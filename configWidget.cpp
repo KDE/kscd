@@ -198,9 +198,5 @@ void configWidget::apply()
     mPlayer->setEjectOnFinish(ejectChkbx->isChecked());
     mPlayer->setStopOnExit(stopOnExitChckbx->isChecked());
     mPlayer->setRandomOnce(randomShuffleRadio->isChecked());
-    
-    if (cdDevice->lineEdit()->edited())
-    {
-        mPlayer->setDevicePath(cdDevice->lineEdit()->text());
-    }
+    mPlayer->setDevicePath(cdDevice->lineEdit()->text());
 }
