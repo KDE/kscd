@@ -94,6 +94,7 @@ struct configstruct{
   bool  autoplay;
   bool stopexit;
   bool ejectonfinish;
+  bool randomonce;
 };
 
 struct mgconfigstruct{

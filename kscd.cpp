@@ -353,13 +353,13 @@ void KSCD::drawPanel()
 
     artistlabel = new QLabel(this);
     artistlabel->setGeometry(WIDTH + 5, iy + 38 , SBARWIDTH -15, 13);
-    artistlabel->setFont( QFont( "Helvetica", 10, QFont::Bold) );
+    artistlabel->setFont( QFont( "helvetica", 10, QFont::Bold) );
     artistlabel->setAlignment( AlignLeft );
     artistlabel->setText("");
 
     titlelabel = new QLabel(this);
     titlelabel->setGeometry(WIDTH + 5, iy + 50 , SBARWIDTH -15, 13);
-    QFont ledfont( "Helvetica", 10, QFont::Bold );
+    QFont ledfont( "Helvetica", 8, QFont::Bold );
     //    KGlobal::charsets()->setQFont(ledfont);
     titlelabel->setFont( ledfont );
     titlelabel->setAlignment( AlignLeft );
@@ -981,15 +981,16 @@ void KSCD::aboutClicked(){
     QString labelstring;
     labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
-    "Copyright (c) 1997-98 \nBernd Johannes Wuebben <wuebben@kde.org>\n\n"
-    "Currently maintained by:\nDirk Foersterling <milliByte@DeathsDoor.com>\n\n"
+    "Copyright (c) 1997-1998 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
+    "Copyright (c) 1999-2000 \nDirk Försterling <milliByte@gmx.net>\n"
+    "   (current Maintainer)\n\n"
     "Kscd is based on WorkMan,\n"
                                       "Copyright (c) 1991-1996 Steven Grimm\n"
-                                      "Copyright (c) 1996-1999 Dirk Foersterling <milliByte@DeathsDoor.com>\n\n"
+                                      "Copyright (c) 1996-2000 Dirk Försterling <milliByte@gmx.net>\n\n"
                                       "Special thanks to Ti Kan and "
                                       "Steve Scherf, the inventors of "
                                       "the CDDB database concept. "
-                                      "Visit http://www.cddb.com for "
+                                      "Visit http://www.cddb.com/ for "
                                       "more information on CDDB.\n\n"
                                      );
 

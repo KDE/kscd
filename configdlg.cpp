@@ -50,6 +50,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 
   if(data){
     configdata.background_color = data->background_color;
+  configdata.randomonce = true;
     configdata.led_color = data->led_color;
     configdata.tooltips = data->tooltips;
     configdata.cd_device = data->cd_device;
@@ -64,6 +65,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 
   colors_changed = false;
 
+    configdata.randomonce = data->randomonce;
   setCaption(i18n("Configure kscd"));
 
   box = new QGroupBox(this, "box");
@@ -183,6 +185,15 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   connect(ejectOnFinishCB, SIGNAL(clicked()), this, SLOT(ejectOnFinishClicked()));
 
 
+  /* koz: Added a configure option to select the unique random play mode, */
+  /* or the traditional random mode */
+  randomOnceCB = new QCheckBox(i18n("Random is Shuffle"),
+			     this, "randomOnceCB");
+  randomOnceCB->setGeometry(30+XOFF,365+YOFF,200,15);
+  randomOnceCB->setFixedSize(randomOnceCB->sizeHint());
+  randomOnceCB->setChecked(configdata.randomonce);
+  connect(randomOnceCB,SIGNAL(clicked()),this,SLOT(randomOnceClicked()));
+
   button3 = new QPushButton(this);
   button3->setGeometry( 420, 400, 90, 25 );
   //button3->setGeometry(255+XOFF,340+YOFF,100,25);
@@ -192,7 +203,6 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 
 
 void ConfigDlg::custombutton_clicked(){
-
     configdata.use_kfm = false;
     custom_edit->setEnabled(!configdata.use_kfm);
 }
@@ -263,37 +273,48 @@ void ConfigDlg::ejectOnFinishClicked()
         configdata.ejectonfinish = FALSE;
 }
 
-void ConfigDlg::help(){
-
+void 
+ConfigDlg::help()
+{
     kapp->invokeHTMLHelp("kscd/kscd.html","");
 }
 
-void ConfigDlg::cancelbutton() {
+void 
+ConfigDlg::cancelbutton() 
+{
   reject();
-}
+} // cancelbutton
 
-void ConfigDlg::set_led_color(){
-
-
+void 
+ConfigDlg::set_led_color()
+{
   KColorDialog::getColor(configdata.led_color);
   qframe1->setBackgroundColor(configdata.led_color);
+} // set_led_color
 
-
-}
-
-void ConfigDlg::set_background_color(){
+void 
+ConfigDlg::set_background_color()
+{
 
   KColorDialog::getColor(configdata.background_color);
   qframe2->setBackgroundColor(configdata.background_color);
+} // set_background_color
 
-}
+void 
+ConfigDlg::randomOnceClicked()
+{
+  if(randomOnceCB->isChecked())
+    configdata.randomonce = TRUE;
+  else
+    configdata.randomonce = FALSE;
+} // randomOnceClicked
 
-struct configstruct * ConfigDlg::getData(){
-
+struct configstruct * 
+ConfigDlg::getData()
+{
   configdata.browsercmd = custom_edit->text();
   return &configdata;
-
-}
+} // getData
 
 #include "configdlg.moc"
 

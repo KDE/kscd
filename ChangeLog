@@ -1,3 +1,12 @@
+Mon Feb 28 07:27:04 2000  Dirk Försterling  <milliByte@gmx.de>
+
+	* Added "random is shuffle" patch from 
+	Bernard Kozioziemski <koz@tdl.com>
+	* Started some source formatting my better understanding. Sorry,
+	but I'm a Qt/KDE-programming-newbie and need some visual hints yet
+	to understand the code. (And I _love_ source documentation
+	(comments) ...)
+
 Tue Jan 18 17:27:26 2000  Dirk Försterling  <milliByte@DeathsDoor.com>
 
 	* Added the libWorkMan directory and inserted it into the make

@@ -71,6 +71,7 @@ private slots:
   void stopOnExitClicked();
   void ejectOnFinishClicked();
   void device_changed(const QString&);
+  void randomOnceClicked();
   void mail_changed(const QString&);
   void custombutton_clicked();
   void kfmbutton_clicked();
@@ -111,6 +112,7 @@ private:
   QCheckBox *cdAutoPlayCB;
   QCheckBox *stopOnExitCB;
   QCheckBox *ejectOnFinishCB;
+  QCheckBox *randomOnceCB;
 
   QLabel *label5;
   QLineEdit *cd_device_edit;
