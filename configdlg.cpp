@@ -76,7 +76,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char* name = 0, bool modal = false)
     /*
      * freedb page
      */
-    page = addVBoxPage(QString("freedb"), i18n("Configure fetching items"), loadIcon("freedb"));
+    page = addVBoxPage(QString("freedb"), i18n("Configure fetching items"), loadIcon("cdtrack"));
     mCDDBConfig = new CDDBSetup(page,"cddbsetupdialog");
     mPlayer->getCDDBOptions(mCDDBConfig);
     connect(mCDDBConfig, SIGNAL(updateCDDBServers()), mPlayer, SLOT(getCDDBservers()));
