@@ -28,6 +28,7 @@
 
 static char *ident = "@(#)plat_freebsd.c	1.2 2/20/95";
 
+#include <unistd.h>
 #include <errno.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -53,7 +54,9 @@ static char *ident = "@(#)plat_freebsd.c	1.2 2/20/95";
 
 #include "struct.h"
 
+#ifndef DEFAULT_CD_DEVICE
 #define DEFAULT_CD_DEVICE       "/dev/rcd0c"
+#endif
 
 void *malloc();
 
