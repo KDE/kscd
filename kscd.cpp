@@ -176,7 +176,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( &queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
   connect( &cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
-  connect( &timer, SIGNAL(timeout()),  SLOT(initCDROM()) );
+  connect( &timer, SIGNAL(timeout()),  SLOT(cdMode()) );
   connect( &jumpTrackTimer, SIGNAL(timeout()),  SLOT(jumpTracks()) );
   connect( playPB, SIGNAL(clicked()), SLOT(playClicked()) );
   connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
@@ -265,7 +265,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   setFocusPolicy ( QWidget::NoFocus );
 
-  timer.start(500, true);
+  QTimer::singleShot(500, this, SLOT(initCDROM()));
 } // KSCD
 
 
@@ -346,7 +346,6 @@ KSCD::initWorkMan()
 void
 KSCD::initCDROM()
 {
-  timer.stop();
   kapp->processEvents();
   kapp->flushX();
 
@@ -354,11 +353,6 @@ KSCD::initCDROM()
   volstartup = FALSE;
   if(cddrive_is_ok)
     volChanged(volume);
-
-  disconnect( &timer, SIGNAL(timeout()), this, SLOT(initCDROM()) );
-  // in case we get called twice...
-  disconnect( &timer, SIGNAL(timeout()), this,  SLOT(cdMode()) );
-  connect( &timer, SIGNAL(timeout()),  SLOT(cdMode()) );
   
   if (autoplay)
   {
@@ -729,9 +723,13 @@ KSCD::setToolTips(bool on)
 void
 KSCD::cleanUp()
 {
-    delete thiscd.trk;
-    thiscd.trk = 0L;
-    thiscd.ntracks = 0;
+    if (thiscd.trk)
+    {
+        free(thiscd.trk);
+        thiscd.trk = 0L;
+        thiscd.ntracks = 0;
+    }
+
     signal (SIGINT, SIG_DFL);
     delete magicproc;
     magicproc = 0L;
@@ -740,8 +738,11 @@ KSCD::cleanUp()
 void
 KSCD::playClicked()
 {
-    if (!cddrive_is_ok)
+    if (!cddrive_is_ok || 
+        !wm_cd_status())
+    {
         return;
+    }
 
     qApp->processEvents();
     qApp->flushX();
@@ -947,6 +948,10 @@ KSCD::bwdClicked()
 void
 KSCD::quitClicked()
 {
+    // FIXME: if you insert a disc while kscd is starting up
+    // and then repeated hit Ctrl-Q or the quit button it will
+    // segfault every time.
+
     // ensure nothing else starts happening
     queryledtimer.stop();
     titlelabeltimer.stop();
@@ -957,7 +962,7 @@ KSCD::quitClicked()
     randomplay = FALSE;
     statuslabel->clear();
     setLEDs( "--:--" );
-
+    
     // Good GOD this is evil
     qApp->processEvents();
     qApp->flushX();
