@@ -66,7 +66,6 @@ class CDDialog : public CDDialogData
 			   QStringList& playlist,
 			   QStringList& pathlist,
 			   QString& cddbbasedir,
-			   QString& _mailcmd,
 			   QString& _submitaddress,
 			   SMTPConfig::SMTPConfigData *_smtpConfigData
 			   );
@@ -109,7 +108,6 @@ private:
   int      	revision;
   QString     submitaddress;
   QString 	category;
-  QString	mailcmd;
   QString     playorder;
   struct dialogcdinfo cdinfo;
   bool            messageNotSent;

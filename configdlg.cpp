@@ -41,7 +41,6 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   configdata.led_color = green;
   configdata.tooltips = true;
   configdata.cd_device = QString::fromLatin1("/dev/cdrom");
-  configdata.mailcmd = QString::fromLatin1("mail -s \"%s\" ");
   configdata.docking = true;
   configdata.autoplay = false;
   configdata.stopexit = true;
@@ -54,7 +53,6 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
       configdata.led_color = data->led_color;
       configdata.tooltips = data->tooltips;
       configdata.cd_device = data->cd_device;
-      configdata.mailcmd = data->mailcmd;
       configdata.browsercmd = data->browsercmd;
       configdata.use_kfm = data->use_kfm;
       configdata.docking = data->docking;
@@ -117,14 +115,6 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   cd_device_edit->hide();
 
 #endif
-
-  label6 = new QLabel(i18n("Unix mail command:"),cpbox);
-  cplay->addWidget ( label6, 4, 0 );
-  mail_edit = new QLineEdit(cpbox);
-  cplay->addMultiCellWidget ( mail_edit, 4,4, 1,2 );
-  mail_edit->setText(configdata.mailcmd);
-  connect(mail_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(mail_changed(const QString &)));
 
   browserbox = new  QButtonGroup(i18n("WWW Browser"),box,"wwwbox");
   lay3->addWidget ( browserbox );
@@ -221,12 +211,6 @@ ConfigDlg::device_changed(const QString &dev) {
 
   configdata.cd_device = dev;
 } // device_changed
-
-void 
-ConfigDlg::mail_changed(const QString &dev) {
-
-  configdata.mailcmd = dev;
-} // mail_changed
 
 void 
 ConfigDlg::ttclicked(){

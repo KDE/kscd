@@ -72,7 +72,6 @@ private slots:
   void ejectOnFinishClicked();
   void device_changed(const QString&);
   void randomOnceClicked();
-  void mail_changed(const QString&);
   void custombutton_clicked();
   void kfmbutton_clicked();
 
@@ -116,9 +115,6 @@ private:
 
   QLabel *label5;
   QLineEdit *cd_device_edit;
-
-  QLabel *label6;
-  QLineEdit *mail_edit;
 
   QButtonGroup *browserbox;
 
