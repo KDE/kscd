@@ -38,7 +38,6 @@
 #include "configdlg.h"
 #include "configWidget.h"
 #include "smtpconfig.h"
-#include "CDDBSetup.h"
 #include "kscd.h"
 #include "version.h"
 
@@ -75,30 +74,28 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
     mKCSDConfig = new configWidget(mPlayer, page);
 
     /*
-     * freedb page
+     * libkcddb page
      *
-    page = addVBoxPage(QString("freedb"), i18n("Configure Fetching Items"), loadIcon("cdtrack"));
-    mCDDBConfig = new CDDBSetup(page,"cddbsetupdialog");
-    mPlayer->getCDDBOptions(mCDDBConfig);
-    connect(mCDDBConfig, SIGNAL(updateCDDBServers()), mPlayer, SLOT(getCDDBservers()));
-    connect(mCDDBConfig, SIGNAL(updateCurrentServer(const QString&)),
-            mPlayer, SLOT(updateCurrentCDDBServer(const QString&)));
-    connect(mPlayer, SIGNAL(newServerList(const QStringList&)),
-            mCDDBConfig, SLOT(insertServerList(const QStringList&)));*/
+     */
 
-    KCModuleInfo info("Settings/Sound/cddb.desktop", "settings");
-    if (info.service()->isValid())
+    KService::Ptr libkcddb = KService::serviceByDesktopName("libkcddb");
+    if (libkcddb->isValid())
     {
-        KCModule *m = KCModuleLoader::loadModule(info);
-        if (m)
+        KCModuleInfo info(libkcddb->desktopEntryPath(), "settings");
+        if (info.service()->isValid())
         {
-            m->load();
-            page = addVBoxPage(QString("freedb"), i18n("Configure Fetching Items"), loadIcon("cdtrack"));
-            m->reparent(page, 0, QPoint(0, 0));
-            connect(this, SIGNAL(okClicked()), m, SLOT(save()));
-            connect(this, SIGNAL(applyClicked()), m, SLOT(save()));
-            connect(this, SIGNAL(defaultClicked()), m, SLOT(defaults()));
-       }
+            KCModule *m = KCModuleLoader::loadModule(info);
+            if (m)
+            {
+                m->load();
+                page = addVBoxPage(QString("freedb"), i18n("Configure Fetching Items"), loadIcon("cdtrack"));
+                m->reparent(page, 0, QPoint(0, 0));
+                connect(this, SIGNAL(okClicked()), m, SLOT(save()));
+                connect(this, SIGNAL(applyClicked()), m, SLOT(save()));
+                connect(this, SIGNAL(defaultClicked()), m, SLOT(defaults()));
+                page->setStretchFactor(m, 1);
+            }
+        }
     }
 
     /*
@@ -152,7 +149,3 @@ void ConfigDlg::finis()
 }
 
 #include "configdlg.moc"
-
-
-
-

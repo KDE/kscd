@@ -1,11 +1,14 @@
 /*
  *             BW_LED_Number a very very primitive LED
- * 
+ *
  * Copyright: Bernd Johannes Wuebben, wuebben@math.cornell.edu
- * 
+ *
  * $Id$
- * 
+ *
  * $Log$
+ * Revision 1.8  1999/06/27 17:57:37  kulow
+ * fixes for --enable-final and other problems :)
+ *
  * Revision 1.7  1999/05/17 13:45:35  porten
  * * added SCO support
  * * (Q)char fix
@@ -49,7 +52,7 @@
  *
  *
  *
- * 
+ *
  */
 
 
@@ -65,16 +68,16 @@
 
 
 static char segs[14][8] =
-{ { 0, 1, 2, 4, 5, 6,25, 0},		// 0 
+{ { 0, 1, 2, 4, 5, 6,25, 0},		// 0
   { 2, 5,25, 0, 0, 0, 0, 0},		// 1
   { 1, 2, 3, 4, 6,25 ,0, 0},		// 2
   { 1, 2, 3, 5, 6,25, 0, 0},		// 3
   { 0, 3, 2, 5 ,25, 0, 0, 0},		// 4
-  { 0, 1, 3, 5, 6,25, 0, 0},		// 5 
+  { 0, 1, 3, 5, 6,25, 0, 0},		// 5
   { 0, 1, 3, 4, 5, 6,25, 0},		// 6
   { 1,2 , 5,25, 0, 0, 0, 0},		// 7
   { 0, 1, 2, 3, 4, 5, 6,25},		// 8
-  { 0, 1, 2, 3, 5, 6,25, 0},		// 9 
+  { 0, 1, 2, 3, 5, 6,25, 0},		// 9
   { 3,25, 0, 0, 0, 0, 0, 0},		// -
   { 7,25, 0, 0, 0, 0, 0, 0},		// .
   { 8, 9,25, 0, 0, 0, 0, 0},		// :
@@ -83,7 +86,7 @@ static char segs[14][8] =
 
 BW_LED_Number::BW_LED_Number( QWidget *parent, const char *name )
   : QFrame( parent, name ){
-    
+
 
     offcolor = QColor(100,0,0);
     showOffColon(FALSE);
@@ -92,7 +95,7 @@ BW_LED_Number::BW_LED_Number( QWidget *parent, const char *name )
     old_segments = &segs[13][0];      // nothing
     current_segments = &segs[13][0];  // nothing
     setLEDColor(yellow,black);
-    
+
 }
 
 void dump_segments(char * segs){
@@ -113,8 +116,13 @@ void  BW_LED_Number::resizeEvent( QResizeEvent * ){
 
 }
 
+void BW_LED_Number::mouseReleaseEvent( QMouseEvent * /* e */ )
+{
+    emit(clicked());
+}
+
 void BW_LED_Number::showOffColon(bool off){
- 
+
   show_off_colon = off;
 
 }
@@ -128,10 +136,10 @@ void BW_LED_Number::setLEDColor( const QColor& fgColor, const QColor& bgColor ){
 
 
   QColorGroup new_cg( fgColor, bgColor,
-		      fgColor, fgColor, fgColor, 
+		      fgColor, fgColor, fgColor,
 		      fgColor, fgColor );
 
-        
+
   this->setPalette(QPalette(new_cg, new_cg, new_cg));
 
 }
@@ -139,8 +147,8 @@ void BW_LED_Number::setLEDColor( const QColor& fgColor, const QColor& bgColor ){
 
 
 
-static char *getSegments( char s)	
-                                        
+static char *getSegments( char s)
+
 {
   if (s >= '0' && s <= '9'){
     return segs[s - '0'];
@@ -150,19 +158,19 @@ static char *getSegments( char s)
 
     switch ( s ) {
     case '-':
-      j = 10;  
+      j = 10;
       break;
     case 'O':
-      j = 0;   
+      j = 0;
       break;
     case '.':
-      j = 11;  
+      j = 11;
       break;
     case ':':
-      j = 12;  
+      j = 12;
       break;
     default:
-      j = 13;  
+      j = 13;
       break;
     }
 
@@ -186,11 +194,11 @@ void BW_LED_Number::display(int i ){
 
 
 void BW_LED_Number::display(char s){
-  
-  QPainter p;     
+
+  QPainter p;
 
   p.begin( this );
-  
+
   old_segments = current_segments;
   current_symbol = s;
   current_segments = getSegments(s);
@@ -209,12 +217,12 @@ void BW_LED_Number::setSmallLED(bool a_boolean){
 
 
 void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
-  
+
   //  printf("drawSymbol repaint = %d\n",repaint);
 
  QPoint  pos;
-  
- int xSegment_Length, ySegment_Length, Segment_Length, xAdvance;   
+
+ int xSegment_Length, ySegment_Length, Segment_Length, xAdvance;
  int Xoffset, Yoffset, space;
 
  space = 1;
@@ -225,17 +233,17 @@ void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
 
  Segment_Length   = ySegment_Length > xSegment_Length ? xSegment_Length : ySegment_Length;
 
- xAdvance = Segment_Length*( 5 + space )/5 +1  ;  
+ xAdvance = Segment_Length*( 5 + space )/5 +1  ;
 
  // Xoffset  = ( width() - xAdvance + Segment_Length/5 )/2; // origininal
  Xoffset  = ( width() - xAdvance + Segment_Length/4 )/2;
  Yoffset  = ( height() - Segment_Length*2 )/2;
-  
- pos = QPoint( Xoffset , Yoffset );	
+
+ pos = QPoint( Xoffset , Yoffset );
 
 
  if(repaint){
- 
+
    // this draw the non-illumintated segments
 
    if(show_off_colon){// we want to show the colon which is actually ugly and
@@ -263,12 +271,12 @@ void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
    }
  }
  else{ // we are not repainting ourselves due to a repaint event but rather
-       // genuinely changing the symbol that is to be displayed 
+       // genuinely changing the symbol that is to be displayed
 
    for(int l = 0; l <= NUM_OF_SEGMENTS -1; l++){
 
      if(current_segments[l] != STOP_CHAR){
-       if(!seg_contained_in(current_segments[l],old_segments)) 
+       if(!seg_contained_in(current_segments[l],old_segments))
 	 drawSegment(pos,current_segments[l],*p,Segment_Length,FALSE);   // draw segment
      }
      else{
@@ -276,7 +284,7 @@ void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
      }
    }
 
- 
+
    for(int k = 0; k <= NUM_OF_SEGMENTS -1; k++){
 
      if(old_segments[k] != STOP_CHAR){
@@ -320,10 +328,10 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
   QColorGroup g = colorGroup();
   QColor lightColor,darkColor;
   if ( erase ){
-    
+
     lightColor = offcolor;
     darkColor  = offcolor;
-    
+
   } else {
     lightColor = g.light();
     darkColor  = g.dark();
@@ -332,32 +340,32 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
   //  int Width = (int) Segment_Length/5 ; // original
   int Width = (int) Segment_Length/4;
 
-  
-  QBrush brush(g.light()); 
+
+  QBrush brush(g.light());
   QPointArray pts;
-  
-  
+
+
   pt.ry() += (QCOORD)Width/2;
-  
-  
+
+
   if (erase){
-    
+
     p.setBrush(offcolor);
     brush.setColor(offcolor);
-    
+
   }
   else
     p.setBrush(g.light());
-  
+
   if(!smallLED){
-    
+
     switch ( seg_number ) {
     case 0 :
-      
-      
-      if (erase) 
+
+
+      if (erase)
 	p.setPen(offcolor);
-      
+
       pts.setPoints(3,pt.x(), pt.y() ,
 		    pt.x(), pt.y()-Width +1,
 		    pt.x() + Width-1, pt.y());
@@ -366,87 +374,87 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
 		    pt.x() + Width -1 , pt.y()  -Width +Segment_Length - Width/2 -1,
 		    pt.x() , pt.y() + Segment_Length - 3*Width/4 -1);
       p.drawPolygon(pts);
-      
+
       if (erase)
 	p.setPen(g.light());
-      
-      p.fillRect(pt.x(),pt.y()+ Width/2 -1, Width , 
+
+      p.fillRect(pt.x(),pt.y()+ Width/2 -1, Width ,
 		 Segment_Length - Width -Width +1 ,brush);
-      
+
       break;
     case 1 :
-      
+
       p.fillRect(pt.x()+Width,pt.y()- Width , Segment_Length -2* Width, Width ,brush);
-      
-      if (erase) 
+
+      if (erase)
 	p.setPen(offcolor);
-      
+
       pts.setPoints(3,pt.x()+1, pt.y()-Width  ,
 		    pt.x()+Width, pt.y()-Width  ,
 		    pt.x() + Width, pt.y() -1 );
       p.drawPolygon(pts);
-      
+
       pts.setPoints(3,pt.x()+ Segment_Length - Width , pt.y() - Width,
 		    pt.x()+  Segment_Length  -1, pt.y() - Width,
 		    pt.x() + Segment_Length - Width , pt.y() -1 );
       p.drawPolygon(pts);
-      
-      if (erase) 
+
+      if (erase)
 	p.setPen(g.light());
       break;
     case 2 :
       pt.rx() += (QCOORD)(Segment_Length);
-      
-      
-      if (erase) 
+
+
+      if (erase)
 	p.setPen(offcolor);
-      
+
       pts.setPoints(3,pt.x() , pt.y() ,
-		    pt.x() , pt.y() - Width + 1,    // changes from 1 to 2 
+		    pt.x() , pt.y() - Width + 1,    // changes from 1 to 2
 		    pt.x() - Width +1, pt.y() );
-      
+
       p.drawPolygon(pts);
-      
+
       pts.setPoints(3,pt.x() , pt.y() + Segment_Length - Width - Width/2 -1,
 		    pt.x() , pt.y() + Segment_Length - 3*Width/4 - 1,
 		    pt.x() - Width +1, pt.y() + Segment_Length - Width - Width/2 -1);
 
       p.drawPolygon(pts);
-      
+
       if (erase)
 	p.setPen(g.light());
-      
-      p.fillRect(pt.x() - Width+1 ,pt.y() + Width/2- 1, Width , 
+
+      p.fillRect(pt.x() - Width+1 ,pt.y() + Width/2- 1, Width ,
 		 Segment_Length - Width - Width + 1 ,brush);
-      
+
       break;
     case 3 :
-      
+
       pt.ry() += (QCOORD)Segment_Length;
-      
+
       p.setPen(g.background());
-      
+
       pts.setPoints(3,pt.x()-1 , pt.y() - Width/2 -1,
 		    pt.x() + Width+2, pt.y()-Width -1 ,//
 		    pt.x() + Width+2, pt.y() );
       p.drawPolygon(pts);
       pts.setPoints(3,pt.x() + Segment_Length + 1, pt.y()  - Width/2 -1  ,
-		    pt.x() + Segment_Length - Width - 2 , 
+		    pt.x() + Segment_Length - Width - 2 ,
 		    pt.y() - Width -1,
 		    pt.x() + Segment_Length - Width - 2, pt.y() );
       p.drawPolygon(pts);
-      
+
       p.setPen(g.light());
-      p.fillRect(pt.x() + Width -1 ,pt.y() - Width, Segment_Length- 2* Width + 3, 
-		       Width  ,brush);	    
-      
+      p.fillRect(pt.x() + Width -1 ,pt.y() - Width, Segment_Length- 2* Width + 3,
+		       Width  ,brush);
+
       break;
     case 4 :
       pt.ry() += (QCOORD)(Segment_Length +1);
       p.fillRect(pt.x(), pt.y(), Width , Segment_Length - Width - Width/2 ,brush);
-      if (erase) 
+      if (erase)
 	p.setPen(offcolor);
-      
+
       pts.setPoints(3,pt.x(), pt.y(),
 		    pt.x(), pt.y()-Width+1,
 		    pt.x() + Width-1, pt.y());
@@ -455,60 +463,60 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
 		    pt.x() + Width -1 , pt.y()  -Width +Segment_Length - Width/2 -1 ,
 		    pt.x() , pt.y() + Segment_Length - 3*Width/4 -1);
       p.drawPolygon(pts);
-      
+
       if (erase)
 	p.setPen(g.light());
-      
+
       break;
     case 5 :
       pt.rx() += (QCOORD)(Segment_Length );
       pt.ry() += (QCOORD)(Segment_Length +1);
-      p.fillRect(pt.x() - Width +1  ,pt.y(), Width , 
+      p.fillRect(pt.x() - Width +1  ,pt.y(), Width ,
 		 Segment_Length - Width - Width/2  ,brush);
-      
-      if (erase) 
+
+      if (erase)
 	p.setPen(offcolor);
-      
+
       pts.setPoints(3,pt.x() , pt.y(),
 		    pt.x() , pt.y() - Width  +1,
 		    pt.x() - Width +1, pt.y());
-      
+
       p.drawPolygon(pts);
-      
+
       pts.setPoints(3,pt.x() , pt.y() + Segment_Length - Width - Width/2 -1,
 		    pt.x() , pt.y() + Segment_Length - 3*Width/4 -1,
 		    pt.x() - Width +1, pt.y() + Segment_Length - Width - Width/2 -1);
 
       p.drawPolygon(pts);
-      
+
       if (erase)
 	p.setPen(g.light());
-      
+
       break;
     case 6 :
       pt.ry() += (QCOORD)(Segment_Length*2 );
-      p.fillRect(pt.x() + Width  ,pt.y() -Width , Segment_Length -2* Width , 
+      p.fillRect(pt.x() + Width  ,pt.y() -Width , Segment_Length -2* Width ,
 		 Width  ,brush);
-      
-      if (erase) 
+
+      if (erase)
 	p.setPen(offcolor);
-      
+
       pts.setPoints(3,pt.x()+1, pt.y()-1,
 		    pt.x() + Width, pt.y() - Width,
 		    pt.x() + Width, pt.y() - 1 );
       p.drawPolygon(pts);
-      
+
       pts.setPoints(3, pt.x() + Segment_Length - 1, pt.y()-1,
-		    pt.x() + Segment_Length - Width , pt.y() - Width, 
+		    pt.x() + Segment_Length - Width , pt.y() - Width,
 		    pt.x() + Segment_Length - Width , pt.y() - 1 );
-             
+
       p.drawPolygon(pts);
-      
-      if (erase) 
+
+      if (erase)
 	p.setPen(g.light());
-      
-      
-      
+
+
+
       break;
     case 7 :
       pt.rx() += (QCOORD)(Segment_Length/2);
@@ -518,7 +526,7 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
     case 8 :
       pt.ry() += (QCOORD)(Segment_Length/2 + Width/2);
       pt.rx() += (QCOORD)(Segment_Length/2 - Width/2 + 1);
-      
+
       if (!show_off_colon && erase) {
 	p.setBrush(bgcolor);
         brush.setColor(bgcolor);
@@ -526,7 +534,7 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
 
       p.fillRect(pt.x()  ,pt.y() - Width  , Width , Width  ,brush);
       p.moveTo(pt);
-      
+
       if (!show_off_colon && erase) {
 	p.setBrush(fgcolor);
         brush.setColor(fgcolor);
@@ -549,13 +557,13 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
       }
       break;
     }
-    
+
   } /*  if (!smallLED) */
-  
+
   else{
-    
+
     pt.ry() += (QCOORD)Width/2;
-    
+
     switch ( seg_number ) {
     case 0 :
       p.fillRect(pt.x(),pt.y()+ Width /2, Width , Segment_Length - Width -Width/2 ,brush);
@@ -565,7 +573,7 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
       break;
     case 2 :
       pt.rx() += (QCOORD)(Segment_Length);
-      p.fillRect(pt.x()-Width,pt.y()+ Width/2, Width , 
+      p.fillRect(pt.x()-Width,pt.y()+ Width/2, Width ,
 		 Segment_Length - Width -Width/2 ,brush);
       break;
     case 3 :
@@ -579,12 +587,12 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
     case 5 :
       pt.rx() += (QCOORD)(Segment_Length );
       pt.ry() += (QCOORD)(Segment_Length );
-      p.fillRect(pt.x() - Width ,pt.y(), Width , 
+      p.fillRect(pt.x() - Width ,pt.y(), Width ,
 		 Segment_Length - Width - Width/2  ,brush);
       break;
     case 6 :
       pt.ry() += (QCOORD)(Segment_Length*2);
-      p.fillRect(pt.x() + Width  ,pt.y() -Width , Segment_Length -2* Width , 
+      p.fillRect(pt.x() + Width  ,pt.y() -Width , Segment_Length -2* Width ,
 		 Width  ,brush);
       break;
     case 7 :
@@ -611,7 +619,7 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
     case 9 :
       pt.ry() += (QCOORD)(3*Segment_Length/2 + Width/2);
       pt.rx() += (QCOORD)(Segment_Length/2 - Width/2 + 1);
-     
+
       if (!show_off_colon && erase) {
 	p.setBrush(bgcolor);
         brush.setColor(bgcolor);
@@ -621,9 +629,9 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
 	p.setBrush(fgcolor);
         brush.setColor(fgcolor);
       }
-      
+
       break;
-    }	
+    }
 
   } /* end smallLED */
 

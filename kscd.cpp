@@ -25,6 +25,8 @@
 #include <qregexp.h>
 #include <qtextstream.h>
 #include <qlayout.h>
+#include <qhbox.h>
+#include <qvbox.h>
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
@@ -176,7 +178,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
     jumpToTrack(0L),
     skipDelta(30),
     volume(40),
-    tooltips(true),
     randomplay(false),
     looping(false),
     cddrive_is_ok(true),
@@ -187,7 +188,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
     autoplay(false),
     stopexit(true),
     ejectonfinish(false),
-    randomonce(true),
+    digitalplayback(false),
     currentlyejected(false),
     updateDialog(false), //!!!!
     revision(0) // The first freedb revision is "0" //!!!!
@@ -215,11 +216,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   initWorkMan();
   setupPopups();
 
-  // this looks really freakin' wierd, i know
-  // the reason is that setToolTips doesn't do anything unless the value
-  // of tooltips is changed, ergo the flipping back and forth of bool tooltips
-  tooltips = !tooltips;
-  setToolTips(!tooltips);
+  setToolTips();
 
 
   // set the volume BEFORE setting up the signals
@@ -286,6 +283,9 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connectDCOPSignal(0, 0, "KDE_emailSettingsChanged()", "emailSettingsChanged()", false);
 
   setFocusPolicy ( QWidget::NoFocus );
+
+  this->adjustSize();
+  this->setFixedSize(this->width(), this->height());
 
   QTimer::singleShot(500, this, SLOT(initCDROM()));
 } // KSCD
@@ -426,162 +426,143 @@ KSCD::initFont()
 QPushButton *
 KSCD::makeButton( int x, int y, int w, int h, const QString& n )
 {
-  QPushButton *pb = new QPushButton( n, this );
-  pb->setGeometry( x, y, w, h );
-  pb->setFocusPolicy ( QWidget::NoFocus );
+  // ML XXX
+  QPushButton *pb = new QPushButton(n, this);
+  pb->setFocusPolicy(QWidget::NoFocus);
+  if (w <= 1 && h <= 1) outerLO->addWidget(pb, y, x);
+  else outerLO->addMultiCellWidget(pb, y, h + y - 1 , x, w + x - 1);
+  pb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   return pb;
 } // makeButton
 
 /**
  * drawPanel() constructs KSCD's main window.
  * This is oldstyle and needs to be redesigned.
+ * Redone using QGridLayout -- but the inner part still uses fixed layout.
  *
  * @author Bernd Wübben
  * @author Dirk Försterling
+ * @author Luciano Montanaro
  */
 void
 KSCD::drawPanel()
 {
-  int ix = 0;
-  int iy = 0;
-  const int WIDTH = 90;
+  const int SBARWIDTH = 240;
   const int HEIGHT = 27;
-  const int SBARWIDTH = 220;
+  const int WIDTH = 92;
 
-  aboutPB = makeButton( ix, iy, WIDTH, 2 * HEIGHT, i18n("About") );
+  outerLO = new QGridLayout(this, 5, 9);
 
-  ix = 0;
-  iy += 2 * HEIGHT;
+  aboutPB = makeButton(0, 0, 2, 2, i18n("About"));
+  aboutPB->setMinimumWidth(WIDTH);
+  aboutPB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-  infoPB = makeButton( ix, iy, WIDTH/2, HEIGHT, "" );
-  ejectPB = makeButton( ix + WIDTH/2, iy, WIDTH/2, HEIGHT, "" );
+  infoPB = makeButton(0, 2, 1, 1, "");
+  infoPB->setMinimumHeight(HEIGHT);
 
-  iy += HEIGHT;
+  optionsbutton = makeButton(1, 2, 1, 1, "");
+
 #if KSCDMAGIC
-  dockPB = makeButton( ix, iy, WIDTH/2, HEIGHT, i18n("Quit") );
-  magicPB = makeButton(ix+WIDTH/2, iy, WIDTH/2, HEIGHT, "" );
+  dockPB = makeButton(0, 3, 1, 1, i18n("Quit"));
+
+  magicPB = makeButton(1, 3, 1, 1, "");
 #else
-  dockPB = makeButton( ix, iy, WIDTH, HEIGHT, i18n("Quit") );
+  dockPB = makeButton(0, 3, 2, 1, i18n("Quit"));
 #endif
-  ix += WIDTH;
-  iy = 0;
+  dockPB->setMinimumHeight(HEIGHT);
 
-  backdrop = new QFrame(this);
-  backdrop->setGeometry(ix,iy,SBARWIDTH -2, 2* HEIGHT + HEIGHT /2 -1);
-  backdrop->setFocusPolicy ( QWidget::NoFocus );
+  QVBox* innerVB = new QVBox(this);
+  outerLO->addMultiCellWidget(innerVB, 0, 2, 2, 6);
 
-  int D = 6;
+  backdrop = new QFrame(innerVB);
+  backdrop->setFixedSize(SBARWIDTH - 2, 2 * HEIGHT + HEIGHT / 2 - 1);
+  backdrop->setFocusPolicy(QWidget::NoFocus);
+  backdrop->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
-  ix = WIDTH + 8;
-  for (int u = 0; u<5;u++)
-    {
-      trackTimeLED[u] = new BW_LED_Number(this );
-      trackTimeLED[u]->setGeometry( ix  + u*18, iy + D, 23 ,  30 );
-      trackTimeLED[u]->setLEDoffColor(background_color);
-      trackTimeLED[u]->setLEDColor(led_color,background_color);
-    }
+  const int D = 6;
+
+  for (int u = 0; u < 5; u++) {
+     trackTimeLED[u] = new BW_LED_Number(backdrop);
+     trackTimeLED[u]->setLEDoffColor(background_color);
+     trackTimeLED[u]->setLEDColor(led_color, background_color);
+     trackTimeLED[u]->setGeometry(u * 18, D, 23,  30);
+     connect(trackTimeLED[u], SIGNAL(clicked()), this, SLOT(cycleplaytimemode()));
+  }
 
   QString zeros("--:--");
   setLEDs(zeros);
-
-  artistlabel = new QLabel(this);
-  artistlabel->setGeometry(WIDTH + 5, iy + 38 , SBARWIDTH -15, 13);
-  artistlabel->setFont( smallfont );
-  artistlabel->setAlignment( AlignLeft );
+  artistlabel = new QLabel(backdrop);
+  artistlabel->setFont(smallfont);
+  artistlabel->setAlignment(AlignLeft);
+  artistlabel->setGeometry(5, 38, SBARWIDTH -15, 13);
   artistlabel->clear();
 
-  titlelabel = new QLabel(this);
-  titlelabel->setGeometry(WIDTH + 5, iy + 50 , SBARWIDTH -15, 13);
-  titlelabel->setFont( verysmallfont );
-  titlelabel->setAlignment( AlignLeft );
+  titlelabel = new QLabel(backdrop);
+  titlelabel->setFont(verysmallfont);
+  titlelabel->setAlignment(AlignLeft);
+  titlelabel->setGeometry(5, 50, SBARWIDTH -15, 13);
   titlelabel->clear();
 
-  statuslabel = new QLabel(this);
-  statuslabel->setGeometry(WIDTH + 110, iy  +D, 50, 14);
-  statuslabel->setFont( verysmallfont );
-  statuslabel->setAlignment( AlignLeft );
+  statuslabel = new QLabel(backdrop);
+  statuslabel->setFont(verysmallfont);
+  statuslabel->setAlignment(AlignLeft);
+  statuslabel->setGeometry(110, D, 60, 14);
 
-  queryled = new LedLamp(this);
-  queryled->move(WIDTH + 200, iy  +D +1 );
+  queryled = new LedLamp(backdrop);
+  queryled->move(220, D + 1);
   queryled->off();
   queryled->hide();
 
-  loopled = new LedLamp(this, LedLamp::Loop);
-  loopled->move(WIDTH + 200, iy  +D +18 );
+  loopled = new LedLamp(backdrop, LedLamp::Loop);
+  loopled->move(220, D + 18);
   loopled->off();
 
-  volumelabel = new QLabel(this);
-  volumelabel->setGeometry(WIDTH + 110, iy + 14 + D, 50, 14);
-  volumelabel->setFont( smallfont );
-  volumelabel->setAlignment( AlignLeft );
+  volumelabel = new QLabel(backdrop);
+  volumelabel->setFont(smallfont);
+  volumelabel->setAlignment(AlignLeft);
+  volumelabel->setGeometry(110, 14 + D, 60, 14);
   volumelabel->setText(i18n("Vol: --"));
 
-  tracklabel = new QLabel(this);
-  tracklabel->setGeometry(WIDTH + 168, iy + 14 +D, 30, 14);
-  tracklabel->setFont( smallfont );
-  tracklabel->setAlignment( AlignLeft );
+  tracklabel = new QLabel(backdrop);
+  tracklabel->setFont(smallfont);
+  tracklabel->setAlignment(AlignLeft);
+  tracklabel->setGeometry(178, 14 + D, 40, 14);
   tracklabel->setText("--/--");
 
-  totaltimelabel = new QLabel(this);
-  totaltimelabel->setGeometry(WIDTH + 168, iy  +D, 50, 14);
+  totaltimelabel = new QLabel(backdrop);
   totaltimelabel->setFont( smallfont );
   totaltimelabel->setAlignment( AlignLeft );
+  totaltimelabel->setGeometry(178, D, 60, 14);
   totaltimelabel->hide();
 
-  ix = WIDTH;
-  iy = HEIGHT + HEIGHT + HEIGHT/2;
+  volSB = new KSCDSlider(innerVB, "Slider");
+  volSB->setFocusPolicy(QWidget::NoFocus);
 
-  volSB = new KSCDSlider( this, "Slider" );
-  volSB->setGeometry( ix, iy, SBARWIDTH, HEIGHT/2 );
-  volSB->setFocusPolicy ( QWidget::NoFocus );
+  cddbbutton = makeButton(2, 3, 1, 1, "");
 
-  iy += HEIGHT/2  +1 ;
-  cddbbutton = new QPushButton( this );
-  cddbbutton->setGeometry( ix , iy, SBARWIDTH/10 *2 , HEIGHT );
-  cddbbutton->setFocusPolicy ( QWidget::NoFocus );
+  shufflebutton = makeButton(3, 3, 1, 1, "");
 
-  ix += SBARWIDTH/10*2;
-  shufflebutton = new QPushButton( this );
-  shufflebutton->setGeometry( ix , iy, SBARWIDTH/10 *2  , HEIGHT );
-  shufflebutton->setFocusPolicy ( QWidget::NoFocus );
+  replayPB = makeButton(4, 3, 1, 1, "");
 
-  ix += SBARWIDTH/10*2;
+  songListCB = new QComboBox(this);
+  songListCB->setFocusPolicy (QWidget::NoFocus);
+  outerLO->addMultiCellWidget(songListCB, 4 , 4, 0, 8);
 
-  optionsbutton = new QPushButton( this );
-  optionsbutton->setGeometry( ix, iy, SBARWIDTH/10 *2  , HEIGHT );
-  optionsbutton->setFocusPolicy ( QWidget::NoFocus );
+  playPB = makeButton(7, 0, 2, 2, "Play/Pause");
+  playPB->setMinimumWidth(WIDTH);
+  playPB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-  ix = 0;
-  iy += HEIGHT;
-  songListCB = new QComboBox( this );
-  songListCB->setGeometry( ix, iy, SBARWIDTH/10*18+6, HEIGHT );
-  songListCB->setFocusPolicy ( QWidget::NoFocus );
+  stopPB = makeButton(7, 2, 1, 1, "Stop");
 
-  iy = 0;
-  ix = WIDTH + SBARWIDTH + 2;
-  playPB = makeButton( ix, iy, WIDTH, HEIGHT*2, "Play/Pause" );
+  ejectPB = makeButton(8, 2, 1, 1, "Replay");
 
-  iy += HEIGHT + HEIGHT;
-  stopPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Stop" );
+  bwdPB = makeButton(5, 3, 1, 1, "Bwd");
 
-  ix += WIDTH / 2;
-  replayPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Replay" );
+  fwdPB = makeButton(6, 3, 1, 1, "Fwd");
 
-  ix = WIDTH + SBARWIDTH/10*6;
-  iy += HEIGHT;
-  bwdPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Bwd" );
+  prevPB = makeButton(7, 3, 1, 1, "Prev");
 
-  ix += WIDTH / 2;
-  fwdPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Fwd" );
-
-  ix = WIDTH + SBARWIDTH + 2;
-  prevPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Prev" );
-
-  ix += WIDTH / 2;
-  nextPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Next" );
-
-  this->adjustSize();
-  this->setFixedSize(this->width(),this->height());
+  nextPB = makeButton(8, 3, 1, 1, "Next");
 
 } // drawPanel
 
@@ -623,6 +604,7 @@ KSCD::loadBitmaps()
     shufflebutton->setPixmap( shuffleBmp );
     cddbbutton->setPixmap( databaseBmp );
     optionsbutton->setPixmap( optionsBmp );
+
 } // loadBitmaps
 
 
@@ -670,88 +652,31 @@ KSCD::setupPopups()
     mainPopup->insertItem(i18n("Help"), helpMenu->menu());
 } // setupPopups
 
-void
-KSCD::setRandomOnce(bool shuffle)
-{
-    randomonce = shuffle;
-    QToolTip::remove(shufflebutton);
-
-    if (tooltips)
-    {
-        if (!randomonce)
-        {
-            QToolTip::add(shufflebutton, i18n("Random play"));
-        }
-        else
-        {
-            QToolTip::add(shufflebutton, i18n("Shuffle play"));
-        }
-    }
-} // setRandomOnce()
 
 void
-KSCD::setToolTips(bool on)
+KSCD::setToolTips()
 {
-    if (tooltips == on)
-    {
-        return;
-    }
+    QToolTip::add(playPB,          i18n("Play/Pause"));
+    QToolTip::add(stopPB,          i18n("Stop"));
+    QToolTip::add(replayPB,        i18n("Loop"));
+    QToolTip::add(songListCB,      i18n("Track selection"));
 
-    tooltips = on;
-    if(tooltips)
-    {
-        QToolTip::add(playPB,          i18n("Play/Pause"));
-        QToolTip::add(stopPB,          i18n("Stop"));
-        QToolTip::add(replayPB,        i18n("Loop"));
-        QToolTip::add(songListCB,      i18n("Track selection"));
-
-        // if you change these, change them in Config Done as well!
-        QToolTip::add(fwdPB,           i18n("%1 secs forward").arg(skipDelta));
-        QToolTip::add(bwdPB,           i18n("%1 secs backward").arg(skipDelta));
-        QToolTip::add(nextPB,          i18n("Next track"));
-        QToolTip::add(prevPB,          i18n("Previous track"));
-        QToolTip::add(dockPB,          i18n("Quit CD player"));
+    // if you change these, change them in Config Done as well!
+    QToolTip::add(fwdPB,           i18n("%1 secs forward").arg(skipDelta));
+    QToolTip::add(bwdPB,           i18n("%1 secs backward").arg(skipDelta));
+    QToolTip::add(nextPB,          i18n("Next track"));
+    QToolTip::add(prevPB,          i18n("Previous track"));
+    QToolTip::add(dockPB,          i18n("Quit CD player"));
 #if KSCDMAGIC
-        QToolTip::add(magicPB,         i18n("Run Kscd Magic"));
+    QToolTip::add(magicPB,         i18n("Run Kscd Magic"));
 #endif
-        QToolTip::add(aboutPB,         i18n("Cycle time display"));
-        QToolTip::add(optionsbutton,   i18n("Configure CD player"));
-        QToolTip::add(ejectPB,         i18n("Eject CD"));
-        QToolTip::add(infoPB,          i18n("The artist on the Web"));
-        QToolTip::add(cddbbutton,      i18n("freedb dialog"));
-        QToolTip::add(volSB,           i18n("CD volume control"));
-
-        if (!randomonce)
-        {
-            QToolTip::add(shufflebutton,         i18n("Random play"));
-        }
-        else
-        {
-            QToolTip::add(shufflebutton,         i18n("Shuffle play"));
-        }
-    }
-    else
-    {
-        QToolTip::remove(playPB);
-        QToolTip::remove(stopPB);
-        QToolTip::remove(replayPB);
-        QToolTip::remove(songListCB);
-        QToolTip::remove(fwdPB);
-        QToolTip::remove(bwdPB);
-        QToolTip::remove(nextPB);
-        QToolTip::remove(prevPB);
-        QToolTip::remove(dockPB);
-#if KSCDMAGIC
-        QToolTip::remove(magicPB);
-#endif
-        QToolTip::remove(aboutPB);
-        QToolTip::remove(optionsbutton);
-        QToolTip::remove(ejectPB);
-        QToolTip::remove(infoPB);
-        QToolTip::remove(cddbbutton);
-        QToolTip::remove(volSB);
-        QToolTip::remove(shufflebutton);
-    }
+    QToolTip::add(aboutPB,         i18n("Cycle time display"));
+    QToolTip::add(optionsbutton,   i18n("Configure CD player"));
+    QToolTip::add(ejectPB,         i18n("Eject CD"));
+    QToolTip::add(infoPB,          i18n("The artist on the Web"));
+    QToolTip::add(cddbbutton,      i18n("freedb dialog"));
+    QToolTip::add(volSB,           i18n("CD volume control"));
+    QToolTip::add(shufflebutton,   i18n("Shuffle play"));
 } // setToolTips
 
 void
@@ -819,10 +744,7 @@ KSCD::playClicked()
                 case WM_CDM_PAUSED:
                     if(randomplay)
                     {
-                        if (randomonce)
-                            statuslabel->setText( i18n("Shuffle") );
-                        else
-                            statuslabel->setText( i18n("Random") );
+                        statuslabel->setText( i18n("Shuffle") );
                     } else {
                         statuslabel->setText( i18n("Playing") );
                     }
@@ -1117,10 +1039,7 @@ KSCD::randomSelected()
 
     if (randomplay)
     {
-        if( randomonce )
-            statuslabel->setText(i18n("Shuffle"));
-        else
-            statuslabel->setText(i18n("Random"));
+        statuslabel->setText(i18n("Shuffle"));
 
         if(songListCB->count()==0)
             return;
@@ -1185,13 +1104,10 @@ KSCD::configDone()
     configDialog = 0L;
 
     // update the tooltips
-    if (tooltips)
-    {
-        QToolTip::remove(fwdPB);
-        QToolTip::remove(bwdPB);
-        QToolTip::add(fwdPB, i18n("%1 secs forward").arg(skipDelta));
-        QToolTip::add(bwdPB, i18n("%1 secs backward").arg(skipDelta));
-    }
+    QToolTip::remove(fwdPB);
+    QToolTip::remove(bwdPB);
+    QToolTip::add(fwdPB, i18n("%1 secs forward").arg(skipDelta));
+    QToolTip::add(bwdPB, i18n("%1 secs backward").arg(skipDelta));
 }
 
 void
@@ -1355,67 +1271,47 @@ KSCD::make_random_list()
 } // make_random_list()
 
 int
-KSCD::real_randomtrack()
-{
-    int j = 1 + randSequence.getLong(cd->ntracks);
-    if(!playlist.isEmpty()) {
-        playlistpointer = j-1;
-        return atoi((*playlist.at(playlistpointer)).ascii());
-    } else {
-        return j;
-    }
-}
-
-int
 KSCD::next_randomtrack()
 {
-    if(randomonce) {
-       /* Check to see if we are at invalid state */
-       if(random_current == INVALID_RANDOM_ITERATOR) {
-           random_current = FIRST_VALID_ITERATOR;
-       } else if(random_current == LAST_VALID_ITERATOR) {
-            if(!looping) {
-                 stopClicked();
-                 return -1;
-            } else {
-                 // playing the same random list isn't very random, is it?
-                 make_random_list();
-                 return next_randomtrack();
-            }
+    /* Check to see if we are at invalid state */
+    if(random_current == INVALID_RANDOM_ITERATOR) {
+        random_current = FIRST_VALID_ITERATOR;
+    } else if(random_current == LAST_VALID_ITERATOR) {
+        if(!looping) {
+                stopClicked();
+                return -1;
         } else {
-            NEXT_VALID_ITERATOR(random_current);
+                // playing the same random list isn't very random, is it?
+                make_random_list();
+                return next_randomtrack();
         }
-        //fprintf(stderr, "next_randomtrack randomonce %i\n", *random_current);
-        return *random_current;
-    } else { // !randomonce
-        return real_randomtrack();
+    } else {
+        NEXT_VALID_ITERATOR(random_current);
     }
+
+    return *random_current;
 } // next_randomtrack
 
 int
 KSCD::prev_randomtrack()
 {
-    if(randomonce) {
-        /* Check to see if we are at invalid state */
-        if(random_current == INVALID_RANDOM_ITERATOR) {
-            random_current = LAST_VALID_ITERATOR;
-        } else if(random_current == FIRST_VALID_ITERATOR) {
-            if(!looping) {
-                stopClicked();
-                return -1;
-            } else {
-                // playing the same random list isn't very random, is it?
-                make_random_list();
-                return prev_randomtrack();
-            }
+    /* Check to see if we are at invalid state */
+    if(random_current == INVALID_RANDOM_ITERATOR) {
+        random_current = LAST_VALID_ITERATOR;
+    } else if(random_current == FIRST_VALID_ITERATOR) {
+        if(!looping) {
+            stopClicked();
+            return -1;
         } else {
-            PREV_VALID_ITERATOR(random_current);
+            // playing the same random list isn't very random, is it?
+            make_random_list();
+            return prev_randomtrack();
         }
-        //fprintf(stderr, "prev_randomtrack randomonce %i\n", *random_current);
-        return *random_current;
-    } else { // !randomonce
-        return real_randomtrack();
+    } else {
+        PREV_VALID_ITERATOR(random_current);
     }
+
+    return *random_current;
 } // prev_randomtrack
 
 /*
@@ -1507,12 +1403,7 @@ KSCD::cdMode()
         case WM_CDM_PLAYING:
             playtime ();
             if(randomplay)
-                if(randomonce)
-                {
-                    statuslabel->setText( i18n("Shuffle") );
-                } else {
-                    statuslabel->setText( i18n("Random") );
-                }
+                statuslabel->setText( i18n("Shuffle") );
             else
                 statuslabel->setText( i18n("Playing") );
 
@@ -1681,14 +1572,12 @@ KSCD::readSettings()
 
 	config->setGroup("GENERAL");
 	volume     	= config->readNumEntry("Volume", volume);
-	tooltips   	= config->readBoolEntry("ToolTips", tooltips);
         // TODO: this breaks if randomplay comes up true to begin with!
 //	randomplay 	= config->readBoolEntry("RandomPlay", false);
     docking = config->readBoolEntry("DOCKING", docking);
 	autoplay		= config->readBoolEntry("AUTOPLAY", autoplay);
 	stopexit 	= config->readBoolEntry("STOPEXIT", stopexit);
 	ejectonfinish = config->readBoolEntry("EJECTONFINISH", ejectonfinish);
-	randomonce 	= (bool)config->readBoolEntry("RANDOMONCE",randomonce);
 	looping    	= config->readBoolEntry("Looping", looping);
 	skipDelta = config->readNumEntry("SkipDelta", skipDelta);
 	time_display_mode = config->readNumEntry("TimeDisplay", TRACK_SEC);
@@ -1835,13 +1724,11 @@ KSCD::writeSettings()
     KConfig* config = kapp->config();
 
     config->setGroup("GENERAL");
-    config->writeEntry("ToolTips", tooltips);
     config->writeEntry("RandomPlay", randomplay);
     config->writeEntry("DOCKING", docking);
     config->writeEntry("AUTOPLAY", autoplay);
     config->writeEntry("STOPEXIT", stopexit);
     config->writeEntry("EJECTONFINISH", ejectonfinish);
-    config->writeEntry("RANDOMONCE", randomonce);
     config->writeEntry("CDDevice", cd_device_str);
     config->writeEntry("Volume", volume);
     config->writeEntry("BackColor",background_color);
@@ -2681,10 +2568,7 @@ void KSCD::emailSettingsChanged()
 void KSCD::clearSongList()
 {
     songListCB->clear();
-    if (tooltips)
-    {
-        QToolTip::add(songListCB, i18n("Track list"));
-    }
+    QToolTip::add(songListCB, i18n("Track list"));
 }
 
 void KSCD::populateSongList()
@@ -2708,16 +2592,14 @@ void KSCD::populateSongList()
 void KSCD::setSongListTo(int whichTrack)
 {
     songListCB->setCurrentItem(whichTrack);
-    if (tooltips)
-    {
-        // drop the number.
-        // for Mahlah, a picky though otherwise wonderful person - AJS
-        QString justTheName = songListCB->currentText();
-        justTheName = justTheName.right(justTheName.length() - 4);
+    // drop the number.
+    // for Mahlah, a picky though otherwise wonderful person - AJS
+    QString justTheName = songListCB->currentText();
+    justTheName = justTheName.right(justTheName.length() - 4);
 
-        QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
-    }
+    QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
 }
+
 /**
  * main()
  */

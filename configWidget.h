@@ -1,7 +1,7 @@
 /*
  * configWidget - the config dialog page for KSCD settings
  *
- * $Id: 
+ * $Id:
  *
  * Copyright (c) 2002 Aaron J. Seigo <aseigo@olympusproject.org>
  *
@@ -24,23 +24,12 @@
 #ifndef CONFIGWIDGET_H
 #define CONFIGWIDGET_H
 
-#include <qvariant.h>
-#include <qwidget.h>
-class QVBoxLayout; 
-class QHBoxLayout; 
-class QGridLayout; 
-class KColorButton;
-class KURLRequester;
-class QButtonGroup;
-class QCheckBox;
-class QGroupBox;
-class QLabel;
-class QRadioButton;
-class QSpinBox;
+#include "configWidgetUI.h"
+
 class KSCD;
 
-class configWidget : public QWidget
-{ 
+class configWidget : public configWidgetUI
+{
    public:
         configWidget(KSCD* player, QWidget* parent = 0, const char* name = 0);
         ~configWidget();
@@ -48,32 +37,6 @@ class configWidget : public QWidget
         void apply();
 
     protected:
-        QGroupBox* GroupBox1;
-        KColorButton* bgColorBtn;
-        KColorButton* ledColorBtn;
-        QLabel* TextLabel2;
-        QLabel* TextLabel1;
-        QCheckBox* showToolTips;
-        QCheckBox* systrayChckbx;
-        QGroupBox* GroupBox3;
-        QLabel* TextLabel1_2;
-        QSpinBox* skipInterval;
-        QCheckBox* autoplayChkbx;
-        QCheckBox* ejectChkbx;
-        QCheckBox* stopOnExitChckbx;
-        QGroupBox* GroupBox2;
-        QButtonGroup* ButtonGroup1;
-        QRadioButton* randomShuffleRadio;
-        QRadioButton* randomSelectRadio;
-        KURLRequester* cdDevice;
-
-        QGridLayout* configWidgetLayout;
-        QGridLayout* GroupBox1Layout;
-        QVBoxLayout* GroupBox2Layout;
-        QVBoxLayout* GroupBox3Layout;
-        QHBoxLayout* Layout1;
-        QVBoxLayout* ButtonGroup1Layout;
-        
         KSCD* mPlayer;
 };
 

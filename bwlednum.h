@@ -1,13 +1,16 @@
-/* 
+/*
  *
  *             BW_LED_Number a very very primitive LED
- * 
+ *
  * Copyright: Bernd Johannes Wuebben, wuebben@math.cornell.edu
- * 
+ *
  *
  * $Id$
- * 
+ *
  * $Log$
+ * Revision 1.6  1999/06/27 17:57:37  kulow
+ * fixes for --enable-final and other problems :)
+ *
  * Revision 1.5  1999/05/17 13:45:35  porten
  * * added SCO support
  * * (Q)char fix
@@ -46,7 +49,7 @@
  * Initial revision
  *
  *
- * 
+ *
  *
  */
 
@@ -58,7 +61,7 @@
 #include "qbitarray.h"
 
 
-class BW_LED_Number : public QFrame	
+class BW_LED_Number : public QFrame
 {
     Q_OBJECT
 
@@ -69,17 +72,17 @@ public:
 
     void    setSmallLED(bool ); // if you LED is small it might look better
                                 // if you call setSmallLED(TRUE)
-   
+
             // this sets the fore and  background color of the LED
             // the forground defaults to yellow, the background defaults
-            // to black 
-   
+            // to black
+
     void    setLEDColor( const QColor& foregroundColor, const QColor& backgroundColor );
-   
-   
+
+
             // this sets the color of the segments that are not iluminated
-            // the default is a rather dark red. 
-   
+            // the default is a rather dark red.
+
     void    setLEDoffColor(QColor color);
 
 	    // calling showOffColon(TRUE) will show the colon if not illuminated
@@ -87,17 +90,21 @@ public:
 
     void    showOffColon(bool off);
 
+signals:
+    void	clicked();
+
 public slots:
 
             // display one of the characters " 0 1 2 3 4 5 6 7 8 9 . : - "
     void    display( char c );
-  
+
             // display on e of the numbers   " 0 1 2 3 4 5 6 7 8 9"
     void    display( int i );
 
 protected:
 
     void    resizeEvent( QResizeEvent * );
+    void	mouseReleaseEvent ( QMouseEvent * e );
     void    drawContents( QPainter * );
 
 private:
@@ -114,7 +121,7 @@ private:
     QColor  offcolor;
     QColor  fgcolor;
     QColor  bgcolor;
-    
+
 
     bool    smallLED;
     bool    show_off_colon;

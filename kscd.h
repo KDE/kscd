@@ -86,6 +86,7 @@
 class CDDBSetup;
 class ConfigDlg;
 class CDDialog;
+class QGridLayout;
 
 class SMTPConfig;
 struct SMTPConfigData;
@@ -148,24 +149,23 @@ public:
 
     bool dock() { return docking; }
     void setDocking(bool dock);
-    bool randomOnce() { return randomonce; }
-    void setRandomOnce(bool shuffle);
     bool stopOnExit() { return stopexit; }
     void setStopOnExit(bool stop) { stopexit = stop; }
     bool autoPlay() { return autoplay; }
     void setAutoplay(bool play) { autoplay = play; }
     bool ejectOnFinish() { return ejectonfinish; }
     void setEjectOnFinish(bool eject) { ejectonfinish = eject; }
+    bool digitalPlayback() { return digitalplayback; }
+    void setDigitalPlayback(bool digital) { digitalplayback = digital; }
     unsigned int skipInterval() { return skipDelta; }
     void setSkipInterval(unsigned int skip) { skipDelta = skip; }
     QColor ledColor() { return led_color; }
     QColor bgColor() { return background_color; }
     void setColors(const QColor& LEDs, const QColor& bground);
-    bool toolTips() { return tooltips; }
     void setDevicePath(QString path);
     QString devicePath() { return cd_device_str; }
     SMTPConfigData* smtpData() { return smtpConfigData; }
-    void setToolTips(bool on);
+    void setToolTips();
 
 signals:
     void trackChanged(const QString&);
@@ -251,6 +251,9 @@ private:
     QPopupMenu      *purchPopup;
     QPopupMenu      *infoPopup;
 
+    // ML XXX
+    QGridLayout		*outerLO;
+
     QColor              background_color;
     QColor              led_color;
     BW_LED_Number       *trackTimeLED[6];
@@ -284,7 +287,6 @@ private:
     QFrame              *backdrop;
     LedLamp             *queryled;
     LedLamp             *loopled;
-    bool                tooltips;
     bool                randomplay;
     bool                looping;
     bool                cddrive_is_ok;
@@ -329,7 +331,7 @@ private:
     bool            autoplay;
     bool            stopexit;
     bool            ejectonfinish;
-    bool            randomonce;
+    bool            digitalplayback;
     bool            currentlyejected;
 
 // cddb support

@@ -65,12 +65,8 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     configData = _configData;
     QFontMetrics fm(font());
 
-    QVBoxLayout* lay1 = new QVBoxLayout(this);
-    QGroupBox* mainBox = new QGroupBox(this, "mainBox");
-    lay1->addWidget(mainBox);
-
-    QVBoxLayout* lay2 = new QVBoxLayout(mainBox, KDialog::marginHint());
-    enableCB = new QCheckBox(i18n("Enable submission via SMTP"), mainBox, "enableCB");
+    QVBoxLayout* lay2 = new QVBoxLayout(this, KDialog::marginHint());
+    enableCB = new QCheckBox(i18n("Enable submission via SMTP"), this, "enableCB");
     lay2->addWidget(enableCB);
     enableCB->setChecked(configData->enabled);
     connect(enableCB, SIGNAL(clicked()), this, SLOT(enableClicked()));
@@ -80,46 +76,46 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     // SMTP server settings
     const int LAYOUT_INDENT = 30;
 
-    smtpServerLabel = new QLabel(i18n("SMTP server"), mainBox, "smtpServerLabel");
+    smtpServerLabel = new QLabel(i18n("SMTP server"), this, "smtpServerLabel");
     lay2->addWidget(smtpServerLabel);
 
     QGridLayout* serverLayout = new QGridLayout(lay2, 2, 3, KDialog::spacingHint());
     serverLayout->addColSpacing(0, LAYOUT_INDENT);
     serverLayout->setColStretch(2, 1);
 
-    serverHostLabel = new QLabel(i18n("Host:"), mainBox, "serverHostLabel");
+    serverHostLabel = new QLabel(i18n("Host:"), this, "serverHostLabel");
     serverLayout->addWidget(serverHostLabel, 0, 1);
-    serverHostEdit = new QLineEdit(mainBox, "serverHostEdit");
+    serverHostEdit = new QLineEdit(this, "serverHostEdit");
     serverLayout->addWidget(serverHostEdit, 0, 2);
     serverHostEdit->setText(configData->serverHost);
 
-    serverPortLabel = new QLabel(i18n("Port:"), mainBox, "serverPortLabel");
+    serverPortLabel = new QLabel(i18n("Port:"), this, "serverPortLabel");
     serverLayout->addWidget(serverPortLabel, 1, 1);
-    serverPortEdit = new QLineEdit(mainBox, "serverPortEdit");
+    serverPortEdit = new QLineEdit(this, "serverPortEdit");
     serverPortEdit->setValidator( new QIntValidator(this) );
     serverLayout->addWidget(serverPortEdit, 1, 2);
     serverPortEdit->setText(configData->serverPort);
 
     // Global email address settings
     globalRadio = new QRadioButton(i18n("Use email addresses from control center"),
-        mainBox, "globalRadio");
+        this, "globalRadio");
     lay2->addWidget(globalRadio);
 
     QGridLayout* globalLayout = new QGridLayout(lay2, 3, 4, KDialog::spacingHint());
     globalLayout->addColSpacing(0, LAYOUT_INDENT);
     globalLayout->setColStretch(3, 1);
 
-    globalAddressLabel = new QLabel(i18n("From:"), mainBox, "globalAddressLabel");
+    globalAddressLabel = new QLabel(i18n("From:"), this, "globalAddressLabel");
     globalLayout->addWidget(globalAddressLabel, 0, 1);
-    globalAddressSetting = new QLabel(mainBox, "globalAddressSetting");
+    globalAddressSetting = new QLabel(this, "globalAddressSetting");
     globalLayout->addWidget(globalAddressSetting, 0, 3);
 
-    globalReplyToLabel = new QLabel(i18n("Reply-To:"), mainBox, "globalReplyToLabel");
+    globalReplyToLabel = new QLabel(i18n("Reply-To:"), this, "globalReplyToLabel");
     globalLayout->addWidget(globalReplyToLabel, 1, 1);
-    globalReplyToSetting = new QLabel(mainBox, "globalReplyToSetting");
+    globalReplyToSetting = new QLabel(this, "globalReplyToSetting");
     globalLayout->addWidget(globalReplyToSetting, 1, 3);
 
-    controlCenterLink = new KURLLabel(mainBox, "controlCenterLink");
+    controlCenterLink = new KURLLabel(this, "controlCenterLink");
     controlCenterLink->setText(i18n("Open the email address control panel"));
     globalLayout->addMultiCellWidget(controlCenterLink, 2, 2, 1, 3);
     connect(controlCenterLink, SIGNAL(leftClickedURL()), this, SLOT(launchControlCenter()));
@@ -128,7 +124,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
 
     // KSCD-specific email address settings
     localRadio = new QRadioButton( i18n("Use the following email addresses"),
-        mainBox, "localRadio");
+        this, "localRadio");
     lay2->addWidget(localRadio);
 
     QButtonGroup* radioGroup = new QButtonGroup;
@@ -139,21 +135,19 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     localLayout->addColSpacing(0, 30);
     localLayout->setColStretch(2, 1);
 
-    senderAddressLabel = new QLabel(i18n("From:"), mainBox, "senderAddressLabel");
+    senderAddressLabel = new QLabel(i18n("From:"), this, "senderAddressLabel");
     localLayout->addWidget(senderAddressLabel, 0, 1);
-    senderAddressEdit = new QLineEdit(mainBox, "senderAddressEdit");
+    senderAddressEdit = new QLineEdit(this, "senderAddressEdit");
     localLayout->addWidget(senderAddressEdit, 0, 2);
     if(!configData->useGlobalSettings)
         senderAddressEdit->setText(configData->senderAddress);
 
-    senderReplyToLabel = new QLabel(i18n("Reply-To:"), mainBox, "senderReplyToLabel");
+    senderReplyToLabel = new QLabel(i18n("Reply-To:"), this, "senderReplyToLabel");
     localLayout->addWidget(senderReplyToLabel, 1, 1);
-    senderReplyToEdit = new QLineEdit(mainBox, "senderReplyToEdit");
+    senderReplyToEdit = new QLineEdit(this, "senderReplyToEdit");
     localLayout->addWidget(senderReplyToEdit, 1, 2);
     if(!configData->useGlobalSettings)
         senderReplyToEdit->setText(configData->senderReplyTo);
-
-    lay1->addStretch(1);
 
     if(configData->useGlobalSettings)
         globalRadio->setChecked(true);

@@ -1,6 +1,4 @@
-* Make it portable, and less dependant on stupid Linuxisms like bytesex.h
 * fix html encoding
 * allow to choose email submisson address from server list entries with protocol SMTP
 * Session Management
 * change the GUI
-* optimize freedb support
