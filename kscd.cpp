@@ -202,6 +202,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   cddialog            = 0L;
   configDialog        = 0L;
   jumpToTrack         = 0L;
+  random_current      = random_list.begin();
 
   smtpConfigData = new SMTPConfigData;
 
@@ -1128,7 +1129,7 @@ KSCD::randomSelected()
         else
             statuslabel->setText(i18n("Random"));
 
-        if(songListCB->count()==0)
+        if(cur_ntracks < 1)
             return;
         make_random_list(); /* koz: Build a unique, once, random list */
         nextClicked();
@@ -1349,8 +1350,13 @@ KSCD::randomtrack()
     /* koz: 15/01/00. Check to see if we want to do a randomonce. If so */
     /* we execute the first set of statements. Else we execute the second */
     /* set, the original code.  */
-    if( randomonce  )
+    if( randomonce )
     {
+        if ( random_list.isEmpty() )
+        {
+            return -1;
+        }
+
         if ( random_current == random_list.end() )
         {
             // playing the same random list isn't very random, is it?
