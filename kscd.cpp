@@ -1247,7 +1247,7 @@ KSCD::updateCurrentCDDBServer()
 void
 KSCD::volChanged( int vol )
 {
-    if(volstartup)
+    if(volstartup || !cddrive_is_ok)
         return;
 
     QString str;
