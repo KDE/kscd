@@ -58,7 +58,7 @@
 </authorgroup>
 
 <copyright>
-<year>2000</year><year>2002</year>
+<year>2000</year><year>2004</year>
 <holder>J Singer</holder>
 </copyright>
 
@@ -66,7 +66,7 @@
 
 
 <date>2002-10-07</date>
-<releaseinfo>1.03.03</releaseinfo>
+<releaseinfo>1.4</releaseinfo>
 
 <abstract>
 <para>&kscd; is a small, fast, <abbrev>CDDB</abbrev> enabled audio
@@ -87,7 +87,7 @@
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kscd; is a fast, <acronym>CDDB</acronym>cddb enabled &CD; player for the &UNIX;
+<para>&kscd; is a fast, <acronym>CDDB</acronym> enabled &CD; player for the &UNIX;
 platform. &kscd; stands for <quote>The KDE Project's small/simple &CD;
 player</quote>.</para>
 
@@ -162,30 +162,14 @@ should be familiar to anyone who has ever used a &CD; player.</para>
 
 <para>The uppermost button in the above diagram toggles between playing and
 pausing the &CD;. The left button in the second row stops playing the &CD;. The
-right button in the second row toggles looping, so that the &CD; will start
+right button in the second row ejects the &CD;. The two buttons in the third row 
+skip forward (right) or backward (left) to the beginning of the next or previous track. 
+The left button in the bottom row toggles random play order on and off; the right button 
+in the bottom row toggles looping, so that the &CD; will start
 playing again from the beginning when the end of the last audio track is
-reached. The buttons in the third row advance the &CD; backward (left) or
-forward (right) 30 seconds. The two buttons under the status display skip forward (right)
-or backward (left) to the beginning of the next or previous track. </para>
+reached.</para>
 </sect2>
 
-<sect2 id="eject">
-<title>The <guibutton>Eject</guibutton> button</title>
-
-<screenshot>
-<screeninfo>The <guibutton>Eject</guibutton> button</screeninfo>
-<mediaobject>
-<imageobject><imagedata fileref="kscd2a.png" format="PNG"/></imageobject>
-<textobject><phrase>The Eject button</phrase></textobject>
-</mediaobject>
-</screenshot>
-
-<para>This button ejects the &CD;. Note that the eject button on your &CD-ROM;
-drive may not respond if an audio &CD; is in the drive and &kscd; is
-started. Some very old &CD-ROM; drives may not support software eject. You may
-also have to close the &CD-ROM; drive manually after inserting a new
-disc.</para>
-</sect2>
 
 <sect2 id="status-display">
 <title>The Status Display</title>
@@ -207,23 +191,10 @@ title of the &CD;, and then the title of the track, assuming that appropriate
 entries exist in the local or network <acronym>CDDB</acronym> (&CD; Data
 Base.)</para>
 
-</sect2>
-
-<sect2 id="time-display-modes">
-<title>Time display modes</title>
-
-<screenshot>
-<screeninfo>The Time Display toggle</screeninfo>
-<mediaobject>
-<imageobject><imagedata fileref="kscd4.png" format="PNG"/></imageobject>
-<textobject><phrase>The Time Display toggle</phrase></textobject>
-</mediaobject>
-</screenshot>
-
-<para>This button toggles between the possible main time display modes. By
+<para>Click the time display to toggle between the possible main time display modes. By
 default, &kscd; displays the elapsed time of the current track, if the &CD; is
 playing, or either &ndash;&ndash;:&ndash;&ndash; or 00:00 if the &CD; is not playing.
-Pressing this button toggles in sequence between remaining track time, total
+Clicking the display toggles in sequence between remaining track time, total
 elapsed time, and total remaining time.</para>
 </sect2>
 
@@ -231,16 +202,23 @@ elapsed time, and total remaining time.</para>
 <title>The <guibutton>Configuration</guibutton> button</title>
 
 <screenshot>
-<screeninfo>The Configuration button</screeninfo>
+<screeninfo>The Extras button</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd5.png" format="PNG"/></imageobject>
-<textobject><phrase>The Configuration button</phrase></textobject>
+<textobject><phrase>The Extras button</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para>This button opens the &kscd; configuration panel. This allows you to
-configure &kscd; to work on your machine. See <link linkend="configuring-kscd">the configuring &kscd;</link> section, for details
+<para>This button brings up a menu with a number of options. You can choose to open the &kscd; 
+configuration panel or configure keyboard shortcuts. These allow you to
+configure &kscd; to work exactly to your tastes. See <link linkend="configuring-kscd">the configuring &kscd;</link> section, for details
 about configuring &kscd;</para>
+<para>The menu provides several tools to help you search for information about the artist on the
+Internet. You can find out about performance dates, purchase information, and
+other information by pressing this button and choosing the appropriate option in
+the pop-up menu that appears.</para>
+<para>This menu also allows you to open this help document, report bugs, learn more 
+about &kscd; and &kde; and to quit &kscd;.</para>
 </sect2>
 
 <sect2 id="cddb-button">
@@ -263,66 +241,26 @@ linkend="cddb-editor">&CD; Database Editor</link> section for more details about
 using this tool.</para>
 </sect2>
 
-<sect2 id="information-button">
-<title>The <guibutton>Information</guibutton> button</title>
 
-<screenshot>
-<screeninfo>The Information button</screeninfo>
-<mediaobject>
-<imageobject><imagedata fileref="kscd7.png" format="PNG"/></imageobject>
-<textobject><phrase>The Information button</phrase></textobject>
-</mediaobject>
-</screenshot>
 
-<para> This button will help you search for information about the artist on the
-Internet. You can find out about performance dates, purchase information, and
-other information by pressing this button and choosing the appropriate option in
-the pop-up menu that appears.</para>
-</sect2>
 
 <sect2>
-<title>The Exit button</title>
+<title>The Volume button</title>
 
 <screenshot>
-<screeninfo>The Exit button</screeninfo>
-<mediaobject>
-<imageobject><imagedata fileref="kscd8.png" format="PNG"/></imageobject>
-<textobject><phrase>The exit button</phrase></textobject>
-</mediaobject>
-</screenshot>
-
-<para> This button closes &kscd;.</para>
-</sect2>
-
-<sect2>
-<title>The Volume slider</title>
-
-<screenshot>
-<screeninfo>The Volume slider</screeninfo>
+<screeninfo>The Volume button</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd9.png" format="PNG"/></imageobject>
 <textobject><phrase>The Volume slider</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> This slider controls the volume of the audio output of the &CD;. Right is
+<para> This button pops up a slider which controls the volume of the audio output 
+of the &CD;. Right is
 louder, left is quieter. If you are playing your &CD; through your sound card,
 the sound card mixer will affect the playback volume as well.</para>
 </sect2>
 
-<sect2 id="randomize-button">
-<title>The Randomize button</title>
-
-<screenshot>
-<screeninfo>The Randomize button</screeninfo>
-<mediaobject>
-<imageobject><imagedata fileref="kscd15.png" format="PNG"/></imageobject>
-<textobject><phrase>The Randomize button</phrase></textobject>
-</mediaobject>
-</screenshot>
-
-<para> This button causes the &CD; tracks to be played in random order. </para>
-</sect2>
 
 <sect2>
 <title>The track selector</title>
@@ -347,16 +285,15 @@ a track to play. </para>
 <sect1 id="configuration-intro">
 <title>The primary configuration window</title>
 
-<para>The primary configuration window for &kscd; is a tabbed dialog with four
+<para>The primary configuration window for &kscd; is a tabbed dialog with three
 major sections. </para>
 
 <itemizedlist>
 <listitem><para><link linkend="kscd-options-tab"><guilabel>CD
 Player</guilabel></link></para></listitem>
-<listitem><para><link linkend="freedb-tab"><guilabel>freedb</guilabel></link></para></listitem>
-<listitem><para><link linkend="smtp-options"><guilabel>SMTP</guilabel>
+<listitem><para><link linkend="freedb-tab"><guilabel>Freedb Lookup</guilabel></link></para></listitem>
+<listitem><para><link linkend="smtp-options"><guilabel>Freedb Submit</guilabel>
 </link></para></listitem>
-<listitem><para><link linkend="about"><guilabel>Credits</guilabel></link></para></listitem>
 </itemizedlist>
 </sect1>
 
@@ -405,16 +342,12 @@ either &konqueror; or a custom browser with the radio buttons. By default, the
 <option><replaceable>openURL %s</replaceable></option></userinput>.</para>
 -->
 
+<para><guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
+appear in the &kicker; panel.</para>
+
 <para>Set the <guilabel>Skip interval</guilabel> box to the desired number of 
 seconds to move ahead or behind when the <guibutton>forward skip</guibutton> 
 or <guibutton>reverse skip</guibutton> buttons in the Control Panel are pressed.</para>
-
-<para>The <guilabel>Show tool tips</guilabel> checkbox turns tooltips (tiny
-windows that pop up when the mouse is <quote>parked</quote> briefly over a
-control) on or off.</para>
-
-<para><guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
-appear in the &kicker; panel.</para>
 
 <para><guilabel>Autoplay when CD inserted</guilabel> causes &CD; play to
 start when the tray is closed, with no need to press the
@@ -423,17 +356,10 @@ start when the tray is closed, with no need to press the
 <para><guilabel>Eject CD when finished playing</guilabel> causes the
 &CD; to be ejected when playback ends.</para>
 
-<para><guilabel>Stop playing on exit</guilabel> causes &CD; playback to stop
+<para><guilabel>Stop playing CD on exit</guilabel> causes &CD; playback to stop
 when &kscd; is closed.</para>
 
-<!--<para><guilabel>Random is Shuffle</guilabel> means that when <link
-linkend="randomize-button">random play</link> is used, each track is
-played only once.</para> -->
 
-<para>You can choose how random play operates, from two
-self-explanatory options: <guilabel>Shuffle order and play each song
-only once</guilabel> and <guilabel>Randomly select songs (may
-repeat)</guilabel>.</para>
 
 <para>The <guilabel>CD-ROM Device</guilabel> field contains the name
 of the &CD-ROM; device to be used to play audio &CD;s. The default
@@ -450,45 +376,35 @@ page. <guibutton>OK</guibutton> saves the current settings and exits;
 </sect1>
 
 <sect1 id="freedb-tab">
-<title>The <guilabel>freedb</guilabel> tab</title>
+<title>The <guilabel>freedb Lookup</guilabel> tab</title>
 <screenshot>
-<screeninfo>The <guilabel>freedb</guilabel> tab of the configuration dialog</screeninfo>
+<screeninfo>The <guilabel>freedb Lookup</guilabel> tab of the configuration dialog</screeninfo>
 <mediaobject>
 <imageobject> <imagedata fileref="kscd14.png" format="PNG"/> </imageobject>
-<textobject><phrase>The <guilabel>freedb</guilabel> tab of the configuration
+<textobject><phrase>The <guilabel>freedb Lookup</guilabel> tab of the configuration
 dialog</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> The <guilabel>freedb</guilabel> tab sets up the <acronym>CDDB</acronym> functions
+<para> The <guilabel>freedb Lookup</guilabel> tab sets up the <acronym>CDDB</acronym> functions
 of &kscd;.</para>
 
-<para>The <guilabel>Enable Remote freedb</guilabel> checkbox turns on or off
-<acronym>CDDB</acronym> lookups over the Internet.  The time allowed before the
-lookup attempt times out can be set. To use an &HTTP; proxy, check the
-<guilabel>Use HTTP proxy to access freedb</guilabel> and
-enter the &URL; in the field below.</para>
+<para>The <guilabel>Mode</guilabel> option determines how <acronym>CDDB</acronym> lookups 
+are performed. Setting <guilabel>Cache only</guilabel> means that only information already 
+on your computer will be used. <guilabel>Cache and remote</guilabel> will look up 
+information you do not already have while <guilabel>Remote only</guilabel> looks up 
+every disc over the Internet.  The time allowed before the
+lookup attempt times out can be set.</para>
 
-<para>Checking <guilabel>Enable autosave to local database</guilabel> causes 
-<acronym>CDDB</acronym> information to be stored locally, saving you from having 
-to repeatedly perform lookups over the Internet. The <guilabel>freedb Base 
-Folder:</guilabel> text field lets you choose the folder where you want 
+
+<para>The <guilabel>CDDB Server:</guilabel> list box allows you to specify your 
+freedb server. Enter a server address and port number. Select an entry from this list and it will
+appear in the text field above the selection box. The form of connection (CDDB or HTTP) can also 
+be set. (You are unlikely to want to change any of this from the default.) The <guilabel>Cache 
+Folders:</guilabel> text field lets you choose the folder where you want 
 <acronym>CDDB</acronym> entries to be stored locally.</para>
 
-<para>The <guilabel>freedb server:</guilabel> list box shows a list of known
-freedb servers. Select an entry from this list and it will
-appear in the text field above the selection box. Press the
-<guibutton>Update</guibutton> button to update the list of servers in the list
-box.  Press the <guibutton>Defaults</guibutton> button to enter the default
-value, <userinput>freedb.freedb.org cddbp 888 -</userinput>, which will permit you to
-update the list with a fresh list of freedb servers listed with
-the master freedb site at <systemitem
-class="systemname">freedb.freedb.org</systemitem>. Servers can also be added 
-manually by entering the address in the upper box and hitting the
-<guiicon>+</guiicon> button. Hit the
-<guiicon>-</guiicon> button to delete the selected entry from the
-list.</para>
-
+<!--
 <para>The <guilabel>Send freedb submissions to:</guilabel> field contains the
 e-mail address to which to submit <abbrev>CDDB</abbrev> entries. The default address
 is <email>freedb-submit@freedb.org</email>. As of version 0.8,
@@ -503,41 +419,42 @@ help home page (this document).</para>
 page. <guibutton>OK</guibutton> saves the current settings and exits;
 <guibutton>Apply</guibutton> saves the current settings without exiting;
 <guibutton>Cancel</guibutton> exits without saving. </para>
+-->
 </sect1>
 
 <sect1 id="smtp-options">
-<title>The <guilabel>SMTP</guilabel> tab</title>
+<title>The <guilabel>freedb Submit</guilabel> tab</title>
 
 <screenshot>
-<screeninfo>The SMTP tab</screeninfo>
+<screeninfo>The freedb Submit tab</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd16.png" format="PNG"/></imageobject>
 </mediaobject>
 </screenshot>
 
-<para>The <acronym>SMTP</acronym> tab sets up connection to a mail
+<para>The freedb Submit tab sets up connection to a mail
 server to submit new <acronym>CDDB</acronym> entries. This is useful
 if you do not have your own system configured as a server. Check
 <guilabel>Enable submission via SMTP</guilabel> to use this
-feature. Select your preferred email profile in the <guilabel>Current
-Email Profile</guilabel> box. Enter the address of the
-<acronym>SMTP</acronym> server server in the field labelled
-<guilabel>Host:</guilabel> and the port number (typically
-<userinput>25</userinput>) in the field labelled
-<guilabel>Port:</guilabel>.</para>
+feature.</para>
 
-<para>You may choose to <guilabel>Use email addresses from Control
- Center</guilabel> if you wish.  If you would like to open the
+<para>You may choose to <guilabel>Use email addresses from control
+ center</guilabel> if you wish.  If you would like to open the
  &kcontrol; module to configure this email address, click on the text
  labelled <guilabel>Open the email address control panel</guilabel>.
  Changing the address there will change the default address for all
  &kde; applications that use this setting, not just for &kscd;, so do
  this with caution.</para>
+ 
+<para>Otherwise, provide your preferred email profile in the 
+<guilabel>Use the following email addresses</guilabel> box. Enter your 
+email address, a reply to address, if desired, and the address of the
+<acronym>SMTP</acronym> server server in the field labelled
+<guilabel>Host:</guilabel>. You may also need to provide a username for 
+authentication, and the port number (typically
+<userinput>25</userinput>) in the field labelled
+<guilabel>Port:</guilabel>.</para>
 
-<para>If you don't wish to use the globally configured email address,
-choose the option labelled <guilabel>Use the following email
-address</guilabel> and enter a different email or reply-to address in
-the lower text fields.</para>
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
 page. <guibutton>OK</guibutton> saves the current settings and exits;
@@ -546,14 +463,6 @@ page. <guibutton>OK</guibutton> saves the current settings and exits;
 </sect1>
 
 
-<sect1 id="about">
-<title>The <guilabel>Credits</guilabel> tab </title>
-
-<para> The <guilabel>Credits</guilabel> tab displays information about
-the version of &kscd; you are using and some copyright
-information. </para>
-
-</sect1>
 </chapter>
 
 <chapter id="cddb-editor">
@@ -628,7 +537,7 @@ Database Editor without saving.</para>
 </mediaobject>
 </screenshot>
 
-<para>When the <guilabel>Enable KPanel Docking</guilabel> box is checked, a
+<para>When the <guilabel>Show icon in system tray</guilabel> box is checked, a
 small &kscd; applet is also displayed in the <application>KDE
 panel</application>. Unlike the main &kscd; window, this applet is available on
 any desktop. <mousebutton>Right</mousebutton> click on the applet to pop up a
