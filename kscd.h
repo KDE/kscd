@@ -77,7 +77,6 @@
 #define KSCDMAGIC 0
 #endif
 
-
 #include "ledlamp.h"
 #include "panel.h"
 #include "prefs.h"
@@ -86,15 +85,13 @@
 #include <krandomsequence.h>
 #include <dcopobject.h>
 
-class CDDBSetup;
 class ConfigDlg;
-class CDDialog;
+class CDDBDlg;
 class DockWidget;
 class QGridLayout;
 class KActionCollection;
 class KToggleAction;
 class KVolumeControl;
-
 
 using namespace KCDDB;
 
@@ -234,7 +231,7 @@ protected:
 
 private:
     ConfigDlg       *configDialog;
-    CDDialog        *cddialog;
+    CDDBDlg        *cddialog;
     QPopupMenu      *mainPopup;
     QPopupMenu      *infoPopup;
 

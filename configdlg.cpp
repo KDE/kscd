@@ -2,8 +2,6 @@
  *
  * kscd -- A simple CD player for the KDE project
  *
- * $Id$
- *
  * Copyright (C) 2002 Aaron J. Seigo <aseigo@kde.org>
  * wuebben@math.cornell.edu
  *
@@ -48,19 +46,15 @@ static inline QPixmap loadIcon( const char * name )
 }
 
 ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
-  :  KDialogBase(KDialogBase::IconList, i18n("CD Player Configuration"),
-                 KDialogBase::Help |
-                 KDialogBase::Ok |
-                 KDialogBase::Apply |
-                 KDialogBase::Cancel,
-                 KDialogBase::Ok,
+  :  KDialogBase(IconList, i18n("CD Player Configuration"),
+                 Help|Ok|Apply|Cancel, Ok,
                  0, "configDialog", modal, true),
      mPlayer(player)
 {
 
     setHelp(QString::null);
     KWin::setIcons(winId(), kapp->icon(), kapp->miniIcon());
-    connect(this, SIGNAL(finished()), this, SLOT(finis()));
+    connect(this, SIGNAL(finished()), SLOT(finis()));
 
     /*
      * kscd config page

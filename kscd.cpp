@@ -77,8 +77,7 @@ extern "C" {
 #include "libwm/include/wm_config.h"
 }
 
-#include "inexact.h"
-#include "CDDialog.h"
+#include "cddbdlg.h"
 #include "configWidget.h"
 #include "kvolumecontrol.h"
 
@@ -1382,14 +1381,14 @@ void KSCD::CDDialogSelected()
 {
     if (!cddialog)
     {
-        cddialog = new CDDialog();
+        cddialog = new CDDBDlg(this);
 
         cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category, genre,
                         revision,year,playlist,pathlist);
 
-        connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
-        connect(cddialog,SIGNAL(finished()),this,SLOT(CDDialogDone()));
-        connect(cddialog,SIGNAL(play_signal(int)),this,SLOT(trackSelected(int)));
+        connect(cddialog,SIGNAL(cddbQuery(bool)),SLOT(get_cddb_info(bool)));
+        connect(cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
+        connect(cddialog,SIGNAL(play(int)),SLOT(trackSelected(int)));
     }
 
     cddialog->show();
@@ -1747,7 +1746,7 @@ QString KSCD::calculateDisplayedTime(int sec, int track)
     QString tmptime;
     tmptime.sprintf("%02d:%02d", mymin, mysec);
     return tmptime;
-} // calculateDisplayedTime(int seconds)
+} // calculateDisplayedTime(int sec, int track)
 
 void KSCD::playtime()
 {
