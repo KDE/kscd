@@ -43,6 +43,7 @@
 #include <kkeydialog.h>
 #include <kiconloader.h>
 #include <klocale.h>
+#include <kmainwindow.h>
 #include <kmessagebox.h>
 #include <kpopupmenu.h>
 #include <kprotocolmanager.h>
@@ -247,18 +248,6 @@ KSCD::digitalPlayback() {
 #else
         return false;
 #endif
-}
-
-void
-KSCD::initialShow()
-{
-    KConfig* config = kapp->config();
-
-    config->setGroup("GENERAL");
-    if (!config->readBoolEntry("HiddenControls", !docking))
-    {
-        show();
-    }
 }
 
 /**
@@ -1400,7 +1389,6 @@ KSCD::writeSettings()
     config->writeEntry("BackColor",background_color);
     config->writeEntry("LEDColor",led_color);
     config->writeEntry("Looping", looping);
-    config->writeEntry("HiddenControls", isHidden());
     config->writeEntry("SkipDelta", skipDelta);
     config->writeEntry("TimeDisplay", time_display_mode);
 
@@ -1988,6 +1976,9 @@ bool
 KSCD::saveState(QSessionManager& /*sm*/)
 {
   writeSettings();
+  KConfig* config = KApplication::kApplication()->sessionConfig();
+  config->setGroup("General");
+  config->writeEntry("Show", isVisible());
   return true;
 } // saveState
 
@@ -2156,7 +2147,18 @@ main( int argc, char *argv[] )
     a.setMainWidget( k );
 
     k->setCaption(a.caption());
-    k->initialShow();
+
+    if (kapp->isRestored())
+    {
+        KConfig* config = KApplication::kApplication()->sessionConfig();
+        config->setGroup("General");
+        if (config->readBoolEntry("Show"))
+            k->show();
+    }
+    else
+    {
+        k->show();
+    }
 
     return a.exec();
 } // main()
