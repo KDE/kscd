@@ -2,8 +2,6 @@
  *     XaoS, a fast portable realtime fractal zoomer 
  *                  Copyright (C) 1996,1997 by
  *
- *   $ Id: $
- *
  *      Jan Hubicka          (hubicka@paru.cas.cz)
  *      Thomas Marsh         (tmarsh@austin.ibm.com)
  *
@@ -20,40 +18,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *
+ * Shamelessly ripped for use in xsynaesthesia
  */
-
-
-#if defined(__linux__) || defined(__svr4__)
-
-
+//#include "aconfig.h"
 #define X11_DRIVER
+//#define MITSHM
 
 #ifdef X11_DRIVER
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <X11/cursorfont.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef __FreeBSD__
 #include <malloc.h>
+#else
+#include <stdlib.h>
+#endif
 #include "xlib.h"
-
 #ifdef AMIGA
 #define XFlush(x) while(0)
 #endif
 
-
 #undef PIXMAP
 
-#define chkalloc(n) if (!n) fprintf(stderr, "out of memory\n"), exit(3)
+#define chkalloc(n) if (!n) fprintf(stderr, "out of memory\n"), exit(-1)
 
 int xupdate_size(xdisplay * d)
 {
     int tmp;
     Window wtmp;
     int width = d->width, height = d->height;
-    XGetGeometry(d->display, d->window, &wtmp, &tmp, &tmp, 
-		 &d->width, &d->height, (unsigned int *) &tmp, (unsigned int *) &tmp);
-
+    XGetGeometry(d->display, d->window, &wtmp, &tmp, &tmp, &d->width, &d->height, (unsigned int *) &tmp, (unsigned int *) &tmp);
     if ((int)d->width != width || (int)d->height != height)
 	return 1;
     return 0;
@@ -68,9 +67,7 @@ void xflip_buffers(xdisplay * d)
 
 void draw_screen(xdisplay * d)
 {
-
     switch (d->image[0]->bits_per_pixel) {
-
     case 16:{
 	    unsigned short *de;
 	    unsigned char *s;
@@ -92,14 +89,25 @@ void draw_screen(xdisplay * d)
 		*de = d->pixels[*s];
 	    break;
 	}
-
+    case 24:{
+	    unsigned char *de;
+	    unsigned char *s;
+	    unsigned char *e;
+	    for (s = (unsigned char *) d->vbuffs[d->current],
+		 e = (unsigned char *) d->vbuffs[d->current] + (d->linewidth * d->height),
+		 de = (unsigned char *) d->data[d->current]; s < e; s++, de+=3)
+	      de[0] = d->pixels[*s],
+	      de[1] = d->pixels[*s]>>8,
+	      de[2] = d->pixels[*s]>>16;
+	    
+            break;	
+	}
     case 32:{
 	    unsigned long *de;
 	    unsigned char *s;
 	    unsigned char *e;
 	    for (s = (unsigned char *) d->vbuffs[d->current],
-		 e = (unsigned char *) d->vbuffs[d->current] + 
-		   (d->linewidth * d->height),
+		 e = (unsigned char *) d->vbuffs[d->current] + (d->linewidth * d->height),
 		 de = (unsigned long *) d->data[d->current]; s < e; s += 8, de += 8)
 		*de = d->pixels[*s],
 		    *(de + 1) = d->pixels[*(s + 1)],
@@ -116,27 +124,17 @@ void draw_screen(xdisplay * d)
 	    break;
 	}
     }
-
 #ifdef MITSHM
-
     if (d->SharedMemFlag) {
-
 	XShmPutImage(d->display, d->window, d->gc, d->image[d->current], 0, 0, 0,
 		     0, d->width, d->height, True);
-
 	XFlush(d->display);
-
     } else
-
 #endif
-
-
     {
-	XPutImage(d->display, d->window, d->gc, d->image[d->current], 
-		  0, 0, 0, 0, d->width, d->height);
+	XPutImage(d->display, d->window, d->gc, d->image[d->current], 0, 0, 0, 0, d->width, d->height);
 	XFlush(d->display);
     }
-
     d->screen_changed = 0;
 }
 
@@ -257,7 +255,10 @@ int alloc_image(xdisplay * d)
 	    printf("Out of memory for image..exiting\n");
 	    exit(3);
 	}
-	d->image[i]->data = malloc(d->image[i]->bytes_per_line * d->height);
+	/*Add a little extra memory to catch overruns when dumping image to buffer in draw_screen*/
+	d->image[i]->data = malloc(d->image[i]->bytes_per_line * d->height + 32);
+	memset(d->image[i]->data,0,d->image[i]->bytes_per_line * d->height);
+
 	if (d->image[i]->data == NULL) {
 	    printf("Out of memory for image buffers..exiting\n");
 	    exit(3);
@@ -267,7 +268,11 @@ int alloc_image(xdisplay * d)
     }
     if (d->depth != 8) {
 	for (i = 0; i < 2; i++) {
-	    d->vbuffs[i] = malloc(d->linewidth * d->height);
+	    //Add a little extra memory to catch overruns 
+	    //when dumping image to buffer in draw_screen
+	    d->vbuffs[i] = malloc(d->linewidth * d->height + 32);
+	    memset(d->vbuffs[i],0,d->linewidth * d->height);
+
 	    if (d->vbuffs[i] == NULL) {
 		printf("Out of memory for image buffers2..exiting\n");
 		exit(3);
@@ -296,92 +301,89 @@ void free_image(xdisplay * d)
 
 xdisplay *xalloc_display(const char *s, int xHint, int yHint, int x, int y, xlibparam * params)
 {
-    xdisplay *newd;
+    xdisplay *xd;
     Visual *defaultvisual;
     XVisualInfo vis;
 
 
-    newd = (xdisplay *) calloc(sizeof(xdisplay), 1);
-    chkalloc(newd);
-    newd->display = XOpenDisplay((char *) NULL);
-    if (!newd->display) {
-	free((void *) newd);
+    xd = (xdisplay *) calloc(sizeof(xdisplay), 1);
+    chkalloc(xd);
+    xd->display = XOpenDisplay((char *) NULL);
+    if (!xd->display) {
+	free((void *) xd);
 	return NULL;
     }
-    newd->screen = DefaultScreen(newd->display);
-    newd->attributes = (XSetWindowAttributes *)
+    xd->screen = DefaultScreen(xd->display);
+    xd->attributes = (XSetWindowAttributes *)
 	malloc(sizeof(XSetWindowAttributes));
-    chkalloc(newd->attributes);
-    newd->attributes->background_pixel = BlackPixel(newd->display,
-						   newd->screen);
-    newd->attributes->border_pixel = BlackPixel(newd->display, newd->screen);
-    newd->attributes->event_mask = ButtonPressMask | StructureNotifyMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | ExposureMask | KeyReleaseMask;
-    newd->attributes->override_redirect = False;
-    newd->attr_mask = CWBackPixel | CWBorderPixel | CWEventMask;
-    newd->classX = InputOutput;
-    newd->xcolor.n = 0;
-    newd->parent_window = RootWindow(newd->display, newd->screen);
-    defaultvisual = DefaultVisual(newd->display, newd->screen);
-    newd->params = params;
+    chkalloc(xd->attributes);
+    xd->attributes->background_pixel = BlackPixel(xd->display,
+						   xd->screen);
+    xd->attributes->border_pixel = BlackPixel(xd->display, xd->screen);
+    xd->attributes->event_mask = ButtonPressMask | StructureNotifyMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | ExposureMask | KeyReleaseMask;
+    xd->attributes->override_redirect = False;
+    xd->attr_mask = CWBackPixel | CWBorderPixel | CWEventMask;
+    xd->classX = InputOutput;
+    xd->xcolor.n = 0;
+    xd->parent_window = RootWindow(xd->display, xd->screen);
+    defaultvisual = DefaultVisual(xd->display, xd->screen);
+    xd->params = params;
     if (!params->usedefault) {
-	if (defaultvisual->class != PseudoColor || 
-	    (!XMatchVisualInfo(newd->display,
-			       newd->screen, 8, PseudoColor, &vis) 
-	     && vis.colormap_size > 128)) {
-	    newd->fixedcolormap = 1;
-	    if (!XMatchVisualInfo(newd->display, newd->screen, 15, TrueColor, &vis)) {
-		if (!XMatchVisualInfo(newd->display, newd->screen, 16, TrueColor, &vis)) {
-		    if (!XMatchVisualInfo(newd->display, newd->screen, 32, TrueColor, &vis) &&
-			!XMatchVisualInfo(newd->display, newd->screen, 24, TrueColor, &vis)) {
-			if (!XMatchVisualInfo(newd->display, newd->screen, 8, PseudoColor, &vis) &&
-			    !XMatchVisualInfo(newd->display, newd->screen, 7, PseudoColor, &vis)) {
-			    if (!XMatchVisualInfo(newd->display, newd->screen, 8, TrueColor, &vis) &&
-				!XMatchVisualInfo(newd->display, newd->screen, 8, StaticColor, &vis) &&
-				!XMatchVisualInfo(newd->display, newd->screen, 8, StaticGray, &vis)) {
-				printf("Display does not support PseudoColor depth 7,8,StaticColor depth 8, StaticGray depth 8, Truecolor depth 8,15,16,24 nor 32! try -usedefault\n");
+	if (defaultvisual->class != PseudoColor || (!XMatchVisualInfo(xd->display, xd->screen, 8, PseudoColor, &vis) && vis.colormap_size > 128)) {
+	    xd->fixedcolormap = 1;
+	    if (!XMatchVisualInfo(xd->display, xd->screen, 15, TrueColor, &vis)) {
+		if (!XMatchVisualInfo(xd->display, xd->screen, 16, TrueColor, &vis)) {
+		    if (!XMatchVisualInfo(xd->display, xd->screen, 32, TrueColor, &vis) &&
+			!XMatchVisualInfo(xd->display, xd->screen, 24, TrueColor, &vis)) {
+			if (!XMatchVisualInfo(xd->display, xd->screen, 8, PseudoColor, &vis) &&
+			    !XMatchVisualInfo(xd->display, xd->screen, 7, PseudoColor, &vis)) {
+			    if (!XMatchVisualInfo(xd->display, xd->screen, 8, TrueColor, &vis) &&
+				!XMatchVisualInfo(xd->display, xd->screen, 8, StaticColor, &vis) &&
+				!XMatchVisualInfo(xd->display, xd->screen, 8, StaticGray, &vis)) {
+				printf("Display does not support PseudoColor depth 7,8,StaticColor depth 8, StaticGray depth 8, Truecolor depth 8,15,16,24 nor 32!\n");
 				return NULL;
 			    } else
-				newd->truecolor = 1;
+				xd->truecolor = 1;
 			} else
-			    newd->fixedcolormap = 0, newd->truecolor = 0;
+			    xd->fixedcolormap = 0, xd->truecolor = 0;
 		    } else
-			newd->truecolor = 1;
+			xd->truecolor = 1;
 		} else
-		    newd->truecolor = 1;
+		    xd->truecolor = 1;
 	    } else
-		newd->truecolor = 1;
+		xd->truecolor = 1;
 	} else {
-	    newd->truecolor = 0;
+	    xd->truecolor = 0;
 	}
-	newd->depth = vis.depth;
-	newd->visual = vis.visual;
+	xd->depth = vis.depth;
+	xd->visual = vis.visual;
     } else {			/*usedefault */
-	vis.depth = newd->depth = DefaultDepth(newd->display, newd->screen);
-	newd->visual = defaultvisual;
+	vis.depth = xd->depth = DefaultDepth(xd->display, xd->screen);
+	xd->visual = defaultvisual;
 	switch (defaultvisual->class) {
 	case PseudoColor:
-	    if (newd->depth <= 8) {
-		newd->depth = 8;
-		newd->truecolor = 0;
-		newd->fixedcolormap = 0;
+	    if (xd->depth <= 8) {
+		xd->depth = 8;
+		xd->truecolor = 0;
+		xd->fixedcolormap = 0;
 	    } else {
-		printf("Pseudocolor visual on unsuported depth try autodetection of visuals\n");
+		printf("Pseudocolor visual on unsuported depth\n");
 		return NULL;
 	    }
 	    break;
 	case TrueColor:
 	case StaticColor:
 	case StaticGray:
-	    newd->truecolor = 1;
-	    newd->fixedcolormap = 1;
-	    if (newd->depth <= 8)
-		newd->depth = 8;
-	    else if (newd->depth <= 16)
-		newd->depth = 16;
-	    else if (newd->depth <= 32)
-		newd->depth = 32;
+	    xd->truecolor = 1;
+	    xd->fixedcolormap = 1;
+	    if (xd->depth <= 8)
+		xd->depth = 8;
+	    else if (xd->depth <= 16)
+		xd->depth = 16;
+	    else if (xd->depth <= 32)
+		xd->depth = 32;
 	    else {
-		printf("Truecolor visual on unsuported depth try autodetection of visuals\n");
+		printf("Truecolor visual on unsuported depth\n");
 		return NULL;
 	    }
 	    break;
@@ -390,45 +392,46 @@ xdisplay *xalloc_display(const char *s, int xHint, int yHint, int x, int y, xlib
 	    break;
 	}
     }
-    /*newd->visual->map_entries = 256; */
-    newd->colormap = newd->defaultcolormap = DefaultColormap(newd->display, newd->screen);
+    /*xd->visual->map_entries = 256; */
+    xd->colormap = xd->defaultcolormap = DefaultColormap(xd->display, xd->screen);
 
-    newd->window_name = s;
-    newd->height = y;
-    newd->width = x;
-    newd->border_width = 2;
-    newd->lastx = 0;
-    newd->lasty = 0;
-    newd->font_struct = (XFontStruct *) NULL;
+    xd->window_name = s;
+    xd->height = y;
+    xd->width = x;
+    xd->border_width = 2;
+    xd->lastx = 0;
+    xd->lasty = 0;
+    xd->font_struct = (XFontStruct *) NULL;
 
-    newd->window = XCreateWindow(newd->display, newd->parent_window, xHint, yHint,
-			      newd->width, newd->height, newd->border_width,
-				vis.depth, newd->classX, newd->visual,
-				newd->attr_mask, newd->attributes);
-    if (!newd->fixedcolormap && params->privatecolormap) {
+    xd->window = XCreateWindow(xd->display, xd->parent_window, xHint, yHint,
+			      xd->width, xd->height, xd->border_width,
+				vis.depth, xd->classX, xd->visual,
+				xd->attr_mask, xd->attributes);
+    if (!xd->fixedcolormap && params->privatecolormap) {
 	unsigned long pixels[256];
 	int i;
-	newd->colormap = XCreateColormap(newd->display, newd->window, newd->visual, AllocNone);
-	XAllocColorCells(newd->display, newd->colormap, 1, 0, 0, pixels, MAX(newd->visual->map_entries, 256));
+	xd->colormap = XCreateColormap(xd->display, xd->window, xd->visual, AllocNone);
+	XAllocColorCells(xd->display, xd->colormap, 1, 0, 0, pixels, MAX(xd->visual->map_entries, 256));
 	for (i = 0; i < 16; i++) {
-	    newd->xcolor.c[i].pixel = pixels[i];
+	    xd->xcolor.c[i].pixel = pixels[i];
 	}
-	XQueryColors(newd->display, newd->defaultcolormap, newd->xcolor.c, 16);
-	XStoreColors(newd->display, newd->colormap, newd->xcolor.c, 16);
-	newd->privatecolormap = 1;
+	XQueryColors(xd->display, xd->defaultcolormap, xd->xcolor.c, 16);
+	XStoreColors(xd->display, xd->colormap, xd->xcolor.c, 16);
+	xd->privatecolormap = 1;
     }
-    if (!newd->fixedcolormap)
-	XSetWindowColormap(newd->display, newd->window, newd->colormap);
-    newd->gc = XCreateGC(newd->display, newd->window, 0L, &(newd->xgcvalues));
-    XSetBackground(newd->display, newd->gc,
-		   BlackPixel(newd->display, newd->screen));
-    XSetForeground(newd->display, newd->gc,
-		   WhitePixel(newd->display, newd->screen));
-    XStoreName(newd->display, newd->window, newd->window_name);
-    XMapWindow(newd->display, newd->window);
+    if (!xd->fixedcolormap)
+	XSetWindowColormap(xd->display, xd->window, xd->colormap);
+    xd->gc = XCreateGC(xd->display, xd->window, 0L, &(xd->xgcvalues));
+    XSetBackground(xd->display, xd->gc,
+		   BlackPixel(xd->display, xd->screen));
+    XSetForeground(xd->display, xd->gc,
+		   WhitePixel(xd->display, xd->screen));
+    XStoreName(xd->display, xd->window, xd->window_name);
+    XMapWindow(xd->display, xd->window);
 #if 1
-    XSelectInput(newd->display, newd->window, 
-                 //ExposureMask | KeyPress |
+    XSelectInput(xd->display, xd->window, 
+                 //ExposureMask | 
+		 KeyPress |
 		 //KeyRelease | 
                  //ConfigureRequest | 
 		 //FocusChangeMask | 
@@ -436,10 +439,23 @@ xdisplay *xalloc_display(const char *s, int xHint, int yHint, int x, int y, xlib
                  ButtonPressMask | ButtonReleaseMask);
 #endif
 #ifdef PIXAMP
-    newd->pixmap = XCreatePixmap(newd->display, newd->window, newd->width,
-				newd->height, newd->depth);
+    xd->pixmap = XCreatePixmap(xd->display, xd->window, xd->width,
+				xd->height, xd->depth);
 #endif
-    return (newd);
+
+    {
+      XColor c;
+      Pixmap p = XCreatePixmap(xd->display, xd->window, 1,1,1);
+      memset(&c,0,sizeof(c));
+      xd->cursor = XCreatePixmapCursor(xd->display, p,p,
+        &c,&c, 0,0);
+      /* We don't need no fancy cursor
+      XDefineCursor(xd->display,xd->window,xd->cursor);
+      */
+      XFreePixmap(xd->display, p);
+    }
+
+    return (xd);
 }
 
 void xsetcolor(xdisplay * d, int col)
@@ -549,6 +565,7 @@ void xfree_display(xdisplay * d)
     XFreePixmap(d->display, d->pixmap);
 #endif
     XDestroyWindow(d->display, d->window);
+    XFreeCursor(d->display, d->cursor);
     XCloseDisplay(d->display);
     free((void *) d->attributes);
     free((void *) d);
@@ -689,18 +706,71 @@ void xmouse_update(xdisplay * d)
 		  &buttons); 
 }
 
+char xkeyboard_query(xdisplay * d) {
+    XEvent event;
+  
+    if (XCheckMaskEvent(d->display,KeyPressMask | KeyReleaseMask, &event)) {
+      char *str =
+        XKeysymToString(XLookupKeysym((XKeyPressedEvent*)(&event),0));
+        
+      if ( ((XKeyPressedEvent*)(&event))->state & 
+	   (ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask) )
+	return 0;
+
+      if (str) {
+        char key;
+
+        if (strlen(str) == 1)
+	  key = str[0];
+	else if (strcmp(str,"equal") == 0)
+	  key = '=';
+	else if (strcmp(str,"minus") == 0)
+	  key = '-';
+	else if (strcmp(str,"bracketleft") == 0)
+	  key = '[';
+	else if (strcmp(str,"bracketright") == 0)
+	  key = ']';
+	else if (strcmp(str,"comma") == 0)
+	  key = ',';
+	else if (strcmp(str,"period") == 0)
+	  key = '.';
+	else if (strcmp(str,"slash") == 0)
+	  key = '/';
+	else return 0;
+	
+        if ( ((XKeyPressedEvent*)(&event))->state & ShiftMask )
+	  switch(key) {
+	    case '=' : key = '+'; break;
+	    case '[' : key = '{'; break;
+	    case ']' : key = '}'; break;
+	    case ',' : key = '<'; break;
+	    case '/' : key = '?'; break;
+	    default :
+	      if (key >= 'a' && key <= 'z')
+		key = key+'A'-'a';
+	      break;
+	  }
+        return key;
+      }
+    }
+
+    return 0;
+}
+
 int xsize_update(xdisplay *d,int *width,int *height) {
     XEvent event;
   
     if (XCheckMaskEvent(d->display,StructureNotifyMask, &event)) {
       if (event.type == ConfigureNotify) {
         xupdate_size(d);
+        free_image(d);
         alloc_image(d);
         *width = d->linewidth;
         *height = d->height;
         return 1;
       }
     }
+
     return 0;
 }
 
@@ -709,6 +779,3 @@ unsigned int xmouse_buttons(xdisplay * d)
     return d->mouse_buttons;
 }
 #endif
-
-
-#endif /* linux*/

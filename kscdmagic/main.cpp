@@ -1,8 +1,12 @@
-
 /*
 
-  kscdmagic 1.0   Bernd Johannes Wuebben <wuebben@kde.org>
   $Id$
+
+  kscdmagic 2.0   Dirk Försterling <milliByte@gmx.de>
+
+  based on:
+
+  kscdmagic 1.0   Bernd Johannes Wuebben <wuebben@kde.org>
 
   based on:
  
@@ -49,10 +53,13 @@
 #include "syna.h"
 
 volatile short *data;
-unsigned char *output;
-int outWidth, outHeight;
 
-static int configUseCD = 1;
+int outWidth, outHeight;
+double brightnessTwiddler;
+SymbolID fadeMode = Stars;
+double starSize = 0.125;
+bool pointsAreDiamonds = true;
+
 
 const int numRows = 4, rowHeight = 50, leftColWidth = 40, rowMaxWidth = 310,
           sliderBorder = 20, sliderWidth = rowMaxWidth - leftColWidth - sliderBorder*2,
@@ -63,47 +70,95 @@ const int numRows = 4, rowHeight = 50, leftColWidth = 40, rowMaxWidth = 310,
 static int isExpanded = 0;
 static double bright = 1.0;
 
+Bitmap<unsigned short> outputBmp, lastOutputBmp, lastLastOutputBmp;
+PolygonEngine<unsigned short,combiner,2> polygonEngine;
 
-void setBrightness(double bright) { 
-
-  brightFactor = int(brightness * bright * 8.0); 
-
-} 
-
-
-
-static void cleanup( int sig )
+void 
+allocOutput(int w,int h) 
 {
+  outputBmp.size(w,h);
+  lastOutputBmp.size(w,h);
+  lastLastOutputBmp.size(w,h);
+  polygonEngine.size(w,h);
+  outWidth = w;
+  outHeight = h;
+} // allocOutput()
 
+void 
+setBrightness(double bright) 
+{
+  brightnessTwiddler = bright;
+}  // setBrightness()
+
+
+
+static void 
+cleanup( int sig )
+{
   (void) sig;
   closeSound();
   exit(0);
-}
+} // cleanup()
 
 
 // make sure the pid file is cleaned up when exiting unexpectedly.
 
-void catchSignals()
+void 
+catchSignals()
 {
 	signal(SIGHUP, cleanup);		/* Hangup */
 	signal(SIGINT, cleanup);		/* Interrupt */
 	signal(SIGTERM, cleanup);		/* Terminate */
 	signal(SIGPIPE, cleanup);
 	signal(SIGQUIT, cleanup);
+} // catchSignals()
 
-}
-
-void usage(char*){
-
+void 
+usage(char*)
+{
   fprintf(stderr, "Valid command line options:\n");
   fprintf(stderr, " -b set brightness (1 - 10)\n");
   fprintf(stderr, " -w set width\n");
   fprintf(stderr, " -h set height\n");
   exit(1);
+} // usage()
 
+void 
+error(const char *str, bool syscall) { 
+  fprintf(stderr, PROGNAME ": Error %s\n",str); 
+  if (syscall)
+    fprintf(stderr,"(reason for error: %s)\n",strerror(errno));
+  exit(1);
 }
-int main(int argc, char **argv) { 
 
+void 
+warning(const char *str, bool syscall) { 
+  fprintf(stderr, PROGNAME ": Possible error %s\n",str); 
+  if (syscall)
+    fprintf(stderr,"(reason for error: %s)\n",strerror(errno));
+}
+
+
+
+int processUserInput() 
+{
+
+  int mouseX, mouseY, mouseButtons;
+  char keyHit;
+
+  inputUpdate(mouseX,mouseY,mouseButtons,keyHit);
+
+  if (sizeUpdate()) 
+    {
+      isExpanded = 0;
+    }
+  
+  return 0;
+} // processUserInput()
+
+int 
+main(int argc, char **argv) 
+{
   int windX=10;
   int windY=30;
   int windWidth=320;
@@ -111,14 +166,14 @@ int main(int argc, char **argv) {
   int c;
   opterr = 0;
 
-  openSound(configUseCD); 
-  catchSignals();
+  //  openSound(configUseCD);
+  openSound(SourceCD, 22050, "/dev/dsp", NULL);
 
+  catchSignals();
 
   while ((c = getopt(argc, argv, "b:h:w:")) != -1){
     switch (c)
       {
-
       case '?':
 	fprintf(stderr, "%s: unknown option \"%s\"\n", 
 		argv[0], argv[optind-1]);
@@ -136,70 +191,57 @@ int main(int argc, char **argv) {
 	break;
       }
   }
-
- 
+  
   if (bright > 1.0)
     bright = 1.0;
   else if (bright < 0.0)
     bright = 0.0;
-
-
+  
   if (windWidth < 1)
     windWidth = 320;
   if (windHeight < 1)
     windHeight = 200;
 
-  setBrightness(bright);
-
   screenInit(windX,windY,windWidth,windHeight);
-  output = new unsigned char[outWidth*outHeight*2];
+
+  allocOutput(outWidth,outHeight);
 
   coreInit();
+
+  setStarSize(starSize);
+  setBrightness(bright);
 
   time_t timer = time(NULL);
   
   int frames = 0;
-  do {
-    screenShow();
-    coreGo();
+
+  for(;;) {
+    fade();
+    if (-1 == coreGo())
+      break;
+    screenShow(); 
     frames++;
-  } while(!processUserInput());
+    processUserInput();
+  } 
 
+  
   timer = time(NULL) - timer;
-  delete output;
+  delete ucoutput;
   closeSound();
-
+  
   if (timer > 10)
     fprintf(stderr,"Frames per second: %f\n", double(frames)/timer);
   
   return 0;
-}
-
-void error( const char *str ) { 
-  printf(PROGNAME ": Error %s\n",str); 
-  exit(1);
-}
-
-void warning(const char *str) { printf(PROGNAME ": Possible error %s\n",str); }
-
-
-int processUserInput() {
-
-  if (sizeUpdate()) {
-    isExpanded = 0;
-  }
-
-  return 0;
-}
+} // main() /* linux */
 
 #else
 
-int main() { 
-
+int main() 
+{
   fprintf(stderr,"KSCD Magic works currently only on Linux.\n"\
 	  "It should however be trivial to port it to other platforms ...\n");
-
-}
+} // main() /* non-linux */
 
 #endif
 

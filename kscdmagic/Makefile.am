@@ -23,7 +23,7 @@ INCLUDES= $(all_includes)
 bin_PROGRAMS = 	kscdmagic
 
 # Which sources should be compiled for kscdmagic
-kscdmagic_SOURCES = core.cpp main.cpp sound.cpp xlibwrap.cpp xlib.c  bitmap.cpp
+kscdmagic_SOURCES = core.cpp main.cpp sound.cpp xlibwrap.cpp xlib.c
 
 # the library search path. 
 kscdmagic_LDFLAGS = $(all_libraries) $(KDE_RPATH)
@@ -33,7 +33,7 @@ kscdmagic_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 kscdmagic_LDADD   =       -lm $(LIB_KDEUI)
 
 # this option you can leave out. Just, if you use "make dist", you need it
-noinst_HEADERS = bitmap.h    symbol.h    syna.h      xlib.h magicconf.h
+noinst_HEADERS =  symbol.h    syna.h      xlib.h magicconf.h
 
 messages:
 #	$(XGETTEXT) -kTRANS $(kscdmagic_SOURCES)

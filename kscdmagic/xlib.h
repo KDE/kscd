@@ -19,11 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
-#if defined(__linux__) || defined(__svr4__)
-
-#include "magicconf.h"
-
 #ifndef XAOS_X11_H
 #define XAOS_X11_H
 
@@ -31,7 +26,8 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
-
+//#include "config.h"
+//#define MITSHM
 
 #ifdef MITSHM
 #include <sys/types.h>
@@ -100,6 +96,8 @@ typedef struct {
     char *back;
     int truecolor;
     int linewidth;
+
+    Cursor cursor;
 } xdisplay;
 
 extern int alloc_shm_image(xdisplay * d);
@@ -135,9 +133,7 @@ extern int xsize_update(xdisplay *d,int *width,int *height);
 extern int xmouse_x(xdisplay * d);
 extern int xmouse_y(xdisplay * d);
 extern void xmouse_update(xdisplay * d);
+extern char xkeyboard_query(xdisplay * d);
 extern unsigned int xmouse_buttons(xdisplay * d);
 
 #endif				/* XAOS_X11_H */
-
-
-#endif  /* linux */
