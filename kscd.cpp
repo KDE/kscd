@@ -1717,13 +1717,13 @@ KSCD::writeSettings()
     config->sync();
 } // writeSettings()
 
-void 
+void
 KSCD::CDDialogSelected()
 {
+    cddialog = new CDDialog();
+
     if(cddialog)
         return;
-
-    cddialog = new CDDialog();
 
     cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
                       revision,playlist,pathlist,mailcmd,submitaddress, &smtpConfigData);
@@ -1731,6 +1731,7 @@ KSCD::CDDialogSelected()
     connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
     connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
     connect(cddialog,SIGNAL(play_signal(int)),this,SLOT(trackSelected(int)));
+
     cddialog->show();
 }
 
