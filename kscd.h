@@ -80,8 +80,10 @@
 #include "ledlamp.h"
 #include "CDDialog.h"
 #include "CDDBSetup.h"
+
 #include <kapp.h>
 #include <kprocess.h>
+#include <dcopobject.h>
 
 struct configstruct
 {
@@ -109,13 +111,34 @@ struct mgconfigstruct
   double starSize;
 };
 
+class KSCD : public QWidget, virtual public DCOPObject {
 
-class KSCD : public QWidget {
-
-	Q_OBJECT
-
-      // time display modes
-      enum { TRACK_SEC = 0, TRACK_REM = 1, TOTAL_SEC = 2, TOTAL_REM = 3};
+    Q_OBJECT
+    K_DCOP
+    
+    // time display modes
+    enum time_display { TRACK_SEC = 0, TRACK_REM = 1, TOTAL_SEC = 2, TOTAL_REM = 3 };
+    
+    
+k_dcop:
+    void play() { playClicked(); }
+    void stop() { stopClicked(); }
+    void previous() { prevClicked(); }
+    void next() { nextClicked(); }
+    void forward() { fwdClicked(); }
+    void backward() { bwdClicked(); }
+    void eject() { ejectClicked(); }
+    void quit() { quitClicked(); }
+    void toggleLoop() { loopClicked(); }
+    void toggleShuffle() { randomSelected(); }
+    void toggleTimeDisplay() { cycleplaytimemode(); }
+    void cddbDialog() { CDDialogSelected(); }
+    void optionDialog() { aboutClicked(); }
+    void setTrack(int t) { trackSelected(t+1); }
+    void setVolume(int v) { volChanged(v); volSB->setValue(v); }
+    int currentTrack() { return cur_track; }
+    QString currentTrackTitle() { return tracktitlelist[cur_track]; }
+    QStringList trackList() { return tracktitlelist; }
 
 public slots:
 

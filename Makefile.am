@@ -19,14 +19,14 @@ noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
 
 #	struct.h wmcdda.h
 
-kscd_SOURCES = kscd.cpp configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cpp \
+kscd_SOURCES = kscd.cpp kscd.skel configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cpp \
 	CDDialogData.cpp CDDBSetup.cpp CDDBSetupData.cpp docking.cpp \
 	smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp
 
 #	plat_scor5.c plat_sun.c plat_hpux.c plat_linux.c plat_news.c \
 #	plat_bsd386.c plat_ultrix.c cdrom.c scsi.c drv_toshiba.c drv_sony.c \
 #	plat_svr4.c plat_freebsd.c plat_osf1.c plat_irix.c
-	
+
 
 #cddaslave_SOURCES = cddaslave.c
 #cddaslave_LDADD = libwm/libworkman.la
@@ -50,7 +50,7 @@ bin_PROGRAMS = kscd
 #TARGET3 = kscdmagic
 
 #config.h: kscd-script
-	#$(SHELL) $(srcdir)/kscd-script
+#$(SHELL) $(srcdir)/kscd-script
 
 SUBDIRS = bitmaps libwm
 
