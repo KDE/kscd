@@ -2318,7 +2318,7 @@ KSCD::getArtist(QString& artist)
 void
 KSCD::performances(int i)
 {
-    //kdDebug() << "preformances " << i << "\n" << endl;
+    //kdDebug() << "performances " << i << "\n" << endl;
     QString artist;
     QString str;
 
