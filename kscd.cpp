@@ -698,7 +698,7 @@ void KSCD::showConfig()
         KCModuleInfo info(libkcddb->desktopEntryPath());
         if (info.service()->isValid())
         {
-            KCModule *m = KCModuleLoader::loadModule(info);
+            KCModule *m = KCModuleLoader::loadModule(info, KCModuleLoader::Inline);
             if (m)
             {
                 m->load();
