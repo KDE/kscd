@@ -32,7 +32,7 @@
 #include <qstring.h>
 #include <qstrlist.h>
 
-#include <ksock.h>
+#include <qsocket.h>
 
 #define DEFAULT_SUBMIT_EMAIL "freedb-submit@freedb.org"
 #define DEFAULT_TEST_EMAIL ""
@@ -119,7 +119,7 @@ class CDDB:public QObject
     bool    useHTTPProxy();
     QString getHTTPProxyHost();
     unsigned short int getHTTPProxyPort();
-   
+
  protected:
     
     void 	do_state_machine();
@@ -133,9 +133,13 @@ class CDDB:public QObject
 
     void	 cddb_connect(QString& server);
     void	 cddb_connect_internal();
-    void         cddb_read(KSocket* sock);
-    void         cddb_close(KSocket* sock);
+    void         cddb_read();
+    void         cddb_close();
     void         cddb_timed_out_slot();
+
+    void slotErrorConnection(int);
+    void slotConnected();
+    void slotConnectionClosed();
 
  signals:
 
@@ -173,7 +177,7 @@ class CDDB:public QObject
     unsigned short int port;
     bool    	connected;
     bool	readonly;
-    KSocket	*sock;
+    QSocket	*sock;
 
     CDDBState	state;
     CDDBMode    mode;
@@ -185,6 +189,8 @@ class CDDB:public QObject
     QStringList serverlist;
     unsigned long magicID;
     int         protocol_level;
+
+    QString RequestFrom;
 
 };
 

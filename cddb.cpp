@@ -175,20 +175,10 @@ CDDB::cddbgetServerList(QString& _server)
 
     if(protocol==CDDBHTTP)
       {
+	RequestFrom = "cddbgetServerList";
 	cddb_connect_internal();
-	if(connected)
-	  {
-	    QString cmd="sites";
-	    send_http_command(cmd);
-	    if(use_http_proxy)
-	      {
-		saved_state=SERVER_LIST_WAIT;
-		state=HTTP_REQUEST;
-	      } else {
-		state = SERVER_LIST_WAIT;
-	      }
-	  }
       } else {
+	RequestFrom = "";
 	starttimer.start(100,TRUE);
       }
 } // cddbgetServerList
@@ -200,7 +190,7 @@ CDDB::cddb_connect(QString& _server)
     char por[CDDB_FIELD_BUFFER_LEN];
     char proto[CDDB_FIELD_BUFFER_LEN];
     char extra[CDDB_FIELD_BUFFER_LEN];
-  
+
     sscanf(_server.ascii(),"%s %s %s %s",ser,proto,por,extra);
   
     hostname  = ser;
@@ -212,11 +202,98 @@ CDDB::cddb_connect(QString& _server)
     if(protocol==CDDBP)
       {
 	// --HERE--
+	RequestFrom = "";
 	starttimer.start(100,TRUE);
       } else {
 	emit cddb_ready();
       }
 } // cddb_connect
+
+void
+CDDB::slotErrorConnection(int)
+{
+	kdDebug() << "CONNECT FAILED\n" << endl;
+
+	cddb_close();
+
+	if(mode == REGULAR )
+		emit cddb_failed();
+	else // mode == SERVER_LIST_GET
+		emit get_server_list_failed();
+		
+	connected = false;
+
+	if (-1 != RequestFrom.find("query_exact"))
+	{
+		state = CDDB_READ;
+		respbuffer = "";
+	}
+}
+
+void
+CDDB::slotConnected()
+{
+	kdDebug() << "CONNECTED\n" << endl;
+
+	connected = true;
+	respbuffer = "";
+
+	if(protocol==CDDBHTTP)
+	{
+		protocol_level=4;
+		state=READY;
+	}
+	else
+	{
+		protocol_level=1;
+		state = INIT;
+	}
+
+	if ("cddbgetServerList" == RequestFrom)
+	{
+		QString cmd="sites";
+		send_http_command(cmd);
+		if(use_http_proxy)
+		{
+			saved_state=SERVER_LIST_WAIT;
+			state=HTTP_REQUEST;
+		}
+		else
+		{
+			state = SERVER_LIST_WAIT;
+		}
+	}
+	else if (-1 != RequestFrom.find("queryCD"))
+	{
+		QString param = RequestFrom.mid(7);
+		send_http_command(param);
+		if(use_http_proxy)
+		{
+			saved_state = NORMAL_QUERY;
+			state       = HTTP_REQUEST;
+		}
+		else
+		{
+			state  = NORMAL_QUERY;
+		}
+	}
+	else if (-1 != RequestFrom.find("query_exact"))
+	{
+		QString readstring;
+		readstring = RequestFrom.mid(11);
+		send_http_command(readstring);
+
+		state = CDDB_READ;
+		respbuffer = "";
+	}
+
+}
+
+void
+CDDB::slotConnectionClosed()
+{
+kdDebug() << "CONNECTION CLOSED\n" << endl;
+}
 
 void 
 CDDB::cddb_connect_internal()
@@ -226,8 +303,9 @@ CDDB::cddb_connect_internal()
 
     //    kdDebug() << "cddb_connect_internal_timeout = " << timeout*1000 << "\n" << endl;
 
-    if(sock) 
+    if(sock)
       {
+		sock->close();
 		delete sock;
 		sock = 0L;
       }
@@ -235,53 +313,41 @@ CDDB::cddb_connect_internal()
     // signal( SIGALRM , CDDB::sighandler );
     // setalarm();
 
-    fprintf(stderr, "proto = %d, proxy=%s\n", protocol, use_http_proxy?"true":"false");
-    if(protocol==CDDBHTTP && use_http_proxy)
-      {
-        fprintf(stderr, "PROX\n");
-		kdDebug() << "CONNECTING TO " << proxyhost << ":" << proxyport << " ....\n" << endl;
-		sock = new KSocket(proxyhost.ascii(),proxyport, timeout);
-		kdDebug() << "SOCKET SET" << endl;
-      } else {
-		kdDebug() << "CONNECTING TO " << hostname << ":" << port << " ....\n" << endl;
-		sock = new KSocket(hostname.local8Bit(),port, timeout);
-		kdDebug() << "SOCKET SET" << endl;
-      }
-    
-    //signal( SIGALRM , SIG_DFL );
-	
-    if(sock == 0L || sock->socket() < 0)
-      {
+	sock = new QSocket();
+
+	if(sock == 0L)
+	{
 		timeouttimer.stop();
-		
-		kdDebug() << "CONNECT FAILED\n" << endl;
-		
+	
+		kdDebug() << "CONNECT1 FAILED\n" << endl;
+	
 		if(mode == REGULAR )
-		  emit cddb_failed();      
+			emit cddb_failed();
 		else // mode == SERVER_LIST_GET
-		  emit get_server_list_failed();
-		
+			emit get_server_list_failed();
+	
 		connected = false;
-		return;    
-      }
-    
-    connected = true;
-    respbuffer = "";
-    
-    connect(sock,SIGNAL(readEvent(KSocket*)),this,SLOT(cddb_read(KSocket*)));
-    connect(sock,SIGNAL(closeEvent(KSocket*)),this,SLOT(cddb_close(KSocket*)));
-    sock->enableRead(true);
-    
-    if(protocol==CDDBHTTP)
+		return;
+	}
+
+	connect(sock, SIGNAL(connected()), this, SLOT(slotConnected()));
+	connect(sock, SIGNAL(connectionClosed()), this, SLOT(slotConnectionClosed()));
+	connect(sock, SIGNAL(error(int)), this, SLOT(slotErrorConnection(int)));
+	connect(sock,SIGNAL(readyRead()),this,SLOT(cddb_read()));
+
+	fprintf(stderr, "proto = %d, proxy=%s\n", protocol, use_http_proxy?"true":"false");
+	if(protocol==CDDBHTTP && use_http_proxy)
       {
-		protocol_level=4;
-		state=READY;
+		fprintf(stderr, "PROX\n");
+		kdDebug() << "CONNECTING1 TO " << proxyhost << ":" << proxyport << " ....\n" << endl;
+		sock->connectToHost(proxyhost.ascii(),proxyport);
+		kdDebug() << "SOCKET1 SET" << endl;
       } else {
-		protocol_level=1;
-		state = INIT;
+		kdDebug() << "CONNECTING1 TO " << hostname << ":" << port << " ....\n" << endl;
+		sock->connectToHost(hostname.local8Bit(),port);
+		kdDebug() << "SOCKET1 SET" << endl;
       }
-    
-    kdDebug() << "CONNECTED\n" << endl;
+
 } // cddb_connect_internal
 
 void 
@@ -317,9 +383,6 @@ CDDB::cddb_timed_out_slot()
 {
     timeouttimer.stop();
 
-    if(sock) 
-	sock->enableRead(false);
-
     if( mode == REGULAR )
 	  emit cddb_timed_out();
     else // mode == SERVER_LIST_GET
@@ -327,7 +390,7 @@ CDDB::cddb_timed_out_slot()
 	
     state = CDDB_TIMEDOUT;
     kdDebug() << "SOCKET CONNECTION TIMED OUT\n" << endl;
-    cddb_close(sock);
+    cddb_close();
 } // cddb_timed_out_slot
 
 // called externally if we want to close or interrupt the cddb connection
@@ -336,24 +399,26 @@ CDDB::close_connection()
 {
     if(sock)
     {
-	cddb_close(sock);
+	cddb_close();
 	sock = 0L;
     }
 } // close_connection
 
 void 
-CDDB::cddb_close(KSocket *socket)
+CDDB::cddb_close()
 {
     timeouttimer.stop();
-    disconnect(socket,SIGNAL(readEvent(KSocket*)),this,SLOT(cddb_read(KSocket*)));
-    disconnect(socket,SIGNAL(closeEvent(KSocket*)),this,SLOT(cddb_close(KSocket*)));
-    socket->enableRead(false);
+
     kdDebug() << "SOCKET CONNECTION TERMINATED\n" << endl;
     connected = false;
-    if(socket)
+    if(sock)
       {
-	delete socket;
-	socket = 0L;
+	sock->close();
+	disconnect(sock, SIGNAL(connected()), this, SLOT(slotConnected()));
+	disconnect(sock, SIGNAL(connectionClosed()), this, SLOT(slotConnectionClosed()));
+	disconnect(sock, SIGNAL(error(int)), this, SLOT(slotErrorConnection(int)));
+	disconnect(sock,SIGNAL(readyRead()),this,SLOT(cddb_read()));
+	delete sock;
 	sock = 0L;
       }
 } // cddb_close
@@ -365,21 +430,42 @@ CDDB::cddb_close(KSocket *socket)
 #include <kglobal.h>
 
 void 
-CDDB::cddb_read(KSocket *socket)
+CDDB::cddb_read()
 {
-    int  n;
+    int  n, sizeBytes = 0;
     char buffer[CDDB_READ_BUFFER_LEN];
     
-    if(socket == 0L || socket->socket() < 0)
+    if(sock == 0L || sock->socket() < 0)
 	return;
 
+  while (sock != 0L && (sizeBytes = sock->bytesAvailable()) > 0)
+  {
     memset(buffer,0,CDDB_READ_BUFFER_LEN);
-    n = read(socket->socket(), buffer, CDDB_READ_BUFFER_LEN-1 );
-    buffer[n] = '\0';
+    if (sizeBytes > CDDB_READ_BUFFER_LEN-1)
+    {
+	n = sock->readBlock(buffer, CDDB_READ_BUFFER_LEN-1);
+	if (-1==n)
+	{
+		cddb_close();
+		return;
+	}
+	buffer[CDDB_READ_BUFFER_LEN] = '\0';
+    }
+    else
+    {
+	n = sock->readBlock(buffer, sizeBytes);
+	if (-1==n)
+	{
+		cddb_close();
+		return;
+	}
+	buffer[sizeBytes+1] = '\0';
+    }
     tempbuffer += buffer;
 
     while(next_token())
         do_state_machine();
+  }
 } // cddb_read
 
 bool 
@@ -434,8 +520,9 @@ CDDB::queryCD(unsigned long _magicID,QStringList& querylist)
 
     if(protocol==CDDBHTTP)
       {
+	RequestFrom = "queryCD" + str;
 	cddb_connect_internal();
-	if(connected)
+/*	if(connected)
 	  {
 	    QString param = str;
 	    send_http_command(param);
@@ -446,7 +533,7 @@ CDDB::queryCD(unsigned long _magicID,QStringList& querylist)
 	      } else {
 		state  = NORMAL_QUERY;
 	      }
-	  }
+	  } */
       } else {
 	// CDDB
 	timeouttimer.stop();
@@ -487,13 +574,15 @@ CDDB::query_exact(QString line)
   
   if(protocol==CDDBHTTP)
     {
+	readstring = QString::fromLatin1("cddb read %1 %2").arg(category).arg(magicstr);
+	RequestFrom = "query_exact" + readstring;
       cddb_connect_internal();
-      if(connected)
+/*      if(connected)
 	{
 	  readstring = QString::fromLatin1("cddb read %1 %2")
             .arg(category).arg(magicstr);
 	  send_http_command(readstring);
-	}
+	}*/
     } else {
       // CDDB
       timeouttimer.stop();
@@ -504,10 +593,9 @@ CDDB::query_exact(QString line)
         .arg(magicstr);
       write(sock->socket(),readstring.ascii(),readstring.length());
     }
-  
+
   state = CDDB_READ;
   respbuffer = "";
-  sock->enableRead(true);
 } // query_exact
 
 
@@ -575,7 +663,7 @@ CDDB::do_state_machine()
 		  state = HELLO;
 		} else {
 		  state = ERROR_INIT;	
-		  cddb_close(sock);
+		  cddb_close();
 		  kdDebug() << "ERROR_INIT\n" << endl;
 		  emit cddb_failed();
 		}
@@ -590,10 +678,10 @@ CDDB::do_state_machine()
 		  state = PROTO;
 		  // Let's try to request protocol level 3
 		  // so we'll get list of servers with protocol.
-		  write(sock->socket(),"proto 3\n",8); 
+		  write(sock->socket(),"proto 3\n",8);
 		} else {
 		  state = ERROR_HELLO;
-		  cddb_close(sock);
+		  cddb_close();
 		  kdDebug() << "ERROR_HELLO\n" << endl;
 		  emit cddb_failed();
 		}
@@ -631,7 +719,7 @@ CDDB::do_state_machine()
 			  if(lastline.left(3) == QString("202"))
 				{
 				  state = CDDB_DONE;
-      				  cddb_close(sock);
+      				  cddb_close();
 				  kdDebug() << "emitting cddb_no_info" << endl;
 				  emit cddb_no_info();
 				} else {
@@ -642,7 +730,7 @@ CDDB::do_state_machine()
 					  state = MULTEX_READ;
 					} else {
 					  state = ERROR_QUERY;
-					  cddb_close(sock);
+					  cddb_close();
 					  kdDebug() << "ERROR_QUERY\n" << endl;
 					  emit cddb_failed();
 					}
@@ -682,7 +770,7 @@ CDDB::do_state_machine()
 			write(sock->socket(),"quit\n",6);
 		  state = CDDB_DONE;
 		  
-		  cddb_close(sock);
+		  cddb_close();
 		  emit cddb_done();
 		} else {
 		  if(!cddbfh)
@@ -711,7 +799,7 @@ CDDB::do_state_machine()
 		{
 		  state = ERROR_CDDB_READ;
 		  kdDebug() << "ERROR_CDDB_READ\n" << endl;
-		  cddb_close(sock);
+		  cddb_close();
 		  emit cddb_failed();
 		} else {
 		  respbuffer="";
@@ -737,7 +825,7 @@ CDDB::do_state_machine()
 		  kdDebug() << "GOT SERVERLIST\n" << endl;
 		  if(protocol!=CDDBHTTP)
 			write(sock->socket(),"quit\n",6);
-		  cddb_close(sock);
+		  cddb_close();
 		  emit get_server_list_done();
 		  state = CDDB_DONE;
 		} else {
