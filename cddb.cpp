@@ -441,10 +441,10 @@ CDDB::queryCD(unsigned long _magicID,QStringList& querylist)
 	    send_http_command(param);
 	    if(use_http_proxy)
 	      {
-		saved_state = QUERY;
+		saved_state = NORMAL_QUERY;
 		state       = HTTP_REQUEST;
 	      } else {
-		state  = QUERY;
+		state  = NORMAL_QUERY;
 	      }
 	  }
       } else {
@@ -454,7 +454,7 @@ CDDB::queryCD(unsigned long _magicID,QStringList& querylist)
 	str += "\n";
 	kdDebug() << "strdata: " << str << "\n" << endl;
 	write(sock->socket(),str.ascii(),str.length());
-        state  = QUERY;
+        state  = NORMAL_QUERY;
       }
 } // queryCD
 
@@ -617,7 +617,7 @@ CDDB::do_state_machine()
 		}
 	  break;
 	  
-	case QUERY:
+	case NORMAL_QUERY:
 	  if(lastline.left(3) == QString("200"))
 		{
 		  query_exact(lastline);

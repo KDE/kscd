@@ -55,7 +55,7 @@ class CDDB:public QObject
     typedef enum { INIT=0, ERROR_INIT=1,
                    HELLO=2, ERROR_HELLO=3,
                    READY=4,
-                   QUERY=5, ERROR_QUERY=6,
+                   NORMAL_QUERY=5, ERROR_QUERY=6,
                    CDDB_READ=7,CDDB_READING=70,ERROR_CDDB_READ=8, 
                    CDDB_DONE=9, CDDB_TIMEDOUT=10,
                    INEX_READ=11,
