@@ -3,7 +3,7 @@
 mimedir = $(kde_mimedir)/text
 picsdir  = $(kde_datadir)/kscd/pics
 
-INCLUDES= $(all_includes)
+INCLUDES= -I$(top_srcdir) $(all_includes)
 
 ####### Files
 
