@@ -4,11 +4,11 @@
  * kscd -- A simple CD player for the KDE project
  *
  * $Id$
- * 
- * Copyright (C) 1997 Bernd Johannes Wuebben 
+ *
+ * Copyright (C) 1997 Bernd Johannes Wuebben
  * wuebben@math.cornell.edu
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
@@ -45,7 +45,6 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   configdata.mailcmd = "mail -s \"%s\" ";
   configdata.docking = true;
   configdata.autoplay = false;
-  configdata.autodock = false;
   configdata.stopexit = true;
   configdata.ejectonfinish = false;
 
@@ -59,7 +58,6 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
     configdata.use_kfm = data->use_kfm;
     configdata.docking = data->docking;
     configdata.autoplay = data->autoplay;
-    configdata.autodock = data->autodock;
     configdata.stopexit = data->stopexit;
     configdata.ejectonfinish = data->ejectonfinish;
   }
@@ -108,7 +106,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   cd_device_edit->setGeometry(155+XOFF,85+YOFF,200,25);
   cd_device_edit->setText(configdata.cd_device);
   connect(cd_device_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(device_changed(const QString &)));  
+	  this,SLOT(device_changed(const QString &)));
 
 #if defined(sun) || defined(__sun__) || defined(__osf__) || defined(ultrix) || defined(__ultrix)
 
@@ -125,7 +123,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   mail_edit->setGeometry(155+XOFF,115+YOFF,200,25);
   mail_edit->setText(configdata.mailcmd);
   connect(mail_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(mail_changed(const QString &)));  
+	  this,SLOT(mail_changed(const QString &)));
 
   browserbox = new  QButtonGroup(i18n("WWW-Browser"),this,"wwwbox");
 //  browserbox->setGeometry(20+XOFF,145+YOFF,338,130);
@@ -149,14 +147,14 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   custom_edit->setEnabled(!configdata.use_kfm);
   custom_edit->setGeometry(30,60,198+70,25);
 
-  ttcheckbox = new QCheckBox(i18n("Show Tool Tips"), 
+  ttcheckbox = new QCheckBox(i18n("Show Tool Tips"),
 			     this, "tooltipscheckbox");
   ttcheckbox->setGeometry(30+XOFF,245+YOFF,135, 15);
   ttcheckbox->setFixedSize( ttcheckbox->sizeHint() );
   ttcheckbox->setChecked(configdata.tooltips);
   connect(ttcheckbox,SIGNAL(clicked()),this,SLOT(ttclicked()));
 
-  dockcheckbox = new QCheckBox(i18n("Enable KPanel Docking"), 
+  dockcheckbox = new QCheckBox(i18n("Enable KPanel Docking"),
 			       this, "dockcheckbox");
   dockcheckbox->setGeometry(30+XOFF,265+YOFF,200, 15);
   dockcheckbox->setFixedSize( dockcheckbox->sizeHint() );
@@ -169,14 +167,6 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   cdAutoPlayCB->setFixedSize( cdAutoPlayCB->sizeHint() );
   cdAutoPlayCB->setChecked(configdata.autoplay);
   connect(cdAutoPlayCB, SIGNAL(clicked()), this, SLOT(autoPlayClicked()));
-
-  dockOnMinimizeCB = new QCheckBox(i18n("AutoDock on Minimize"),
-                                   this, "dockOnMinimizeCB");
-  dockOnMinimizeCB->setGeometry(30+XOFF, 305+YOFF, 200, 15);
-  dockOnMinimizeCB->setFixedSize( dockOnMinimizeCB->sizeHint() );
-  dockOnMinimizeCB->setChecked(configdata.autodock);
-  connect(dockOnMinimizeCB, SIGNAL(clicked()), this, SLOT(dockOnMinimizeClicked()));
-  dockOnMinimizeCB->setEnabled(configdata.docking);
 
   stopOnExitCB = new QCheckBox(i18n("Stop Playing on Exit"),
                                this, "stopOnExitCB");
@@ -192,7 +182,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   ejectOnFinishCB->setChecked(configdata.ejectonfinish);
   connect(ejectOnFinishCB, SIGNAL(clicked()), this, SLOT(ejectOnFinishClicked()));
 
-  
+
   button3 = new QPushButton(this);
   button3->setGeometry( 420, 400, 90, 25 );
   //button3->setGeometry(255+XOFF,340+YOFF,100,25);
@@ -243,10 +233,8 @@ void ConfigDlg::ttclicked(){
 void ConfigDlg::dockclicked(){
 
     if(dockcheckbox->isChecked()){
-        dockOnMinimizeCB->setEnabled(true);
         configdata.docking = TRUE;
     }else{
-        dockOnMinimizeCB->setEnabled(false);
         configdata.docking = FALSE;
     }
 }
@@ -258,10 +246,6 @@ void ConfigDlg::autoPlayClicked(){
         configdata.autoplay = FALSE;
 }
 
-void ConfigDlg::dockOnMinimizeClicked()
-{
-    configdata.autodock = dockOnMinimizeCB->isChecked();
-}
 
 void ConfigDlg::stopOnExitClicked()
 {

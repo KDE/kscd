@@ -63,7 +63,6 @@ extern "C" {
 #include <kstddirs.h>
 #include <kmessagebox.h>
 
-KSCD 	         *k;
 DockWidget*     dock_widget;
 SMTP                *smtpMailer;
 bool dockinginprogress = 0;
@@ -159,7 +158,6 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     use_kfm 		= true;
     docking 		= true;
     autoplay = false;
-    autodock = false;
     stopexit = true;
     ejectonfinish = false;
     updateDialog          = false;
@@ -209,9 +207,9 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     volstartup = TRUE;
     volSB->setValue(volume);
 
-    dock_widget = new DockWidget("dockw");
-        if(docking){
-        dock_widget->dock();
+    dock_widget = new DockWidget( this, "dockw");
+    if(docking){
+        dock_widget->show();
     }
 
     smtpMailer = new SMTP;
@@ -835,24 +833,9 @@ void KSCD::quitClicked()
 
 }
 
-void KSCD::dockClicked()
-{
-
-    if(docking){
-        dockinginprogress = true;
-//        if(dock_widget) {
-//            dock_widget->dock();      // i think this is wrong
-//        }
-        dock_widget->setToggled(true);  // << better :)
-        this->hide();
-    }
-
-
-}
 
 void KSCD::closeEvent( QCloseEvent *e ){
 
-    //emit dockClicked();
 
     quitPending = true;
     randomplay = FALSE;
@@ -875,21 +858,6 @@ void KSCD::closeEvent( QCloseEvent *e ){
 }
 
 bool KSCD::event( QEvent *e ){
-    if(e->type() == QEvent::Hide && autodock && docking){
-        if(dockinginprogress || quitPending)
-            return(FALSE);
-        sleep(1); // give kwm some time..... ugly I know.
-        if (!KWM::isIconified(winId())) // maybe we are just on another desktop
-            return FALSE;
-//        if(dock_widget) {
-//            dock_widget->dock();      // this was not needed/bad
-//        }
-        dock_widget->setToggled(true);
-        // a trick to remove the window from the taskbar (Matthias)
-        recreate(0, 0, QPoint(x(), y()), FALSE);
-        kapp->setTopWidget( this );
-        return TRUE;
-    }
     return QWidget::event(e);
 }
 
@@ -1047,7 +1015,6 @@ void KSCD::aboutClicked(){
     config.use_kfm    = use_kfm;
     config.docking    = docking;
     config.autoplay   = autoplay;
-    config.autodock = autodock;
     config.stopexit = stopexit;
     config.ejectonfinish = ejectonfinish;
 
@@ -1096,7 +1063,6 @@ void KSCD::aboutClicked(){
         use_kfm = dlg->getData()->use_kfm;
         docking = dlg->getData()->docking;
         autoplay = dlg->getData()->autoplay;
-        autodock = dlg->getData()->autodock;
         stopexit = dlg->getData()->stopexit;
         ejectonfinish = dlg->getData()->ejectonfinish;
 
@@ -1132,20 +1098,11 @@ void KSCD::aboutClicked(){
         setColors();
         setToolTips();
 
-        if(docking){
-            if(!dock_widget->isDocked()){
-                delete dock_widget;
-                dock_widget = new DockWidget("dockw");
-                dock_widget->dock();
-            }
-        }else{
-            if(dock_widget->isDocked()){
-                if(dock_widget->isToggled())
-                    dock_widget->toggle_window_state();
-                dock_widget->undock();
-            }
-        }
-
+        if(docking)
+	    dock_widget->show();
+	else
+	    dock_widget->hide();
+	
     }
     else{
         // reset the current server in case we played with it ...
@@ -1450,7 +1407,6 @@ void KSCD::readSettings()
     use_kfm    = config->readBoolEntry("USEKFM", true);
     docking    = config->readBoolEntry("DOCKING", true);
     autoplay = config->readBoolEntry("AUTOPLAY", false);
-    autodock = config->readBoolEntry("AUTODOCK", false);
     stopexit = config->readBoolEntry("STOPEXIT", true);
     ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);
     mailcmd    =        config->readEntry("UnixMailCommand","/bin/mail -s \"%s\"");
@@ -1487,7 +1443,7 @@ void KSCD::readSettings()
     config->setGroup("CDDB");
 
     cddbbasedir = config->readEntry("LocalBaseDir");
-    if (!cddbbasedir.isNull()) 
+    if (!cddbbasedir.isNull())
 	KGlobal::dirs()->addResourceDir("cddb", cddbbasedir);
 
 // Set this to false by default. Look at the settings dialog source code
@@ -1552,7 +1508,6 @@ void KSCD::writeSettings(){
     config->writeEntry("USEKFM", use_kfm);
     config->writeEntry("DOCKING", docking);
     config->writeEntry("AUTOPLAY", autoplay);
-    config->writeEntry("AUTODOCK", autodock);
     config->writeEntry("STOPEXIT", stopexit);
     config->writeEntry("EJECTONFINISH", ejectonfinish);
     config->writeEntry("CDDevice",cd_device);
@@ -2101,7 +2056,7 @@ void  KSCD::performances(int i){
 
     switch(i){
     case 0:
-        str = 
+        str =
             QString("http://www.tourdates.com/cgi-bin/search.cgi?type=Artist&search=%1")
             .arg(artist);
         startBrowser(str);
@@ -2330,11 +2285,11 @@ void KSCD::doSM()
 
 int main( int argc, char *argv[] )
 {
-    
+
     KApplication a( argc, argv,"kscd" );
     KGlobal::dirs()->addResourceType("cddb", KStandardDirs::kde_default("data") + "kscd/cddb/");
 
-    k = new KSCD();
+    KSCD* k = new KSCD();
 
     cur_track = 1;
 

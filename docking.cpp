@@ -24,218 +24,33 @@
 #include "kscd.h"
 
 #include <qtooltip.h>
-#include <kwm.h>
 #include <kapp.h>
 
 #include "docking.h"
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kglobal.h>
+#include <kpopmenu.h>
 
+DockWidget::DockWidget( KSCD* parent, const char *name)
+  : KDockWindow( parent, name ) 
+{
 
-extern KSCD *k;
+    setPixmap( BarIcon("cdsmall.xpm") );
+      
+      // popup menu for right mouse button
+    QPopupMenu* popup = contextMenu();
 
-extern bool dockinginprogress;
-
-DockWidget::DockWidget(const char *name)
-  : QWidget(0, name, 0) {
-
-  docked = false;
-
-  QString tmp;
-
-  //     printf("trying to load %s\n",pixdir.data());
-  // load pixmaps
-
-  cdsmall_pixmap = BarIcon("cdsmall.xpm");
-
-  // popup menu for right mouse button
-  popup_m = new QPopupMenu();
-
-  popup_m->insertItem(i18n("Play/Pause"), this, SLOT(play_pause()));
-  popup_m->insertItem(i18n("Stop"), this, SLOT(stop()));
-  popup_m->insertItem(i18n("Forward"), this, SLOT(forward()));
-  popup_m->insertItem(i18n("Backward"), this, SLOT(backward()));
-  popup_m->insertItem(i18n("Next"), this, SLOT(next()));
-  popup_m->insertItem(i18n("Previous"), this, SLOT(prev()));
-  popup_m->insertItem(i18n("Eject"), this, SLOT(eject()));
-  popup_m->insertSeparator();
-  toggleID = popup_m->insertItem(i18n("Restore"),
-				 this, SLOT(toggle_window_state()));
-
-
-
-  //  QToolTip::add( this, statstring.data() );
-
+    popup->insertItem(i18n("Play/Pause"), parent, SLOT(playClicked()));
+    popup->insertItem(i18n("Stop"), parent, SLOT(stopClicked()));
+    popup->insertItem(i18n("Forward"), parent, SLOT(fwdClicked()));
+    popup->insertItem(i18n("Backward"), parent, SLOT(bwdClicked()));
+    popup->insertItem(i18n("Next"), parent, SLOT(nextClicked()));
+    popup->insertItem(i18n("Previous"), parent, SLOT(prevClicked()));
+    popup->insertItem(i18n("Eject"), parent, SLOT(ejectClicked()));
 }
 
 DockWidget::~DockWidget() {
-}
-
-void DockWidget::dock() {
-
-  if (!docked) {
-
-
-    // prepare panel to accept this widget
-    KWM::setDockWindow (this->winId());
-
-    // that's all the space there is
-    this->setFixedSize(24, 24);
-
-    // finally dock the widget
-    this->show();
-    docked = true;
-  }
-}
-
-void DockWidget::undock()
-{
-    if(docked){
-        // the widget's window has to be destroyed in order
-        // to undock from the panel. Simply using hide() is
-        // not enough.
-        this->destroy(true, true);
-
-        // recreate window for further dockings
-        this->create(0, false, false);
-
-        docked = false;
-    }
-    /*
-     allthough this un-docks the applet from the panel, it seems to stop
-     the applet from being able to re-dock with a call to this->dock(),
-     which docks it fine when newly created
-                    -- thuf
-     */
-}
-
-const bool DockWidget::isDocked() {
-
-  return docked;
-
-}
-
-void DockWidget::paintEvent (QPaintEvent *e) {
-
-  (void) e;
-
-  paintIcon();
-
-}
-
-void DockWidget::paintIcon () {
-
-  bitBlt(this, 0, 0, &cdsmall_pixmap);
-
-
-}
-
-void DockWidget::timeclick() {
-
-  if(this->isVisible()){
-    paintIcon();
-  }
-}
-
-
-void DockWidget::mousePressEvent(QMouseEvent *e) {
-
-  // open/close connect-window on right mouse button
-  if ( e->button() == LeftButton ) {
-    toggle_window_state();
-  }
-
-  // open popup menu on left mouse button
-  if ( e->button() == RightButton  || e->button() == MidButton) {
-    int x = e->x() + this->x();
-    int y = e->y() + this->y();
-
-    QString text;
-    if(k->isVisible())
-      text = i18n("Minimize");
-    else
-      text = i18n("Restore");
-
-    popup_m->changeItem(text, toggleID);
-    popup_m->popup(QPoint(x, y));
-    popup_m->exec();
-  }
-
-}
-
-void DockWidget::toggle_window_state() {
-  // restore/hide connect-window
-    if(k != 0L)  {
-        if (k->isVisible()){
-            dockinginprogress = true;
-            toggled = true;
-            k->hide();
-            k->recreate(0, 0, QPoint(k->x(), k->y()), FALSE);
-            kapp->setTopWidget( k );
-
-        }
-        else {
-            toggled = false;
-            k->show();
-            dockinginprogress = false;
-            KWM::activate(k->winId());
-        }
-    }
-}
-
-void DockWidget::setToggled(int totoggle)
-{
-    toggled = totoggle;
-}
-
-const bool DockWidget::isToggled()
-{
-    return(toggled);
-}
-
-void DockWidget::eject() {
-
-  k->ejectClicked();
-
-}
-
-void DockWidget::next() {
-
-  k->nextClicked();
-
-}
-
-
-void DockWidget::stop() {
-
-  k->stopClicked();
-
-}
-
-void DockWidget::prev() {
-
-  k->prevClicked();
-
-}
-
-void DockWidget::play_pause() {
-
-  k->playClicked();
-}
-
-
-void DockWidget::forward() {
-
-  k->fwdClicked();
-
-}
-
-
-void DockWidget::backward() {
-
-  k->bwdClicked();
-
 }
 
 

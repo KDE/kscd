@@ -1,14 +1,14 @@
 
 /*
  *
- * kscd -- A simple CD player for the KDE project           
+ * kscd -- A simple CD player for the KDE project
  *
  * $Id$
- * 
- * Copyright (C) 1997 Bernd Johannes Wuebben 
+ *
+ * Copyright (C) 1997 Bernd Johannes Wuebben
  * wuebben@math.cornell.edu
  *
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -29,7 +29,7 @@
 #ifndef _CONFIG_DLG_H_
 #define _CONFIG_DLG_H_
 
-#include <qgroupbox.h> 
+#include <qgroupbox.h>
 #include <qdialog.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
@@ -39,8 +39,8 @@
 #include <qcheckbox.h>
 #include <qlineedit.h>
 #include <qradiobutton.h>
-#include <qbutton.h> 
-#include <qbuttongroup.h> 
+#include <qbutton.h>
+#include <qbuttongroup.h>
 #include <kcolordlg.h>
 
 
@@ -68,7 +68,6 @@ private slots:
   void ttclicked();
   void dockclicked();
   void autoPlayClicked();
-  void dockOnMinimizeClicked();
   void stopOnExitClicked();
   void ejectOnFinishClicked();
   void device_changed(const QString&);
@@ -81,12 +80,12 @@ signals:
 
 public:
   bool colors_changed;
-  
+
 private:
 
   struct configstruct configdata;
   QGroupBox *box;
-  
+
   QPushButton *ok;
   QPushButton *cancel;
 
@@ -110,10 +109,9 @@ private:
   QCheckBox *ttcheckbox;
   QCheckBox *dockcheckbox;
   QCheckBox *cdAutoPlayCB;
-  QCheckBox *dockOnMinimizeCB;
   QCheckBox *stopOnExitCB;
   QCheckBox *ejectOnFinishCB;
-  
+
   QLabel *label5;
   QLineEdit *cd_device_edit;
 

@@ -92,7 +92,6 @@ struct configstruct{
   bool	use_kfm;
   bool	docking;
   bool  autoplay;
-  bool autodock;
   bool stopexit;
   bool ejectonfinish;
 };
@@ -160,7 +159,6 @@ public slots:
     void purchases(int);
     void information(int);
     void showPopup();
-    void dockClicked();
 
     void doSM();
 
@@ -278,7 +276,6 @@ private:
 	bool 		use_kfm;
         bool            docking;
         bool            autoplay;
-        bool autodock;
         bool stopexit;
         bool ejectonfinish;
 
