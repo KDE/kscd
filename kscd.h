@@ -69,7 +69,7 @@
 #include <sys/mount.h>
 #endif
 
-#ifdef linux
+#ifdef __linux
 #include <mntent.h>
 #define KSCDMAGIC 1
 #endif
