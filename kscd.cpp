@@ -276,12 +276,12 @@ void KSCD::drawPanel()
   setLEDs(-1);
 
   queryled = new LedLamp(symbols);
-  queryled->move(symbols->width()-20, D + 1);
+  queryled->move(+10, D + 1);
   queryled->off();
   queryled->hide();
 
   loopled = new LedLamp(symbols, LedLamp::Loop);
-  loopled->move(symbols->width()-20, D + 18);
+  loopled->move(+10, D + 18);
   loopled->off();
 
   totaltimelabel->hide();
@@ -1006,10 +1006,6 @@ void KSCD::setColors()
     QColor background_color = Prefs::backColor();
 
     backdrop->setBackgroundColor(background_color);
-    frameoben->setBackgroundColor(background_color);
-    frameleds->setBackgroundColor(background_color);
-    symbols->setBackgroundColor(background_color);
-    frameartisttitle->setBackgroundColor(background_color);
 
     QColorGroup colgrp( led_color, background_color, led_color,led_color , led_color,
                         led_color, white );
