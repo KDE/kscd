@@ -134,7 +134,7 @@ k_dcop:
     void toggleTimeDisplay() { cycleplaytimemode(); }
     void cddbDialog() { CDDialogSelected(); }
     void optionDialog() { aboutClicked(); }
-    void setTrack(int t) { trackSelected(t+1); }
+    void setTrack(int t) { trackSelected(t >= 1 ? t - 1 : 0); }
     void setVolume(int v) { volChanged(v); volSB->setValue(v); }
     int currentTrack() { return cur_track; }
     QString currentTrackTitle() { return tracktitlelist[cur_track]; }
