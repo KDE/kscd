@@ -21,7 +21,7 @@
  *
  */
 
-#include <smtp.h>
+#include "smtp.h"
 
 #include <sys/utsname.h>
 #include <unistd.h>
@@ -43,7 +43,7 @@ SMTP::SMTP(char *serverhost, unsigned short int port, int timeout)
     recipientAddress = "user@host.ext";
     messageSubject = "freedb unknown unknown";
     messageBody = "empty";
-    
+
     connected = false;
     finished = false;
 
@@ -53,8 +53,8 @@ SMTP::SMTP(char *serverhost, unsigned short int port, int timeout)
 
     uname(&uts);
     domainName = uts.nodename;
-    
-    
+
+
     // this is for the HELO
     if(domainName.isEmpty())
         domainName = "somemachine.nowhere.org";
@@ -153,7 +153,7 @@ void SMTP::connectTimerTick(void)
 //    timeOutTimer.start(timeOut, TRUE);
 
     kdDebug() << "connectTimerTick called...\n" << endl;
-    
+
     if(sock){
         delete sock;
         sock = 0L;
@@ -185,7 +185,7 @@ void SMTP::connectTimedOut(void)
 {
     timeOutTimer.stop();
 
-    if(sock) 
+    if(sock)
 	sock->enableRead(false);
     kdDebug() << "socket connection timed out\n" << endl;
     socketClose(sock);
@@ -245,7 +245,7 @@ void SMTP::processLine(QString *line)
 {
     int i, stat;
     QString tmpstr;
-    
+
     i = line->find(' ');
     tmpstr = line->left(i);
     if(i > 3)

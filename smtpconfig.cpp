@@ -25,7 +25,7 @@
 #include <klocale.h>
 #include <kapplication.h>
 
-#include <smtpconfig.h>
+#include "smtpconfig.h"
 
 #include <qlayout.h>
 #include <qfontmetrics.h>
@@ -118,7 +118,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     globalLayout->addWidget(globalReplyToLabel, 1, 1);
     globalReplyToSetting = new QLabel(mainBox, "globalReplyToSetting");
     globalLayout->addWidget(globalReplyToSetting, 1, 3);
-    
+
     controlCenterLink = new KURLLabel(mainBox, "controlCenterLink");
     controlCenterLink->setText(i18n("Open the email address control panel"));
     globalLayout->addMultiCellWidget(controlCenterLink, 2, 2, 1, 3);
@@ -152,7 +152,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     localLayout->addWidget(senderReplyToEdit, 1, 2);
     if(!configData->useGlobalSettings)
         senderReplyToEdit->setText(configData->senderReplyTo);
-    
+
     lay1->addStretch(1);
 
     if(configData->useGlobalSettings)
@@ -233,4 +233,4 @@ void SMTPConfig::launchControlCenter()
 
 } // launchControlCenter
 
-#include <smtpconfig.moc>
+#include "smtpconfig.moc"
