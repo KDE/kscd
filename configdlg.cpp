@@ -130,6 +130,11 @@ ConfigDlg::~ConfigDlg()
 {
 }
 
+void ConfigDlg::updateGlobalSettings()
+{
+    mSMTPConfig->updateGlobalSettings();
+}
+
 void ConfigDlg::slotApply()
 {
     mKCSDConfig->apply();

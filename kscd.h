@@ -127,6 +127,7 @@ k_dcop:
     int currentTrack();
     QString currentTrackTitle();
     QStringList trackList();
+    void emailSettingsChanged();
 
 public:
     KSCD( QWidget *parent = 0, const char *name = 0 );

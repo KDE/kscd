@@ -48,6 +48,7 @@
 #include <kstringhandler.h>
 #include <kurl.h>
 #include <kuniqueapplication.h>
+#include <kglobalsettings.h>
 
 #include "docking.h"
 #include "kscd.h"
@@ -261,6 +262,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
   smtpMailer = new SMTP;
   connect(smtpMailer, SIGNAL(messageSent()), this, SLOT(smtpMessageSent()));
   connect(smtpMailer, SIGNAL(error(int)), this, SLOT(smtpError(int)));
+
+  connectDCOPSignal(0, 0, "KDE_emailSettingsChanged()", "emailSettingsChanged()", false);
 
   setFocusPolicy ( QWidget::NoFocus );
 
@@ -1708,20 +1711,27 @@ KSCD::readSettings()
 
     config->setGroup("SMTP");
     smtpConfigData->enabled = config->readBoolEntry("enabled", true);
-    smtpConfigData->mailProfile = config->readEntry("mailProfile", i18n("Default"));
+    smtpConfigData->useGlobalSettings = config->readBoolEntry("useGlobalSettings", true);
+    smtpConfigData->serverHost = config->readEntry("serverHost");
+    smtpConfigData->serverPort = config->readEntry("serverPort", "25");
+    smtpConfigData->senderAddress = config->readEntry("senderAddress");
+    smtpConfigData->senderReplyTo = config->readEntry("senderReplyTo");
 
-    // Same as follows happens in smtpconfig.cpp. Try to remove one.
-    KEMailSettings kes;
-    kes.setProfile( smtpConfigData->mailProfile );
-    smtpConfigData->serverHost = kes.getSetting( KEMailSettings::OutServer );
-    smtpConfigData->serverPort = "25";
-    smtpConfigData->senderAddress = kes.getSetting( KEMailSettings::EmailAddress );
-    smtpConfigData->senderReplyTo = kes.getSetting( KEMailSettings::ReplyToAddress );
-    // Don't accept obviously bogus settings.
-    if( (smtpConfigData->serverHost == "") || (!smtpConfigData->senderAddress.contains("@")) )
+    // serverHost used to be stored via KEMailSettings, so we attempt to read the
+    // value via KEMailSettings to preserve the user's settings when upgrading.
+    if( !config->readEntry("mailProfile").isNull() )
     {
-        smtpConfigData->enabled = false;
+        KEMailSettings kes;
+        kes.setProfile( i18n("Default") );
+        smtpConfigData->serverHost = kes.getSetting( KEMailSettings::OutServer );
     }
+
+    if(smtpConfigData->useGlobalSettings)
+        smtpConfigData->loadGlobalSettings();
+
+    // Don't accept obviously bogus settings.
+    if(!smtpConfigData->isValid())
+        smtpConfigData->enabled = false;
 
     config->setGroup("CDDB");
 
@@ -1828,7 +1838,21 @@ KSCD::writeSettings()
 
     config->setGroup("SMTP");
     config->writeEntry("enabled", smtpConfigData->enabled);
-    config->writeEntry("mailProfile", smtpConfigData->mailProfile);
+    config->writeEntry("useGlobalSettings", smtpConfigData->useGlobalSettings);
+    config->writeEntry("serverHost", smtpConfigData->serverHost);
+    config->writeEntry("serverPort", smtpConfigData->serverPort);
+    if(smtpConfigData->useGlobalSettings)
+    {
+        config->writeEntry("senderAddress", "");
+        config->writeEntry("senderReplyTo", "");
+    }
+    else
+    {
+        config->writeEntry("senderAddress", smtpConfigData->senderAddress);
+        config->writeEntry("senderReplyTo", smtpConfigData->senderReplyTo);
+    }
+    // delete legacy mailProfile option
+    config->deleteEntry("mailProfile");
 
     config->setGroup("CDDB");
     config->writeEntry("CDDBRemoteEnabled",cddb_remote_enabled);
@@ -3141,6 +3165,15 @@ QString KSCD::currentTrackTitle()
 QStringList KSCD::trackList()
 {
     return tracktitlelist;
+}
+
+void KSCD::emailSettingsChanged()
+{
+    if(smtpConfigData->useGlobalSettings)
+        smtpConfigData->loadGlobalSettings();
+
+    if(configDialog)
+        configDialog->updateGlobalSettings();
 }
 
 /**

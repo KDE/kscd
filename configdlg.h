@@ -51,6 +51,8 @@ class ConfigDlg : public KDialogBase
          */
         CDDBSetup* cddb() { return mCDDBConfig; }
 
+        void updateGlobalSettings();
+
     protected slots: 
         void slotApply();
         void slotOk();

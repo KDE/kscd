@@ -29,135 +29,208 @@
 
 #include <qlayout.h>
 #include <qfontmetrics.h>
+#include <qvalidator.h>
+#include <qgroupbox.h>
+#include <qcheckbox.h>
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qbuttongroup.h>
+#include <qradiobutton.h>
 
 #include <kemailsettings.h>
 #include <kmessagebox.h>
+#include <kdialog.h>
+#include <kurllabel.h>
+
+bool SMTPConfigData::isValid() const
+{
+    // simple validation
+    return !serverHost.isEmpty() && !serverPort.isEmpty() &&
+           senderAddress.contains("@") &&
+           (senderReplyTo.contains("@") || senderReplyTo.isEmpty());
+}
+
+void SMTPConfigData::loadGlobalSettings()
+{
+    KEMailSettings kes;
+    kes.setProfile( i18n("Default") );
+    senderAddress = kes.getSetting( KEMailSettings::EmailAddress );
+    senderReplyTo = kes.getSetting( KEMailSettings::ReplyToAddress );
+}
+
 
 SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData *_configData)
     : QWidget(parent, name)
 {
     configData = _configData;
-    QFontMetrics fm ( font() );
-    kes = new KEMailSettings();
+    QFontMetrics fm(font());
 
-    kes->setProfile( configData->mailProfile );
-    configData->serverHost = kes->getSetting( KEMailSettings::OutServer );
-    configData->serverPort = "25";
-    configData->senderAddress = kes->getSetting( KEMailSettings::EmailAddress );
-    configData->senderReplyTo = kes->getSetting( KEMailSettings::ReplyToAddress );
-    // Don't accept obviously bogus settings.
-    if( (configData->serverHost == "") || (!configData->senderAddress.contains("@")))
-      {
-	configData->enabled = false;
-      }
-    
+    QVBoxLayout* lay1 = new QVBoxLayout(this);
+    QGroupBox* mainBox = new QGroupBox(this, "mainBox");
+    lay1->addWidget(mainBox);
 
-    QBoxLayout * lay1 = new QVBoxLayout ( this );
-    mainBox = new QGroupBox(this, "mainBox");
-    lay1->addWidget ( mainBox );
-
-    QBoxLayout * lay2 = new QVBoxLayout ( mainBox, 10 );
+    QVBoxLayout* lay2 = new QVBoxLayout(mainBox, KDialog::marginHint());
     enableCB = new QCheckBox(i18n("Enable submission via SMTP"), mainBox, "enableCB");
-    lay2->addWidget ( enableCB );
+    lay2->addWidget(enableCB);
     enableCB->setChecked(configData->enabled);
     connect(enableCB, SIGNAL(clicked()), this, SLOT(enableClicked()));
 
-    QGridLayout * glay = new QGridLayout ( lay2, 2, 4, 5 );
-    glay->setColStretch ( 1, 1 );
+    lay2->addSpacing(20);
 
-    mailProfileLabel = new QLabel(i18n("Current email profile:"), mainBox, "mailProfileLabel");
-    glay->addWidget ( mailProfileLabel, 0, 0 );
-    mailProfileCombo = new KComboBox( FALSE, mainBox, "mailProfileCombo" );
-    glay->addMultiCellWidget( mailProfileCombo, 0,0, 1,3);
-    mailProfileCombo->insertStringList(kes->profiles());
-    mailProfileCombo->setEnabled(configData->enabled);
-    connect(mailProfileCombo, SIGNAL(activated(const QString &)), this, SLOT(mailProfileChanged(const QString &)));
-    // *yuck*
-    int i = 0;
-    for( i=0; i < mailProfileCombo->count(); i++ )
-      {
-	if( configData->mailProfile == mailProfileCombo->text(i) )
-	  {
-	    mailProfileCombo->setCurrentItem( i );
-	  }
-      }
+    // SMTP server settings
+    const int LAYOUT_INDENT = 30;
 
-    serverHostLabel = new QLabel(i18n("SMTP address:port :"), mainBox, "serverHostLabel");
-    glay->addWidget ( serverHostLabel, 1, 0 );
+    smtpServerLabel = new QLabel(i18n("SMTP server"), mainBox, "smtpServerLabel");
+    lay2->addWidget(smtpServerLabel);
+
+    QGridLayout* serverLayout = new QGridLayout(lay2, 2, 3, KDialog::spacingHint());
+    serverLayout->addColSpacing(0, LAYOUT_INDENT);
+    serverLayout->setColStretch(2, 1);
+
+    serverHostLabel = new QLabel(i18n("Host:"), mainBox, "serverHostLabel");
+    serverLayout->addWidget(serverHostLabel, 0, 1);
     serverHostEdit = new QLineEdit(mainBox, "serverHostEdit");
-    glay->addWidget ( serverHostEdit, 1, 1 );
+    serverLayout->addWidget(serverHostEdit, 0, 2);
     serverHostEdit->setText(configData->serverHost);
-    serverHostEdit->setEnabled(configData->enabled);
-    serverPortLabel = new QLabel(":", mainBox, "serverPortLabel");
-    glay->addWidget ( serverPortLabel, 1, 2 );
+
+    serverPortLabel = new QLabel(i18n("Port:"), mainBox, "serverPortLabel");
+    serverLayout->addWidget(serverPortLabel, 1, 1);
     serverPortEdit = new QLineEdit(mainBox, "serverPortEdit");
-    serverPortEdit->setFixedWidth ( 5 * fm.maxWidth() );
-    glay->addWidget ( serverPortEdit, 1, 3 );
-    serverPortEdit->setGeometry(475, 40, 45, 25);
+    serverPortEdit->setValidator( new QIntValidator(this) );
+    serverLayout->addWidget(serverPortEdit, 1, 2);
     serverPortEdit->setText(configData->serverPort);
-    serverPortEdit->setEnabled(configData->enabled);
-    serverPortEdit->setReadOnly( true );
 
-    senderAddressLabel = new QLabel(i18n("Your email address:"), mainBox, "senderAddressLabel");
-    glay->addWidget ( senderAddressLabel, 2, 0 );
-    senderAddressEdit = new QLineEdit(mainBox, "senderAddressEdit");
-    glay->addMultiCellWidget ( senderAddressEdit, 2,2, 1,3 );
-    senderAddressEdit->setText(configData->senderAddress);
-    senderAddressEdit->setEnabled(configData->enabled);
-    senderAddressEdit->setReadOnly( true );
+    // Global email address settings
+    globalRadio = new QRadioButton(i18n("Use email addresses from Control Center"),
+        mainBox, "globalRadio");
+    lay2->addWidget(globalRadio);
 
-    senderReplyToLabel = new QLabel(i18n("Your reply address:"), mainBox, "senderReplyToLabel");
-    glay->addWidget ( senderReplyToLabel, 3, 0 );
-    senderReplyToEdit = new QLineEdit(mainBox, "senderReplyToEdit");
-    glay->addMultiCellWidget ( senderReplyToEdit, 3,3, 1,3 );
-    senderReplyToEdit->setText(configData->senderReplyTo);
-    senderReplyToEdit->setEnabled(configData->enabled);
-    senderReplyToEdit->setReadOnly( true );
+    QGridLayout* globalLayout = new QGridLayout(lay2, 3, 4, KDialog::spacingHint());
+    globalLayout->addColSpacing(0, LAYOUT_INDENT);
+    globalLayout->setColStretch(3, 1);
+
+    globalAddressLabel = new QLabel(i18n("From:"), mainBox, "globalAddressLabel");
+    globalLayout->addWidget(globalAddressLabel, 0, 1);
+    globalAddressSetting = new QLabel(mainBox, "globalAddressSetting");
+    globalLayout->addWidget(globalAddressSetting, 0, 3);
+
+    globalReplyToLabel = new QLabel(i18n("Reply-To:"), mainBox, "globalReplyToLabel");
+    globalLayout->addWidget(globalReplyToLabel, 1, 1);
+    globalReplyToSetting = new QLabel(mainBox, "globalReplyToSetting");
+    globalLayout->addWidget(globalReplyToSetting, 1, 3);
     
-    lay1->addStretch ( 1 );
+    controlCenterLink = new KURLLabel(mainBox, "controlCenterLink");
+    controlCenterLink->setText(i18n("Open the email address control panel"));
+    globalLayout->addMultiCellWidget(controlCenterLink, 2, 2, 1, 3);
+    connect(controlCenterLink, SIGNAL(leftClickedURL()), this, SLOT(launchControlCenter()));
+
+    updateGlobalSettings();
+
+    // KSCD-specific email address settings
+    localRadio = new QRadioButton( i18n("Use the following email addresses"),
+        mainBox, "localRadio");
+    lay2->addWidget(localRadio);
+
+    QButtonGroup* radioGroup = new QButtonGroup;
+    radioGroup->insert(globalRadio);
+    radioGroup->insert(localRadio);
+
+    QGridLayout* localLayout = new QGridLayout(lay2, 2, 3, KDialog::spacingHint());
+    localLayout->addColSpacing(0, 30);
+    localLayout->setColStretch(2, 1);
+
+    senderAddressLabel = new QLabel(i18n("From:"), mainBox, "senderAddressLabel");
+    localLayout->addWidget(senderAddressLabel, 0, 1);
+    senderAddressEdit = new QLineEdit(mainBox, "senderAddressEdit");
+    localLayout->addWidget(senderAddressEdit, 0, 2);
+    if(!configData->useGlobalSettings)
+        senderAddressEdit->setText(configData->senderAddress);
+
+    senderReplyToLabel = new QLabel(i18n("Reply-To:"), mainBox, "senderReplyToLabel");
+    localLayout->addWidget(senderReplyToLabel, 1, 1);
+    senderReplyToEdit = new QLineEdit(mainBox, "senderReplyToEdit");
+    localLayout->addWidget(senderReplyToEdit, 1, 2);
+    if(!configData->useGlobalSettings)
+        senderReplyToEdit->setText(configData->senderReplyTo);
+    
+    lay1->addStretch(1);
+
+    if(configData->useGlobalSettings)
+        globalRadio->setChecked(true);
+    else
+        localRadio->setChecked(true);
+
+    enableClicked();
 }
 
 void SMTPConfig::commitData(void)
 {
     configData->enabled = enableCB->isChecked();
     configData->serverHost = serverHostEdit->text();
-    kes->setSetting( KEMailSettings::OutServer, serverHostEdit->text() );
     configData->serverPort = serverPortEdit->text();
-    configData->senderAddress = senderAddressEdit->text();
-    configData->senderReplyTo = senderReplyToEdit->text();
-    configData->mailProfile = mailProfileCombo->currentText();
-    if( configData->enabled && ( (configData->serverHost == "") ||
-                                   (!configData->senderAddress.contains("@")) ) )
-      {
-	KMessageBox::sorry(this, i18n("freedb submissions via SMTP have been disabled\n"
-				      "because the email profile you selected is\n"
-				      "incomplete. Please review your email settings\n"
-				      "and try again."), i18n("Freedb Submissions Disabled"));
-	configData->enabled = false;
-      } 
+    configData->useGlobalSettings = globalRadio->isChecked();
+    if(configData->useGlobalSettings)
+    {
+        configData->senderAddress = globalAddressSetting->text();
+        configData->senderReplyTo = globalReplyToSetting->text();
+    }
+    else
+    {
+        configData->senderAddress = senderAddressEdit->text();
+        configData->senderReplyTo = senderReplyToEdit->text();
+    }
+
+    if( configData->enabled && !configData->isValid() )
+    {
+        KMessageBox::sorry(this, i18n("freedb submissions via SMTP have been disabled\n"
+                                      "because the email details you have entered are\n"
+                                      "incomplete. Please review your email settings\n"
+                                      "and try again."), i18n("Freedb Submissions Disabled"));
+        configData->enabled = false;
+        enableCB->setChecked(false);
+        enableClicked();
+    }
+
 } // commitData
 
 void SMTPConfig::enableClicked(void)
 {
-    bool c;
+    bool enable = enableCB->isChecked();
 
-    c = enableCB->isChecked();
-    mailProfileCombo->setEnabled(c);
-    serverHostEdit->setEnabled(c);
-    serverPortEdit->setEnabled(c);
-    senderAddressEdit->setEnabled(c);
-    senderReplyToEdit->setEnabled(c);
+    smtpServerLabel->setEnabled(enable);
+    serverHostLabel->setEnabled(enable);
+    serverHostEdit->setEnabled(enable);
+    serverPortLabel->setEnabled(enable);
+    serverPortEdit->setEnabled(enable);
+
+    globalRadio->setEnabled(enable);
+    globalAddressLabel->setEnabled(enable);
+    globalAddressSetting->setEnabled(enable);
+    globalReplyToLabel->setEnabled(enable);
+    globalReplyToSetting->setEnabled(enable);
+    controlCenterLink->setEnabled(enable);
+
+    localRadio->setEnabled(enable);
+    senderAddressLabel->setEnabled(enable);
+    senderAddressEdit->setEnabled(enable);
+    senderReplyToLabel->setEnabled(enable);
+    senderReplyToEdit->setEnabled(enable);
+
 } // enableClicked
 
-void SMTPConfig::mailProfileChanged( const QString &name )
+void SMTPConfig::updateGlobalSettings()
 {
-    kes->setProfile( name );
-    configData->serverHost = kes->getSetting( KEMailSettings::OutServer );
-    configData->senderAddress = kes->getSetting( KEMailSettings::EmailAddress );
-    configData->senderReplyTo = kes->getSetting( KEMailSettings::ReplyToAddress );
-    serverHostEdit->setText( configData->serverHost );
-    senderAddressEdit->setText( configData->senderAddress );
-    senderReplyToEdit->setText( configData->senderReplyTo );
-} // mailProfileChanged
+    SMTPConfigData globalData;
+    globalData.loadGlobalSettings();
+    globalAddressSetting->setText(globalData.senderAddress);
+    globalReplyToSetting->setText(globalData.senderReplyTo);
+
+} // updateGlobalSettings
+
+void SMTPConfig::launchControlCenter()
+{
+    KApplication::kdeinitExec("kcmshell", "email");
+
+} // launchControlCenter
 
 #include <smtpconfig.moc>

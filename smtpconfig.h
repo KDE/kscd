@@ -24,24 +24,29 @@
 #ifndef SMTPCONFIG_H
 #define SMTPCONFIG_H
 
-#include <qpushbutton.h>
-#include <qgroupbox.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
+#include <qstring.h>
+#include <qwidget.h>
 
-#include <kcombobox.h>
-#include <kemailsettings.h>
+class QCheckBox;
+class QRadioButton;
+class QLabel;
+class QLineEdit;
+class KURLLabel;
 
 struct SMTPConfigData 
 {
-//public:
     bool enabled;
+
     QString serverHost;
     QString serverPort;
+
+    bool useGlobalSettings;
+
     QString senderAddress;
     QString senderReplyTo;
-    QString mailProfile;
+
+    bool isValid() const;
+    void loadGlobalSettings();
 };
 
 class SMTPConfig:public QWidget
@@ -55,26 +60,35 @@ public:
 public slots:
     void commitData();
     void enableClicked();
-    void mailProfileChanged(const QString &name);
+    void updateGlobalSettings();
+    void launchControlCenter();
 
 signals:
 
 protected:
-    QGroupBox       *mainBox;
     QCheckBox       *enableCB;
-    QLabel          *mailProfileLabel;
-    KComboBox       *mailProfileCombo;
+
+    QLabel          *smtpServerLabel;
     QLabel          *serverHostLabel;
     QLineEdit       *serverHostEdit;
     QLabel          *serverPortLabel;
     QLineEdit       *serverPortEdit;
+
+    QRadioButton    *globalRadio;
+    QLabel          *globalAddressLabel;
+    QLabel          *globalAddressSetting;
+    QLabel          *globalReplyToLabel;
+    QLabel          *globalReplyToSetting;
+    KURLLabel       *controlCenterLink;
+
+    QRadioButton    *localRadio;
     QLabel          *senderAddressLabel;
     QLineEdit       *senderAddressEdit;
     QLabel          *senderReplyToLabel;
     QLineEdit       *senderReplyToEdit;
-    KEMailSettings  *kes;
 
 private:
     SMTPConfigData *configData;
 };
+
 #endif
