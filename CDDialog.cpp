@@ -306,7 +306,7 @@ CDDialog::extITB()
 {
   InexactDialog dialog(0,"dialog",false);
   dialog.insertText(ext_list.first());
-  dialog.setTitle(i18n("Use this editor to annotate this album."));
+  dialog.setTitle(i18n("Use This Editor to Annotate This Album"));
 
   if(dialog.exec() == QDialog::Accepted)
   {
@@ -392,7 +392,7 @@ CDDialog::upload()
 	{
 	  dialog->insertList(catlist);
 	  dialog->setErrorString(i18n("Please select a category or press Cancel"));
-	  dialog->setTitle(i18n("To Which Category does the CD Belong?"));
+	  dialog->setTitle(i18n("To Which Category Does CD Belong?"));
 	  if(dialog->exec() != QDialog::Accepted)
 		{
 		  delete dialog;
@@ -525,7 +525,7 @@ CDDialog::save()
     dialog = new InexactDialog(0,"Dialog",true);
     dialog->insertList(catlist);
     dialog->setErrorString(i18n("Please select a category or press Cancel"));
-    dialog->setTitle(i18n("Under Which Category Would you like to Store this Disc's Information?"));
+    dialog->setTitle(i18n("Under Which Category Would you Like to Store This Disc's Information?"));
 
     if(dialog->exec() != QDialog::Accepted)
     {

@@ -675,11 +675,11 @@ KSCD::setRandomOnce(bool shuffle)
     {
         if (!randomonce)
         {
-            QToolTip::add(shufflebutton, i18n("Random Play"));
+            QToolTip::add(shufflebutton, i18n("Random play"));
         }
         else
         {
-            QToolTip::add(shufflebutton, i18n("Shuffle Play"));
+            QToolTip::add(shufflebutton, i18n("Shuffle play"));
         }
     }
 } // setRandomOnce()
@@ -698,31 +698,31 @@ KSCD::setToolTips(bool on)
         QToolTip::add(playPB,          i18n("Play/Pause"));
         QToolTip::add(stopPB,          i18n("Stop"));
         QToolTip::add(replayPB,        i18n("Loop"));
-        QToolTip::add(songListCB,      i18n("Track Selection"));
+        QToolTip::add(songListCB,      i18n("Track selection"));
 
         // if you change these, change them in Config Done as well!
-        QToolTip::add(fwdPB,           i18n("%1 Secs Forward").arg(skipDelta));
-        QToolTip::add(bwdPB,           i18n("%1 Secs Backward").arg(skipDelta));
-        QToolTip::add(nextPB,          i18n("Next Track"));
-        QToolTip::add(prevPB,          i18n("Previous Track"));
-        QToolTip::add(dockPB,          i18n("Quit CD Player"));
+        QToolTip::add(fwdPB,           i18n("%1 secs forward").arg(skipDelta));
+        QToolTip::add(bwdPB,           i18n("%1 secs backward").arg(skipDelta));
+        QToolTip::add(nextPB,          i18n("Next track"));
+        QToolTip::add(prevPB,          i18n("Previous track"));
+        QToolTip::add(dockPB,          i18n("Quit CD player"));
 #if KSCDMAGIC
         QToolTip::add(magicPB,         i18n("Run Kscd Magic"));
 #endif
-        QToolTip::add(aboutPB,         i18n("Cycle Time Display"));
-        QToolTip::add(optionsbutton,   i18n("Configure CD Player"));
+        QToolTip::add(aboutPB,         i18n("Cycle time display"));
+        QToolTip::add(optionsbutton,   i18n("Configure CD player"));
         QToolTip::add(ejectPB,         i18n("Eject CD"));
-        QToolTip::add(infoPB,          i18n("The Artist on the Web"));
-        QToolTip::add(cddbbutton,      i18n("freedb Dialog"));
-        QToolTip::add(volSB,           i18n("CD Volume Control"));
+        QToolTip::add(infoPB,          i18n("The artist on the Web"));
+        QToolTip::add(cddbbutton,      i18n("freedb dialog"));
+        QToolTip::add(volSB,           i18n("CD volume control"));
 
         if (!randomonce)
         {
-            QToolTip::add(shufflebutton,         i18n("Random Play"));
+            QToolTip::add(shufflebutton,         i18n("Random play"));
         }
         else
         {
-            QToolTip::add(shufflebutton,         i18n("Shuffle Play"));
+            QToolTip::add(shufflebutton,         i18n("Shuffle play"));
         }
     }
     else
@@ -1184,8 +1184,8 @@ KSCD::configDone()
     {
         QToolTip::remove(fwdPB);
         QToolTip::remove(bwdPB);
-        QToolTip::add(fwdPB, i18n("%1 Secs Forward").arg(skipDelta));
-        QToolTip::add(bwdPB, i18n("%1 Secs Backward").arg(skipDelta));
+        QToolTip::add(fwdPB, i18n("%1 secs forward").arg(skipDelta));
+        QToolTip::add(bwdPB, i18n("%1 secs backward").arg(skipDelta));
     }
 }
 
@@ -2710,7 +2710,7 @@ void KSCD::setSongListTo(int whichTrack)
         QString justTheName = songListCB->currentText();
         justTheName = justTheName.right(justTheName.length() - 4);
 
-        QToolTip::add(songListCB, i18n("Current Track: %1").arg(justTheName));
+        QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
     }
 }
 /**
