@@ -71,7 +71,7 @@
 
 #ifdef __linux__
 #include <mntent.h>
-#define KSCDMAGIC 1
+#define KSCDMAGIC 0
 #endif
 
 #include "cddb.h"

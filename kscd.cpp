@@ -168,7 +168,9 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     connect( fwdPB, SIGNAL(clicked()), SLOT(fwdClicked()) );
     connect( bwdPB, SIGNAL(clicked()), SLOT(bwdClicked()) );
     connect( dockPB, SIGNAL(clicked()), SLOT(quitClicked()) );
+#if KSCDMAGIC
     connect( magicPB, SIGNAL(clicked()), SLOT(magicslot()) );
+#endif
     connect( replayPB, SIGNAL(clicked()), SLOT(loopClicked()) );
     connect( ejectPB, SIGNAL(clicked()), SLOT(ejectClicked()) );
     connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
@@ -332,9 +334,12 @@ KSCD::drawPanel()
     ejectPB = makeButton( ix + WIDTH/2, iy, WIDTH/2, HEIGHT, "" );
 
     iy += HEIGHT;
+#if KSCDMAGIC
     dockPB = makeButton( ix, iy, WIDTH/2, HEIGHT, i18n("Quit") );
     magicPB = makeButton(ix+WIDTH/2, iy, WIDTH/2, HEIGHT, "" );
-	
+#else
+    dockPB = makeButton( ix, iy, WIDTH, HEIGHT, i18n("Quit") );
+#endif
     ix += WIDTH;
     iy = 0;
 
@@ -495,7 +500,9 @@ KSCD::loadBitmaps()
     QBitmap ejectBmp( eject_width, eject_height, eject_bits, TRUE );
     QBitmap infoBmp( info_width, info_height,info_bits, TRUE );
     QBitmap dockBmp( poweroff_width, poweroff_height, poweroff_bits, TRUE );
+#if KSCDMAGIC
     QBitmap magicBmp( magicxbm_width, magicxbm_height, magicxbm_bits, TRUE );
+#endif
     QBitmap shuffleBmp( shuffle_width, shuffle_height, shuffle_bits, TRUE );
     QBitmap databaseBmp( db_width, db_height, db_bits, TRUE );
     QBitmap aboutBmp( logo_width, logo_height, logo_bits, TRUE );
@@ -511,8 +518,9 @@ KSCD::loadBitmaps()
     ejectPB->setPixmap( ejectBmp );
     infoPB->setPixmap( infoBmp );
     dockPB->setPixmap( dockBmp );
+#if KSCDMAGIC
     magicPB->setPixmap( magicBmp );
-
+#endif
     // This is UGLY .... -- Bernd
     // dockPB->setFont(QFont("helvetica", 12, QFont::Bold));
     // dockPB->setText("DOCK");
@@ -555,7 +563,7 @@ KSCD::setupPopups()
 
     mainPopup->insertItem (i18n("Information"), infoPopup);
 
-#ifdef KSCDMAGIC
+#if KSCDMAGIC
     mainPopup->insertSeparator(-1);
     mainPopup->insertItem (i18n("KSCD Magic"));
     connect( mainPopup, SIGNAL(activated(int)), SLOT(magicslot(int)) );
@@ -589,7 +597,9 @@ KSCD::setToolTips()
         QToolTip::add( nextPB, 		i18n("Next Track") );
         QToolTip::add( prevPB, 		i18n("Previous Track") );
         QToolTip::add( dockPB, 		i18n("Quit Kscd") );
+#if KSCDMAGIC
         QToolTip::add( magicPB, 	i18n("Run Kscd Magic") );
+#endif
         QToolTip::add( aboutPB, 	i18n("Cycle Time Display") );
         QToolTip::add( optionsbutton, 	i18n("Configure Kscd") );
         QToolTip::add( ejectPB, 	i18n("Eject CD") );
@@ -611,7 +621,9 @@ KSCD::setToolTips()
         QToolTip::remove( nextPB );
         QToolTip::remove( prevPB );
         QToolTip::remove( dockPB );
+#if KSCDMAGIC
         QToolTip::remove( magicPB );
+#endif
         QToolTip::remove( aboutPB );
         QToolTip::remove( optionsbutton );
         QToolTip::remove( ejectPB );
@@ -1057,7 +1069,7 @@ KSCD::aboutClicked()
                                       "more information on CDDB.\n\n"
                                      );
 
-#ifdef KSCDMAGIC
+#if KSCDMAGIC
      labelstring += i18n(
         "KSCD Magic based on Synaesthesia by "
         "Paul Harrison <pfh@yoyo.cc.monash.edu.au>\n\n");
@@ -1120,7 +1132,9 @@ KSCD::aboutClicked()
     tabdialog->addTab(setup,"CDDB");
     tabdialog->addTab(smtpconfig, i18n("SMTP Setup"));
     tabdialog->addTab(dlg,i18n("Kscd Options"));
+#if KSCDMAGIC
     tabdialog->addTab(mgdlg,i18n("Kscd Magic"));
+#endif
     tabdialog->addTab(about,i18n("About"));
 
 
@@ -2710,7 +2724,6 @@ main( int argc, char *argv[] )
   //        RESTORE(KSCD);
   //    } else {
 
-  wm_lib_set_verbosity(WM_MSG_LEVEL_DEBUG|WM_MSG_CLASS_ALL);
   KSCD *k = new KSCD();
   cur_track = 1;
   
@@ -2740,14 +2753,8 @@ main( int argc, char *argv[] )
       if(!hide)
 	k->show();
       //    }
-printf("test\n");
-  return a.exec();
+      return a.exec();
 } // main()
 
 #include "kscd.moc"
-
-
-
-
-
 

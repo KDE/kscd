@@ -31,11 +31,11 @@ kscd_SOURCES = kscd.cpp configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cpp \
 cddaslave_SOURCES = cddaslave.c
 cddaslave_LDADD = libwm/libworkman.la
 
-SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp \
-	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
+#SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp \
+#	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
 
-OBJECTS3=kscdmagic/bitmap.o  kscdmagic/core.o kscdmagic/main.o \
-	kscdmagic/sound.o kscdmagic/xlibwrap.o kscdmagic/xlib.o
+#OBJECTS3=kscdmagic/bitmap.o  kscdmagic/core.o kscdmagic/main.o \
+#	kscdmagic/sound.o kscdmagic/xlibwrap.o kscdmagic/xlib.o
 
 METASOURCES = kscd.moc bwlednum.moc configdlg.moc cddb.moc ledlamp.moc \
 	 inexact.moc CDDialog.moc CDDialogData.moc CDDBSetup.moc \
@@ -45,12 +45,12 @@ METASOURCES = kscd.moc bwlednum.moc configdlg.moc cddb.moc ledlamp.moc \
 DISTCLEANFILES = config.h
 
 bin_PROGRAMS = kscd cddaslave
-TARGET3 = kscdmagic
+#TARGET3 = kscdmagic
 
 #config.h: kscd-script
 	#$(SHELL) $(srcdir)/kscd-script
 
-SUBDIRS = bitmaps sbpcdhack libwm
+SUBDIRS = bitmaps libwm
 
 CDDB_DIRS = rock blues classical jazz newage soundtrack \
 	reggae folk country misc data
