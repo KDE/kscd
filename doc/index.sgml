@@ -63,14 +63,15 @@ and should compile on many others with few modifications.
 <p>
 <sect>Installation
 <p>
-<sect1>How to obtain Kscd
+<sect1>How to obtain <bf/kscd/
 <p>
 Kscd is part of the kdemultimedia package available at 
 KDE project <url url="http://www.kde.org">.
 
 <sect1>Requirements
 <p>
-In order to successfully compile Kscd, you need the latest versions of the KDE libraries as well as the Qt C++ library.All required libraries as well as Kscd 
+In order to successfully compile Kscd, you need the latest versions
+of the KDE libraries as well as the Qt C++ library. All required libraries as well as Kscd 
 itself can be found on <url url="ftp://ftp.kde.org/pub/kde/">. 
 
 <sect1>Compilation and installation
@@ -88,6 +89,7 @@ directory of the Kscd distribution:
 Please inform me of any modification you had to undertake in order to
 get KSCD to compile on your platform.
 <p>
+
 <sect>Onscreen Fundamentals
 <p>
 
@@ -99,7 +101,7 @@ get KSCD to compile on your platform.
 when you start <bf/kscd/. The controls in this window are explained below,
 in no particular order.
 
-<img src-"kscd2.gif">
+<img src="kscd2.gif">
 
 <p>This is the main control panel for <bf/kscd/. The function of these buttons 
 should be familiar to anyone who has ever used a CD player. The uppermost 
@@ -126,7 +128,7 @@ display modes)</em>, the status of the CD-ROM drive, the total play time of the
 audio CD, the current volume setting, and the current and maximum track 
 numbers (<em/curr./ / <em/max./). The bottommost two lines of text display 
 the artist and title of the CD, and then the title of the track, assuming that
-appropriate entries exist in the local or network CDDB <em/(CD Data Base.)/
+appropriate entries exist in the local or network CDDB <em/(CD Data Base)/.
 
 <p>
 <img src="kscd4.gif">
@@ -140,7 +142,7 @@ remaining time.
 <img src="kscd5.gif">
 
 <p>This button opens the <bf/kscd/ configuration panel. This allows you
-to configure <bf/kscd/ to work on your machine. See <ref id="configure" name="Configuring <bf/kscd/">
+to configure <bf/kscd/ to work on your machine. See <ref id="configure" name="Configuring kscd">
 for details about configuring <bf/kscd/. 
 
 <img src="kscd6.gif">
@@ -150,7 +152,7 @@ panel. The CDDB can identify your CD and often download a list of tracks for
 that CD or load it from the filesystem. See <ref id="editor" name="The CD Database Editor"> for details
 about using this tool.
 
-<img src="kscd7.gif">
+<img src="kscd7.gif"><label id="information">
 
 <p>This button will help you search for information about the artist on the
 Internet. You can find out about performance dates, purchase information,
@@ -161,7 +163,7 @@ option in the pop-up menu that appears.
 
 <p>This button closes <bf/kscd/.
 
-<img src="kscd10.gif">>
+<img src="kscd10.gif">
 
 <p>This slider controls the volume of the audio output of the CD. Right is
 louder, left is quieter. If you are playing your CD through your sound card, 
@@ -175,22 +177,23 @@ the sound card mixer will affect the playback volume as well.
 
 <p>This button plays the CD tracks in random order.
 
-<sect1>Configuring <bf/kscd/
+<sect1>Configuring <bf/kscd/ <label id="configure">
 
 <p>The primary configuration window for <bf/kscd/ is a tabbed dialog with three 
 major sections.
 
 <itemize>
-<item><ref id="CDDB" name="CDDB">
+<item><ref id="cddb" name="CDDB">
 <item><ref id="options" name="Kscd Options">
-<item><ref id="baout" name="About">
+<item><ref id="about" name="About">
 </itemize>
 
-<sect2>The CDDB tab <label id="CDDB">
+<sect2>The CDDB tab <label id="cddb">
 
 <img src="kscd13.gif">
 
-<p>The CDDB tab sets up the <ref id="database" name="CDDB"><em/(Compact Disc Data Base)/ functions of <em/kscd/.
+<p>The CDDB tab sets up the <ref id="database" name="CDDB">
+<em/(Compact Disc Data Base)/ functions of <em/kscd/.
 The &quot;Enable Remote CDDB&quot; checkbox turns on or off CDDB lookups over the Internet.
 
 <p>The &quot;CDDB Base Directory"&quot; text field lets you choose the
@@ -211,7 +214,9 @@ cddb.cddb.com.
 
 <p>The &quot;Help&quot; button opens the <bf/kscd/ help home page.
 
-<sect2>The <bf/kscd/ Options tab <label id="options">
+<sect2>The Kscd Options tab <label id="options">
+
+<img src="kscd14.gif">
 
 <p>The &quot;LED Color:&quot; and &quot;Background Color:&quot; fields show the
 color selected for the foreground and background of the status display. Press
@@ -237,96 +242,180 @@ edit <bf>/etc/sendmail.cf</bf> to ensure that the return address on the
 submission is valid. Your mileage is likely to vary.
 
 <p>The &quot;WWW-Browser&quot; section lets you choose which web browser to use
- to access the web sites in the information button menus. You can choose either
-<bf>kfm</bf> or a custom browser with the radio buttons. By default, the
+ to access the web sites in the <ref id="information" name="information button">
+menus. You can choose either
+<bf/kfm/ or a custom browser with the radio buttons. By default, the
 &quot;Use Custom Browser&quot; field contains
 &quot;netscape &quot;%s&quot;&quot;, for use with Netscape Navigator or
 Communicator.
 
-<p>The &quot;Show Tool Tips&quot; checkbox turns tooltips <em/(tiny windows that
-pop up when the mouse is &quot;parked&quot; briefly over a control)/ on or
+<p>The &quot;Show Tool Tips&quot; checkbox turns tooltips <em>(tiny windows that
+pop up when the mouse is &quot;parked&quot; briefly over a control)</em> on or
 off.
 
-<p>The &quot;Help&quot; button opens the <em/kscd/ help home page.
+<p>The &quot;Help&quot; button opens the <bf/kscd/ help home page.
 
 <sect2>The About tab <label id="about">
 
 <p>The &quot;About&quot; tab displays information about the version of <bf/kscd/ you are using
 and some copyright information.
 
-<sect1>4.3 The CD Database Editor <label id="editor">
+<sect1>The CD Database Editor <label id="editor">
 
 <img src="kscd8.gif" height=488>
 
 <p>The CD Database Editor allows you to modify, download, save, annotate, and
 upload <ref id="database" name="CDDB"> <em/(Compact Disc Data Base)/ entries.
-If there is an entry in your local CDDB tree <I>(see <A
-HREF="kscd-4.html#sss4.2.1">the CDDB subsection in 4.2 Configuring
-Kscd</A>)</I> for the CD in the in your CD-ROM drive, or if the disc could be
+If there is an entry in your local CDDB tree <em>(see the <ref id="cddb" name="CDDB Tab"> in
+the <bf/kscd/ configuration window)</em> for the CD in the in your CD-ROM drive, or if the disc could be
 found in the CDDB, you will see the name of the artist and the title of the CD
 in the &quot;Disc Artist / Title&quot; field and a list of tracks with song
 titles in the &quot;Track / Time / Title &quot; selection box. Otherwise, you
 will see a list of tracks and play times without titles. 
-<P>You can make an annotation for the entire disc with the &quot;Ext Info&quot;
+
+<p>You can make an annotation for the entire disc with the &quot;Ext Info&quot;
 button next to the &quot;Disc Artist / Title&quot; field, or for a selected
 track in the &quot;Track / Time /Title&quot; selection box with the adjacent
-&quot;Ext Info&quot; button. <P>If you select a track in the &quot;Track / Time
+&quot;Ext Info&quot; button.
+
+<p>If you select a track in the &quot;Track / Time
 /Title&quot; selection box, the title, if present, will appear in the
 &quot;Edit Track Title&quot; field below. You can type a title for the track in
 the box, or edit the entry to suit your needs. Press the &quot;Return&quot; key
 on your keyboard, and the text will appear in the proper line in the selection
 box. 
-<P>Once all tracks have been given titles and the &quot;Disc Artist /
+
+<p>Once all tracks have been given titles and the &quot;Disc Artist /
 Title&quot; field has been filled out, you can press the &quot;Submit&quot;
  button to send your submission by e-mail to the CDDB. You will be prompted to
 select a category for the submission.
-<P>The &quot;Disc ID&quot; section displays the
+
+<p>The &quot;Disc ID&quot; section displays the
 32 bit ID code used by the CDDB to identify a compact disc. Above the ID code
 is the category of the CDDB entry. These categories correspond to the
 subdirectories tree of the directory chosen in the &quot;CDDB Base
-Directory&quot; in the <A HREF="kscd-4.html#sss4.2.1">CDDB tab of the
-<B>kscd</B> Configuration</A> window.
-<P>The &quot;Total Time:&quot; display shows the total play time of the CD.
-<P>The &quot;Play List Editor&quot; lets you change the play order of a 
+Directory&quot; in the <ref id="cddb" name="CDDB tab"> of the <bf/kscd/ Configuration window.
+
+<p>The &quot;Total Time:&quot; display shows the total play time of the CD.
+
+<p>The &quot;Play List Editor&quot; lets you change the play order of a 
 disc. Enter a comma seperated list of track numbers to define a new play order.
-<P>The &quot;Save&quot; button writes the displayed record to disk. You will be
+
+<p>The &quot;Save&quot; button writes the displayed record to disk. You will be
 prompted to select a category under which to save the record. Select a
 directory and press &quot;Ok&quot; to finish saving.
-<P>The &quot;Load&quot; button will prompt you for a location to look for a
+
+<p>The &quot;Load&quot; button will prompt you for a location to look for a
 CDDB entry other than a remote CDDB server or the local CDDB entries in the
 file system.
-<P>The &quot;Close&quot; button closes the CD Database Editor.
-<P ALIGN="RIGHT"> <A
-HREF="kscd-5.html">Next</A> <A HREF="kscd-3.html">Previous</A> <A
-HREF="kscd.html#toc4">Table of Contents</A> </P> <CENTER> <HR WIDTH="100%"
-SIZE=3 ALIGN=CENTER NOSHADE> </CENTER>     </FONT> </BODY> </HTML>
 
-<sect>CDDB Support<p>
-Kscd by default installs its cddb database files in 
-<tt>KDEIDR/share/apps/kscd/cddb</tt>. You can create as many category subdirectories
-as you like. However, when uploading only the
-offical cddb categories are displayed. The default upload address is
-<tt>xmcd-cddb@amb.org</tt>. For more information about CDDB visit the
-CDDB <htmlurl url="http://www.cddb.com" name="homepage">.
+<p>The &quot;Close&quot; button closes the CD Database Editor.
 
-<p>
+<sect>CDDB Support <label id="database">
+
+<p>The Compact Disc Data Base is a distributed network database accessible over
+the Internet that contains information about most audio CDs in circulation. If
+you have Internet access, you will likely never have to manually enter track
+information for your CDs if you have this set up properly. See the
+<ref id="cddb" name="the CDDB tab"> of the Configuration window
+for detailed instructions on how to configure
+this service, and <ref id="editor" name="The CD Database Editor">
+for instructions on how to edit CDDB entries.
+
+<p>Use of the CDDB is free. Submissions from users are encouraged.  
+
+<p>When preparing entries for the CDDB, please keep the following points in
+mind: 
+<itemize>
+<item>Use &quot;standard&quot; latin characters in the entries. Some
+special characters are supported, but Cyrillic or Greek alphabet submissions,
+for example, cannot be accepted.
+<item> Use only one &quot;/&quot; character in the &quot;Disc Artist /
+Title&quot; field in the &quot;CD Database Editor&quot;. For classical CDs, it
+is standard practice to put the composer's name in the Artist section 
+<em/(before the slash)/ and the performer's name in the Title section
+<em/(after the slash)/.
+<item>If you send an entry that already exists in the database, any additional
+information you provide may be added to the existing entry.
+</itemize>
+
+<p>By default, <bf/kscd/ installs the standard CDDB
+categories in <bf>$KDEDIR/share/apps/kscd/cddb</bf>. You can create as many
+category  subdirectories as you like. However,when uploading only the offical
+CDDB  categories are displayed. The default upload address is
+&quot;xmcd-cddb@amb.org&quot;. For more information about CDDB visit the CDDB
+<htmlurl url="http://www.cddb.com" name="homepage">.
+
+<p>The local CDDB entry for a
+particular CD is stored in the file <bf><em>&lt;category name&gt;/&lt;disc
+ID&gt;</em></bf> under the &quot;CDDB Base Directory&quot;. These files can be
+edited with any text editor if you have nothing better to do with your spare
+time.
+
 <sect>Questions and answers
-If you experience trouble in particular with the cddb functionality try the
-start kscd as <tt>kscd -d</tt> and observer the debug output.
+
+<p>
+<itemize>
+<item>Q. I see this dialog when I start <bf/kscd/. What's wrong?
+
+<img src="kscd16.gif">
+
+<p>
+A. This means that <bf/kscd/ couldn't open your CDROM drive. The name of the device
+in the &quot;CDROM Device&quot; field of the &quot;<bf/kscd/ Configuration&quot; must
+actually refer to the block device associated with your CD-ROM drive. This will often
+be a hardlink to the appropriate IDE (<bf>/dev/hd<em>x</em></bf>) or SCSI
+(<bf>/dev/sd<em>x</em></bf>) device. The device file normally belongs to
+user <bf/root/ in group <bf/root/, and does not allow normal users to
+open it for reading, writing, or execution directly. This has *nothing* to
+do with the SUID <em>(Set User ID programs use the <bf>setuid()</bf> function in the standard Un*x
+library to assume the identity of another user)</em> 
+<bf/mount/ command, which has no problems with permissions; <bf/kscd/ must be able to get a
+read-only file descriptor referring to the CD device to control the CDROM drive 
+and read raw data off the disk.
+
+<p>If you have the root password, you can fix this quickly and easily.
+Become root and type <bf>chmod a+r /dev/cdrom</bf> to allow any user on your
+system to read from <bf>/dev/cdrom</bf>. If your CDROM device is called
+something else, change the permissions on that device with the same
+procedure. If you don't have the root password, ask your system 
+administrator nicely to give you read permission for the CDROM device.
+
+<p>See also section <ref id="configure" name="Configuring kscd">.
+
 <p>
 
-<sect>Thanks<p>
+<item>
+Q. I can't get the CDDB to work.
+Can I get any detailed information about what may be going wrong?
+
+<p>
+A. If you experience trouble with the CDDB functionality try to starting
+<bf/kscd/ from the command line with the <tt>-d</tt> switch and observe the 
+debug output.
+</itemize>
+
+<sect>Thanks
+
+<p>
 Special thanks to Ti Kan and Steve Scherf, the inventors of 
 the CDDB database concept. Visit <htmlurl url="http://www.cddb.com" name="www.cddb.com"> 
-for  more information on CDDB.;  
+for  more information on CDDB.  
+
+<p>Thanks also to Paul Harrison pfh@yoyo.cc.monash.edu.au 
+for writing Synaesthesia on which KSCD Magic is based.
 
 <p>
+A very special thank you also to David White who wrote the KSCD help
+documentation. Great Job David!
+
 <sect>Copyright<p>
 <tscreen><verb>
 Kscd Copyright (c) 1997,1998  Bernd Johannes Wuebben wuebben@kde.org
 
 kscd contains code from:
 workman 1.4 beta 3 Copyright (c) Steven Grimm koreth@hyperion.com   
+Synaesthesia 1.3 Copyright (c) Paul Harrison pfh@yoyo.cc.monash.edu.au
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
