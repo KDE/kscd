@@ -1157,7 +1157,12 @@ void KSCD::setColors()
 {
     QColor led_color = Prefs::ledColor();
     QColor background_color = Prefs::backColor();
+
     backdrop->setBackgroundColor(background_color);
+    frameoben->setBackgroundColor(background_color);
+    frameleds->setBackgroundColor(background_color);
+    symbols->setBackgroundColor(background_color);
+    frameartisttitle->setBackgroundColor(background_color);
 
     QColorGroup colgrp( led_color, background_color, led_color,led_color , led_color,
                         led_color, white );

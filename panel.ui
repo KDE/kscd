@@ -355,10 +355,13 @@
                                 </color>
                             </property>
                             <property name="frameShape">
-                                <enum>StyledPanel</enum>
+                                <enum>NoFrame</enum>
                             </property>
                             <property name="frameShadow">
                                 <enum>Sunken</enum>
+                            </property>
+                            <property name="lineWidth">
+                                <number>0</number>
                             </property>
                             <vbox>
                                 <property name="name">
