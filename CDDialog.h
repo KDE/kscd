@@ -17,7 +17,7 @@
 #include "smtpconfig.h"
 
 extern "C" {
-#include "libwm/include/workman.h"
+#include "libwm/include/wm_cdinfo.h"
 }
 
 struct mytoc 

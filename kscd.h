@@ -101,7 +101,6 @@ struct mgconfigstruct
 };
 
 typedef QValueList<int> RandomList;
-typedef QValueListIterator<int> RandomListIt;
 
 class KSCD : public QWidget, public KSessionManaged, virtual public DCOPObject {
 
@@ -138,7 +137,7 @@ public:
     KSCD( QWidget *parent = 0, const char *name = 0 );
     ~KSCD();
     void initialShow();
-	virtual bool saveState(QSessionManager& sm);
+    virtual bool saveState(QSessionManager& sm);
 
     bool dock() { return docking; }
     void setDocking(bool dock);
@@ -293,7 +292,7 @@ private:
     // random plyalists
     KRandomSequence     randSequence;
     RandomList          random_list;
-    RandomListIt        random_current;
+    RandomList::iterator random_current;
 
     KProcess*           magicproc;
     int                 jumpToTrack;
@@ -330,7 +329,7 @@ private:
     void    drawPanel();
     void    loadBitmaps();
     void    setLEDs(const QString& symbols);
-    void    cdtext();
+    void    cdtext(struct cdtext_info* p_cdtext);
 
   /**
    * select a random track from the current disc.
