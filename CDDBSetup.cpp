@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include <qvalidator.h>
-
+#include <knumvalidator.h>
 #include <kglobal.h>
 #include <kstddirs.h>
 #include <kapp.h>
@@ -63,8 +63,7 @@ CDDBSetup::CDDBSetup
     connect(currentSubmitAddPB, SIGNAL(clicked()), this, SLOT(insertSUL()));
     connect(currentSubmitDelPB, SIGNAL(clicked()), this, SLOT(removeSUL()));
 
-    QIntValidator *port_validator=new QIntValidator(this,"HTTP Port Validator");
-    port_validator->setRange(0, INT_MAX );
+    KIntValidator *port_validator=new KIntValidator(0,INT_MAX,proxy_port_ef);
     proxy_port_ef->setValidator(port_validator);
 
     proxy_port_ef->setEnabled(cddb_http_cb->isChecked());
@@ -241,7 +240,7 @@ CDDBSetup::set_defaults()
     remote_cddb_cb->setChecked(true);
     cddb_http_cb->setChecked(false);
     // Leave proxy host and port values unchanged, just disable them
-
+    cddb_timeout_ef->setText("30");
     emit updateCurrentServer();
 } // set_defaults
 
