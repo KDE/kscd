@@ -132,7 +132,7 @@ void SMTPConfig::commitData(void)
 	KMessageBox::sorry(this, i18n("freedb submissions via SMTP have been disabled\n"
 				      "because the email profile you selected is\n"
 				      "incomplete. Please review your email settings\n"
-				      "and try again."), i18n("freedb submissions disabled"));
+				      "and try again."), i18n("Freedb Submissions Disabled"));
 	configData->enabled = false;
       } 
 } // commitData
