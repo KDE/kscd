@@ -3,7 +3,7 @@
 mimedir = $(kde_mimedir)/text
 picsdir  = $(kde_datadir)/kscd/pics
 
-INCLUDES= -I$(top_srcdir) $(all_includes)
+INCLUDES= -I$(top_srcdir) -I$(top_builddir)/libkcddb $(all_includes)
 METASOURCES = AUTO
 
 ####### Files

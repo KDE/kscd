@@ -115,7 +115,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
     updateTime(true),
     revision(0), // The first freedb revision is "0" //!!!!
     year(0),
-    cddb(0),
     m_dockWidget(0)
 {
   random_current      = random_list.begin();
@@ -207,6 +206,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
     loopled->show();
     repeatPB->setOn(true);
   }
+  
+  cddb = new KCDDB::Client();
 
   setDocking(Prefs::docking());
 
@@ -1287,8 +1288,7 @@ void KSCD::get_cddb_info()
     querylist << cd->trk[0].start << cd->trk[wm_cd_getcountoftracks()].start;
     led_on();
 
-    delete cddb;
-    cddb = new KCDDB::Client();
+    cddb->config().reparse();
     cddb->setBlockingMode(false);
     connect(cddb, SIGNAL(finished(CDDB::Result)),
             this, SLOT(cddb_done(CDDB::Result)));
