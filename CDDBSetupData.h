@@ -14,11 +14,13 @@
 #define CDDBSetupData_included
 
 #include <qwidget.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qlineedit.h>
+
+
+class KURLRequester;
+class QCheckBox;
+class QPushButton;
+class QListBox;
+class QLineEdit;
 
 class CDDBSetupData : public QWidget
 {
@@ -43,7 +45,7 @@ protected slots:
     virtual void http_access_toggled(bool);
 
 protected:
-    QLineEdit* basedir_edit;
+    KURLRequester* basedir_edit;
     QListBox* server_listbox;
     QPushButton* update_button;
     /* edm new section */

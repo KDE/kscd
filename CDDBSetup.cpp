@@ -13,6 +13,10 @@
 #include <kstddirs.h>
 #include <kapp.h>
 #include <kdebug.h>
+#include <klineedit.h>
+#include <qcheckbox.h>
+#include <qlistbox.h>
+#include <kurlrequester.h>
 
 #include "../config.h"
 
@@ -30,7 +34,7 @@ CDDBSetup::CDDBSetup
     Inherited( parent, name )
 {
 
-    connect(basedir_edit,SIGNAL(textChanged(const QString &)),
+    connect(basedir_edit->lineEdit(),SIGNAL(textChanged(const QString &)),
             this,SLOT(basedir_changed(const QString &)));
 
     connect(update_button,SIGNAL(clicked()),
@@ -198,10 +202,10 @@ CDDBSetup::insertData(const QStringList& _serverlist,
     kdDebug() << "check point: server_listbox->centerCurrentItem()\n" << endl;
 
     basedirstring = _basedir.copy();
-    basedir_edit->setText(basedirstring);
+    basedir_edit->lineEdit()->setText(basedirstring);
     enable_auto_save_cddb->setChecked(auto_save_enabled);
     remote_cddb_cb->setChecked(remote_enabled);
-    
+
     char timeout_str[40];
     sprintf(timeout_str,"%d",cddb_timeout);
     cddb_timeout_ef->setText(timeout_str);
@@ -226,7 +230,7 @@ CDDBSetup::set_defaults()
     server_listbox->setCurrentItem(0);
 
     basedirstring = KGlobal::dirs()->resourceDirs("cddb").last();
-    basedir_edit->setText(basedirstring);
+    basedir_edit->lineEdit()->setText(basedirstring);
 
     submission_listbox->clear();
     submission_listbox->insertItem(DEFAULT_SUBMIT_EMAIL,-1);

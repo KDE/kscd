@@ -19,10 +19,16 @@
 
 #include <klocale.h>
 #include <kapp.h>
+#include <qpushbutton.h>
+#include <qcheckbox.h>
+#include <qlistbox.h>
+#include <klineedit.h>
 
 #include <qlayout.h>
 #include <qfontmetrics.h>
-
+#include <knumvalidator.h>
+#include <kurlrequester.h>
+#include <kfiledialog.h>
 
 CDDBSetupData::CDDBSetupData
 (
@@ -49,6 +55,7 @@ CDDBSetupData::CDDBSetupData
 	cddb_timeout_ef->setText( "30" );
 	cddb_timeout_ef->setMaxLength ( 5 );
 	cddb_timeout_ef->setFixedWidth ( 5*fm.maxWidth() );
+        cddb_timeout_ef->setValidator(new QIntValidator (cddb_timeout_ef));
 	lay3->addWidget ( cddb_timeout_ef );
 	QLabel* cddb_timeout_lb = new QLabel( i18n("seconds freedb timeout"), group, "CDDBTimeoutLabel" );
         lay3->addWidget ( cddb_timeout_lb );
@@ -69,7 +76,7 @@ CDDBSetupData::CDDBSetupData
 	proxy_port_ef->setMaxLength ( 5 );
 	proxy_port_ef->setFixedWidth ( 5*fm.maxWidth() );
 	lay4->addWidget ( proxy_port_ef );
-	
+
 	/* edm new section start */
 	lay2->addSpacing ( fm.lineSpacing() );
 	enable_auto_save_cddb = new QCheckBox( i18n("Enable auto save to local database"), group, "CheckBox_3" );
@@ -80,7 +87,9 @@ CDDBSetupData::CDDBSetupData
 	lay2->addSpacing ( fm.lineSpacing() );
 	QLabel* dlgedit_Label_8 = new QLabel( i18n("freedb Base Directory:"), group, "Label_8" );
 	lay2->addWidget ( dlgedit_Label_8 );
-	basedir_edit = new QLineEdit( group, "LineEdit_4" );
+        basedir_edit = new KURLRequester(group, "LineEdit_4" );
+        basedir_edit->fileDialog()->setMode(KFile::Directory);
+
 	lay2->addWidget ( basedir_edit );
 
 	lay2->addSpacing ( fm.lineSpacing() );
@@ -145,12 +154,12 @@ CDDBSetupData::~CDDBSetupData()
 {
 } // ~CDDBSetupData
 
-void 
+void
 CDDBSetupData::http_access_toggled(bool)
 {
 } // http_access_toggled
 
-void 
+void
 CDDBSetupData::enable_remote_cddb(bool)
 {
 } // enable_remote_cddb
