@@ -20,6 +20,7 @@
 
 #include <qpushbutton.h>
 #include <qslider.h>
+#include <qtimer.h>
 
 #include "kvolumecontrol.h"
 
@@ -27,8 +28,12 @@ KVolumeControl::KVolumeControl(QPushButton* surrogate, QWidget* parent, const ch
     : QHBox(parent, name),
       m_surrogate(surrogate)
 {
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(hide()));
+
     setFrameStyle(Panel | Raised);
     setLineWidth(1);
+
     m_surrogate->setToggleButton(true);
     m_surrogate->installEventFilter(this);
     setShown(m_surrogate->isOn());
@@ -39,12 +44,6 @@ KVolumeControl::KVolumeControl(QPushButton* surrogate, QWidget* parent, const ch
     m_volumeSlider->installEventFilter(this);
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(valueFlip(int)));
     adjustSize();
-}
-
-void KVolumeControl::show()
-{
-    move(m_surrogate->pos() + QPoint(0, m_surrogate->height()));
-    QHBox::show();
 }
 
 bool KVolumeControl::eventFilter(QObject* watched, QEvent* e)
@@ -86,8 +85,23 @@ void KVolumeControl::setValue(int value)
     m_volumeSlider->setValue(100 - value);
 }
 
+void KVolumeControl::show()
+{
+    m_timer->start(2000, true);
+    move(m_surrogate->pos() + QPoint(0, m_surrogate->height()));
+    QHBox::show();
+}
+
+void KVolumeControl::hide()
+{
+    m_timer->stop();
+    m_surrogate->setOn(false);
+    QHBox::hide();
+}
+
 void KVolumeControl::valueFlip(int value)
 {
+    m_timer->start(2000, true);
     emit valueChanged(100 - value);
 }
 
@@ -97,6 +111,18 @@ void KVolumeControl::keyPressEvent(QKeyEvent * e)
     {
         m_surrogate->setOn(false);
     }
+}
+
+void KVolumeControl::enterEvent(QEvent * e)
+{
+    m_timer->start(2000, true);
+    QHBox::enterEvent(e);
+}
+
+void KVolumeControl::leaveEvent(QEvent * e)
+{
+    m_timer->start(500, true);
+    QHBox::leaveEvent(e);
 }
 
 #include <kvolumecontrol.moc>

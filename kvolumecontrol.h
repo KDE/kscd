@@ -25,6 +25,7 @@
 
 class QPushButton;
 class QSlider;
+class QTimer;
 
 class KVolumeControl : public QHBox
 {
@@ -32,9 +33,12 @@ class KVolumeControl : public QHBox
 
     public:
         KVolumeControl(QPushButton* surrogate, QWidget* parent = 0, const char* name = 0);
-        void show();
         bool eventFilter(QObject* watched, QEvent* e);
         void setValue(int value);
+
+    public slots:
+        virtual void show();
+        virtual void hide();
 
     signals:
         void valueChanged(int);
@@ -43,11 +47,14 @@ class KVolumeControl : public QHBox
         void valueFlip(int);
 
     protected:
-        void keyPressEvent(QKeyEvent * e);
+        virtual void keyPressEvent(QKeyEvent * e);
+        virtual void enterEvent(QEvent * e);
+        virtual void leaveEvent(QEvent * e);
 
     private:
         QPushButton* m_surrogate;
         QSlider* m_volumeSlider;
+        QTimer* m_timer;
 };
 
 #endif
