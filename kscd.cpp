@@ -563,6 +563,7 @@ KSCD::setupPopups()
 
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     mainPopup->insertItem(i18n("Help"), helpMenu->menu());
+    mainPopup->insertSeparator();
     m_actions->action(KStdAction::name(KStdAction::Quit))->plug(mainPopup);
 
     /*QPopupMenu* volMenu = new QPopupMenu(this);
@@ -2510,16 +2511,15 @@ int
 main( int argc, char *argv[] )
 {
 
-    KAboutData aboutData( "kscd", I18N_NOOP("kscd"),
+    KAboutData aboutData( "kscd", I18N_NOOP("KsCD"),
                           KSCDVERSION, description,
                           KAboutData::License_GPL,
-                          "(c) 2001, Dirk Försterling");
+                          "(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo");
     aboutData.addAuthor("Aaron J. Seigo", I18N_NOOP("Current maintainer"), "aseigo@kde.org");
     aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
     aboutData.addAuthor("Dirk Försterling", I18N_NOOP("Workman library, previous maintainer"), "milliByte@gmx.net");
     aboutData.addCredit("Steven Grimm", I18N_NOOP("Workman library"));
-    aboutData.addCredit("Vadim Zaliva", I18N_NOOP("HTTP proxy code"));
-    aboutData.addCredit("Paul Harrison", I18N_NOOP("KSCD Magic based on Synaesthesia"), "pfh@yoyo.cc.monash.edu.au");
+    aboutData.addCredit("Sven Lueppken", I18N_NOOP("UI Work"));
     aboutData.addCredit("freedb.org", I18N_NOOP("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
     KCmdLineArgs::init( argc, argv, &aboutData );
