@@ -13,7 +13,7 @@ extern "C" {
 #include "libwm/include/wm_cdinfo.h"
 }
 
-class CDDBDlgBase;
+class CDInfoDialogBase;
 
 class CDDBDlg : public KDialogBase
 {
@@ -39,18 +39,14 @@ class CDDBDlg : public KDialogBase
     void play(int i);
 
   private:
-    static const int TRACK_NUMBER = 0;
-    static const int TRACK_TIME = 1;
-    static const int TRACK_TITLE = 2;
-    static const int TRACK_COMMENT = 3;
     bool updateFromDialog();
+    QString framesTime(unsigned frames);
 
-    CDDBDlgBase *m_dlgBase;
+    CDInfoDialogBase *m_dlgBase;
     KCDDB::CDInfo cddbInfo;
     QStringList playlist;
     unsigned ntracks;   /* Number of tracks on the disc */
-    int length;         /* Total running time in seconds */
-    struct mytoc *cddbtoc;
+    QValueList<unsigned> trackStartFrames;
     KCDDB::Client *cddbClient;
 };
 #endif // CDDBDLG_H
