@@ -14,10 +14,10 @@ noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
 
 #	struct.h wmcdda.h
 
-kscd_SOURCES = kscd.cpp kscd.skel configdlg.cpp ledlamp.cpp CDDialog.cpp \
+kscd_SOURCES = panel.ui kscd.cpp kscd.skel configdlg.cpp ledlamp.cpp CDDialog.cpp \
 	       CDDialogData.cpp CDDBSetup.cpp CDDBSetupData.cpp docking.cpp \
-	       smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp \ 
-	       configWidget.cpp configWidgetUI.ui panel.ui
+	       smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
+	       configWidget.cpp configWidgetUI.ui
 
 kscd_LDFLAGS = $(all_libraries) -lkutils
 kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
