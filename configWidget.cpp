@@ -71,7 +71,7 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
 
     if(audioBackend->listBox()->findItem(mPlayer->audioSystem()))
         audioBackend->setCurrentText(mPlayer->audioSystem());
-    audioDevice->setText(mPlayer->audioDevice());
+    audioDevice->lineEdit()->setText(mPlayer->audioDevice());
 #else
     digitalPlaybackChckbx->hide();
 #endif
@@ -90,7 +90,7 @@ void configWidget::apply()
     mPlayer->setEjectOnFinish(ejectChkbx->isChecked());
     mPlayer->setStopOnExit(stopOnExitChckbx->isChecked());
     if(digitalPlaybackChckbx->isChecked())
-        mPlayer->setDevicePaths(cdDevice->lineEdit()->text(), audioBackend->currentText(), audioDevice->text());
+        mPlayer->setDevicePaths(cdDevice->lineEdit()->text(), audioBackend->currentText(), audioDevice->lineEdit()->text());
     else
         mPlayer->setDevicePaths(cdDevice->lineEdit()->text(), QString(""), QString(""));
 }
