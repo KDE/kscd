@@ -472,7 +472,7 @@ enter the &URL; in the field below.</para>
 <para>Checking <guilabel>Enable autosave to local database</guilabel> causes 
 <acronym>CDDB</acronym> information to be stored locally, saving you from having 
 to repeatedly perform lookups over the Internet. The <guilabel>freedb Base 
-Directory:</guilabel> text field lets you choose the directory where you want 
+Folder:</guilabel> text field lets you choose the folder where you want 
 <acronym>CDDB</acronym> entries to be stored locally.</para>
 
 <para>The <guilabel>freedb server:</guilabel> list box shows a list of known
@@ -601,8 +601,8 @@ submission. The <guilabel>Disc ID</guilabel> section displays the 32
 bit <acronym>ID</acronym> code used by freedb to identify a compact
 disc. Above the <acronym>ID</acronym> code is the category of the
 <guilabel>freedb</guilabel> entry. These categories correspond to the
-subdirectories tree of the directory chosen in the <guilabel>freedb
-Base Directory:</guilabel> in the <link
+subfolders tree of the folder chosen in the <guilabel>freedb
+Base Folder:</guilabel> in the <link
 linkend="freedb-tab"><guilabel>freedb</guilabel> tab</link> of the &kscd;
 Configuration window.</para>
 
@@ -681,7 +681,7 @@ additional information you provide may be added to the existing entry.</para>
 
 <para>By default, &kscd; installs the standard <acronym>CDDB</acronym>
 categories in <filename class="directory">$KDEDIR/share/apps/kscd/cddb</filename>. You can create as
-many category subdirectories as you like. However, when uploading, only the
+many category subfolders as you like. However, when uploading, only the
 official <acronym>CDDB</acronym> categories are displayed. The default upload
 address is <email>freedb-submit@freedb.org</email>. For more information about
 <abbrev>freedb</abbrev> visit the <abbrev>freedb</abbrev> homepage.</para>
@@ -689,7 +689,7 @@ address is <email>freedb-submit@freedb.org</email>. For more information about
 <para>The local <acronym>CDDB</acronym> entry for a particular &CD; is stored in
 the file <filename><replaceable>category name</replaceable>/<replaceable>disc
 ID</replaceable></filename> under the <acronym>CDDB</acronym> Base
-Directory. These files can be edited with any text editor if you have nothing
+Folder. These files can be edited with any text editor if you have nothing
 better to do with your spare time.</para>
 
 </chapter>
