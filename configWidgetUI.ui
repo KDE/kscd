@@ -8,12 +8,9 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>450</width>
-            <height>521</height>
+            <width>539</width>
+            <height>592</height>
         </rect>
-    </property>
-    <property name="caption">
-        <string>configWidgetUI</string>
     </property>
     <vbox>
         <property name="name">
@@ -164,9 +161,6 @@
                     <property name="text">
                         <string>Auto&amp;play when CD inserted</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+P</string>
-                    </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</string>
                     </property>
@@ -177,9 +171,6 @@
                     </property>
                     <property name="text">
                         <string>&amp;Eject CD when finished playing</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+E</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will automatically eject when it is finished.</string>
@@ -266,9 +257,6 @@
                     <property name="text">
                         <string>&amp;Use direct digital playback</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+U</string>
-                    </property>
                     <property name="checked">
                         <bool>false</bool>
                     </property>
@@ -287,7 +275,7 @@
                         <number>0</number>
                     </property>
                     <property name="buddy" stdset="0">
-                        <cstring>audioSystemComboBox</cstring>
+                        <cstring>kcfg_AudioSystem</cstring>
                     </property>
                 </widget>
                 <widget class="KURLRequester" row="3" column="1" rowspan="1" colspan="2">
@@ -346,18 +334,13 @@
     <tabstop>kcfg_AudioSystem</tabstop>
     <tabstop>kcfg_AudioDevice</tabstop>
 </tabstops>
-<includes>
-    <include location="local" impldecl="in implementation">configWidgetUI.ui.h</include>
-</includes>
 <slots>
     <slot>kcfg_DigitalPlayback_toggled( bool )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>
     <includehint>knuminput.h</includehint>
-    <includehint>klineedit.h</includehint>
     <includehint>kpushbutton.h</includehint>
-    <includehint>klineedit.h</includehint>
     <includehint>kpushbutton.h</includehint>
 </includehints>
 </UI>
