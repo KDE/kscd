@@ -518,7 +518,7 @@ CDDialog::setCdInfo(KCDDB::CDInfo &info, const QString& category)
   info.extd = ext_list.first();
   // No year available?
   info.length = cdinfo.length;
-  // Should set revision too
+  info.revision = revision;
 
   info.trackInfoList.clear();
   QStringList::Iterator it = track_list.begin();

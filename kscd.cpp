@@ -1817,6 +1817,8 @@ KSCD::cddb_done(CDDB::Result result)
     // CDDBTODO: we really should get the artist off the 'tracktitlelist'
     tracktitlelist << cddbInfo.artist + " / " + cddbInfo.title;
 
+    revision = cddbInfo.revision;
+
     KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
     KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
     for (; it != end; ++it)
