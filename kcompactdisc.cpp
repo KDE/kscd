@@ -227,7 +227,7 @@ void KCompactDisc::play(unsigned startTrack, unsigned startTrackPosition, unsign
     wm_cd_play((startTrack == 0) ? 1 : startTrack, startTrackPosition / 1000, (endTrack == 0) ? WM_ENDTRACK : endTrack);
 }
 
-void KCompactDisc::setDevice(
+bool KCompactDisc::setDevice(
     const QString &device,
     unsigned volume,
     bool digitalPlayback,
@@ -264,17 +264,26 @@ void KCompactDisc::setDevice(
                     digitalPlayback ? audioSystem.ascii() : 0,
                     digitalPlayback ? audioDevice.ascii() : 0,
                     0);
+    m_device = wm_drive_device();
     kdDebug() << "Device change: "
         << (digitalPlayback ? "WM_CDDA, " : "WM_CDIN, ")
-        << deviceUrl.path() << ", "
+        << m_device << ", "
         << (digitalPlayback ? audioSystem : "") << ", "
         << (digitalPlayback ? audioDevice : "") << ", status: "
         << discStatus(status) << endl;
-    m_device = wm_drive_device();
 
-    // Init CD-ROM and display.
-    setVolume(volume);
+    if (status < 0)
+    {
+        // Severe (OS-level) error.
+        m_device = "";
+    }
+    else
+    {
+        // Init CD-ROM and display.
+        setVolume(volume);
+    }
     timer.start(1000, true);
+    return !(m_device.length() == 0);
 }
 
 void KCompactDisc::setVolume(unsigned volume)
@@ -318,12 +327,8 @@ unsigned KCompactDisc::tracks() const
  */
 void KCompactDisc::timerExpired()
 {
-    // No device, no work to do!
-    if (m_device.length() == 0)
-        return;
-
     m_status = wm_cd_status();
-    if (WM_CDS_NO_DISC(m_status))
+    if (WM_CDS_NO_DISC(m_status) || (m_device.length() == 0))
     {
         if (m_previousStatus != m_status)
         {

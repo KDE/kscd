@@ -70,8 +70,9 @@ public:
      * @param digitalPlayback Select digial or analogue playback.
      * @param audioSystem For analogue playback, system to use, e.g. "arts".
      * @param audioDevice For analogue playback, device to use.
+     * @return true if the device seemed usable.
      */
-    void setDevice(
+    bool setDevice(
         const QString &device = defaultDevice,
         unsigned volume = 50,
         bool digitalPlayback = true,
@@ -92,6 +93,8 @@ public:
 
     /**
      * Current device.
+     *
+     * @return Empty string if no usable device set.
      */
     const QString &device() const;
 

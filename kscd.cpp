@@ -336,7 +336,7 @@ KSCD::setupPopups()
 
 void KSCD::playClicked()
 {
-    if (!m_cd->discId())
+    if (m_cd->discId() == KCompactDisc::missingDisc)
         return;
 
     kapp->processEvents();
@@ -737,10 +737,19 @@ void KSCD::configureKeys()
 
 void KSCD::setDevicePaths()
 {
-    m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback());
-    if (Prefs::autoplay() && !m_cd->isPlaying())
+    if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback()))
     {
-        playClicked();
+        // This device did not seem usable.
+        QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
+                            "Please make sure you have access permissions to:\n%1").arg(Prefs::cdDevice());
+        KMessageBox::error(this, str, i18n("Error"));
+    }
+    else
+    {
+        if (Prefs::autoplay() && !m_cd->isPlaying())
+        {
+            playClicked();
+        }
     }
 } // setDevicePath()
 
@@ -895,12 +904,9 @@ int KSCD::prev_randomtrack()
 void KSCD::discChanged(unsigned discId)
 {
     cddbInfo.clear();
-    if (discId == 0)
+    if (discId == KCompactDisc::missingDisc)
     {
         statuslabel->setText(i18n("No disc"));
-        QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
-                            "Please make sure you have access permissions to:\n%1").arg(m_cd->device());
-        KMessageBox::error(this, str, i18n("Error"));
     }
     else
     {
@@ -955,7 +961,7 @@ void KSCD::discChanged(unsigned discId)
 void KSCD::discStopped()
 {
     statuslabel->setText(i18n("Stopped"));
-    if (Prefs::ejectOnFinish() && !stoppedByUser && m_cd->discId())
+    if (Prefs::ejectOnFinish() && !stoppedByUser && (m_cd->discId() != KCompactDisc::missingDisc))
     {
         ejectClicked();
     }
@@ -1086,6 +1092,8 @@ void KSCD::CDDialogDone()
 
 void KSCD::lookupCDDB()
 {
+    if (m_cd->discId() == KCompactDisc::missingDisc)
+        return;
     kdDebug(67000) << "lookupCDDB() called" << endl;
 
     populateSongList(i18n("Start freedb lookup."));
@@ -1100,7 +1108,7 @@ void KSCD::lookupCDDB()
 
     // FIXME Should be enabled again when it doesn't go into an infinite loop
     // when no disc is found
-    //cddb->lookup(m_cd->cddbSignature());
+    cddb->lookup(m_cd->cddbSignature());
 } // lookupCDDB
 
 void KSCD::lookupCDDBDone(CDDB::Result result)
