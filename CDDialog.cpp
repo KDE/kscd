@@ -19,19 +19,9 @@
 
  *********************************************************************/
 
-#include "CDDialog.h"
-#include "CDDialog.moc"
-#include "CDDialogData.moc"
-#include "inexact.h"
-#include "version.h"
-#include "smtp.h"
-#include "smtpconfig.h"
-extern "C" {
-#include "libwm/include/workman.h"
-}
-
 #include <unistd.h>
-#include <klocale.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <qkeycode.h>
 #include <qregexp.h> 
@@ -41,14 +31,26 @@ extern "C" {
 #include <qdir.h>
 #include <qfileinfo.h> 
 
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <klocale.h>
+#include <kdebug.h>
 
 #include <stdio.h>
 #include <math.h>
 
 #include <kapp.h>
 #include <kmessagebox.h>
+
+#include "CDDialog.h"
+#include "CDDialog.moc"
+#include "CDDialogData.moc"
+#include "inexact.h"
+#include "version.h"
+#include "smtp.h"
+#include "smtpconfig.h"
+
+extern "C" {
+#include "libwm/include/workman.h"
+}
 
 #define Inherited CDDialogData
 
@@ -137,7 +139,7 @@ CDDialog::setData(
 		  QString& cat,
 		  int& rev,
 		  QStrList& _playlist,
-		  QStrList& _pathlist,
+		  QStringList& _pathlist,
 		  QString& _mailcmd,
 		  QString& _submitaddress,
 		  SMTPConfig::SMTPConfigData *_smtpConfigData
@@ -238,7 +240,6 @@ CDDialog::setData(
     QString 	fmt;
     QTime 	dml;
 
-    listbox->setAutoUpdate(false);
     listbox->clear();
 
     for(int i = 1; i <= cdinfo.ntracks; i++)
@@ -255,7 +256,6 @@ CDDialog::setData(
 	listbox->insertItem(fmt,-1);
       }
     
-    listbox->setAutoUpdate(true);
     listbox->repaint();
     
     QString str;
@@ -342,11 +342,8 @@ CDDialog::trackchanged()
   track_list.insert(i+1,trackedit->text().ascii());
   track_list.remove(i+2);
 
-  listbox->setAutoUpdate(false);
-
   listbox->insertItem(fmt, i);
   listbox->removeItem(i+1);
-  listbox->setAutoUpdate(true);
   listbox->repaint();
   if ( i <(int) listbox->count() -1 )
     {
@@ -399,7 +396,7 @@ CDDialog::upload()
 
   dialog = new InexactDialog(0,"Dialog",true);
 
-  QStrList catlist;
+  QStringList catlist;
 
   catlist.append("rock");
   catlist.append("classical");
@@ -436,7 +433,7 @@ CDDialog::upload()
 
   if(smtpConfigData->enabled)
     {
-      debug("Submitting cddb entry via SMTP...\n");
+      kdDebug() << "Submitting cddb entry via SMTP...\n" << endl;
       QFile file(tempfile);
       
       file.open(IO_ReadOnly);
@@ -456,7 +453,7 @@ CDDialog::upload()
       smtpMailer->setSenderAddress(smtpConfigData->senderAddress);
       smtpMailer->setRecipientAddress(submitaddress);
       
-      subject.sprintf("cddb %s %08lx", submitcat.data(), cdinfo.magicID);
+      subject.sprintf("cddb %s %08lx", submitcat.utf8().data(), cdinfo.magicID);
       smtpMailer->setMessageSubject(subject);
       smtpMailer->setMessageBody(s);
 
@@ -470,10 +467,10 @@ CDDialog::upload()
 
   cmd = "sendmail -tU";
 
-  debug("Submitting cddb entry: %s\n",cmd.ascii());
+  kdDebug() << "Submitting cddb entry: " << cmd << "\n" << endl;
   
   FILE* mailpipe;
-  mailpipe = popen(cmd.data(),"w");
+  mailpipe = popen(QFile::encodeName(cmd),"w");
 
   if(mailpipe == NULL){
     QString str;
@@ -513,8 +510,8 @@ CDDialog::upload()
   file.close();
   //  file2.close();   // *****
 
-  unlink(tempfile.data());
-  debug("DONE SENDING\n");
+  unlink(QFile::encodeName(tempfile));
+  kdDebug() << "DONE SENDING\n" << endl;
 } // upload
 
 void 
@@ -551,13 +548,10 @@ CDDialog::save()
   // Let's get rid of some ugly double slashes such as in 
   // /usr/local/kde/share/apps/kscd/cddb//rock 
   
-  for(int i = 0; i < (int)pathlist.count();i++)
-    {
-      QString temp = pathlist.at(i);
-      temp = temp.replace( QRegExp("//"), "/" );
-      pathlist.insert(i,temp.ascii());
-      pathlist.remove(i+1);
-    }
+  for ( QStringList::Iterator it = pathlist.begin();
+        it != pathlist.end();
+        ++it )
+    (*it).replace( QRegExp("//"), "/" );
 
   dialog->insertList(pathlist);
   dialog->setErrorString(i18n("Please select a Category or press Cancel"));
@@ -571,7 +565,7 @@ CDDialog::save()
 
   dialog->getSelection(path);
   QString mag;
-  mag.sprintf("%s/%08lx",path.data(),cdinfo.magicID);
+  mag.sprintf("%s/%08lx",path.utf8().data(),cdinfo.magicID);
 
   save_cddb_entry(mag,false);
   load();
@@ -581,11 +575,11 @@ CDDialog::save()
 void 
 CDDialog::save_cddb_entry(QString& path,bool upload)
 {
-  QString magic;
+  QCString magic;
   magic.sprintf("%08lx",cdinfo.magicID);
   bool have_magic_already = false;
 
-  debug("::save_cddb_entry(): path: %s upload = %d\n", path.data(), upload);
+  kdDebug() << "::save_cddb_entry(): path: " << path << " upload = " << upload << "\n" << endl;
   // Steve and Ti contacted me and said they have changed the cddb upload specs
   // Now, an uploaded entry must only contain one DISCID namely the one corresponding
   // to the CD the user actually owns.
@@ -593,7 +587,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
     {
       for(int i = 0 ; i < (int)discidlist.count();i ++)
 	{
-	  if(magic == (QString)discidlist.at(i))
+	  if(magic == discidlist.at(i))
 	    {
 	      have_magic_already = true;
 	      break;
@@ -601,13 +595,13 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
 	}
       
       if(!have_magic_already)
-	discidlist.insert(0,magic.data());
+	discidlist.insert(0,magic);
     } else { // uploading 
       discidlist.clear();
-      discidlist.insert(0,magic.data());
+      discidlist.insert(0,magic);
     }
 
-  QFile file(path.data());
+  QFile file(path);
 
 
   if( !file.open( IO_WriteOnly  )) 
@@ -627,7 +621,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
   if(upload && !smtpConfigData->enabled)
     {
       QString subject;
-      subject.sprintf("cddb %s %08lx", submitcat.data(), cdinfo.magicID);
+      subject.sprintf("cddb %s %08lx", submitcat.utf8().data(), cdinfo.magicID);
       
       t << "To: " + submitaddress + "\n";
       tmp = QString("Subject: %1\n").arg(subject);
@@ -910,14 +904,14 @@ mimetranslate(QString& s)
   
   for(uint i = 0 ; i < s.length(); i++)
     {
-      if (((s.data()[i] >= 32) && (s.data()[i] <= 60)) || 
-	  ((s.data()[i] >= 62) && (s.data()[i] <= 126))) 
+      if (((s[i] >= 32) && (s[i] <= 60)) || 
+	  ((s[i] >= 62) && (s[i] <= 126))) 
 	{
 	  
 	  q += s.at(i);
 	} else {
 	  
-	  hex = hex.sprintf("=%02X", (unsigned char)s.data()[i]);
+	  hex = hex.sprintf("=%02X", (unsigned char)s[i].latin1());
 	  q += hex; 
 	}
     }

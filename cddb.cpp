@@ -24,25 +24,27 @@
  *
  */
 
+#include <netdb.h>
+#include <pwd.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/utsname.h>
+
 #include <qtextstream.h> 
 #include <qfile.h>
 #include <qdir.h>
 #include <qfileinfo.h> 
 #include <qregexp.h> 
-#include "cddb.h"
-#include <sys/time.h>
+
 #include <kapp.h>
+#include <kdebug.h>
+
+#include "cddb.h"
 #include "version.h"
-
-#include <sys/utsname.h>
-
-#include <netdb.h>
-#include <pwd.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
 
 extern KApplication 	*mykapp;
 
@@ -159,7 +161,7 @@ CDDB::cddbgetServerList(QString& _server)
     char proto [CDDB_FIELD_BUFFER_LEN];
     char extra [CDDB_FIELD_BUFFER_LEN];
   
-    sscanf(_server.data(),"%s %s %s %s",ser,proto,por,extra);
+    sscanf(_server.ascii(),"%s %s %s %s",ser,proto,por,extra);
   
     hostname  = ser;
     port      = atoi(por);
@@ -167,7 +169,7 @@ CDDB::cddbgetServerList(QString& _server)
 
     protocol=decodeTransport(proto);
 
-    debug("GETTING SERVERLIST\n");
+    kdDebug() << "GETTING SERVERLIST\n" << endl;
 
     mode = SERVER_LIST_GET;
 
@@ -199,7 +201,7 @@ CDDB::cddb_connect(QString& _server)
     char proto[CDDB_FIELD_BUFFER_LEN];
     char extra[CDDB_FIELD_BUFFER_LEN];
   
-    sscanf(_server.data(),"%s %s %s %s",ser,proto,por,extra);
+    sscanf(_server.ascii(),"%s %s %s %s",ser,proto,por,extra);
   
     hostname  = ser;
     port      = atoi(por);
@@ -222,7 +224,7 @@ CDDB::cddb_connect_internal()
     starttimer.stop();
     timeouttimer.start(timeout*1000,TRUE);
 
-    debug("timeout = %d\n", timeout*1000);
+    kdDebug() << "timeout = " << timeout*1000 << "\n" << endl;
 
     if(sock) 
       {
@@ -237,13 +239,13 @@ CDDB::cddb_connect_internal()
     if(protocol==CDDBHTTP && use_http_proxy)
       {
         fprintf(stderr, "PROX\n");
-	debug("CONNECTING TO %s:%d ....\n",proxyhost.data(),proxyport);
-	sock = new KSocket(proxyhost.data(),proxyport);
-	debug("SOCKET SET");
+	kdDebug() << "CONNECTING TO " << proxyhost << ":" << proxyport << " ....\n" << endl;
+	sock = new KSocket(proxyhost.ascii(),proxyport);
+	kdDebug() << "SOCKET SET" << endl;
       } else {
-	debug("CONNECTING TO %s:%d ....\n",hostname.data(),port);
-	sock = new KSocket(hostname.data(),port);
-	debug("SOCKET SET");
+	kdDebug() << "CONNECTING TO " << hostname << ":" << port << " ....\n" << endl;
+	sock = new KSocket(hostname.ascii(),port);
+	kdDebug() << "SOCKET SET" << endl;
       }
     
     //signal( SIGALRM , SIG_DFL );
@@ -252,7 +254,7 @@ CDDB::cddb_connect_internal()
       {
 	timeouttimer.stop();
 	
-	debug("CONNECT FAILED\n");
+	kdDebug() << "CONNECT FAILED\n" << endl;
 	
 	if(mode == REGULAR )
 	    emit cddb_failed();      
@@ -279,7 +281,7 @@ CDDB::cddb_connect_internal()
 	state = INIT;
       }
     
-    debug("CONNECTED\n");
+    kdDebug() << "CONNECTED\n" << endl;
 } // cddb_connect_internal
 
 void 
@@ -303,9 +305,9 @@ CDDB::send_http_command(QString &command)
     else
 	request="GET "+cgi+"?cmd="+command+identification+"\r\n";
     
-    debug("Sending HTTP request: %s",request.data());
+    kdDebug() << "Sending HTTP request: " << request << endl;
     
-    write(sock->socket(),request.data(),request.length());
+    write(sock->socket(),request.ascii(),request.length());
     timeouttimer.stop();
     timeouttimer.start(timeout*1000,TRUE);
 } // send_http_command
@@ -324,7 +326,7 @@ CDDB::cddb_timed_out_slot()
 	emit get_server_list_failed();
 
     state = CDDB_TIMEDOUT;
-    debug("SOCKET CONNECTION TIMED OUT\n");
+    kdDebug() << "SOCKET CONNECTION TIMED OUT\n" << endl;
     cddb_close(sock);
 } // cddb_timed_out_slot
 
@@ -346,7 +348,7 @@ CDDB::cddb_close(KSocket *socket)
     disconnect(socket,SIGNAL(readEvent(KSocket*)),this,SLOT(cddb_read(KSocket*)));
     disconnect(socket,SIGNAL(closeEvent(KSocket*)),this,SLOT(cddb_close(KSocket*)));
     socket->enableRead(false);
-    debug("SOCKET CONNECTION TERMINATED\n");
+    kdDebug() << "SOCKET CONNECTION TERMINATED\n" << endl;
     connected = false;
     if(socket)
       {
@@ -376,7 +378,7 @@ CDDB::cddb_read(KSocket *socket)
     buffer[n] = '\0';
     tempbuffer += buffer;
 
-//    debug("BUFFER: '%s'",buffer);
+//    kdDebug() << "BUFFER: '" << buffer << "'" << endl;
 
     while(next_token())
         do_state_machine();
@@ -437,8 +439,8 @@ CDDB::queryCD(unsigned long _magicID,QStrList& querylist)
 	timeouttimer.stop();
 	timeouttimer.start(timeout*1000,TRUE);
 	str += "\n";
-	debug("strdata: %s\n", str.data());
-	write(sock->socket(),str.data(),str.length());
+	kdDebug() << "strdata: " << str << "\n" << endl;
+	write(sock->socket(),str.ascii(),str.length());
         state  = QUERY;
       }
 } // queryCD
@@ -466,7 +468,7 @@ CDDB::query_exact(QString line)
   QString readstring;
   if((sock == 0L || sock ->socket() < 0) && protocol==CDDBP)
     {
-      debug("sock = 0L!!!\n");
+      kdDebug() << "sock = 0L!!!\n" << endl;
       return;
     }
   
@@ -475,7 +477,7 @@ CDDB::query_exact(QString line)
       cddb_connect_internal();
       if(connected)
 	{
-	  readstring.sprintf("cddb read %s %s",category.data(),magicstr.data());
+	  readstring.sprintf("cddb read %s %s",category.ascii(),magicstr.ascii());
 	  send_http_command(readstring);
 	}
     } else {
@@ -483,8 +485,8 @@ CDDB::query_exact(QString line)
       timeouttimer.stop();
       timeouttimer.start(timeout*1000,TRUE);
       //  readstring.sprintf("cddb read %s %lx \n",category.data(),magicID);
-      readstring.sprintf("cddb read %s %s \n",category.data(),magicstr.data());
-      write(sock->socket(),readstring.data(),readstring.length());
+      readstring.sprintf("cddb read %s %s \n",category.ascii(),magicstr.ascii());
+      write(sock->socket(),readstring.ascii(),readstring.length());
     }
   
   state = CDDB_READ;
@@ -500,7 +502,7 @@ CDDB::do_state_machine()
     int cddblinelen;
 
 
-    debug("STATE MACHINE: State: %d Got: %s\n",(int)state,lastline.data());
+    kdDebug() << "STATE MACHINE: State: " << (int)state << " Got: " << lastline << "\n" << endl;
 
     switch (state)
       {
@@ -509,7 +511,7 @@ CDDB::do_state_machine()
         if(lastline.stripWhiteSpace()==QString(""))
 	  {
             state=saved_state;
-	    debug("HTTP Header is done. Moving on.\n");
+	    kdDebug() << "HTTP Header is done. Moving on.\n" << endl;
 	  }
         break;
 	
@@ -517,19 +519,19 @@ CDDB::do_state_machine()
 	//Parse responce and check numeric code.
 	char proto [CDDB_FIELD_BUFFER_LEN];
 	char code  [CDDB_FIELD_BUFFER_LEN];
-	sscanf(lastline.data(),"%s %s",proto,code);
+	sscanf(lastline.ascii(),"%s %s",proto,code);
 	if(strcmp(code,"200")==0)
 	  {
             if(use_http_proxy)
 	      {
                 state=HTTP_HEADER;
-                debug("HTTP request is OK. Reading HTTP header.\n");
+                kdDebug() << "HTTP request is OK. Reading HTTP header.\n" << endl;
 	      } else {
                 state=saved_state;
-                debug("HTTP request is OK. Mooving on.\n");
+                kdDebug() << "HTTP request is OK. Mooving on.\n" << endl;
 	      }
 	  } else {
-	    debug("HTTP error: %s\n",lastline.data());
+	    kdDebug() << "HTTP error: " << lastline << "\n" << endl;
 	    if(saved_state==SERVER_LIST_WAIT)
 	      {
 		emit get_server_list_failed();
@@ -539,10 +541,10 @@ CDDB::do_state_machine()
 	break;
 	
       case INIT:
-        debug("case INIT == true\n");
+        kdDebug() << "case INIT == true\n" << endl;
 	if((lastline.left(3) == QString("201")) ||(lastline.left(3) == QString("200")) )
 	  {
-	    debug("next if == true\n");
+	    kdDebug() << "next if == true\n" << endl;
 	    QString hellostr;
 	    
 	    // cddb hello username hostname clientname version
@@ -550,15 +552,15 @@ CDDB::do_state_machine()
 	      .arg(username)
 	      .arg(domainname)
 	      .arg(KSCDVERSION);
-            debug("hellostr: %s\n", hellostr.data());
+            kdDebug() << "hellostr: " << hellostr << "\n" << endl;
 	    
-	    Ret = write(sock->socket(),hellostr.data(),hellostr.length());
-	    debug("write() returned: %d [%s]\n", Ret, strerror(errno));
+	    Ret = write(sock->socket(),hellostr.ascii(),hellostr.length());
+	    kdDebug() << "write() returned: " << Ret << " [" << strerror(errno) << "]\n" << endl;
 	    state = HELLO;
 	  } else {
 	    state = ERROR_INIT;	
 	    cddb_close(sock);
-	    debug("ERROR_INIT\n");
+	    kdDebug() << "ERROR_INIT\n" << endl;
 	    emit cddb_failed();
 	  }
 
@@ -576,7 +578,7 @@ CDDB::do_state_machine()
 	  } else {
 	    state = ERROR_HELLO;
 	    cddb_close(sock);
-	    debug("ERROR_HELLO\n");
+	    kdDebug() << "ERROR_HELLO\n" << endl;
 	    emit cddb_failed();
 	  }
 	
@@ -618,7 +620,7 @@ CDDB::do_state_machine()
 		  } else {
 		    state = ERROR_QUERY;
 		    cddb_close(sock);
-		    debug("ERROR_QUERY\n");
+		    kdDebug() << "ERROR_QUERY\n" << endl;
 		    emit cddb_failed();
 		  }
 	      }
@@ -655,14 +657,14 @@ CDDB::do_state_machine()
 		file.sprintf("%s/%08lx", category.ascii(), magicID);
 		file = locate("cddb", file);
 		
-		debug("dir/file path: %s\n", file.ascii());
+		kdDebug() << "dir/file path: " << file << "\n" << endl;
 		cddbfh = open(file.ascii(), O_CREAT|O_WRONLY|O_TRUNC,
 			      S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
 	      }
             cddblinelen = lastline.length();
-            write(cddbfh, lastline.data(), cddblinelen);
+            write(cddbfh, lastline.ascii(), cddblinelen);
             write(cddbfh, "\n", strlen("\n"));
-	    //            debug("line written: %d\n", cddblinelen);
+	    //            kdDebug() << "line written: " << cddblinelen << "\n" << endl;
             
             respbuffer.prepend("\n");
             respbuffer.prepend(lastline);
@@ -674,7 +676,7 @@ CDDB::do_state_machine()
 	if(lastline.at(0) == '4')
 	  {
 	    state = ERROR_CDDB_READ;
-	    debug("ERROR_CDDB_READ\n");
+	    kdDebug() << "ERROR_CDDB_READ\n" << endl;
 	    cddb_close(sock);
 	    emit cddb_failed();
 	  } else {
@@ -698,7 +700,7 @@ CDDB::do_state_machine()
       case GETTING_SERVER_LIST:
 	if(lastline.at(0) == '.')
 	  {
-            debug("GOT SERVERLIST\n");
+            kdDebug() << "GOT SERVERLIST\n" << endl;
             if(protocol!=CDDBHTTP)
 	      write(sock->socket(),"quit\n",6);
 	    cddb_close(sock);
@@ -730,19 +732,19 @@ CDDB::parse_serverlist_entry()
     char proto [CDDB_FIELD_BUFFER_LEN];
     char extra [CDDB_FIELD_BUFFER_LEN];
   
-    QString tempstr;
+    QCString tempstr;
 
     if(protocol_level<3)
       {
-        sscanf(lastline.data(),"%s %s",serv,po);
+        sscanf(lastline.ascii(),"%s %s",serv,po);
         tempstr = tempstr.sprintf("%s cddbp %s -",serv,po);
-        serverlist.append(tempstr.data());
+        serverlist.append(tempstr);
       } else {
-        sscanf(lastline.data(),"%s %s %s %s",serv,proto,po,extra);
+        sscanf(lastline.ascii(),"%s %s %s %s",serv,proto,po,extra);
         tempstr = tempstr.sprintf("%s %s %s %s",serv,proto,po,extra);
 	//         transport tr=decodeTransport(proto);
 	//         if(tr==CDDBP || tr==CDDBHTTP)
-        serverlist.append(tempstr.data());
+        serverlist.append(tempstr);
       }
 } // parse_serverlist_entry
 
@@ -809,7 +811,7 @@ CDDB::checkDir(unsigned long magicID, const QString& dir)
 
     respbuffer = "";
 
-    QFile file(mag.data());
+    QFile file(mag);
 
     if( !file.open( IO_ReadOnly )) 
       {
@@ -868,7 +870,7 @@ CDDB::getData(
 	revision = revstr.toInt(&ok);
 	if(!ok)
 	  revision = 1;
-	debug("REVISION %d\n",revision);
+	kdDebug() << "REVISION " << revision << "\n" << endl;
       }
     
     // lets get all DISCID's in the data. Remeber there can be many DISCID's on
@@ -889,10 +891,10 @@ CDDB::getData(
 	  {
 	    discidtemp = data.mid(pos1 + 7,pos2- pos1 -7);
 	  } else {
-	    debug("ANOMALY 1\n");
+	    kdDebug() << "ANOMALY 1\n" << endl;
 	  }
 
-	debug("DISCDID %s\n",discidtemp.data());
+	kdDebug() << "DISCDID " << discidtemp << "\n" << endl;
 
 	pos1 = 0;
 	while((pos2 = discidtemp.find(",",pos1,true)) != -1)
@@ -901,13 +903,13 @@ CDDB::getData(
 	      {
 		temp3 = discidtemp.mid(pos1,pos2-pos1);
 	      } else {
-		debug("ANOMALY 2\n");
+		kdDebug() << "ANOMALY 2\n" << endl;
 	      }
 	    
 	    temp3 = temp3.stripWhiteSpace();
 	    
 	    if(!temp3.isEmpty())
-	      discidlist.append(temp3.data());
+	      discidlist.append(temp3.ascii());
 	    pos1 = pos2 + 1;
 	  }
 
@@ -916,12 +918,12 @@ CDDB::getData(
 	
 	if(!temp3.isEmpty())
 	  {
-	    discidlist.append(temp3.data());
+	    discidlist.append(temp3.ascii());
 	  }
 	pos4 = pos3 + 1;
       }// end get DISCID's
 
-    debug("FOUND %d DISCID's\n",discidlist.count());
+    kdDebug() << "FOUND " << discidlist.count() << " DISCID's\n" << endl;
 
   // Get the DTITLE
 
@@ -987,7 +989,7 @@ CDDB::getValue(QString& key,QString& value, QString& data)
 
     value = "";
 
-    while((  pos1 = data.find(key.data(),pos1,true)) != -1)
+    while((  pos1 = data.find(key,pos1,true)) != -1)
       {
 	found_one = true;
 	pos2 = data.find("\n",pos1,true);
@@ -995,7 +997,7 @@ CDDB::getValue(QString& key,QString& value, QString& data)
 	  {
 	    value += data.mid(pos1 + key.length(), pos2 - pos1 - key.length());
 	  } else {
-	    debug("GET VALUE ANOMALY 1\n");
+	    kdDebug() << "GET VALUE ANOMALY 1\n" << endl;
 	  }
 	pos1 = pos1 + 1;
       }
@@ -1197,7 +1199,7 @@ CDDB::normalize_server_list_entry(QString &entry)
     char po   [CDDB_FIELD_BUFFER_LEN];
     char extra[CDDB_FIELD_BUFFER_LEN];
     
-    if(sscanf(entry.data(),"%s %s %s %s",serv,proto,po,extra)==2) 
+    if(sscanf(entry.ascii(),"%s %s %s %s",serv,proto,po,extra)==2) 
       {
 	// old format
 	sprintf(extra,"%s cddbp %s -",serv, proto);
@@ -1290,7 +1292,7 @@ CDDB::cddb_http_xlat(QString &s)
 
 
 void 
-CDDB::setPathList(QStrList& _paths)
+CDDB::setPathList(QStringList& _paths)
 {
     pathlist = _paths; // automatically makes deep copies is _paths has deep copies
 } // setPathList

@@ -3,18 +3,21 @@
  * afterwards.
  */
 
-#include "CDDBSetup.h"
-
-#define Inherited CDDBSetupData
-
-#include <kapp.h>
-#include <cddb.h>
-#include <qvalidator.h> 
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <qvalidator.h> 
+
 #include <kglobal.h>
 #include <kstddirs.h>
+#include <kapp.h>
+#include <kdebug.h>
+
+#define Inherited CDDBSetupData
+
+#include "CDDBSetup.h"
+#include "cddb.h"
 
 CDDBSetup::CDDBSetup
 (
@@ -194,7 +197,7 @@ CDDBSetup::insertData(const QStrList& _serverlist,
 //    server_listbox->find(_current_server.data());
 //    server_listbox->centerCurrentItem();
 
-    debug("check point: server_listbox->centerCurrentItem()\n");
+    kdDebug() << "check point: server_listbox->centerCurrentItem()\n" << endl;
     
     basedirstring = _basedir.copy();
     basedir_edit->setText(basedirstring);
@@ -210,30 +213,26 @@ CDDBSetup::insertData(const QStrList& _serverlist,
     char port_str[40];
     sprintf(port_str,"%d",http_proxy_port);
     proxy_port_ef->setText(port_str);
-    debug("check point: ::insertData{...;return;}\n");
+    kdDebug() << "check point: ::insertData{...;return;}\n" << endl;
 } // insertData
 
 void 
 CDDBSetup::set_defaults()
 {
-    server_listbox->setAutoUpdate(false);
     server_listbox->clear();
     server_listbox->insertItem(DEFAULT_CDDB_SERVER, -1);
     // We should provide at least one entry
     // with HTTP protocol so people behind firewals can get servers list
     server_listbox->insertItem(DEFAULT_CDDBHTTP_SERVER, -1); 
-    server_listbox->setAutoUpdate(true);
     server_listbox->repaint();
     server_listbox->setCurrentItem(0);
 
     basedirstring = KGlobal::dirs()->resourceDirs("cddb").last();
     basedir_edit->setText(basedirstring);
 
-    submission_listbox->setAutoUpdate(false);
     submission_listbox->clear();
     submission_listbox->insertItem(DEFAULT_SUBMIT_EMAIL,-1);
     submission_listbox->insertItem(DEFAULT_TEST_EMAIL, -1);
-    submission_listbox->setAutoUpdate(true);
     submission_listbox->repaint();
     submission_listbox->setCurrentItem(0);
 
@@ -298,9 +297,7 @@ CDDBSetup::insertServerList(const QStrList& list)
     uint i;
 
     current_server_string_backup = current_server_string.copy();
-    server_listbox->setAutoUpdate(false);
     server_listbox->clear();
-    submission_listbox->setAutoUpdate(false);
     submission_listbox->clear();
 
     bool have_email = false;
@@ -351,16 +348,14 @@ CDDBSetup::insertServerList(const QStrList& list)
 //        submission_listbox->insertItem(DEFAULT_TEST_EMAIL, -1);
       }
    
-    server_listbox->setAutoUpdate(true);
     server_listbox->repaint();
-    submission_listbox->setAutoUpdate(true);
     submission_listbox->repaint();
 
     bool found = 0;
 
     current_server_string = current_server_string_backup.copy();
     //current_server_string = currentServerLE->text();
-    debug("current_server_string: %s\n", current_server_string.data());
+    kdDebug() << "current_server_string: " << current_server_string << "\n" << endl;
     for(i = 0; i < server_listbox->count(); i++)
       {
         if(current_server_string == server_listbox->text(i))

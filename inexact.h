@@ -47,7 +47,8 @@ public:
   InexactDialog(QWidget *parent=0, const char *name=0,bool listbox = true);
   ~InexactDialog();
 
-  void insertList(QStrList& list);
+  void insertList(const QStringList& list);
+  void insertList(const QStrList& list);
   void insertText(const QString& str);
   void getSelection(QString& string);
 

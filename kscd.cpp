@@ -29,6 +29,13 @@
 #include <klocale.h>
 #include <krun.h>
 #include <krandomsequence.h>
+#include <kdebug.h>
+#include <kglobal.h>
+#include <kiconloader.h>
+#include <kstddirs.h>
+#include <kmessagebox.h>
+#include <kaboutdata.h>
+#include <kcmdlineargs.h>
 
 #include "docking.h"
 #include "kscd.h"
@@ -59,13 +66,6 @@ extern "C" {
 #include "bitmaps/logo.xbm"
 #include "bitmaps/shuffle.xbm"
 #include "bitmaps/options.xbm"
-
-#include <kglobal.h>
-#include <kiconloader.h>
-#include <kstddirs.h>
-#include <kmessagebox.h>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
 
 static const char *description = I18N_NOOP("KDE CD player");
 
@@ -354,7 +354,7 @@ KSCD::drawPanel()
     artistlabel->setGeometry(WIDTH + 5, iy + 38 , SBARWIDTH -15, 13);
     artistlabel->setFont( QFont( "helvetica", smallPtSize(), QFont::Bold) );
     artistlabel->setAlignment( AlignLeft );
-    artistlabel->setText("");
+    artistlabel->clear();
 
     titlelabel = new QLabel(this);
     titlelabel->setGeometry(WIDTH + 5, iy + 50 , SBARWIDTH -15, 13);
@@ -362,7 +362,7 @@ KSCD::drawPanel()
     //    KGlobal::charsets()->setQFont(ledfont);
     titlelabel->setFont( ledfont );
     titlelabel->setAlignment( AlignLeft );
-    titlelabel->setText("");
+    titlelabel->clear();
 
     statuslabel = new QLabel(this);
     statuslabel->setGeometry(WIDTH + 110, iy  +D, 50, 14);
@@ -438,7 +438,7 @@ KSCD::drawPanel()
     songListCB->setFont( QFont( "helvetica", smallPtSize() ) );
     songListCB->setFocusPolicy ( QWidget::NoFocus );
 
-    debug("Width %d Height %d\n",WIDTH, HEIGHT);
+    kdDebug() << "Width " << WIDTH << " Height " << HEIGHT << "\n" << endl;
 
     iy = 0;
     ix = WIDTH + SBARWIDTH;
@@ -838,7 +838,7 @@ KSCD::quitClicked()
 {
     quitPending = true;
     randomplay = FALSE;
-    statuslabel->setText("");
+    statuslabel->clear();
     setLEDs( "--:--" );
 
     qApp->processEvents();
@@ -864,7 +864,7 @@ KSCD::closeEvent( QCloseEvent *e )
     quitPending = true;
     randomplay = FALSE;
 
-    statuslabel->setText("");
+    statuslabel->clear();
 
     setLEDs( "--:--" );
 
@@ -933,8 +933,8 @@ KSCD::ejectClicked()
       statuslabel->setText(i18n("Ejecting"));
       qApp->processEvents();
       qApp->flushX();
-      artistlabel->setText("");
-      titlelabel->setText("");
+      artistlabel->clear();
+      titlelabel->clear();
       tracktitlelist.clear();
       extlist.clear();
       
@@ -1182,7 +1182,7 @@ KSCD::aboutClicked()
         // reset the current server in case we played with it ...
 	
         current_server = server_copy;
-        debug("RESETTING SERVER TO: %s\n",current_server.ascii());
+        kdDebug() << "RESETTING SERVER TO: " << current_server << "\n" << endl;
       }
     
     disconnect(setup,SIGNAL(updateCDDBServers()),this,SLOT(getCDDBservers()));
@@ -1205,7 +1205,7 @@ KSCD::updateCurrentCDDBServer()
     if(setup)
       {
         setup->getCurrentServer(current_server);
-        debug("SET SERVER TO: %s\n",current_server.ascii());
+        kdDebug() << "SET SERVER TO: " << current_server << "\n" << endl;
       }
 } // updateCurrentCDDBServer
 
@@ -1346,7 +1346,7 @@ KSCD::cdMode()
 
 	  } else {
             cur_track = save_track = 1;
-            statuslabel->setText( "" ); // TODO how should I properly handle this
+            statuslabel->clear(); // TODO how should I properly handle this
             damn = TRUE;
 	  }
         break;
@@ -1468,9 +1468,9 @@ KSCD::cdMode()
         songListCB->clear();
         setLEDs( "--:--" );	
         tracklabel->setText( "--/--" );
-        titlelabel->setText("");
-        artistlabel->setText("");
-        totaltimelabel->setText("");
+        titlelabel->clear();
+        artistlabel->clear();
+        totaltimelabel->clear();
         totaltimelabel->lower();
         damn = TRUE;
         ejectedBefore = TRUE;
@@ -1601,7 +1601,7 @@ KSCD::readSettings()
     //Let's check if it is in old format and if so, convert it to new one:
     if(CDDB::normalize_server_list_entry(current_server))
     {
-        debug("Default CDDB server entry converted to new format and saved.\n");
+        kdDebug() << "Default CDDB server entry converted to new format and saved.\n" << endl;
         config->writeEntry("CurrentServer",current_server);
         config->sync();
     }
@@ -1628,7 +1628,7 @@ KSCD::readSettings()
             // function in configuration - it does not notice if QStrList
             // String contents is changed.
             cddbserverlist=nlist;
-            debug("CDDB server list converted to new format and saved.\n");
+            kdDebug() << "CDDB server list converted to new format and saved.\n" << endl;
             config->writeEntry("SeverList",cddbserverlist,',',true);
             config->sync();
         }
@@ -1763,7 +1763,7 @@ KSCD::getCDDBserversFailed()
     disconnect(&cddb,SIGNAL(get_server_list_done()),this,SLOT(getCDDBserversDone()));
     disconnect(&cddb,SIGNAL(get_server_list_failed()),this,SLOT(getCDDBserversFailed()));
     titlelabel->setText(i18n("Unable to get CDDB server list."));
-    artistlabel->setText("");
+    artistlabel->clear();
     titlelabeltimer->start(10000,TRUE); // 10 secs
 }
 
@@ -1881,20 +1881,17 @@ KSCD::get_cddb_info(bool _updateDialog)
 
     if(!res){
 
-        debug("STARTING REMOTE QUERY\n");
+        kdDebug() << "STARTING REMOTE QUERY\n" << endl;
         cddb.cddb_connect(current_server);
     }
     else{
-        debug("FOUND RECORD LOCALLY\n");
+        kdDebug() << "FOUND RECORD LOCALLY\n" << endl;
         if((int)tracktitlelist.count() != (cd->ntracks + 1)){
-                debug("WARNING LOCAL QUERY tracktitleslist.count = %d != cd->ntracks +1 = %d\n",
-                tracktitlelist.count(),cd->ntracks + 1
-            );
+                kdDebug() << "WARNING LOCAL QUERY tracktitleslist.count = " << tracktitlelist.count() << " != cd->ntracks +1 = " << cd->ntracks + 1 << "\n" << endl;
         }
 
         if((int)extlist.count() != (cd->ntracks + 1)){
-            debug("WARNING LOCAL QUERYextlist.count = %d != cd->ntracks +1 = %d\n",
-                                  extlist.count(),cd->ntracks + 1);
+            kdDebug() << "WARNING LOCAL QUERYextlist.count = " << extlist.count() << " != cd->ntracks +1 = " << cd->ntracks + 1 << "\n" << endl;
         }
 
         if(tracktitlelist.count() > 1){
@@ -1931,7 +1928,7 @@ int cddb_ready_bug = 0;
 void 
 KSCD::cddb_ready()
 {
-    debug("cddb_ready() called\n");
+    kdDebug() << "cddb_ready() called\n" << endl;
 
     if(!cd)
         return;
@@ -1960,10 +1957,10 @@ void
 KSCD::cddb_no_info()
 {
     //        cddb_ready_bug = 0;
-    debug("cddb_no_info() called\n");
+    kdDebug() << "cddb_no_info() called\n" << endl;
 
     titlelabel->setText(i18n("No matching CDDB entry found."));
-//    artistlabel->setText("");
+//    artistlabel->clear();
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
     tracktitlelist.clear();
@@ -1989,7 +1986,7 @@ KSCD::cddb_failed()
     // TODO differentiate between those casees where the communcition really
     // failed and those where we just couldn't find anything
     //        cddb_ready_bug = 0;
-    debug("cddb_failed() called\n");
+    kdDebug() << "cddb_failed() called\n" << endl;
     tracktitlelist.clear();
     tracktitlelist.append(i18n("Error getting CDDB entry.").ascii());
     for(int i = 0 ; i < cd->ntracks; i++)
@@ -2002,7 +1999,7 @@ KSCD::cddb_failed()
     discidlist.clear();
 
     titlelabel->setText(i18n("Error getting CDDB entry."));
-    artistlabel->setText("");
+    artistlabel->clear();
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
     timer->start(1000);
@@ -2015,7 +2012,7 @@ void
 KSCD::cddb_timed_out()
 {
     //    cddb_ready_bug = 0;
-    debug("cddb_timed_out() called\n");
+    kdDebug() << "cddb_timed_out() called\n" << endl;
     tracktitlelist.clear();
     tracktitlelist.append(i18n("CDDB query timed out.").ascii());
     for(int i = 0 ; i <= cd->ntracks; i++)
@@ -2028,7 +2025,7 @@ KSCD::cddb_timed_out()
     discidlist.clear();
 
     titlelabel->setText(i18n("CDDB query timed out."));
-    artistlabel->setText("");
+    artistlabel->clear();
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
     timer->start(1000);
@@ -2089,19 +2086,17 @@ KSCD::cddb_done()
 {
     cddb_inexact_sentinel =false;
 
-    debug("cddb_done() called\n");
+    kdDebug() << "cddb_done() called\n" << endl;
 //    cddb_ready_bug = 0;
     cddb.getData(xmcd_data,tracktitlelist,extlist,category,discidlist,revision,playlist);
     playlistpointer = 0;
 
     if((int)tracktitlelist.count() != (cd->ntracks + 1)){
-        debug("WARNING tracktitleslist.count = %d != cd->ntracks +1 = %d\n",
-                             tracktitlelist.count(),cd->ntracks + 1);
+        kdDebug() << "WARNING tracktitleslist.count = " << tracktitlelist.count() << " != cd->ntracks +1 = " << cd->ntracks + 1 << "\n" << endl;
     }
 
     if((int)extlist.count() != (cd->ntracks + 1)){
-        debug("WARNING extlist.count = %d != cd->ntracks +1 = %d\n",
-                              extlist.count(),cd->ntracks + 1);
+        kdDebug() << "WARNING extlist.count = " << extlist.count() << " != cd->ntracks +1 = " << cd->ntracks + 1 << "\n" << endl;
     }
 
     if(tracktitlelist.count() > 1){
@@ -2168,7 +2163,7 @@ KSCD::titlelabeltimeout()
 {
     // clear the cddb error message on the title label.
     titlelabeltimer->stop();
-    titlelabel->setText("");
+    titlelabel->clear();
 
 } // titlelabeltimeout
 
@@ -2286,7 +2281,7 @@ KSCD::getArtist(QString& artist)
 void  
 KSCD::performances(int i)
 {
-    debug("preformances %d\n",i);
+    kdDebug() << "preformances " << i << "\n" << endl;
 
     QString artist;
     QString str;
@@ -2315,7 +2310,7 @@ KSCD::performances(int i)
 void  
 KSCD::purchases(int i)
 {
-    debug("purchases %d\n",i);
+    kdDebug() << "purchases " << i << "\n" << endl;
 
     QString artist;
     QString str;
@@ -2372,7 +2367,7 @@ KSCD::magicslot( int )
     QString h;
     h.setNum(magic_height);
 
-    *magicproc << "kscdmagic" << " -b" << b.data() << " -w"<< w.data() << " -h" << h.data();
+    *magicproc << "kscdmagic" << " -b" << b << " -w"<< w << " -h" << h;
 
     connect(magicproc,
             SIGNAL(processExited(KProcess *)),this, SLOT(magicdone(KProcess*)));
@@ -2405,7 +2400,7 @@ KSCD::magicdone(KProcess* proc)
 void 
 KSCD::information(int i)
 {
-  debug("Information %d\n",i);
+  kdDebug() << "Information " << i << "\n" << endl;
   
   QString artist;
   QString str;
@@ -2498,7 +2493,7 @@ KSCD::startBrowser(const QString &querystring)
 
 
 void 
-KSCD::get_pathlist(QStrList& _pathlist)
+KSCD::get_pathlist(QStringList& _pathlist)
 {
   QDir d;
   QStrList list;
@@ -2506,11 +2501,11 @@ KSCD::get_pathlist(QStrList& _pathlist)
   
   d.setFilter( QDir::Dirs);
   d.setSorting( QDir::Size);
-  d.setPath(cddbbasedir.data());
+  d.setPath(cddbbasedir);
   if(!d.exists())
     {
       dialog = new InexactDialog(0, "dialog", false);
-      dialog->insertText(cddbbasedir.data());
+      dialog->insertText(cddbbasedir);
       dialog->setTitle(i18n("Enter the local CDDB base Directory"));
       
       if(dialog->exec() != QDialog::Accepted)
@@ -2520,7 +2515,7 @@ KSCD::get_pathlist(QStrList& _pathlist)
 	}
       
       dialog->getSelection(cddbbasedir);
-      d.setPath(cddbbasedir.data());
+      d.setPath(cddbbasedir);
       delete dialog;
     }
   
@@ -2643,7 +2638,7 @@ KSCD::make_random_list()
   if( (size = playlist.count()) <= 0 )
     size = cur_ntracks;
   
-  debug ( "Playlist has %d entries\n", size );
+  kdDebug() << "Playlist has " << size << " entries\n" << endl;
   random_list = (int *)malloc((size_t)size*sizeof(int));
   for( i=0; i < size; i++ ) 
     {
@@ -2715,8 +2710,8 @@ main( int argc, char *argv[] )
 	    printf("KSCD "KSCDVERSION
 		   "\n Copyright 1997-98 Bernd Johannes Wuebben wuebben@kde.org\n"
 		   " Copyright 2000 Dirk Foersterling milliByte@gmx.de\n");
-	    printf(i18n("-h: display commandline options\n").ascii());
-	    printf(i18n("-d: enable debugging output.\n").ascii());
+	    printf(i18n("-h: display commandline options\n").local8Bit());
+	    printf(i18n("-d: enable debugging output.\n").local8Bit());
 	    exit(0);
 	  }
 	}

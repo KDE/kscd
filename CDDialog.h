@@ -64,7 +64,7 @@ public:
 		 QString& cat,
 		 int& revision,
 		 QStrList& playlist,
-		 QStrList& pathlist,
+		 QStringList& pathlist,
 		 QString& _mailcmd,
                  QString& _submitaddress,
                  SMTPConfig::SMTPConfigData *_smtpConfigData
@@ -99,7 +99,7 @@ private:
     SMTPConfig::SMTPConfigData *smtpConfigData;
     QStrList 	ext_list;
     QStrList 	track_list;
-    QStrList 	pathlist;
+    QStringList pathlist;
     QStrList	playlist;
     QString  	xmcd_data;
     QStrList 	discidlist;

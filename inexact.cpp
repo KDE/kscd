@@ -130,13 +130,20 @@ InexactDialog::getSelection(QString& string)
 
 
 void 
-InexactDialog::insertList(QStrList& strlist)
+InexactDialog::insertList(const QStringList& stringlist)
 {
   if(listbox)
     {
-      list_box->setAutoUpdate(FALSE);
-      list_box->insertStrList(&strlist,-1);
-      list_box->setAutoUpdate(TRUE);
+      list_box->insertStringList(stringlist,-1);
+    }
+}
+
+void 
+InexactDialog::insertList(const QStrList& stringlist)
+{
+  if(listbox)
+    {
+      list_box->insertStrList(&stringlist,-1);
     }
 }
 
