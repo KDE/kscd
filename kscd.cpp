@@ -141,6 +141,7 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     updateDialog        = false;
     ejectedBefore       = false;
     currentlyejected    = false;
+    cddialog        = 0L;
 
     have_new_cd = true;
 
@@ -149,7 +150,6 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     setColors();
     setToolTips();
 
-    cddialog 	    = 0L;
     timer 	    = new QTimer( this );
     queryledtimer   = new QTimer( this );
     titlelabeltimer = new QTimer( this );
@@ -1720,10 +1720,10 @@ KSCD::writeSettings()
 void
 KSCD::CDDialogSelected()
 {
-    cddialog = new CDDialog();
-
     if(cddialog)
         return;
+
+    cddialog = new CDDialog();
 
     cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
                       revision,playlist,pathlist,mailcmd,submitaddress, &smtpConfigData);
@@ -1738,12 +1738,8 @@ KSCD::CDDialogSelected()
 void 
 KSCD::CDDialogDone()
 {
-    disconnect(cddialog,SIGNAL(play_signal(int)),this,SLOT(trackSelected(int)));
-    disconnect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
-    disconnect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
     delete cddialog;
     cddialog = 0L;
-
 }
 
 
