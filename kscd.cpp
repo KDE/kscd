@@ -1492,7 +1492,7 @@ void KSCD::readSettings()
     QString basedirdefault = mykapp->kde_datadir();
     basedirdefault += "/kscd/cddb/";
 
-    cddbbasedir = config->readEntry("LocalBaseDir",basedirdefault.data());
+    cddbbasedir = config->readEntry("LocalBaseDir",basedirdefault);
     strncpy(cddbbasedirtext, cddbbasedir.data(), 4095);
     cddbbasedirtext[4095] = 0;
 // Set this to false by default. Look at the settings dialog source code
