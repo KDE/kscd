@@ -90,14 +90,14 @@ InexactDialog::~InexactDialog() {
 
 }
 
-void InexactDialog::setTitle(char* t){
+void InexactDialog::setTitle(const QString& t){
 
   titlestring = t;
   text->setText(t);
 
 }
 
-void InexactDialog::setErrorString(char* t){
+void InexactDialog::setErrorString(const QString& t){
 
   errorstring = t;
 }
@@ -124,7 +124,7 @@ void InexactDialog::checkit(){
 
 void InexactDialog::getSelection(QString& string){
 
-  string = returnstring.copy();
+  string = returnstring;
 }
 
 
@@ -138,7 +138,7 @@ void InexactDialog::insertList(QStrList& strlist){
 
 }
 
-void InexactDialog::insertText(char* str){
+void InexactDialog::insertText(const QString& str){
 
   if(!listbox){
     edit->setAutoUpdate(FALSE);

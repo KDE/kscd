@@ -65,18 +65,18 @@ public:
     SMTP(char *serverhost = 0, int port = 0, int timeout = DEFAULT_SMTP_TIMEOUT);
     ~SMTP();
     
-    void setServerHost(char *serverhost);
+    void setServerHost(const QString& serverhost);
     void setPort(int port);
     void setTimeOut(int timeout);
     
     bool isConnected(){return connected;};
     bool isFinished(){return finished;};
-    char *getLastLine(){return lastLine.data();};
+    QString getLastLine(){return lastLine;};
     
-    void setSenderAddress(char *sender);
-    void setRecipientAddress(char *recipient);
-    void setMessageSubject(char *subject);
-    void setMessageBody(char *message);
+    void setSenderAddress(const QString& sender);
+    void setRecipientAddress(const QString& recipient);
+    void setMessageSubject(const QString& subject);
+    void setMessageBody(const QString& message);
 
     typedef enum {
         NONE = 0,             // null

@@ -1,3 +1,7 @@
+1999-03-09  Harri Porten  <porten@kde.org>
+
+	* ported to Qt 2.0 strings. Haven't tested if everything still works.
+
 1999-02-18  Harri Porten  <porten@kde.org>
 
 	* cddb.cpp: work around snprintf() for non-GNUish systems

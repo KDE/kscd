@@ -1228,11 +1228,11 @@ void CDDB::cddb_http_xlat(QString &s)
 {
     char q[6];
 
-    if(s.isNull() || s.size()==0)
+    if(s.isEmpty())
         return;
 
     unsigned int pos=0;
-    while(pos < s.size())
+    while(pos < s.length()+1)
     {
         switch (s[pos]) 
         {
@@ -1245,7 +1245,7 @@ void CDDB::cddb_http_xlat(QString &s)
         case '+':
         case '&':
         case '%':
-            (void) sprintf(q, "%%%02X", s[pos]);
+            (void) sprintf(q, "%%%02X", (char) s[pos]);
             s.remove(pos,1);
             s.insert(pos+1,q);
             pos += 3;

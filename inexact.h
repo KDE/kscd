@@ -49,11 +49,11 @@ public:
   ~InexactDialog();
 
   void insertList(QStrList& list);
-  void insertText(char* str);
+  void insertText(const QString& str);
   void getSelection(QString& string);
 
-  void setTitle(char* t);
-  void setErrorString(char* t);
+  void setTitle(const QString& t);
+  void setErrorString(const QString& t);
 
 private slots:
 

@@ -77,7 +77,7 @@ SMTP::~SMTP()
     timeOutTimer.stop();
 }
 
-void SMTP::setServerHost(char *serverhost)
+void SMTP::setServerHost(const QString& serverhost)
 {
     serverHost = serverhost;
 }
@@ -92,22 +92,22 @@ void SMTP::setTimeOut(int timeout)
     timeOut = timeout;
 }
 
-void SMTP::setSenderAddress(char *sender)
+void SMTP::setSenderAddress(const QString& sender)
 {
     senderAddress = sender;
 }
 
-void SMTP::setRecipientAddress(char *recipient)
+void SMTP::setRecipientAddress(const QString& recipient)
 {
     recipientAddress = recipient;
 }
 
-void SMTP::setMessageSubject(char *subject)
+void SMTP::setMessageSubject(const QString& subject)
 {
     messageSubject = subject;
 }
 
-void SMTP::setMessageBody(char *message)
+void SMTP::setMessageBody(const QString& message)
 {
     messageBody = message;
 }

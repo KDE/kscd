@@ -252,7 +252,7 @@ void CDDialog::extIB(){
 
   InexactDialog *dialog;
   dialog = new InexactDialog(0,"dialog",false);
-  dialog->setTitle((char *)i18n("Use this Editor to annotate this track"));
+  dialog->setTitle(i18n("Use this Editor to annotate this track"));
 
   dialog->insertText(ext_list.at(item + 1));
   
@@ -278,7 +278,7 @@ void CDDialog::extITB(){
   InexactDialog *dialog;
   dialog = new InexactDialog(0,"dialog",false);
   dialog->insertText(ext_list.at(0));
-  dialog->setTitle((char *)i18n("Use this Editor to annotate the title"));
+  dialog->setTitle(i18n("Use this Editor to annotate the title"));
   
   if(dialog->exec() != QDialog::Accepted){
     delete dialog;
@@ -316,7 +316,7 @@ void CDDialog::trackchanged(){
 
   QString fmt;
 
-  fmt.sprintf("%02d   %02d:%02d   %s",i+1,dml.minute(),dml.second(),trackedit->text());
+  fmt.sprintf("%02d   %02d:%02d   %s",i+1,dml.minute(),dml.second(),trackedit->text().ascii());
 
   track_list.insert(i+1,trackedit->text());
   track_list.remove(i+2);
@@ -427,8 +427,8 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   catlist.append("data");
 
   dialog->insertList(catlist);
-  dialog->setErrorString((char *)i18n("Please select a Category or press Cancel"));
-  dialog->setTitle((char *)i18n("To which category does the CD belong?"));
+  dialog->setErrorString(i18n("Please select a Category or press Cancel"));
+  dialog->setTitle(i18n("To which category does the CD belong?"));
   if(dialog->exec() != QDialog::Accepted){
     delete dialog;
     return;
@@ -476,7 +476,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
 
 //      smtpMailer = new SMTP;
 
-      smtpMailer->setServerHost(smtpConfigData->serverHost.data());
+      smtpMailer->setServerHost(smtpConfigData->serverHost);
       smtpMailer->setPort(smtpConfigData->serverPort.toInt());
       
       smtpMailer->setSenderAddress(smtpConfigData->senderAddress.data());

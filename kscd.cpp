@@ -93,7 +93,7 @@ extern "C" {
 
 extern struct play *playlist ;
 extern struct cdinfo_wm thiscd, *cd ;
-extern char	*cd_device;
+extern const char *cd_device;
 extern int have_new_cd;
 
 extern int	cur_track;	/* Current track number, starting at 1 */
@@ -230,25 +230,25 @@ void KSCD::smtpError(int errornum)
 {
     QString str, lstr;
 
-//    if(errornum == 10)
     switch(errornum){
     case 10:
-        lstr.sprintf(i18n("Error connecting to server."));
+        lstr = i18n("Error connecting to server.");
         break;
     case 11:
-        lstr.sprintf(i18n("Not connected."));
+        lstr = i18n("Not connected.");
         break;
     case 15:
-        lstr.sprintf(i18n("Connection timed out."));
+        lstr = i18n("Connection timed out.");
         break;
     case 16:
-        lstr.sprintf(i18n("Time out waiting for server interaction."));
+        lstr = i18n("Time out waiting for server interaction.");
         break;
     default:
-        lstr.sprintf(i18n("Server said:\n\"%s\""), smtpMailer->getLastLine());
+        lstr = i18n("Server said:\n\"%1\"").arg(smtpMailer->getLastLine());
     }
-    str.sprintf(i18n("Error #%d sending message via SMTP.\n\n%s"), errornum, lstr.data());
-    QMessageBox::critical(this, "Record Submission", str.data());
+    str = i18n("Error #%1 sending message via SMTP.\n\n%2")
+      .arg(errornum).arg(lstr);
+    QMessageBox::critical(this, i18n("Record Submission"), str);
 }
 
 	
@@ -634,10 +634,10 @@ void KSCD::playClicked()
         char *ptr = tracktitlelist.first();
         for(ptr = tracktitlelist.next(); ptr != 0; ptr = tracktitlelist.next()){
             i++;
-            songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
+            songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
         }
         for(; i < cur_ntracks; i++){
-            songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
+            songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
         }
 
 
@@ -748,7 +748,7 @@ void KSCD::nextClicked(){
         int j = randomtrack();
         QString str;
         str.sprintf("%02d/%02d",j,cd->ntracks );
-        tracklabel->setText(str.data());
+        tracklabel->setText(str);
 
         if(j < (int)tracktitlelist.count()){
             titlelabel->setText(tracktitlelist.at(j));
@@ -944,7 +944,7 @@ void KSCD::randomSelected(){
         int j = randomtrack();
         QString str;
         str.sprintf("%02d/%02d",j,cd->ntracks );
-        tracklabel->setText(str.data());
+        tracklabel->setText(str);
         if(j < (int)tracktitlelist.count()){
             titlelabel->setText(tracktitlelist.at(j));
             artistlabel->setText(tracktitlelist.at(0));
@@ -964,7 +964,7 @@ void KSCD::trackSelected( int trk ){
     randomplay = false;
     QString str;
     str.sprintf("%02d/%02d",trk + 1,cd->ntracks );
-    tracklabel->setText(str.data());
+    tracklabel->setText(str);
 
     if(trk+1 < (int)tracktitlelist.count()){
         titlelabel->setText(tracktitlelist.at(trk+1));
@@ -1027,11 +1027,11 @@ void KSCD::aboutClicked(){
 
 
     label->setAlignment(AlignLeft|WordBreak|ExpandTabs);
-    label->setText(labelstring.data());
+    label->setText(labelstring);
 
     QString pixdir = mykapp->kde_datadir() + QString("/kscd/pics/");
 
-    QPixmap pm((pixdir + "kscdlogo.xpm").data());
+    QPixmap pm((pixdir + "kscdlogo.xpm"));
     QLabel *logo = new QLabel(box);
     logo->setPixmap(pm);
     logo->setGeometry(40, 50, pm.width(), pm.height());
@@ -1103,7 +1103,7 @@ void KSCD::aboutClicked(){
         if( (QString)cd_device != dlg->getData()->cd_device){
             cd_device_str = dlg->getData()->cd_device;
             cd_close();
-            cd_device = cd_device_str.data();
+            cd_device = cd_device_str.ascii();
 
         }
         cddrive_is_ok = true;
@@ -1151,7 +1151,7 @@ void KSCD::aboutClicked(){
         // reset the current server in case we played with it ...
 
         current_server = server_copy.copy();
-        if(debugflag) printf("RESETTING SERVER TO: %s\n",current_server.data());
+        if(debugflag) printf("RESETTING SERVER TO: %s\n",current_server.ascii());
     }
 
     disconnect(setup,SIGNAL(updateCDDBServers()),this,SLOT(getCDDBservers()));
@@ -1172,7 +1172,7 @@ void KSCD::updateCurrentCDDBServer(){
 
     if(setup){
         setup->getCurrentServer(current_server);
-        if(debugflag) printf("SET SERVER TO: %s\n",current_server.data());
+        if(debugflag) printf("SET SERVER TO: %s\n",current_server.ascii());
     }
 }
 
@@ -1183,7 +1183,7 @@ void KSCD::volChanged( int vol ){
 
     QString str;
     str.sprintf(i18n("Vol: %02d%%"),vol);
-    volumelabel->setText(str.data());
+    volumelabel->setText(str);
     cd_volume(vol, 10, 100); // 10 -> right == left balance
     volume = vol;
 
@@ -1218,11 +1218,11 @@ void KSCD::cdMode(){
         if(cddrive_is_ok){
             statuslabel->setText( i18n("Error") );
             cddrive_is_ok = false;
-            QString errstring;
-            errstring.sprintf(i18n(
-                              "CDROM read or access error.\n"\
-                              "Please make sure you have access permissions to:\n%s"),cd_device);
-            QMessageBox::warning(this,i18n("Error"),errstring.data());
+            QString errstring =
+              i18n("CDROM read or access error.\n"\
+                   "Please make sure you have access permissions to:\n%1")
+              .arg(cd_device);
+            QMessageBox::warning(this,i18n("Error"),errstring);
         }
         return;
     }
@@ -1287,10 +1287,10 @@ void KSCD::cdMode(){
             char *ptr = tracktitlelist.first();
             for(ptr = tracktitlelist.next(); ptr != 0; ptr = tracktitlelist.next()){
                 i++;
-                songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
+                songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
             }
             for(; i < cur_ntracks; i++){
-                songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
+                songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
             }
 
 //            for (int i = 0; i < cur_ntracks; i++){
@@ -1304,7 +1304,7 @@ void KSCD::cdMode(){
             songListCB->setCurrentItem( cur_track - 1 );
         }
         str.sprintf("%02d/%02d",cur_track,cd->ntracks );
-        tracklabel->setText(str.data());
+        tracklabel->setText(str);
 
         if((cur_track < (int)tracktitlelist.count()) && (cur_track >= 0)){
             titlelabel->setText(tracktitlelist.at(cur_track));
@@ -1340,10 +1340,10 @@ void KSCD::cdMode(){
             char *ptr = tracktitlelist.first();
             for(ptr = tracktitlelist.next(); ptr != 0; ptr = tracktitlelist.next()){
                 i++;
-                songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
+                songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
             }
             for(; i < cur_ntracks; i++){
-                songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
+                songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
             }
 
 //            for (i = 0; i < cur_ntracks; i++)
@@ -1352,7 +1352,7 @@ void KSCD::cdMode(){
             int w = ((cur_track >= 0) ? cur_track : 1);
 
             str.sprintf("%02d/%02d",cur_track >=0? cur_track :1 ,cd->ntracks );
-            tracklabel->setText(str.data());
+            tracklabel->setText(str);
 
             if( w < (int)tracktitlelist.count()){
                 titlelabel->setText(tracktitlelist.at( w ));
@@ -1398,7 +1398,7 @@ void KSCD::setLEDs(QString symbols){
     }
 
     for(int i=0;i<5;i++){
-        trackTimeLED[i]->display(symbols.data()[i]);
+        trackTimeLED[i]->display(symbols[i]);
     }
 
 
@@ -1463,7 +1463,7 @@ void KSCD::readSettings()
     // in config.h
 
     cd_device_str = config->readEntry("CDDevice",DEFAULT_CD_DEVICE);
-    cd_device = cd_device_str.data();
+    cd_device = cd_device_str.ascii();
 
 #endif
 
@@ -1486,8 +1486,7 @@ void KSCD::readSettings()
     smtpConfigData.senderAddress = config->readEntry("senderAddress", "someone@somewhere.org");
 
     config->setGroup("CDDB");
-    QString basedirdefault;
-    basedirdefault = mykapp->kde_datadir().copy();
+    QString basedirdefault = mykapp->kde_datadir();
     basedirdefault += "/kscd/cddb/";
 
     cddbbasedir = config->readEntry("LocalBaseDir",basedirdefault.data());
@@ -1525,7 +1524,7 @@ void KSCD::readSettings()
             entry=cddbserverlist.next())
         {
             needtosave|=CDDB::normalize_server_list_entry(entry);
-            nlist.append(entry.data());
+            nlist.append(entry);
         }
         if(needtosave)
         {
@@ -1687,7 +1686,7 @@ void KSCD::get_cddb_info(bool _updateDialog){
     else
         fmt.sprintf("%02d:%02d",dml.minute(),dml.second());
 
-    totaltimelabel->setText(fmt.data());
+    totaltimelabel->setText(fmt);
 
     get_pathlist(pathlist);
     cddb.setPathList(pathlist);
@@ -1749,10 +1748,10 @@ void KSCD::get_cddb_info(bool _updateDialog){
         char *ptr = tracktitlelist.first();
         for(ptr = tracktitlelist.next(); ptr != 0; ptr = tracktitlelist.next()){
             i++;
-            songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
+            songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
         }
         for(; i < cur_ntracks; i++){
-            songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
+            songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
         }
 
 
@@ -1947,10 +1946,10 @@ void KSCD::cddb_done()
     char *ptr = tracktitlelist.first();
     for(ptr = tracktitlelist.next(); ptr != 0; ptr = tracktitlelist.next()){
         i++;
-        songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
+        songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
     }
     for(; i < cur_ntracks; i++){
-        songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
+        songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
     }
 
 //    for (int i = 0; i < cur_ntracks; i++){
@@ -2083,7 +2082,7 @@ void KSCD::cycletimeout(){
     cycletimer->stop();
     QString str;
     str.sprintf(i18n("Vol: %02d%%"),volume);
-    volumelabel->setText(str.data());
+    volumelabel->setText(str);
 
 }
 
@@ -2124,7 +2123,7 @@ void  KSCD::performances(int i){
         str = str.sprintf(
             "http://www.tourdates.com/cgi-bin/search.cgi?type=Artist&search=%s",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2152,14 +2151,14 @@ void  KSCD::purchases(int i){
         str = str.sprintf(
             "http://cdnow.com/switch/from=sr-288025/target=buyweb_products/artfs=%s",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
     case 1:
         str = str.sprintf(
             "http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%s",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2196,7 +2195,7 @@ void KSCD::magicslot(int ){
     if(!result){
         QString str;
         str.sprintf(i18n("Cannot start kscdmagic."));
-        QMessageBox::critical(this,"KSCD", str.data());
+        QMessageBox::critical(this,"KSCD", str);
     }
 
     return;
@@ -2212,7 +2211,7 @@ void KSCD::magicdone(KProcess* proc){
             QString str;
             str.sprintf(i18n("KSCD Magic exited abnormally.\n"\
                                            "Are you sure kscdmagic is installed?"));
-            QMessageBox::critical(this,"KSCD", str.data());
+            QMessageBox::critical(this,"KSCD", str);
         }
     }
 
@@ -2251,7 +2250,7 @@ void KSCD::information(int i){
         str = str.sprintf(
             "http://www.ubl.com/find/form?SEARCH=%s",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2261,7 +2260,7 @@ void KSCD::information(int i){
             "http://x8.dejanews.com/dnquery.xp?QRY=%s&defaultOp=AND&svcclass=dncurrent&maxhits=20&ST=QS&format=terse&DBS=2",
 
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2269,7 +2268,7 @@ void KSCD::information(int i){
         str = str.sprintf(
             "http://www.excite.com/search.gw?c=web&search=%s&trace=a",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2277,7 +2276,7 @@ void KSCD::information(int i){
         str = str.sprintf(
             "http://www.search.hotbot.com/hResult.html?SW=web&SM=MC&MT=%s&DC=10&DE=2&RG=NA&_v=2",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2285,7 +2284,7 @@ void KSCD::information(int i){
         str = str.sprintf(
             "http://www.infoseek.com/Titles?qt=%s&col=WW&sv=IS&lk=ip-noframes&nh=10",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2293,7 +2292,7 @@ void KSCD::information(int i){
         str = str.sprintf(
             "http://www.lycos.com/cgi-bin/pursuit?cat=lycos&query=%s",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2301,7 +2300,7 @@ void KSCD::information(int i){
         str = str.sprintf(
             "http://www.mckinley.com/search.gw?search=%s&c=web&look=magellan",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2309,7 +2308,7 @@ void KSCD::information(int i){
         str = str.sprintf(
             "http://search.yahoo.com/bin/search?p=%s",
             artist.data());
-        startBrowser(str.data());
+        startBrowser(str);
 
         break;
 
@@ -2319,7 +2318,7 @@ void KSCD::information(int i){
 
 }
 
-void KSCD::startBrowser(char* querystring){
+void KSCD::startBrowser(const QString &querystring){
 
     if(use_kfm){
 
@@ -2330,11 +2329,11 @@ void KSCD::startBrowser(char* querystring){
     }
     else{
 
-        char* shell = 0L;
+        const char* shell = 0L;
 
         QString bw = browsercmd.copy();
         QString cmd;
-        cmd = cmd.sprintf(bw.data(),querystring);
+        cmd = cmd.sprintf(bw.data(),querystring.ascii());
 
         if (!shell){
             if ( ( shell = getenv("SHELL") ) && *shell ) // make sure SHELL is not empty
@@ -2360,12 +2359,12 @@ void KSCD::get_pathlist(QStrList& _pathlist){
 
     d.setFilter( QDir::Dirs);
     d.setSorting( QDir::Size);
-    d.setPath(cddbbasedir.data());
+    d.setPath(cddbbasedir);
     if(!d.exists()){
 
         dialog = new InexactDialog(0, "dialog", false);
-        dialog->insertText(cddbbasedir.data());
-        dialog->setTitle((char *)i18n("Enter the local CDDB base Directory"));
+        dialog->insertText(cddbbasedir);
+        dialog->setTitle(i18n("Enter the local CDDB base Directory"));
 
         if(dialog->exec() != QDialog::Accepted){
             delete dialog;
@@ -2373,7 +2372,7 @@ void KSCD::get_pathlist(QStrList& _pathlist){
         }
 
         dialog->getSelection(cddbbasedir);
-        d.setPath(cddbbasedir.data());
+        d.setPath(cddbbasedir);
         delete dialog;
     }
 

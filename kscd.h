@@ -300,7 +300,7 @@ protected:
     //    void focusOutEvent(QFocusEvent *e);
     void playtime();
     void setupPopups();
-    void startBrowser(char* querystring);
+    void startBrowser(const QString& querystring);
     bool getArtist(QString& artist);
     void get_pathlist(QStrList& _patlist);
 
