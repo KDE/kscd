@@ -74,7 +74,7 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) :
     gbLayout->setAlignment( Qt::AlignTop );
 
     tracksList = new QListView( tracksGroup, "TracksList" );
-    tracksList->addColumn( i18n( "Nr" ) );
+    tracksList->addColumn( i18n( "No." ) );
     tracksList->addColumn( i18n( "Time" ) );
     tracksList->header()->setClickEnabled( FALSE, tracksList->header()->count() - 1 );
     tracksList->addColumn( i18n( "Title" ) );
