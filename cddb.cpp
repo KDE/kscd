@@ -72,21 +72,6 @@ CDDB::CDDB(char *host, unsigned short int _port, unsigned short int _timeout)
     protocol_level=1;
     // for direct connections assuming CDDB protocol level 1
 
-    // get current user/host name
-    struct utsname uts;
-
-    uname(&uts);
-    domainname = uts.nodename;
-    
-    
-    if(domainname.isEmpty())
-	domainname = "somemachine.nowhere.org";
-      
-    pw = getpwuid(getuid());
-    if (pw)
-	username = pw->pw_name;
-    else
-	username = "anonymous";
 //printf("cddb info: host[%s] port[%d] connected[%d] readonly[%d] timeout[%d]\n", host, port, connected, readonly, timeout);
 //printf("attemping to connect to cddb...\n");
 //fflush(stdout);
@@ -363,7 +348,7 @@ CDDB::send_http_command(QString &command)
     QString identification;
     
     prot.setNum(protocol_level);
-    identification="&hello="+username+"+"+domainname+"+Kscd+"+KSCDVERSION+"&proto="+prot;
+    identification=QString("&hello=anonymous+kde+Kscd+")+KSCDVERSION+"&proto="+prot;
 
     prt.setNum(port);
     QString base  = "http://"+hostname+":"+prt;
@@ -659,9 +644,7 @@ CDDB::do_state_machine()
 		  QString hellostr;
 		  
 		  // cddb hello username hostname clientname version
-		  hellostr = QString("cddb hello %1 %2 Kscd %3\n")
-			.arg(username)
-			.arg(domainname)
+		  hellostr = QString("cddb hello anonymous kde Kscd %1\n")
 			.arg(KSCDVERSION);
 		  kdDebug() << "hellostr: " << hellostr << "\n" << endl;
 		  
