@@ -29,19 +29,19 @@
 
 #include "bwlednum.h"
 
-#include <qpushbt.h>
+#include <qpushbutton.h>
 #include <qlabel.h>
 #include <qdialog.h>
-#include <qapp.h>
+#include <qapplication.h>
 #include <qtimer.h>
 #include <qbitmap.h>
-#include <qcombo.h>
-#include <qmsgbox.h>
-#include <qscrbar.h>
+#include <qcombobox.h>
+#include <qmessagebox.h>
+#include <qscrollbar.h>
 #include <qslider.h>
-#include <qtabdlg.h>
+#include <qtabdialog.h>
 #include <qtooltip.h>
-#include <qpopmenu.h>
+#include <qpopupmenu.h>
 
 #include <stdlib.h>
 #include <stdio.h>

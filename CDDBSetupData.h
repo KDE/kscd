@@ -15,10 +15,10 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qchkbox.h>
-#include <qpushbt.h>
+#include <qcheckbox.h>
+#include <qpushbutton.h>
 #include <qlistbox.h>
-#include <qlined.h>
+#include <qlineedit.h>
 
 class CDDBSetupData : public QWidget
 {

@@ -51,7 +51,7 @@ SMTP::SMTP(char *serverhost, int port, int timeout)
 
     uname(&uts);
     domainName = uts.nodename;
-    domainName.detach();
+    
     
     if(domainName.isEmpty())
         domainName = "somemachine.nowhere.org";

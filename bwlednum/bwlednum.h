@@ -8,6 +8,12 @@
  * $Id$
  * 
  * $Log$
+ * Revision 1.1.1.1.6.1  1999/02/22 22:28:46  kulow
+ * CVS_SILENT replaced old qt header names with new ones
+ *
+ * Revision 1.1.1.1  1997/07/04 21:23:49  kulow
+ * Coolo: added Bernd's kscd
+ *
  * Revision 1.1  1997/06/21 23:10:11  wuebben
  * Initial revision
  *
@@ -27,7 +33,7 @@
 #define BW_LED_NUM_H
 
 #include <qframe.h>
-#include <qbitarry.h>
+#include <qbitarray.h>
 
 
 class BW_LED_Number : public QFrame	

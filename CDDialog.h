@@ -12,7 +12,7 @@
 
 #include "CDDialogData.h"
 #include <qstrlist.h>
-#include <qdatetm.h>
+#include <qdatetime.h>
 #include <smtpconfig.h>
 
 

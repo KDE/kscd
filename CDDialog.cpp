@@ -20,12 +20,12 @@
 
 #include <qkeycode.h>
 #include <qregexp.h> 
-#include <qdatetm.h> 
-#include <qtstream.h> 
+#include <qdatetime.h> 
+#include <qtextstream.h> 
 #include <qfile.h>
 #include <qdir.h>
-#include <qfileinf.h> 
-#include <qmsgbox.h>
+#include <qfileinfo.h> 
+#include <qmessagebox.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -560,7 +560,7 @@ void CDDialog::getCategoryFromPathName(char* pathname, QString& _category){
   else
     _category = path.mid(pos+1,path.length());
 
-  _category.detach();
+  
 
 }
 
@@ -950,7 +950,7 @@ void  mimetranslate(QString& s){
     
   }
 
-  q.detach();
+  
   //  printf("%s\n",q.data());
   s = q.copy();
 

@@ -8,6 +8,12 @@
 //  $Id$
 //
 //  $Log$
+//  Revision 1.2.4.1  1999/02/22 22:28:47  kulow
+//  CVS_SILENT replaced old qt header names with new ones
+//
+//  Revision 1.2  1999/01/17 19:54:52  bieker
+//  i18n() some more strings.
+//
 //  Revision 1.1.1.1  1997/07/04 21:23:49  kulow
 //  Coolo: added Bernd's kscd
 //
@@ -27,14 +33,14 @@
 //
 
 #include <qdialog.h>
-#include <qapp.h>
+#include <qapplication.h>
 #include <qframe.h>
 #include <qlabel.h>
 #include "bwlednum.h"
-#include <qpushbt.h>
+#include <qpushbutton.h>
 #include <qtooltip.h>
 
-#include <qlcdnum.h>
+#include <qlcdnumber.h>
 
 class LEDDemo : public QDialog{
 

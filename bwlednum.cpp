@@ -6,6 +6,13 @@
  * $Id$
  * 
  * $Log$
+ * Revision 1.5.6.1  1999/02/22 22:28:30  kulow
+ * CVS_SILENT replaced old qt header names with new ones
+ *
+ * Revision 1.5  1998/01/02 00:47:17  wuebben
+ * Bernd: Monster Commit !! Finished CDDB support and Web intergration
+ * Let the games begin
+ *
  * Revision 1.4  1997/10/25 15:15:34  wuebben
  * Bernd: fixed the segfault error if you had no permiision to access the cdrom
  * drive
@@ -40,7 +47,7 @@
 
 
 #include "bwlednum.h"
-#include "qbitarry.h"
+#include "qbitarray.h"
 #include "qpainter.h"
 #include <stdio.h>
 

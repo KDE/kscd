@@ -15,9 +15,9 @@
 
 #include <qdialog.h>
 #include <qlabel.h>
-#include <qlined.h>
+#include <qlineedit.h>
 #include <qlistbox.h>
-#include <qpushbt.h>
+#include <qpushbutton.h>
 
 class CDDialogData : public QDialog
 {

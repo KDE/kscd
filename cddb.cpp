@@ -24,10 +24,10 @@
  *
  */
 
-#include <qtstream.h> 
+#include <qtextstream.h> 
 #include <qfile.h>
 #include <qdir.h>
-#include <qfileinf.h> 
+#include <qfileinfo.h> 
 #include <qregexp.h> 
 #include "cddb.h"
 #include <sys/time.h>
@@ -76,7 +76,7 @@ CDDB::CDDB(char *host, int _port,int _timeout)
 
     uname(&uts);
     domainname = uts.nodename;
-    domainname.detach();
+    
     
     if(domainname.isEmpty())
 	domainname = "somemachine.nowhere.org";
@@ -611,7 +611,7 @@ void CDDB::do_state_machine()
 	else if(lastline.left(3) == QString("202"))
         {
 	    state = CDDB_DONE;
-	    respbuffer.detach();
+	    
 	    cddb_close(sock);
 	    emit cddb_no_info();
 	}
@@ -644,7 +644,7 @@ void CDDB::do_state_machine()
             if(protocol!=CDDBHTTP)
                 write(sock->socket(),"quit\n",6);
             state = CDDB_DONE;
-	    respbuffer.detach();
+	    
 	    cddb_close(sock);
 	    emit cddb_done();
 	} else {
@@ -776,7 +776,7 @@ bool CDDB::local_query(
 
 	if(checkDir(magicID,pathlist.at(i))){
 	    getCategoryFromPathName(pathlist.at(i),category);
-	    category.detach();
+	    
 	    getData(data,titlelist,extlist,_category,discidlist,revision,playlist);
 	    return true;
 	}
@@ -814,7 +814,7 @@ bool CDDB::checkDir(unsigned long magicID, char* dir)
 
 
     file.close();
-    respbuffer.detach();
+    
     return true;
 
 }
@@ -842,7 +842,7 @@ void CDDB::getData(
     discidlist.clear();
     categ      = category.copy();
     data       = respbuffer;
-    data.detach();
+    
   
     int pos1,pos2,pos3,pos4 = 0;
 
@@ -968,7 +968,7 @@ void CDDB::getCategoryFromPathName(char* pathname, QString& category){
     else
 	category = path.mid(pos+1,path.length());
 
-    category.detach();
+    
 
 }
 

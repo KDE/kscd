@@ -873,7 +873,7 @@ void KSCD::closeEvent( QCloseEvent *e ){
 }
 
 bool KSCD::event( QEvent *e ){
-    if(e->type() == Event_Hide && autodock && docking){
+    if(e->type() == QEvent::Hide && autodock && docking){
         if(dockinginprogress || quitPending)
             return(FALSE);
         sleep(1); // give kwm some time..... ugly I know.

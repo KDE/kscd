@@ -15,7 +15,7 @@
 #define Inherited QWidget
 
 #include <qlabel.h>
-#include <qgrpbox.h>
+#include <qgroupbox.h>
 #include <klocale.h>
 #include <kapp.h>
 
