@@ -31,8 +31,8 @@ KVolumeControl::KVolumeControl(QPushButton* surrogate, QWidget* parent, const ch
     setLineWidth(1);
     m_surrogate->setToggleButton(true);
     m_surrogate->installEventFilter(this);
-    makeVisible(m_surrogate->isOn());
-    connect(m_surrogate, SIGNAL(toggled(bool)), this, SLOT(makeVisible(bool)));
+    setShown(m_surrogate->isOn());
+    connect(m_surrogate, SIGNAL(toggled(bool)), this, SLOT(setShown(bool)));
     m_volumeSlider = new QSlider(0, 100, 5,  50, QSlider::Vertical, this);
     setMargin((surrogate->width() - m_volumeSlider->sizeHint().width()) / 2);
     m_volumeSlider->setFixedSize(surrogate->width() - lineWidth() * 2 - margin() * 2, 100);
@@ -89,18 +89,6 @@ void KVolumeControl::setValue(int value)
 void KVolumeControl::valueFlip(int value)
 {
     emit valueChanged(100 - value);
-}
-
-void KVolumeControl::makeVisible(bool visible)
-{
-    if (visible)
-    {
-        show();
-    }
-    else
-    {
-        hide();
-    }
 }
 
 void KVolumeControl::keyPressEvent(QKeyEvent * e)

@@ -40,7 +40,6 @@ class KVolumeControl : public QHBox
         void valueChanged(int);
 
     protected slots:
-        void makeVisible(bool);
         void valueFlip(int);
 
     protected:
