@@ -724,6 +724,7 @@ KSCD::playClicked()
                   } else {
                     statuslabel->setText( i18n("Playing") );
                   }
+                fprintf(stderr, "yeah");
                 wm_cd_pause();
                 break;
 
@@ -1068,12 +1069,12 @@ KSCD::aboutClicked()
     QString labelstring;
     labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
-    "Copyright (c) 1997-2000 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
-    "Copyright (c) 1999-2000 \nDirk Försterling <milliByte@gmx.net>\n"
+    "Copyright (c) 1997-2001 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
+    "Copyright (c) 1999-2001 \nDirk Försterling <milliByte@gmx.net>\n"
     "   (current Maintainer)\n\n"
     "Kscd is based in part on WorkMan,\n"
                                       "Copyright (c) 1991-1996 Steven Grimm\n"
-                                      "Copyright (c) 1996-2000 Dirk Försterling <milliByte@gmx.net>\n\n"
+                                      "Copyright (c) 1996-2001 Dirk Försterling <milliByte@gmx.net>\n\n"
                                       "Special thanks to Ti Kan and "
                                       "Steve Scherf, the inventors of "
                                       "the CDDB database concept. "
@@ -1095,6 +1096,15 @@ KSCD::aboutClicked()
     label->setAlignment(AlignLeft|WordBreak|ExpandTabs);
     label->setText(labelstring);
     lay2->addWidget ( label );
+
+    /*
+     * ?
+     * 
+    QPixmap pm = UserIcon("kscdlogo");
+    QLabel *logo = new QLabel(box);
+    logo->setPixmap(pm);
+    logo->setGeometry(40, 50, pm.width(), pm.height());
+    */
 
     ConfigDlg* dlg;
     struct configstruct config;
