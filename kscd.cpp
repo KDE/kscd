@@ -40,6 +40,7 @@
 #include <kemailsettings.h>
 #include <kglobal.h>
 #include <khelpmenu.h>
+#include <kkeydialog.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kmainwindow.h>
@@ -183,7 +184,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action = new KAction(i18n("Previous"), Key_B, this, SLOT(prevClicked()), m_actions, "Previous");
   action = new KAction(i18n("Next"), Key_N, this, SLOT(nextClicked()), m_actions, "Next");
   action = KStdAction::quit(this, SLOT(quitClicked()), m_actions);
-  action = KStdAction::keyBindings(guiFactory(), SLOT(configureShortcuts()), m_actions);
+  action = KStdAction::keyBindings(this, SLOT(configureKeys()), m_actions);
   action = KStdAction::preferences(this, SLOT(showConfig()), m_actions);
   action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), m_actions, "Loop");
   action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), m_actions, "Eject");
@@ -918,6 +919,11 @@ void KSCD::configDone()
 
     // dialog deletes itself
     configDialog = 0L;
+}
+
+void KSCD::configureKeys()
+{
+    KKeyDialog::configure(m_actions, this);
 }
 
 void KSCD::setDevicePaths(QString cd_device, QString audio_system, QString audio_device)
