@@ -254,40 +254,24 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect(&cddb,SIGNAL(cddb_no_info()),this,SLOT(cddb_no_info()));
 
   // set up the actions and keyboard accels
-  KAccel* accels = new KAccel(this);
   KActionCollection* actions = new KActionCollection(this);
 
   KAction* action;
-  action = new KAction(i18n("Play/Pause"), Key_P, this, SLOT(playClicked()), this, "Play/Pause");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Stop"), Key_S, this, SLOT(stopClicked()), this, "Stop");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Previous"), Key_B, this, SLOT(prevClicked()), this, "Previous");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Next"), Key_N, this, SLOT(nextClicked()), this, "Next");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Forward"), Key_Right, this, SLOT(fwdClicked()), this, "Forward");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Backward"), Key_Left, this, SLOT(bwdClicked()), this, "Backward");
-  action->plugAccel(accels);
+  action = new KAction(i18n("Play/Pause"), Key_P, this, SLOT(playClicked()), actions, "Play/Pause");
+  action = new KAction(i18n("Stop"), Key_S, this, SLOT(stopClicked()), actions, "Stop");
+  action = new KAction(i18n("Previous"), Key_B, this, SLOT(prevClicked()), actions, "Previous");
+  action = new KAction(i18n("Next"), Key_N, this, SLOT(nextClicked()), actions, "Next");
+  action = new KAction(i18n("Forward"), Key_Right, this, SLOT(fwdClicked()), actions, "Forward");
+  action = new KAction(i18n("Backward"), Key_Left, this, SLOT(bwdClicked()), actions, "Backward");
   action = KStdAction::action(KStdAction::Quit, this, SLOT(quitClicked()), actions);
-  action->plugAccel(accels);
-  action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), this, "Loop");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), this, "Eject");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Increase Volume"), Key_Plus, this, SLOT(incVolume()), this, "IncVolume");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Increase Volume"), Key_Equal, this, SLOT(incVolume()), this, "IncVolume Alt");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), this, "DecVolume");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), this, "Options");
-  action->plugAccel(accels);
-  action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), this, "Shuffle");
-  action->plugAccel(accels);
-  action = new KAction(i18n("CDDB"), CTRL + Key_D, this, SLOT(CDDialogSelected()), this, "CDDB");
-  action->plugAccel(accels);
+  action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), actions, "Loop");
+  action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), actions, "Eject");
+  action = new KAction(i18n("Increase Volume"), Key_Plus, this, SLOT(incVolume()), actions, "IncVolume");
+  action = new KAction(i18n("Increase Volume"), Key_Equal, this, SLOT(incVolume()), actions, "IncVolume Alt");
+  action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), actions, "DecVolume");
+  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), actions, "Options");
+  action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), actions, "Shuffle");
+  action = new KAction(i18n("CDDB"), CTRL + Key_D, this, SLOT(CDDialogSelected()), actions, "CDDB");
 
   volstartup = TRUE;
   volSB->setValue(volume);
@@ -1420,7 +1404,6 @@ KSCD::randomtrack()
 void
 KSCD::cdMode()
 {
-//  static char *p = new char[10];
     static bool damn = TRUE;
 
     sss = wm_cd_status();
