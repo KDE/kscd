@@ -1017,11 +1017,11 @@ void KSCD::setDevicePaths(QString cd_device, QString audio_system, QString audio
 #if defined(BUILD_CDDA)
         Prefs::audioSystem().isEmpty()?WM_CDIN:WM_CDDA,
         QFile::encodeName(Prefs::cdDevice()), Prefs::audioSystem().ascii(), Prefs::audioDevice().ascii(), 0);
-    kdDebug() << "Device changed to " << Prefs::cdDevice() << ", " << Prefs::audioSystem()
+    kdDebug(67000) << "Device changed to " << Prefs::cdDevice() << ", " << Prefs::audioSystem()
         << ", " << Prefs::audioDevice() << ". return " << ret << "\n";
 #else
         WM_CDIN, QFile::encodeName(Prefs::cdDevice()), 0, 0, 0);
-    kdDebug() << "Device changed to " << Prefs::cdDevice() << ". return " << ret << "\n";
+    kdDebug(67000) << "Device changed to " << Prefs::cdDevice() << ". return " << ret << "\n";
 #endif
 
     device_change = true;
@@ -1104,7 +1104,7 @@ void KSCD::make_random_list()
     int selected = 0;
     bool rejected = false;
 
-    //kdDebug() << "Playlist has " << size << " entries\n" << endl;
+    //kdDebug(67000) << "Playlist has " << size << " entries\n" << endl;
     random_list.clear();
     for(int i = 0; i < cd->ntracks; i++)
     {
@@ -1466,7 +1466,7 @@ void KSCD::get_cddb_info(bool /*_updateDialog*/)
 
     // Don't crash if no disc is in
     if( cd->length == 0 ) {
-      kdDebug() << "CD length seems to be zero" << endl;
+      kdDebug(67000) << "CD length seems to be zero" << endl;
       cddb_no_info();
       return;
     }
@@ -1540,7 +1540,7 @@ void KSCD::cddb_done(CDDB::Result result)
 
 void KSCD::cdtext(struct cdtext_info* p_cdtext)
 {
-    kdDebug() << "cdtext() called" << endl;
+    kdDebug(67000) << "cdtext() called" << endl;
     setArtistAndTitle("", "");
     tracktitlelist.clear();
     extlist.clear();
@@ -1604,7 +1604,7 @@ void KSCD::cddb_failed()
     // TODO differentiate between those casees where the communcition really
     // failed and those where we just couldn't find anything
     //        cddb_ready_bug = 0;
-    kdDebug() << "cddb_failed() called\n" << endl;
+    kdDebug(67000) << "cddb_failed() called\n" << endl;
     setArtistAndTitle("", "");
     tracktitlelist.clear();
     extlist.clear();
@@ -1887,7 +1887,7 @@ bool KSCD::getArtist(QString& artist)
 
 void KSCD::information(int i)
 {
-    //kdDebug() << "Information " << i << "\n" << endl;
+    //kdDebug(67000) << "Information " << i << "\n" << endl;
 
     QString artist;
     QString str;
