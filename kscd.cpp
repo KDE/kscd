@@ -37,9 +37,11 @@
 #include <kdialogbase.h>
 #include <kemailsettings.h>
 #include <kglobal.h>
+#include <khelpmenu.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kmessagebox.h>
+#include <kpopupmenu.h>
 #include <kprotocolmanager.h>
 #include <krun.h>
 #include <kstandarddirs.h>
@@ -663,6 +665,9 @@ KSCD::setupPopups()
 #endif
 
     connect( infoPopup, SIGNAL(activated(int)), SLOT(information(int)) );
+
+    KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
+    mainPopup->insertItem(i18n("Help"), helpMenu->menu());
 } // setupPopups
 
 void
@@ -2723,10 +2728,14 @@ main( int argc, char *argv[] )
     KAboutData aboutData( "kscd", I18N_NOOP("kscd"),
                           KSCDVERSION, description,
                           KAboutData::License_GPL,
-                          "(c) 2001, Dirk Försterling");
+                          "(c) 2001, Dirk FÃ¶rsterling");
+    aboutData.addAuthor("Aaron J. Seigo", I18N_NOOP("Current maintainer"), "aseigo@olympusproject.org");
     aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
-    aboutData.addAuthor("Dirk Försterling",0, "milliByte@gmx.net");
-    aboutData.addAuthor("Aaron J. Seigo", 0, "aseigo@olympusproject.org");
+    aboutData.addAuthor("Dirk FÃ¶rsterling", I18N_NOOP("Workman library, previous maintainer"), "milliByte@gmx.net");
+    aboutData.addCredit("Steven Grimm", I18N_NOOP("Workman library"));
+    aboutData.addCredit("Vadim Zaliva", I18N_NOOP("HTTP proxy code"));
+    aboutData.addCredit("Paul Harrison", I18N_NOOP("KSCD Magic based on Synaesthesia"), "pfh@yoyo.cc.monash.edu.au");
+    aboutData.addCredit("freedb.org", I18N_NOOP("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
     KCmdLineArgs::init( argc, argv, &aboutData );
 

@@ -30,6 +30,7 @@
 
 #include <kaboutdialog.h>
 #include <kapplication.h>
+#include <kcmoduleloader.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kwin.h>
@@ -72,19 +73,34 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
      */
     QVBox* page = addVBoxPage(i18n("CD Player"), i18n("KSCD Settings & Behavior"), loadIcon("kscd"));
     mKCSDConfig = new configWidget(mPlayer, page);
-    
+
     /*
      * freedb page
-     */
+     *
     page = addVBoxPage(QString("freedb"), i18n("Configure Fetching Items"), loadIcon("cdtrack"));
     mCDDBConfig = new CDDBSetup(page,"cddbsetupdialog");
     mPlayer->getCDDBOptions(mCDDBConfig);
     connect(mCDDBConfig, SIGNAL(updateCDDBServers()), mPlayer, SLOT(getCDDBservers()));
-    connect(mCDDBConfig, SIGNAL(updateCurrentServer(const QString&)), 
+    connect(mCDDBConfig, SIGNAL(updateCurrentServer(const QString&)),
             mPlayer, SLOT(updateCurrentCDDBServer(const QString&)));
-    connect(mPlayer, SIGNAL(newServerList(const QStringList&)), 
-            mCDDBConfig, SLOT(insertServerList(const QStringList&)));
-    
+    connect(mPlayer, SIGNAL(newServerList(const QStringList&)),
+            mCDDBConfig, SLOT(insertServerList(const QStringList&)));*/
+
+    KCModuleInfo info("Settings/Sound/cddb.desktop", "settings");
+    if (info.service()->isValid())
+    {
+        KCModule *m = KCModuleLoader::loadModule(info);
+        if (m)
+        {
+            m->load();
+            page = addVBoxPage(QString("freedb"), i18n("Configure Fetching Items"), loadIcon("cdtrack"));
+            m->reparent(page, 0, QPoint(0, 0));
+            connect(this, SIGNAL(okClicked()), m, SLOT(save()));
+            connect(this, SIGNAL(applyClicked()), m, SLOT(save()));
+            connect(this, SIGNAL(defaultClicked()), m, SLOT(defaults()));
+       }
+    }
+
     /*
      * SMTP page
      */
@@ -103,28 +119,6 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
     mPlayer->getMagicOptions(mgconfig);
     mMagicConfig = new MGConfigDlg(page, &mgconfig, "mgconfigdialg");
 #endif
-    
-    /*
-     * About page
-     */
-    page = addVBoxPage(i18n("Credits"), i18n("Primary Authors & Contributors"), loadIcon("help"));
-    KAboutWidget* about = new KAboutWidget(page);
-    about->setLogo(UserIcon("kscdlogo"));
-    about->setVersion(KSCDVERSION);
-    about->setMaintainer("Aaron J. Seigo", "aseigo@olympusproject.org",
-                         QString::null, i18n("Current maintainer"));
-    about->addContributor(i18n("Dirk Försterling"), "milliByte@gmx.net", QString::null, 
-                     i18n("Workman library, previous maintainer"));
-    about->setAuthor("Bernd Johannes Wuebben", "wuebben@kde.org", 
-                     QString::null, QString::null);
-    about->addContributor("Steven Grimm", QString::null, QString::null, i18n("Workman library"));
-    about->addContributor("Vadim Zaliva", QString::null, QString::null, i18n("HTTP proxy code"));
-    about->addContributor("Paul Harrison", "pfh@yoyo.cc.monash.edu.au", QString::null, 
-                          i18n("KSCD Magic based on Synaesthesia"));
-    about->addContributor("freedb.org", QString::null, QString::null, 
-                          i18n("Special thanks to freedb.org for "
-                               "providing a free CDDB-like CD database"));
-    about->adjust();
 }
 
 ConfigDlg::~ConfigDlg()

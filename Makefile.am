@@ -19,7 +19,7 @@ kscd_SOURCES = kscd.cpp kscd.skel configdlg.cpp ledlamp.cpp CDDialog.cpp \
 	smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
         configWidget.cpp
 
-kscd_LDFLAGS = $(all_libraries)
+kscd_LDFLAGS = $(all_libraries) -lkutils
 kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
              $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) $(top_builddir)/libkcddb/libkcddb.la
 
