@@ -12,6 +12,9 @@
             <height>670</height>
         </rect>
     </property>
+    <property name="caption">
+        <string>CDDBDlgBase</string>
+    </property>
     <vbox>
         <property name="name">
             <cstring>unnamed</cstring>
@@ -154,6 +157,12 @@
                 <widget class="KComboBox" row="4" column="3">
                     <property name="name">
                         <cstring>m_genre</cstring>
+                    </property>
+                    <property name="editable">
+                        <bool>true</bool>
+                    </property>
+                    <property name="duplicatesEnabled">
+                        <bool>false</bool>
                     </property>
                 </widget>
                 <widget class="QLabel" row="0" column="0">
@@ -317,6 +326,7 @@
     <includehint>klineedit.h</includehint>
     <includehint>klineedit.h</includehint>
     <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
     <includehint>klineedit.h</includehint>
     <includehint>kcombobox.h</includehint>
     <includehint>klistview.h</includehint>
