@@ -2316,10 +2316,15 @@ void KSCD::startBrowser(const QString &querystring){
 
 void KSCD::doSM()
 {
+//WABA: Session management has changed
+#if 1
+#warning Session management is broken
+#else
     if (isVisible())
 	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->getCaption()+"\"");
     else
 	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->getCaption()+"\" -hide ");
+#endif
 }
 
 
@@ -2349,7 +2354,12 @@ int main( int argc, char *argv[] )
         }
     }
 
+//WABA: Session management has changed
+#if 1
+#warning Session management is broken
+#else
     a.enableSessionManagement(true);
+#endif
     a.setTopWidget(k);
     a.setMainWidget( k );
     k->setCaption(a.getCaption());
