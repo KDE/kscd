@@ -195,8 +195,9 @@
 
 /*
  * Linux Soundcard support
+ * Disabled by default, because some people rely on it
  */
-#define OSS_SUPPORT 1
+/*#define OSS_SUPPORT 1 */
 
 /*
  * This has nothing to do with the above.
@@ -210,8 +211,9 @@
  * drives as well. But it may be possible, that it doesn't work at all.
  * If your drive/driver combination cannot handle the faster access,
  * the driver will usually hang and you have to reboot your machine.
+ * [Defaulted this to be enabled, because KSCD-1.2.7 did it anyway.]
  */
-/* #define FAST_IDE 1 */
+#define FAST_IDE 1
 
 /*
  * There are two alternative ways of checking a device containing a

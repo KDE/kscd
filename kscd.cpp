@@ -709,7 +709,7 @@ KSCD::playClicked()
 	      {
 	      case WM_CDM_PLAYING:
                 statuslabel->setText( i18n("Pause") );
-                wm_cd_pause ();
+                wm_cd_pause();
                 break;
 	      case WM_CDM_PAUSED:
                 if(randomplay)
@@ -721,6 +721,7 @@ KSCD::playClicked()
 		  } else {
                     statuslabel->setText( i18n("Playing") );
 		  }
+                wm_cd_pause();
                 break;
 	
 	      default:
@@ -1258,7 +1259,7 @@ KSCD::randomtrack()
   /* set, the original code.  */
   if( randomonce )
     {
-      if( !playlist.isEmpty() ) 
+      if( !playlist.isEmpty() )
 	{
 	  /* Check to see if we are at the end of the list */
 	  if( (unsigned int)random_current >= playlist.count() ) 
@@ -1297,7 +1298,7 @@ KSCD::randomtrack()
       return atoi( (*playlist.at(j)).ascii() );
     } else {
       int j;
-      j = 1 + (int) randSequence.getLong(cur_ntracks);
+      j = (cur_ntracks == 0) ? 0 : (1 + (int) randSequence.getLong(cur_ntracks));
       return j;
     }
 } // randomtrack
@@ -1575,7 +1576,6 @@ KSCD::readSettings()
     ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);
     mailcmd    =        config->readEntry("UnixMailCommand","/bin/mail -s \"%s\"");
     randomonce = (bool)config->readBoolEntry("RANDOMONCE",true);
-
 
 #ifdef DEFAULT_CD_DEVICE
 
