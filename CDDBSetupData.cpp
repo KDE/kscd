@@ -53,7 +53,7 @@ CDDBSetupData::CDDBSetupData
 	cddb_timeout_ef->setText( "30" );
 	cddb_timeout_ef->setMaxLength ( 5 );
 	cddb_timeout_ef->setFixedWidth ( 5*fm.maxWidth() );
-        cddb_timeout_ef->setValidator(new QIntValidator (cddb_timeout_ef));
+        cddb_timeout_ef->setValidator(new KIntValidator (0,9999,cddb_timeout_ef));
 	lay3->addWidget ( cddb_timeout_ef );
 	QLabel* cddb_timeout_lb = new QLabel( i18n("seconds freedb timeout"), group, "CDDBTimeoutLabel" );
         lay3->addWidget ( cddb_timeout_lb );
