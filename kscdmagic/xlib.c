@@ -22,9 +22,9 @@
  *
  * Shamelessly ripped for use in xsynaesthesia
  */
-//#include "aconfig.h"
+/*#include "aconfig.h"*/
 #define X11_DRIVER
-//#define MITSHM
+/*#define MITSHM*/
 
 #ifdef X11_DRIVER
 #include <X11/Xlib.h>
@@ -268,8 +268,8 @@ int alloc_image(xdisplay * d)
     }
     if (d->depth != 8) {
 	for (i = 0; i < 2; i++) {
-	    //Add a little extra memory to catch overruns 
-	    //when dumping image to buffer in draw_screen
+	    /* Add a little extra memory to catch overruns */
+	    /* when dumping image to buffer in draw_screen */
 	    d->vbuffs[i] = malloc(d->linewidth * d->height + 32);
 	    memset(d->vbuffs[i],0,d->linewidth * d->height);
 
@@ -430,11 +430,11 @@ xdisplay *xalloc_display(const char *s, int xHint, int yHint, int x, int y, xlib
     XMapWindow(xd->display, xd->window);
 #if 1
     XSelectInput(xd->display, xd->window, 
-                 //ExposureMask | 
+                 /* ExposureMask | */
 		 KeyPress |
-		 //KeyRelease | 
-                 //ConfigureRequest | 
-		 //FocusChangeMask | 
+		 /* KeyRelease | */
+                 /* ConfigureRequest | */
+		 /* FocusChangeMask | */
 		 StructureNotifyMask |
                  ButtonPressMask | ButtonReleaseMask);
 #endif
