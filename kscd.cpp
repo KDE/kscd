@@ -3122,6 +3122,7 @@ void KSCD::clearSongList()
     songListCB->clear();
     if (tooltips)
     {
+        QToolTip::remove(songListCB);
         QToolTip::add(songListCB, i18n("Track list"));
     }
 }
@@ -3154,6 +3155,7 @@ void KSCD::setSongListTo(int whichTrack)
         QString justTheName = songListCB->currentText();
         justTheName = justTheName.right(justTheName.length() - 4);
 
+        QToolTip::remove(songListCB);
         QToolTip::add(songListCB, i18n("Current Track: %1").arg(justTheName));
     }
 }
