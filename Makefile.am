@@ -5,7 +5,7 @@ picsdir  = $(kde_datadir)/kscd/pics/
 appsdir = $(kde_appsdir)/Multimedia
 CDDBDIR = $(kde_datadir)/kscd/cddb/
 
-LDFLAGS	= $(all_libraries) $(KDE_RPATH)
+LDFLAGS	= $(LIB_KIO) $(all_libraries) $(KDE_RPATH)
 kscd_LDADD   = $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KSYCOCA) $(LIB_KDEUI)
 INCLUDES= $(all_includes)
 LINK    = $(CXXLINK)
@@ -25,7 +25,7 @@ kscd_SOURCES = kscd.cpp configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cpp \
 	plat_svr4.c plat_freebsd.c plat_osf1.c plat_irix.c bwlednum.cpp \
 	smtpconfig.cpp smtp.cpp
 
-cddaslave_SOURCES = plat_sun_audio.c plat_sun_cdda.c cddaslave.c  
+cddaslave_SOURCES = plat_sun_audio.c plat_sun_cdda.c cddaslave.c
 
 SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp \
 	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
@@ -40,10 +40,10 @@ METASOURCES = kscd.moc bwlednum.moc configdlg.moc cddb.moc ledlamp.moc \
 
 DISTCLEANFILES = config.h
 
-bin_PROGRAMS = kscd cddaslave 
+bin_PROGRAMS = kscd cddaslave
 TARGET3 = kscdmagic
 
-#config.h: kscd-script 
+#config.h: kscd-script
 	#$(SHELL) $(srcdir)/kscd-script
 
 SUBDIRS = kscdmagic bitmaps sbpcdhack libwm
@@ -69,10 +69,10 @@ install-data-local:
 		$(mkinstalldirs) $(DESTDIR)$(CDDBDIR)/$$i ;\
 		chmod 0777 $(DESTDIR)$(CDDBDIR)/$$i ;\
 	fi ;\
-	done 
+	done
 
 messages:
-	$(XGETTEXT) *.cpp -o $(podir)/kscd.pot   
+	$(XGETTEXT) *.cpp -o $(podir)/kscd.pot
 
 cddaslave.c:config.h
 cdrom.c:config.h
@@ -88,5 +88,5 @@ plat_sun.c:config.h
 plat_sun_audio.c:config.h
 plat_sun_cdda.c:config.h
 plat_svr4.c:config.h
-plat_ultrix.c:config.h     
+plat_ultrix.c:config.h
 
