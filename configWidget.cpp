@@ -26,6 +26,7 @@
 
 #include <kaccel.h>
 #include <kcolorbutton.h>
+#include <kdialog.h>
 #include <klocale.h>
 #include <klineedit.h>
 #include <kurlrequester.h>
@@ -65,8 +66,8 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     GroupBox1->setFrameShadow(QGroupBox::Sunken);
     GroupBox1->setTitle(i18n("Interface"));
     GroupBox1->setColumnLayout(0, Qt::Vertical);
-    GroupBox1->layout()->setSpacing(6);
-    GroupBox1->layout()->setMargin(11);
+    GroupBox1->layout()->setSpacing(KDialog::spacingHint());
+    GroupBox1->layout()->setMargin(KDialog::marginHint());
     GroupBox1Layout = new QGridLayout(GroupBox1->layout());
     GroupBox1Layout->setAlignment(Qt::AlignTop);
 
@@ -108,8 +109,8 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     GroupBox3 = new QGroupBox(this, "GroupBox3");
     GroupBox3->setTitle(i18n("Play Options"));
     GroupBox3->setColumnLayout(0, Qt::Vertical);
-    GroupBox3->layout()->setSpacing(6);
-    GroupBox3->layout()->setMargin(11);
+    GroupBox3->layout()->setSpacing(KDialog::spacingHint());
+    GroupBox3->layout()->setMargin(KDialog::marginHint());
     GroupBox3Layout = new QVBoxLayout(GroupBox3->layout());
     GroupBox3Layout->setAlignment(Qt::AlignTop);
 
@@ -151,8 +152,8 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     ButtonGroup1 = new QButtonGroup(this, "ButtonGroup1");
     ButtonGroup1->setTitle(i18n("Random Play Mode"));
     ButtonGroup1->setColumnLayout(0, Qt::Vertical);
-    ButtonGroup1->layout()->setSpacing(6);
-    ButtonGroup1->layout()->setMargin(11);
+    ButtonGroup1->layout()->setSpacing(KDialog::spacingHint());
+    ButtonGroup1->layout()->setMargin(KDialog::marginHint());
     ButtonGroup1Layout = new QVBoxLayout(ButtonGroup1->layout());
     ButtonGroup1Layout->setAlignment(Qt::AlignTop);
 
@@ -171,8 +172,8 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     GroupBox2 = new QGroupBox(this, "GroupBox2");
     GroupBox2->setTitle(i18n("CD-ROM &Device"));
     GroupBox2->setColumnLayout(0, Qt::Vertical);
-    GroupBox2->layout()->setSpacing(6);
-    GroupBox2->layout()->setMargin(11);
+    GroupBox2->layout()->setSpacing(KDialog::spacingHint());
+    GroupBox2->layout()->setMargin(KDialog::marginHint());
     GroupBox2Layout = new QVBoxLayout(GroupBox2->layout());
     cdDevice = new KURLRequester(mPlayer->devicePath(), GroupBox2);
     GroupBox2Layout->addWidget(cdDevice);

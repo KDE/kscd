@@ -46,16 +46,16 @@
 #endif
 
 // little helper:
-static inline QPixmap loadIcon( const char * name ) 
+static inline QPixmap loadIcon( const char * name )
 {
   return KGlobal::instance()->iconLoader()
     ->loadIcon( QString::fromLatin1(name), KIcon::NoGroup, KIcon::SizeMedium );
 }
 
 ConfigDlg::ConfigDlg(KSCD* player, const char* name, bool modal)
-  :  KDialogBase(KDialogBase::IconList, i18n("kscd Configuraton"),
-                 KDialogBase::Help | 
-                 KDialogBase::Ok | 
+  :  KDialogBase(KDialogBase::IconList, i18n("kscd Configuration"),
+                 KDialogBase::Help |
+                 KDialogBase::Ok |
                  KDialogBase::Apply |
                  KDialogBase::Cancel,
                  KDialogBase::Ok,
