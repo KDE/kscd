@@ -69,9 +69,9 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   QVBoxLayout * lay1 = new QVBoxLayout ( this, 10 );
   box = new QGroupBox(this, "box");
   lay1->addWidget ( box );
-  
+
   QFontMetrics fm ( font() );
-  
+
   QHBoxLayout * lay2 = new QHBoxLayout ( box, 10 );
   QVBoxLayout * lay3 = new QVBoxLayout ( lay2 );
   QGroupBox * cpbox = new QGroupBox ( i18n("Colors and paths"), box );
@@ -185,7 +185,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 }
 
 
-void 
+void
 ConfigDlg::custombutton_clicked()
 {
     configdata.use_kfm = false;
@@ -193,7 +193,7 @@ ConfigDlg::custombutton_clicked()
 } // custombutton_clicked
 
 
-void 
+void
 ConfigDlg::kfmbutton_clicked()
 {
     configdata.use_kfm = true;
@@ -201,18 +201,18 @@ ConfigDlg::kfmbutton_clicked()
 } // kfmbutton_clicked
 
 
-void 
-ConfigDlg::okbutton() 
+void
+ConfigDlg::okbutton()
 {
 } // okbutton
 
-void 
+void
 ConfigDlg::device_changed(const QString &dev) {
 
   configdata.cd_device = dev;
 } // device_changed
 
-void 
+void
 ConfigDlg::ttclicked(){
 
   if(ttcheckbox->isChecked())
@@ -221,7 +221,7 @@ ConfigDlg::ttclicked(){
     configdata.tooltips = FALSE;
 } // ttclicked
 
-void 
+void
 ConfigDlg::dockclicked(){
 
     if(dockcheckbox->isChecked()){
@@ -231,7 +231,7 @@ ConfigDlg::dockclicked(){
     }
 } // dockclicked
 
-void 
+void
 ConfigDlg::autoPlayClicked(){
     if(cdAutoPlayCB->isChecked())
         configdata.autoplay = TRUE;
@@ -240,7 +240,7 @@ ConfigDlg::autoPlayClicked(){
 } // autoPlayClicked
 
 
-void 
+void
 ConfigDlg::stopOnExitClicked()
 {
     if(stopOnExitCB->isChecked())
@@ -249,7 +249,7 @@ ConfigDlg::stopOnExitClicked()
         configdata.stopexit = FALSE;
 } // stopOnExitClicked
 
-void 
+void
 ConfigDlg::ejectOnFinishClicked()
 {
     if(ejectOnFinishCB->isChecked())
@@ -258,26 +258,26 @@ ConfigDlg::ejectOnFinishClicked()
         configdata.ejectonfinish = FALSE;
 } // ejectOnFinishClicked
 
-void 
+void
 ConfigDlg::help()
 {
-    kapp->invokeHTMLHelp("kscd/kscd.html","");
+    kapp->invokeHelp( QString::null,"kscd" );
 } // help
 
-void 
-ConfigDlg::cancelbutton() 
+void
+ConfigDlg::cancelbutton()
 {
   reject();
 } // cancelbutton
 
-void 
+void
 ConfigDlg::set_led_color()
 {
   KColorDialog::getColor(configdata.led_color);
   qframe1->setBackgroundColor(configdata.led_color);
 } // set_led_color
 
-void 
+void
 ConfigDlg::set_background_color()
 {
 
@@ -285,7 +285,7 @@ ConfigDlg::set_background_color()
   qframe2->setBackgroundColor(configdata.background_color);
 } // set_background_color
 
-void 
+void
 ConfigDlg::randomOnceClicked()
 {
   if(randomOnceCB->isChecked())
@@ -294,7 +294,7 @@ ConfigDlg::randomOnceClicked()
     configdata.randomonce = FALSE;
 } // randomOnceClicked
 
-struct configstruct * 
+struct configstruct *
 ConfigDlg::getData()
 {
   configdata.browsercmd = custom_edit->text();

@@ -4,10 +4,10 @@
  * kscd -- A simple CD player for the KDE project
  *
  * $Id$
- * 
+ *
  * Copyright (C) 1997 Bernd Johannes Wuebben wuebben@math.cornell.edu
  * Copyright (C) 2000 Dirk Försterling <milliByte@gmx.de>
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
@@ -30,16 +30,16 @@
 #include "mgconfdlg.h"
 #include <klocale.h>
 
-MGConfigDlg::MGConfigDlg(QWidget *parent, 
+MGConfigDlg::MGConfigDlg(QWidget *parent,
 			 struct mgconfigstruct *data,const char *name)
   : QDialog(parent, name)
 {
-  
+
   mgconfigdata.width = 320;
   mgconfigdata.height = 200;
   mgconfigdata.brightness = 10;
   QString temp;
-  
+
   if(data)
     {
       mgconfigdata.width = data->width;
@@ -47,12 +47,12 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
       mgconfigdata.brightness = data->brightness;
       mgconfigdata.pointsAreDiamonds = data->pointsAreDiamonds;
     }
-  
+
   setCaption(i18n("Magic Kscd"));
 
   box = new QGroupBox(this, "box");
   box->setGeometry(10,10,520,420);
-  
+
   // Window width
   label1 = new QLabel(this);
   label1->setGeometry(20,25,155,25);
@@ -63,7 +63,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
   temp.setNum(mgconfigdata.width);
   width_edit->setText(temp);
   connect(width_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(width_changed(const QString &)));  
+	  this,SLOT(width_changed(const QString &)));
 
 
   // Window height
@@ -76,7 +76,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
   temp.setNum(mgconfigdata.height);
   height_edit->setText(temp);
   connect(height_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(height_changed(const QString &)));  
+	  this,SLOT(height_changed(const QString &)));
 
 
   // Brightness adjustment.
@@ -86,13 +86,13 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
 
   bspin = new QSpinBox(0, 100, 1, this);
   bspin->setGeometry(200,110,50,25);
-  
+
   bspin->setValue(mgconfigdata.brightness);
   connect(bspin,SIGNAL(valueChanged(int)),
-	  this,SLOT(brightness_changed(int)));  
+	  this,SLOT(brightness_changed(int)));
 
   // Are Points Diamonds?
-  
+
   pointsAreDiamondsCB = new QCheckBox(this,"Points are Diamonds");
   pointsAreDiamondsCB->setGeometry(20,150,160,30);
   pointsAreDiamondsCB->setText(i18n("Points are Diamonds"));
@@ -103,32 +103,32 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
 
 } // MgConfigDlg() constructor
 
-void 
-MGConfigDlg::width_changed(const QString &width) 
+void
+MGConfigDlg::width_changed(const QString &width)
 {
   mgconfigdata.width = width.toInt();
 }
 
-void 
-MGConfigDlg::height_changed(const QString &height) 
+void
+MGConfigDlg::height_changed(const QString &height)
 {
   mgconfigdata.height = height.toInt();
 }
 
-void 
-MGConfigDlg::brightness_changed(int value) 
+void
+MGConfigDlg::brightness_changed(int value)
 {
   mgconfigdata.brightness = value;
 }
 
-void 
+void
 MGConfigDlg::help()
 {
-    kapp->invokeHTMLHelp("kscd/kscd.html","");
+    kapp->invokeHelp( QString::null,"kscd" );
 }
 
 
-struct mgconfigstruct * 
+struct mgconfigstruct *
 MGConfigDlg::getData()
 {
   return &mgconfigdata;

@@ -164,7 +164,7 @@ CDDBSetup::enable_remote_cddb(bool state)
 void
 CDDBSetup::help()
 {
-    kapp->invokeHTMLHelp("kscd/kscd.html","");
+     kapp->invokeHelp( QString::null,"kscd" );
 } // help
 
 void
