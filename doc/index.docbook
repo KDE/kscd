@@ -1,12 +1,12 @@
 <!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
-  <!ENTITY kscd " <application>KSCD</application> ">
   <!ENTITY kappname "&kscd;" -- this only *seems* redundant -->
+  <!ENTITY % English "INCLUDE">
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Application-Variable Entities V1.0//EN">
+  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Documentation V1.0//EN">
   %ents;
 ]>
 
-<book lang="en">
+<book lang="&language;">
 
 <bookinfo>
 <title>The &kscd; Handbook</title>
@@ -50,7 +50,7 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
   
-<date>06/09/2000</date>
+<date>15/11/2000</date>
 <releaseinfo>1.3.0</releaseinfo>
 
 <abstract>
@@ -72,13 +72,14 @@
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kscd; is a fast, <abbrev>CDDB</abbrev>cddb enabled CD player for the Unix
-platform. &kscd; stands for "The KDE Project's small/simple CD player".</para>
+<para>&kscd; is a fast, <acronym>CDDB</acronym>cddb enabled &CD; player for the Unix
+platform. &kscd; stands for <quote>The KDE Project's small/simple &CD;
+player</quote>.</para>
 
 <para><emphasis>New</emphasis>: the <filename>workman2cddb.pl</filename> Perl
 script provided in order to facilitate transition for users of workman.</para>
 
-<para>I hope you will enjoy this CD player,</para>
+<para>I hope you will enjoy this &CD; player,</para>
 
 <para>Bernd Johannes Wuebben</para>
 
@@ -95,10 +96,10 @@ script provided in order to facilitate transition for users of workman.</para>
 <listitem><para>NetBSD</para></listitem>
 <listitem><para>BSD386</para></listitem>
 <listitem><para>Sun</para></listitem>
-<listitem><para>Solaris (including <abbrev>cdda</abbrev>
+<listitem><para>&Solaris; (including <acronym>cdda</acronym>
 support)</para></listitem>
-<listitem><para>HPUX</para></listitem>
-<listitem><para>SGI Irix (including <abbrev>cdda</abbrev>
+<listitem><para>&HP-UX;</para></listitem>
+<listitem><para>&SGI; Irix (including <abbrev>cdda</abbrev>
 support)</para></listitem>
 <listitem><para>Sony NEWS</para></listitem>
 <listitem><para>OSF/1</para></listitem>
@@ -117,7 +118,7 @@ support)</para></listitem>
 
 <para>&kscd; is part of the <ulink url="http://www.kde.org/">KDE
 Project</ulink>. &kscd; can be found in the kdemultimedia package on <ulink
-url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the main
+									    url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>, the main
 ftp site of the KDE project. </para>
 
 </sect2>
@@ -126,9 +127,9 @@ ftp site of the KDE project. </para>
 <title>Requirements</title>
 
 <para>In order to successfully compile &kscd;, you need the latest versions of
-the KDE libraries as well as the Qt C++ library.  All required
-libraries as well as &kscd; itself can be found at the KDE FTP site, <ulink
-url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>.</para>
+the KDE libraries as well as the &Qt; C++ library.  All required libraries as
+well as &kscd; itself can be found at the KDE &FTP; site, <ulink
+								 url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>.</para>
 
 </sect2> 
 
@@ -139,10 +140,10 @@ url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>.</para>
 in the base directory of the &kscd; distribution:</para>
 	
 <screen width="40">
-<prompt>%</prompt><command>./configure</command> 
-<prompt>%</prompt><command>make</command> 
-Then as root: 
-<prompt>%</prompt> <command>make <option>install</option></command> 
+<prompt>%</prompt> <userinput><command>./configure</command></userinput> 
+<prompt>%</prompt> <userinput><command>make</command></userinput>
+<lineannotation>Then as root: </lineannotation>
+<prompt>%</prompt> <userinput><command>make</command> <option>install</option></userinput> 
 </screen> 
 	
 <para>Please inform the current maintainer, Dirk Foersterling, at
@@ -160,13 +161,17 @@ order to get &kscd; to compile on your platform.</para>
 <title>Basic Operation</title>
 
 <screenshot>
-<screeninfo>The KSCD Interface</screeninfo>
-<graphic fileref="kscd.png" format="png"></graphic>
+<screeninfo>The &kscd; Interface</screeninfo>
+<mediaobject>
+<imageobject>
+<imagedata fileref="kscd.png" format="PNG"></imageobject>
+<textobject><phrase>The &kscd; Interface</phrase></textobject>
+</mediaobject>
 </screenshot>
 
 <para>This is the main window of &kscd;. You should see something like this when
 you start &kscd;. The controls in this window are explained below, in no
-particular order.</para> 
+particular order.</para>
 
 <sect2 id="control-panel">
 <title>The Control Panel</title>
@@ -180,52 +185,54 @@ particular order.</para>
 </screenshot>
 
 <para> This is the main control panel for &kscd;. The function of these buttons
-should be familiar to anyone who has ever used a CD player.</para>
+should be familiar to anyone who has ever used a &CD; player.</para>
 
 <para>The uppermost button in the above diagram toggles between playing and
-pausing the CD. The left button in the second row stops playing the CD. The
-right button in the second row toggles looping, so that the CD will start
+pausing the &CD;. The left button in the second row stops playing the &CD;. The
+right button in the second row toggles looping, so that the &CD; will start
 playing again from the beginning when the end of the last audio track is
-reached. The buttons in the third row advance the CD backward (left) or forward
-(right) 30 seconds. The buttons in the fourth row skip forward (right) or
-backward (left) to the beginning of the next or previous track. </para>
+reached. The buttons in the third row advance the &CD; backward (left) or
+forward (right) 30 seconds. The buttons in the fourth row skip forward (right)
+or backward (left) to the beginning of the next or previous track. </para>
 </sect2>
 
 <sect2 id="eject">
-<title>The eject button</title>
+<title>The <guibutton>eject</guibutton> button</title>
 
 <screenshot>
-<screeninfo>The eject button</screeninfo>
+<screeninfo>The <guibutton>eject</guibutton> button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd2a.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd2a.png" format="PNG"></imageobject>
 <textobject><phrase>The eject button</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para>This button ejects the CD. Note that the eject button on your CD-ROM drive
-may not respond if an audio CD is in the drive and &kscd; is started. Some very
-old CD-ROM drives may not support software eject. You may also have to close the
-CD-ROM drive manually after inserting a new disc.</para>
+<para>This button ejects the &CD;. Note that the eject button on your &CD-ROM;
+drive may not respond if an audio &CD; is in the drive and &kscd; is
+started. Some very old &CD-ROM; drives may not support software eject. You may
+also have to close the &CD-ROM; drive manually after inserting a new
+disc.</para>
 </sect2>
-
+      
 <sect2 id="status-display">
 <title>The Status display</title>
 
 <screenshot>
 <screeninfo>The Status display</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd3.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd3.png" format="PNG"></imageobject>
 <textobject><phrase>The Status display</phrase></textobject>
 </mediaobject>
 </screenshot>
 
 <para>This is the status display. Starting at the top, from right to left, is
 the main time display (see below for a discussion of the various possible time
-display modes), the status of the CD-ROM drive, the total play time of the audio
-CD, the current volume setting, and the current and maximum track numbers
-(curr./max.). The bottommost two lines of text display the artist and title of
-the CD, and then the title of the track, assuming that appropriate entries exist
-in the local or network <abbrev>CDDB</abbrev> (CD Data Base.)</para>
+display modes), the status of the &CD-ROM; drive, the total play time of the
+audio &CD;, the current volume setting, and the current and maximum track
+numbers (curr./max.). The bottommost two lines of text display the artist and
+title of the &CD;, and then the title of the track, assuming that appropriate
+entries exist in the local or network <acronym>CDDB</acronym> (&CD; Data
+Base.)</para>
 
 </sect2>
 
@@ -235,7 +242,7 @@ in the local or network <abbrev>CDDB</abbrev> (CD Data Base.)</para>
 <screenshot>
 <screeninfo>The time display toggle</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd4.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd4.png" format="PNG"></imageobject>
 <textobject><phrase>The time display toggle</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -244,55 +251,55 @@ in the local or network <abbrev>CDDB</abbrev> (CD Data Base.)</para>
 <!-- commented out the colon! -->
 	
 <para>This button toggles between the possible main time display modes. By
-default, &kscd; displays the elapsed time of the current track, if the CD is
-playing, or either <![ CDATA [ --:--]]> or 00:00 if the CD is not playing.
+default, &kscd; displays the elapsed time of the current track, if the &CD; is
+playing, or either <![ CDATA [ --:--]]> or 00:00 if the &CD; is not playing.
 Pressing this button toggles in sequence between remaining track time, total
 elapsed time, and total remaining time.</para>
 </sect2>
 
 <sect2 id="configuration-button">
-<title>The Configuration button</title>
+<title>The <guibutton>Configuration</guibutton> button</title>
 
 <screenshot>
 <screeninfo>The configuration panel</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd5.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd5.png" format="PNG"></imageobject>
 <textobject><phrase>The configuration panel</phrase></textobject>
 </mediaobject>
 </screenshot>
 
 <para>This button opens the &kscd; configuration panel. This allows you to
-configure &kscd; to work on your machine. See <link 
-linkend="configuring-kscd">the configuring &kscd;</link> section, for details
+configure &kscd; to work on your machine. See <link linkend="configuring-kscd">the configuring &kscd;</link> section, for details
 about configuring &kscd;</para>
 </sect2>
 
 <sect2 id="cddb-button">
-<title>The <abbrev>CDDB</abbrev> button</title>
+<title>The <guibutton>CDDB</guibutton> button</title>
 
 <screenshot>
-<screeninfo>The CDDB button</screeninfo>
+<screeninfo>The <acronym>CDDB</acronym> button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd5.png" format="png"></imageobject>
-<textobject><phrase>The CDDB button</phrase></textobject>
+<imageobject><imagedata fileref="kscd5.png" format="PNG"></imageobject>
+<textobject><phrase>The <acronym>CDDB</acronym> button</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> This button opens the <abbrev>CDDB</abbrev> (Compact Disc Data Base) entry
+<para> This button opens the <acronym>CDDB</acronym> (Compact Disc Data Base) entry
 editor panel. </para>
 
-<para>The CDDB can identify your CD and often download a list of tracks for that
-CD or load it from the filesystem. See the <link linkend="cddb-editor">
-CD Database Editor</link> section for more details about using this tool.</para>
+<para>The <acronym>CDDB</acronym> can identify your &CD; and often download a
+list of tracks for that &CD; or load it from the filesystem. See the <link
+									   linkend="cddb-editor">&CD; Database Editor</link> section for more details about
+using this tool.</para>
 </sect2>
 
 <sect2 id="information-button">
-<title>The information button</title>
+<title>The <guibutton>information</guibutton> button</title>
 
 <screenshot>
 <screeninfo>The information button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd7.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd7.png" format="PNG"></imageobject>
 <textobject><phrase>The information button</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -309,7 +316,7 @@ the pop-up menu that appears.</para>
 <screenshot>
 <screeninfo>The exit button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd8.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd8.png" format="PNG"></imageobject>
 <textobject><phrase>The exit button</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -323,14 +330,14 @@ the pop-up menu that appears.</para>
 <screenshot>
 <screeninfo>The volume slider</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd9.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd9.png" format="PNG"></imageobject>
 <textobject><phrase>The volume slider</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> This slider controls the volume of the audio output of the CD. Right is
-louder, left is quieter. If you are playing your CD through your sound card, the
-sound card mixer will affect the playback volume as well.</para>
+<para> This slider controls the volume of the audio output of the &CD;. Right is
+louder, left is quieter. If you are playing your &CD; through your sound card,
+the sound card mixer will affect the playback volume as well.</para>
 </sect2>
 
 <sect2 id="randomise-button">
@@ -339,12 +346,12 @@ sound card mixer will affect the playback volume as well.</para>
 <screenshot>
 <screeninfo>The randomise button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd15.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd15.png" format="PNG"></imageobject>
 <textobject><phrase>The randomise button</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> This button plays the CD tracks in random order. </para>
+<para> This button plays the &CD; tracks in random order. </para>
 </sect2>
 
 <sect2>
@@ -353,7 +360,7 @@ sound card mixer will affect the playback volume as well.</para>
 <screenshot>
 <screeninfo>The track selector</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd11.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd11.png" format="PNG"></imageobject>
 <textobject><phrase>The track selector</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -369,157 +376,158 @@ sound card mixer will affect the playback volume as well.</para>
 <sect1 id="configuration-intro">
 <title>The primary configuration window</title>
 
-<para>The primary configuration window for kscd is a tabbed dialog with four
+<para>The primary configuration window for &kscd; is a tabbed dialog with four
 major sections. </para>
 
 <itemizedlist>
-<listitem><para><link
-linkend="cddb-tab"><guilabel>CDDB</guilabel></link></para></listitem>
+<listitem><para><link linkend="cddb-tab"><guilabel>CDDB</guilabel></link></para></listitem>
 <listitem><para><link linkend="smtp-options"><guilabel>SMTP Options</guilabel>
 </link></para></listitem>
 <listitem><para><link linkend="kscd-options-tab"><guilabel>KSCD
 options</guilabel></link></para></listitem>
-<listitem><para><link
-linkend="about"><guilabel>About</guilabel></link></para></listitem>
+<listitem><para><link linkend="about"><guilabel>About</guilabel></link></para></listitem>
 </itemizedlist>
 </sect1>
 
 <sect1 id="cddb-tab">
-<title>The CDDB tab</title>
+<title>The <guilabel>CDDB</guilabel> tab</title>
 <screenshot>
-<screeninfo>The CDDB tab of the configuration dialog</screeninfo>
+<screeninfo>The <guilabel>CDDB</guilabel> tab of the configuration dialog</screeninfo>
 <mediaobject>
 <imageobject> <imagedata fileref="kscd14.png" format="png"> </imageobject>
-<textobject><phrase>The CDDB tab of the configuration dialog</phrase></textobject>
+<textobject><phrase>The <guilabel>CDDB</guilabel> tab of the configuration
+dialog</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> The <abbrev>CDDB</abbrev> tab sets up the <abbrev>CDDB</abbrev> functions
+<para> The <guilabel>CDDB</guilabel> tab sets up the <acronym>CDDB</acronym> functions
 of &kscd;.</para>
 
 <para>The <guilabel>Enable Remote CDDB</guilabel> checkbox turns on or off
-<abbrev>CDDB</abbrev> lookups over the Internet.  The time allowed  before the
-lookup attempt times out can be set. To use an <abbrev>HTTP</abbrev> proxy,
-check the <guilabel>Use HTTP proxy to access CDDB</guilabel> and enter the
-<abbrev>URL</abbrev> in the field below.</para>
+<acronym>CDDB</acronym> lookups over the Internet.  The time allowed before the
+lookup attempt times out can be set. To use an &HTTP; proxy, check the
+<guilabel>Use HTTP proxy to access CDDB</guilabel> and
+enter the &URL; in the field below.</para>
 
 <para>The <guilabel>CDDB Base Directory</guilabel> text field lets you choose
-the directory where you want <abbrev>CDDB</abbrev> entries to be stored
+the directory where you want <acronym>CDDB</acronym> entries to be stored
 locally.</para>
 
 <para>The <guilabel>CDDB Server</guilabel> list box shows a list of known
-<abbrev>CDDB</abbrev> servers. Select an entry from this list and it will appear
-in the text field above the selection box. Press the
+<acronym>CDDB</acronym> servers. Select an entry from this list and it will
+appear in the text field above the selection box. Press the
 <guibutton>Update</guibutton> button to update the list of servers in the list
 box.  Press the <guibutton>Defaults</guibutton> button to enter the default
-value, "freedb.freedb.org 888 -", which will permit you to update the list with a
-fresh list of <abbrev>CDDB</abbrev> Servers listed with the master
-<abbrev>CDDB</abbrev> site at freedb.freedb.org. Hit the <guibutton>-</guibutton>
-button to delete the selected entry from the list.</para>
+value, <userinput>freedb.freedb.org 888 -</userinput>, which will permit you to
+update the list with a fresh list of <acronym>CDDB</acronym> Servers listed with
+the master <abbrev>CDDB</abbrev> site at <systemitem
+class="systemname">freedb.freedb.org</systemitem>. Hit the
+<guibutton>-</guibutton> button to delete the selected entry from the
+list.</para>
 
 <para>The <guilabel>Send CDDB submissions to:</guilabel> field contains the
 e-mail address to submit <abbrev>CDDB</abbrev> entries to. The default address
 is <email>freedb-submit@freedb.org</email>. As of version 0.8,
-<abbrev>CDDB</abbrev> entries from &kscd; are accepted for inclusion in the
+<acronym>CDDB</acronym> entries from &kscd; are accepted for inclusion in the
 database. Hit the <guibutton>-</guibutton> button to delete the selected entry
-from the list. The <guibutton>Defaults</guibutton> button restores all
-settings to the default values.The <guibutton>Help</guibutton> button opens
-the &kscd; help home page (this document).</para>
+from the list. The <guibutton>Defaults</guibutton> button restores all settings
+to the default values.The <guibutton>Help</guibutton> button opens the &kscd;
+help home page (this document).</para>
 
-<para><guibutton>OK</guibutton> saves the current settings and
-exits; <guibutton>Cancel</guibutton> exits without saving. </para>
+<para><guibutton>OK</guibutton> saves the current settings and exits;
+<guibutton>Cancel</guibutton> exits without saving. </para>
 </sect1>
 
 <sect1 id="smtp-options">
-<title>The <abbrev>SMTP</abbrev> Options tab</title> 
+<title>The <guilabel>SMTP Options</guilabel> tab</title> 
 
 <screenshot>
 <screeninfo>The SMTP Options tab</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd16.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd16.png" format="PNG"></imageobject>
 </mediaobject>
 </screenshot>
 
-<para> The <abbrev>SMTP</abbrev> options tab sets up connection to a mail server
-to submit new <abbrev>CDDB</abbrev> entries. This is useful if you do not have
-your own system configured as a server. Check <guilabel>Enable submission via
-SMTP</guilabel> to use this feature. Enter the address of the
-<guilabel>SMTP</guilabel> server in the upper left text field and the port
-number (typically 25) in the upper right field. Enter your own email address in
-the lower text field. </para>
+<para> The <acronym>SMTP</acronym> options tab sets up connection to a mail
+server to submit new <acronym>CDDB</acronym> entries. This is useful if you do
+not have your own system configured as a server. Check <guilabel>Enable
+submission via SMTP</guilabel> to use this feature. Enter the address of the
+<acronym>SMTP</acronym> server in the upper left text field and the port number
+(typically <userinput>25</userinput>) in the upper right field. Enter your own
+email address in the lower text field. </para>
 </sect1>
 
 <sect1 id="kscd-options-tab">
-<title>The &kscd; Options tab</title> 
+<title>The <guilabel>KSCD Options</guilabel> tab</title> 
 
 <screenshot>
-<screeninfo>The KSCD Options tab</screeninfo>
+<screeninfo>The <guilabel>KSCD Options</guilabel> tab</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd12.png" format="png"></imageobject>
-<textobject><phrase>The KSCD Options tab</phrase></textobject>
+<imageobject><imagedata fileref="kscd12.png" format="PNG"></imageobject>
+<textobject><phrase>The <guilabel>KSCD Options</guilabel> tab</phrase></textobject>
 </mediaobject>
 </screenshot>
 
 <para>The <guilabel>LED Color:</guilabel> and <guilabel>Background
 Color:</guilabel> fields show the color selected for the foreground and
-background of the status display. Press the <guibutton>Change</guibutton> 
-button next to the color box to change these colors.</para>
+background of the status display. Press the <guibutton>Change</guibutton> button
+next to the color box to change these colors.</para>
 
 <para>The <guilabel>CDROM Device</guilabel> field contains the name of the
-CDROM device to be used to play audio CDs. The default value is
+&CD-ROM; device to be used to play audio &CD;s. The default value is
 <filename>/dev/cdrom</filename>. The permissions on this device must be set to
-allow opening this device read-only. Changing the permissions on this device file will
-in almost all cases require superuser privileges and can be done from the
-command line, or in the Super User Mode of
-<application>Konqueror</application>.</para>
+allow opening this device read-only. Changing the permissions on this device
+file will in almost all cases require superuser privileges and can be done from
+the command line, or in the Super User Mode of &konqueror;.</para>
 
-<para>The <guilabel>Unix mail command</guilabel> field shows the command used
-to send new CDDB entries to the database. The default value is <command>mail
-<option>-s <replaceable>%s</replaceable></option></command>. You will need to make sure this command will
- actually send mail to non-local systems if you want to submit
-<abbrev>CDDB</abbrev> entries, especially if you access the Internet through a
+<para>The <guilabel>Unix mail command</guilabel> field shows the command used to
+send new <acronym>CDDB</acronym> entries to the database. The default value is
+<userinput><command>mail</command> <option>-s
+<replaceable>%s</replaceable></option></userinput>. You will need to make sure
+this command will actually send mail to non-local systems if you want to submit
+<acronym>CDDB</acronym> entries, especially if you access the Internet through a
 dial-up connection. Check the documentation for your Linux distribution for
 details. Some Linux distributions that use sendmail to deliver e-mail require
 only that you enter your mail host into the <guilabel>"Smart" relay
-host</guilabel> field in <filename>/etc/sendmail.cf</filename>. In addition,
-the <abbrev>CDDB</abbrev>  site will want to be able to mail you back; it may
+host</guilabel> field in <filename>/etc/sendmail.cf</filename>. In addition, the
+<acronym>CDDB</acronym> site will want to be able to mail you back; it may
 therefore also be necessary to edit <filename>/etc/sendmail.cf</filename> to
 ensure that the return address on the submission is valid. Your mileage is
-likely to vary. If all else fails, use <link
-linkend="smtp-options">SMTP</link> instead.</para>
+likely to vary. If all else fails, use <link linkend="smtp-options">SMTP</link>
+instead.</para>
 
 <para>The <guilabel>WWW-Browser</guilabel> section lets you choose which web
-browser to use to access the web sites in the <link
-linkend="information-button">information button</link> menus.  You can choose
-either <application>Konqueror</application> or a custom browser with the radio
-buttons. By default, the <guilabel>Use Custom Browser</guilabel> field contains
-<command>netscape <option><replaceable>%s</replaceable></option></command>, for
-use with <application>Netscape Navigator</application> or
+browser to use to access the web sites in the <link linkend="information-button">information button</link> menus.  You can choose
+either &konqueror; or a custom browser with the radio buttons. By default, the
+<guilabel>Use Custom Browser</guilabel> field contains
+<userinput><command>netscape</command>
+<option><replaceable>%s</replaceable></option></userinput>, for use with
+<application>Netscape Navigator</application> or
 <application>Communicator</application>.</para>
 
 <para>The <guilabel>Show Tool Tips</guilabel> checkbox turns tooltips (tiny
-windows that pop up when the mouse is "parked" briefly over a control) on or
-off.</para>
+windows that pop up when the mouse is <quote>parked</quote> briefly over a
+control) on or off.</para>
 
 <para><guilabel>Enable KPanel Docking</guilabel> causes a &kscd; control to
-appear in the <application>KDE panel</application>kde>.</para>
+appear in the &kicker; panel.</para>
 
-<para><guilabel>Play on Tray Close</guilabel> causes CD play to start when the
+<para><guilabel>Play on Tray Close</guilabel> causes &CD; play to start when the
 tray is closed, with no need to press the <guibutton>Play</guibutton>
 button.</para>
 
-<para><guilabel>Stop Playing on Exit</guilabel> causes CD playback to stop
-when Kscd is closed.</para>
+<para><guilabel>Stop Playing on Exit</guilabel> causes &CD; playback to stop
+when &kscd; is closed.</para>
 
-<para><guilabel>Eject on Finish</guilabel> causes the CD to be ejected when
+<para><guilabel>Eject on Finish</guilabel> causes the &CD; to be ejected when
 playback ends.</para>
 
 <para><guilabel>Random is Shuffle</guilabel> means that when <link
- linkend="randomise-button">random play</link> is used, each track is played only
- once.</para>
+								   linkend="randomise-button">random play</link> is used, each track is played only
+once.</para>
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
- page.</para>
+page.</para>
 
 <para><guibutton>OK</guibutton> saves the current settings and exits;
 <guibutton>Cancel</guibutton> exits without saving.</para>
@@ -527,36 +535,36 @@ playback ends.</para>
 </sect1>
 
 <sect1 id="about">
-<title>The About tab </title>
+<title>The <guilabel>About</guilabel> tab </title>
 
-<para> The <guilabel>About</guilabel> tab displays information about the
-version of &kscd; you are using and some copyright information. </para>
+<para> The <guilabel>About</guilabel> tab displays information about the version
+of &kscd; you are using and some copyright information. </para>
 
 </sect1>
 </chapter>
 
 <chapter id="cddb-editor">
-<title>The CD Database Editor</title>
+<title>The <guilabel>CD Database Editor</guilabel></title>
 
 <screenshot>
 <screeninfo>The CD Database Editor</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd13.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd13.png" format="PNG"></imageobject>
 <textobject><phrase>The CD Database Editor</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para>The CD Database Editor allows you to modify, download, save, annotate, and
-upload <link linkend="cddb-support"><abbrev>CDDB</abbrev> (Compact Disc Data
-Base)</link> entries.</para>
+<para>The &CD; Database Editor allows you to modify, download, save, annotate,
+and upload <link linkend="cddb-support"><acronym>CDDB</acronym> (Compact Disc
+Data Base)</link> entries.</para>
 
-<para>If there is an entry in your local <abbrev>CDDB</abbrev> tree (see the
+<para>If there is an entry in your local <acronym>CDDB</acronym> tree (see the
 <link linkend="cddb-tab">CDDB subsection</link> in the Configuration chapter)
-for the CD in your CD-Rom drive, or if the disc could be found in the <abbrev>
-CDDB</abbrev>, you will see the name of the artist and the title of the CD in
-the <guilabel>Disc Artist / Title</guilabel> field and a list of tracks with
-song titles in the <guilabel>Track / Time / Title</guilabel> selection
-box. Otherwise, you will see a list of tracks and play times without
+for the &CD; in your &CD-ROM; drive, or if the disc could be found in the
+<acronym>CDDB</acronym>, you will see the name of the artist and the title of
+the &CD; in the <guilabel>Disc Artist / Title</guilabel> field and a list of
+tracks with song titles in the <guilabel>Track / Time / Title</guilabel>
+selection box. Otherwise, you will see a list of tracks and play times without
 titles.</para>
 
 <para>You can make an annotation for the entire disc with the <guibutton>Ext
@@ -564,31 +572,31 @@ Info</guibutton> button next to the <guilabel>Disc Artist / Title</guilabel>
 field, or for a selected track in the <guilabel>Track / Time /Title</guilabel>
 selection box with the adjacent <guibutton>Ext Info</guibutton> button. If you
 select a track in the <guilabel>Track / Time / Title</guilabel> selection box,
-the title, if present, will appear in the <guilabel>Edit Track
-Title</guilabel> field below. You can type a title for the track in the box, or
-edit the entry to suit your needs. Press the <keycap>Return</keycap> key on your
-keyboard, and the text will appear in the proper line in the selection
-box.</para>
+the title, if present, will appear in the <guilabel>Edit Track Title</guilabel>
+field below. You can type a title for the track in the box, or edit the entry to
+suit your needs. Press the <keycap>Return</keycap> key on your keyboard, and the
+text will appear in the proper line in the selection box.</para>
 
 <para>Once all tracks have been given titles and the <guilabel>Disc Artist /
 Title</guilabel> field has been filled out, you can press the
 <guibutton>Submit</guibutton> button to send your submission by e-mail to the
-CDDB.</para>
+<acronym>CDDB</acronym>.</para>
 
 <para>You will be prompted to select a category for the submission. The
-<guilabel>Disc ID</guilabel> section displays the 32 bit ID code used by the
-<abbrev>CDDB</abbrev> to identify a compact disc. Above the ID code is the
-category of the <guilabel>CDDB</guilabel> entry. These categories correspond to
-the subdirectories tree of the directory chosen in the <guilabel>CDDB Base
-Directory</guilabel> in the <link linkend="cddb-tab"><abbrev>CDDB</abbrev>
-tab</link> of the &kscd; Configuration window.</para>
+<guilabel>Disc ID</guilabel> section displays the 32 bit <acronym>ID</acronym>
+code used by the <acronym>CDDB</acronym> to identify a compact disc. Above the
+<acronym>ID</acronym> code is the category of the <guilabel>CDDB</guilabel>
+entry. These categories correspond to the subdirectories tree of the directory
+chosen in the <guilabel>CDDB Base Directory</guilabel> in the <link
+								    linkend="cddb-tab"><abbrev>CDDB</abbrev> tab</link> of the &kscd; Configuration
+window.</para>
 
-<para>The <guilabel>Total Time:</guilabel> display shows the total play time
- of the CD.</para>
+<para>The <guilabel>Total Time:</guilabel> display shows the total play time of
+the &CD;.</para>
 
-<para>The <guilabel>Play List Editor</guilabel> lets you change the play
-order of a disc. Enter a comma seperated list of track numbers to define a new
-play order.</para>
+<para>The <guilabel>Play List Editor</guilabel> lets you change the play order
+of a disc. Enter a comma-separated list of track numbers to define a new play
+order.</para>
 
 <para>The <guibutton>Save</guibutton> button writes the displayed record to
 disk. You will be prompted to select a category under which to save the
@@ -596,10 +604,10 @@ record. Select a directory and press <guibutton>Ok</guibutton> to finish
 saving.</para>
 
 <para>The <guibutton>Load</guibutton> button will prompt you for a location to
-look for a <abbrev>CDDB</abbrev> entry other than a remote <abbrev>CDDB</abbrev>
-server or the local <abbrev>CDDB</abbrev> entries in the file system. The
-<guibutton>Close</guibutton> button closes the CD Database Editor without
-saving.</para>
+look for a <acronym>CDDB</acronym> entry other than a remote
+<acronym>CDDB</acronym> server or the local <abbrev>CDDB</abbrev> entries in the
+file system. The <guibutton>Close</guibutton> button closes the &CD;
+Database Editor without saving.</para>
 
 </chapter>
 
@@ -609,47 +617,47 @@ saving.</para>
 <screenshot>
 <screeninfo>Using KSCD in the KDE Panel</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd18.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd18.png" format="PNG"></imageobject>
 <textobject><phrase>Using KSCD in the KDE Panel</phrase></textobject>
 </mediaobject>
 </screenshot>
 
 <para> When the <guilabel>Enable KPanel Docking</guilabel> box is checked, a
 small &kscd; applet is also displayed in the <application>KDE
-panel</application>. Unlike the main &kscd; window, this applet is available
-on any desktop. <mousebutton>Right</mousebutton> click on the applet to pop up a
-menu to control CD playback. A <mousebutton>left</mousebutton> click on the
+panel</application>. Unlike the main &kscd; window, this applet is available on
+any desktop. <mousebutton>Right</mousebutton> click on the applet to pop up a
+menu to control &CD; playback. A <mousebutton>left</mousebutton> click on the
 applet takes you to the main &kscd; window. If the main window is minimized, a
-<mousebutton>left</mousebutton> click on the applet restores
-it. </para>
+<mousebutton>left</mousebutton> click on the applet restores it. </para>
    
 </chapter>
 
 <chapter id="cddb-support">
-<title><abbrev>CDDB</abbrev> Support</title>
+<title><acronym>CDDB</acronym> Support</title>
 
 <para>The Compact Disc Data Base is a distributed network database accessible
-over the Internet that contains information about most audio CDs in
+over the Internet that contains information about most audio &CD;s in
 circulation. If you have Internet access, you will likely never have to manually
-enter track information for your CDs if you have this set up properly. See
+enter track information for your &CD;s if you have this set up properly. See
 <link linkend="cddb-tab">The CDDB Tab</link> subsection in the configuring
 &kscd; chapter for detailed instructions on how to configure this service, and
 the <link linkend="cddb-editor">The CD Database Editor</link> section for
-instructions on how to edit <abbrev>CDDB</abbrev> entries.</para>
+instructions on how to edit <acronym>CDDB</acronym> entries.</para>
 
-<para>Use of the CDDB is free. Submissions from users are encouraged.</para>
+<para>Use of the <acronym>CDDB</acronym> is free. Submissions from users are
+encouraged.</para>
 
-<para>When preparing entries for the CDDB, please keep the following points in
-mind:</para>
+<para>When preparing entries for the <acronym>CDDB</acronym>, please keep the
+following points in mind:</para>
 
 <itemizedlist>
-<listitem><para>Use "standard" latin characters in the entries. Some special
-characters are supported, but Cyrillic or Greek alphabet submissions, for
-example, cannot be accepted.</para></listitem>
-<listitem><para>Use only one " <keysym>/</keysym> character in the
-<guilabel>Disc Artist / Title</guilabel> field in the CD Database
+<listitem><para>Use <quote>standard</quote> latin characters in the entries. Some
+special characters are supported, but Cyrillic or Greek alphabet submissions,
+for example, cannot be accepted.</para></listitem>
+<listitem><para>Use only one <keysym>/</keysym> character in the
+<guilabel>Disc Artist / Title</guilabel> field in the &CD; Database
 Editor.</para>
-<para>For classical CDs, it is standard practice to put the composer's name in
+<para>For classical &CD;s, it is standard practice to put the composer's name in
 the Artist section (before the slash) and the performer's name in the Title
 section (after the slash).</para></listitem> 
 <listitem><para>If you send an entry that already exists in the database, any
@@ -657,18 +665,18 @@ additional information you provide may be added to the existing entry.</para>
 </listitem>
 </itemizedlist>
 
-<para>By default, &kscd; installs the standard <abbrev>CDDB</abbrev> categories
-in <filename>$KDEDIR/share/apps/kscd/cddb</filename>. You can create as many
-category subdirectories as you like. However, when uploading, only the offical
-<abbrev>CDDB</abbrev> categories are displayed. The default upload address is
-"xmcd-cddb@amb.org". For more information about <abbrev>CDDB</abbrev> visit the
-<abbrev>CDDB</abbrev> homepage.</para>
+<para>By default, &kscd; installs the standard <acronym>CDDB</acronym>
+categories in <filename class="directory">$KDEDIR/share/apps/kscd/cddb</filename>. You can create as
+many category subdirectories as you like. However, when uploading, only the
+offical <acronym>CDDB</acronym> categories are displayed. The default upload
+address is <email>xmcd-cddb@amb.org</email>. For more information about
+<abbrev>CDDB</abbrev> visit the <abbrev>CDDB</abbrev> homepage.</para>
 
-<para>The local <abbrev>CDDB</abbrev> entry for a particular CD is stored in the
-file <filename><replaceable>category name</replaceable>/<replaceable>disc
-ID</replaceable></filename> under the CDDB Base Directory. These files can be
-edited with any text editor if you have nothing better to do with your spare
-time.</para>
+<para>The local <acronym>CDDB</acronym> entry for a particular &CD; is stored in
+the file <filename><replaceable>category name</replaceable>/<replaceable>disc
+ID</replaceable></filename> under the <acronym>CDDB</acronym> Base
+Directory. These files can be edited with any text editor if you have nothing
+better to do with your spare time.</para>
 
 </chapter>
 
@@ -681,44 +689,44 @@ time.</para>
 <screenshot>
 <screeninfo>Error dialog</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd19.png" format ="png"></imageobject>
+<imageobject><imagedata fileref="kscd19.png" format ="PNG"></imageobject>
 <textobject><phrase>Error dialog</phrase></textobject>
 </mediaobject>
 </screenshot>
 </question>
-<answer><para>This means that &kscd; couldn't open your CDROM drive. The name of
-the device in the <guilabel>CDROM Device</guilabel>cdrom> field of the
+<answer><para>This means that &kscd; couldn't open your &CD-ROM; drive. The name of
+the device in the <guilabel>CDROM Device</guilabel>cdrom field of the
 <guilabel>Kscd Configuration</guilabel> must actually refer to the block device
-associated with your CD-ROM drive. This will often be a hardlink to the
-appropriate <abbrev>IDE</abbrev> (<filename>/dev/hdx</filename>) or
-<abbrev>SCSI</abbrev> (<filename>/dev/sdx</filename>) device.</para>
+associated with your &CD-ROM; drive. This will often be a hardlink to the
+appropriate <acronym>IDE</acronym> (<filename>/dev/hdx</filename>) or
+<acronym>SCSI</acronym> (<filename>/dev/sdx</filename>) device.</para>
 
 <para> The device file normally belongs to user root in group root, and does not
 allow normal users to open it for reading, writing, or execution directly. This
-has <emphasis>nothing</emphasis> to do with the <abbrev>SUID</abbrev> (Set User ID programs use the
-<function>setuid()</function> function in the standard Un*x library to assume
-the identity of another user) <command>mount</command> command, which has no
-problems with permissions; &kscd; must be able to get a read-only file
-descriptor referring to the CD device to control the CDROM drive and read raw
-data off the disk.</para>
+has <emphasis>nothing</emphasis> to do with the <application>SUID</application>
+(Set User <acronym>ID</acronym> programs use the <function>setuid()</function>
+function in the standard Un*x library to assume the identity of another user)
+<command>mount</command> command, which has no problems with permissions; &kscd;
+must be able to get a read-only file descriptor referring to the &CD; device to
+control the &CD-ROM; drive and read raw data off the disk.</para>
 
-<para> If you have the root password, you can fix this quickly and
-easily. Become root and type <command>chmod <option>a+r</option>
-<filename><replaceable>/dev/cdrom</replaceable></filename></command> to allow
-any user on your system to read from <filename>/dev/cdrom</filename>. If your
-CDROM device is called something else, change the permissions on that device
+<para> If you have the root password, you can fix this quickly and easily.
+Become root and type <userinput><command>chmod</command> <option>a+r</option>
+<filename><replaceable>/dev/cdrom</replaceable></filename></userinput> to allow
+any user on your system to read from <filename>/dev/cdrom</filename>.  If your
+&CD-ROM; device is called something else, change the permissions on that device
 with the same procedure. If you don't have the root password, ask your system
-administrator nicely to give you read permission for the CDROM device.</para>
+administrator nicely to give you read permission for the &CD-ROM; device.</para>
 
 <para>See also the chapter on <link linkend="configuring-kscd">configuring KSCD
 </link></para></answer> 
-</qandaentry> 
+</qandaentry>
 
 <qandaentry> 
-<question><para>I can't get the <abbrev>CDDB</abbrev> to work. Can I get any
+<question><para>I can't get the <acronym>CDDB</acronym> to work. Can I get any
 detailed information about what may be going wrong?</para></question> 
-<answer><para>If you experience trouble with the <abbrev>CDDB</abbrev>
-functionality try to starting kscd from the command line with the
+<answer><para>If you experience trouble with the <acronym>CDDB</acronym>
+functionality try to starting &kscd; from the command line with the
 <option>-d</option> switch and observe the debug output.</para></answer> 
 </qandaentry>
 </qandaset>
@@ -737,9 +745,9 @@ Steven Grimm <email>koreth@hyperion.com</email></para></listitem>
 </itemizedlist>
 
 <para>Special thanks to Ti Kan and Steve Scherf, the inventors of the
-<abbrev>CDDB</abbrev> database concept. Visit <ulink
-url="http://www.cddb.com/">http://ww.cddb.com</ulink> for more information on
-<abbrev>CDDB</abbrev>.</para>
+<acronym>CDDB</acronym> database concept. Visit <ulink
+						       url="http://www.cddb.com/">http://ww.cddb.com</ulink> for more information on
+<acronym>CDDB</acronym>.</para>
 
 <para>A very special thank you also to David White who wrote the original &kscd;
 help documention. Great Job David!</para>
@@ -747,7 +755,8 @@ help documention. Great Job David!</para>
 <para>Documentation updated for KDE 2.0, and copyright by Jonathan Singer
 <email>jsinger@leeta.net.</email></para>
 
-&license-links;
+&underFDL;
+&underGPL;
 
 </chapter>
 
