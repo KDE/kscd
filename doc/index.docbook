@@ -682,7 +682,7 @@ additional information you provide may be added to the existing entry.</para>
 <para>By default, &kscd; installs the standard <acronym>CDDB</acronym>
 categories in <filename class="directory">$KDEDIR/share/apps/kscd/cddb</filename>. You can create as
 many category subdirectories as you like. However, when uploading, only the
-offical <acronym>CDDB</acronym> categories are displayed. The default upload
+official <acronym>CDDB</acronym> categories are displayed. The default upload
 address is <email>freedb-submit@freedb.org</email>. For more information about
 <abbrev>freedb</abbrev> visit the <abbrev>freedb</abbrev> homepage.</para>
 
