@@ -1,0 +1,527 @@
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN">
+<book lang="en">
+<bookinfo>
+<title>The Kscd Handbook</title>
+<authorgroup>
+<author>
+<firstname>Bernd Johannes</firstname>
+<surname>Wuebben</surname>
+<affiliation><address><email><ulink url="mailto:wuebben@kde.org">wuebben@kde.org</ulink></email></address></affiliation>
+</author>
+</authorgroup>
+<date>Version 0.8, Jan 17, 1997</date>
+<releaseinfo><!-- information about this particular version --></releaseinfo>
+<abstract>
+<para>This Handbook describes Kdscd Version 0.8</para>
+<para>The KSCD Handbook</para><!-- Merge this with the previous paragraph; it comes from <META NAME="description" CONTENT="..."> --></abstract>
+<keywordset>
+<keyword>KDE</keyword>
+<keyword>KSCD</keyword>
+<keyword>CD player</keyword>
+<keyword>CDDB</keyword>
+</keywordset>
+</bookinfo>
+
+<chapter id="Introduction">
+<title>Introduction</title>
+
+<para>Kscd is a fast, CDDB enabled cd player for the Unix platform.
+Kscd stands for "The KDE Project's small/simple CD player". </para>
+
+<para>Special thanks to David White who wrote the KSCD help documentation! Thanks David!</para>
+
+<para><emphasis remap="bf">New:</emphasis> workman2cddb.pl Perl script provided in order to facilitate transition
+for users of workman.</para>
+
+<para>I hope you will enjoy this cd-player,</para>
+
+<para><literal remap="tt">Bernd Johannes Wuebben</literal></para>
+
+<para><literal remap="tt"><ulink url="mailto:wuebben@kde.org">wuebben@kde.org</ulink></literal></para>
+</chapter>
+
+<chapter id="SupportedPlatforms">
+<title>Supported Platforms</title>
+
+<para>KSCD explicitly supports the following platforms: </para>
+
+<para><itemizedlist>
+<listitem>
+<para>Linux </para>
+</listitem>
+<listitem>
+<para>FreeBSD </para>
+</listitem>
+<listitem>
+<para>NetBSD </para>
+</listitem>
+<listitem>
+<para>BSD386 </para>
+</listitem>
+<listitem>
+<para>Sun </para>
+</listitem>
+<listitem>
+<para>Solaris (including cdda support) </para>
+</listitem>
+<listitem>
+<para>HPUX </para>
+</listitem>
+<listitem>
+<para>SGI Irix (including cdda support) </para>
+</listitem>
+<listitem>
+<para>Sony NEWS </para>
+</listitem>
+<listitem>
+<para>OSF/1 </para>
+</listitem>
+<listitem>
+<para>Ultrix </para>
+</listitem>
+</itemizedlist>
+
+and should compile on many others with few modifications.</para>
+</chapter>
+
+<chapter id="Installation">
+<title>Installation</title>
+<sect1 id="Howtoobtainkscd">
+<title>How to obtain <emphasis remap="bf">kscd</emphasis></title>
+
+<para>Kscd is part of the kdemultimedia package available at 
+KDE project <ulink url="http://www.kde.org">http://www.kde.org</ulink>.</para>
+</sect1>
+<sect1 id="Requirements">
+<title>Requirements</title>
+
+<para>In order to successfully compile Kscd, you need the latest versions
+of the KDE libraries as well as the Qt C++ library. All required libraries as well as Kscd 
+itself can be found on <ulink url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>. </para>
+</sect1>
+<sect1 id="Compilationandinstallation">
+<title>Compilation and installation</title>
+
+<para>In order to compile and install Kscd on your system, type the following in the base 
+directory of the Kscd distribution:
+<screen>% ./configure
+% make
+% make install
+</screen>
+</para>
+
+<para>Please inform me of any modification you had to undertake in order to
+get KSCD to compile on your platform.</para>
+</sect1>
+</chapter>
+
+<chapter id="OnscreenFundamentals">
+<title>Onscreen Fundamentals</title>
+<sect1 id="Basicoperation">
+<title>Basic operation</title>
+<sect2 id="Mainwindow">
+<title>Main window</title>
+
+<para><graphic fileref="kscd1.png"></graphic></para>
+
+<para>This is the main window of kscd. You should see something like this
+when you start <emphasis remap="bf">kscd</emphasis>. The controls in this window are explained below,
+in no particular order.</para>
+</sect2>
+<sect2 id="Maincontrolpanel">
+<title>Main control panel</title>
+
+<para><graphic fileref="kscd2.png"></graphic></para>
+
+<para>This is the main control panel for <emphasis remap="bf">kscd</emphasis>. The function of these buttons 
+should be familiar to anyone who has ever used a CD player. The uppermost 
+button in the above diagram toggles between playing and pausing the CD. The left 
+button in the second row stops playing the CD. The right button in the second row 
+toggles looping, so that the CD will start playing again from the beginning when the 
+end of the last audio track is reached. The buttons in the third row advance 
+the CD backward <emphasis>(left)</emphasis> or forward <emphasis>(right)</emphasis> 30 seconds. The buttons
+in the fourth row skip forward <emphasis>(right)</emphasis> or backward <emphasis>(left)</emphasis> to the
+beginning of the next or previous track.</para>
+</sect2>
+<sect2 id="Ejectbutton">
+<title>Eject button</title>
+
+<para><graphic fileref="kscd2a.png"></graphic></para>
+
+<para>This button ejects the CD. Note that the eject button on your CD-ROM drive 
+may not respond if an audio CD is in the drive and <emphasis remap="bf">kscd</emphasis> is started. Some 
+very old CD-ROM drives may not support software eject. You may also have to close 
+the CD-ROM drive manually after inserting a new disc.</para>
+</sect2>
+<sect2 id="Statusdisplay">
+<title>Status display</title>
+
+<para><graphic fileref="kscd3.png"></graphic></para>
+
+<para>This is the status display. Starting at the top, from right to left, is the
+main time display <emphasis>(See below for a discussion of the various possible time 
+display modes)</emphasis>, the status of the CD-ROM drive, the total play time of the
+audio CD, the current volume setting, and the current and maximum track 
+numbers (<emphasis>curr.</emphasis> / <emphasis>max.</emphasis>). The bottommost two lines of text display 
+the artist and title of the CD, and then the title of the track, assuming that
+appropriate entries exist in the local or network CDDB <emphasis>(CD Data Base)</emphasis>.</para>
+</sect2>
+<sect2 id="Timedisplaymodebutton">
+<title>Time display mode button</title>
+
+<para><graphic fileref="kscd4.png"></graphic></para>
+
+<para>This button toggles between the possible main time display modes. By default, 
+<emphasis remap="bf">kscd</emphasis> displays the elapsed time of the current track, if the CD is 
+playing, or either --:-- or 00:00 if the CD is not playing. Pressing this button 
+toggles in sequence between remaining track time, total elapsed time, and total 
+remaining time.</para>
+</sect2>
+<sect2 id="Configurationbutton">
+<title>Configuration button</title>
+
+<para><graphic fileref="kscd5.png"></graphic></para>
+
+<para>This button opens the <emphasis remap="bf">kscd</emphasis> configuration panel. This allows you
+to configure <emphasis remap="bf">kscd</emphasis> to work on your machine. See <link linkend="configure">Configuring kscd</link>
+for details about configuring <emphasis remap="bf">kscd</emphasis>. </para>
+</sect2>
+<sect2 id="CDDBEditorbutton">
+<title>CDDB Editor button</title>
+
+<para><graphic fileref="kscd6.png"></graphic></para>
+
+<para>This button opens the CDDB <emphasis>(Compact Disc Data Base)</emphasis> entry editor
+panel. The CDDB can identify your CD and often download a list of tracks for
+that CD or load it from the filesystem. See <link linkend="editor">The CD Database Editor</link> for details
+about using this tool.</para>
+</sect2>
+<sect2 id="information">
+<title>Information button</title>
+
+<para><graphic fileref="kscd7.png"></graphic></para>
+
+<para>This button will help you search for information about the artist on the
+Internet. You can find out about performance dates, purchase information,
+and other information by pressing this button and choosing the appropriate
+option in the pop-up menu that appears.</para>
+</sect2>
+<sect2 id="Onoffbutton">
+<title>On / off button</title>
+
+<para><graphic fileref="kscd9.png"></graphic></para>
+
+<para>This button closes <emphasis remap="bf">kscd</emphasis>.</para>
+</sect2>
+<sect2 id="Volumeslider">
+<title>Volume slider</title>
+
+<para><graphic fileref="kscd10.png"></graphic></para>
+
+<para>This slider controls the volume of the audio output of the CD. Right is
+louder, left is quieter. If you are playing your CD through your sound card, 
+the sound card mixer will affect the playback volume as well.</para>
+</sect2>
+<sect2 id="Directtrackselection">
+<title>Direct track selection</title>
+
+<para><graphic fileref="kscd11.png"></graphic></para>
+
+<para>This combo box lets you directly select a track to play.</para>
+</sect2>
+<sect2 id="Randomorderbutton">
+<title>Random order button</title>
+
+<para><graphic fileref="kscd15.png"></graphic></para>
+
+<para>This button plays the CD tracks in random order.</para>
+</sect2>
+</sect1>
+<sect1 id="configure">
+<title>Configuring <emphasis remap="bf">kscd</emphasis> </title>
+
+<para>The primary configuration window for <emphasis remap="bf">kscd</emphasis> is a tabbed dialog with three 
+major sections.</para>
+
+<para><itemizedlist>
+<listitem>
+<para><link linkend="cddb">CDDB</link></para>
+</listitem>
+<listitem>
+<para><link linkend="options">Kscd Options</link></para>
+</listitem>
+<listitem>
+<para><link linkend="about">About</link></para>
+</listitem>
+</itemizedlist>
+</para>
+<sect2 id="cddb">
+<title>The CDDB tab</title> 
+<graphic fileref="kscd13.png"></graphic>
+
+<para>The CDDB tab sets up the <link linkend="database">CDDB</link>
+<emphasis>(Compact Disc Data Base)</emphasis> functions of <emphasis>kscd</emphasis>.
+The &quot;Enable Remote CDDB&quot; checkbox turns on or off CDDB lookups over the Internet.</para>
+
+<para>The &quot;CDDB Base Directory"&quot; text field lets you choose the
+directory where you want CDDB entries to be stored locally.</para>
+
+<para>The &quot;Send CDDB submissions to:&quot; field contains the e-mail 
+address to submit CDDB entries to. The default address is
+&quot;xmcd-cddb@amb.org&quot;. As of version 8.0, CDDB entries from kscd are
+accepted for inclusion in the database.</para>
+
+<para>The &quot;CDDB Server&quot; list box shows a list of known CDDB servers.
+Select an entry from this list and it will appear in the text field above the
+selection box. Press the &quot;Update&quot; button to update the list of
+servers in the list box. Press the &quot;Defaultsquot; button to enter the
+default value, &quot;cddb.cddb.com 888&quot;, which will permit you to update
+the list with a fresh list of CDDB Servers listed with the master CDDB site at
+cddb.cddb.com. </para>
+
+<para>The &quot;Help&quot; button opens the <emphasis remap="bf">kscd</emphasis> help home page.</para>
+</sect2>
+<sect2 id="options">
+<title>The Kscd Options tab</title> 
+<graphic fileref="kscd14.png"></graphic>
+
+<para>The &quot;LED Color:&quot; and &quot;Background Color:&quot; fields show the
+color selected for the foreground and background of the status display. Press
+the &quot;Change&quot; button next to the color box to change these colors.</para>
+
+<para>The &quot;CDROM Device&quot; field contains the name of the CDROM device to
+be used to play audio CDs. The default value is &quot;/dev/cdrom&quot;. The
+permissions on this device <emphasis>must</emphasis> be set to allow opening this device
+read-only. Changing the permissions on this device file will in almost all
+cases require superuser priveleges and can be done from the command line or in
+the &quot;Super User Mode&quot; of <emphasis remap="bf">kfm</emphasis>.</para>
+
+<para>The &quot;Unix mail command&quot; field shows the command used to send new CDDB entries to the
+database.  The default value is &quot;mail -s &quot;&percnt;s&quot;&quot;. You will
+need to make sure this command will actually send mail to non-local systems if
+you want to submit CDDB entries, especially if you access the Internet through
+a dial-up connection. Check the documentation for your Linux distribution for
+details. Some Linux distributions that use <emphasis remap="bf">sendmail</emphasis> to deliver e-mail
+require only that you enter your mail host into the &quot;&quot;Smart&quot;
+relay host&quot; field in <emphasis remap="bf">/etc/sendmail.cf</emphasis>. In addition, the CDDB site
+will want to be able to mail you back; it may therefore also be neccessary to
+edit <emphasis remap="bf">/etc/sendmail.cf</emphasis> to ensure that the return address on the
+submission is valid. Your mileage is likely to vary.</para>
+
+<para>The &quot;WWW-Browser&quot; section lets you choose which web browser to use
+to access the web sites in the <link linkend="information">information button</link>
+menus. You can choose either
+<emphasis remap="bf">kfm</emphasis> or a custom browser with the radio buttons. By default, the
+&quot;Use Custom Browser&quot; field contains
+&quot;netscape &quot;&percnt;s&quot;&quot;, for use with Netscape Navigator or
+Communicator.</para>
+
+<para>The &quot;Show Tool Tips&quot; checkbox turns tooltips <emphasis>(tiny windows that
+pop up when the mouse is &quot;parked&quot; briefly over a control)</emphasis> on or
+off.</para>
+
+<para>The &quot;Help&quot; button opens the <emphasis remap="bf">kscd</emphasis> help home page.</para>
+</sect2>
+<sect2 id="about">
+<title>The About tab </title>
+
+<para>The &quot;About&quot; tab displays information about the version of <emphasis remap="bf">kscd</emphasis> you are using
+and some copyright information.</para>
+</sect2>
+</sect1>
+<sect1 id="editor">
+<title>The CD Database Editor</title> 
+<graphic fileref="kscd8.png"></graphic>
+
+<para>The CD Database Editor allows you to modify, download, save, annotate, and
+upload <link linkend="database">CDDB</link> <emphasis>(Compact Disc Data Base)</emphasis> entries.
+If there is an entry in your local CDDB tree <emphasis>(see the <link linkend="cddb">CDDB Tab</link> in
+the <emphasis remap="bf">kscd</emphasis> configuration window)</emphasis> for the CD in the in your CD-ROM drive, or if the disc could be
+found in the CDDB, you will see the name of the artist and the title of the CD
+in the &quot;Disc Artist / Title&quot; field and a list of tracks with song
+titles in the &quot;Track / Time / Title &quot; selection box. Otherwise, you
+will see a list of tracks and play times without titles. </para>
+
+<para>You can make an annotation for the entire disc with the &quot;Ext Info&quot;
+button next to the &quot;Disc Artist / Title&quot; field, or for a selected
+track in the &quot;Track / Time /Title&quot; selection box with the adjacent
+&quot;Ext Info&quot; button.</para>
+
+<para>If you select a track in the &quot;Track / Time
+/Title&quot; selection box, the title, if present, will appear in the
+&quot;Edit Track Title&quot; field below. You can type a title for the track in
+the box, or edit the entry to suit your needs. Press the &quot;Return&quot; key
+on your keyboard, and the text will appear in the proper line in the selection
+box. </para>
+
+<para>Once all tracks have been given titles and the &quot;Disc Artist /
+Title&quot; field has been filled out, you can press the &quot;Submit&quot;
+button to send your submission by e-mail to the CDDB. You will be prompted to
+select a category for the submission.</para>
+
+<para>The &quot;Disc ID&quot; section displays the
+32 bit ID code used by the CDDB to identify a compact disc. Above the ID code
+is the category of the CDDB entry. These categories correspond to the
+subdirectories tree of the directory chosen in the &quot;CDDB Base
+Directory&quot; in the <link linkend="cddb">CDDB tab</link> of the <emphasis remap="bf">kscd</emphasis> Configuration window.</para>
+
+<para>The &quot;Total Time:&quot; display shows the total play time of the CD.</para>
+
+<para>The &quot;Play List Editor&quot; lets you change the play order of a 
+disc. Enter a comma seperated list of track numbers to define a new play order.</para>
+
+<para>The &quot;Save&quot; button writes the displayed record to disk. You will be
+prompted to select a category under which to save the record. Select a
+directory and press &quot;Ok&quot; to finish saving.</para>
+
+<para>The &quot;Load&quot; button will prompt you for a location to look for a
+CDDB entry other than a remote CDDB server or the local CDDB entries in the
+file system.</para>
+
+<para>The &quot;Close&quot; button closes the CD Database Editor.</para>
+</sect1>
+</chapter>
+
+<chapter id="database">
+<title>CDDB Support </title>
+
+<para>The Compact Disc Data Base is a distributed network database accessible over
+the Internet that contains information about most audio CDs in circulation. If
+you have Internet access, you will likely never have to manually enter track
+information for your CDs if you have this set up properly. See the
+<link linkend="cddb">the CDDB tab</link> of the Configuration window
+for detailed instructions on how to configure
+this service, and <link linkend="editor">The CD Database Editor</link>
+for instructions on how to edit CDDB entries.</para>
+
+<para>Use of the CDDB is free. Submissions from users are encouraged.  </para>
+
+<para>When preparing entries for the CDDB, please keep the following points in
+mind: 
+<itemizedlist>
+<listitem>
+<para>Use &quot;standard&quot; latin characters in the entries. Some
+special characters are supported, but Cyrillic or Greek alphabet submissions,
+for example, cannot be accepted.</para>
+</listitem>
+<listitem>
+<para> Use only one &quot;/&quot; character in the &quot;Disc Artist /
+Title&quot; field in the &quot;CD Database Editor&quot;. For classical CDs, it
+is standard practice to put the composer's name in the Artist section 
+<emphasis>(before the slash)</emphasis> and the performer's name in the Title section
+<emphasis>(after the slash)</emphasis>.</para>
+</listitem>
+<listitem>
+<para>If you send an entry that already exists in the database, any additional
+information you provide may be added to the existing entry.</para>
+</listitem>
+</itemizedlist>
+</para>
+
+<para>By default, <emphasis remap="bf">kscd</emphasis> installs the standard CDDB
+categories in <emphasis remap="bf">$KDEDIR/share/apps/kscd/cddb</emphasis>. You can create as many
+category  subdirectories as you like. However,when uploading only the offical
+CDDB  categories are displayed. The default upload address is
+&quot;xmcd-cddb@amb.org&quot;. For more information about CDDB visit the CDDB
+<ulink url="http://www.cddb.com">homepage</ulink>.</para>
+
+<para>The local CDDB entry for a
+particular CD is stored in the file <emphasis remap="bf"><emphasis>&lt;category name&gt;/&lt;disc
+ID&gt;</emphasis></emphasis> under the &quot;CDDB Base Directory&quot;. These files can be
+edited with any text editor if you have nothing better to do with your spare
+time.</para>
+</chapter>
+
+<chapter id="Questionsandanswers">
+<title>Questions and answers</title>
+
+<para><itemizedlist>
+<listitem>
+<para>Q. I see this dialog when I start <emphasis remap="bf">kscd</emphasis>. What's wrong?</para>
+
+<para><graphic fileref="kscd16.png"></graphic></para>
+
+<para>A. This means that <emphasis remap="bf">kscd</emphasis> couldn't open your CDROM drive. The name of the device
+in the &quot;CDROM Device&quot; field of the &quot;<emphasis remap="bf">kscd</emphasis> Configuration&quot; must
+actually refer to the block device associated with your CD-ROM drive. This will often
+be a hardlink to the appropriate IDE (<emphasis remap="bf">/dev/hd<emphasis>x</emphasis></emphasis>) or SCSI
+(<emphasis remap="bf">/dev/sd<emphasis>x</emphasis></emphasis>) device. The device file normally belongs to
+user <emphasis remap="bf">root</emphasis> in group <emphasis remap="bf">root</emphasis>, and does not allow normal users to
+open it for reading, writing, or execution directly. This has *nothing* to
+do with the SUID <emphasis>(Set User ID programs use the <emphasis remap="bf">setuid()</emphasis> function in the standard Un*x
+library to assume the identity of another user)</emphasis> 
+<emphasis remap="bf">mount</emphasis> command, which has no problems with permissions; <emphasis remap="bf">kscd</emphasis> must be able to get a
+read-only file descriptor referring to the CD device to control the CDROM drive 
+and read raw data off the disk.</para>
+
+<para>If you have the root password, you can fix this quickly and easily.
+Become root and type <emphasis remap="bf">chmod a+r /dev/cdrom</emphasis> to allow any user on your
+system to read from <emphasis remap="bf">/dev/cdrom</emphasis>. If your CDROM device is called
+something else, change the permissions on that device with the same
+procedure. If you don't have the root password, ask your system 
+administrator nicely to give you read permission for the CDROM device.</para>
+
+<para>See also section <link linkend="configure">Configuring kscd</link>.</para>
+
+</listitem>
+<listitem>
+<para>Q. I can't get the CDDB to work.
+Can I get any detailed information about what may be going wrong?</para>
+
+<para>A. If you experience trouble with the CDDB functionality try to starting
+<emphasis remap="bf">kscd</emphasis> from the command line with the <literal remap="tt">-d</literal> switch and observe the 
+debug output.</para>
+
+</listitem>
+</itemizedlist>
+</para>
+</chapter>
+
+<chapter id="Thanks">
+<title>Thanks</title>
+
+<para>Special thanks to Ti Kan and Steve Scherf, the inventors of 
+the CDDB database concept. Visit <ulink url="http://www.cddb.com">www.cddb.com</ulink> 
+for  more information on CDDB.  </para>
+
+<para>Thanks also to Paul Harrison pfh@yoyo.cc.monash.edu.au 
+for writing Synaesthesia on which KSCD Magic is based.</para>
+
+<para>A very special thank you also to David White who wrote the KSCD help
+documentation. Great Job David!</para>
+</chapter>
+
+<chapter id="Copyright">
+<title>Copyright</title>
+
+<para><screen>Kscd Copyright (c) 1997,1998  Bernd Johannes Wuebben wuebben@kde.org
+
+kscd contains code from:
+workman 1.4 beta 3 Copyright (c) Steven Grimm koreth@hyperion.com   
+Synaesthesia 1.3 Copyright (c) Paul Harrison pfh@yoyo.cc.monash.edu.au
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+</screen>
+</para>
+</chapter>
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-omittag: nil
+sgml-shorttag: t
+End:
+-->
