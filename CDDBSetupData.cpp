@@ -71,7 +71,7 @@ CDDBSetupData::CDDBSetupData
 	
 	/* edm new section start */
 	lay2->addSpacing ( fm.lineSpacing() );
-	enable_auto_save_cddb = new QCheckBox( i18n("Enable auto save of to local cddb"), group, "CheckBox_3" );
+	enable_auto_save_cddb = new QCheckBox( i18n("Enable auto save to local cddb"), group, "CheckBox_3" );
 	connect( cddb_http_cb, SIGNAL(toggled(bool)), SLOT(http_access_toggled(bool)) );
 	lay2->addWidget ( enable_auto_save_cddb );
 	/* edm new section end */
