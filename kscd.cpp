@@ -1270,7 +1270,7 @@ void KSCD::get_cddb_info(bool /*_updateDialog*/)
 
     KCDDB::TrackOffsetList querylist;
     tracktitlelist.clear();
-    tracktitlelist.append(i18n("start freedb lookup."));
+    tracktitlelist.append(i18n("Start freedb lookup."));
     populateSongList();
 
     for(int i = 0 ; i < wm_cd_getcountoftracks(); i++)
