@@ -308,7 +308,6 @@ private:
     int             save_track;
 
     QStringList     pathlist;
-    QStringList     discidlist;
     QStringList     tracktitlelist;
     QStringList     playlist;
     int             playlistpointer;

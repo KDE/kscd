@@ -32,7 +32,7 @@ struct mytoc
 
 struct dialogcdinfo 
 {
-  unsigned long magicID;	/*cddb magic disk id BERND*/
+  QString magicID;	/*cddb magic disk id BERND*/
   int	ntracks;	/* Number of tracks on the disc */
   int	length;		/* Total running time in seconds */
   struct mytoc *cddbtoc;
@@ -57,7 +57,6 @@ class CDDialog : public CDDialogData
 #endif
 			   QStringList& tracktitlelist,
 			   QStringList& extlist,
-			   QStringList& discidlist,
 			   QString& xmcddata,
 			   QString& cat,
 			   int& revision,
@@ -102,7 +101,6 @@ private:
   QStringList catlist;
   QStringList	playlist;
   QString  	xmcd_data;
-  QStringList 	discidlist;
   int      	revision;
   QString     submitaddress;
   QString 	category;

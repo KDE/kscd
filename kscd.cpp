@@ -1628,7 +1628,7 @@ KSCD::CDDialogSelected()
 
     cddialog = new CDDialog();
 
-    cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
+    cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category,
                       revision,playlist,pathlist,submitaddress, smtpConfigData);
 
     connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
@@ -1711,47 +1711,6 @@ KSCD::getCDDBserversDone()
     emit newServerList(cddbserverlist);*/
 }
 
-#ifdef NEEDOWNCDDBDISCID
-int
-cddb_sum(int n)
-{
-    char    buf[12];
-    char    *p;
-    int     ret = 0;
-    long unsigned int ntemp = 0;
-    ntemp = (long unsigned int) n;
-
-    /* For backward compatibility this algorithm must not change */
-    sprintf(buf, "%lu", ntemp);
-    for (p = buf; *p != '\0'; p++)
-        ret += (*p - '0');
-
-    return (ret);
-}
-
-unsigned long
-cddb_discid()
-{
-    int     i;
-    int     t = 0;
-    int     n = 0;
-    int     min, sec;
-
-
-    /* For backward compatibility this algorithm must not change */
-    for (i = 0; i < cd->ntracks; i++)
-    {
-        n += cddb_sum(cd->trk[i].start / 75);
-    }
-
-    t = ((cd->trk[cd->ntracks].start / 75) -
-         (cd->trk[0].start / 75));
-
-    return ((n % 0xff) << 24 | t << 8 | cd->ntracks);
-}
-
-#endif
-
 void
 KSCD::get_cddb_info(bool /*_updateDialog*/)
 {
@@ -1818,6 +1777,7 @@ KSCD::cddb_done(CDDB::Result result)
     tracktitlelist << cddbInfo.artist + " / " + cddbInfo.title;
 
     revision = cddbInfo.revision;
+    category = cddbInfo.category;
 
     KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
     KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
@@ -1887,7 +1847,6 @@ KSCD::cddb_no_info()
     }
     else
     {
-       discidlist.clear();
        populateSongList();
     }
 
@@ -1922,7 +1881,6 @@ KSCD::cddb_failed()
       for(int i = 0 ; i <= cd->ntracks; i++)
         extlist.append("");
 
-      discidlist.clear();
       populateSongList();
 
       setArtistAndTitle(i18n("Error getting freedb entry."), "");

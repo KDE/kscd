@@ -63,7 +63,7 @@ CDDialog::CDDialog
 	:
 	CDDialogData( parent, name )
 {
-    cdinfo.magicID = 0;	/*cddb magic disk id BERND*/
+    cdinfo.magicID = QString::null;	/*cddb magic disk id BERND*/
     cdinfo.ntracks = 0;	/* Number of tracks on the disc */
     cdinfo.length  = 0;	/* Total running time in seconds */
     cdinfo.cddbtoc = 0L;
@@ -133,7 +133,6 @@ CDDialog::setData(
         struct wm_cdinfo *cd,
         QStringList& tracktitlelist,
         QStringList& extlist,
-        QStringList& discidl,
         QString& _xmcd_data,
         QString& cat,
         int& rev,
@@ -149,7 +148,6 @@ CDDialog::setData(
     track_list 	= tracktitlelist;
     xmcd_data   = _xmcd_data.copy();
     category 	= cat.copy();
-    discidlist  = discidl;
     revision    = rev;
     playlist	= _playlist;
     pathlist	= _pathlist;
@@ -172,7 +170,7 @@ CDDialog::setData(
      */
     if( cd->ntracks == 0 )
       {
-        cdinfo.magicID = 0;
+        cdinfo.magicID = QString::null;
         cdinfo.ntracks = 0;
         cdinfo.length = 0;
         titleEdit->setText("No Disc");
@@ -180,10 +178,11 @@ CDDialog::setData(
         tracksList->clear();
         return;
       }
-    cdinfo.magicID = cddb_discid();	/* cddb magic disk id            */
+
     cdinfo.ntracks = cd->ntracks;	/* Number of tracks on the disc  */
     cdinfo.length  = cd->length;	/* Total running time in seconds */
 
+    KCDDB::TrackOffsetList offsetList;
 
     for( int i = 0; i < cd->ntracks + 1; i++)
       {
@@ -191,7 +190,12 @@ CDDialog::setData(
         cdinfo.cddbtoc[i].sec = (cd->trk[i].start % 4500) / 75;
         cdinfo.cddbtoc[i].frame = cd->trk[i].start - ((cd->trk[i].start / 75)*75);
         cdinfo.cddbtoc[i].absframe = cd->trk[i].start;
+	if (i < cd->ntracks)
+	  offsetList.append(cd->trk[i].start);
       }
+    offsetList.append(cd->trk[0].start);
+    offsetList.append(cd->trk[cd->ntracks].start);
+    cdinfo.magicID = KCDDB::CDDB::trackOffsetListToId(offsetList); /* cddb magic disk id */
 
     // some sanity provisions
 
@@ -227,8 +231,7 @@ CDDialog::setData(
     titleEdit->setText((track_list.first().section('/',1,1)).stripWhiteSpace());
 
     QString idstr;
-    idstr.sprintf("%08lx",cddb_discid());
-    idstr = category + "  " + idstr;
+    idstr = category + "  " + cdinfo.magicID;
 
     disc_id_label->setText(idstr.stripWhiteSpace());
 
@@ -439,7 +442,7 @@ CDDialog::upload()
     smtpMailer->setSenderReplyTo(smtpConfigData->senderReplyTo);
     smtpMailer->setRecipientAddress(submitaddress);
 
-    subject.sprintf("cddb %s %08lx", submitcat.utf8().data(), cdinfo.magicID);
+    subject = QString("cddb %1 %2").arg(submitcat, cdinfo.magicID);
     smtpMailer->setMessageSubject(subject);
     smtpMailer->setMessageBody(s);
 
@@ -513,8 +516,9 @@ CDDialog::setCdInfo(KCDDB::CDInfo &info, const QString& category)
 {
   info.artist = track_list.first().section('/',0,0).stripWhiteSpace();
   info.title = track_list.first().section('/',1,1).stripWhiteSpace();
-  info.genre = category;
-  info.id = QString("%1").arg(cdinfo.magicID, 8, 16);
+  info.category = category;
+  // TODO Genre
+  info.id = cdinfo.magicID;
   info.extd = ext_list.first();
   // No year available?
   info.length = cdinfo.length;
@@ -581,38 +585,9 @@ CDDialog::save()
 void
 CDDialog::save_cddb_entry(QString& path,bool upload)
 {
-  QString magic;
-  magic.sprintf("%08lx",cdinfo.magicID);
-  bool have_magic_already = false;
-
   kdDebug() << "::save_cddb_entry(): path: " << path << " upload = " << upload << "\n" << endl;
 
-  if( !upload )
-  {
-    for ( QStringList::Iterator it = discidlist.begin();
-            it != discidlist.end();
-            ++it )
-    {
-        if (magic == *it)
-        {
-          have_magic_already = true;
-          break;
-        }
-    }
-
-    if(!have_magic_already)
-    {
-      discidlist.insert(discidlist.begin(), magic);
-    }
-  }
-  else
-  { // uploading
-      discidlist.clear();
-      discidlist.insert(discidlist.begin(), magic);
-  }
-
   QFile file(path);
-
 
   if( !file.open( IO_WriteOnly  ))
   {
@@ -631,7 +606,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
   if(upload && !smtpConfigData->enabled)
   {
       QString subject;
-      subject.sprintf("cddb %s %08lx", submitcat.utf8().data(), cdinfo.magicID);
+      subject = QString("cddb %1 %2").arg(submitcat, cdinfo.magicID);
 
       t << "To: " + submitaddress + "\n";
       tmp = QString("Subject: %1\n").arg(subject);
@@ -670,27 +645,8 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
 
 
   tmp = "DISCID=";
-  int counter = 0;
 
-  int num = 0;
-  for ( QStringList::Iterator it = discidlist.begin();
-        it != discidlist.end();
-        ++it, ++num )
-    {
-
-      tmp += *it;
-
-      if( num < (int) discidlist.count() - 1)
-	{
-	  if( counter++ == 3 )
-	    {
-	      tmp += "\nDISCID=";
-	      counter = 0;
-	    } else {
-	      tmp += ",";
-	    }
-	}
-    }
+  tmp += cdinfo.magicID;
 
   tmp += "\n";
   t << tmp;
@@ -718,7 +674,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
     }
   }
 
-  num = 1;
+  int num = 1;
   for ( QStringList::Iterator it = track_list.begin();
         it != track_list.end();
         ++it)
