@@ -54,6 +54,8 @@
 #include "kscd.h"
 #include "mgconfdlg.h"
 #include "version.h"
+#include <kwin.h>
+#include <netwm.h>
 
 extern "C" {
     // We don't have libWorkMan installed already, so get everything
@@ -250,16 +252,12 @@ KSCD::KSCD( QWidget *parent, const char *name )
     loopled->on();
   }
 
-  dock_widget = new DockWidget( this, "dockw");
-  if(docking)
-  {
-    dock_widget->show();
-    connect(this, SIGNAL(trackChanged(const QString&)), dock_widget, SLOT(setToolTip(const QString&)));
-  }
-
   smtpMailer = new SMTP;
   connect(smtpMailer, SIGNAL(messageSent()), this, SLOT(smtpMessageSent()));
   connect(smtpMailer, SIGNAL(error(int)), this, SLOT(smtpError(int)));
+  
+  dock_widget = new DockWidget( this, "dockw");
+  setDocking(docking);
 
   connectDCOPSignal(0, 0, "KDE_emailSettingsChanged()", "emailSettingsChanged()", false);
 
@@ -271,8 +269,19 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
 KSCD::~KSCD()
 {
-  delete smtpConfigData;
-  delete smtpMailer;
+    if (thiscd.trk)
+    {
+        free(thiscd.trk);
+        thiscd.trk = 0L;
+        thiscd.ntracks = 0;
+    }
+
+    signal (SIGINT, SIG_DFL);
+    delete magicproc;
+    magicproc = 0L;
+
+    delete smtpConfigData;
+    delete smtpMailer;
 } // ~KSCD
 
 
@@ -721,21 +730,6 @@ KSCD::setToolTips(bool on)
 } // setToolTips
 
 void
-KSCD::cleanUp()
-{
-    if (thiscd.trk)
-    {
-        free(thiscd.trk);
-        thiscd.trk = 0L;
-        thiscd.ntracks = 0;
-    }
-
-    signal (SIGINT, SIG_DFL);
-    delete magicproc;
-    magicproc = 0L;
-} // cleanUp()
-
-void
 KSCD::playClicked()
 {
     if (!cddrive_is_ok || 
@@ -976,7 +970,6 @@ KSCD::quitClicked()
 
     wm_free_cdtext();
 
-    cleanUp();
     writeSettings();
     qApp->quit();
 } // quitClicked()
@@ -1003,7 +996,6 @@ KSCD::closeEvent( QCloseEvent *e )
 
     wm_cd_status();
     wm_cd_status();
-    cleanUp();
     writeSettings();
     e->accept();
 } // closeEvent
@@ -1277,11 +1269,17 @@ KSCD::setDocking(bool dock)
     docking = dock;
     if(docking)
     {
+        //TODO: make it skip the taskbar when minimized something like:
+        //KWin::setState(winId(), KWin::info(winId()).state | NET::SkipTaskbar);
         dock_widget->show();
+        connect(this, SIGNAL(trackChanged(const QString&)), 
+                dock_widget, SLOT(setToolTip(const QString&)));
     }
     else
     {
         dock_widget->hide();
+        disconnect(this, SIGNAL(trackChanged(const QString&)), 
+                   dock_widget, SLOT(setToolTip(const QString&)));
     }
 }
 
@@ -1643,7 +1641,7 @@ KSCD::readSettings()
 	volume     	= config->readNumEntry("Volume",40);
 	tooltips   	= config->readBoolEntry("ToolTips", true);
 	randomplay 	= config->readBoolEntry("RandomPlay", false);
-	docking   	= config->readBoolEntry("DOCKING", true);
+    docking = config->readBoolEntry("DOCKING", true);
 	autoplay		= config->readBoolEntry("AUTOPLAY", false);
 	stopexit 	= config->readBoolEntry("STOPEXIT", true);
 	ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);

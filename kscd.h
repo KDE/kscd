@@ -318,7 +318,6 @@ private:
     //  void            checkMount();
 
     void                drawPanel();
-    void                cleanUp();
     void                loadBitmaps();
     void                setLEDs(const QString& symbols);
   /**
