@@ -59,7 +59,6 @@ extern "C" {
 #include "bitmaps/shuffle.xbm"
 #include "bitmaps/options.xbm"
 
-#include <kwm.h>
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <kstddirs.h>
