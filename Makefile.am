@@ -52,7 +52,8 @@ SUBDIRS = bitmaps libwm
 bin_SCRIPTS = workman2cddb.pl
 
 kscdicondir = $(kde_datadir)/kscd/icons
-kscdicon_ICON = AUTO
+kscdicon_ICON = cdsmall
+KDE_ICON = kscd
 
 xdg_apps_DATA = kscd.desktop
 
