@@ -315,7 +315,10 @@ KSCD::~KSCD()
 void
 KSCD::initialShow()
 {
-    if (!docking)
+    KConfig* config = kapp->config();
+
+    config->setGroup("GENERAL");
+    if (config->readBoolEntry("HiddenControls", !docking))
     {
         show();
     }
@@ -1172,8 +1175,7 @@ KSCD::setDevicePath(QString path)
 
     cddrive_is_ok = false;
     cd_device_str = path;
-    int ret = wm_cd_init(WM_CDIN, (char *)qstrdup(QFile::encodeName(cd_device_str)),
-        NULL, NULL, NULL);
+    int ret = wm_cd_init(WM_CDIN, QFile::encodeName(cd_device_str), 0, 0, 0);
     kdDebug() << "Device changed to " << cd_device_str << ", return " << ret << "\n";
     device_change = true;
     setArtistAndTitle("", "");
@@ -1342,7 +1344,7 @@ KSCD::cdMode()
             QString errstring =
                 i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
                      "Please make sure you have access permissions to:\n%1")
-                .arg(cd_device_str);
+                .arg(cd_device_str.isNull() ? wm_drive_device() : cd_device_str);
             KMessageBox::error(this, errstring, i18n("Error"));
         }
         return;
@@ -1592,8 +1594,7 @@ KSCD::readSettings()
 
 	cd_device_str = config->readEntry("CDDevice",DEFAULT_CD_DEVICE);
 	/* FIXME check for return value */
-	wm_cd_init(WM_CDIN, (char *)qstrdup(QFile::encodeName(cd_device_str)),
-		NULL, NULL, NULL);
+	wm_cd_init(WM_CDIN, QFile::encodeName(cd_device_str), 0, 0, 0);
 
 #endif
 
@@ -2550,6 +2551,32 @@ QString KSCD::currentTrackTitle()
 {
     int track = wm_cd_getcurtrack();
     return (track > -1) ? tracktitlelist[track] : QString::null;
+}
+
+QString KSCD::currentAlbum()
+{
+    QString album = tracktitlelist[0];
+    int slash = album.find('/');
+
+    if (slash < 1)
+    {
+        return album;
+    }
+
+    return album.left(slash - 1);
+}
+
+QString KSCD::currentArtist()
+{
+    QString artist = tracktitlelist[0];
+    int slash = artist.find('/');
+
+    if (slash < 2)
+    {
+        return artist;
+    }
+
+    return artist.right(slash - 2);
 }
 
 QStringList KSCD::trackList()

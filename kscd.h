@@ -138,6 +138,8 @@ k_dcop:
     int  getVolume() { return volume; }
     int currentTrack();
     QString currentTrackTitle();
+    QString currentAlbum();
+    QString currentArtist();
     QStringList trackList();
     void emailSettingsChanged();
 
