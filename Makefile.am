@@ -58,7 +58,7 @@ mime_DATA = xmcd.desktop
 
 pics_DATA = kscdlogo.xpm cdsmall.xpm
 
-messages:
+messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/kscd.pot
 
 cdrom.c:config.h
