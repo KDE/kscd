@@ -30,8 +30,8 @@ CDDBSetup::CDDBSetup
 
 
     basedir_edit->setText(temp.data());
-    connect(basedir_edit,SIGNAL(textChanged(const char*)),
-            this,SLOT(basedir_changed(const char*)));
+    connect(basedir_edit,SIGNAL(textChanged(const QString &)),
+            this,SLOT(basedir_changed(const QString &)));
 
     connect(update_button,SIGNAL(clicked()),
             this,SLOT(serverlist_update()));
@@ -133,7 +133,7 @@ void CDDBSetup::set_current_submission_address(int i)
     currentSubmitLE->setText(submitaddressstring.data());
 }
 
-void CDDBSetup::basedir_changed(const char* str)
+void CDDBSetup::basedir_changed(const QString &str)
 {
     basedirstring = str;
 }

@@ -51,7 +51,7 @@ public slots:
 protected slots:
    void help();
    void enable_remote_cddb(bool en);
-   void basedir_changed(const char* str);
+   void basedir_changed(const QString &str);
    void set_current_server(int i);
    void set_current_submission_address(int i);
    void set_defaults();

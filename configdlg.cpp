@@ -108,8 +108,8 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
   cd_device_edit = new QLineEdit(this);
   cd_device_edit->setGeometry(155+XOFF,85+YOFF,200,25);
   cd_device_edit->setText(configdata.cd_device);
-  connect(cd_device_edit,SIGNAL(textChanged(const char*)),
-	  this,SLOT(device_changed(const char*)));  
+  connect(cd_device_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(device_changed(const QString &)));  
 
 #if defined(sun) || defined(__sun__) || defined(__osf__) || defined(ultrix) || defined(__ultrix)
 
@@ -125,8 +125,8 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
   mail_edit = new QLineEdit(this);
   mail_edit->setGeometry(155+XOFF,115+YOFF,200,25);
   mail_edit->setText(configdata.mailcmd);
-  connect(mail_edit,SIGNAL(textChanged(const char*)),
-	  this,SLOT(mail_changed(const char*)));  
+  connect(mail_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(mail_changed(const QString &)));  
 
   browserbox = new  QButtonGroup(i18n("WWW-Browser"),this,"wwwbox");
 //  browserbox->setGeometry(20+XOFF,145+YOFF,338,130);
@@ -216,12 +216,12 @@ void ConfigDlg::okbutton() {
 
 }
 
-void ConfigDlg::device_changed(const char* dev) {
+void ConfigDlg::device_changed(const QString &dev) {
 
   configdata.cd_device = dev;
 }
 
-void ConfigDlg::mail_changed(const char* dev) {
+void ConfigDlg::mail_changed(const QString &dev) {
 
   configdata.mailcmd = dev;
 }

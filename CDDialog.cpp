@@ -72,8 +72,8 @@ CDDialog::CDDialog
 	connect(load_button, SIGNAL(clicked())       ,this,SLOT(load()));
 	connect(ext_info_title_button, SIGNAL(clicked()) ,this,SLOT(extITB()));
 	connect(ext_info_button, SIGNAL(clicked())       ,this,SLOT(extIB()));
-	connect(titleedit,   SIGNAL(textChanged(const char*)),
-		             this,SLOT(titlechanged(const char*)));
+	connect(titleedit,   SIGNAL(textChanged(const QString &)),
+		             this,SLOT(titlechanged(const QString &)));
 	ext_info_button->setEnabled(false);
 
         setFixedSize(width(),height());
@@ -357,7 +357,7 @@ QTime framestoTime(int _frames){
   return dml;
 }
 
-void CDDialog::titlechanged(const char* t){
+void CDDialog::titlechanged(const QString &t){
 
 
   track_list.remove((uint)0);

@@ -62,8 +62,8 @@ MGConfigDlg::MGConfigDlg(QWidget *parent=0,
   width_edit->setGeometry(200,25,100,25);
   temp.setNum(mgconfigdata.width);
   width_edit->setText(temp.data());
-  connect(width_edit,SIGNAL(textChanged(const char*)),
-	  this,SLOT(width_changed(const char*)));  
+  connect(width_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(width_changed(const QString &)));  
 
 
   label2 = new QLabel(this);
@@ -74,8 +74,8 @@ MGConfigDlg::MGConfigDlg(QWidget *parent=0,
   height_edit->setGeometry(200,65,100,25);
   temp.setNum(mgconfigdata.height);
   height_edit->setText(temp.data());
-  connect(height_edit,SIGNAL(textChanged(const char*)),
-	  this,SLOT(height_changed(const char*)));  
+  connect(height_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(height_changed(const QString &)));  
 
 
   label3 = new QLabel(this);
@@ -98,13 +98,13 @@ MGConfigDlg::MGConfigDlg(QWidget *parent=0,
 
 
 
-void MGConfigDlg::width_changed(const char* width) {
+void MGConfigDlg::width_changed(const QString &width) {
 
   mgconfigdata.width = atoi(width);
 }
 
 
-void MGConfigDlg::height_changed(const char* height) {
+void MGConfigDlg::height_changed(const QString &height) {
 
   mgconfigdata.height = atoi(height);
 }

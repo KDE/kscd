@@ -62,8 +62,8 @@ private slots:
 
   void help();
   void brightness_changed();
-  void width_changed(const char*);
-  void height_changed(const char*);
+  void width_changed(const QString &);
+  void height_changed(const QString &);
 
   
 private:

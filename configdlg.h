@@ -71,8 +71,8 @@ private slots:
   void dockOnMinimizeClicked();
   void stopOnExitClicked();
   void ejectOnFinishClicked();
-  void device_changed(const char*);
-  void mail_changed(const char*);
+  void device_changed(const QString&);
+  void mail_changed(const QString&);
   void custombutton_clicked();
   void kfmbutton_clicked();
 
