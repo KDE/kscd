@@ -225,7 +225,6 @@ private:
 // cddb support
 public slots:
     void cddb_failed(CDDB::Result);
-    void mycddb_inexact_read();
     void CDDialogSelected();
     void CDDialogDone();
     void lookupCDDB();

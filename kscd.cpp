@@ -1188,54 +1188,6 @@ void KSCD::cddb_failed(CDDB::Result result)
     led_off();
 } // cddb_failed
 
-void KSCD::mycddb_inexact_read()
-{
-/*    if(cddb_inexact_sentinel == true)
-        return;
-
-    QString pick;
-
-    cddb_inexact_sentinel = true;
-    QStringList inexact_list;
-    cddb->get_inexact_list(inexact_list);
-
-    // Whatever happens, we better clear the list beforehand
-    tracktitlelist.clear();
-    extlist.clear();
-
-    if( inexact_list.count() == 1)
-    {
-        pick = inexact_list.first();
-        cddb->query_exact("200 " + pick);
-        return;
-    }
-
-    InexactDialog *dialog;
-    dialog = new InexactDialog(0,"inexactDialog",true);
-    dialog->insertList(inexact_list);
-
-    if(dialog->exec() != QDialog::Accepted)
-    {
-        cddb->close_connection();
-        timer.start(1000);
-        led_off();
-        return;
-    }
-
-    pick = dialog->selection();
-    delete dialog;
-
-    if(pick.isEmpty())
-    {
-        timer.start(1000);
-        led_off();
-        return;
-    }
-
-    pick = "200 " + pick;
-    cddb->query_exact(pick);*/
-} // mycddb_inexact_read
-
 void KSCD::led_off()
 {
     queryledtimer.stop();
@@ -1402,6 +1354,7 @@ void KSCD::information(int i)
         case 2:
             str = QString("http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1")
                   .arg(encodedArtist);
+	    break;
 
         case 3:
             str = QString("http://www.alltheweb.com/search?cat=web&q=%1")
