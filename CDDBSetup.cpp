@@ -168,7 +168,6 @@ CDDBSetup::insertData(const QStringList& _serverlist,
                       const QString& http_proxy_host,
                       const unsigned short int& http_proxy_port)
 {
-
     current_server_string = _current_server.copy();
     currentServerLE->setText(current_server_string);
 
@@ -209,7 +208,7 @@ CDDBSetup::set_defaults()
     server_listbox->repaint();
     server_listbox->setCurrentItem(0);
 
-	 // Changed to local user KDE dir
+    // Changed to local user KDE dir
     basedirstring = KGlobal::dirs()->resourceDirs("cddb").first();
     basedir_edit->lineEdit()->setText(basedirstring);
 
@@ -232,7 +231,7 @@ CDDBSetup::getData(QStringList& _serverlist,
                    QString& _basedir,
                    QString& _submitaddress,
                    QString& _current_server,
-		   bool&    auto_save_enabled,
+                   bool&    auto_save_enabled,
                    bool&    remote_enabled,
                    unsigned short int &cddb_timeout,
                    bool&    http_proxy_enabled,

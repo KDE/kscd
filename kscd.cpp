@@ -1200,7 +1200,7 @@ KSCD::configDone()
 void
 KSCD::getCDDBOptions(CDDBSetup* config)
 {
-    if (config)
+    if (!config)
     {
         return;
     }
@@ -2104,26 +2104,27 @@ KSCD::cddb_ready()
     cddb.queryCD(cddb_discid(),querylist);
 } // cddb_ready
 
-#define DEFINE_CDTEXT
-#define CDTEXT_MACRO \
-    if(wm_cdtext_info.valid){\
-  kdDebug() << "CDTEXT_MACRO called" << endl;\
-  int at;\
-    setArtistAndTitle("", ""); \
-    tracktitlelist.clear(); \
-    extlist.clear(); \
-  tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->name[0]),(const char*)(wm_cdtext_info.blocks[0]->performer[0])));\
-  titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));\
-  artistlabel->setText(tracktitlelist.first());\
-  songListCB->clear();\
-  for (at = 1 ; at < (wm_cdtext_info.count_of_entries); ++at ) {\
-      songListCB->insertItem( QString().sprintf("%02d: %s", at, wm_cdtext_info.blocks[0]->name[at]));\
-      tracktitlelist.append((const char*)(wm_cdtext_info.blocks[0]->name[at]));\
-  }\
-  for(; at < cur_ntracks; ++at){\
-      songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));\
-  }\
+
+#ifdef DEFINE_CDTEXT
+void KSCD::cdtext()
+{
+    kdDebug() << "cdtext() called" << endl;
+    setArtistAndTitle("", ""); 
+    tracktitlelist.clear(); 
+    extlist.clear(); 
+    tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->name[0]),(const char*)(wm_cdtext_info.blocks[0]->performer[0])));
+    titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));
+    artistlabel->setText(tracktitlelist.first());
+    songListCB->clear();
+    for (int at = 1; at < (wm_cdtext_info.count_of_entries); ++at ) {
+        songListCB->insertItem( QString().sprintf("%02d: %s", at, wm_cdtext_info.blocks[0]->name[at]));
+        tracktitlelist.append((const char*)(wm_cdtext_info.blocks[0]->name[at]));
+    }
+    for(; at < cur_ntracks; ++at){
+        songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));
+    }
 }
+#endif
 
 void
 KSCD::cddb_no_info()
@@ -2134,17 +2135,20 @@ KSCD::cddb_no_info()
     //    tracktitlelist.append(i18n("No matching freedb entry found."));
 #ifdef DEFINE_CDTEXT
     wm_cd_get_cdtext();
-    CDTEXT_MACRO
+    if(wm_cdtext_info.valid)
+    {
+        cdtext();
+    }
     else
 #endif /* DEFINE_CDTEXT */
     {
        discidlist.clear();
+       populateSongList();
     }
     timer.start(1000);
     led_off();
     cddb_inexact_sentinel =false;
 
-    populateSongList();
 } // cddb_no_info
 
 void
@@ -2159,7 +2163,10 @@ KSCD::cddb_failed()
     extlist.clear();
     tracktitlelist.append(i18n("Error getting freedb entry."));
 #ifdef DEFINE_CDTEXT
-    CDTEXT_MACRO
+    if(wm_cdtext_info.valid)
+    {
+        cdtext();
+    }
     else
 #endif /* DEFINE_CDTEXT */
     {
@@ -2171,6 +2178,7 @@ KSCD::cddb_failed()
         extlist.append("");
 
       discidlist.clear();
+      populateSongList();
 
       setArtistAndTitle(i18n("Error getting freedb entry."), "");
     }
@@ -2188,7 +2196,10 @@ KSCD::cddb_timed_out()
   extlist.clear();
   tracktitlelist.append(i18n("freedb query timed out."));
 #ifdef DEFINE_CDTEXT
-    CDTEXT_MACRO
+    if(wm_cdtext_info.valid)
+    {
+        cdtext();
+    }
     else
 #endif /* DEFINE_CDTEXT */
     {
@@ -2200,6 +2211,7 @@ KSCD::cddb_timed_out()
         extlist.append("");
 
       discidlist.clear();
+      populateSongList();
 
       setArtistAndTitle(i18n("freedb query timed out."),"");
     }
@@ -3106,16 +3118,17 @@ void KSCD::clearSongList()
 
 void KSCD::populateSongList()
 {
-    int i = 1;
+    // need to start i at 0 for the case when tracktitlelist is empty
+    int i = 0;
     clearSongList();
     QStringList::Iterator it = tracktitlelist.begin();
     for (++it; it != tracktitlelist.end(); ++it, ++i )
     {
         songListCB->insertItem(QString::fromLatin1("%1: %2")
-                               .arg(QString::number(i).rightJustify(2, '0'))
+                               .arg(QString::number(i + 1).rightJustify(2, '0'))
                                .arg(*it));
     }
-    for(; i < cur_ntracks; i++)
+    for(; i < cur_ntracks; ++i)
     {
         songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
     }

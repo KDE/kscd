@@ -520,36 +520,41 @@ void
 CDDialog::save()
 {
   if(!checkit())
+  {
+    emit dialog_done();
     return;
+  }
 
   QString savecat;
 
-  InexactDialog *dialog;
-  dialog = new InexactDialog(0,"Dialog",true);
-
   if( category.length() < 1 )
-	{
-	  dialog->insertList(catlist);
-	  dialog->setErrorString(i18n("Please select a category or press Cancel"));
-	  dialog->setTitle(i18n("Under Which Category Would you like to Store this Disc's Information?"));
-	  
-	  if(dialog->exec() != QDialog::Accepted)
-		{
-		  delete dialog;
-		  return;
-		}
-	  
-	  dialog->getSelection(savecat);
-	} else {
-	  savecat = category.copy();
-	}
+  {
+    InexactDialog *dialog;
+    dialog = new InexactDialog(0,"Dialog",true);
+    dialog->insertList(catlist);
+    dialog->setErrorString(i18n("Please select a category or press Cancel"));
+    dialog->setTitle(i18n("Under Which Category Would you like to Store this Disc's Information?"));
+
+    if(dialog->exec() != QDialog::Accepted)
+    {
+      delete dialog;
+      emit dialog_done();
+      return;
+    }
+
+    dialog->getSelection(savecat);
+    delete dialog;
+  } 
+  else 
+  {
+    savecat = category.copy();
+  }
 
   QString mag;
   mag.sprintf("%s/%s/%08lx",cddbbasedir.utf8().data(),savecat.utf8().data(),cdinfo.magicID);
 
   save_cddb_entry(mag,false);
   load_cddb();
-  delete dialog;
   emit dialog_done();
 } // save
 
