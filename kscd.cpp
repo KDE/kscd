@@ -114,16 +114,12 @@ KSCD::KSCD( QWidget *parent, const char *name )
     have_new_cd(true),
     //updateDialog(false), //!!!!
     updateTime(true),
+    cddb(0),
     revision(0), // The first freedb revision is "0" //!!!!
     year(0),
     m_dockWidget(0)
 {
   random_current      = random_list.begin();
-
-  cddb = new KCDDB::Client();
-  cddb->setBlockingMode(false);
-  connect(cddb, SIGNAL(finished(CDDB::Result)),
-          this, SLOT(cddb_done(CDDB::Result)));
 
 #if defined(BUILD_CDDA)
   audio_systems_list
@@ -1286,6 +1282,12 @@ void KSCD::get_cddb_info(bool /*_updateDialog*/)
     querylist << cd->trk[0].start << cd->trk[wm_cd_getcountoftracks()].start;
     led_on();
 
+    delete cddb;
+    cddb = new KCDDB::Client();
+    cddb->setBlockingMode(false);
+    connect(cddb, SIGNAL(finished(CDDB::Result)),
+            this, SLOT(cddb_done(CDDB::Result)));
+
     cddb->lookup(querylist);
 } // get_cddb_info
 
@@ -1379,6 +1381,11 @@ void KSCD::cddb_done(CDDB::Result result)
     }
  
     populateSongList();
+
+    // In case the cddb dialog is open, update it
+    if (cddialog)
+      cddialog->setData(cd,artist,title,tracktitlelist,extlist,xmcd_data,category, genre,
+                        revision,year,playlist,pathlist);
 
     led_off();
 } // cddb_done
