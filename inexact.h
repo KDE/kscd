@@ -60,9 +60,6 @@ private slots:
   void checkit();
 
 private:
-    void resizeEvent(QResizeEvent *e);
-
-private:
     bool            listbox;
     QPushButton     *ok_button;
     QPushButton     *cancel_button;
