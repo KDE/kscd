@@ -70,13 +70,13 @@ ConfigDlg::ConfigDlg(KSCD* player, const char* name, bool modal)
      * kscd config page
      *
      */
-    QVBox* page = addVBoxPage(i18n("CD Player"), i18n("KSCD settings and behavior"), loadIcon("kscd"));
+    QVBox* page = addVBoxPage(i18n("CD Player"), i18n("KSCD Settings & Behavior"), loadIcon("kscd"));
     mKCSDConfig = new configWidget(mPlayer, page);
     
     /*
      * freedb page
      */
-    page = addVBoxPage(QString("freedb"), i18n("Configure fetching items"), loadIcon("cdtrack"));
+    page = addVBoxPage(QString("freedb"), i18n("Configure Fetching Items"), loadIcon("cdtrack"));
     mCDDBConfig = new CDDBSetup(page,"cddbsetupdialog");
     mPlayer->getCDDBOptions(mCDDBConfig);
     connect(mCDDBConfig, SIGNAL(updateCDDBServers()), mPlayer, SLOT(getCDDBservers()));
@@ -88,7 +88,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char* name, bool modal)
     /*
      * SMTP page
      */
-    page = addVBoxPage(QString("SMTP"), i18n("Mail settings for uploading CDDB records"), loadIcon("email"));
+    page = addVBoxPage(QString("SMTP"), i18n("Mail Settings for Uploading CDDB Records"), loadIcon("email"));
     mSMTPConfig = new SMTPConfig(page, "smtpconfig", mPlayer->smtpData());
 
 #if KSCDMAGIC
@@ -107,7 +107,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char* name, bool modal)
     /*
      * About page
      */
-    page = addVBoxPage(i18n("Credits"), i18n("Primary authors and contributors"), loadIcon("help"));
+    page = addVBoxPage(i18n("Credits"), i18n("Primary Authors & Contributors"), loadIcon("help"));
     KAboutWidget* about = new KAboutWidget(page);
     about->setLogo(UserIcon("kscdlogo"));
     about->setVersion(KSCDVERSION);
