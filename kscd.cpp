@@ -298,11 +298,11 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
 KSCD::~KSCD()
 {
-    if (thiscd.trk)
+    if (cd->trk)
     {
-        free(thiscd.trk);
-        thiscd.trk = 0L;
-        thiscd.ntracks = 0;
+        free(cd->trk);
+        cd->trk = 0L;
+        cd->ntracks = 0;
     }
 
     signal (SIGINT, SIG_DFL);
@@ -371,9 +371,6 @@ KSCD::initWorkMan()
   scmd         = 0;
   tmppos       = 0;
   save_track   = 1;
-  thiscd.trk   = NULL;
-  thiscd.lists = NULL;
-  thiscd.ntracks = 0;
   tottime      = tmptime;
 } // initWorkMan()
 
@@ -945,7 +942,7 @@ KSCD::fwdClicked()
     if (cur_cdmode == WM_CDM_PLAYING)
     {
         tmppos = cur_pos_rel + skipDelta;
-        if (tmppos < thiscd.trk[cur_track - 1].length)
+        if (tmppos < cd->trk[cur_track - 1].length)
         {
             if(randomplay || !playlist.isEmpty())
                 wm_cd_play (cur_track, tmppos, cur_track + 1);
@@ -1989,15 +1986,15 @@ cddb_discid()
 
 
     /* For backward compatibility this algorithm must not change */
-    for (i = 0; i < thicd.ntracks; i++)
+    for (i = 0; i < cd->ntracks; i++)
     {
-        n += cddb_sum(thiscd.trk[i].start / 75);
+        n += cddb_sum(cd->trk[i].start / 75);
     }
 
-    t = ((thiscd.trk[thiscd.ntracks].start / 75) -
-         (thiscd.trk[0].start / 75));
+    t = ((cd->trk[cd->ntracks].start / 75) -
+         (cd->trk[0].start / 75));
 
-    return ((n % 0xff) << 24 | t << 8 | thiscd.ntracks);
+    return ((n % 0xff) << 24 | t << 8 | cd->ntracks);
 }
 
 #endif
