@@ -377,7 +377,7 @@ KSCD::drawPanel()
      trackTimeLED[u] = new BW_LED_Number(backdrop);
      trackTimeLED[u]->setLEDoffColor(background_color);
      trackTimeLED[u]->setLEDColor(led_color, background_color);
-     trackTimeLED[u]->setGeometry(1 + u * 18, D, 23,  30);
+     trackTimeLED[u]->setGeometry(2 + u * 18, D, 23,  30);
      connect(trackTimeLED[u], SIGNAL(clicked()), this, SLOT(cycleplaytimemode()));
   }
 
