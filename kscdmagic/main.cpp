@@ -175,12 +175,12 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void error(char *str) { 
+void error( const char *str ) { 
   printf(PROGNAME ": Error %s\n",str); 
   exit(1);
 }
 
-void warning(char *str) { printf(PROGNAME ": Possible error %s\n",str); }
+void warning(const char *str) { printf(PROGNAME ": Possible error %s\n",str); }
 
 
 int processUserInput() {
