@@ -76,7 +76,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
     /*
      * freedb page
      */
-    page = addVBoxPage(QString("freedb"), i18n("Configure Fetching Items"), loadIcon("cdtrack"));
+    page = addVBoxPage(i18n("freedb"), i18n("Configure Fetching Items"), loadIcon("cdtrack"));
     mCDDBConfig = new CDDBSetup(page,"cddbsetupdialog");
     mPlayer->getCDDBOptions(mCDDBConfig);
     connect(mCDDBConfig, SIGNAL(updateCDDBServers()), mPlayer, SLOT(getCDDBservers()));
@@ -88,7 +88,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
     /*
      * SMTP page
      */
-    page = addVBoxPage(QString("SMTP"), i18n("Mail Settings for Uploading CDDB Records"), loadIcon("email"));
+    page = addVBoxPage(i18n("SMTP"), i18n("Mail Settings for Uploading CDDB Records"), loadIcon("email"));
     mSMTPConfig = new SMTPConfig(page, "smtpconfig", mPlayer->smtpData());
 
 #if KSCDMAGIC
@@ -113,7 +113,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
     about->setVersion(KSCDVERSION);
     about->setMaintainer("Aaron J. Seigo", "aseigo@olympusproject.org",
                          QString::null, i18n("Current maintainer"));
-    about->addContributor(i18n("Dirk Försterling"), "milliByte@gmx.net", QString::null, 
+    about->addContributor("Dirk Försterling", "milliByte@gmx.net", QString::null, 
                      i18n("Workman library, previous maintainer"));
     about->setAuthor("Bernd Johannes Wuebben", "wuebben@kde.org", 
                      QString::null, QString::null);
@@ -158,7 +158,3 @@ void ConfigDlg::finis()
 }
 
 #include "configdlg.moc"
-
-
-
-
