@@ -1789,12 +1789,13 @@ QString KSCD::currentAlbum()
     QString album = tracktitlelist[0];
     int slash = album.find('/');
 
-    if (slash < 1)
+    if (slash < 2)
     {
         return album;
     }
 
-    return album.left(slash - 1);
+
+    return album.right(album.length() - slash - 2);
 }
 
 QString KSCD::currentArtist()
@@ -1802,12 +1803,12 @@ QString KSCD::currentArtist()
     QString artist = tracktitlelist[0];
     int slash = artist.find('/');
 
-    if (slash < 2)
+    if (slash < 1)
     {
         return artist;
     }
 
-    return artist.right(slash - 2);
+    return artist.left(slash - 1);
 }
 
 QStringList KSCD::trackList()
