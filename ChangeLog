@@ -1,8 +1,8 @@
 Wed May 31 06:18:21 2000  Dirk Försterling  <milliByte@gmx.de>
-
+	
 	* Switched from stand alone WorkMan code to libworkman.
-	* Fixed Bugs 296, 298, 299, 301, 1186, 2278, 2354, 2429, 2559
- 	and 2586 or verified that they were already fixed.
+	* Fixed Bugs 296, 298, 299, 301, 371, 815, 1186, 2278, 2354, 
+	* 2429, 2559 and 2586 or verified that they were already fixed.
 	* updated ChangeLog.
 
 Sat May 27 09:43:58 2000  Dirk Försterling  <milliByte@gmx.de>
