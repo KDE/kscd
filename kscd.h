@@ -274,6 +274,8 @@ private:
     LedLamp             *queryled;
     LedLamp             *loopled;
     bool                randomplay;
+    bool                randomplay_pending;
+    void song_list_complete(void);
     bool                looping;
     bool                cddrive_is_ok;
     bool                have_new_cd;
@@ -287,7 +289,7 @@ private:
 
 
 
-    void    cdtext(struct cdtext_info* p_cdtext);
+    void cdtext(struct cdtext_info* p_cdtext);
 
   /**
    * select a random track from the current disc.

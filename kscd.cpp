@@ -117,6 +117,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
     skipDelta(30),
     volume(40),
     randomplay(false),
+    randomplay_pending(false),
     looping(false),
     cddrive_is_ok(true),
     have_new_cd(true),
@@ -154,7 +155,11 @@ KSCD::KSCD( QWidget *parent, const char *name )
   drawPanel();
   setColors();
   initWorkMan();
-
+  
+  /* debug
+    wm_cd_set_verbosity(255);
+   */
+  
   // the volume slider
   m_volume = new KVolumeControl(volumePB, this);
   m_volume->setValue(volume);
@@ -561,7 +566,11 @@ KSCD::playClicked()
         qApp->processEvents();
         qApp->flushX();
 
-        if(!playlist.isEmpty())
+        if(randomplay)
+        {
+            nextClicked();
+        }
+        else if(!playlist.isEmpty())
         {
             if(playlistpointer >=(int) playlist.count())
                 playlistpointer = 0;
@@ -617,24 +626,32 @@ KSCD::playClicked()
     cdMode();
 } // playClicked()
 
+void KSCD::song_list_complete(void)
+{
+    if (randomplay_pending) {
+        setShuffle(false);
+        setShuffle(true);
+        randomplay_pending = false;
+    }
+}
+
 void KSCD::setShuffle(bool shuffle)
 {
     if (randomplay == shuffle)
     {
         return;
     }
-
+   
     randomplay = shuffle;
     shufflePB->setOn(shuffle);
 
-    if (randomplay)
-    {
+    if (randomplay) {
         statuslabel->setText(i18n("Shuffle"));
-
-        if (songListCB->count() == 0)
-            return;
-        make_random_list(); /* koz: Build a unique, once, random list */
-        nextClicked();
+        if(cd && cd->ntracks > 0) {
+            make_random_list(); /* koz: Build a unique, once, random list */
+            if(WM_CDM_PLAYING == wm_cd_status())
+                nextClicked();
+        }
     }
 }
 
@@ -642,8 +659,6 @@ void
 KSCD::stopClicked()
 {
     //    looping = FALSE;
-    // TODO: figure out what it will take to not reset randomplay!
-    // setShuffle(false);
     stoppedByUser = true;
     statuslabel->setText(i18n("Stopped"));
     playPB->setText(i18n("Play"));
@@ -747,7 +762,7 @@ KSCD::quitClicked()
     jumpTrackTimer.stop();
 
     writeSettings();
-    setShuffle(false);
+    //setShuffle(false);
     statuslabel->clear();
     setLEDs( "--:--" );
 
@@ -793,7 +808,7 @@ KSCD::closeEvent( QCloseEvent *e )
         stopClicked();
 
     writeSettings();
-    setShuffle(false);
+    //setShuffle(false);
 
     statuslabel->clear();
 
@@ -858,8 +873,9 @@ KSCD::ejectClicked()
         return;
     if(!currentlyejected)
     {
-      // TODO: preserve the shuffle preference between discs
-      setShuffle(false);
+      // preserve the shuffle preference between discs
+      randomplay_pending = randomplay;
+
       statuslabel->setText(i18n("Ejecting"));
       qApp->processEvents();
       qApp->flushX();
@@ -1030,7 +1046,7 @@ KSCD::setDevicePaths(QString cd_device, QString audio_system, QString audio_devi
         WM_CDIN, QFile::encodeName(cd_device_str), 0, 0, 0);
     kdDebug() << "Device changed to " << cd_device_str << ". return " << ret << "\n";
 #endif
-
+    
     device_change = true;
     setArtistAndTitle("", "");
     tracktitlelist.clear();
@@ -1111,6 +1127,13 @@ KSCD::make_random_list()
         random_list.append(selected);
     }
 
+/*  debug
+    RandomList::iterator it;
+    for(it = random_list.begin(); it != random_list.end(); it++) {
+        printf("%i ", *it);
+    }
+    printf("\n");
+*/
     random_current = random_list.end();
 } // make_random_list()
 
@@ -1415,9 +1438,8 @@ KSCD::readSettings()
 
 	config->setGroup("GENERAL");
 	volume     	= config->readNumEntry("Volume", volume);
-        // TODO: this breaks if randomplay comes up true to begin with!
-	setShuffle(config->readBoolEntry("RandomPlay", false));
-    docking = config->readBoolEntry("DOCKING", docking);
+	randomplay_pending = config->readBoolEntry("RandomPlay", false);
+	docking = config->readBoolEntry("DOCKING", docking);
 	autoplay		= config->readBoolEntry("AUTOPLAY", autoplay);
 	stopexit 	= config->readBoolEntry("STOPEXIT", stopexit);
 	ejectonfinish = config->readBoolEntry("EJECTONFINISH", ejectonfinish);
@@ -1777,6 +1799,7 @@ KSCD::get_cddb_info(bool /*_updateDialog*/)
     {
         querylist << cd->trk[i].start;
     }
+    song_list_complete();
 
     querylist << cd->trk[0].start << cd->trk[cd->ntracks].start;
     led_on();
@@ -1818,6 +1841,7 @@ KSCD::cddb_done(CDDB::Result result)
 
     playlistpointer = 0;
     populateSongList();
+
     led_off();
     timer.start(1000);
 } // cddb_done
@@ -1879,6 +1903,7 @@ KSCD::cddb_no_info()
        discidlist.clear();
        populateSongList();
     }
+
     led_off();
     timer.start(1000);
 } // cddb_no_info
@@ -1915,8 +1940,9 @@ KSCD::cddb_failed()
 
       setArtistAndTitle(i18n("Error getting freedb entry."), "");
     }
-    timer.start(1000);
+
     led_off();
+    timer.start(1000);
 } // cddb_failed
 
 void
