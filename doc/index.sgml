@@ -98,7 +98,7 @@ get KSCD to compile on your platform.
 <sect2>Main window
 
 <p>
-<img src="kscd1.gif">
+<img src="kscd1.png">
 
 This is the main window of kscd. You should see something like this
 when you start <bf/kscd/. The controls in this window are explained below,
@@ -107,7 +107,7 @@ in no particular order.
 <sect2>Main control panel
 
 <p>
-<img src="kscd2.gif">
+<img src="kscd2.png">
 
 This is the main control panel for <bf/kscd/. The function of these buttons 
 should be familiar to anyone who has ever used a CD player. The uppermost 
@@ -122,7 +122,7 @@ beginning of the next or previous track.
 <sect2>Eject button
 
 <p>
-<img src="kscd2a.gif">
+<img src="kscd2a.png">
 
 This button ejects the CD. Note that the eject button on your CD-ROM drive 
 may not respond if an audio CD is in the drive and <bf/kscd/ is started. Some 
@@ -132,7 +132,7 @@ the CD-ROM drive manually after inserting a new disc.
 <sect2>Status display
 
 <p>
-<img src="kscd3.gif">
+<img src="kscd3.png">
 
 This is the status display. Starting at the top, from right to left, is the
 main time display <em>(See below for a discussion of the various possible time 
@@ -145,7 +145,7 @@ appropriate entries exist in the local or network CDDB <em/(CD Data Base)/.
 <sect2>Time display mode button
 
 <p>
-<img src="kscd4.gif">
+<img src="kscd4.png">
 
 This button toggles between the possible main time display modes. By default, 
 <bf/kscd/ displays the elapsed time of the current track, if the CD is 
@@ -156,7 +156,7 @@ remaining time.
 <sect2>Configuration button
 
 <p>
-<img src="kscd5.gif">
+<img src="kscd5.png">
 
 This button opens the <bf/kscd/ configuration panel. This allows you
 to configure <bf/kscd/ to work on your machine. See <ref id="configure" name="Configuring kscd">
@@ -165,7 +165,7 @@ for details about configuring <bf/kscd/.
 <sect2>CDDB Editor button
 
 <p>
-<img src="kscd6.gif">
+<img src="kscd6.png">
 
 This button opens the CDDB <em/(Compact Disc Data Base)/ entry editor
 panel. The CDDB can identify your CD and often download a list of tracks for
@@ -175,7 +175,7 @@ about using this tool.
 <sect2>Information button
 
 <p>
-<img src="kscd7.gif"><label id="information">
+<img src="kscd7.png"><label id="information">
 
 This button will help you search for information about the artist on the
 Internet. You can find out about performance dates, purchase information,
@@ -185,14 +185,14 @@ option in the pop-up menu that appears.
 <sect2>On / off button
 
 <p>
-<img src="kscd9.gif">
+<img src="kscd9.png">
 
 This button closes <bf/kscd/.
 
 <sect2>Volume slider
 
 <p>
-<img src="kscd10.gif">
+<img src="kscd10.png">
 
 This slider controls the volume of the audio output of the CD. Right is
 louder, left is quieter. If you are playing your CD through your sound card, 
@@ -201,14 +201,14 @@ the sound card mixer will affect the playback volume as well.
 <sect2>Direct track selection
 
 <p>
-<img src="kscd11.gif">
+<img src="kscd11.png">
 
 This combo box lets you directly select a track to play.
 
 <sect2>Random order button
 
 <p>
-<img src="kscd15.gif">
+<img src="kscd15.png">
 
 This button plays the CD tracks in random order.
 
@@ -225,7 +225,7 @@ major sections.
 
 <sect2>The CDDB tab <label id="cddb">
 
-<img src="kscd13.gif">
+<img src="kscd13.png">
 
 <p>The CDDB tab sets up the <ref id="database" name="CDDB">
 <em/(Compact Disc Data Base)/ functions of <em/kscd/.
@@ -251,7 +251,7 @@ cddb.cddb.com.
 
 <sect2>The Kscd Options tab <label id="options">
 
-<img src="kscd14.gif">
+<img src="kscd14.png">
 
 <p>The &quot;LED Color:&quot; and &quot;Background Color:&quot; fields show the
 color selected for the foreground and background of the status display. Press
@@ -297,7 +297,7 @@ and some copyright information.
 
 <sect1>The CD Database Editor <label id="editor">
 
-<img src="kscd8.gif" height=488>
+<img src="kscd8.png" height=488>
 
 <p>The CD Database Editor allows you to modify, download, save, annotate, and
 upload <ref id="database" name="CDDB"> <em/(Compact Disc Data Base)/ entries.
@@ -394,7 +394,7 @@ time.
 <item>Q. I see this dialog when I start <bf/kscd/. What's wrong?
 
 <p>
-<img src="kscd16.gif">
+<img src="kscd16.png">
 
 A. This means that <bf/kscd/ couldn't open your CDROM drive. The name of the device
 in the &quot;CDROM Device&quot; field of the &quot;<bf/kscd/ Configuration&quot; must
