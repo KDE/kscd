@@ -38,9 +38,9 @@
 
 #define PROGNAME "kscdmagic"
 
-void error(char *str);
+void error(const char *str);
 #define attempt(x,y) if ((int)(x) == -1) error(y)
-void warning(char *str);
+void warning(const char *str);
 #define attemptNoDie(x,y) if ((int)(x) == -1) warning(y)
 
 #define n (1<<m)
@@ -69,8 +69,8 @@ int mouseGetButtons(void);
 int processUserInput(void); //True == abort now
 void showOutput(void);
 
-void error(char *str); //Display error and exit
-void warning(char *str); //Display error
+void error(const char *str); //Display error and exit
+void warning(const char *str); //Display error
 
 
 /* bitmap */

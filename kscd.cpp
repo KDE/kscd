@@ -58,6 +58,7 @@ extern "C" {
 #include "bitmaps/options.xbm"
 
 #include <kwm.h>
+#include <kglobal.h>
 
 KApplication 	*mykapp;
 KSCD 	         *k;
@@ -357,7 +358,7 @@ void KSCD::drawPanel()
     titlelabel = new QLabel(this);
     titlelabel->setGeometry(WIDTH + 5, iy + 50 , SBARWIDTH -15, 13);
     QFont ledfont( "Helvetica", 10, QFont::Bold );
-    KApplication::getKApplication()->getCharsets()->setQFont(ledfont);
+    KGlobal::charsets()->setQFont(ledfont);
     titlelabel->setFont( ledfont );
     titlelabel->setAlignment( AlignLeft );
     titlelabel->setText("");

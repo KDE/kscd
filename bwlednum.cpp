@@ -6,6 +6,10 @@
  * $Id$
  * 
  * $Log$
+ * Revision 1.7  1999/05/17 13:45:35  porten
+ * * added SCO support
+ * * (Q)char fix
+ *
  * Revision 1.6  1999/03/01 23:37:46  kulow
  * CVS_SILENT ported to Qt 2.0
  *
@@ -204,7 +208,7 @@ void BW_LED_Number::setSmallLED(bool a_boolean){
 }
 
 
-void BW_LED_Number::drawSymbol( QPainter *p,char s,bool repaint ){
+void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
   
   //  printf("drawSymbol repaint = %d\n",repaint);
 

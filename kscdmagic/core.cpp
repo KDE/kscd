@@ -30,6 +30,8 @@
 #include "syna.h"
 #include "magicconf.h"
 
+#define n (1<<m)
+
 int brightFactor = brightness;
 
 double cosTable[n], negSinTable[n];

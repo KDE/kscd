@@ -156,3 +156,5 @@ CDDialogData::~CDDialogData()
 void CDDialogData::titleselected(int)
 {
 }
+
+#undef Inherited

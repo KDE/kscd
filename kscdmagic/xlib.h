@@ -40,6 +40,10 @@
 #include <X11/extensions/XShm.h>
 #endif				/* MITSHM */
 
+#ifdef n
+#undef n
+#endif
+
 typedef struct {
     int n;
     XColor c[256];
@@ -71,7 +75,7 @@ typedef struct {
     unsigned long attr_mask;
     XSizeHints sizehints;
     int screen;
-    char *window_name;
+    const char *window_name;
     int status;
     GC gc;
     XGCValues xgcvalues;
@@ -104,7 +108,7 @@ extern int alloc_image(xdisplay * d);
 extern void free_image(xdisplay * d);
 extern int xupdate_size(xdisplay * d);
 extern void xflip_buffers(xdisplay * d);
-extern xdisplay *xalloc_display(char *n, int x, int y, int width,int height, xlibparam * p);
+extern xdisplay *xalloc_display(const char *n, int x, int y, int width,int height, xlibparam * p);
 extern void xfree_display(xdisplay * d);
 extern void xsetcolor(xdisplay * d, int col);
 extern int xsetfont(xdisplay * d, char *font_name);

@@ -8,6 +8,10 @@
  * $Id$
  * 
  * $Log$
+ * Revision 1.5  1999/05/17 13:45:35  porten
+ * * added SCO support
+ * * (Q)char fix
+ *
  * Revision 1.4  1999/03/01 23:37:47  kulow
  * CVS_SILENT ported to Qt 2.0
  *
@@ -117,8 +121,8 @@ private:
 
 private:	// Disabled copy constructor and operator=
 
-    BW_LED_Number( const BW_LED_Number & ) {}
-    BW_LED_Number &operator=( const BW_LED_Number & ) { return *this; }
+    BW_LED_Number( const BW_LED_Number & );
+    BW_LED_Number &operator=( const BW_LED_Number & );
 
 };
 

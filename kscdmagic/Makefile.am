@@ -23,7 +23,7 @@ INCLUDES= $(all_includes)
 bin_PROGRAMS = 	kscdmagic
 
 # Which sources should be compiled for kscdmagic
-kscdmagic_SOURCES = core.cpp main.cpp xlibwrap.cpp xlib.c sound.cpp bitmap.cpp
+kscdmagic_SOURCES = core.cpp main.cpp sound.cpp xlibwrap.cpp xlib.c  bitmap.cpp
 
 # the library search path. 
 kscdmagic_LDFLAGS = $(all_libraries) $(KDE_RPATH)

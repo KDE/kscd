@@ -368,3 +368,5 @@ void CDDBSetup::http_access_toggled(bool state)
 
 #include "CDDBSetup.moc"
 #include "CDDBSetupData.moc"
+
+#undef Inherited

@@ -955,3 +955,5 @@ void  mimetranslate(QString& s){
   s = q.copy();
 
 }
+
+#undef Inherited

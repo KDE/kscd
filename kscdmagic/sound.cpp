@@ -53,13 +53,10 @@
 #include "syna.h"
 #include "magicconf.h"
 
+static int device;
 
-static int configUseCD, device;
+void openSound(int) {
 
-
-void openSound(int param) {
-
-  configUseCD = param;
   int format, stereo, fragment, fqc;
  
   attempt(device = open("/dev/dsp",O_RDONLY),"opening /dev/dsp");
