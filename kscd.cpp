@@ -246,7 +246,6 @@ void KSCD::initCDROM()
 {
   have_new_cd = true;
   cdMode();
-  //populateSongList();
 
   if(cddrive_is_ok)
     volChanged(Prefs::volume());
@@ -1037,14 +1036,14 @@ void KSCD::cdMode()
     {
         if (cdmode == WM_CDM_PLAYING)
         {
+            if ( updateTime )
+            {
+                playtime();
+            }
             if( prev_track != track )
             {
                 updateDisplayedTrack(track);
                 prev_track = track;
-            }
-            if ( updateTime )
-            {
-                playtime();
             }
         }
     } else {
@@ -1826,6 +1825,8 @@ void KSCD::populateSongList()
     QStringList::Iterator it = tracktitlelist.begin();
     if(it != tracktitlelist.end() && !(*it).isEmpty())
         setArtist((*it));
+    else
+        setArtist(i18n("<Unknown>"));
 
     for (++it; it != tracktitlelist.end(); ++it, ++i )
     {
