@@ -27,8 +27,11 @@ extern "C" {
 
 #include <qdir.h>
 #include <qregexp.h>
-#include <kfm.h>
+
 #include <kcharsets.h>
+#include <kconfig.h>
+#include <kfm.h>
+#include <klocale.h>
 
 #include "docking.h"
 #include "kscd.h"
