@@ -94,7 +94,7 @@ extern "C" {
 #include "bitmaps/options.xbm"
 
 
-static const char *description = I18N_NOOP("KDE CD player");
+static const char description[] = I18N_NOOP("KDE CD player");
 
 DockWidget*     dock_widget;
 SMTP                *smtpMailer;
