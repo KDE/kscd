@@ -27,12 +27,15 @@ KVolumeControl::KVolumeControl(QPushButton* surrogate, QWidget* parent, const ch
     : QHBox(parent, name),
       m_surrogate(surrogate)
 {
+    setFrameStyle(Panel | Raised);
+    setLineWidth(1);
     m_surrogate->setToggleButton(true);
     m_surrogate->installEventFilter(this);
     makeVisible(m_surrogate->isOn());
     connect(m_surrogate, SIGNAL(toggled(bool)), this, SLOT(makeVisible(bool)));
     m_volumeSlider = new QSlider(0, 100, 5,  50, QSlider::Vertical, this);
-    m_volumeSlider->setFixedSize(m_volumeSlider->sizeHint().width(), 100);
+    setMargin((surrogate->width() - m_volumeSlider->sizeHint().width()) / 2);
+    m_volumeSlider->setFixedSize(surrogate->width() - lineWidth() * 2 - margin() * 2, 100);
     m_volumeSlider->installEventFilter(this);
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(valueFlip(int)));
     adjustSize();
@@ -40,7 +43,7 @@ KVolumeControl::KVolumeControl(QPushButton* surrogate, QWidget* parent, const ch
 
 void KVolumeControl::show()
 {
-    move(m_surrogate->pos() + QPoint((m_surrogate->width() / 2) - (width() / 2), m_surrogate->height()));
+    move(m_surrogate->pos() + QPoint(0, m_surrogate->height()));
     QHBox::show();
 }
 
