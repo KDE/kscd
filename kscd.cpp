@@ -485,14 +485,6 @@ KSCD::playClicked()
        cur_cdmode == WM_CDM_UNKNOWN)
 #endif
     {
-        statuslabel->setText( i18n("Playing") );
-        playing = true;
-        setLEDs( "00:00" );
-        populateSongList();
-
-        kapp->processEvents();
-        kapp->flushX();
-
         if(Prefs::randomPlay())
         {
             nextClicked();
@@ -517,15 +509,22 @@ KSCD::playClicked()
         {
             wm_cd_play (save_track, 0, WM_ENDTRACK);
         }
+        statuslabel->setText( i18n("Playing") );
+        playing = true;
+        setLEDs( "00:00" );
+        populateSongList();
+
+        kapp->processEvents();
+        kapp->flushX();
     }
     else if (cur_cdmode == WM_CDM_PLAYING || cur_cdmode == WM_CDM_PAUSED)
     {
+        wm_cd_pause();
         switch (cur_cdmode)
         {
             case WM_CDM_PLAYING:
                 statuslabel->setText( i18n("Pause") );
                 playing = false;
-                wm_cd_pause();
                 break;
             case WM_CDM_PAUSED:
                 if(Prefs::randomPlay())
@@ -536,13 +535,7 @@ KSCD::playClicked()
                 {
                     statuslabel->setText( i18n("Playing") );
                 }
-                wm_cd_pause();
                 playing = true;
-                break;
-
-            default:
-                // TODO: next release: force "stop".
-                statuslabel->setText( i18n("Strange...") );
                 break;
         } // switch
 
@@ -602,6 +595,7 @@ void
 KSCD::stopClicked()
 {
     //    looping = false;
+    wm_cd_stop();
     stoppedByUser = true;
     statuslabel->setText(i18n("Stopped"));
     updatePlayPB(false);
@@ -611,16 +605,12 @@ KSCD::stopClicked()
 
     save_track = 1;
     playlistpointer = 0;
-    wm_cd_stop();
 } // stopClicked()
 
 void
 KSCD::prevClicked()
 {
     int track;
-    setLEDs("00:00");
-    kapp->processEvents();
-    kapp->flushX();
 
     if(Prefs::randomPlay()) {
         if((track = prev_randomtrack()) < 0)
@@ -646,15 +636,16 @@ KSCD::prevClicked()
         wm_cd_play (track, 0, track + 1);
     else
         wm_cd_play (track, 0, WM_ENDTRACK);
+
+    setLEDs("00:00");
+    kapp->processEvents();
+    kapp->flushX();
 } // prevClicked()
 
 void
 KSCD::nextClicked()
 {
     int track;
-    setLEDs("00:00");
-    kapp->processEvents();
-    kapp->flushX();
 
     if(Prefs::randomPlay()) {
         if((track = next_randomtrack()) < 0)
@@ -675,6 +666,10 @@ KSCD::nextClicked()
          wm_cd_play (track, 0, track + 1);
     else
          wm_cd_play (track, 0, WM_ENDTRACK);
+    
+    setLEDs("00:00");
+    kapp->processEvents();
+    kapp->flushX();
 } // nextClicked()
 
 void
@@ -881,11 +876,12 @@ KSCD::trackSelected( int trk )
                           i18n("<Unknown>"));
     }
 
+    wm_cd_play(trk + 1, 0, trk + 2);
+        
     setLEDs("00:00");
     kapp->processEvents();
     kapp->flushX();
 
-    wm_cd_play(trk + 1, 0, trk + 2);
     updatePlayPB(true);
 } // trackSelected
 
