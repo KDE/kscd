@@ -36,7 +36,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     : KSystemTray( parent, name )
 {
 
-    setPixmap( UserIcon("cdsmall") );
+    setPixmap( loadIcon("cdsmall") );
 
       // popup menu for right mouse button
     QPopupMenu* popup = contextMenu();

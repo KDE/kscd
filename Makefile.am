@@ -48,15 +48,16 @@ SUBDIRS = bitmaps libwm
 
 bin_SCRIPTS = workman2cddb.pl
 
-EXTRA_DIST = kscdlogo.xpm xmcd.desktop kscd.desktop kscd-script $(bin_SCRIPTS) config.h.std
+EXTRA_DIST = xmcd.desktop kscd.desktop kscd-script $(bin_SCRIPTS) config.h.std
 
 KDE_ICON = kscd
+
+kscdicondir = $(kde_datadir)/kscd/icons
+kscdicon_ICON = AUTO
 
 xdg_apps_DATA = kscd.desktop
 
 mime_DATA = xmcd.desktop
-
-pics_DATA = kscdlogo.xpm cdsmall.xpm
 
 messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/kscd.pot
