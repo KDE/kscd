@@ -98,7 +98,11 @@ find_cdrom()
 	int	pid;
 
 	if ((cd_device = getenv("CDROM")) != NULL)
+  {
+    if(strncmp("/dev/", cd_device, 5) || strstr(cd_device, "/../"))
+      exit(-1);
 		return;
+  }
 
 	pipe(fds);
 

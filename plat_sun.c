@@ -103,8 +103,13 @@ find_cdrom()
 
 		/* If vold is running us, it'll tell us the device name. */
 		cd_device = getenv("VOLUME_DEVICE");
-		if (cd_device == NULL)
-			cd_device = "/vol/dev/aliases/cdrom0";
+    /*
+    ** the path of the device has to include /dev
+    ** otherwise we are vulnerable to race conditions
+    ** Thomas Biege <thomas@suse.de>
+    */
+	  if (cd_device == NULL || strncmp("/vol/dev/", cd_device, 9) || strstr(cd_device, "/../") )
+		  cd_device = "/vol/dev/aliases/cdrom0";
 		return 1;
 	}
 	else if (access("/dev/rdsk/c0t6d0s2", F_OK) == 0)
@@ -1022,7 +1027,15 @@ codec_init()
     audio_info_t foo;
     audio_device_t aud_dev;
 
-    if (!(devname = getenv("AUDIODEV"))) devname = "/dev/audio";
+    devname = getenv("AUDIODEV"));
+    /*
+    ** the path of the device has to start w/ /dev
+    ** otherwise we are vulnerable to race conditions
+    ** Thomas Biege <thomas@suse.de>
+    */
+	  if (devname == NULL || strncmp("/dev/", devname, 5) || strstr(devname, "/../") )
+      devname = "/dev/audio";
+
     ctlname = strcat(strcpy(malloc(strlen(devname) + 4), devname), "ctl");
     if ((ctl_fd = open(ctlname, O_WRONLY, 0)) < 0) {
 	perror(ctlname);

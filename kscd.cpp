@@ -529,21 +529,20 @@ KSCD::setupPopups()
     purchPopup   = new QPopupMenu ();
     infoPopup   = new QPopupMenu ();
 
-    purchPopup->insertItem("CD Now");
-    purchPopup->insertItem("CD Universe");
+    purchPopup->insertItem("CD Now", 0);
+    purchPopup->insertItem("CD Universe", 1);
 
-    perfPopup->insertItem("Tourdates.com");
+    perfPopup->insertItem("Tourdates.com", 0);
 
-    //  infoPopup->insertItem("Music Central");
-    infoPopup->insertItem("Ultimate Bandlist");
+    infoPopup->insertItem("Ultimate Bandlist", 0);
     infoPopup->insertSeparator();
-    infoPopup->insertItem("Deja News");
-    infoPopup->insertItem("Excite");
-    infoPopup->insertItem("HotBot");
-    infoPopup->insertItem("Info Seek");
-    infoPopup->insertItem("Lycos");
-    infoPopup->insertItem("Magellan");
-    infoPopup->insertItem("Yahoo!");
+    infoPopup->insertItem("Deja News", 1);
+    infoPopup->insertItem("Excite", 2);
+    infoPopup->insertItem("HotBot", 3);
+    infoPopup->insertItem("Info Seek", 4);
+    infoPopup->insertItem("Lycos", 5);
+    infoPopup->insertItem("Magellan", 6);
+    infoPopup->insertItem("Yahoo!", 7);
 
     mainPopup->insertItem (i18n("Performances"), perfPopup);
     connect( perfPopup, SIGNAL(activated(int)), SLOT(performances(int)) );
@@ -2423,22 +2422,10 @@ KSCD::startBrowser(const QString &querystring)
         (void) new KRun ( querystring ); // replacement for KFM::openURL (David)
     }
     else{
-        const char* shell = 0L;
-
-        QString bw = browsercmd;
-        QString cmd;
-        cmd = cmd.sprintf(bw.data(),querystring.ascii());
-
-        if (!shell){
-            if ( ( shell = getenv("SHELL") ) && *shell ) // make sure SHELL is not empty
-                shell = qstrdup(getenv("SHELL"));
-            else
-                shell = "/bin/sh";
-        }
-
+        if (browsercmd.isEmpty())
+          browsercmd="netscape";
         KProcess proc;
-        proc.setExecutable(shell);
-        proc << "-c" << cmd;
+        proc << browsercmd << querystring;
         proc.start(KProcess::DontCare);
     }
 } //startBrowser

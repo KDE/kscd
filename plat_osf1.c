@@ -84,8 +84,14 @@ find_cdrom()
 	pipe(fds);
 
 	cd_device = getenv("CDROM");
-	if (cd_device != NULL)
-	    return;
+  /*
+  ** the path of the device has to start w/ /dev
+  ** otherwise we are vulnerable to race conditions
+  ** Thomas Biege <thomas@suse.de>
+  */
+	if (cd_device == NULL || strncmp("/dev/", cd_device, 5) || strstr(cd_device, "/../") )
+		return;
+
 	if ((pid = fork()) == 0) {
 		close(fds[0]);
 		dup2(fds[1], 1);

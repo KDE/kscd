@@ -103,7 +103,12 @@ wmaudio_init()
 	int			linval;
 
 	audiodev = getenv("AUDIODEV");
-	if (audiodev == NULL)
+  /*
+  ** the path of the device has to start w/ /dev
+  ** otherwise we are vulnerable to race conditions
+  ** Thomas Biege <thomas@suse.de>
+  */
+	if (audiodev == NULL || strncmp("/dev/", audiodev, 5) || strstr(audiodev, "/../") )
 		audiodev = "/dev/audio";
 
 	acdev = malloc(strlen(audiodev) + 4);

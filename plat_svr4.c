@@ -77,8 +77,13 @@ extern char	*cd_device;
 
 int               
 find_cdrom()
-{          
-    if ((cd_device = getenv("CDROM")) != NULL)
+{
+    /*
+    ** the path of the device has to start w/ /dev
+    ** otherwise we are vulnerable to race conditions
+    ** Thomas Biege <thomas@suse.de>
+    */
+	  if ((cd_device = getenv("CDROM")) != NULL && !(strncmp("/dev/", cd_device, 5) || strstr(cd_device, "/../") ))
                 return 1;
     if (access("/dev/cdrom/cdrom1", F_OK) == 0)
         {
@@ -255,7 +260,7 @@ create_cdrom_node(char *dev_name)
 	int ccode;
 
 
-	strcpy(pass_through, dev_name);
+	strncpy(pass_through, dev_name, sizeof(pass_through)-2);
 	strcat(pass_through, "p" );
 
 	if (setreuid(-1,0) < 0)

@@ -325,7 +325,7 @@ CDDBSetup::insertServerList(const QStrList& list)
 	  } else {
             if(t==CDDB::SMTP)
 	      {
-                sprintf(email,"%s@%s",extra,ser);
+                snprintf(email, sizeof(email),"%s@%s",extra,ser);
                 have_email=true;
                 submission_listbox->insertItem(email, -1);
 	      } else {

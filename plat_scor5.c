@@ -241,7 +241,7 @@ create_cdrom_node(char *dev_name)
 	int ccode;
 
 
-	strcpy(pass_through, dev_name);
+	strncpy(pass_through, dev_name, sizeof(pass_through)-2);
 	strcat(pass_through, "p" );
 
 	if (setreuid(-1,0) < 0)
