@@ -125,6 +125,9 @@ k_dcop:
     void setVolume(int v);
     int  getVolume() { return Prefs::volume(); }
     int currentTrack();
+    int currentTrackLength();
+    int currentPosition();
+    int getStatus();
     QString currentTrackTitle();
     QString currentAlbum();
     QString currentArtist();

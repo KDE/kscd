@@ -460,7 +460,7 @@ void KSCD::stopClicked()
 
     kapp->processEvents();
     kapp->flushX();
-    wm_cd_stop(); // must be first, apparently
+    wm_cd_stop(); // we need some error handling here!! it does return a useful value
 } // stopClicked()
 
 void KSCD::prevClicked()
@@ -1840,6 +1840,29 @@ bool KSCD::playing()
 int KSCD::currentTrack()
 {
     return wm_cd_getcurtrack();
+}
+
+int KSCD::currentTrackLength()
+{
+    if ((wm_cd_status() == WM_CDM_PLAYING) || (wm_cd_status() == WM_CDM_PAUSED))
+    {
+        return cd->trk[wm_cd_getcurtrack() - 1].length;
+    }
+    return -1;
+}
+
+int KSCD::currentPosition()
+{
+    if ((wm_cd_status() == WM_CDM_PLAYING) || (wm_cd_status() == WM_CDM_PAUSED))
+    {
+        return cur_pos_rel;
+    }
+    return -1;
+}
+
+int KSCD::getStatus()
+{
+    return wm_cd_status();
 }
 
 QString KSCD::currentTrackTitle()
