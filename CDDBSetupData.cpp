@@ -68,6 +68,13 @@ CDDBSetupData::CDDBSetupData
 	proxy_port_ef->setMaxLength ( 5 );
 	proxy_port_ef->setFixedWidth ( 5*fm.maxWidth() );
 	lay4->addWidget ( proxy_port_ef );
+	
+	/* edm new section start */
+	lay2->addSpacing ( fm.lineSpacing() );
+	enable_auto_save_cddb = new QCheckBox( i18n("Enable auto save of to local cddb"), group, "CheckBox_3" );
+	connect( cddb_http_cb, SIGNAL(toggled(bool)), SLOT(http_access_toggled(bool)) );
+	lay2->addWidget ( enable_auto_save_cddb );
+	/* edm new section end */
 
 	lay2->addSpacing ( fm.lineSpacing() );
 	QLabel* dlgedit_Label_8 = new QLabel( i18n("CDDB Base Directory:"), group, "Label_8" );

@@ -151,6 +151,7 @@ public slots:
     void cddb_done();
     void cddb_timed_out();
     void cddb_ready();
+    void edm_save_cddb_entry(QString& path);
     void cddb_failed();
     void setToolTips();
     void randomSelected();
@@ -319,13 +320,16 @@ private:
         QStringList        cddbsubmitlist;
 	QString  	browsercmd;
 	bool		cddb_remote_enabled;
+	/* edm new section */
+	bool            cddb_auto_enabled;
+	/* edm new section end */
 	bool 		use_kfm;
         bool            docking;
         bool            autoplay;
         bool            stopexit;
         bool            ejectonfinish;
         bool            randomonce;
-
+	bool            Fetch_remote_cddb;
 	bool 		cddb_inexact_sentinel;
         bool            updateDialog;
         bool            ejectedBefore;

@@ -23,7 +23,7 @@
 
 #include <qdir.h>
 #include <qregexp.h>
-
+#include <qtextstream.h> 
 #include <qlayout.h>
 
 #include <kcharsets.h>
@@ -130,6 +130,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
     cycle_flag          = false;
     cddb_remote_enabled = false;
+    cddb_auto_enabled   = false;
     setup               = 0L;
     smtpconfig          = 0L;
     time_display_mode   = TRACK_SEC;
@@ -684,22 +685,22 @@ KSCD::playClicked()
               .arg(*it);
             songListCB->insertItem( str );
           }
-        
+
         // We don't know the rest, but we should still have entries
         for( ; i < cur_ntracks; i++)
           {
             songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1) ) );
           }
-        
+
         qApp->processEvents();
         qApp->flushX();
-        
+
         if(!playlist.isEmpty())
           {
             if(playlistpointer >=(int) playlist.count())
               playlistpointer = 0;
             wm_cd_play (atoi((*playlist.at(playlistpointer)).ascii()), 0,
-                        atoi((*playlist.at(playlistpointer)).ascii()) + 1);
+                     atoi((*playlist.at(playlistpointer)).ascii()) + 1);
             save_track = cur_track = atoi((*playlist.at(playlistpointer)).ascii());
           } else {
             wm_cd_play (save_track, 0, cur_ntracks + 1);
@@ -707,8 +708,8 @@ KSCD::playClicked()
     } else { // if (WM_CDM_STOPPED||UNKNOWN)
       if (cur_cdmode == WM_CDM_PLAYING || cur_cdmode == WM_CDM_PAUSED)
         {
-          fprintf(stderr, "Not Stopped. Mode = %d\n", cur_cdmode);
-          switch (cur_cdmode)
+
+            switch (cur_cdmode)
               {
               case WM_CDM_PLAYING:
                 statuslabel->setText( i18n("Pause") );
@@ -737,9 +738,6 @@ KSCD::playClicked()
         } // if (PLAYING||PAUSED)
     } // if (WM_CDM_STOPPED||UNKNOWN) else
     cdMode();
-    /* show something usefull if the user tried to play data. */
-    if( cur_cdmode == WM_CDM_STOPPED )
-      stopClicked();
 } // playClicked()
 
 void
@@ -1071,12 +1069,12 @@ KSCD::aboutClicked()
     QString labelstring;
     labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
-    "Copyright (c) 1997-2001 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
-    "Copyright (c) 1999-2001 \nDirk Försterling <milliByte@gmx.net>\n"
+    "Copyright (c) 1997-2000 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
+    "Copyright (c) 1999-2000 \nDirk Försterling <milliByte@gmx.net>\n"
     "   (current Maintainer)\n\n"
     "Kscd is based in part on WorkMan,\n"
                                       "Copyright (c) 1991-1996 Steven Grimm\n"
-                                      "Copyright (c) 1996-2001 Dirk Försterling <milliByte@gmx.net>\n\n"
+                                      "Copyright (c) 1996-2000 Dirk Försterling <milliByte@gmx.net>\n\n"
                                       "Special thanks to Ti Kan and "
                                       "Steve Scherf, the inventors of "
                                       "the CDDB database concept. "
@@ -1098,15 +1096,6 @@ KSCD::aboutClicked()
     label->setAlignment(AlignLeft|WordBreak|ExpandTabs);
     label->setText(labelstring);
     lay2->addWidget ( label );
-
-    /*
-     * ?
-     * 
-    QPixmap pm = UserIcon("kscdlogo");
-    QLabel *logo = new QLabel(box);
-    logo->setPixmap(pm);
-    logo->setGeometry(40, 50, pm.width(), pm.height());
-    */
 
     ConfigDlg* dlg;
     struct configstruct config;
@@ -1133,6 +1122,7 @@ KSCD::aboutClicked()
                       cddbbasedir,
                       submitaddress,
                       current_server,
+		      cddb_auto_enabled,
                       cddb_remote_enabled,
                       cddb.getTimeout(),
                       cddb.useHTTPProxy(),
@@ -1203,6 +1193,7 @@ KSCD::aboutClicked()
                        cddbbasedir,
                        submitaddress,
                        current_server,
+		       cddb_auto_enabled,
                        cddb_remote_enabled,
                        cddb_timeout,
                        cddb_proxy_enabled,
@@ -1627,7 +1618,7 @@ KSCD::readSettings()
     config->setGroup("CDDB");
 
     cddb.setTimeout(config->readNumEntry("CDDBTimeout",60));
-
+    cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",false);
     cddbbasedir = config->readEntry("LocalBaseDir");
     if (cddbbasedir.isEmpty())
         cddbbasedir = KGlobal::dirs()->resourceDirs("cddb").last();
@@ -1721,6 +1712,8 @@ KSCD::writeSettings()
     config->setGroup("CDDB");
     config->writeEntry("CDDBRemoteEnabled",cddb_remote_enabled);
     config->writeEntry("CDDBTimeout",cddb.getTimeout());
+    config->writeEntry("CDDBLocalAutoSaveEnabled",cddb_auto_enabled);
+
     config->writeEntry("LocalBaseDir",cddbbasedir);
     config->writeEntry("SeverList",cddbserverlist);
     config->writeEntry("SubmitList", cddbsubmitlist);
@@ -1781,6 +1774,7 @@ KSCD::getCDDBservers()
                    cddbbasedir,
                    submitaddress,
                    current_server,
+		   cddb_auto_enabled,
                    cddb_remote_enabled,
                    cddb_timeout,
                    cddb_proxy_enabled,
@@ -1916,7 +1910,7 @@ KSCD::get_cddb_info(bool _updateDialog)
         revision,
         playlist
     );
-
+    Fetch_remote_cddb = false;
     if(!res && !cddb_remote_enabled){
         //    have_new_cd = false;
         cddb_no_info();
@@ -1927,6 +1921,8 @@ KSCD::get_cddb_info(bool _updateDialog)
 
         kdDebug() << "STARTING REMOTE QUERY\n" << endl;
         cddb.cddb_connect(current_server);
+	Fetch_remote_cddb = true;
+	
     }
     else{
         kdDebug() << "FOUND RECORD LOCALLY\n" << endl;
@@ -2172,6 +2168,21 @@ KSCD::cddb_done()
     //    }
 
     led_off();
+    if(Fetch_remote_cddb)
+      {
+	if(cddb_auto_enabled)
+	  {
+	    QString path,tmp;
+	    tmp.sprintf("/%08lx",cddb_discid());
+	    path = cddbbasedir;
+	    path += "/";
+	    path += category;
+	    path += tmp;
+	    //	    kdDebug() << path << endl << cddbbasedir << category << cddb_discid() << endl;
+	    path.replace(QRegExp("//"),"/");
+	    edm_save_cddb_entry(path);
+	  }
+      }
     timer->start(1000);
 } // cddb_done
 
@@ -2714,6 +2725,185 @@ KSCD::make_random_list()
   random_current = 0; /* Index of array we are on */
   return;
 } // make_random_list()
+
+
+void 
+KSCD::edm_save_cddb_entry(QString& path)
+{
+
+  kdDebug() << "::save_cddb_entry(): path: " << path << " edm" << "\n" << endl;
+
+  QFile file(path); //open the file
+
+
+  if( !file.open( IO_WriteOnly  )) 
+    {
+      QString str = i18n("Unable to write to file:\n%1\nPlease check "
+			 "your permissions and make your category directories exist.")
+	.arg(path);
+
+      KMessageBox::error(this, str);
+      return;
+    }
+
+  QString tmp;
+  QTextStream t(&file);
+
+  t << "# xmcd CD database file\n";
+  
+  QString datestr;
+  datestr = QDateTime::currentDateTime().toString();
+  tmp = QString("# Generated: %1 by KSCD\n").arg(datestr);
+  t << tmp;
+
+  // Waste some disk space
+  t << "# Copyright (C) 1997-1999 Bernd Johannes Wuebben.\n";
+  t << "# Copyright (C) 2000 Dirk Foersterling.\n";
+
+  
+
+  t << "# \n";
+  t << "# Track frame offsets:\n";
+
+  for(int i = 0 ; i < cd->ntracks+1 ;i ++)
+    {
+      tmp = QString("#       %1\n").arg(cd->trk[i].start);
+      t << tmp;
+    }
+
+  t << "#\n";
+  tmp = QString("# Disc length: %1 seconds\n").arg(cd->length);
+  t << tmp;
+  t << "#\n";
+  tmp = QString("# Revision: %1\n").arg("8"); //if no revision put 8
+  t << tmp;
+  t << "# Submitted via: Kscd "KSCDVERSION"\n";
+  t << "#\n";
+
+
+  tmp = "DISCID=";
+  int counter = 0;
+
+  int num = 0;
+  for ( QStringList::Iterator it = discidlist.begin();
+        it != discidlist.end();
+        ++it, ++num )
+    {
+      
+      tmp += *it;
+      
+      if( num < (int) discidlist.count() - 1)
+	{
+	  if( counter++ == 3 )
+	    {
+	      tmp += "\nDISCID=";
+	      counter = 0;
+	    } else {
+	      tmp += ",";
+	    }
+	}
+    }
+
+  tmp += "\n";
+  t << tmp;
+
+  QStringList returnlist;
+  QString tmp2;
+
+  tmp2 = *tracktitlelist.at(0);
+  cddb_encode(tmp2,returnlist);  
+
+  if(returnlist.count() == 0)
+    {
+      // sanity provision
+      tmp = QString("DTITLE=%1\n").arg("");
+      t << tmp;
+    } else {
+      for ( QStringList::Iterator it = returnlist.begin();
+            it != returnlist.end(); 
+            ++it )
+	{
+	  tmp = QString("DTITLE=%1\n").arg(*it);
+	  t << tmp;
+	}
+    }
+
+  num = 1;
+  for ( QStringList::Iterator it = tracktitlelist.begin();
+        it != tracktitlelist.end();
+        ++it)
+    {
+      tmp2 = *it;
+      cddb_encode(tmp2,returnlist);  
+     
+      // no perfect solution, but it's working so far.
+      if( it != tracktitlelist.begin() ) {
+        if(returnlist.isEmpty())
+          {
+            // sanity provision
+            tmp = QString("TTITLE%1=%2\n").arg(num-1).arg("");
+            t << tmp;
+          } else {
+            tmp = QString("TTITLE%1=%2\n").arg(num-1).arg(*it);
+            t << tmp;
+          }
+        num++;
+      }
+    }
+  
+  tmp2 = extlist.first();
+  cddb_encode(tmp2,returnlist);  
+
+  if(returnlist.isEmpty())
+    {
+      // sanity provision
+      tmp = tmp.sprintf("EXTD=%s\n","");
+      t << tmp;
+    } else {
+      for ( QStringList::Iterator it = returnlist.begin();
+            it != returnlist.end();
+            ++it )
+	{
+	  tmp = QString("EXTD=%1\n").arg(*it);
+	  t << tmp;
+	}
+    }
+
+  int i = 1;
+  for ( QStringList::Iterator it = extlist.at(1);
+        it != extlist.end(); 
+        ++it, i++ )
+    {
+      tmp2 = *it;
+      cddb_encode(tmp2,returnlist);  
+      
+      if(returnlist.count() == 0)
+	{
+	  // sanity provision
+	  tmp = tmp.sprintf("EXTT%d=%s\n",i-1,"");
+	  t << tmp;
+	} else {
+	  for(int j = 0; j < (int) returnlist.count();j++)
+	    {
+	      tmp = tmp.sprintf("EXTT%d=%s\n",i-1,(*returnlist.at(j)).utf8().data());
+	      t << tmp;
+	    }
+	}
+    }
+  QString     playorder;
+   cddb_encode(playorder,returnlist);  
+  
+   for(int i = 0; i < (int) returnlist.count();i++)
+     {
+       tmp = tmp.sprintf("PLAYORDER=%s\n", (*returnlist.at(i)).utf8().data());
+       t << tmp;
+     }
+  t << "\n";
+
+  file.close();
+  chmod(QFile::encodeName(file.name()), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH );
+  return;
+} // save_cddb_entry
 
 
 /**
