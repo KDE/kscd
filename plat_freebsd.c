@@ -521,7 +521,7 @@ wmcd_open(d)
 		}
 
 		/* No CD in drive. */
-		return (1);
+		return (-1);
 	}
 
 	if (warned)
