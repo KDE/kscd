@@ -352,10 +352,14 @@ wm_cd_status( void )
     /* device changed */
     thiscd.ntracks = 0;
     if(read_toc() || 0 == thiscd.ntracks)
+    {
+      close(drive.fd);
+      drive.fd = -1;
       mode = WM_CDM_NO_DISC;
+    }
     else /* refresh cdtext info */
       get_glob_cdtext(&drive, 1);
-      
+
     wm_lib_message(WM_MSG_LEVEL_DEBUG|WM_MSG_CLASS, "device status changed() from %s to %s\n",
       gen_status(oldmode), gen_status(mode));
   }
