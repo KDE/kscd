@@ -83,7 +83,7 @@ Notes for code rippers
 
 This program contains code that you may wish to use in your own projects.
 If you want to, please do. (For example, you might want to add some
-snazzy visual effects to your favourite MP3 or CD player)
+snazzy visual effects to your favorite MP3 or CD player)
 
 The actual code to do the mapping from sound to visual display is
 all in core.cpp, it should be fairly easy to disentangle from other
