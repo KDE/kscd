@@ -35,7 +35,7 @@ profiledatadir = $(kde_datadir)/profiles
 METASOURCES = kscd.moc bwlednum.moc configdlg.moc ledlamp.moc \
 	 inexact.moc CDDialog.moc CDDialogData.moc CDDBSetup.moc \
 	CDDBSetupData.moc docking.moc mgconfdlg.moc smtpconfig.moc \
-	smtp.moc
+	smtp.moc kvolumecontrol.moc
 
 DISTCLEANFILES = config.h
 
