@@ -529,7 +529,7 @@ void KSCD::setShuffle(int shuffle)
     shufflePB->setOn(shuffle);
     shufflePB->blockSignals(false);
 
-    if (Prefs::randomPlay()cd && cd->ntracks > 0) {
+    if (Prefs::randomPlay() && cd && cd->ntracks > 0) {
         make_random_list(); /* koz: Build a unique, once, random list */
         if(WM_CDM_PLAYING == wm_cd_status())
             nextClicked();
