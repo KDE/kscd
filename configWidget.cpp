@@ -63,8 +63,8 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     stopOnExitChckbx->setChecked(mPlayer->stopOnExit());
     cdDevice->setURL(mPlayer->devicePath());
 
-    digitalPlaybackChckbx_toggled(mPlayer->digitalPlayback());
-    digitalPlaybackChckbx->setChecked(mPlayer->digitalPlayback());
+    digitalPlaybackChckbx_toggled(false); //mPlayer->digitalPlayback());
+    digitalPlaybackChckbx->setChecked(false); //mPlayer->digitalPlayback());
 #if defined(BUILD_CDDA)
     // fill ComboBox audioBackend
     audioBackend->insertStringList(mPlayer->audioSystems());
