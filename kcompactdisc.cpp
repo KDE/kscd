@@ -316,6 +316,7 @@ void KCompactDisc::timerExpired()
     m_status = wm_cd_status();
     if (WM_CDS_NO_DISC(m_status))
     {
+        m_discId = (unsigned)-1;
         m_previousDiscId = 0;
     }
     else
@@ -363,42 +364,43 @@ void KCompactDisc::timerExpired()
             m_trackStartFrames.append(cd->trk[m_tracks].start);
             emit discChanged(m_discId);
         }
-    }
 
-    // Per-event processing.
-    m_track = wm_cd_getcurtrack();
-    if (m_previousTrack != m_track)
-    {
-        m_previousTrack = m_track;
-
-        // Update the current track and its length.
-        emit trackChanged(m_track, trackLength());
-    }
-    if (isPlaying())
-    {
-        // Update the current playing position.
-        emit trackPlaying(m_track, trackPosition());
-    }
-    else
-    if (m_previousStatus != m_status)
-    {
-        m_previousStatus = m_status;
-        kdDebug() << m_device << " status change to " << discStatus(m_status) << endl;
-
-        // If we are not playing, then we are either paused, or stopped.
-        switch (m_status)
+        // Per-event processing.
+        m_track = wm_cd_getcurtrack();
+        if (m_previousTrack != m_track)
         {
-        case WM_CDM_PAUSED:
-            emit trackPaused(m_track, trackPosition());
-            break;
-        case WM_CDM_EJECTED:
-            emit trayOpening();
-            break;
-        default:
-            emit discStopped();
-            break;
+            m_previousTrack = m_track;
+
+            // Update the current track and its length.
+            emit trackChanged(m_track, trackLength());
+        }
+        if (isPlaying())
+        {
+            // Update the current playing position.
+            emit trackPlaying(m_track, trackPosition());
+        }
+        else
+        if (m_previousStatus != m_status)
+        {
+            m_previousStatus = m_status;
+
+            // If we are not playing, then we are either paused, or stopped.
+            switch (m_status)
+            {
+            case WM_CDM_PAUSED:
+                emit trackPaused(m_track, trackPosition());
+                break;
+            case WM_CDM_EJECTED:
+                emit trayOpening();
+                break;
+            default:
+                emit discStopped();
+                break;
+            }
         }
     }
+
+    // Now that we have incurred any delays caused by the signals, we'll start the timer.
     timer.start(1000, true);
 }
 
