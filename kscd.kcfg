@@ -82,8 +82,8 @@
             <default>black</default>
         </entry>
         <entry name="SelectEncoding" type="Bool">
-            <label>Allow to select encoding.</label>
-            <whatsthis>When this option is selected, you get a ability to select encoding for results of CDDB request. Standard describes CDDB result as strictly Latin1. That is not true. Not spoken English users often use other 8bit encodings for it.</whatsthis>
+            <label>Allow encoding selection.</label>
+            <whatsthis>When this option is selected, you have the ability to select encoding for the results of a CDDB request. The standard describes CDDB results as being strictly Latin1. This is not true, as non-English speaking users often use other 8-bit encodings.</whatsthis>
             <default>false</default>
         </entry>
     </group>
