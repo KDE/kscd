@@ -90,9 +90,10 @@ class CDDBSetup;
 class ConfigDlg;
 class CDDialog;
 class QGridLayout;
-
+class KActionCollection;
 class SMTPConfig;
 struct SMTPConfigData;
+class KVolumeControl;
 
 
 using namespace KCDDB;
@@ -123,8 +124,7 @@ k_dcop:
     void stop() { stopClicked(); }
     void previous() { prevClicked(); }
     void next() { nextClicked(); }
-    void forward() { fwdClicked(); }
-    void backward() { bwdClicked(); }
+    void jumpTo(int seconds) { jumpToTime(seconds); }
     void eject() { ejectClicked(); }
     void quit() { quitClicked(); }
     void toggleLoop() { loopClicked(); }
@@ -133,7 +133,7 @@ k_dcop:
     void cddbDialog() { CDDialogSelected(); }
     void optionDialog() { showConfig(); }
     void setTrack(int t) { trackSelected(t >= 1 ? t - 1 : 0); }
-    void setVolume(int v) { volChanged(v); } /* FIXME volSB->setValue(v); } */
+    void setVolume(int v);
     int  getVolume() { return volume; }
     int currentTrack();
     QString currentTrackTitle();
@@ -183,8 +183,7 @@ public slots:
     void stopClicked();
     void prevClicked();
     void nextClicked();
-    void fwdClicked();
-    void bwdClicked();
+    void jumpToTime(int seconds);
     void quitClicked();
     void loopOn();
     void loopOff();
@@ -211,6 +210,8 @@ public slots:
 
 protected slots:
     void configDone();
+    void configureKeys();
+    void setIcons();
 
 protected:
     // mostly start up stuff
@@ -356,6 +357,8 @@ private:
     bool            updateDialog;
     bool            Fetch_remote_cddb;
     int             revision;
+    KActionCollection* m_actions;
+    KVolumeControl* m_volume;
 };
 
 

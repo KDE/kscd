@@ -4,7 +4,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2002 Aaron J. Seigo <aseigo@olympusproject.org>
+ * Copyright (C) 2002 Aaron J. Seigo <aseigo@kde.org>
  * wuebben@math.cornell.edu
  *
  *

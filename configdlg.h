@@ -2,10 +2,8 @@
  *
  * ConfigDlg - the configuration dialog for kscd
  *
- * $Id$
+ * Copyright (C) 2002 Aaron J. Seigo <aseigo@kde.org>
  *
- * Copyright (C) 2002 Aaron J. Seigo <aseigo@olympusproject.org>
- * 
  * there was a class of the same name written in 1997 by 
  * Bernd Johannes Wuebben, but it was rewritten.
  *

@@ -1,7 +1,7 @@
 /*
- * configWidget - the config dialog page for KSCD settings
+ * KVolumeControl - a volume slider
  *
- * Copyright (c) 2002 Aaron J. Seigo <aseigo@kde.org>
+ * Copyright (c) 2003 Aaron J. Seigo
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,29 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  */
 
-#ifndef CONFIGWIDGET_H
-#define CONFIGWIDGET_H
+#ifndef __KVOLUMECONTROL_H
+#define __KVOLUMECONTROL_H
 
-#include "configWidgetUI.h"
+#include <qhbox.h>
 
-class KSCD;
+class QPushButton;
+class QSlider;
 
-class configWidget : public configWidgetUI
+class KVolumeControl : public QHBox
 {
-   public:
-        configWidget(KSCD* player, QWidget* parent = 0, const char* name = 0);
-        ~configWidget();
+    Q_OBJECT
 
-        void apply();
+    public:
+        KVolumeControl(QPushButton* surrogate, QWidget* parent = 0, const char* name = 0);
+        void show();
+        bool eventFilter(QObject* watched, QEvent* e);
+        void setValue(int value);
 
-   protected:
-        KSCD* mPlayer;
+    signals:
+        void valueChanged(int);
 
-   public slots:
-        virtual void digitalPlaybackChckbx_toggled(bool);
+    protected slots:
+        void makeVisible(bool);
+        void valueFlip(int);
+
+    protected:
+        void keyPressEvent(QKeyEvent * e);
+
+    private:
+        QPushButton* m_surrogate;
+        QSlider* m_volumeSlider;
 };
 
-#endif // CONFIGWIDGET_H
+#endif
+

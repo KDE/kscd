@@ -1,9 +1,8 @@
 /*
  * Kscd - A simple cd player for the KDE Project
  *
- * $Id$
- *
  * Copyright (c) 1997 Bernd Johannes wuebben@math.cornell.edu
+ * Copyright (c) 2002-2003 Aaron J. Seigo <aseigo@kde.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +39,7 @@
 #include <kemailsettings.h>
 #include <kglobal.h>
 #include <khelpmenu.h>
+#include <kkeydialog.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <kmessagebox.h>
@@ -76,6 +76,7 @@ extern "C" {
 #include "CDDBSetup.h"
 #include "configdlg.h"
 #include "configWidget.h"
+#include "kvolumecontrol.h"
 #include "smtpconfig.h"
 
 static const char description[] = I18N_NOOP("KDE CD player");
@@ -196,20 +197,21 @@ KSCD::KSCD( QWidget *parent, const char *name )
   ;
 #endif
 
-
   readSettings();
   initFont();
   drawPanel();
-  // What to do here? (sven)
-  // setColors();
+  setColors();
   initWorkMan();
-  setupPopups();
+
+  // the volume slider
+  m_volume = new KVolumeControl(volumePB, this);
+  m_volume->setValue(volume);
+  connect(m_volume, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
+
+  connect(timeSlider, SIGNAL(valueChanged(int)), SLOT(jumpToTime(int)));
 
   /* FIXME check for return value */
   setDevicePaths(cd_device_str, audio_system_str, audio_device_str);
-
-  // set the volume BEFORE setting up the signals
-  // FIXME volSB->setValue(volume); // We have to do something here as well with the new volume control (sven)
 
   connect( &queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
@@ -220,37 +222,35 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
   connect( prevPB, SIGNAL(clicked()), SLOT(prevClicked()) );
   connect( nextPB, SIGNAL(clicked()), SLOT(nextClicked()) );
-  // FIXME connect( dockPB, SIGNAL(clicked()), SLOT(quitClicked()) );
   connect( repeatPB, SIGNAL(clicked()), SLOT(loopClicked()) );
   connect( ejectPB, SIGNAL(clicked()), SLOT(ejectClicked()) );
   connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
-  // FIXME connect( volSB, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
-  // FIXME connect( aboutPB, SIGNAL(clicked()), SLOT(cycleplaytimemode()));
-  // FIXME connect( optionsbutton, SIGNAL(clicked()), SLOT(showConfig()));
   connect( shufflePB, SIGNAL(clicked()), SLOT(randomSelected()));
   connect( cddbPB, SIGNAL(clicked()), SLOT(CDDialogSelected()));
-  connect(kapp,SIGNAL(kdisplayPaletteChanged()),this,SLOT(setColors()));
+  connect(kapp, SIGNAL(kdisplayPaletteChanged()), this, SLOT(setColors()));
+  connect(kapp, SIGNAL(iconChanged(int)), this, SLOT(setIcons()));
 
   // set up the actions and keyboard accels
-  KActionCollection* actions = new KActionCollection(this);
+  m_actions = new KActionCollection(this);
 
   KAction* action;
-  action = new KAction(i18n("Play/Pause"), Key_P, this, SLOT(playClicked()), actions, "Play/Pause");
-  action = new KAction(i18n("Stop"), Key_S, this, SLOT(stopClicked()), actions, "Stop");
-  action = new KAction(i18n("Previous"), Key_B, this, SLOT(prevClicked()), actions, "Previous");
-  action = new KAction(i18n("Next"), Key_N, this, SLOT(nextClicked()), actions, "Next");
-  action = new KAction(i18n("Forward"), Key_Right, this, SLOT(fwdClicked()), actions, "Forward");
-  action = new KAction(i18n("Backward"), Key_Left, this, SLOT(bwdClicked()), actions, "Backward");
-  action = KStdAction::action(KStdAction::Quit, this, SLOT(quitClicked()), actions);
-  action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), actions, "Loop");
-  action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), actions, "Eject");
-  action = new KAction(i18n("Increase Volume"), Key_Plus, this, SLOT(incVolume()), actions, "IncVolume");
-  action = new KAction(i18n("Increase Volume"), Key_Equal, this, SLOT(incVolume()), actions, "IncVolume Alt");
-  action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), actions, "DecVolume");
-  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), actions, "Options");
-  action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), actions, "Shuffle");
-  action = new KAction(i18n("CDDB"), CTRL + Key_D, this, SLOT(CDDialogSelected()), actions, "CDDB");
+  action = new KAction(i18n("Play/Pause"), Key_P, this, SLOT(playClicked()), m_actions, "Play/Pause");
+  action = new KAction(i18n("Stop"), Key_S, this, SLOT(stopClicked()), m_actions, "Stop");
+  action = new KAction(i18n("Previous"), Key_B, this, SLOT(prevClicked()), m_actions, "Previous");
+  action = new KAction(i18n("Next"), Key_N, this, SLOT(nextClicked()), m_actions, "Next");
+  action = KStdAction::quit(this, SLOT(quitClicked()), m_actions);
+  action = KStdAction::keyBindings(this, SLOT(configureKeys()), m_actions);
+  action = KStdAction::preferences(this, SLOT(showConfig()), m_actions);
+  action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), m_actions, "Loop");
+  action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), m_actions, "Eject");
+  action = new KAction(i18n("Increase Volume"), Key_Plus, this, SLOT(incVolume()), m_actions, "IncVolume");
+  action = new KAction(i18n("Increase Volume"), Key_Equal, this, SLOT(incVolume()), m_actions, "IncVolume Alt");
+  action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), m_actions, "DecVolume");
+  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), m_actions, "Options");
+  action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
+  action = new KAction(i18n("CDDB"), CTRL + Key_D, this, SLOT(CDDialogSelected()), m_actions, "CDDB");
 
+  setupPopups();
 
   if(looping)
   {
@@ -259,17 +259,16 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   smtpMailer = new SMTP;
   connect(smtpMailer, SIGNAL(messageSent()), this, SLOT(smtpMessageSent()));
-  connect(smtpMailer, SIGNAL(error(int)), this, SLOT(smtpError(int)));
 
   dock_widget = new DockWidget( this, "dockw");
   setDocking(docking);
 
   connectDCOPSignal(0, 0, "KDE_emailSettingsChanged()", "emailSettingsChanged()", false);
 
-  setFocusPolicy ( QWidget::NoFocus );
+  setFocusPolicy(QWidget::NoFocus);
 
-  this->adjustSize();
-  this->setFixedSize(this->width(), this->height());
+  adjustSize();
+  setFixedSize(this->width(), this->height());
 
   QTimer::singleShot(500, this, SLOT(initCDROM()));
 } // KSCD
@@ -384,6 +383,13 @@ KSCD::initCDROM()
   }
 } // initCDROM
 
+void
+KSCD::setVolume(int v)
+{
+    volChanged(v);
+    m_volume->setValue(v);
+}
+
 /**
  * Initialize smallfont which fits into the 13 and 14 pixel widgets
  * and verysmallfont which is slightly smaller.
@@ -427,20 +433,23 @@ KSCD::makeButton( int x, int y, int w, int h, const QString& n )
 } // makeButton
 
 /**
- * drawPanel() constructs KSCD's main window.
- * This is oldstyle and needs to be redesigned.
- * Redone using QGridLayout -- but the inner part still uses fixed layout.
- *
- * @author Bernd Wübben
- * @author Dirk Försterling
- * @author Luciano Montanaro
+ * drawPanel() constructs KSCD's little black LED area
  */
 void
 KSCD::drawPanel()
 {
   const int SBARWIDTH = 240;
   const int HEIGHT = 27;
-  const int WIDTH = 92;
+//  const int WIDTH = 92;
+
+  setIcons();
+
+  int buttonHeight = repeatPB->height();
+  ledLayout->setRowSpacing(1, infoPB->height() - buttonHeight);
+  infoPB->setFixedHeight(buttonHeight);
+  cddbPB->setFixedHeight(buttonHeight);
+
+
 
   backdrop->setFixedSize(SBARWIDTH - 2, 2 * HEIGHT + HEIGHT / 2 - 1);
   backdrop->setFocusPolicy(QWidget::NoFocus);
@@ -504,6 +513,18 @@ KSCD::drawPanel()
 } // drawPanel
 
 void
+KSCD::setIcons()
+{
+  playPB->setIconSet(SmallIconSet("player_play"));
+  stopPB->setIconSet(SmallIconSet("player_stop"));
+  ejectPB->setIconSet(SmallIconSet("player_eject"));
+  prevPB->setIconSet(SmallIconSet("player_rew"));
+  nextPB->setIconSet(SmallIconSet("player_fwd"));
+  cddbPB->setIconSet(SmallIconSet("view_text"));
+  infoPB->setIconSet(SmallIconSet("run"));
+}
+
+void
 KSCD::setupPopups()
 {
     QPopupMenu* mainPopup   = new QPopupMenu(this);
@@ -530,7 +551,10 @@ KSCD::setupPopups()
     infoPopup->insertItem("Open Directory", 9);
     infoPopup->insertItem("Yahoo!", 10);
 
-    mainPopup->insertItem (i18n("Purchases"), purchPopup);
+    m_actions->action(KStdAction::name(KStdAction::Preferences))->plug(mainPopup);
+    m_actions->action(KStdAction::name(KStdAction::KeyBindings))->plug(mainPopup);
+    mainPopup->insertSeparator();
+    mainPopup->insertItem(i18n("Purchases"), purchPopup);
     connect( purchPopup, SIGNAL(activated(int)), SLOT(purchases(int)) );
 
     mainPopup->insertItem (i18n("Information"), infoPopup);
@@ -539,6 +563,13 @@ KSCD::setupPopups()
 
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     mainPopup->insertItem(i18n("Help"), helpMenu->menu());
+    m_actions->action(KStdAction::name(KStdAction::Quit))->plug(mainPopup);
+
+    /*QPopupMenu* volMenu = new QPopupMenu(this);
+    volumePB->setPopup(volMenu);
+    KSCDSlider* volSlider = new KSCDSlider(this);
+    volSlider->setOrientation(Vertical);
+    volMenu->insertItem(volSlider);*/
 } // setupPopups
 
 
@@ -548,18 +579,6 @@ KSCD::playClicked()
     int cur_cdmode;
     int track;
 
-    if (dock_widget)
-    {
-        if (dock_widget->isVisible())
-        {
-            dock_widget->hide();
-        }
-        else
-        {
-            dock_widget->show();
-        }
-    }
-
     cur_cdmode = wm_cd_status();
     if (!cddrive_is_ok || cur_cdmode < 1)
     {
@@ -568,7 +587,7 @@ KSCD::playClicked()
 
     qApp->processEvents();
     qApp->flushX();
-
+    bool playing = false;
 
 
 #ifdef NEW_BSD_PLAYCLICKED
@@ -596,6 +615,7 @@ KSCD::playClicked()
             {
                 save_track = track = atoi((*playlist.at(playlistpointer)).ascii());
                 wm_cd_play (track, 0, track + 1);
+                playing = true;
             }
             else
             {
@@ -606,35 +626,39 @@ KSCD::playClicked()
         {
             wm_cd_play (save_track, 0, WM_ENDTRACK);
         }
-    } else { // if (WM_CDM_STOPPED||UNKNOWN)
-        if (cur_cdmode == WM_CDM_PLAYING || cur_cdmode == WM_CDM_PAUSED)
+    }
+    else if (cur_cdmode == WM_CDM_PLAYING || cur_cdmode == WM_CDM_PAUSED)
+    {
+        switch (cur_cdmode)
         {
+            case WM_CDM_PLAYING:
+                statuslabel->setText( i18n("Pause") );
+                wm_cd_pause();
+                break;
+            case WM_CDM_PAUSED:
+                if(randomplay)
+                {
+                    statuslabel->setText( i18n("Shuffle") );
+                }
+                else
+                {
+                    statuslabel->setText( i18n("Playing") );
+                }
+                wm_cd_pause();
+                playing = true;
+                break;
 
-            switch (cur_cdmode)
-            {
-                case WM_CDM_PLAYING:
-                    statuslabel->setText( i18n("Pause") );
-                    wm_cd_pause();
-                    break;
-                case WM_CDM_PAUSED:
-                    if(randomplay)
-                    {
-                        statuslabel->setText( i18n("Shuffle") );
-                    } else {
-                        statuslabel->setText( i18n("Playing") );
-                    }
-                    wm_cd_pause();
-                    break;
+            default:
+                // next release: force "stop".
+                statuslabel->setText( i18n("Strange...") );
+                break;
+        } // switch
 
-                default:
-                    // next release: force "stop".
-                    statuslabel->setText( i18n("Strange...") );
-                    break;
-            } // switch
-            qApp->processEvents();
-            qApp->flushX();
-        } // if (PLAYING||PAUSED)
+        qApp->processEvents();
+        qApp->flushX();
     } // if (WM_CDM_STOPPED||UNKNOWN) else
+
+    playPB->setText(playing ? i18n("Pause") : i18n("Play"));
     cdMode();
 } // playClicked()
 
@@ -646,6 +670,7 @@ KSCD::stopClicked()
     randomplay = FALSE;
     stoppedByUser = TRUE;
     statuslabel->setText(i18n("Stopped"));
+    playPB->setText(i18n("Play"));
     setLEDs("--:--");
     qApp->processEvents();
     qApp->flushX();
@@ -719,46 +744,21 @@ KSCD::nextClicked()
 } // nextClicked()
 
 void
-KSCD::fwdClicked()
+KSCD::jumpToTime(int seconds)
 {
     qApp->processEvents();
     qApp->flushX();
 
-    int cur_cdmode = wm_cd_status();
     int track = wm_cd_getcurtrack();
 
-    if (cur_cdmode == WM_CDM_PLAYING)
+    if (wm_cd_status() == WM_CDM_PLAYING && seconds < cd->trk[track - 1].length)
     {
-        tmppos = cur_pos_rel + skipDelta;
-        if (tmppos < cd->trk[track - 1].length)
-        {
-            if(randomplay || !playlist.isEmpty())
-                wm_cd_play (track, tmppos, track + 1);
-            else
-                wm_cd_play (track, tmppos, WM_ENDTRACK);
-        }
-    }
-} // fwdClicked()
-
-void
-KSCD::bwdClicked()
-{
-    qApp->processEvents();
-    qApp->flushX();
-
-    int cur_cdmode = wm_cd_status();
-    int track = wm_cd_getcurtrack();
-
-    if (cur_cdmode == WM_CDM_PLAYING)
-    {
-        tmppos = cur_pos_rel - skipDelta;
         if(randomplay || !playlist.isEmpty())
-            wm_cd_play (track, tmppos > 0 ? tmppos : 0, track + 1);
+            wm_cd_play (track, seconds, track + 1);
         else
-            wm_cd_play (track, tmppos > 0 ? tmppos : 0, WM_ENDTRACK);
+            wm_cd_play (track, seconds, WM_ENDTRACK);
     }
-    cdMode();
-} // bwdClicked()
+} // jumpToTime(int seconds)
 
 void
 KSCD::quitClicked()
@@ -971,12 +971,17 @@ KSCD::showConfig()
     configDialog->raise();
 } // aboutClicked()
 
-
 void
 KSCD::configDone()
 {
     // dialog deletes itself
     configDialog = 0L;
+}
+
+void
+KSCD::configureKeys()
+{
+    KKeyDialog::configure(m_actions, this);
 }
 
 void
@@ -2038,7 +2043,6 @@ KSCD::togglequeryled()
 {
     queryled->show();
     queryled->toggle();
-
 } // togglequeryled
 
 void
@@ -2070,6 +2074,15 @@ KSCD::setArtistAndTitle(const QString& artist, const QString& title)
         titlelabel->clear();
     }
 
+    if (currentTrack() < 0)
+    {
+        timeSlider->setRange(0, 0);
+    }
+    else
+    {
+        timeSlider->setRange(0, wm_cd_getcurtracklen());
+    }
+
     emit trackChanged(tooltip);
 }
 
@@ -2078,43 +2091,38 @@ KSCD::playtime()
 {
     static int mymin;
     static int mysec;
-    int tmp = 0;
+    int tmp;
 
-    switch(time_display_mode){
-
+    switch (time_display_mode)
+    {
         case TRACK_REM:
-
             tmp = wm_cd_getcurtracklen() - cur_pos_rel;
             mysec = tmp % 60;
             mymin = tmp / 60;
             break;
 
         case TOTAL_SEC:
-
             mysec = cur_pos_abs % 60;
             mymin = cur_pos_abs / 60;
             break;
 
         case TOTAL_REM:
-
             tmp = cd->length - cur_pos_abs;
             mysec = tmp % 60;
             mymin = tmp / 60;
-
             break;
 
         case TRACK_SEC:
         default:
-
-            if (cur_pos_rel > 0 && (tmp = cur_pos_rel % 60) == mysec)
+            tmp = cur_pos_rel % 60;
+            if (cur_pos_rel > 0 && tmp == mysec)
                 return;
             mysec = tmp;
             mymin = cur_pos_rel / 60;
-
             break;
     }
 
-
+    m_volume->setValue(cur_pos_rel);
     QString tmptime;
     tmptime.sprintf("%02d:%02d", mymin, mysec);
     setLEDs(tmptime);
@@ -2414,7 +2422,7 @@ int KSCD::currentTrack()
 
 QString KSCD::currentTrackTitle()
 {
-    int track = wm_cd_getcurtrack();
+    int track = currentTrack();
     return (track > -1) ? tracktitlelist[track] : QString::null;
 }
 
@@ -2506,7 +2514,7 @@ main( int argc, char *argv[] )
                           KSCDVERSION, description,
                           KAboutData::License_GPL,
                           "(c) 2001, Dirk FÃ¶rsterling");
-    aboutData.addAuthor("Aaron J. Seigo", I18N_NOOP("Current maintainer"), "aseigo@olympusproject.org");
+    aboutData.addAuthor("Aaron J. Seigo", I18N_NOOP("Current maintainer"), "aseigo@kde.org");
     aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
     aboutData.addAuthor("Dirk FÃ¶rsterling", I18N_NOOP("Workman library, previous maintainer"), "milliByte@gmx.net");
     aboutData.addCredit("Steven Grimm", I18N_NOOP("Workman library"));
