@@ -8,11 +8,11 @@ METASOURCES = AUTO
 
 ####### Files
 
-noinst_HEADERS = kscd.h bwlednum.h ledlamp.h mgconfdlg.h \
+noinst_HEADERS = kscd.h bwlednum.h ledlamp.h \
                  version.h docking.h configWidget.h kvolumecontrol.h
 
 kscd_SOURCES = kvolumecontrol.cpp panel.ui kscd.cpp kscd.skel ledlamp.cpp \
-               cddbdlgbase.ui docking.cpp mgconfdlg.cpp bwlednum.cpp \
+               cddbdlgbase.ui docking.cpp bwlednum.cpp \
                configWidget.cpp configWidgetUI.ui prefs.kcfgc cddbdlg.cpp
 
 kde_kcfg_DATA = kscd.kcfg

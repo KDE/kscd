@@ -94,16 +94,6 @@ class KVolumeControl;
 
 using namespace KCDDB;
 
-struct mgconfigstruct
-{
-  int width;
-  int height;
-  int brightness;
-  int fadeMode;
-  bool pointsAreDiamonds;
-  double starSize;
-};
-
 typedef QValueList<int> RandomList;
 
 class KSCD : public kscdPanelDlg, public KSessionManaged, virtual public DCOPObject {

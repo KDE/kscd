@@ -28,6 +28,7 @@
 #include <qhbox.h>
 #include <qvbox.h>
 #include <qapplication.h>
+#include <qgroupbox.h>
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
@@ -61,7 +62,6 @@
 
 #include "docking.h"
 #include "kscd.h"
-#include "mgconfdlg.h"
 #include "version.h"
 #include "prefs.h"
 
