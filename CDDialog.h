@@ -15,6 +15,7 @@
 
 #include "CDDialogData.h"
 #include "smtpconfig.h"
+#include "libkcddb/cdinfo.h"
 
 extern "C" {
 #include "libwm/include/wm_cdinfo.h"
@@ -70,6 +71,7 @@ class CDDialog : public CDDialogData
   bool checkit();
   void save_cddb_entry(QString& path,bool upload);
   void getCategoryFromPathName(char* pathname, QString& _category);
+  void setCdInfo(KCDDB::CDInfo &info, const QString& category);
   
  protected:
   void closeEvent(QCloseEvent* e);

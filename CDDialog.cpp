@@ -511,6 +511,33 @@ CDDialog::getCategoryFromPathName(char* pathname, QString& _category)
 } // getCategoryFromPathName
 
 void
+CDDialog::setCdInfo(KCDDB::CDInfo &info, const QString& category)
+{
+  info.artist = track_list.first().section('/',0,0).stripWhiteSpace();
+  info.title = track_list.first().section('/',1,1).stripWhiteSpace();
+  info.genre = category;
+  info.id = QString("%1").arg(cdinfo.magicID, 8, 16);
+  info.extd = ext_list.first();
+  // No year available?
+  info.length = cdinfo.length;
+  // Should set revision too
+
+  info.trackInfoList.clear();
+  QStringList::Iterator it = track_list.begin();
+  ++it;
+  unsigned i=0;
+  for ( ; it != track_list.end(); ++it)
+  {
+    TrackInfo t;
+    t.title = *it;
+    t.extt = ext_list[i];
+  
+    info.trackInfoList.append(t);
+    ++i;
+  }
+} // setCdInfo
+
+void
 CDDialog::save()
 {
   if(!checkit())
@@ -544,10 +571,11 @@ CDDialog::save()
     savecat = category.copy();
   }
 
-  QString mag;
-  mag.sprintf("%s/%s/%08lx",cddbbasedir.utf8().data(),savecat.utf8().data(),cdinfo.magicID);
+  KCDDB::CDInfo info;
+  setCdInfo(info, savecat);
 
-  save_cddb_entry(mag,false);
+  KCDDB::Cache::store(info);
+
   load_cddb();
   emit dialog_done();
 } // save
