@@ -10,7 +10,7 @@
         <entry name="RandomPlay" type="Bool">
             <label>Play random tracks.</label>
             <whatsthis>When this option is selected the playing order
-of the CD tracks is chosen at random.</whatsthis>
+            of the CD tracks is chosen at random.</whatsthis>
             <default>false</default>
         </entry>
         <entry name="Docking" type="Bool" key="DOCKING">
