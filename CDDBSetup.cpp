@@ -310,27 +310,24 @@ CDDBSetup::insertServerList(const QStringList& list)
           it != list.end();
           ++it )
       {
-        char ser   [CDDB_FIELD_BUFFER_LEN];
-        char por   [CDDB_FIELD_BUFFER_LEN];
-        char proto [CDDB_FIELD_BUFFER_LEN];
-        char extra [CDDB_FIELD_BUFFER_LEN];
-        char email [CDDB_FIELD_BUFFER_LEN];
-
-        QString srv=*it;
-        sscanf(srv.ascii(),"%s %s %s %s",ser,proto,por,extra);
-        CDDB::transport t=CDDB::decodeTransport(proto);
+        QStringList sl = QStringList::split(' ', *it);
+        CDDB::transport t = CDDB::UNKNOWN;
+	if (sl.count() > 1)
+		t = CDDB::decodeTransport(sl[1].ascii());
         if(t==CDDB::UNKNOWN)
           {
             continue;
           } else {
             if(t==CDDB::SMTP)
               {
-                snprintf(email, sizeof(email),"%s@%s",extra,ser);
-                have_email=true;
-                submission_listbox->insertItem(email, -1);
+		if (sl.count() > 3) {
+			QString email = sl[3] + "@" + sl[0];
+	                have_email=true;
+			submission_listbox->insertItem(email, -1);
+		}
               } else {
                 have_srv=true;
-                server_listbox->insertItem(srv, -1);
+                server_listbox->insertItem(*it, -1);
               }
           }
       }
