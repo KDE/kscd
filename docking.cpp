@@ -46,8 +46,8 @@ DockWidget::DockWidget(const char *name)
   QString tmp;
 
 #define PMERROR(pm) \
-  tmp.sprintf(i18n("Could not load %s !"), pm); \
-  QMessageBox::warning(this, i18n("Error"), tmp);
+  tmp = i18n("Could not load %1!").arg(pm); \
+  QMessageBox::warning(this, i18n("Error"), tmp, i18n("OK"));
 
   //     printf("trying to load %s\n",pixdir.data());
   // load pixmaps

@@ -45,7 +45,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     
     serverHostEdit = new QLineEdit(this, "serverHostEdit");
     serverHostEdit->setGeometry(155, 40, 300, 25);
-    serverHostEdit->setText(configData->serverHost.data());
+    serverHostEdit->setText(configData->serverHost);
     serverHostEdit->setEnabled(configData->enabled);
 
     serverPortLabel = new QLabel(this, "serverPortLabel");
@@ -54,7 +54,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     
     serverPortEdit = new QLineEdit(this, "serverPortEdit");
     serverPortEdit->setGeometry(475, 40, 45, 25);
-    serverPortEdit->setText(configData->serverPort.data());
+    serverPortEdit->setText(configData->serverPort);
     serverPortEdit->setEnabled(configData->enabled);
 
     senderAddressLabel = new QLabel(this, "senderAddressLabel");
@@ -63,7 +63,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
 
     senderAddressEdit = new QLineEdit(this, "senderAddressEdit");
     senderAddressEdit->setGeometry(155, 70, 365, 25);
-    senderAddressEdit->setText(configData->senderAddress.data());
+    senderAddressEdit->setText(configData->senderAddress);
     senderAddressEdit->setEnabled(configData->enabled);
 }
 

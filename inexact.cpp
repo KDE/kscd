@@ -107,9 +107,9 @@ void InexactDialog::checkit(){
   if(listbox){
     if(list_box->currentItem() == -1){
       QMessageBox::information(this,
-			       "Kscd",
-			       errorstring.data()
-			       );
+			       i18n("Kscd"),
+			       errorstring,
+			       i18n("OK"));
       return;
     }
     returnstring = list_box->text(list_box->currentItem());

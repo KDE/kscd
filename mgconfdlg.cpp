@@ -63,7 +63,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
   width_edit = new QLineEdit(this);
   width_edit->setGeometry(200,25,100,25);
   temp.setNum(mgconfigdata.width);
-  width_edit->setText(temp.data());
+  width_edit->setText(temp);
   connect(width_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(width_changed(const QString &)));  
 
@@ -75,7 +75,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
   height_edit = new QLineEdit(this);
   height_edit->setGeometry(200,65,100,25);
   temp.setNum(mgconfigdata.height);
-  height_edit->setText(temp.data());
+  height_edit->setText(temp);
   connect(height_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(height_changed(const QString &)));  
 

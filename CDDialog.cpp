@@ -230,7 +230,7 @@ void CDDialog::setData(
       else
 	fmt.sprintf("%02d   %02d:%02d",i,dml.minute(),dml.second());
      
-      listbox->insertItem(fmt.data(),-1);
+      listbox->insertItem(fmt,-1);
 
     }
 
@@ -239,7 +239,7 @@ void CDDialog::setData(
 
     QString str;
     cddb_playlist_encode(playlist,str);
-    progseq_edit->setText(str.data());
+    progseq_edit->setText(str);
 
 }
 
@@ -323,7 +323,7 @@ void CDDialog::trackchanged(){
 
   listbox->setAutoUpdate(false);
 
-  listbox->insertItem(fmt.data(),i);
+  listbox->insertItem(fmt, i);
   listbox->removeItem(i+1);
   listbox->setAutoUpdate(true);
   listbox->repaint();
@@ -438,7 +438,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   delete dialog;
 
   QString tempfile;
-  tempfile = tempfile.sprintf("%s",tmpnam(0L));
+  tempfile = tmpnam(0L);
 
   save_cddb_entry(tempfile,true);
 
@@ -470,7 +470,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
           s += ti.readLine() + "\r\n";
 //          if(!ti.eof()){
               //  mimetranslate(s);
-//              to << s.data() << '\n';
+//              to << s. << '\n';
  //         }
       }
 
@@ -479,12 +479,12 @@ I would like you ask you to upload as many test submissions as possible.\n"\
       smtpMailer->setServerHost(smtpConfigData->serverHost);
       smtpMailer->setPort(smtpConfigData->serverPort.toUInt());
       
-      smtpMailer->setSenderAddress(smtpConfigData->senderAddress.data());
-      smtpMailer->setRecipientAddress(submitaddress.data());
+      smtpMailer->setSenderAddress(smtpConfigData->senderAddress);
+      smtpMailer->setRecipientAddress(submitaddress);
       
       subject.sprintf("cddb %s %08lx", submitcat.data(), cdinfo.magicID);
-      smtpMailer->setMessageSubject(subject.data());
-      smtpMailer->setMessageBody(s.data());
+      smtpMailer->setMessageSubject(subject);
+      smtpMailer->setMessageBody(s);
 
       smtpMailer->sendMessage();
       
@@ -495,7 +495,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   QString cmd;
   //  cmd = cmd.sprintf("mail -s \"%s\" cddb-test@cddb.cddb.com",subject.data());
   //  cmd = cmd.sprintf("sendmail wuebben@math.cornell.edu");
-  cmd = cmd.sprintf("sendmail -tU");
+  cmd = "sendmail -tU";
   //  cmd = cmd.sprintf(formatstr.data(),subject.data());
 
   if (debugflag ) printf(i18n("Submitting cddb entry: %s\n"),cmd.data());
@@ -505,9 +505,9 @@ I would like you ask you to upload as many test submissions as possible.\n"\
 
   if(mailpipe == NULL){
     QString str;
-    str.sprintf(i18n("Could not pipe contents into:\n %s"),cmd.data());
+    str = i18n("Could not pipe contents into:\n %1").arg(cmd);
 
-    QMessageBox::critical(this, "Kscd", str.data());
+    QMessageBox::critical(this, i18n("Kscd"), str, i18n("OK"));
     pclose(mailpipe);
     return;
     
@@ -531,7 +531,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
       s = ti.readLine();
       if(!ti.eof()){
           //  mimetranslate(s);
-          to << s.data() << '\n';
+          to << s << '\n';
       }
   }
 
@@ -637,15 +637,14 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
   if( !file.open( IO_WriteOnly  )) {
     
     QString str;
-    str.sprintf(
-		i18n("Unable to write to file:\n%s\nPlease check "\
-		"your permissions and make your category directories exist."),
-		path.data());
+    str =  i18n("Unable to write to file:\n%s\nPlease check "
+		"your permissions and make your category directories exist.")
+		.arg(path);
 
     QMessageBox::warning(this,
 			 i18n("Kscd Error"),
-			 str.data()
-			 );
+			 str,
+			 i18n("OK"));
     return;
   }
 
@@ -658,8 +657,8 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
       subject.sprintf("cddb %s %08lx", submitcat.data(), cdinfo.magicID);
 
       t << "To: " + submitaddress + "\n";
-      tmp = tmp.sprintf("Subject: %s\n", subject.data());
-      t << tmp.data();
+      tmp = QString("Subject: %1\n").arg(subject);
+      t << tmp;
   }
 
   t << "# xmcd CD database file\n";
@@ -669,26 +668,26 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
 
   QString datestr;
   datestr = QDateTime::currentDateTime().toString();
-  tmp = tmp.sprintf("# Generated: %s by KSCD\n",datestr.data());
-  t << tmp.data();
+  tmp = QString("# Generated: %1 by KSCD\n").arg(datestr);
+  t << tmp;
 
   t << "# \n";
   t << "# Track frame offsets:\n";
 
   for(int i = 0 ; i < cdinfo.ntracks;i ++){
-    tmp = tmp.sprintf("#       %d\n",cdinfo.cddbtoc[i].absframe);
-    t << tmp.data();
+    tmp = QString("#       %1\n").arg(cdinfo.cddbtoc[i].absframe);
+    t << tmp;
   }
 
   t << "#\n";
-  tmp = tmp.sprintf("# Disc length: %d seconds\n",cdinfo.length);
-  t << tmp.data();
+  tmp = QString("# Disc length: %1 seconds\n").arg(cdinfo.length);
+  t << tmp;
   t << "#\n";
   if(upload)
-    tmp = tmp.sprintf("# Revision: %d\n",++revision);
+    tmp = QString("# Revision: %1\n").arg(++revision);
   else
-    tmp = tmp.sprintf("# Revision: %d\n",revision);
-  t << tmp.data();
+    tmp = QString("# Revision: %1\n").arg(revision);
+  t << tmp;
   t << "# Submitted via: Kscd "KSCDVERSION"\n";
   t << "#\n";
 
@@ -711,7 +710,7 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
   }
 
   tmp += "\n";
-  t << tmp.data();
+  t << tmp;
 
   QStrList returnlist;
   QString tmp2;
@@ -721,13 +720,13 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
 
   if(returnlist.count() == 0){
     // sanity provision
-    tmp = tmp.sprintf("DTITLE=%s\n","");
-    t << tmp.data();
+    tmp = QString("DTITLE=%1\n").arg("");
+    t << tmp;
   }
   else{
     for(int i = 0; i < (int) returnlist.count();i++){
-      tmp = tmp.sprintf("DTITLE=%s\n",returnlist.at(i));
-      t << tmp.data();
+      tmp = QString("DTITLE=%1\n").arg(returnlist.at(i));
+      t << tmp;
     }
   }
 
@@ -738,13 +737,13 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
     
     if(returnlist.count() == 0){
       // sanity provision
-      tmp = tmp.sprintf("TTITLE%d=%s\n",i-1,"");
-      t << tmp.data();
+      tmp = QString("TTITLE%1=%2\n").arg(i-1).arg("");
+      t << tmp;
     }
     else{
       for(int j = 0; j < (int) returnlist.count();j++){
-	tmp = tmp.sprintf("TTITLE%d=%s\n",i-1,returnlist.at(j));
-	t << tmp.data();
+	tmp = QString("TTITLE%1=%2\n").arg(i-1).arg(returnlist.at(j));
+	t << tmp;
       }
     }
   }
@@ -755,12 +754,12 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
   if(returnlist.count() == 0){
     // sanity provision
     tmp = tmp.sprintf("EXTD=%s\n","");
-    t << tmp.data();
+    t << tmp;
   }
   else{
     for(int i = 0; i < (int) returnlist.count();i++){
-      tmp = tmp.sprintf("EXTD=%s\n",returnlist.at(i));
-      t << tmp.data();
+      tmp = QString("EXTD=%1\n").arg(returnlist.at(i));
+      t << tmp;
     }
   }
 
@@ -772,12 +771,12 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
     if(returnlist.count() == 0){
       // sanity provision
       tmp = tmp.sprintf("EXTT%d=%s\n",i-1,"");
-      t << tmp.data();
+      t << tmp;
     }
     else{
       for(int j = 0; j < (int) returnlist.count();j++){
 	tmp = tmp.sprintf("EXTT%d=%s\n",i-1,returnlist.at(j));
-	t << tmp.data();
+	t << tmp;
       }
     }
   }
@@ -787,12 +786,12 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
 
     for(int i = 0; i < (int) returnlist.count();i++){
       tmp = tmp.sprintf("PLAYORDER=%s\n",returnlist.at(i));
-      t << tmp.data();
+      t << tmp;
     }
   }
   else{
     tmp = tmp.sprintf("PLAYORDER=\n");
-    t << tmp.data();
+    t << tmp;
   }
 
   t << "\n";
@@ -814,8 +813,8 @@ bool CDDialog::checkit(){
     QMessageBox::warning(this,
 			 i18n("Invalid Database Entry"),
 			 i18n("The Disc Artist / Title field is not filled in.\n"\
-			 "Please correct the entry and try again.")
-			 );
+			 "Please correct the entry and try again."),
+			 i18n("OK"));
      return false;
   }
 
@@ -830,8 +829,8 @@ bool CDDialog::checkit(){
 			 i18n("Invalid Database Entry"),
 			 i18n("The Disc Artist / Title field is not filled in correctly.\n"\
 			 "Please separate the artist from the title of the CD with \n"\
-			 "a forward slash, such as in: Peter Gabriel / Greatest Hits\n"
-			 ));
+			 "a forward slash, such as in: Peter Gabriel / Greatest Hits\n"),
+			 i18n("OK"));
      return false;
 
   }
@@ -843,8 +842,8 @@ bool CDDialog::checkit(){
     QMessageBox::warning(this,
 			 i18n("Invalid Database Entry"),
 			 i18n("Not all track titles can be empty.\n"\
-			 "Please correct the entry and try again."
-			 ));
+			 "Please correct the entry and try again."), 
+			 i18n("OK"));
      return false;
   }
 
@@ -865,8 +864,8 @@ bool CDDialog::checkit(){
     QMessageBox::warning(this,
 			 i18n("Invalid Database Entry"),
 			 i18n("Not all track titles can be empty.\n"\
-			 "Please correct the entry and try again."
-			 ));
+			 "Please correct the entry and try again."),
+			 i18n("OK"));
      return false;
 
   }
@@ -876,8 +875,8 @@ bool CDDialog::checkit(){
     QMessageBox::critical(this,
 			 i18n("Internal Error"),
 			 i18n("cdinfo.ntracks != title_list->count() + 1\n"
-			 "Please email the author."
-			 ));
+			 "Please email the author."),
+			 i18n("OK"));
      return false;
   }
 
@@ -904,8 +903,8 @@ bool CDDialog::checkit(){
   if(!ret){
       QMessageBox::warning(this,
 			 i18n("Error"),
-			 i18n("Invalid Playlist\n")
-			 );
+			 i18n("Invalid Playlist\n"),
+			 i18n("OK"));
       return false;
   }
 
@@ -939,7 +938,7 @@ void  mimetranslate(QString& s){
     if (((s.data()[i] >= 32) && (s.data()[i] <= 60)) || 
 	  ((s.data()[i] >= 62) && (s.data()[i] <= 126))) {
 
-      q += s.data()[i];
+      q += s.at(i);
     }
     else{
 

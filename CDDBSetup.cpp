@@ -30,7 +30,7 @@ CDDBSetup::CDDBSetup
     QString basedirdefault;
 
 
-    basedir_edit->setText(temp.data());
+    basedir_edit->setText(temp);
     connect(basedir_edit,SIGNAL(textChanged(const QString &)),
             this,SLOT(basedir_changed(const QString &)));
 
@@ -82,7 +82,7 @@ void CDDBSetup::insertSL(void)
             return;
         }
     }
-    server_listbox->insertItem(current_server_string.data());
+    server_listbox->insertItem(current_server_string);
     server_listbox->setCurrentItem(server_listbox->count()-1);
     server_listbox->centerCurrentItem();
 }
@@ -107,7 +107,7 @@ void CDDBSetup::insertSUL(void)
             return;
         }
     }
-    submission_listbox->insertItem(submitaddressstring.data());
+    submission_listbox->insertItem(submitaddressstring);
     submission_listbox->setCurrentItem(submission_listbox->count()-1);
     submission_listbox->centerCurrentItem();
 }
@@ -124,14 +124,14 @@ void CDDBSetup::removeSUL(void)
 void CDDBSetup::set_current_server(int i)
 {
     current_server_string = server_listbox->text(i);
-    currentServerLE->setText(current_server_string.data());
+    currentServerLE->setText(current_server_string);
     emit updateCurrentServer();
 }
 
 void CDDBSetup::set_current_submission_address(int i)
 {
     submitaddressstring = submission_listbox->text(i);
-    currentSubmitLE->setText(submitaddressstring.data());
+    currentSubmitLE->setText(submitaddressstring);
 }
 
 void CDDBSetup::basedir_changed(const QString &str)
@@ -164,7 +164,7 @@ void CDDBSetup::insertData(const QStrList& _serverlist,
 {
 
     current_server_string = _current_server.copy();
-    currentServerLE->setText(current_server_string.data());
+    currentServerLE->setText(current_server_string);
 
     submitaddressstring = _submitaddress.copy();
     currentSubmitLE->setText(submitaddressstring);

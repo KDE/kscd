@@ -72,7 +72,7 @@ bool            debugflag = false;
 char 		tmptime[100];
 char 		*tottime;
 //static void 	playtime (void);
-void 		kcderror(char* title,char* message);
+void 		kcderror(const QString& title, const QString& message);
 void 		kcdworker(int );
 
 //void 		parseargs(char* buf, char** args);
@@ -226,8 +226,9 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
 
 void KSCD::smtpMessageSent(void)
 {
-    QMessageBox::information(this, "Record Submission",
-                             i18n("Record submitted successfully"));
+    QMessageBox::information(this, i18n("Record Submission"),
+                             i18n("Record submitted successfully"),
+			     i18n("OK"));
 }
 
 void KSCD::smtpError(int errornum)
@@ -252,7 +253,7 @@ void KSCD::smtpError(int errornum)
     }
     str = i18n("Error #%1 sending message via SMTP.\n\n%2")
       .arg(errornum).arg(lstr);
-    QMessageBox::critical(this, i18n("Record Submission"), str);
+    QMessageBox::critical(this, i18n("Record Submission"), str, i18n("OK"));
 }
 
 	
@@ -1007,7 +1008,7 @@ void KSCD::aboutClicked(){
     label->setGeometry(160,20,340,390);
     label->setAlignment( AlignCenter);
     QString labelstring;
-    labelstring = "kscd "KSCDVERSION"\n";
+    labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
     "Copyright (c) 1997-98 \nBernd Johannes Wuebben <wuebben@kde.org>\n\n"
     "Currently maintained by:\nSam Maloney <thufir@illogic.ml.org>\n\n"
@@ -1226,7 +1227,7 @@ void KSCD::cdMode(){
               i18n("CDROM read or access error.\n"\
                    "Please make sure you have access permissions to:\n%1")
               .arg(cd_device);
-            QMessageBox::warning(this,i18n("Error"),errstring);
+            QMessageBox::warning(this,i18n("Error"),errstring, i18n("OK"));
         }
         return;
     }
@@ -1791,10 +1792,10 @@ void KSCD::cddb_ready(){
     QString num;
 
     for(int i = 0 ; i < cd->ntracks; i++){
-        querylist.append(num.sprintf("%d",cd->cddbtoc[i].absframe));
+        querylist.append(num.setNum(cd->cddbtoc[i].absframe));
     }
 
-    querylist.append(num.sprintf("%d",cd->cddbtoc[cd->ntracks].absframe/75));
+    querylist.append(num.setNum(cd->cddbtoc[cd->ntracks].absframe/75));
     cddb_inexact_sentinel =false;
     cddb.queryCD(cd->magicID,querylist);
 
@@ -2124,9 +2125,9 @@ void  KSCD::performances(int i){
 
     switch(i){
     case 0:
-        str = str.sprintf(
-            "http://www.tourdates.com/cgi-bin/search.cgi?type=Artist&search=%s",
-            artist.data());
+        str = 
+            QString("http://www.tourdates.com/cgi-bin/search.cgi?type=Artist&search=%1")
+            .arg(artist);
         startBrowser(str);
 
         break;
@@ -2152,16 +2153,16 @@ void  KSCD::purchases(int i){
 
     switch(i){
     case 0:
-        str = str.sprintf(
-            "http://cdnow.com/switch/from=sr-288025/target=buyweb_products/artfs=%s",
-            artist.data());
+        str =
+            QString("http://cdnow.com/switch/from=sr-288025/target=buyweb_products/artfs=%1")
+            .arg(artist);
         startBrowser(str);
 
         break;
     case 1:
-        str = str.sprintf(
-            "http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%s",
-            artist.data());
+        str =
+            QString("http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1")
+            .arg(artist);
         startBrowser(str);
 
         break;
@@ -2198,8 +2199,8 @@ void KSCD::magicslot(int ){
 
     if(!result){
         QString str;
-        str.sprintf(i18n("Cannot start kscdmagic."));
-        QMessageBox::critical(this,"KSCD", str);
+        str = i18n("Cannot start kscdmagic.");
+        QMessageBox::critical(this, i18n("KSCD"), str, i18n("OK"));
     }
 
     return;
@@ -2213,9 +2214,9 @@ void KSCD::magicdone(KProcess* proc){
         //    fprintf(stderr,"kscdmagic exit status %d\n",proc->exitStatus());
         if(proc->exitStatus()!=0){
             QString str;
-            str.sprintf(i18n("KSCD Magic exited abnormally.\n"\
-                                           "Are you sure kscdmagic is installed?"));
-            QMessageBox::critical(this,"KSCD", str);
+            str = i18n("KSCD Magic exited abnormally.\n"
+                       "Are you sure kscdmagic is installed?");
+            QMessageBox::critical(this, i18n("KSCD"), str, i18n("OK"));
         }
     }
 
@@ -2251,67 +2252,66 @@ void KSCD::information(int i){
 
             break;*/
     case 0:
-        str = str.sprintf(
-            "http://www.ubl.com/find/form?SEARCH=%s",
-            artist.data());
+        str =
+            QString("http://www.ubl.com/find/form?SEARCH=%1")
+            .arg(artist);
         startBrowser(str);
 
         break;
 
 
     case 2:
-        str = str.sprintf(
-            "http://x8.dejanews.com/dnquery.xp?QRY=%s&defaultOp=AND&svcclass=dncurrent&maxhits=20&ST=QS&format=terse&DBS=2",
-
-            artist.data());
+        str =
+            QString("http://x8.dejanews.com/dnquery.xp?QRY=%1&defaultOp=AND&svcclass=dncurrent&maxhits=20&ST=QS&format=terse&DBS=2")
+            .arg(artist);
         startBrowser(str);
 
         break;
 
     case 3:
-        str = str.sprintf(
-            "http://www.excite.com/search.gw?c=web&search=%s&trace=a",
-            artist.data());
+        str =
+            QString("http://www.excite.com/search.gw?c=web&search=%1&trace=a")
+            .arg(artist);
         startBrowser(str);
 
         break;
 
     case 4:
-        str = str.sprintf(
-            "http://www.search.hotbot.com/hResult.html?SW=web&SM=MC&MT=%s&DC=10&DE=2&RG=NA&_v=2",
-            artist.data());
+        str =
+            QString("http://www.search.hotbot.com/hResult.html?SW=web&SM=MC&MT=%1&DC=10&DE=2&RG=NA&_v=2")
+            .arg(artist);
         startBrowser(str);
 
         break;
 
     case 5:
-        str = str.sprintf(
-            "http://www.infoseek.com/Titles?qt=%s&col=WW&sv=IS&lk=ip-noframes&nh=10",
-            artist.data());
+        str =
+            QString("http://www.infoseek.com/Titles?qt=%1&col=WW&sv=IS&lk=ip-noframes&nh=10")
+            .arg(artist);
         startBrowser(str);
 
         break;
 
     case 6:
-        str = str.sprintf(
-            "http://www.lycos.com/cgi-bin/pursuit?cat=lycos&query=%s",
-            artist.data());
+        str =
+            QString("http://www.lycos.com/cgi-bin/pursuit?cat=lycos&query=%1")
+            .arg(artist);
         startBrowser(str);
 
         break;
 
     case 7:
-        str = str.sprintf(
-            "http://www.mckinley.com/search.gw?search=%s&c=web&look=magellan",
-            artist.data());
+        str =
+            QString("http://www.mckinley.com/search.gw?search=%1&c=web&look=magellan")
+            .arg(artist);
         startBrowser(str);
 
         break;
 
     case 8:
-        str = str.sprintf(
-            "http://search.yahoo.com/bin/search?p=%s",
-            artist.data());
+        str =
+            QString("http://search.yahoo.com/bin/search?p=%1")
+            .arg(artist);
         startBrowser(str);
 
         break;
@@ -2438,9 +2438,9 @@ int main( int argc, char *argv[] )
     return mykapp->exec();
 }
 
-void kcderror(char* title,char* message)
+void kcderror(const QString& title,const QString& message)
 {
-    QMessageBox::message(title,message);
+    QMessageBox::information(0L,title, message, i18n("OK"));
 }
 
 
