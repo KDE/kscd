@@ -213,6 +213,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
   if (looping)
   {
     loopled->on();
+    loopled->show();
+    repeatPB->setOn(true);
   }
 
   dock_widget = new DockWidget( this, "dockw");
