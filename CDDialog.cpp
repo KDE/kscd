@@ -239,9 +239,9 @@ CDDialog::setData(
 
     QString temp2;
     if(dl.hour() > 0)
-      temp2 = dl.toString("HH:MM:SS:");
+      temp2 = dl.toString("hh:mm:ss:");
     else
-      temp2 = dl.toString("MM:SS");
+      temp2 = dl.toString("mm:ss");
     total_time_label->setText(temp2);
 
     QString 	fmt;
@@ -255,9 +255,9 @@ CDDialog::setData(
         QListViewItem * item = new QListViewItem( tracksList, 0 );
         item->setText( 0, QString().sprintf("%02d",i) );
         if (dl.hour() > 0)
-            item->setText( 1, dl.toString("HH:MM:SS"));
+            item->setText( 1, dl.toString("hh:mm:ss"));
         else
-            item->setText( 1, dl.toString("MM:SS"));
+            item->setText( 1, dl.toString("mm:ss"));
 
 	if((ntr >=  i) && (ntr > 0))
             item->setText( 2,  *(track_list.at(i)));
