@@ -1441,7 +1441,7 @@ void KSCD::CDDialogSelected()
                         revision,year,playlist,pathlist);
 
         connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
-        connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
+        connect(cddialog,SIGNAL(finished()),this,SLOT(CDDialogDone()));
         connect(cddialog,SIGNAL(play_signal(int)),this,SLOT(trackSelected(int)));
     }
 
@@ -1451,7 +1451,7 @@ void KSCD::CDDialogSelected()
 
 void KSCD::CDDialogDone()
 {
-  delete cddialog;
+  cddialog->delayedDestruct();
   cddialog = 0L;
 }
 

@@ -73,9 +73,6 @@ class CDDialog : public CDDialogData
   void save_cddb_entry(QString& path,bool upload);
   void setCdInfo(KCDDB::CDInfo &info, const QString& category);
   
- protected:
-  void closeEvent(QCloseEvent* e);
-  void keyPressEvent(QKeyEvent* e);
  public slots:
   void titleselected(QListViewItem *);
   void titlechanged();
@@ -85,7 +82,6 @@ class CDDialog : public CDDialogData
   void extIB();
   void load_cddb();
   void upload();
-  void cancel();
   void play(QListViewItem *);
   void nextTrack();
   void submitFinished(CDDB::Result);
@@ -93,7 +89,6 @@ class CDDialog : public CDDialogData
 signals:
 
   void cddb_query_signal(bool);
-  void dialog_done();
   void play_signal(int i);
   
 private:

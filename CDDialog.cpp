@@ -5,9 +5,6 @@
  *
  *      --- This file has been manually midified ---
  *
- *
- * $Id$
- *
  ***********************************************************************/
 
 #include <unistd.h>
@@ -65,7 +62,6 @@ CDDialog::CDDialog
     connect(trackEdit,   SIGNAL( returnPressed ()) ,this,SLOT(nextTrack()));
     connect(ok_button, SIGNAL(clicked())       ,this,SLOT(save()));
     connect(upload_button, SIGNAL(clicked())       ,this,SLOT(upload()));
-    connect(cancel_button, SIGNAL(clicked())       ,this,SLOT(cancel()));
     connect(load_button, SIGNAL(clicked())       ,this,SLOT(load_cddb()));
     connect(ext_info_title_button, SIGNAL(clicked()) ,this,SLOT(extITB()));
     connect(ext_info_button, SIGNAL(clicked())       ,this,SLOT(extIB()));
@@ -98,25 +94,6 @@ CDDialog::~CDDialog()
         delete [] cdinfo.cddbtoc;
     delete cddbClient;
 } // ~CDDialog
-
-void
-CDDialog::closeEvent(QCloseEvent*)
-{
-    emit dialog_done();
-} // closeEvent
-
-void
-CDDialog::keyPressEvent(QKeyEvent *e)
-{
-    if(e->state() == 0 && e->key() == Key_Escape)
-        emit dialog_done();
-} // keyPressEvent
-
-void
-CDDialog::cancel()
-{
-  emit dialog_done();
-} // ok
 
 void
 CDDialog::play(QListViewItem *item)
@@ -471,7 +448,6 @@ CDDialog::save()
 {
   if(!checkit())
   {
-    emit dialog_done();
     return;
   }
 
@@ -488,7 +464,6 @@ CDDialog::save()
     if(dialog->exec() != QDialog::Accepted)
     {
       delete dialog;
-      emit dialog_done();
       return;
     }
 
@@ -507,7 +482,6 @@ CDDialog::save()
   KCDDB::Cache::store(info);
 
   load_cddb();
-  emit dialog_done();
 } // save
 
 bool
@@ -574,9 +548,7 @@ CDDialog::checkit()
       return false;
     }
 
-  QString str;
-  QStringList strlist;
-  str = progseq_edit->text();
+  QStringList strlist = QStringList::split( ',', progseq_edit->text() );
 
   bool ret  = true;
 
@@ -591,14 +563,14 @@ CDDialog::checkit()
       teststr = *it;
       num = teststr.toInt(&ok);
 
-      if( num > cdinfo.ntracks || !ok)
+      if( !ok || num > cdinfo.ntracks )
 	ret = false;
     }
 
   if(!ret)
     {
       KMessageBox::sorry(this,
-			 i18n("Invalid Playlist\nPlease use track numbers only, separated by commas."));
+			 i18n("Invalid Playlist\nPlease use valid track numbers, separated by commas."));
       return false;
     }
 
