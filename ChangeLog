@@ -1,3 +1,9 @@
+Tue Jan 18 17:27:26 2000  Dirk Försterling  <milliByte@DeathsDoor.com>
+
+	* Added the libWorkMan directory and inserted it into the make
+	process. Please note, that libWorkMan will be built and installed,
+	but is not currently used.
+
 1999-03-17  Harri Porten  <porten@kde.org>
 
 	* kscd.cpp: applied patch from Petter Reinholdtsen <pere@hungry.com>
