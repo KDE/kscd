@@ -1027,8 +1027,8 @@ void KSCD::cdMode()
           return;
         }
 
-    
         lookupDevice();
+        lookupCDDB();
 
         if(Prefs::autoplay() && cdmode == WM_CDM_STOPPED)
             playClicked();
@@ -1387,7 +1387,6 @@ void KSCD::lookupDevice(void)
   trackStartFrames.append((cd->trk[numberOfTracks]).start);
 
   populateSongList("");
-  lookupCDDB();
 }
 
 void KSCD::cddb_failed(CDDB::Result result)
