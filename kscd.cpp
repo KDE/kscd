@@ -2471,6 +2471,7 @@ main( int argc, char *argv[] )
                           KAboutData::License_GPL,
                           "(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo");
     aboutData.addAuthor("Aaron J. Seigo", I18N_NOOP("Current maintainer"), "aseigo@kde.org");
+    aboutData.addAuthor("Alexander Kern",I18N_NOOP("Workman library update, CDTEXT, CDDA"), "kernalex@kde.org");
     aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
     aboutData.addAuthor("Dirk Försterling", I18N_NOOP("Workman library, previous maintainer"), "milliByte@gmx.net");
     aboutData.addCredit("Steven Grimm", I18N_NOOP("Workman library"));
