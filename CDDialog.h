@@ -63,7 +63,8 @@ class CDDialog : public CDDialogData
 			   QString& xmcddata,
 			   QString& cat,
 			   QString& _genre,
-			   int& revision,
+			   int revision,
+			   int _year,
 			   QStringList& playlist,
 			   QStringList& pathlist
 			   );
@@ -103,6 +104,7 @@ private:
   QStringList	playlist;
   QString  	xmcd_data;
   int      	revision;
+  int           year;
   QString 	category;
   QString     playorder;
   QString     genre;

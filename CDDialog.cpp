@@ -133,7 +133,8 @@ CDDialog::setData(
         QString& _xmcd_data,
         QString& cat,
 	QString& _genre,
-        int& rev,
+        int rev,
+        int _year,
         QStringList& _playlist,
         QStringList& _pathlist
         )
@@ -146,6 +147,7 @@ CDDialog::setData(
     category 	= cat.copy();
     genre       = _genre.copy();
     revision    = rev;
+    year        = _year;
     playlist	= _playlist;
     pathlist	= _pathlist;
 
@@ -312,8 +314,6 @@ CDDialog::extITB()
     text = dialog->selection();
 
     *ext_list.at(0) = text;
-    //ext_list.insert( 0 , text );
-    //ext_list.remove( 1 );
   }
   delete dialog;
 } // extITB
@@ -447,7 +447,7 @@ CDDialog::setCdInfo(KCDDB::CDInfo &info, const QString& category)
   info.genre = genre;
   info.id = cdinfo.magicID;
   info.extd = ext_list.first();
-  // No year available?
+  info.year = year;
   info.length = cdinfo.length;
   info.revision = revision;
 
@@ -459,7 +459,7 @@ CDDialog::setCdInfo(KCDDB::CDInfo &info, const QString& category)
   {
     TrackInfo t;
     t.title = *it;
-    t.extt = ext_list[i];
+    t.extt = ext_list[i+1];
 
     info.trackInfoList.append(t);
     ++i;

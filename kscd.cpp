@@ -122,7 +122,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
     stopexit(true),
     ejectonfinish(false),
     updateDialog(false), //!!!!
-    revision(0) // The first freedb revision is "0" //!!!!
+    revision(0), // The first freedb revision is "0" //!!!!
+    year(0)
 {
   random_current      = random_list.begin();
 
@@ -1414,7 +1415,7 @@ KSCD::CDDialogSelected()
         cddialog = new CDDialog();
 
         cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category, genre,
-                        revision,playlist,pathlist);
+                        revision,year,playlist,pathlist);
 
         connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
         connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
@@ -1488,9 +1489,8 @@ KSCD::cddb_done(CDDB::Result result)
     }
     KCDDB::CDInfo cddbInfo = cddb->bestLookupResponse();
 
-    // shouldn't need to clear it, but i fear the maintainability monster
-    // so let's just clear it to be safe, m'kay
     tracktitlelist.clear();
+    extlist.clear();
 
     setArtistAndTitle(cddbInfo.artist, cddbInfo.title);
 
@@ -1500,12 +1500,15 @@ KSCD::cddb_done(CDDB::Result result)
     revision = cddbInfo.revision;
     category = cddbInfo.category;
     genre = cddbInfo.genre;
+    extlist << cddbInfo.extd;
+    year = cddbInfo.year;
 
     KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
     KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
     for (; it != end; ++it)
     {
         tracktitlelist << (*it).title;
+        extlist << (*it).extt;
     }
 
     playlistpointer = 0;
