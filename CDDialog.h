@@ -60,6 +60,7 @@ public:
 		 QString& cat,
 		 int& revision,
 		 QStrList& playlist,
+		 QStrList& pathlist,
 		 QString& _mailcmd,
                  QString& _submitaddress,
                  SMTPConfig::SMTPConfigData *_smtpConfigData

@@ -1234,6 +1234,12 @@ void CDDB::cddb_http_xlat(QString &s)
     }
 }
 
+
+void CDDB::setPathList(QStrList& _paths)
+{
+    pathlist = _paths; // automatically makes deep copies is _paths has deep copies
+}
+
 #include "cddb.moc"
 
 

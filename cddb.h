@@ -83,6 +83,7 @@ class CDDB:public QObject
 
     void  get_inexact_list(QStrList& inexact_list);
     void  query_exact(QString line);
+    void  setPathList(QStrList& paths);
     bool  checkDir(unsigned long magicID, const QString& dir);
     bool  getValue(QString& key,QString& value, QString& data);
     void  serverList(QStrList& list);
@@ -155,6 +156,7 @@ class CDDB:public QObject
     QTimer      expecttimer;
 
     QString 	hostname;
+    QStrList    pathlist;
 
     QString     proxyhost;
     unsigned short int proxyport;
