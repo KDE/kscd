@@ -198,6 +198,11 @@ KSCD::KSCD( QWidget *parent, const char *name )
     volstartup = TRUE;
     volSB->setValue(volume);
 
+    if(looping)
+    {
+    	loopled->on();
+    }
+
     dock_widget = new DockWidget( this, "dockw");
     if(docking)
     {
@@ -1585,7 +1590,8 @@ KSCD::readSettings()
     ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);
     mailcmd    =        config->readEntry("UnixMailCommand","/bin/mail -s \"%s\"");
     randomonce = (bool)config->readBoolEntry("RANDOMONCE",true);
-
+    looping    = config->readBoolEntry("Looping",false);
+    
 
 #ifdef DEFAULT_CD_DEVICE
 
@@ -1730,6 +1736,7 @@ KSCD::writeSettings()
     config->writeEntry("BackColor",background_color);
     config->writeEntry("LEDColor",led_color);
     config->writeEntry("UnixMailCommand",mailcmd);
+    config->writeEntry("Looping", looping);
 
     config->setGroup("SMTP");
     config->writeEntry("enabled", smtpConfigData.enabled);
