@@ -14,6 +14,8 @@
 #include <kapp.h>
 #include <kdebug.h>
 
+#include "../config.h"
+
 #define Inherited CDDBSetupData
 
 #include "CDDBSetup.h"
