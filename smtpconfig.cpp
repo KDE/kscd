@@ -88,7 +88,6 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     glay->addWidget ( serverHostEdit, 1, 1 );
     serverHostEdit->setText(configData->serverHost);
     serverHostEdit->setEnabled(configData->enabled);
-    serverHostEdit->setReadOnly( true );
     serverPortLabel = new QLabel(":", mainBox, "serverPortLabel");
     glay->addWidget ( serverPortLabel, 1, 2 );
     serverPortEdit = new QLineEdit(mainBox, "serverPortEdit");
@@ -122,6 +121,7 @@ void SMTPConfig::commitData(void)
 {
     configData->enabled = enableCB->isChecked();
     configData->serverHost = serverHostEdit->text();
+    kes->setSetting( KEMailSettings::OutServer, serverHostEdit->text() );
     configData->serverPort = serverPortEdit->text();
     configData->senderAddress = senderAddressEdit->text();
     configData->senderReplyTo = senderReplyToEdit->text();
