@@ -281,6 +281,10 @@ KSCD::~KSCD()
   delete cycletimer;
   delete jumpTrackTimer;
   delete smtpMailer;
+  delete mainPopup;
+  delete perfPopup;
+  delete purchPopup;
+  delete infoPopup;
 
 } // ~KSCD
 
