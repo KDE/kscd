@@ -91,7 +91,7 @@ SMTP                *smtpMailer;
 bool dockinginprogress = 0;
 bool quitPending = 0;
 bool stoppedByUser = 1;
-bool device_change = false;
+bool device_change = true;
 
 char            tmptime[100];
 char            *tottime;
@@ -1303,6 +1303,10 @@ KSCD::volChanged( int vol )
 int
 KSCD::randomtrack()
 {
+    if(random_list == 0) 
+    {
+        return -1;
+    }
     /* koz: 15/01/00. Check to see if we want to do a randomonce. If so */
     /* we execute the first set of statements. Else we execute the second */
     /* set, the original code.  */
@@ -1368,7 +1372,7 @@ KSCD::cdMode()
 
   sss = wm_cd_status();
 
-  if( sss == 2  || sss == WM_CDS_NO_DISC) 
+  if( sss == WM_CDS_JUST_INSERTED  || sss == WM_CDS_NO_DISC) 
   {
       have_new_cd = true;
   }
