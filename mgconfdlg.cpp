@@ -26,6 +26,7 @@
  */
 
 
+#include <qspinbox.h>
 
 #include "mgconfdlg.h"
 #include <klocale.h>
@@ -83,17 +84,12 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
   label3->setGeometry(20,110,155,25);
   label3->setText(i18n("MAGIC Brightness:"));
 
-  bspin = new KNumericSpinBox(this);
+  bspin = new QSpinBox(0, 100, 1, this);
   bspin->setGeometry(200,110,50,25);
-  bspin->setRange(0,100);
   
   bspin->setValue(mgconfigdata.brightness);
-  connect(bspin,SIGNAL(valueIncreased()),
-	  this,SLOT(brightness_changed()));  
-  connect(bspin,SIGNAL(valueDecreased()),
-	  this,SLOT(brightness_changed()));  
-
-  
+  connect(bspin,SIGNAL(valueChanged(int)),
+	  this,SLOT(brightness_changed(int)));  
 }
 
 
@@ -111,9 +107,9 @@ void MGConfigDlg::height_changed(const QString &height) {
 }
 
 
-void MGConfigDlg::brightness_changed() {
+void MGConfigDlg::brightness_changed(int value) {
 
-  mgconfigdata.brightness = bspin->getValue();
+  mgconfigdata.brightness = value;
 }
 
 

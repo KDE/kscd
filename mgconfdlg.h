@@ -41,10 +41,11 @@
 #include <qradiobutton.h>
 #include <qbutton.h> 
 #include <qbuttongroup.h> 
-#include <kspinbox.h>
 
 #include "kscd.h"
 
+
+class QSpinBox;
 
 class MGConfigDlg : public QDialog {
 
@@ -61,7 +62,7 @@ public:
 private slots:
 
   void help();
-  void brightness_changed();
+  void brightness_changed(int value);
   void width_changed(const QString &);
   void height_changed(const QString &);
 
@@ -73,7 +74,7 @@ private:
   QGroupBox *box;
   
   QLabel *label1;
-  KNumericSpinBox *bspin;
+  QSpinBox *bspin;
 
   QLabel *label2;
   QLineEdit *height_edit;

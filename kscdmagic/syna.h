@@ -35,12 +35,12 @@
 
 #include "magicconf.h"
 
-
 #define PROGNAME "kscdmagic"
 
-void error(const char *str);
+void error(const char *str); //Display error and exit
+void warning(const char *str); //Display error
+
 #define attempt(x,y) if ((int)(x) == -1) error(y)
-void warning(const char *str);
 #define attemptNoDie(x,y) if ((int)(x) == -1) warning(y)
 
 #define n (1<<m)
@@ -68,10 +68,6 @@ int mouseGetButtons(void);
 
 int processUserInput(void); //True == abort now
 void showOutput(void);
-
-void error(const char *str); //Display error and exit
-void warning(const char *str); //Display error
-
 
 /* bitmap */
 enum SymbolID {
