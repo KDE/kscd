@@ -95,7 +95,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
 
   pointsAreDiamondsCB = new QCheckBox(this,"Points are Diamonds");
   pointsAreDiamondsCB->setGeometry(20,150,160,30);
-  pointsAreDiamondsCB->setText(i18n("Points are Diamonds"));
+  pointsAreDiamondsCB->setText(i18n("Points are diamonds"));
   pointsAreDiamondsCB->setChecked(mgconfigdata.pointsAreDiamonds);
   connect(pointsAreDiamondsCB, SIGNAL(toggled(bool)),
 	  this, SLOT(pointsAreDiamonds_clicked(bool)));

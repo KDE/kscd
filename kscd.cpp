@@ -819,7 +819,7 @@ KSCD::playClicked()
 
                 default:
                     // next release: force "stop".
-                    statuslabel->setText( i18n("Strange....") );
+                    statuslabel->setText( i18n("Strange...") );
                     break;
             } // switch
             qApp->processEvents();
@@ -2730,7 +2730,7 @@ KSCD::get_pathlist(QStringList& _pathlist)
     {
         dialog = new InexactDialog(0, "dialog", false);
         dialog->insertText(cddbbasedir);
-        dialog->setTitle(i18n("Enter the local freedb base Directory"));
+        dialog->setTitle(i18n("Enter the Local freedb Base Directory"));
 
         if(dialog->exec() != QDialog::Accepted)
         {
