@@ -445,25 +445,16 @@ CDDialog::upload()
       
       return;
     }
-
       
-  QString cmd;
-
-  cmd = "/usr/sbin/sendmail -t";
-
-  kdDebug() << "Submitting freedb entry: " << cmd << "\n" << endl;
-  
   FILE* mailpipe;
-  mailpipe = popen(QFile::encodeName(cmd),"w");
+  mailpipe = popen("/usr/sbin/sendmail -t","w");
 
   if(mailpipe == NULL){
     QString str;
     str = i18n("Could not pipe contents into:\n %1").arg(cmd);
 
     KMessageBox::error(this, str);
-    pclose(mailpipe);
     return;
-    
   }
   
   QFile file(tempfile);
