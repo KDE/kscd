@@ -1,9 +1,9 @@
-<!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
+<?xml version="1.0" ?><!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1-Based Variant V1.0//EN" "dtd/kdex.dtd" [
   <!ENTITY kappname "&kscd;">
-  <!ENTITY % English "INCLUDE" -- change language only here -->
+  <!ENTITY % English "INCLUDE" > <!-- change language only here -->
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Documentation V1.0//EN">
-  %ents;
+  
+  
 ]>
 
 <book lang="&language;">
@@ -137,7 +137,7 @@ support)</para></listitem>
 <screeninfo>The &kscd; Interface</screeninfo>
 <mediaobject>
 <imageobject>
-<imagedata fileref="kscd.png" format="PNG"></imageobject>
+<imagedata fileref="kscd.png" format="PNG"/></imageobject>
 <textobject><phrase>The &kscd; Interface</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -152,7 +152,7 @@ particular order.</para>
 <screenshot>
 <screeninfo>The Control Panel</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd2.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd2.png" format="PNG"/></imageobject>
 <textobject><phrase>The Control Panel</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -175,7 +175,7 @@ or backward (left) to the beginning of the next or previous track. </para>
 <screenshot>
 <screeninfo>The <guibutton>eject</guibutton> button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd2a.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd2a.png" format="PNG"/></imageobject>
 <textobject><phrase>The eject button</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -193,7 +193,7 @@ disc.</para>
 <screenshot>
 <screeninfo>The Status display</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd3.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd3.png" format="PNG"/></imageobject>
 <textobject><phrase>The Status display</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -215,17 +215,14 @@ Base.)</para>
 <screenshot>
 <screeninfo>The time display toggle</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd4.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd4.png" format="PNG"/></imageobject>
 <textobject><phrase>The time display toggle</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<!-- LW: Note - I needed the CDATA in the next section, or the double dashes -->
-<!-- commented out the colon! -->
-	
 <para>This button toggles between the possible main time display modes. By
 default, &kscd; displays the elapsed time of the current track, if the &CD; is
-playing, or either <![ CDATA [ --:--]]> or 00:00 if the &CD; is not playing.
+playing, or either &ndash;&ndash;:&ndash;&ndash; or 00:00 if the &CD; is not playing.
 Pressing this button toggles in sequence between remaining track time, total
 elapsed time, and total remaining time.</para>
 </sect2>
@@ -236,7 +233,7 @@ elapsed time, and total remaining time.</para>
 <screenshot>
 <screeninfo>The configuration panel</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd5.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd5.png" format="PNG"/></imageobject>
 <textobject><phrase>The configuration panel</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -252,7 +249,7 @@ about configuring &kscd;</para>
 <screenshot>
 <screeninfo>The <acronym>CDDB</acronym> button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd5.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd5.png" format="PNG"/></imageobject>
 <textobject><phrase>The <acronym>CDDB</acronym> button</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -272,7 +269,7 @@ using this tool.</para>
 <screenshot>
 <screeninfo>The information button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd7.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd7.png" format="PNG"/></imageobject>
 <textobject><phrase>The information button</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -289,7 +286,7 @@ the pop-up menu that appears.</para>
 <screenshot>
 <screeninfo>The exit button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd8.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd8.png" format="PNG"/></imageobject>
 <textobject><phrase>The exit button</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -303,7 +300,7 @@ the pop-up menu that appears.</para>
 <screenshot>
 <screeninfo>The volume slider</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd9.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd9.png" format="PNG"/></imageobject>
 <textobject><phrase>The volume slider</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -319,7 +316,7 @@ the sound card mixer will affect the playback volume as well.</para>
 <screenshot>
 <screeninfo>The randomise button</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd15.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd15.png" format="PNG"/></imageobject>
 <textobject><phrase>The randomise button</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -333,7 +330,7 @@ the sound card mixer will affect the playback volume as well.</para>
 <screenshot>
 <screeninfo>The track selector</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd11.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd11.png" format="PNG"/></imageobject>
 <textobject><phrase>The track selector</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -367,7 +364,7 @@ options</guilabel></link></para></listitem>
 <screenshot>
 <screeninfo>The <guilabel>CDDB</guilabel> tab of the configuration dialog</screeninfo>
 <mediaobject>
-<imageobject> <imagedata fileref="kscd14.png" format="PNG"> </imageobject>
+<imageobject> <imagedata fileref="kscd14.png" format="PNG"/> </imageobject>
 <textobject><phrase>The <guilabel>CDDB</guilabel> tab of the configuration
 dialog</phrase></textobject>
 </mediaobject>
@@ -417,7 +414,7 @@ help home page (this document).</para>
 <screenshot>
 <screeninfo>The SMTP Options tab</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd16.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd16.png" format="PNG"/></imageobject>
 </mediaobject>
 </screenshot>
 
@@ -436,7 +433,7 @@ email address in the lower text field. </para>
 <screenshot>
 <screeninfo>The <guilabel>KSCD Options</guilabel> tab</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd12.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd12.png" format="PNG"/></imageobject>
 <textobject><phrase>The <guilabel>KSCD Options</guilabel> tab</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -522,7 +519,7 @@ of &kscd; you are using and some copyright information. </para>
 <screenshot>
 <screeninfo>The CD Database Editor</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd13.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd13.png" format="PNG"/></imageobject>
 <textobject><phrase>The CD Database Editor</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -590,7 +587,7 @@ Database Editor without saving.</para>
 <screenshot>
 <screeninfo>Using &kscd; in the &kde; Panel</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd18.png" format="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd18.png" format="PNG"/></imageobject>
 <textobject><phrase>Using &kscd; in the &kde; Panel</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -669,7 +666,7 @@ better to do with your spare time.</para>
 <screenshot>
 <screeninfo>Error dialog</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd19.png" format ="PNG"></imageobject>
+<imageobject><imagedata fileref="kscd19.png" format ="PNG"/></imageobject>
 <textobject><phrase>Error dialog</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -791,7 +788,7 @@ order to get &kscd; to compile on your platform.</para>
 
 
 
-<![ %addindex; [ &documentation.index; ]]>
+&documentation.index; 
 </book>
 <!--
 Local Variables:
@@ -800,3 +797,4 @@ sgml-minimize-attributes: nil
 sgml-general-insert-case: lower
 End:
 -->
+
