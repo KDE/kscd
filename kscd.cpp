@@ -74,7 +74,6 @@ extern "C" {
 
 #include "inexact.h"
 #include "CDDialog.h"
-#include "CDDBSetup.h"
 #include "configdlg.h"
 #include "configWidget.h"
 #include "kvolumecontrol.h"

@@ -9,12 +9,12 @@ METASOURCES = AUTO
 ####### Files
 
 noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
-	CDDialog.h CDDialogData.h CDDBSetup.h CDDBSetupData.h mgconfdlg.h \
+	CDDialog.h CDDialogData.h mgconfdlg.h \
 	configdlg.h version.h docking.h \
 	configWidget.h kvolumecontrol.h
 
 kscd_SOURCES = kvolumecontrol.cpp panel.ui kscd.cpp kscd.skel configdlg.cpp ledlamp.cpp CDDialog.cpp \
-	       CDDialogData.cpp CDDBSetup.cpp CDDBSetupData.cpp docking.cpp \
+	       CDDialogData.cpp docking.cpp \
 	       inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
 	       configWidget.cpp configWidgetUI.ui
 
