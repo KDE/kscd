@@ -544,7 +544,7 @@ CDDialog::save()
 	}
 
   QString mag;
-  mag.sprintf("%s%s/%08lx",cddbbasedir.utf8().data(),savecat.utf8().data(),cdinfo.magicID);
+  mag.sprintf("%s/%s/%08lx",cddbbasedir.utf8().data(),savecat.utf8().data(),cdinfo.magicID);
 
   save_cddb_entry(mag,false);
   load_cddb();
