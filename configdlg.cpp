@@ -202,82 +202,89 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 }
 
 
-void ConfigDlg::custombutton_clicked(){
+void ConfigDlg::custombutton_clicked()
+{
     configdata.use_kfm = false;
     custom_edit->setEnabled(!configdata.use_kfm);
-}
+} // custombutton_clicked
 
 
-void ConfigDlg::kfmbutton_clicked(){
-
+void 
+ConfigDlg::kfmbutton_clicked()
+{
     configdata.use_kfm = true;
     custom_edit->setEnabled(!configdata.use_kfm);
-}
+} // kfmbutton_clicked
 
 
-void ConfigDlg::okbutton() {
+void 
+ConfigDlg::okbutton() 
+{
+} // okbutton
 
-
-
-}
-
-void ConfigDlg::device_changed(const QString &dev) {
+void 
+ConfigDlg::device_changed(const QString &dev) {
 
   configdata.cd_device = dev;
-}
+} // device_changed
 
-void ConfigDlg::mail_changed(const QString &dev) {
+void 
+ConfigDlg::mail_changed(const QString &dev) {
 
   configdata.mailcmd = dev;
-}
+} // mail_changed
 
-void ConfigDlg::ttclicked(){
+void 
+ConfigDlg::ttclicked(){
 
   if(ttcheckbox->isChecked())
     configdata.tooltips = TRUE;
   else
     configdata.tooltips = FALSE;
+} // ttclicked
 
-}
-
-void ConfigDlg::dockclicked(){
+void 
+ConfigDlg::dockclicked(){
 
     if(dockcheckbox->isChecked()){
         configdata.docking = TRUE;
     }else{
         configdata.docking = FALSE;
     }
-}
+} // dockclicked
 
-void ConfigDlg::autoPlayClicked(){
+void 
+ConfigDlg::autoPlayClicked(){
     if(cdAutoPlayCB->isChecked())
         configdata.autoplay = TRUE;
     else
         configdata.autoplay = FALSE;
-}
+} // autoPlayClicked
 
 
-void ConfigDlg::stopOnExitClicked()
+void 
+ConfigDlg::stopOnExitClicked()
 {
     if(stopOnExitCB->isChecked())
         configdata.stopexit = TRUE;
     else
         configdata.stopexit = FALSE;
-}
+} // stopOnExitClicked
 
-void ConfigDlg::ejectOnFinishClicked()
+void 
+ConfigDlg::ejectOnFinishClicked()
 {
     if(ejectOnFinishCB->isChecked())
         configdata.ejectonfinish = TRUE;
     else
         configdata.ejectonfinish = FALSE;
-}
+} // ejectOnFinishClicked
 
 void 
 ConfigDlg::help()
 {
     kapp->invokeHTMLHelp("kscd/kscd.html","");
-}
+} // help
 
 void 
 ConfigDlg::cancelbutton() 
