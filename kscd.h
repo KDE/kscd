@@ -82,11 +82,11 @@
 #include "prefs.h"
 #include "configWidget.h"
 #include <kapplication.h>
+#include <kconfigdialog.h>
 #include <kprocess.h>
 #include <krandomsequence.h>
 #include <dcopobject.h>
 
-class ConfigDlg;
 class CDDBDlg;
 class DockWidget;
 class QGridLayout;
@@ -233,8 +233,9 @@ protected:
     void updatePlayPB(bool playing);
 
     void updateConfigDialog(configWidget* widget);
+
 private:
-    ConfigDlg       *configDialog;
+    KConfigDialog   *configDialog;
     CDDBDlg         *cddialog;
     QPopupMenu      *mainPopup;
     QPopupMenu      *infoPopup;

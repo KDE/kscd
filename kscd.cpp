@@ -764,7 +764,7 @@ void KSCD::showConfig()
         return;
     }
 
-    KConfigDialog* configDialog = new KConfigDialog(this, "settings", Prefs::self());
+    configDialog = new KConfigDialog(this, "settings", Prefs::self());
 
     configDialog->setHelp(QString::null);
 
@@ -797,7 +797,7 @@ void KSCD::showConfig()
     connect(configDialog, SIGNAL(settingsChanged()), confWidget, SLOT(configDone()));
     connect(configDialog, SIGNAL(settingsChanged()), this, SLOT(configDone()));
     configDialog -> show();
-} // aboutClicked()
+} // showConfig()
 
 void KSCD::configDone()
 {
@@ -817,7 +817,6 @@ void KSCD::configureKeys()
 void KSCD::setDevicePaths()
 {
     cddrive_is_ok = false;
-
     int ret = wm_cd_init(
 #if defined(BUILD_CDDA)
         (Prefs::digitalPlayback())?WM_CDDA:WM_CDIN,
@@ -842,7 +841,7 @@ void KSCD::setDevicePaths()
     clearSongList();
     cddrive_is_ok = true;
     initCDROM();
-} // setDevicePath(QString)
+} // setDevicePath()
 
 void KSCD::setDocking(bool dock)
 {
