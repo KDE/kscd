@@ -80,6 +80,7 @@
 #include "ledlamp.h"
 #include "panel.h"
 #include "prefs.h"
+#include "configWidget.h"
 #include <kapplication.h>
 #include <kprocess.h>
 #include <krandomsequence.h>
@@ -148,7 +149,7 @@ public:
 
     void setDocking(bool dock);
     bool digitalPlayback();
-    void setDevicePaths(QString cd_device, QString audio_system, QString audio_device);
+    void setDevicePaths();
     QStringList audioSystems() { return audio_systems_list; }
 
     KActionCollection* actionCollection() { return m_actions; }
@@ -231,6 +232,7 @@ protected:
     void populateSongList();
     void updatePlayPB(bool playing);
 
+    void updateConfigDialog(configWidget* widget);
 private:
     ConfigDlg       *configDialog;
     CDDBDlg        *cddialog;

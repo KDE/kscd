@@ -141,7 +141,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   setColors();
 
   /* debug
-   wm_cd_set_verbosity(255);
+   wm_cd_set_verbosity(0xff);
   */
 
   // the time slider
@@ -157,7 +157,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect(volumeSlider, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
 
   /* FIXME check for return value */
-  setDevicePaths(Prefs::cdDevice(), Prefs::audioSystem(), Prefs::audioDevice());
+  setDevicePaths(/*Prefs::cdDevice(), Prefs::audioSystem(), Prefs::audioDevice()*/);
 
   connect( &queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
@@ -245,6 +245,7 @@ bool KSCD::digitalPlayback() {
  */
 void KSCD::initCDROM()
 {
+  have_new_cd = true;
   cdMode();
   //populateSongList();
 
@@ -459,6 +460,7 @@ void KSCD::playClicked()
 
         if(Prefs::randomPlay())
         {
+            make_random_list();
             // next clicked handles updating the play button, etc.
             nextClicked();
             return;
@@ -798,16 +800,36 @@ void KSCD::trackSelected( int cb_index )
     wm_cd_play(track, 0, WM_ENDTRACK);
 } // trackSelected
 
+void KSCD::updateConfigDialog(configWidget* widget)
+{
+    if(!widget)
+        return;
+    
+    static QString originalTitleOfGroupBox = widget->groupBox3->title();
+    int status = wm_cd_status();
+    if(WM_CDS_DISC_PLAYING(status)) {
+        widget->groupBox3->setEnabled(false);
+        widget->groupBox3->setTitle( i18n( "You must stop playing before change this" ) );
+    } else {
+        widget->groupBox3->setEnabled(true);
+        widget->groupBox3->setTitle(originalTitleOfGroupBox);
+    }            
+}
+
 void KSCD::showConfig()
 {
-    if (KConfigDialog::showDialog("settings"))
+    static configWidget* confWidget = 0;
+    
+    if (KConfigDialog::showDialog("settings")) {
+        updateConfigDialog(confWidget);
         return;
+    }
 
     KConfigDialog* configDialog = new KConfigDialog(this, "settings", Prefs::self());
 
     configDialog->setHelp(QString::null);
 
-    configWidget* confWidget = new configWidget(this, 0, "Kscd");
+    confWidget = new configWidget(this, 0, "Kscd");
 
     // kscd config page
     configDialog -> addPage(confWidget, i18n("CD Player"), "kscd", i18n("Settings & Behavior"));
@@ -830,6 +852,8 @@ void KSCD::showConfig()
             }
         }
     }
+    
+    updateConfigDialog(confWidget);
 
     connect(configDialog, SIGNAL(settingsChanged()), confWidget, SLOT(configDone()));
     connect(configDialog, SIGNAL(settingsChanged()), this, SLOT(configDone()));
@@ -841,15 +865,7 @@ void KSCD::configDone()
     setColors();
     setDocking(Prefs::docking());
 
-    if(Prefs::digitalPlayback())
-    {
-        setDevicePaths(Prefs::cdDevice(), Prefs::audioSystem(), Prefs::audioDevice());
-    }
-    else
-    {
-        setDevicePaths(Prefs::cdDevice(), QString(""), QString(""));
-    }
-
+    setDevicePaths();
     // dialog deletes itself
     configDialog = 0L;
 }
@@ -859,32 +875,25 @@ void KSCD::configureKeys()
     KKeyDialog::configure(m_actions, this);
 }
 
-void KSCD::setDevicePaths(QString cd_device, QString audio_system, QString audio_device)
+void KSCD::setDevicePaths()
 {
-    static bool first_init = true;
-    if(first_init) {
-        first_init = false;
-    } else if (Prefs::cdDevice() == cd_device &&
-        Prefs::audioSystem() == audio_system &&
-        Prefs::audioDevice() == audio_device)
-    {
-        return;
-    }
-
     cddrive_is_ok = false;
-    Prefs::setCdDevice(cd_device);
-    Prefs::setAudioSystem(audio_system);
-    Prefs::setAudioDevice(audio_device);
-
+ 
     int ret = wm_cd_init(
 #if defined(BUILD_CDDA)
-        Prefs::audioSystem().isEmpty()?WM_CDIN:WM_CDDA,
-        QFile::encodeName(Prefs::cdDevice()), Prefs::audioSystem().ascii(), Prefs::audioDevice().ascii(), 0);
-    kdDebug(67000) << "Device changed to " << Prefs::cdDevice() << ", " << Prefs::audioSystem()
-        << ", " << Prefs::audioDevice() << ". return " << ret << "\n";
+        (Prefs::digitalPlayback())?WM_CDDA:WM_CDIN,
+        QFile::encodeName(Prefs::cdDevice()),
+        (Prefs::digitalPlayback())?Prefs::audioSystem().ascii():"",
+        (Prefs::digitalPlayback())?Prefs::audioDevice().ascii():"",
+        0);
+    kdDebug(67000) << "Device changed to "
+        << ((Prefs::digitalPlayback())?"WM_CDDA, ":"WM_CDIN, ")
+        << Prefs::cdDevice() << ", "
+        << ((Prefs::digitalPlayback())?Prefs::audioSystem():"") << ", "
+        << ((Prefs::digitalPlayback())?Prefs::audioDevice():"") << ". returns status " << ret << "\n";
 #else
         WM_CDIN, QFile::encodeName(Prefs::cdDevice()), 0, 0, 0);
-    kdDebug(67000) << "Device changed to " << Prefs::cdDevice() << ". return " << ret << "\n";
+    kdDebug(67000) << "Device changed to " << Prefs::cdDevice() << ". returns status  " << ret << "\n";
 #endif
 
     setArtist("");
