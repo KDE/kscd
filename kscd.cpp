@@ -1026,7 +1026,7 @@ KSCD::closeEvent( QCloseEvent *e )
     // we need to figure out if we were called by the system tray
     // to decide whether or not to actually quit or not =/
     // this behaviour of ksystemtray is, IMHO, very silly
-    QObject* caller = sender();
+    const QObject* caller = sender();
     while (caller)
     {
         if (caller == dock_widget)
