@@ -536,7 +536,7 @@ void KSCD::stopClicked()
 void KSCD::prevClicked()
 {
     int track = currentTrack();
-    
+
     if (Prefs::randomPlay()) {
         track = prev_randomtrack();
         if (track == N_TRACK_UNKNOW) {
@@ -562,7 +562,7 @@ void KSCD::prevClicked()
 bool KSCD::nextClicked()
 {
     int track = currentTrack();
-    
+
     if (Prefs::randomPlay()) {
         track = next_randomtrack();
         if(track == N_TRACK_UNKNOW) {
@@ -804,22 +804,22 @@ void KSCD::updateConfigDialog(configWidget* widget)
 {
     if(!widget)
         return;
-    
+
     static QString originalTitleOfGroupBox = widget->groupBox3->title();
     int status = wm_cd_status();
     if(WM_CDS_DISC_PLAYING(status)) {
         widget->groupBox3->setEnabled(false);
-        widget->groupBox3->setTitle( i18n( "You must stop playing before change this" ) );
+        widget->groupBox3->setTitle( i18n( "CD Drive (you must stop playing to change this)" ) );
     } else {
         widget->groupBox3->setEnabled(true);
         widget->groupBox3->setTitle(originalTitleOfGroupBox);
-    }            
+    }
 }
 
 void KSCD::showConfig()
 {
     static configWidget* confWidget = 0;
-    
+
     if (KConfigDialog::showDialog("settings")) {
         updateConfigDialog(confWidget);
         return;
@@ -852,7 +852,7 @@ void KSCD::showConfig()
             }
         }
     }
-    
+
     updateConfigDialog(confWidget);
 
     connect(configDialog, SIGNAL(settingsChanged()), confWidget, SLOT(configDone()));
@@ -878,7 +878,7 @@ void KSCD::configureKeys()
 void KSCD::setDevicePaths()
 {
     cddrive_is_ok = false;
- 
+
     int ret = wm_cd_init(
 #if defined(BUILD_CDDA)
         (Prefs::digitalPlayback())?WM_CDDA:WM_CDIN,
@@ -1153,15 +1153,15 @@ void KSCD::cdModeChanged()
         case WM_CDM_STOPPED:
             updatePlayPB(false);
             statuslabel->setText(i18n("Stopped"));
-            
+
             if (Prefs::ejectOnFinish() && !stoppedByUser)
             {
                 ejectClicked();
                 break;
             }
-            
+
             /* reset to initial value, only stopclicked() sets this to true */
-            stoppedByUser = false;                     
+            stoppedByUser = false;
 
             updateDisplayedTrack(N_TRACK_UNKNOW);
             break;
@@ -1335,7 +1335,7 @@ void KSCD::get_cddb_info(bool /*_updateDialog*/)
     tracktitlelist.clear();
     tracktitlelist.append(i18n("start freedb lookup."));
     populateSongList();
-    
+
     for(int i = 0 ; i < wm_cd_getcountoftracks(); i++)
     {
         querylist << cd->trk[i].start;
@@ -1392,12 +1392,12 @@ void KSCD::cdtext(struct cdtext_info* p_cdtext)
     //songListCB->clear();
     tracktitlelist.clear();
     extlist.clear();
-    
+
     tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(p_cdtext->blocks[0]->name[0]),
         (const char*)(p_cdtext->blocks[0]->performer[0])));
     //titlelabel->setText(QString((const char*)(p_cdtext->blocks[0]->name[1])));
     //artistlabel->setText(tracktitlelist.first());
-    
+
 
     // if it's a sampler, we'll do artist/title
     bool isSampler = (qstricmp(reinterpret_cast<char*>(p_cdtext->blocks[0]->performer[0]), "various") == 0);
@@ -1425,7 +1425,7 @@ void KSCD::cddb_no_info()
 {
     struct cdtext_info* cdtext_i;
     kdDebug(67000) << "cddb_no_info() called\n" << endl;
-    
+
     tracktitlelist.clear();
     extlist.clear();
     tracktitlelist.append(i18n("No matching freedb entry found."));
@@ -1447,7 +1447,7 @@ void KSCD::cddb_failed()
     // failed and those where we just couldn't find anything
     //        cddb_ready_bug = 0;
     kdDebug(67000) << "cddb_failed() called\n" << endl;
-    
+
     tracktitlelist.clear();
     extlist.clear();
     tracktitlelist.append(i18n("Error getting freedb entry."));
@@ -1566,7 +1566,7 @@ void KSCD::setTitle(int track)
             title = i18n("<Unknown>");
         else
             title = *tracktitlelist.at(track);
-    
+
         titlelabel->setText(title);
         tooltip += KStringHandler::rsqueeze(title, 30);
     }
