@@ -926,7 +926,7 @@ void KSCD::ejectClicked(){
 
         stop_cd();
         //  timer->stop();
-        eject_cd(1);
+        eject_cd();
     }else{
         cd_close();
         cd_status();
@@ -2357,7 +2357,6 @@ void KSCD::startBrowser(const QString &querystring){
 void KSCD::get_pathlist(QStrList& _pathlist){
 
     QDir d;
-    QStrList list;
     InexactDialog *dialog;
 
     d.setFilter( QDir::Dirs);
@@ -2383,11 +2382,11 @@ void KSCD::get_pathlist(QStrList& _pathlist){
       return;
 
     _pathlist.clear();
-    list = *d.entryList();
-
-    for(uint i = 0; i < list.count(); i++){
-        if(QString(list.at(i)) != QString (".") && QString(list.at(i)) != QString (".."))
-            _pathlist.append( QString (cddbbasedir + "/" +  list.at(i)));
+    QStringList list = d.entryList();
+    QStringList::Iterator it;
+    for(it = list.begin(); it != list.end(); it++){
+        if (*it!= "." && *it != "..")
+            _pathlist.append( QString (cddbbasedir + "/" +  *it));
 
     }
 }

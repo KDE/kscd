@@ -28,13 +28,14 @@
 
 
 #include "mgconfdlg.h"
+#include <klocale.h>
 
 
 extern KApplication *mykapp;
 
 
-MGConfigDlg::MGConfigDlg(QWidget *parent=0, 
-			 struct mgconfigstruct *data = 0,const char *name=0)
+MGConfigDlg::MGConfigDlg(QWidget *parent, 
+			 struct mgconfigstruct *data,const char *name)
   : QDialog(parent, name)
 {
 

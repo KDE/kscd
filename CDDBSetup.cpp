@@ -12,6 +12,7 @@
 #include <qvalidator.h> 
 #include <limits.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 extern KApplication 	*mykapp;
 

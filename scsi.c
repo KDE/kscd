@@ -210,7 +210,7 @@ wm_scsi_get_drive_type(d, vendor, model, rev)
 		t = model;
 		while (*s == ' ' || *s == '\t')
 			s++;
-		while (*t++ = *s++)
+		while ((*t++ = *s++) != 0)
 			;
 	}
 

@@ -28,6 +28,7 @@
 #include <kapp.h>
 
 #include "docking.h"
+#include <klocale.h>
 
 
 extern KApplication *mykapp;

@@ -83,7 +83,7 @@ insert_trackinfo(num)
 	struct trackinfo *newtrk;
 
 	/* Easy case: the list is empty */
-	if (cd->trk == NULL)
+	if (cd->trk == NULL) {
 		if ((cd->trk = (struct trackinfo *) calloc(1,
 						sizeof(*newtrk))) == NULL)
 		{
@@ -93,6 +93,7 @@ nomem:
 		}
 		else
 			return;
+	}
 
 	/* Stick the new entry in cd->trk[]. */
 	if ((newtrk = (struct trackinfo *) malloc(sizeof(*newtrk) *

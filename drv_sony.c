@@ -38,6 +38,9 @@ static int	sony_init(), sony_set_volume(), sony_get_volume();
 
 extern int	min_volume, max_volume;
 
+extern int wm_scsi_mode_sense(struct wm_drive *d, unsigned char page, 
+			      unsigned char *buf);
+
 struct wm_drive sony_proto = {
 	-1,			/* fd */
 	"Sony",			/* vendor */

@@ -61,7 +61,7 @@ int	max_volume = MAX_VOLUME;
 
 #define max(a,b) ((a) > (b) ? (a) : (b))
 
-
+extern int wm_scsi(), wmcd_open();
 void *malloc();
 
 extern char	*cd_device;
@@ -426,7 +426,7 @@ keep_cd_open()
 {
 	int	fd;
 	struct flock	fl;
-	extern	end;
+	extern	int end;
 
 	for (fd = 0; fd < 256; fd++)
 		close(fd);

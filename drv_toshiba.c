@@ -37,6 +37,23 @@
 static int	tosh_init(), tosh_eject(), tosh_set_volume(), tosh_get_volume();
 int		wm_scsi2_get_volume(), wm_scsi2_set_volume();
 
+extern int sendscsi(struct wm_drive *d,
+		    void *buf,
+		    unsigned int    len, 
+		    int             dir,
+		    unsigned char   a0, 
+		    unsigned char a1, 
+		    unsigned char a2, 
+		    unsigned char a3, 
+		    unsigned char a4, 
+		    unsigned char a5, 
+		    unsigned char a6, 
+		    unsigned char a7, 
+		    unsigned char a8, 
+		    unsigned char a9, 
+		    unsigned char a10, 
+		    unsigned char a11);
+
 struct wm_drive toshiba_proto = {
 	-1,			/* fd */
 	"Toshiba",		/* vendor */
@@ -79,7 +96,7 @@ static int
 tosh_eject(d)
 	struct wm_drive *d;
 {
-	return (sendscsi(d, NULL, 0, 0, SCMD_TOSH_EJECT, 1, 0,0,0,0,0,0,0,0));
+	return (sendscsi(d, NULL, 0, 0, SCMD_TOSH_EJECT, 1, 0,0,0,0,0,0,0,0,0,0));
 }
 
 /*

@@ -41,6 +41,7 @@ struct drivelist {
 void *malloc();
 void strmcpy(char **t, char *s);
 int susleep(int usec);
+extern int wm_scsi(), wmcd_open();
 
 extern struct play *playlist;
 extern struct cdinfo_wm thiscd, *cd;
@@ -374,11 +375,12 @@ cd_status()
 		  status = wmcd_open( &drive, 1 );
 		} while ( status != 0 );
 #endif
-		if ((cd = read_toc()) == NULL)
+		if ((cd = read_toc()) == NULL) {
 			if (exit_on_eject)
 				exit(-1);
 			else
 				return (-1);
+		}
 
 		cur_nsections = 0;
 		cur_ntracks = cd->ntracks;
@@ -612,11 +614,12 @@ int eject_cd()
 	int	status;
 
 	status = (drive.eject)(&drive);
-	if (status < 0)
+	if (status < 0) {
 	  if (status == -3)
 	    return (2);
 	  else
 	    return (1);
+	}
 	
 	if (exit_on_eject)
 	  exit(0);
