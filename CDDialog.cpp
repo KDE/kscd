@@ -278,7 +278,7 @@ CDDialog::extIB()
   dialog = new InexactDialog(0,"dialog",false);
   dialog->setTitle(i18n("Use this editor to annotate this track."));
 
-  dialog->insertText(*ext_list.at(iNr + 1));
+  dialog->insertText(*ext_list.at(iNr));
 
   if(dialog->exec() != QDialog::Accepted)
     {
@@ -289,7 +289,7 @@ CDDialog::extIB()
   QString text;
   dialog->getSelection(text);
 
-  *ext_list.at(iNr + 1) = text;
+  *ext_list.at(iNr) = text;
 
   delete dialog;
 } // extIB
