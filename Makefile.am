@@ -46,7 +46,7 @@ TARGET3 = kscdmagic
 config.h: kscd-script 
 	$(SHELL) $(srcdir)/kscd-script
 
-SUBDIRS = docs kscdmagic bitmaps sbpcdhack
+SUBDIRS = kscdmagic bitmaps sbpcdhack
 
 CDDB_DIRS = rock blues classical jazz newage soundtrack \
 	reggae folk country misc data
