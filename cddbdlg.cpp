@@ -12,6 +12,7 @@
 #include <klineedit.h>
 #include <knuminput.h>
 
+#include <kglobal.h>
 #include <kapplication.h>
 #include <kdebug.h>
 #include <kinputdialog.h>
@@ -36,6 +37,8 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
     : KDialogBase( parent, name, false, i18n( "CD Editor" ),
       Ok|Cancel|User1|User2, Ok, true )
 {
+  KGlobal::locale()->insertCatalogue("libkcddb");
+
   m_dlgBase = new CDInfoDialogBase( this, "m_dlgBase" );
 
   setMainWidget( m_dlgBase );
