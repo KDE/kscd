@@ -1108,15 +1108,19 @@ void KSCD::lookupCDDB()
 
     // FIXME Should be enabled again when it doesn't go into an infinite loop
     // when the disc is played and no entry is found
-    // cddb->lookup(m_cd->cddbSignature());
+//    QValueList<unsigned> messedUp = m_cd->cddbSignature();
+//    messedUp.append(0);
+//    cddb->lookup(messedUp);
+//    cddb->lookup(m_cd->cddbSignature());
 } // lookupCDDB
 
 void KSCD::lookupCDDBDone(CDDB::Result result)
 {
+    led_off();
     if ((result != KCDDB::CDDB::Success) &&
         (result != KCDDB::CDDB::MultipleRecordFound))
     {
-        cddb_failed(result);
+        populateSongList(result == CDDB::NoRecordFound ? i18n("No matching freedb entry found.") : i18n("Error getting freedb entry."));
         return;
     }
 
@@ -1181,20 +1185,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
     // In case the cddb dialog is open, update it
     if (cddialog)
       cddialog->setData(cddbInfo, m_cd->cddbSignature(), playlist);
-
-    led_off();
 } // lookupCDDBDone
-
-void KSCD::cddb_failed(CDDB::Result result)
-{
-    kdDebug(67000) << k_funcinfo << endl;
-
-    cddbInfo.clear();
-
-    populateSongList(result == CDDB::NoRecordFound ? i18n("No matching freedb entry found.") : i18n("Error getting freedb entry."));
-
-    led_off();
-} // cddb_failed
 
 void KSCD::led_off()
 {
@@ -1203,7 +1194,6 @@ void KSCD::led_off()
     queryled->hide();
     totaltimelabel->raise();
     totaltimelabel->show();
-
 } // led_off
 
 void KSCD::led_on()

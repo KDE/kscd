@@ -221,25 +221,19 @@ private:
      */
     KCDDB::CDInfo cddbInfo;
     QStringList     playlist;
-
-// cddb support
-public slots:
-    void cddb_failed(CDDB::Result);
-    void CDDialogSelected();
-    void CDDialogDone();
-    void lookupCDDB();
-    void lookupCDDBDone(CDDB::Result);
-
-private:
-    void lookupDevice();
-
-private:
     KCDDB::Client*  cddb;
     KActionCollection* m_actions;
     KToggleAction* m_togglePopupsAction;
     KVolumeControl* m_volume;
     DockWidget* m_dockWidget;
+    void lookupDevice();
+public slots:
+    void lookupCDDB();
+
 private slots:
+    void CDDialogSelected();
+    void CDDialogDone();
+    void lookupCDDBDone(CDDB::Result);
     void discStopped();
     void trackUpdate(unsigned track, unsigned trackPosition);
     void trackChanged(unsigned track, unsigned trackLength);
