@@ -29,7 +29,7 @@ fi
 ], use_kscd_defaults="yes"
 )
 
-AC_DEFUN(KDE_COPY_KSCD_DEFAULTS,
+AC_DEFUN([KDE_COPY_KSCD_DEFAULTS],
 [
 if echo $TOPSUBDIRS | grep "kscd" > /dev/null 2> /dev/null; then
   if test "$use_kscd_defaults" = "yes"; then
