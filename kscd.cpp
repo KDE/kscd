@@ -638,15 +638,18 @@ KSCD::setupPopups()
 
     perfPopup->insertItem("Tourdates.com", 0);
 
-    infoPopup->insertItem("Ultimate Bandlist", 0);
+    infoPopup->insertItem("MusicMoz", 0);
+    infoPopup->insertItem("Ultimate Bandlist", 1);
     infoPopup->insertSeparator();
-    infoPopup->insertItem("Deja News", 1);
-    infoPopup->insertItem("Excite", 2);
-    infoPopup->insertItem("HotBot", 3);
-    infoPopup->insertItem("Info Seek", 4);
-    infoPopup->insertItem("Lycos", 5);
-    infoPopup->insertItem("Magellan", 6);
-    infoPopup->insertItem("Yahoo!", 7);
+    infoPopup->insertItem("AlltheWeb", 2);
+    infoPopup->insertItem("Altavista", 3);
+    infoPopup->insertItem("Excite", 4);
+    infoPopup->insertItem("Google", 5);
+    infoPopup->insertItem("Google Groups", 6);
+    infoPopup->insertItem("HotBot", 7);
+    infoPopup->insertItem("Lycos", 8);
+    infoPopup->insertItem("Open Directory", 9);
+    infoPopup->insertItem("Yahoo!", 10);
 
     mainPopup->insertItem (i18n("Purchases"), purchPopup);
     connect( purchPopup, SIGNAL(activated(int)), SLOT(purchases(int)) );
@@ -2417,7 +2420,6 @@ KSCD::getArtist(QString& artist)
 
     artist = artist.stripWhiteSpace();
     return true;
-
 } // getArtist
 
 void
@@ -2430,22 +2432,20 @@ KSCD::performances(int i)
     if(!getArtist(artist))
         return;
 
-    // primitive incomplete http encoding TODO fix!
-    artist = artist.replace( QRegExp(" "), "+" );
+    artist = KURL::encode_string_no_slash(artist);
 
     switch(i){
         case 0:
-            str =
-                QString("http://www.tourdates.com/cgi-bin/search.cgi?type=Artist&search=%1")
-                .arg(artist);
-            startBrowser(str);
-
+            str = QString("http://www.tourdates.com/cgi-bin/search.cgi?type=Artist&search=%1")
+                  .arg(artist);
             break;
 
         default:
+            return;
             break;
     }
 
+    KRun::runURL(str, "text/html");
 } // performances
 
 void
@@ -2459,29 +2459,24 @@ KSCD::purchases(int i)
     if(!getArtist(artist))
         return;
 
-    // primitive incomplete http encoding TODO fix!
-    artist = artist.replace( QRegExp(" "), "+" );
+    artist = KURL::encode_string_no_slash(artist);
 
     switch(i){
         case 0:
-            str =
-                QString("http://cdnow.com/switch/from=sr-288025/target=buyweb_products/artfs=%1")
-                .arg(artist);
-            startBrowser(str);
-
+            str = QString("http://cdnow.com/switch/from=sr-288025/target=buyweb_products/artfs=%1")
+                  .arg(artist);
             break;
         case 1:
-            str =
-                QString("http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1")
-                .arg(artist);
-            startBrowser(str);
-
+            str = QString("http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1")
+                  .arg(artist);
             break;
 
         default:
+            return;
             break;
     }
 
+    KRun::runURL(str, "text/html");
 } // purchases
 
 void
@@ -2495,82 +2490,72 @@ KSCD::information(int i)
     if(!getArtist(artist))
         return;
 
-    // primitive incomplete http encoding TODO fix!
-    artist = artist.replace( QRegExp(" "), "+" );
+    artist = KURL::encode_string_no_slash(artist);
 
     switch(i)
     {
         case 0:
-            str =
-                QString("http://ubl.artistdirect.com/cgi-bin/gx.cgi/AppLogic+Search?select=MusicArtist&searchstr=%1&searchtype=NormalSearch")
+            str = QString("http://musicmoz.org/cgi-bin/ext.cgi?artist=%1")
+                   .arg(artist);
+            break;
+
+         case 1:
+            str = QString("http://ubl.artistdirect.com/cgi-bin/gx.cgi/AppLogic+Search?select=MusicArtist&searchstr=%1&searchtype=NormalSearch")
                 .arg(artist);
-            startBrowser(str);
             break;
 
         case 2:
-            str =
-                QString("http://x8.dejanews.com/dnquery.xp?QRY=%1&defaultOp=AND&svcclass=dncurrent&maxhits=20&ST=QS&format=terse&DBS=2")
-                .arg(artist);
-            startBrowser(str);
+            str = QString("http://www.alltheweb.com/search?cat=web&q=%1")
+                    .arg(artist);
             break;
 
         case 3:
-            str =
-                QString("http://www.excite.com/search.gw?c=web&search=%1&trace=a")
-                .arg(artist);
-            startBrowser(str);
+            str = QString("http://altavista.com/web/results?q=%1&kgs=0&kls=1&avkw=xytx")
+                  .arg(artist);
             break;
 
         case 4:
-            str =
-                QString("http://www.search.hotbot.com/hResult.html?SW=web&SM=MC&MT=%1&DC=10&DE=2&RG=NA&_v=2")
-                .arg(artist);
-            startBrowser(str);
+            str = QString("http://msxml.excite.com/_1_2UDOUB70SVHVHR__info.xcite/dog/results?otmpl=dog/webresults.htm&qkw=%1&qcat=web&qk=20&top=1&start=&ver=14060")
+                  .arg(artist);
             break;
 
         case 5:
-            str =
-                QString("http://www.infoseek.com/Titles?qt=%1&col=WW&sv=IS&lk=ip-noframes&nh=10")
-                .arg(artist);
-            startBrowser(str);
+            str = QString("http://www.google.com/search?q=%1")
+                  .arg(artist);
             break;
 
         case 6:
-            str =
-                QString("http://www.lycos.com/cgi-bin/pursuit?cat=lycos&query=%1")
-                .arg(artist);
-            startBrowser(str);
+            str = QString("http://groups.google.com/groups?oi=djq&as_q=%1&num=20")
+                  .arg(artist);
             break;
 
         case 7:
-            str =
-                QString("http://www.mckinley.com/search.gw?search=%1&c=web&look=magellan")
-                .arg(artist);
-            startBrowser(str);
+            str = QString("http://www.hotbot.com/default.asp?prov=Inktomi&query=%1&ps=&loc=searchbox&tab=web")
+                  .arg(artist);
             break;
 
         case 8:
-            str =
-                QString("http://search.yahoo.com/bin/search?p=%1")
-                .arg(artist);
-            startBrowser(str);
-            break;
+            str = QString("http://search.lycos.com/default.asp?lpv=1&loc=searchhp&tab=web&query=%1")
+                  .arg(artist);
+             break;
 
-        default:
+         case 9:
+             str = QString("http://search.dmoz.org/cgi-bin/search?search=%1")
+                   .arg(artist);
+             break;
+
+         case 10:
+             str = QString("http://search.yahoo.com/bin/search?p=%1")
+                   .arg(artist);
+             break;
+
+         default:
+            return;
             break;
     } // switch()
+
+    KRun::runURL(str, "text/html");
 } // information
-
-/**
- * Open an URL with the user's favourite browser.
- *
- */
-void
-KSCD::startBrowser(const QString &querystring)
-{
-    (void) new KRun (querystring);
-} //startBrowser
-
 
 void
 KSCD::get_pathlist(QStringList& _pathlist)

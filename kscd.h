@@ -225,7 +225,6 @@ protected:
     bool event( QEvent *e );
     //    void focusOutEvent(QFocusEvent *e);
     void playtime();
-    void startBrowser(const QString& querystring);
     bool getArtist(QString& artist);
     void get_pathlist(QStringList& _patlist);
 
