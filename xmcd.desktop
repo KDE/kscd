@@ -1,6 +1,5 @@
 [Desktop Entry]
 Comment=CD Database File
-Comment[af]=CD DATABASIS LêER
 Comment[az]=CD Databeyzi Faylı
 Comment[bg]=CD файл с базата данни 
 Comment[br]=Restr stlennvon CD
@@ -45,8 +44,8 @@ Comment[ta]=º¢Ê ¾Ã×ò¾Çì §¸¡ôÒ
 Comment[tr]=CD Veritabanı Dosyası
 Comment[uk]=Файл бази даних CD
 Comment[vi]=File cơ sềEdữ liệu của CD 
+Comment[xh]=Ifayile yesiseko sedata ye CD
 Comment[zh_CN.GB2312]=CD 数据库文件
-Comment[zh_TW.Big5]=CD 資料庫檔案
 DefaultApp=kedit
 Icon=cdtrack
 Type=MimeType
