@@ -42,16 +42,6 @@ static char *ident = "@(#)plat_freebsd.c	1.2 2/20/95";
 #include <sys/ioctl.h>
 #include <sys/cdio.h>
 
-#ifdef __NetBSD__
-
-#define MSF_MINUTES 1
-#define MSF_SECONDS 2
-#define MSF_FRAMES 3
-
-#include "/sys/scsi/scsi_all.h"
-#include "/sys/scsi/scsi_cd.h"
-#endif
-
 #include "struct.h"
 
 #ifndef DEFAULT_CD_DEVICE
@@ -112,17 +102,9 @@ gen_get_trackinfocddb(d, track, min, sec, frm)
 	if (ioctl(d->fd, CDIOREADTOCENTRYS, &toc))
 		return (-1);
 
-
-#ifdef __NetBSD__
-	*min = toc_buffer.addr[MSF_MINUTES];
-	*sec = toc_buffer.addr[MSF_SECONDS];
-	*frm = toc_buffer.addr[MSF_FRAMES];
-#else
 	*min = toc_buffer.addr.msf.minute;
 	*sec = toc_buffer.addr.msf.second;
 	*frm = toc_buffer.addr.msf.frame;
-#endif
-
 	
 	return (0);
 }
@@ -151,15 +133,9 @@ gen_get_trackinfo(d, track, data, startframe)
 
 	*data = ((toc_buffer.control & 0x4) != 0);
 
-#ifdef __NetBSD__
-	*startframe = toc_buffer.addr[MSF_MINUTES]*60*75 +
-		toc_buffer.addr[MSF_SECONDS] * 75 +
-		toc_buffer.addr[MSF_FRAMES];
-#else
 	*startframe = toc_buffer.addr.msf.minute*60*75 +
 		toc_buffer.addr.msf.second * 75 +
 		toc_buffer.addr.msf.frame;
-#endif
 
 	return (0);
 }
@@ -227,15 +203,9 @@ gen_get_drive_status(d, oldmode, mode, pos, track, index)
 	case CD_AS_PLAY_IN_PROGRESS:
 		*mode = PLAYING;
 dopos:
-#ifdef __NetBSD__
-		*pos = scd.what.position.absaddr[MSF_MINUTES] * 60 * 75 +
-			scd.what.position.absaddr[MSF_SECONDS] * 75 +
-			scd.what.position.absaddr[MSF_FRAMES];
-#else
 		*pos = scd.what.position.absaddr.msf.minute * 60 * 75 +
 			scd.what.position.absaddr.msf.second * 75 +
 			scd.what.position.absaddr.msf.frame;
-#endif
 		*track = scd.what.position.track_number;
 		*index = scd.what.position.index_number;
 		break;
