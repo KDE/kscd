@@ -82,7 +82,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
     KService::Ptr libkcddb = KService::serviceByDesktopName("libkcddb");
     if (libkcddb && libkcddb->isValid())
     {
-        KCModuleInfo info(libkcddb->desktopEntryPath(), "settings");
+        KCModuleInfo info(libkcddb->desktopEntryPath());
         if (info.service()->isValid())
         {
             KCModule *m = KCModuleLoader::loadModule(info);
