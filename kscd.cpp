@@ -170,8 +170,8 @@ class KSCDSlider : public QSlider
 *****************************************************************************/
 
 KSCD::KSCD( QWidget *parent, const char *name )
-  : QWidget( parent, name, Qt::WDestructiveClose ),
-    DCOPObject("CDPlayer"),
+  : DCOPObject("CDPlayer"),
+    QWidget( parent, name, Qt::WDestructiveClose ),
     smtpConfigData(new SMTPConfigData),  //!!!!
     configDialog(0L),
     cddialog(0L),  //!!!!
@@ -210,8 +210,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect(cddb, SIGNAL(finished(CDDB::Result)),
           this, SLOT(cddb_done(CDDB::Result)));
 
-  audio_systems_list
 #if defined(BUILD_CDDA)
+  audio_systems_list
                      << "arts"
 #if defined(HAVE_ARTS_LIBASOUND2)
                      << "alsa"
@@ -219,8 +219,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
 #ifdef USE_SUN_AUDIO
                      << "sun"
 #endif
-#endif
   ;
+#endif
 
 
   readSettings();
@@ -2637,6 +2637,7 @@ void KSCD::emailSettingsChanged()
 void KSCD::clearSongList()
 {
     songListCB->clear();
+    QToolTip::remove(songListCB);
     QToolTip::add(songListCB, i18n("Track list"));
 }
 
@@ -2666,6 +2667,7 @@ void KSCD::setSongListTo(int whichTrack)
     QString justTheName = songListCB->currentText();
     justTheName = justTheName.right(justTheName.length() - 4);
 
+    QToolTip::remove(songListCB);
     QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
 }
 

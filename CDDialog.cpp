@@ -64,36 +64,35 @@ CDDialog::CDDialog
 	CDDialogData( parent, name )
 {
     cdinfo.magicID = 0;	/*cddb magic disk id BERND*/
-	cdinfo.ntracks = 0;	/* Number of tracks on the disc */
-	cdinfo.length  = 0;	/* Total running time in seconds */
-	cdinfo.cddbtoc = 0L;
+    cdinfo.ntracks = 0;	/* Number of tracks on the disc */
+    cdinfo.length  = 0;	/* Total running time in seconds */
+    cdinfo.cddbtoc = 0L;
 
-	connect(tracksList,     SIGNAL(selectionChanged(QListViewItem *)),this,SLOT(titleselected(QListViewItem *)));
-	connect(tracksList,     SIGNAL(selectionChanged(QListViewItem *)),this,SLOT(play(QListViewItem *)));
-	connect(trackEdit,   SIGNAL(textChanged( const QString & )) ,this,SLOT(trackchanged( const QString & )));
-	connect(trackEdit,   SIGNAL( returnPressed ()) ,this,SLOT(nextTrack()));
-	connect(ok_button, SIGNAL(clicked())       ,this,SLOT(save()));
-	connect(upload_button, SIGNAL(clicked())       ,this,SLOT(upload()));
-	connect(cancel_button, SIGNAL(clicked())       ,this,SLOT(cancel()));
-	connect(load_button, SIGNAL(clicked())       ,this,SLOT(load_cddb()));
-	connect(ext_info_title_button, SIGNAL(clicked()) ,this,SLOT(extITB()));
-	connect(ext_info_button, SIGNAL(clicked())       ,this,SLOT(extIB()));
-	connect(titleEdit,   SIGNAL(textChanged(const QString &)), this,SLOT(titlechanged()));
-	connect(artistEdit,   SIGNAL(textChanged(const QString &)), this,SLOT(titlechanged()));
-	ext_info_button->setEnabled(false);
+    connect(tracksList,     SIGNAL(selectionChanged(QListViewItem *)),this,SLOT(titleselected(QListViewItem *)));
+    connect(tracksList,     SIGNAL(selectionChanged(QListViewItem *)),this,SLOT(play(QListViewItem *)));
+    connect(trackEdit,   SIGNAL(textChanged( const QString & )) ,this,SLOT(trackchanged( const QString & )));
+    connect(trackEdit,   SIGNAL( returnPressed ()) ,this,SLOT(nextTrack()));
+    connect(ok_button, SIGNAL(clicked())       ,this,SLOT(save()));
+    connect(upload_button, SIGNAL(clicked())       ,this,SLOT(upload()));
+    connect(cancel_button, SIGNAL(clicked())       ,this,SLOT(cancel()));
+    connect(load_button, SIGNAL(clicked())       ,this,SLOT(load_cddb()));
+    connect(ext_info_title_button, SIGNAL(clicked()) ,this,SLOT(extITB()));
+    connect(ext_info_button, SIGNAL(clicked())       ,this,SLOT(extIB()));
+    connect(titleEdit,   SIGNAL(textChanged(const QString &)), this,SLOT(titlechanged()));
+    connect(artistEdit,   SIGNAL(textChanged(const QString &)), this,SLOT(titlechanged()));
+    ext_info_button->setEnabled(false);
 
-	catlist.append("rock");
-	catlist.append("classical");
-	catlist.append("jazz");
-	catlist.append("soundtrack");
-	catlist.append("newage");
-	catlist.append("blues");
-	catlist.append("folk");
-	catlist.append("country");
-	catlist.append("reggae");
-	catlist.append("misc");
-	catlist.append("data");
-
+    catlist.append("rock");
+    catlist.append("classical");
+    catlist.append("jazz");
+    catlist.append("soundtrack");
+    catlist.append("newage");
+    catlist.append("blues");
+    catlist.append("folk");
+    catlist.append("country");
+    catlist.append("reggae");
+    catlist.append("misc");
+    catlist.append("data");
 } // CDDialog
 
 
@@ -131,19 +130,19 @@ CDDialog::play(QListViewItem *item)
 
 void
 CDDialog::setData(
-		  struct wm_cdinfo *cd,
-		  QStringList& tracktitlelist,
-		  QStringList& extlist,
-		  QStringList& discidl,
-		  QString& _xmcd_data,
-		  QString& cat,
-		  int& rev,
-		  QStringList& _playlist,
-		  QStringList& _pathlist,
-		  QString& _cddbbasedir,
-		  QString& _submitaddress,
-		  SMTPConfigData *_smtpConfigData
-		  )
+        struct wm_cdinfo *cd,
+        QStringList& tracktitlelist,
+        QStringList& extlist,
+        QStringList& discidl,
+        QString& _xmcd_data,
+        QString& cat,
+        int& rev,
+        QStringList& _playlist,
+        QStringList& _pathlist,
+        QString& _cddbbasedir,
+        QString& _submitaddress,
+        SMTPConfigData *_smtpConfigData
+        )
 {
     int ntr;
 
@@ -240,23 +239,26 @@ CDDialog::setData(
 
     QString temp2;
     if(dl.hour() > 0)
-      temp2 = QString::fromUtf8( QCString().sprintf("%02d:%02d:%02d",dl.hour(),dl.minute(),dl.second()) );
+      temp2 = dl.toString("HH:MM:SS:");
     else
-      temp2 = QString::fromUtf8( QCString().sprintf("%02d:%02d",dl.minute(),dl.second()) );
+      temp2 = dl.toString("MM:SS");
     total_time_label->setText(temp2);
 
     QString 	fmt;
-    QTime 	dml;
 
     tracksList->clear();
 
     for(int i = 1; i <= cdinfo.ntracks; i++)
       {
-	dml = framestoTime(cdinfo.cddbtoc[i].absframe - cdinfo.cddbtoc[i-1].absframe);
+	dl = framestoTime(cdinfo.cddbtoc[i].absframe - cdinfo.cddbtoc[i-1].absframe);
 
         QListViewItem * item = new QListViewItem( tracksList, 0 );
         item->setText( 0, QString().sprintf("%02d",i) );
-        item->setText( 1, QString().sprintf("%02d:%02d",dml.minute(),dml.second()) );
+        if (dl.hour() > 0)
+            item->setText( 1, dl.toString("HH:MM:SS"));
+        else
+            item->setText( 1, dl.toString("MM:SS"));
+
 	if((ntr >=  i) && (ntr > 0))
             item->setText( 2,  *(track_list.at(i)));
       }
