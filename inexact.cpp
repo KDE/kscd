@@ -32,26 +32,32 @@
 
 #include "inexact.h"
 
+#include <qlayout.h>
+
+
 InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
   : QDialog(parent, name, TRUE)
 {
 
   setCaption("Kscd");
   
+  QBoxLayout * lay1 = new QVBoxLayout ( this, 10 );
+  text = new QLabel(this,"textlabel");
+  text->setAlignment(WordBreak|AlignCenter);
+  lay1->addWidget ( text );
+
   listbox = _listbox;
   if(listbox)
     {
       list_box = new QListBox(this,"debugwindow");
-      list_box->setGeometry(2,5,400, 300);
+      lay1->addWidget ( list_box );
       connect(list_box,SIGNAL(highlighted(int)),SLOT(setStatusBar(int)));
     } else {
       edit = new QMultiLineEdit(this,"debugwindow");
-      edit->setGeometry(2,5,400, 300);
-    }
+      lay1->addWidget ( edit );
+   }
   
   
-  text = new QLabel(this,"textlabel");
-  text->setAlignment(WordBreak|AlignCenter);
   
   text->setText(i18n("No exact match could be found. Please select the appropriate"\
 		     " CD from the list of choices presented below."));
@@ -59,32 +65,26 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
   errorstring = i18n("Please select a Disk Title or press Cancel");
   
   statuslabel = new QLabel( this, "statuslabel" );
-  
+  lay1->addWidget ( statuslabel );
   statuslabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
   statuslabel->setText( "" );
   statuslabel->setAlignment( AlignCenter );
-  statuslabel->setGeometry(2, 307, 400, 20);
   //statusPageLabel->setFont( QFont("helvetica",12,QFont::Normal) );
   
-  cancel_button = new QPushButton(this,"cancel_button");
-  cancel_button->setGeometry(330,340,70,30);
-  cancel_button->setText(i18n("Cancel"));
+  QBoxLayout * lay2 = new QHBoxLayout ( lay1 );
+  lay2->addStretch ( 1 );
+  ok_button = new QPushButton(i18n("OK"),this,"ok_button");
+  lay2->addWidget ( ok_button );
+  lay2->addStretch ( 1 );
+  cancel_button = new QPushButton(i18n("Cancel"),this,"cancel_button");
+  lay2->addWidget ( cancel_button );
+  lay2->addStretch ( 1 );
   cancel_button->setFocus();
-
-  ok_button = new QPushButton(this,"ok_button");
-  ok_button->setGeometry(250,340,70,30);
-  ok_button->setText(i18n("OK"));
-  //  ok_button->setFocus();
-
 
   connect(ok_button,SIGNAL(clicked()),SLOT(checkit()));
   connect(cancel_button,SIGNAL(clicked()),SLOT(reject()));
 
   returnstring = "";
-
-  adjustSize();
-  setMinimumSize(width(),height());
-  
 } // InexactDialog()
 
 

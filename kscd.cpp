@@ -24,6 +24,8 @@
 #include <qdir.h>
 #include <qregexp.h>
 
+#include <qlayout.h>
+
 #include <kcharsets.h>
 #include <kconfig.h>
 #include <klocale.h>
@@ -1052,14 +1054,17 @@ KSCD::aboutClicked()
     tabdialog->setCancelButton( i18n("Cancel") );
 
     QWidget *about = new QWidget(tabdialog,"about");
-
+    QBoxLayout * lay1 = new QVBoxLayout ( about, 10 );
     QGroupBox *box = new QGroupBox(about,"box");
-    QLabel  *label = new QLabel(box,"label");
+    lay1->addWidget ( box );
+    QBoxLayout * lay2 = new QHBoxLayout ( box, 15 );
 
-    box->setGeometry(10,10,520,420);
+    QPixmap pm = UserIcon("kscdlogo");
+    QLabel *logo = new QLabel(box);
+    logo->setPixmap(pm);
+    logo->setFixedSize(pm.width(), pm.height());
+    lay2->addWidget ( logo );
 
-    label->setGeometry(160,20,340,390);
-    label->setAlignment( AlignCenter);
     QString labelstring;
     labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
@@ -1086,13 +1091,10 @@ KSCD::aboutClicked()
         "for his work on the http proxy code.\n\n") ;
 
 
+    QLabel  *label = new QLabel(box,"label");
     label->setAlignment(AlignLeft|WordBreak|ExpandTabs);
     label->setText(labelstring);
-
-    QPixmap pm = UserIcon("kscdlogo");
-    QLabel *logo = new QLabel(box);
-    logo->setPixmap(pm);
-    logo->setGeometry(40, 50, pm.width(), pm.height());
+    lay2->addWidget ( label );
 
     ConfigDlg* dlg;
     struct configstruct config;

@@ -227,18 +227,18 @@ CDDialog::setData(
 
     QString idstr;
     idstr.sprintf("%08lx",cddb_discid());
-    idstr = category + '\n' + idstr;
+    idstr = category + "  " + idstr;
 
-    disc_id_label->setText(idstr);
+    disc_id_label->setText(idstr.stripWhiteSpace());
 
     QTime   dl;
     dl 	=  dl.addSecs(cdinfo.length);
 
     QString temp2;
     if(dl.hour() > 0)
-      temp2 = QString::fromUtf8( QCString().sprintf(i18n("Total Time:\n %02d:%02d:%02d").utf8(),dl.hour(),dl.minute(),dl.second()) );
+      temp2 = QString::fromUtf8( QCString().sprintf("%02d:%02d:%02d",dl.hour(),dl.minute(),dl.second()) );
     else
-      temp2 = QString::fromUtf8( QCString().sprintf(i18n("Total Time:\n %02d:%02d").utf8(),dl.minute(),dl.second()) );
+      temp2 = QString::fromUtf8( QCString().sprintf("%02d:%02d",dl.minute(),dl.second()) );
     total_time_label->setText(temp2);
 
     QString 	fmt;

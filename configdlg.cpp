@@ -29,10 +29,9 @@
 
 #include "configdlg.h"
 #include <klocale.h>
-#define XOFF 75
-#define YOFF 30
-//#define XOFF 0
-//#define YOFF 0
+
+#include <qlayout.h>
+#include <qfontmetrics.h>
 
 ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name)
   : QDialog(parent, name)
@@ -69,41 +68,45 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   configdata.randomonce = data->randomonce;
   setCaption(i18n("Configure kscd"));
 
+  QVBoxLayout * lay1 = new QVBoxLayout ( this, 10 );
   box = new QGroupBox(this, "box");
-  box->setGeometry(10,10,520,420);
+  lay1->addWidget ( box );
+  
+  QFontMetrics fm ( font() );
+  
+  QHBoxLayout * lay2 = new QHBoxLayout ( box, 10 );
+  QVBoxLayout * lay3 = new QVBoxLayout ( lay2 );
+  QGroupBox * cpbox = new QGroupBox ( i18n("Colors and paths"), box );
+  lay3->addWidget ( cpbox );
+  QGridLayout * cplay = new QGridLayout ( cpbox, 5, 3, 10 );
+  cplay->addRowSpacing ( 0, fm.lineSpacing() );
 
-  label1 = new QLabel(i18n("LED Color:"), this);
-  label1->setGeometry(20+XOFF,25+YOFF,135,25);
-  label1->setFixedSize( label1->sizeHint() );
-
-  qframe1 = new QFrame(this);
-  qframe1->setGeometry(155+XOFF,25+YOFF,30,25);
+  label1 = new QLabel(i18n("LED Color:"), cpbox);
+  cplay->addWidget ( label1, 1, 0 );
+  qframe1 = new QFrame(cpbox);
+  qframe1->setFixedSize(30,25);
+  cplay->addWidget ( qframe1, 1, 1, AlignLeft );
   qframe1->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   qframe1->setBackgroundColor(configdata.led_color);
-
-  button1 = new QPushButton(this);
-  button1->setGeometry(255+XOFF,25+YOFF,100,25);
-  button1->setText(i18n("Change"));
+  button1 = new QPushButton(i18n("Change"),cpbox);
+  cplay->addWidget ( button1, 1, 2 );
   connect(button1,SIGNAL(clicked()),this,SLOT(set_led_color()));
 
-  label2 = new QLabel(i18n("Background Color:"),this);
-  label2->setGeometry(20+XOFF,55+YOFF,135,25);
-
-  qframe2 = new QFrame(this);
-  qframe2->setGeometry(155+XOFF,55+YOFF,30,25);
+  label2 = new QLabel(i18n("Background Color:"),cpbox);
+  cplay->addWidget ( label2, 2, 0 );
+  qframe2 = new QFrame(cpbox);
+  qframe2->setFixedSize(30,25);
+  cplay->addWidget ( qframe2, 2, 1, AlignLeft );
   qframe2->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   qframe2->setBackgroundColor(configdata.background_color);
-
-  button2 = new QPushButton(this);
-  button2->setGeometry(255+XOFF,55+YOFF,100,25);
-  button2->setText(i18n("Change"));
+  button2 = new QPushButton(i18n("Change"),cpbox);
+  cplay->addWidget ( button2, 2, 2 );
   connect(button2,SIGNAL(clicked()),this,SLOT(set_background_color()));
 
-  label5 = new QLabel(i18n("CDROM Device:"), this);
-  label5->setGeometry(20+XOFF,85+YOFF,135,25);
-
-  cd_device_edit = new QLineEdit(this);
-  cd_device_edit->setGeometry(155+XOFF,85+YOFF,200,25);
+  label5 = new QLabel(i18n("CDROM Device:"), cpbox);
+  cplay->addWidget ( label5, 3, 0 );
+  cd_device_edit = new QLineEdit(cpbox);
+  cplay->addMultiCellWidget ( cd_device_edit, 3,3, 1,2 );
   cd_device_edit->setText(configdata.cd_device);
   connect(cd_device_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(device_changed(const QString &)));
@@ -115,70 +118,64 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 
 #endif
 
-  label6 = new QLabel(this);
-  label6->setGeometry(20+XOFF,115+YOFF,135,25);
-  label6->setText(i18n("Unix mail command:"));
-
-  mail_edit = new QLineEdit(this);
-  mail_edit->setGeometry(155+XOFF,115+YOFF,200,25);
+  label6 = new QLabel(i18n("Unix mail command:"),cpbox);
+  cplay->addWidget ( label6, 4, 0 );
+  mail_edit = new QLineEdit(cpbox);
+  cplay->addMultiCellWidget ( mail_edit, 4,4, 1,2 );
   mail_edit->setText(configdata.mailcmd);
   connect(mail_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(mail_changed(const QString &)));
 
-  browserbox = new  QButtonGroup(i18n("WWW-Browser"),this,"wwwbox");
-//  browserbox->setGeometry(20+XOFF,145+YOFF,338,130);
-  browserbox->setGeometry(20+XOFF,145+YOFF,338, 95);
+  browserbox = new  QButtonGroup(i18n("WWW Browser"),box,"wwwbox");
+  lay3->addWidget ( browserbox );
+  QVBoxLayout * lay4 = new QVBoxLayout ( browserbox, 10 );
+  lay4->addSpacing ( fm.lineSpacing() );
+
   kfmbutton = new QRadioButton(i18n("Use Konqueror as Browser"),
 			       browserbox,"kfmbutton");
-  kfmbutton->move(10,20);
-  kfmbutton->adjustSize();
+  lay4->addWidget ( kfmbutton );
   kfmbutton->setChecked(configdata.use_kfm);
   connect(kfmbutton,SIGNAL(clicked()),this,SLOT(kfmbutton_clicked()));
 
   custombutton = new QRadioButton(i18n("Use Custom Browser:"),
 				  browserbox,"custombutton");
-  custombutton->move(10,40);
-  custombutton->adjustSize();
+  lay4->addWidget ( custombutton );
   custombutton->setChecked(!configdata.use_kfm);
   connect(custombutton,SIGNAL(clicked()),this,SLOT(custombutton_clicked()));
 
+  QBoxLayout * lay5 = new QHBoxLayout ( lay4 );
+  lay5->addSpacing ( 20 );
   custom_edit = new QLineEdit(browserbox,"customedit");
   custom_edit->setText(data->browsercmd);
   custom_edit->setEnabled(!configdata.use_kfm);
-  custom_edit->setGeometry(30,60,198+70,25);
+  lay5->addWidget ( custom_edit, 1 );
+
+  QBoxLayout * lay6 = new QVBoxLayout ( lay2 );
+  QGroupBox * miscbox = new QGroupBox ( 1, Horizontal, i18n("Misc"), box );
+  lay6->addWidget ( miscbox );
 
   ttcheckbox = new QCheckBox(i18n("Show Tool Tips"),
-			     this, "tooltipscheckbox");
-  ttcheckbox->setGeometry(30+XOFF,245+YOFF,135, 15);
-  ttcheckbox->setFixedSize( ttcheckbox->sizeHint() );
+			     miscbox, "tooltipscheckbox");
   ttcheckbox->setChecked(configdata.tooltips);
   connect(ttcheckbox,SIGNAL(clicked()),this,SLOT(ttclicked()));
 
   dockcheckbox = new QCheckBox(i18n("Enable KPanel Docking"),
-			       this, "dockcheckbox");
-  dockcheckbox->setGeometry(30+XOFF,265+YOFF,200, 15);
-  dockcheckbox->setFixedSize( dockcheckbox->sizeHint() );
+			       miscbox, "dockcheckbox");
   dockcheckbox->setChecked(configdata.docking);
   connect(dockcheckbox,SIGNAL(clicked()),this,SLOT(dockclicked()));
 
   cdAutoPlayCB = new QCheckBox(i18n("Play on Tray Close"),
-                               this, "cdAutoPlayCB");
-  cdAutoPlayCB->setGeometry(30+XOFF, 285+YOFF, 200, 15);
-  cdAutoPlayCB->setFixedSize( cdAutoPlayCB->sizeHint() );
+                               miscbox, "cdAutoPlayCB");
   cdAutoPlayCB->setChecked(configdata.autoplay);
   connect(cdAutoPlayCB, SIGNAL(clicked()), this, SLOT(autoPlayClicked()));
 
   stopOnExitCB = new QCheckBox(i18n("Stop Playing on Exit"),
-                               this, "stopOnExitCB");
-  stopOnExitCB->setGeometry(30+XOFF, 325+YOFF, 200, 15);
-  stopOnExitCB->setFixedSize( stopOnExitCB->sizeHint() );
+                               miscbox, "stopOnExitCB");
   stopOnExitCB->setChecked(configdata.stopexit);
   connect(stopOnExitCB, SIGNAL(clicked()), this, SLOT(stopOnExitClicked()));
 
   ejectOnFinishCB = new QCheckBox(i18n("Eject on Finish"),
-                                  this, "ejectOnFinishCB");
-  ejectOnFinishCB->setGeometry(30+XOFF, 345+YOFF, 200, 15);
-  ejectOnFinishCB->setFixedSize( ejectOnFinishCB->sizeHint() );
+                                  miscbox, "ejectOnFinishCB");
   ejectOnFinishCB->setChecked(configdata.ejectonfinish);
   connect(ejectOnFinishCB, SIGNAL(clicked()), this, SLOT(ejectOnFinishClicked()));
 
@@ -186,17 +183,15 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   /* koz: Added a configure option to select the unique random play mode, */
   /* or the traditional random mode */
   randomOnceCB = new QCheckBox(i18n("Random is Shuffle"),
-			     this, "randomOnceCB");
-  randomOnceCB->setGeometry(30+XOFF,365+YOFF,200,15);
-  randomOnceCB->setFixedSize(randomOnceCB->sizeHint());
+			     miscbox, "randomOnceCB");
   randomOnceCB->setChecked(configdata.randomonce);
   connect(randomOnceCB,SIGNAL(clicked()),this,SLOT(randomOnceClicked()));
 
-  button3 = new QPushButton(this);
-  button3->setGeometry( 420, 400, 90, 25 );
-  //button3->setGeometry(255+XOFF,340+YOFF,100,25);
-  button3->setText(i18n("Help"));
+  button3 = new QPushButton(i18n("Help"),box);
+  lay6->addWidget ( button3, 0, AlignRight );
   connect(button3,SIGNAL(clicked()),this,SLOT(help()));
+
+  lay1->addStretch ( 1 );
 }
 
 

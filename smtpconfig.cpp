@@ -26,45 +26,51 @@
 
 #include <smtpconfig.h>
 
+#include <qlayout.h>
+#include <qfontmetrics.h>
+
 SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData *_configData)
     : QDialog(parent, name)
 {
     configData = _configData;
+    QFontMetrics fm ( font() );
     
+    QBoxLayout * lay1 = new QVBoxLayout ( this, 10 );
     mainBox = new QGroupBox(this, "mainBox");
-    mainBox->setGeometry(10,10,520,420);
+    lay1->addWidget ( mainBox );
 
-    enableCB = new QCheckBox(i18n("Enable submission via SMTP"), this, "enableCB");
-    enableCB->setGeometry(20, 20, 200, 15);
+    QBoxLayout * lay2 = new QVBoxLayout ( mainBox, 10 );
+    enableCB = new QCheckBox(i18n("Enable submission via SMTP"), mainBox, "enableCB");
+    lay2->addWidget ( enableCB );
     enableCB->setChecked(configData->enabled);
     connect(enableCB, SIGNAL(clicked()), this, SLOT(enableClicked()));
 
-    serverHostLabel = new QLabel(this, "serverHostLabel");
-    serverHostLabel->setGeometry(20, 40, 130, 25);
-    serverHostLabel->setText(i18n("SMTP Address:Port"));
-    
-    serverHostEdit = new QLineEdit(this, "serverHostEdit");
-    serverHostEdit->setGeometry(155, 40, 300, 25);
+    QGridLayout * glay = new QGridLayout ( lay2, 2, 4, 5 );
+    glay->setColStretch ( 1, 1 );
+
+    serverHostLabel = new QLabel(i18n("SMTP Address:Port"), mainBox, "serverHostLabel");
+    glay->addWidget ( serverHostLabel, 0, 0 );
+    serverHostEdit = new QLineEdit(mainBox, "serverHostEdit");
+    glay->addWidget ( serverHostEdit, 0, 1 );
     serverHostEdit->setText(configData->serverHost);
     serverHostEdit->setEnabled(configData->enabled);
-
-    serverPortLabel = new QLabel(this, "serverPortLabel");
-    serverPortLabel->setGeometry(460, 40, 10, 25);
-    serverPortLabel->setText(" :");
-    
-    serverPortEdit = new QLineEdit(this, "serverPortEdit");
+    serverPortLabel = new QLabel(":", mainBox, "serverPortLabel");
+    glay->addWidget ( serverPortLabel, 0, 2 );
+    serverPortEdit = new QLineEdit(mainBox, "serverPortEdit");
+    serverPortEdit->setFixedWidth ( 5 * fm.maxWidth() );
+    glay->addWidget ( serverPortEdit, 0, 3 );
     serverPortEdit->setGeometry(475, 40, 45, 25);
     serverPortEdit->setText(configData->serverPort);
     serverPortEdit->setEnabled(configData->enabled);
 
-    senderAddressLabel = new QLabel(this, "senderAddressLabel");
-    senderAddressLabel->setGeometry(20, 70, 130, 25);
-    senderAddressLabel->setText(i18n("Your Email Address"));
-
-    senderAddressEdit = new QLineEdit(this, "senderAddressEdit");
-    senderAddressEdit->setGeometry(155, 70, 365, 25);
+    senderAddressLabel = new QLabel(i18n("Your Email Address"), mainBox, "senderAddressLabel");
+    glay->addWidget ( senderAddressLabel, 1, 0 );
+    senderAddressEdit = new QLineEdit(mainBox, "senderAddressEdit");
+    glay->addMultiCellWidget ( senderAddressEdit, 1,1, 1,3 );
     senderAddressEdit->setText(configData->senderAddress);
     senderAddressEdit->setEnabled(configData->enabled);
+
+    lay1->addStretch ( 1 );
 }
 
 void SMTPConfig::commitData(void)
