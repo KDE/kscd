@@ -775,7 +775,7 @@ void
 KSCD::playClicked()
 {
     if (!cddrive_is_ok || 
-        !wm_cd_status())
+        wm_cd_status() < 1)
     {
         return;
     }
@@ -1395,18 +1395,17 @@ void
 KSCD::cdMode()
 {
 //  static char *p = new char[10];
-  static bool damn = TRUE;
-  QString str;
+    static bool damn = TRUE;
 
-  sss = wm_cd_status();
+    sss = wm_cd_status();
 
-  if( sss == WM_CDS_JUST_INSERTED  || sss == WM_CDS_NO_DISC)
-  {
-      have_new_cd = true;
-  }
+    if( sss == WM_CDS_JUST_INSERTED  || sss == WM_CDS_NO_DISC)
+    {
+        have_new_cd = true;
+    }
 
-  if(sss < 0)
-  {
+    if(sss < 0)
+    {
         if(cddrive_is_ok && (sss != WM_ERR_SCSI_INQUIRY_FAILED))
         {
             statuslabel->setText( i18n("Error") );
@@ -1418,22 +1417,22 @@ KSCD::cdMode()
             KMessageBox::error(this, errstring, i18n("Error"));
         }
         return;
-  }
-  
-  cddrive_is_ok = true; // cd drive ok
+    }
 
-  if(cur_cdmode == WM_CDM_EJECTED)
-    currentlyejected = true;
-  else
-    currentlyejected = false;
+    cddrive_is_ok = true; // cd drive ok
+
+    if (cur_cdmode == WM_CDM_EJECTED)
+        currentlyejected = true;
+    else
+        currentlyejected = false;
 
 
-  if( device_change == true )
-  {
-    device_change = false;
-    cur_cdmode = WM_CDM_STOPPED;
-    damn = false;
-  }
+    if( device_change == true )
+    {
+        device_change = false;
+        cur_cdmode = WM_CDM_STOPPED;
+        damn = false;
+    }
 
     switch (cur_cdmode) {
         case WM_CDM_DEVICECHANGED:
@@ -1999,7 +1998,7 @@ KSCD::get_cddb_info(bool _updateDialog)
 {
     updateDialog = _updateDialog;
     if (!cddrive_is_ok ||
-        !wm_cd_status())
+        wm_cd_status() < 1)
     {
          return;
     }
