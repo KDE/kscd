@@ -416,11 +416,10 @@ CDDialog::upload()
 		}
 
 	  submitcat = dialog->selection();
-	  delete dialog;
 	} else {
 	  submitcat = category.copy();
 	}
-
+  delete dialog;
   KCDDB::CDInfo info;
   setCdInfo(info, submitcat);
 
