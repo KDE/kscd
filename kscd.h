@@ -81,8 +81,8 @@
 #include <kapp.h>
 #include <kprocess.h>
 
-struct configstruct{
-
+struct configstruct
+{
   QColor led_color;
   QColor background_color;
   bool   tooltips;
@@ -97,8 +97,8 @@ struct configstruct{
   bool randomonce;
 };
 
-struct mgconfigstruct{
-
+struct mgconfigstruct
+{
   int width;
   int height;
   int brightness;
@@ -125,6 +125,7 @@ public slots:
     void cddb_failed();
     void setToolTips();
     void randomSelected();
+
     void readSettings();
     void writeSettings();
     void setColors();
@@ -163,6 +164,8 @@ public slots:
 
     void doSM();
 
+    void make_random_list(); /* koz: 15/01/00 */
+
 private:
     CDDBSetup       *setup;
 
@@ -199,25 +202,25 @@ private:
     QPushButton 	*optionsbutton;
     QPushButton 	*shufflebutton;
     QPushButton 	*cddbbutton;
-    QPushButton	*volLA;
+    QPushButton	        *volLA;
     QTimer		*timer;
     QTimer		*titlelabeltimer;
     QTimer		*queryledtimer;
     QTimer		*initimer;
     QTimer		*cycletimer;
-    QComboBox	*songListCB;
+    QComboBox	        *songListCB;
     QSlider		*volSB;
 
-    KProcess*             magicproc;
-    int		volChnl;
-    int		mixerFd;
+    KProcess*           magicproc;
+    int	                volChnl;
+    int		        mixerFd;
     int 	        volume;
-    int magic_width;
-    int magic_height;
-    int magic_brightness;
+    int                 magic_width;
+    int                 magic_height;
+    int                 magic_brightness;
     QFrame 		*backdrop;
-    LedLamp        *queryled;
-    KConfig 	*config;
+    LedLamp             *queryled;
+    KConfig 	        *config;
     bool 		tooltips;
     bool 		randomplay ;
     bool 		looping;
@@ -226,9 +229,9 @@ private:
     bool 		volstartup;
     bool 		cddrive_is_ok;
     int 		time_display_mode;
-    QString cd_device_str;
+    QString             cd_device_str;
 
-    QPushButton     *makeButton( int, int, int, int, const QString& );
+    QPushButton         *makeButton( int, int, int, int, const QString& );
 
     void		initWorkMan();
     //	void		checkMount();
@@ -237,6 +240,10 @@ private:
     void		cleanUp();
     void		loadBitmaps();
     void 	 	setLEDs(const QString& symbols);
+  /**
+   * select a random track from the current disc.
+   *
+   */
     int 	        randomtrack();
 
 //TODO get rid of the mixe stuff
@@ -272,19 +279,20 @@ private:
 	QString		current_server;
 	QString	        mailcmd;
         QString  	submitaddress;
-        QStrList cddbsubmitlist;
+        QStrList        cddbsubmitlist;
 	QString  	browsercmd;
 	bool		cddb_remote_enabled;
 	bool 		use_kfm;
         bool            docking;
         bool            autoplay;
-        bool stopexit;
-        bool ejectonfinish;
+        bool            stopexit;
+        bool            ejectonfinish;
+        bool            randomonce;
 
 	bool 		cddb_inexact_sentinel;
         bool            updateDialog;
-        bool ejectedBefore;
-        bool currentlyejected;
+        bool            ejectedBefore;
+        bool            currentlyejected;
 public:
 
 	KSCD( QWidget *parent = 0, const char *name = 0 );
