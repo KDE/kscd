@@ -1,5 +1,5 @@
 /*
- * $Id:$
+ * $Id$
  *
  * Interface between most of WorkMan and the low-level CD-ROM library
  * routines defined in plat_*.c and drv_*.c.  The goal is to have no
@@ -39,7 +39,6 @@ struct drivelist {
 };
 
 void *malloc();
-char *strchr();
 void strmcpy(char **t, char *s);
 int susleep(int usec);
 
