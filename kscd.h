@@ -146,7 +146,6 @@ k_dcop:
 public:
     KSCD( QWidget *parent = 0, const char *name = 0 );
     ~KSCD();
-    void initialShow();
     virtual bool saveState(QSessionManager& sm);
 
     void setDocking(bool dock);

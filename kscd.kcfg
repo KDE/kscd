@@ -77,9 +77,5 @@
             <label>The background color that will be used for the LCD display.</label>
             <default>black</default>
         </entry>
-        <entry name="HiddenControls" type="Bool">
-            <label>Hide controls.</label>
-            <default>false</default>
-        </entry>
     </group>
 </kcfg>

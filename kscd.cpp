@@ -43,6 +43,7 @@
 #include <kkeydialog.h>
 #include <kiconloader.h>
 #include <klocale.h>
+#include <kmainwindow.h>
 #include <kmessagebox.h>
 #include <kpopupmenu.h>
 #include <kprotocolmanager.h>
@@ -237,14 +238,6 @@ bool KSCD::digitalPlayback() {
 #else
         return false;
 #endif
-}
-
-void KSCD::initialShow()
-{
-    if (!Prefs::hiddenControls() || !Prefs::docking())
-    {
-        show();
-    }
 }
 
 /**
@@ -1979,6 +1972,9 @@ void KSCD::information(int i)
 bool KSCD::saveState(QSessionManager& /*sm*/)
 {
   writeSettings();
+  KConfig* config = KApplication::kApplication()->sessionConfig();
+  config->setGroup("General");
+  config->writeEntry("Show", isVisible());
   return true;
 } // saveState
 
@@ -2119,13 +2115,6 @@ void KSCD::setSongListTo(int whichTrack)
     QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
 }
 
-static const KCmdLineOptions options[] =
-{
-	{ "show", I18N_NOOP("Show window on startup"), 0 },
-	KCmdLineLastOption
-};
-
-
 /**
  * main()
  */
@@ -2146,7 +2135,6 @@ int main( int argc, char *argv[] )
     aboutData.addCredit("freedb.org", I18N_NOOP("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
     KCmdLineArgs::init( argc, argv, &aboutData );
-    KCmdLineArgs::addCmdLineOptions( options );
 
     KUniqueApplication::addCmdLineOptions();
 
@@ -2166,12 +2154,18 @@ int main( int argc, char *argv[] )
     a.setMainWidget( k );
 
     k->setCaption(a.caption());
-    
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-    if (args->isSet("show"))
-        k->show();
+
+    if (kapp->isRestored())
+    {
+        KConfig* config = KApplication::kApplication()->sessionConfig();
+        config->setGroup("General");
+        if (config->readBoolEntry("Show"))
+            k->show();
+    }
     else
-    	k->initialShow();
+    {
+        k->show();
+    }
 
     return a.exec();
 } // main()
