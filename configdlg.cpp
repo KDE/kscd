@@ -130,7 +130,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   browserbox = new  QButtonGroup(i18n("WWW-Browser"),this,"wwwbox");
 //  browserbox->setGeometry(20+XOFF,145+YOFF,338,130);
   browserbox->setGeometry(20+XOFF,145+YOFF,338, 95);
-  kfmbutton = new QRadioButton(i18n("Use kfm as Browser"),
+  kfmbutton = new QRadioButton(i18n("Use Konqueror as Browser"),
 			       browserbox,"kfmbutton");
   kfmbutton->move(10,20);
   kfmbutton->adjustSize();
@@ -325,6 +325,7 @@ ConfigDlg::getData()
 } // getData
 
 #include "configdlg.moc"
+
 
 
 
