@@ -1,4 +1,6 @@
 #warning This is a copy of config.h.std (HACK). Somebody has to fix this.
+#warning [milliByte@DeathsDoor.com]: I'm going to change KSCD.
+#warning Sorry if this breaks compilation on some platforms. Please report this to me. Thanks.
 
 /*************************************************************************
  *
@@ -36,6 +38,9 @@
    make the cd's play better on any drive using the sbpcd or mcdx drivers. If you
    are using any of those you want to uncomment SBPCD_HACK. For more info about this
    hack read the docs in the spbcd directory of this distribution 
+
+   No need to define this any longer. There's a new method of drive
+   handling. [dfoerste]
 */
 /*
 #define SBPCD_HACK

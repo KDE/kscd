@@ -240,6 +240,11 @@ gen_eject(d)
 	return (wm_scsi2_eject(d));
 }
 
+gen_closetray(struct wm_drive *d)
+{
+  return(wm_scsi2_closetray(d));
+} /* gen_closetray() */
+
 static int
 create_cdrom_node(char *dev_name)
 {
@@ -376,6 +381,28 @@ wmcd_open(d)
 
 	return (0);
 }
+
+
+/*
+ * Re-Open the device
+ */
+wmcd_reopen( struct wm_drive *d )
+{
+  int status;
+  int tries = 0;
+  do {
+    if (d->fd >= 0) /* Device really open? */
+      {
+	if( (close(d->fd )) < 0 ) /* ..then close it */
+	  d->fd = -1; /* closed */
+      }
+    susleep( 1000 );
+    status = wmcd_open( d );
+    susleep( 1000 );
+    tries++;
+  } while ( (status != 0) && (tries < 10) );
+  return status;
+} /* wmcd_reopen() */
 
 void
 keep_cd_open() { }

@@ -41,7 +41,7 @@ display_main_menu(){
 
 clear
 echo 
-echo  "                   KSCD -- Configuration\n"
+echo  "                   KSCD -- Configuration"
 echo    "==================================================================="
 echo
 echo     "               Linux ...................... L"

@@ -318,11 +318,7 @@ cd_status()
 
 	/* Open the drive.  This returns 1 if the device isn't ready. */
 
-#if linux & SBPCD_HACK
-	status = wmcd_open(&drive, 0);
-#else
 	status = wmcd_open(&drive);
-#endif
 
 	/* printf("%s %d\n",cd_device, status); */
 	if (status < 0)
@@ -360,22 +356,8 @@ cd_status()
 	{
 		cur_pos_rel = cur_pos_abs = 0;
 
-#if linux & SBPCD_HACK
-		/*
-		 * new code to re-open device if a new cd is inserted.
-		 * this works around sbpcd and mcdx misbehaviour.
-		 *
-		 * I had to change wmcd_open, because for some reason
-		 * closing the device here leads to "bad file number". 
-		 * If I find another (more elegant) way to do this 
-		 * (or if I changed the driver) I'll spread it.
-		 *
-		 * inserted by milliByte@DeathsDoor.com on 1997-06-10
-		 */
-		do {
-		  status = wmcd_open( &drive, 1 );
-		} while ( status != 0 );
-#endif
+		status = wmcd_reopen( &drive );
+
 		if ((cd = read_toc()) == NULL) {
 			if (exit_on_eject)
 				exit(-1);
@@ -633,6 +615,12 @@ int eject_cd()
 	return (0);
 }
 
+int 
+cd_closetray( void )
+{
+  return((drive.closetray)(&drive) ? 0 : cd_status()==2 ? 1 : 0);
+}
+
 /*
  * find_trkind(track, index)
  *
@@ -777,5 +765,6 @@ struct wm_drive generic_proto = {
 	gen_resume,
 	gen_stop,
 	gen_play,
-	gen_eject
+	gen_eject,
+	gen_closetray
 };

@@ -23,7 +23,7 @@
  */
 
 /*
- * $Id:$
+ * $Id$
  *
  * Sun-specific drive control routines.
  */
@@ -690,7 +690,19 @@ gen_eject(d)
 	}
 
 	return (0);
-}
+} /* gen_eject() */
+
+int
+gen_closetray(struct wm_drive *d)
+{
+  if(!close(d->fd))
+    {
+      d->fd=-1;
+      return(wmcd_reopen(d));
+    } else {
+      return(-1);
+    }
+} /* gen_closetray */
 
 /*
  * Read the initial volume from the drive, if available.  Each channel
@@ -942,7 +954,28 @@ wmcd_open(d)
 	(d->init)(d);
 
 	return (0);
-}
+} /* wmcd_open() */
+
+/*
+ * Re-Open the device
+ */
+wmcd_reopen( struct wm_drive *d )
+{
+  int status;
+  int tries = 0;
+  do {
+    if (d->fd >= 0) /* Device really open? */
+      {
+	if( (close(d->fd )) < 0 ) /* ..then close it */
+	  d->fd = -1; /* closed */
+      }
+    susleep( 1000 );
+    status = wmcd_open( d );
+    susleep( 1000 );
+    tries++;
+  } while ( (status != 0) && (tries < 10) );
+  return status;
+} /* wmcd_reopen() */
 
 /*
  * The following code activates the internal CD audio passthrough on

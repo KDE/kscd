@@ -1,3 +1,6 @@
+dnl +-------------------------+
+dnl |   Checks for KSCD       |   
+dnl +-------------------------+
 AC_CHECK_LIB(cdaudio, main, [LIBCDAUDIO="-lcdaudio -lmediad -lds"],[],[-lmedia -lds]) dnl for Irix
 AC_SUBST(LIBCDAUDIO)
 AC_CHECK_LIB(fpe, main, [LIBFPE="-lfpe"]) dnl for Irix CDDA
@@ -40,3 +43,8 @@ fi
 ])
 
 AC_OUTPUT_COMMANDS(KDE_COPY_KSCD_DEFAULTS)
+
+dnl +-------------------------+
+dnl | End KSCD checks         |
+dnl +-------------------------+
+

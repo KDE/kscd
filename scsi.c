@@ -129,7 +129,7 @@ wm_scsi_mode_sense(d, page, buf)
 	unsigned char	page;
 	unsigned char	*buf;
 {
-	unsigned char	pagebuf[255];
+	unsigned char	pagebuf[256];
 	int		status, i, len, offset;
 
 	status = sendscsi(d, pagebuf, sizeof(pagebuf), 1, SCMD_MODE_SENSE, 0,
@@ -163,7 +163,7 @@ wm_scsi_mode_select(d, buf, len)
 	unsigned char	*buf;
 	unsigned char	len;
 {
-	unsigned char	pagebuf[255];
+	unsigned char	pagebuf[256];
 	int		i;
 
 	pagebuf[0] = pagebuf[1] = pagebuf[2] = pagebuf[3] = 0;
@@ -473,6 +473,16 @@ wm_scsi2_eject(d)
 		return (-1);
 
 	return (sendscsi(d, NULL, 0, 0, SCMD_START_STOP, 2, 0,0,0,0,0,0,0,0));
+}
+
+/*
+ * The SCSI specs told me that this is the same like eject.
+ * Maybe I didn't understand them correctly?
+ */
+int
+wm_scsi2_closetray(struct wm_drive *d)
+{
+   return (sendscsi(d, NULL, 0,0, SCMD_START_STOP, 2, 0,0,0,0,0,0,0,0,0,0));	
 }
 
 /*

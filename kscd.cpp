@@ -86,12 +86,16 @@ extern bool cddb_playlist_decode(QStrList& list, QString& str);
  new for workman: (BERND)
  *****************************************************************************/
 extern "C" {
+  /*
+   * These definitions will change heavily in the future.
+   */
     int play_cd(int start,int pos,int end);
     int pause_cd();
     int cd_close();
     int stop_cd();
     int cd_status();
     int eject_cd();
+    int cd_closetray();
     int cd_volume(int vol, int bal,int max);
 }
 
@@ -880,7 +884,8 @@ void KSCD::ejectClicked(){
 
     if(!cddrive_is_ok)
         return;
-    if(!currentlyejected){
+    if(!currentlyejected)
+      {
         looping = FALSE;
         randomplay = FALSE;
         statuslabel->setText(i18n("Ejecting"));
@@ -890,12 +895,13 @@ void KSCD::ejectClicked(){
         titlelabel->setText("");
         tracktitlelist.clear();
         extlist.clear();
-
+	
         stop_cd();
         //  timer->stop();
         eject_cd();
-    }else{
-        cd_close();
+      }else{
+        statuslabel->setText(i18n("Closing"));
+	cd_closetray();
         cd_status();
     }
 }
@@ -976,9 +982,10 @@ void KSCD::aboutClicked(){
     labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
     "Copyright (c) 1997-98 \nBernd Johannes Wuebben <wuebben@kde.org>\n\n"
-    "Currently maintained by:\nSam Maloney <thufir@illogic.ml.org>\n\n"
-    "Kscd contains code from:\nworkman 1.4 beta 3\n"
-                                      "Copyright (c) Steven Grimm <koreth@hyperion.com>\n\n"
+    "Currently maintained by:\nDirk Foersterling <milliByte@DeathsDoor.com>\n\n"
+    "Kscd is based on WorkMan,\n"
+                                      "Copyright (c) 1991-1996 Steven Grimm\n"
+                                      "Copyright (c) 1996-1999 Dirk Foersterling <milliByte@DeathsDoor.com>\n\n"
                                       "Special thanks to Ti Kan and "
                                       "Steve Scherf, the inventors of "
                                       "the CDDB database concept. "
@@ -1163,6 +1170,13 @@ int KSCD::randomtrack(){
     }
 }
 
+/*
+ * cdMode
+ *
+ * - 'No disc' handling is missing
+ * - Data discs not recognized as data discs.
+ * 
+ */
 void KSCD::cdMode(){
 
     static char *p = new char[10];
@@ -1176,7 +1190,7 @@ void KSCD::cdMode(){
             statuslabel->setText( i18n("Error") );
             cddrive_is_ok = false;
             QString errstring =
-              i18n("CDROM read or access error.\n"\
+              i18n("CDROM read or access error (or no audio disc in drive).\n"\
                    "Please make sure you have access permissions to:\n%1")
               .arg(cd_device);
             KMessageBox::error(this, errstring, i18n("Error"));
@@ -1344,7 +1358,7 @@ void KSCD::cdMode(){
 
         break;
     }
-}
+} /* cdMode */
 
 void KSCD::setLEDs(const QString& symbols){
 
@@ -2331,6 +2345,13 @@ void kcderror(const QString& title, const QString& message)
 
 /* I am dropping this code for now. People seem to be having nothing
    but trouble with this code and it was of dubious value anyways....
+
+dfoerste: NOTES
+
+1) Mark Buckaway checked only if there was an iso9660 filesystem mounted,
+   not if our device is mounted.
+2) Mount check only needs to be done befor ejecting the disc.
+
 #ifdef linux
 
 // check if drive is mounted (from Mark Buckaway's cdplayer code)

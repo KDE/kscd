@@ -383,6 +383,18 @@ gen_eject(d)
 	return 0;
 }
 
+int
+gen_closetray(struct wm_drive *d)
+{
+  if(!close(d->fd))
+    {
+       d->fd=-1;
+       return(wmcd_reopen(d));
+    } else {
+       return (-1);
+    }
+}
+
 /*
  * Open the CD and figure out which kind of drive is attached.
  */
@@ -426,6 +438,28 @@ wmcd_open(d)
 
 	return (0);
 }
+
+
+/*
+ * Re-Open the device
+ */
+wmcd_reopen( struct wm_drive *d )
+{
+  int status;
+  int tries = 0;
+  do {
+    if (d->fd >= 0) /* Device really open? */
+      {
+	if( (close(d->fd )) < 0 ) /* ..then close it */
+	  d->fd = -1; /* closed */
+      }
+    susleep( 1000 );
+    status = wmcd_open( d );
+    susleep( 1000 );
+    tries++;
+  } while ( (status != 0) && (tries < 10) );
+  return status;
+} /* wmcd_reopen() */
 
 void
 keep_cd_open() { }
