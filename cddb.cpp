@@ -49,9 +49,9 @@
 extern KApplication 	*mykapp;
 
 void cddb_decode(QString& str);
-void cddb_encode(QString& str, QStrList &returnlist);
-bool cddb_playlist_decode(QStrList& playlist,QString&  value);
-void cddb_playlist_encode(QStrList& playlist,QString&  value);
+void cddb_encode(QString& str, QStringList &returnlist);
+bool cddb_playlist_decode(QStringList& playlist,QString&  value);
+void cddb_playlist_encode(QStringList& playlist,QString&  value);
 
 int Ret;
 extern char cddbbasedirtext[4096];
@@ -244,7 +244,7 @@ CDDB::cddb_connect_internal()
 	kdDebug() << "SOCKET SET" << endl;
       } else {
 	kdDebug() << "CONNECTING TO " << hostname << ":" << port << " ....\n" << endl;
-	sock = new KSocket(hostname.ascii(),port);
+	sock = new KSocket(hostname.local8Bit(),port);
 	kdDebug() << "SOCKET SET" << endl;
       }
     
@@ -399,7 +399,7 @@ CDDB::next_token()
 } // next_token
 
 void 
-CDDB::queryCD(unsigned long _magicID,QStrList& querylist)
+CDDB::queryCD(unsigned long _magicID,QStringList& querylist)
 {
 //    if(state == DO_NOTHING)
 //        return;
@@ -413,11 +413,7 @@ CDDB::queryCD(unsigned long _magicID,QStrList& querylist)
     magicID = _magicID;
 
     str = str.sprintf("cddb query %08lx %u ",magicID,querylist.count()-1);
-    for(int i = 0; i <(int) querylist.count(); i++) 
-      {
-	str += querylist.at(i);
-	str += " ";
-      }
+    str += querylist.join(" ") + ' ';
 
     if(protocol==CDDBHTTP)
       {
@@ -477,7 +473,8 @@ CDDB::query_exact(QString line)
       cddb_connect_internal();
       if(connected)
 	{
-	  readstring.sprintf("cddb read %s %s",category.ascii(),magicstr.ascii());
+	  readstring = QString::fromLatin1("cddb read %1 %2")
+            .arg(category).arg(magicstr);
 	  send_http_command(readstring);
 	}
     } else {
@@ -485,7 +482,9 @@ CDDB::query_exact(QString line)
       timeouttimer.stop();
       timeouttimer.start(timeout*1000,TRUE);
       //  readstring.sprintf("cddb read %s %lx \n",category.data(),magicID);
-      readstring.sprintf("cddb read %s %s \n",category.ascii(),magicstr.ascii());
+      readstring = QString::fromLatin1("cddb read %1 %2 \n")
+        .arg(category)
+        .arg(magicstr);
       write(sock->socket(),readstring.ascii(),readstring.length());
     }
   
@@ -635,7 +634,7 @@ CDDB::do_state_machine()
 	    timeouttimer.stop();
 	    emit cddb_inexact_read();
 	  } else {
- 	    inexact_list.append(lastline.ascii());
+ 	    inexact_list.append(lastline);
 	  }
 	break;
 
@@ -654,11 +653,11 @@ CDDB::do_state_machine()
             if(!cddbfh)
 	      {
 		QString file;
-		file.sprintf("%s/%08lx", category.ascii(), magicID);
+		file.sprintf("%s/%08lx", category.utf8().data(), magicID);
 		file = locate("cddb", file);
 		
 		kdDebug() << "dir/file path: " << file << "\n" << endl;
-		cddbfh = open(file.ascii(), O_CREAT|O_WRONLY|O_TRUNC,
+		cddbfh = open(QFile::encodeName(file), O_CREAT|O_WRONLY|O_TRUNC,
 			      S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
 	      }
             cddblinelen = lastline.length();
@@ -719,7 +718,7 @@ CDDB::do_state_machine()
 
 
 void 
-CDDB::serverList(QStrList& list)
+CDDB::serverList(QStringList& list)
 {
   list = serverlist;
 }
@@ -749,7 +748,7 @@ CDDB::parse_serverlist_entry()
 } // parse_serverlist_entry
 
 void 
-CDDB::get_inexact_list(QStrList& p_inexact_list)
+CDDB::get_inexact_list(QStringList& p_inexact_list)
 {
     p_inexact_list=inexact_list;
 } // get_inexact_list
@@ -758,12 +757,12 @@ bool
 CDDB::local_query(
 		  unsigned  long magicID,
 		  QString&  data,
-		  QStrList& titlelist,
-		  QStrList& extlist,
+		  QStringList& titlelist,
+		  QStringList& extlist,
 		  QString&  _category,
-		  QStrList& discidlist,
+		  QStringList& discidlist,
 		  int&	 revision,
-		  QStrList& playlist
+		  QStringList& playlist
 		  )
 {
   QStringList pathlist = KGlobal::dirs()->resourceDirs("cddb");
@@ -803,7 +802,7 @@ bool
 CDDB::checkDir(unsigned long magicID, const QString& dir)
 {
     QString mag;
-    mag.sprintf("%s/%08lx",dir.ascii(),magicID);
+    mag.sprintf("%s/%08lx",dir.utf8().data(),magicID);
 
     QFileInfo info(mag);
     if(!info.isReadable())
@@ -837,12 +836,12 @@ CDDB::checkDir(unsigned long magicID, const QString& dir)
 void 
 CDDB::getData(
 	      QString& data,
-	      QStrList& titles, 
-	      QStrList& extlist,
+	      QStringList& titles, 
+	      QStringList& extlist,
 	      QString& categ,
-	      QStrList& discidlist, 
+	      QStringList& discidlist, 
 	      int& revision,
-	      QStrList& playlist
+	      QStringList& playlist
 	      )
 {
   data = "";
@@ -909,7 +908,7 @@ CDDB::getData(
 	    temp3 = temp3.stripWhiteSpace();
 	    
 	    if(!temp3.isEmpty())
-	      discidlist.append(temp3.ascii());
+	      discidlist.append(temp3);
 	    pos1 = pos2 + 1;
 	  }
 
@@ -918,7 +917,7 @@ CDDB::getData(
 	
 	if(!temp3.isEmpty())
 	  {
-	    discidlist.append(temp3.ascii());
+	    discidlist.append(temp3);
 	  }
 	pos4 = pos3 + 1;
       }// end get DISCID's
@@ -932,26 +931,26 @@ CDDB::getData(
     key = "DTITLE=";
 
     getValue(key,value,data);
-    titles.append(value.ascii());
+    titles.append(value);
 
 
     int counter = 0;
     key = key.sprintf("TTITLE%d=",counter);
     while(getValue(key,value,data))
       {
-	titles.append(value.ascii());
+	titles.append(value);
 	key = key.sprintf("TTITLE%d=",++counter);
       }
     
     key = "EXTD=";
     getValue(key,value,data);
-    extlist.append(value.ascii());
+    extlist.append(value);
     
     counter = 0;
     key = key.sprintf("EXTT%d=",counter);
     while(getValue(key,value,data))
       {
-	extlist.append(value.ascii());
+	extlist.append(value);
 	key = key.sprintf("EXTT%d=",++counter);
       }
     
@@ -1010,20 +1009,14 @@ CDDB::getValue(QString& key,QString& value, QString& data)
 } // getValue
 
 void 
-cddb_playlist_encode(QStrList& list,QString& playstr)
+cddb_playlist_encode(QStringList& list,QString& playstr)
 {
-  playstr = "";
-  for( uint i = 0; i < list.count(); i++)
-    {
-      playstr += list.at(i);
-      if(i < list.count() -1)
-	playstr += ",";
-    }
+  playstr = list.join(",");
 } // cddb_playlist_encode
 
 
 bool 
-cddb_playlist_decode(QStrList& list, QString& str)
+cddb_playlist_decode(QStringList& list, QString& str)
 { 
   bool isok = true;
   int pos1, pos2;
@@ -1031,54 +1024,35 @@ cddb_playlist_decode(QStrList& list, QString& str)
   pos2 = 0;
   
   list.clear();
-  
-  while((pos2 = str.find(",",pos1,true)) != -1)
-    {
-      if(pos2 > pos1)
-	{
-	  list.append(str.mid(pos1,pos2 - pos1).ascii());
-	}
-    
-	pos1 = pos2 + 1;
-    }
-  
-    if(pos1 <(int) str.length())
-	list.append(str.mid(pos1,str.length()).ascii());
+
+  list = QStringList::split(',', str);
 
     QString check;
     bool 	ok1;
     int   num;
 
-    for(uint i = 0; i < list.count(); i++)
+    for ( QStringList::Iterator it = list.begin();
+          it != list.end();
+          ++it )
       {
-	check = list.at(i);
+	check = *it;
 	check = check.stripWhiteSpace();
-	
-	if(check.isEmpty())
-	  {
-	    list.remove(i);
-	    i--;
-	    continue;
-	  }
 
-	if(check == QString (","))
-	  {
-	    list.remove(i);
-	    i--;
-	    continue;
-	  }
-    
+        if (check.isEmpty())
+          {
+            list.remove(it);
+            continue;
+          }
+	
 	num = check.toInt(&ok1);
 	if(!ok1 || num < 1)
 	  {
-	    list.remove(i);
-	    i--;
+	    list.remove(it);
 	    isok = false;
 	    continue;
 	  }
     
-	list.remove(i);
-	list.insert(i, check.ascii());
+        *it = check;
       }
 
     /*  for(uint i = 0; i < list.count(); i++){
@@ -1135,7 +1109,7 @@ cddb_decode(QString& str)
 } // cddb_decode
 
 void 
-cddb_encode(QString& str, QStrList &returnlist)
+cddb_encode(QString& str, QStringList &returnlist)
 {
     returnlist.clear();
     
@@ -1168,11 +1142,11 @@ cddb_encode(QString& str, QStrList &returnlist)
 
     while(str.length() > 70)
       {
-	returnlist.append(str.left(70).ascii());
+	returnlist.append(str.left(70));
 	str = str.mid(70,str.length());
       }
 
-    returnlist.append(str.ascii());
+    returnlist.append(str);
 } // cddb_encode
 
 // This function converts server list entry from "Server Port" format

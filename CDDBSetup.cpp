@@ -170,8 +170,8 @@ CDDBSetup::help()
 } // help
 
 void 
-CDDBSetup::insertData(const QStrList& _serverlist,
-		      const QStrList& _submitlist,
+CDDBSetup::insertData(const QStringList& _serverlist,
+		      const QStringList& _submitlist,
 		      const QString& _basedir,
 		      const QString& _submitaddress,
 		      const QString& _current_server,
@@ -188,11 +188,12 @@ CDDBSetup::insertData(const QStrList& _serverlist,
     submitaddressstring = _submitaddress.copy();
     currentSubmitLE->setText(submitaddressstring);
 
-    submitlist.clear();
-    for(uint i = 0; i < _submitlist.count(); i++)
-      {
-        submitlist.append(QStrList(_submitlist).at(i));
-      }
+    //submitlist.clear();
+    //for(uint i = 0; i < _submitlist.count(); i++)
+    //  {
+    //    submitlist.append(*_submitlist.at(i));
+    //  }
+    submitlist = _submitlist;
     
     insertServerList(_serverlist);
 //    server_listbox->setCurrentItem(_serverlist.find(_current_server.data()));
@@ -246,8 +247,8 @@ CDDBSetup::set_defaults()
 } // set_defaults
 
 void 
-CDDBSetup::getData(QStrList& _serverlist,
-		   QStrList& _submitlist,
+CDDBSetup::getData(QStringList& _serverlist,
+		   QStringList& _submitlist,
 		   QString& _basedir,
 		   QString& _submitaddress, 
 		   QString& _current_server,
@@ -263,11 +264,11 @@ CDDBSetup::getData(QStrList& _serverlist,
     _submitlist.clear();
     for(i = 0; i < server_listbox->count();i++)
       {
-        _serverlist.append(server_listbox->text(i).ascii());
+        _serverlist.append( server_listbox->text(i) );
       }
     for(i = 0; i < submission_listbox->count(); i++)
       {
-        _submitlist.append(submission_listbox->text(i).ascii());
+        _submitlist.append( submission_listbox->text(i) );
       }
     _basedir = basedirstring.copy();
     _submitaddress = submitaddressstring.copy();
@@ -293,7 +294,7 @@ CDDBSetup::serverlist_update()
 } // serverlist_update
 
 void 
-CDDBSetup::insertServerList(const QStrList& list)
+CDDBSetup::insertServerList(const QStringList& list)
 {
     QString current_server_string_backup;
     uint i;
@@ -305,9 +306,9 @@ CDDBSetup::insertServerList(const QStrList& list)
     bool have_email = false;
     bool have_srv   = false;
 
-    QListIterator<char> it(list);
-
-    for(;it.current();++it)
+    for ( QStringList::ConstIterator it = list.begin();
+          it != list.end();
+          ++it )
       {
         char ser   [CDDB_FIELD_BUFFER_LEN];
         char por   [CDDB_FIELD_BUFFER_LEN];
@@ -315,8 +316,8 @@ CDDBSetup::insertServerList(const QStrList& list)
         char extra [CDDB_FIELD_BUFFER_LEN];
         char email [CDDB_FIELD_BUFFER_LEN];
         
-        const char* srv=it.current();
-        sscanf(srv,"%s %s %s %s",ser,proto,por,extra);
+        QString srv=*it;
+        sscanf(srv.ascii(),"%s %s %s %s",ser,proto,por,extra);
         CDDB::transport t=CDDB::decodeTransport(proto);
         if(t==CDDB::UNKNOWN)
 	  {
@@ -342,10 +343,8 @@ CDDBSetup::insertServerList(const QStrList& list)
     
     if(!have_email)
       {
-	for(i = 0; i < submitlist.count(); i++)
-	  {
-	    submission_listbox->insertItem(submitlist.at(i));
-	  }
+        submission_listbox->insertStringList(submitlist);
+
 //        submission_listbox->insertItem(DEFAULT_SUBMIT_EMAIL,-1);
 //        submission_listbox->insertItem(DEFAULT_TEST_EMAIL, -1);
       }

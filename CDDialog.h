@@ -57,13 +57,13 @@ public:
 #else
 		 struct wm_cdinfo *cd,
 #endif
-		 QStrList& tracktitlelist,
-		 QStrList& extlist,
-		 QStrList& discidlist,
+		 QStringList& tracktitlelist,
+		 QStringList& extlist,
+		 QStringList& discidlist,
 		 QString& xmcddata,
 		 QString& cat,
 		 int& revision,
-		 QStrList& playlist,
+		 QStringList& playlist,
 		 QStringList& pathlist,
 		 QString& _mailcmd,
                  QString& _submitaddress,
@@ -97,12 +97,12 @@ signals:
 
 private:
     SMTPConfig::SMTPConfigData *smtpConfigData;
-    QStrList 	ext_list;
-    QStrList 	track_list;
+    QStringList 	ext_list;
+    QStringList 	track_list;
     QStringList pathlist;
-    QStrList	playlist;
+    QStringList	playlist;
     QString  	xmcd_data;
-    QStrList 	discidlist;
+    QStringList 	discidlist;
     int      	revision;
     QString     submitaddress;
     QString 	category;

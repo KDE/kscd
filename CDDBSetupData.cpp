@@ -99,7 +99,7 @@ CDDBSetupData::CDDBSetupData
         currentServerLE->setGeometry(20, 200, 202, 28);
         currentServerLE->setMinimumSize(10, 10);
         currentServerLE->setMaximumSize(32767, 32767);
-        currentServerLE->setText("");
+        currentServerLE->clear();
 
         currentServerAddPB = new QPushButton(this, "currentServerAddPB");
         currentServerAddPB->setGeometry(225, 200, 16, 28);
@@ -212,7 +212,7 @@ CDDBSetupData::CDDBSetupData
         currentSubmitLE->setGeometry(275, 200, 202, 28);
         currentSubmitLE->setMinimumSize(10, 10);
         currentSubmitLE->setMaximumSize(32767, 32767);
-        currentSubmitLE->setText("");
+        currentSubmitLE->clear();
 
         currentSubmitAddPB = new QPushButton(this, "currentSubmitAddPB");
         currentSubmitAddPB->setGeometry(480, 200, 16, 28);

@@ -26,8 +26,8 @@ public:
 public slots:
     void serverlist_update();
 
-    void getData(QStrList& _serverlist,
-                 QStrList& _submitlist,
+    void getData(QStringList& _serverlist,
+                 QStringList& _submitlist,
                  QString& _basedir,
                  QString& _submitaddress,
                  QString& _current_server,
@@ -38,8 +38,8 @@ public slots:
                  unsigned short int &http_proxy_port
                 );
 
-    void insertData(const QStrList& _serverlist,
-                    const QStrList& _submitlist,
+    void insertData(const QStringList& _serverlist,
+                    const QStringList& _submitlist,
 		    const QString& _basedir,
                     const QString& _submitaddress,
                     const QString& _current_server,
@@ -68,7 +68,7 @@ signals:
    void updateCurrentServer();
 
 public:
-   void insertServerList(const QStrList& list);
+   void insertServerList(const QStringList& list);
    void getCurrentServer(QString& ser);
 
 private:
@@ -76,7 +76,7 @@ private:
    QString basedirstring;
    QString submitaddressstring;
    QString current_server_string;
-   QStrList submitlist;
+   QStringList submitlist;
 };
 #endif // CDDBSetup_included
 

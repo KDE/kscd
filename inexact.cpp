@@ -139,15 +139,6 @@ InexactDialog::insertList(const QStringList& stringlist)
 }
 
 void 
-InexactDialog::insertList(const QStrList& stringlist)
-{
-  if(listbox)
-    {
-      list_box->insertStrList(&stringlist,-1);
-    }
-}
-
-void 
 InexactDialog::insertText(const QString& str)
 {
   if(!listbox)

@@ -73,20 +73,20 @@ class CDDB:public QObject
 
     void getData(
 	QString& data,
-	QStrList& titlelist,
-	QStrList& extlist, 
+	QStringList& titlelist,
+	QStringList& extlist, 
 	QString& cat, 
-	QStrList& discidlist,
+	QStringList& discidlist,
 	int& revision,
-	QStrList& playlist
+	QStringList& playlist
     );
 
-    void  get_inexact_list(QStrList& inexact_list);
+    void  get_inexact_list(QStringList& inexact_list);
     void  query_exact(QString line);
     void  setPathList(QStringList& paths);
     bool  checkDir(unsigned long magicID, const QString& dir);
     bool  getValue(QString& key,QString& value, QString& data);
-    void  serverList(QStrList& list);
+    void  serverList(QStringList& list);
     void  cddbgetServerList(QString& server);
     void  close_connection();
 
@@ -94,17 +94,17 @@ class CDDB:public QObject
     static void  setalarm();
     static void  cddb_http_xlat(QString &s);
 
-    void        queryCD(unsigned long magicID,QStrList& querylist);
+    void        queryCD(unsigned long magicID,QStringList& querylist);
 
     bool local_query(
 	unsigned long magicID,
 	QString&  data,
-	QStrList& titlelist,
-	QStrList& extlist,
+	QStringList& titlelist,
+	QStringList& extlist,
 	QString&  category,
-	QStrList& discidlist,
+	QStringList& discidlist,
 	int& revision,
-	QStrList& playlist
+	QStringList& playlist
     );
     QString getCategoryFromPathName(const QString& pathname);
 
@@ -153,7 +153,7 @@ class CDDB:public QObject
     QString     domainname;
     QString     username;
 
-    QStrList    inexact_list;
+    QStringList    inexact_list;
     QTimer 	starttimer;
     QTimer 	timeouttimer;
     QTimer      expecttimer;
@@ -182,7 +182,7 @@ class CDDB:public QObject
     struct passwd* pw;     
     QString     category;
     QString	title;
-    QStrList 	serverlist;
+    QStringList serverlist;
     unsigned long magicID;
     int         protocol_level;
 

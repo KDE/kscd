@@ -41,8 +41,8 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   configdata.background_color = black;
   configdata.led_color = green;
   configdata.tooltips = true;
-  configdata.cd_device ="/dev/cdrom";
-  configdata.mailcmd = "mail -s \"%s\" ";
+  configdata.cd_device = QString::fromLatin1("/dev/cdrom");
+  configdata.mailcmd = QString::fromLatin1("mail -s \"%s\" ");
   configdata.docking = true;
   configdata.autoplay = false;
   configdata.stopexit = true;

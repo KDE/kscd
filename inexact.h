@@ -48,7 +48,6 @@ public:
   ~InexactDialog();
 
   void insertList(const QStringList& list);
-  void insertList(const QStrList& list);
   void insertText(const QString& str);
   void getSelection(QString& string);
 
