@@ -102,6 +102,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   random_current      = random_list.begin();
 
   cddb = new KCDDB::Client();
+  connect(cddb, SIGNAL(finished(CDDB::Result)), this, SLOT(lookupCDDBDone(CDDB::Result)));
 
 #if defined(BUILD_CDDA)
   audio_systems_list
@@ -1104,14 +1105,7 @@ void KSCD::lookupCDDB()
 
     cddb->config().reparse();
     cddb->setBlockingMode(false);
-    connect(cddb, SIGNAL(finished(CDDB::Result)), this, SLOT(lookupCDDBDone(CDDB::Result)));
-
-    // FIXME Should be enabled again when it doesn't go into an infinite loop
-    // when the disc is played and no entry is found
-//    QValueList<unsigned> messedUp = m_cd->cddbSignature();
-//    messedUp.append(0);
-//    cddb->lookup(messedUp);
-//    cddb->lookup(m_cd->cddbSignature());
+    cddb->lookup(m_cd->cddbSignature());
 } // lookupCDDB
 
 void KSCD::lookupCDDBDone(CDDB::Result result)
@@ -1247,16 +1241,8 @@ bool KSCD::playing()
     return m_cd->isPlaying();
 }
 
-void KSCD::trackUpdate(unsigned track, unsigned trackPosition)
+void KSCD::trackUpdate(unsigned /*track*/, unsigned trackPosition)
 {
-    // This is a hack. Sometimes, discChanged does not get called on startup even
-    // though signals are supposedly delivered synchronously by KCompactDisc.
-    if (songListCB->count() == 0)
-    {
-        discChanged(m_cd->discId());
-        trackChanged(track, m_cd->trackLength());
-    }
-
     unsigned tmp;
 
     switch (Prefs::timeDisplayMode())
@@ -1280,7 +1266,7 @@ void KSCD::trackUpdate(unsigned track, unsigned trackPosition)
     }
     setLEDs(tmp);
     timeSlider->blockSignals(true);
-    timeSlider->setValue(m_cd->trackPosition());
+    timeSlider->setValue(trackPosition);
     timeSlider->blockSignals(false);
 }
 
