@@ -220,8 +220,8 @@ void CDDBDlg::extITB( int trackNumber )
   bool ok;
 
   if (!trackTitle.isEmpty())
-    dialogTitle = i18n("Annotate track #%1: %2").arg(trackNumber)
-                                                .arg(trackTitle);
+    dialogTitle = "<qt>" + i18n("Annotate track #%1: %2").arg(trackNumber)
+                                                .arg(trackTitle) + "</qt>";
   else
     dialogTitle = i18n("Annotate track #%1").arg(trackNumber);
 
