@@ -285,7 +285,7 @@ private:
     LedLamp             *queryled;
     LedLamp             *loopled;
     bool                tooltips;
-    bool                randomplay ;
+    bool                randomplay;
     bool                looping;
     bool                cddrive_is_ok;
     bool                have_new_cd;
