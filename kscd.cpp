@@ -772,10 +772,17 @@ KSCD::prevClicked()
       {
         playlistpointer--;
         if(playlistpointer < 0 )
-	  playlistpointer = playlist.count() -1;
+	  {
+	    playlistpointer = playlist.count() -1;
+	  }
         cur_track = atoi(playlist.at(playlistpointer));
       } else {
-        cur_track--;
+	// djoham@netscape.net suggested the real-world cd-player behaviour
+	// of only jumping to the beginning of the current track if playing
+	// advanced more than 2 seconds. I think that's good, but maybe I'll
+	// make this configurable.
+	if(!(cur_pos_rel > 2)) 
+	  cur_track--;
         if (cur_track < 1)
 	  cur_track = cur_ntracks;
       }
@@ -813,21 +820,20 @@ KSCD::nextClicked()
 	
         play_cd( j, 0, j + 1 );
 	
-      } else if(playlist.count() > 0)
-	{
-	  if(playlistpointer < (int)playlist.count() - 1)
-            playlistpointer++;
-	  else
-            playlistpointer = 0;
-	  
-	  play_cd (atoi(playlist.at(playlistpointer)),
-		   0, atoi(playlist.at(playlistpointer)) + 1);
-	  cur_track = atoi(playlist.at(playlistpointer));	  
-	} else {
-	  if (cur_track == cur_ntracks)
-            cur_track = 0;
-	  play_cd (cur_track + 1, 0, cur_ntracks + 1);
-	}
+      } else if(playlist.count() > 0) {
+	if(playlistpointer < (int)playlist.count() - 1)
+	  playlistpointer++;
+	else
+	  playlistpointer = 0;
+	
+	play_cd (atoi(playlist.at(playlistpointer)),
+		 0, atoi(playlist.at(playlistpointer)) + 1);
+	cur_track = atoi(playlist.at(playlistpointer));	  
+      } else {
+	if (cur_track == cur_ntracks)
+	  cur_track = 0;
+	play_cd (cur_track + 1, 0, cur_ntracks + 1);
+      }
 } // nextClicked()
 
 void 
