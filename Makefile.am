@@ -53,7 +53,7 @@ CDDB_DIRS = rock blues classical jazz newage soundtrack \
 
 bin_SCRIPTS = workman2cddb.pl
 
-EXTRA_DIST = kscd.xpm mini-kscd.xpm kscdlogo.xpm xmcd.kdelnk kscd.kdelnk kscd-script $(bin_SCRIPTS) config.h.std
+EXTRA_DIST = kscd.xpm mini-kscd.xpm kscdlogo.xpm xmcd.desktop kscd.desktop kscd-script $(bin_SCRIPTS) config.h.std
 
 install-data-local:
 	for i in $(CDDB_DIRS); do \
@@ -71,17 +71,17 @@ install-data-local:
 	$(INSTALL_DATA) $(srcdir)/kscdlogo.xpm $(PICSDIR)
 	$(INSTALL_DATA) $(srcdir)/bitmaps/cdsmall.xpm $(PICSDIR)
 	$(mkinstalldirs) $(MIMEDIR)
-	$(INSTALL_DATA) $(srcdir)/xmcd.kdelnk $(MIMEDIR)/xmcd.kdelnk
+	$(INSTALL_DATA) $(srcdir)/xmcd.desktop $(MIMEDIR)/xmcd.desktop
 	$(mkinstalldirs) $(APPSDIR)
-	$(INSTALL_DATA) $(srcdir)/kscd.kdelnk $(APPSDIR)/kscd.kdelnk
+	$(INSTALL_DATA) $(srcdir)/kscd.desktop $(APPSDIR)/kscd.desktop
 
 uninstall:
-	rm -f $(APPSDIR)/kscd.kdelnk
+	rm -f $(APPSDIR)/kscd.desktop
 	rm -f $(PICSDIR)/kscdlogo.xpm
 	rm -f $(kde_icondir)/kscd.xpm
 	rm -f $(kde_minidir)/kscd.xpm
 	rm -f $(kde_icondir)/cd.xpm
-	rm -f $(MIMEDIR)/xmcd.kdelnk
+	rm -f $(MIMEDIR)/xmcd.desktop
 
 messages:
 	$(XGETTEXT) -C -ki18n -x $(includedir)/kde.pot *.cpp && mv messages.po ../po/kscd.pot   
