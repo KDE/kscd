@@ -58,19 +58,19 @@
 </authorgroup>
 
 <copyright>
-<year>2000-2002</year>
+<year>2000</year><year>2002</year>
 <holder>J Singer</holder>
 </copyright>
 
 <legalnotice>&FDLNotice;</legalnotice>
 
 
-<date>2002-02-19</date>
+<date>2002-10-07</date>
 <releaseinfo>1.03.03</releaseinfo>
 
 <abstract>
 <para>&kscd; is a small, fast, <abbrev>CDDB</abbrev> enabled audio
-<abbrev>CD</abbrev> player for Unix platforms.</para>
+<abbrev>CD</abbrev> player for &UNIX; platforms.</para>
 </abstract>
 
 <keywordset>
@@ -87,7 +87,7 @@
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kscd; is a fast, <acronym>CDDB</acronym>cddb enabled &CD; player for the Unix
+<para>&kscd; is a fast, <acronym>CDDB</acronym>cddb enabled &CD; player for the &UNIX;
 platform. &kscd; stands for <quote>The KDE Project's small/simple &CD;
 player</quote>.</para>
 
@@ -516,13 +516,29 @@ page. <guibutton>OK</guibutton> saves the current settings and exits;
 </screenshot>
 
 <para>The <acronym>SMTP</acronym> tab sets up connection to a mail
-server to submit new <acronym>CDDB</acronym> entries. This is useful if you do
-not have your own system configured as a server. Check <guilabel>Enable
-submission via SMTP</guilabel> to use this feature. Select your preferred email
-profile in the <guilabel>Current Email Profile</guilabel> box. Enter the address of the
-<acronym>SMTP</acronym> server in the upper left text field and the port number
-(typically <userinput>25</userinput>) in the upper right field. Enter a different
-email or reply address in the lower text fields. (Not working at this writing.)</para>
+server to submit new <acronym>CDDB</acronym> entries. This is useful
+if you do not have your own system configured as a server. Check
+<guilabel>Enable submission via SMTP</guilabel> to use this
+feature. Select your preferred email profile in the <guilabel>Current
+Email Profile</guilabel> box. Enter the address of the
+<acronym>SMTP</acronym> server server in the field labelled
+<guilabel>Host:</guilabel> and the port number (typically
+<userinput>25</userinput>) in the field labelled
+<guilabel>Port:</guilabel>.</para>
+
+<para>You may choose to <guilabel>Use email addresses from Control
+ Center</guilabel> if you wish.  If you would like to open the
+ &kcontrol; module to configure this email address, click on the text
+ labelled <guilabel>Open the email address control panel</guilabel>.
+ Changing the address there will change the default address for all
+ &kde; applications that use this setting, not just for &kscd;, so do
+ this with caution.</para>
+
+<para>If you don't wish to use the globally configured email address,
+choose the option labelled <guilabel>Use the following email
+address</guilabel> and enter a different email or reply-to address in
+the lower text fields.</para>
+
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
 page. <guibutton>OK</guibutton> saves the current settings and exits;
 <guibutton>Apply</guibutton> saves the current settings without exiting;
