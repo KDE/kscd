@@ -90,6 +90,9 @@ extern "C"
 #define FRAMES_TO_MS(frames) \
 ((frames) * 1000 / 75)
 
+#define TRACK_VALID(track) \
+((track) && (track <= m_tracks))
+
 const QString KCompactDisc::defaultDevice = DEFAULT_CD_DEVICE;
 const unsigned KCompactDisc::missingDisc = (unsigned)-1;
 
@@ -128,7 +131,7 @@ const QString &KCompactDisc::device() const
 
 unsigned KCompactDisc::discLength() const
 {
-    if (NO_DISC)
+    if (NO_DISC || !m_tracks)
         return 0;
     return FRAMES_TO_MS(m_trackStartFrames[m_tracks - 1] - m_trackStartFrames[0]);
 }
@@ -224,7 +227,7 @@ void KCompactDisc::pause()
 
 void KCompactDisc::play(unsigned startTrack, unsigned startTrackPosition, unsigned endTrack)
 {
-    wm_cd_play((startTrack == 0) ? 1 : startTrack, startTrackPosition / 1000, (endTrack == 0) ? WM_ENDTRACK : endTrack);
+    wm_cd_play(TRACK_VALID(startTrack) ? startTrack : 1, startTrackPosition / 1000, TRACK_VALID(endTrack) ? endTrack : WM_ENDTRACK );
 }
 
 bool KCompactDisc::setDevice(
@@ -304,7 +307,7 @@ unsigned KCompactDisc::trackLength() const
 
 unsigned KCompactDisc::trackLength(unsigned track) const
 {
-    if (NO_DISC)
+    if (NO_DISC || !TRACK_VALID(track))
         return 0;
     return cd->trk[track - 1].length * 1000;
 }
