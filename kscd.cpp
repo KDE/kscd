@@ -30,8 +30,8 @@ extern "C" {
 
 #include <kcharsets.h>
 #include <kconfig.h>
-#include <kfm.h>
 #include <klocale.h>
+#include <krun.h>
 
 #include "docking.h"
 #include "kscd.h"
@@ -2325,9 +2325,7 @@ void KSCD::startBrowser(const QString &querystring){
 
     if(use_kfm){
 
-        KFM* kfm = new KFM();
-        kfm->openURL( querystring );
-        delete kfm;
+        (void) new KRun ( querystring ); // replacement for KFM::openURL (David)
 
     }
     else{
