@@ -52,8 +52,8 @@ public slots:
 protected:
   void drawContents(QPainter *);
 private:
-  const int width;
-  const int height;
+  const int w;
+  const int h;
   const int dx;
   State s;
   int ledtype;

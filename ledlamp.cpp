@@ -1,4 +1,3 @@
-
 /*  This file is part of the KDE libraries
     Copyright (C) 1997 Richard Moore (moorer@cs.man.ac.uk)
 
@@ -28,14 +27,14 @@
 #include "ledlamp.moc"
 
 LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent),
-  width( 10 ), height( 7 ), dx( 4 )
+w( 10 ), h( 7 ), dx( 4 )
 {
   // Make sure we're in a sane state
   s = Off;
 
   // Set the frame style
   //  setFrameStyle(Sunken | Box);
-  setGeometry(0,0,height+1,width+1);
+  setGeometry(0,0,h+1,w+1);
   ledtype = t;
 } // LedLamp
 
@@ -43,14 +42,19 @@ void
 LedLamp::drawContents(QPainter *painter)
 {
 
+  
+  
+//  QColor redColor(255,100,100);
+//  QBrush redBrush(redColor);
+//  QPen redPen(redColor);
+
   QBrush lightBrush(this->foregroundColor());
   QBrush darkBrush(this->backgroundColor());
 
-  //  QColor redColor(255,100,100);
-  //  QBrush redBrush(redColor);
-
   QPen darkPen(this->backgroundColor(),1);
   QPen lightPen(this->foregroundColor(), 1);
+
+  fprintf(stderr, "(%d, %d, %d, %d)\n", x(), y(), width(), height());
 
   switch(s) 
     {
@@ -59,20 +63,20 @@ LedLamp::drawContents(QPainter *painter)
       switch (ledtype)
 	{
 	case Rect:
-	  painter->drawRect(1,1,width-3, height-2);
+	  painter->drawRect(1,1,w-3, h-2);
 	  break;
 	case Loop:
-	  painter->setBrush(lightBrush);
-	  painter->setPen(lightPen);
+//	  painter->setBrush(lightBrush);
+//	  painter->setPen(lightBrush);
 
-	  //	  painter->drawRect(0,0,width,height);
+	  //	  painter->drawRect(0,0,w,h);
 
-	  painter->drawLine(0, 2, 0, height-2); //  |
-	  painter->drawLine(1, 1, width-4, 1); // ~
-	  painter->drawLine(width-3, 2, width-3, height-2); // |
-	  painter->drawLine(2, height-2, width-3, height-2); //_
-	  painter->drawLine(width-6,0,width-6,2); // ---+
-	  painter->drawLine(3,height-2,3,height); // +---
+	  painter->drawLine(0, 2, 0, h-2); //  |
+	  painter->drawLine(1, 1, w-4, 1); // ~
+	  painter->drawLine(w-3, 2, w-3, h-2); // |
+	  painter->drawLine(2, h-2, w-3, h-2); //_
+	  painter->drawLine(w-6,0,w-6,2); // ---+
+	  painter->drawLine(3,h-2,3,h); // +---
 	  break;
 	}
       break;
@@ -82,27 +86,27 @@ LedLamp::drawContents(QPainter *painter)
       switch (ledtype)
 	{
 	case Rect:
-	  painter->drawRect(1,1,width-3, height-2);
+	  painter->drawRect(1,1,w-3, h-2);
 	  break;
 	case Loop:
 	  painter->setBrush(darkBrush);
 	  painter->setPen(darkPen);
 
-	  painter->drawLine(0, 2, 0, height-2); //  |
-	  painter->drawLine(1, 1, width-4, 1); // ~
-	  painter->drawLine(width-3, 2, width-3, height-2); // |
-	  painter->drawLine(2, height-2, width-3, height-2); //_
-	  painter->drawLine(width-6,0,width-6,2); // ---+
-	  painter->drawLine(3,height-2,3,height); // +---
+	  painter->drawLine(0, 2, 0, h-2); //  |
+	  painter->drawLine(1, 1, w-4, 1); // ~
+	  painter->drawLine(w-3, 2, w-3, h-2); // |
+	  painter->drawLine(2, h-2, w-3, h-2); //_
+	  painter->drawLine(w-6,0,w-6,2); // ---+
+	  painter->drawLine(3,h-2,3,h); // +---
 	  break;
 	}
       //      painter->setPen(pen);
-      //    painter->drawLine(2,2,width-2, 2);
-      //painter->drawLine(2,height-2,width-2,height-2);
+      //    painter->drawLine(2,2,w-2, 2);
+      //painter->drawLine(2,h-2,w-2,h-2);
       // Draw verticals
       //int i;
-      //for (i= 2; i < width-1; i+= dx)
-      //painter->drawLine(i,2,i,height-2);
+      //for (i= 2; i < w-1; i+= dx)
+      //painter->drawLine(i,2,i,h-2);
       break;
       
     default:

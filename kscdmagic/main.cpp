@@ -49,6 +49,7 @@
 #include <getopt.h>
 #endif
 
+#include "logo.h"
 #include "magicconf.h"
 #include "syna.h"
 
@@ -61,10 +62,15 @@ double starSize = 0.125;
 bool pointsAreDiamonds = true;
 
 
-const int numRows = 4, rowHeight = 50, leftColWidth = 40, rowMaxWidth = 310,
-          sliderBorder = 20, sliderWidth = rowMaxWidth - leftColWidth - sliderBorder*2,
-          numberSpacing = 15,
-          uiWidth = 320, uiHeight = 200;
+const int numRows = 4;
+const int rowHeight = 50;
+const int leftColWidth = 40;
+const int rowMaxWidth = 310;
+const int sliderBorder = 20;
+const int sliderWidth = rowMaxWidth - leftColWidth - sliderBorder*2;
+const int numberSpacing = 15;
+const int uiWidth = 330;
+const int uiHeight = 135;
 
 
 static int isExpanded = 0;
@@ -129,18 +135,19 @@ error(const char *str, bool syscall) {
   if (syscall)
     fprintf(stderr,"(reason for error: %s)\n",strerror(errno));
   exit(1);
-}
+} // error()
 
 void 
 warning(const char *str, bool syscall) { 
   fprintf(stderr, PROGNAME ": Possible error %s\n",str); 
   if (syscall)
     fprintf(stderr,"(reason for error: %s)\n",strerror(errno));
-}
+} // warning()
 
 
 
-int processUserInput() 
+int 
+processUserInput() 
 {
 
   int mouseX, mouseY, mouseButtons;
@@ -148,11 +155,15 @@ int processUserInput()
 
   inputUpdate(mouseX,mouseY,mouseButtons,keyHit);
 
+  if( keyHit == 'q' )
+    return -1;
+
+
   if (sizeUpdate()) 
     {
       isExpanded = 0;
     }
-  
+
   return 0;
 } // processUserInput()
 
@@ -161,9 +172,10 @@ main(int argc, char **argv)
 {
   int windX=10;
   int windY=30;
-  int windWidth=320;
-  int windHeight=200;
+  int windWidth=uiWidth;
+  int windHeight=uiHeight;
   int c;
+  int xx, xy;
   opterr = 0;
 
   //  openSound(configUseCD);
@@ -198,15 +210,16 @@ main(int argc, char **argv)
     bright = 0.0;
   
   if (windWidth < 1)
-    windWidth = 320;
+    windWidth = uiWidth;
   if (windHeight < 1)
-    windHeight = 200;
+    windHeight = uiHeight;
 
   screenInit(windX,windY,windWidth,windHeight);
 
   allocOutput(outWidth,outHeight);
 
   coreInit();
+  
 
   setStarSize(starSize);
   setBrightness(bright);
@@ -219,9 +232,27 @@ main(int argc, char **argv)
     fade();
     if (-1 == coreGo())
       break;
+
+    polygonEngine.clear();
+
+    for( xy = 0; xy < 48; xy++)
+      {
+	for( xx = 0; xx < 48; xx++)
+	  {
+	    if ( logo[xy][xx] != 0)
+	      {
+		polygonEngine.add(32769, xx+10, xy+3);
+	      }
+	  }
+      }
+    polygonEngine.apply(outputBmp.data);
     screenShow(); 
+
+
+
     frames++;
-    processUserInput();
+    if(processUserInput() == -1)
+      break;
   } 
 
   

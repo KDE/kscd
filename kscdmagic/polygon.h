@@ -25,15 +25,25 @@ template<class Pixel, Pixel combine(Pixel a,Pixel b), int superSampleShift>
 struct PolygonEngine : public Bitmap<Pixel,1> {
 #define super (1<<superSampleShift)
   void apply(Pixel *dest) {
-    Pixel sum=0;
+    /*    Pixel sum=0; */
     int count = width*height;
     Pixel *src = data;
+    /*
+     * I don't really want this.
+     *
     while(count--) {
       sum += *(src++);
       if (sum)
         *dest = combine(sum,*dest);
       dest++;
     }
+    */
+    while(count--)
+      {
+	*dest = combine(*src, *dest);
+	src++;
+	dest++;
+      }
   }
 
   void add(Pixel color,int x,int y) {

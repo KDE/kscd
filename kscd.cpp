@@ -238,7 +238,7 @@ KSCD::smtpMessageSent(void)
 {
     KMessageBox::information(this, i18n("Record submitted successfully"),
                                    i18n("Record Submission"));
-}
+} // smtpMessageSent()
 
 void 
 KSCD::smtpError(int errornum)
@@ -264,7 +264,7 @@ KSCD::smtpError(int errornum)
     str = i18n("Error #%1 sending message via SMTP.\n\n%2")
       .arg(errornum).arg(lstr);
     KMessageBox::error(this, str, i18n("Record Submission"));
-} // smptError
+} // smptError()
 
 	
 // Initialize the variables only in WorkMan
@@ -283,7 +283,7 @@ KSCD::initWorkMan()
     thiscd.lists = NULL;
     tottime 	 = tmptime;
 
-} // initWorkMan
+} // initWorkMan()
 	
 void 
 KSCD::initCDROM()
@@ -2273,16 +2273,16 @@ KSCD::purchases(int i)
 } // purchases
 
 void 
-KSCD::magicslot(int )
+KSCD::magicslot( int )
 {
-    if(magicproc && magicproc->isRunning()){
+    if(magicproc && magicproc->isRunning())
+      {
         return;
-    }
+      }
 
     magicproc = 0L;
     magicproc = new KProcess;
 
-    magicproc->setExecutable("kscdmagic");
     QString b;
     b.setNum(magic_brightness);
     QString w;
@@ -2290,7 +2290,7 @@ KSCD::magicslot(int )
     QString h;
     h.setNum(magic_height);
 
-    *magicproc << "-b" << b.data() << "-w"<< w.data() << "-h" << h.data();
+    *magicproc << "kscdmagic" << "-b" << b.data() << "-w"<< w.data() << "-h" << h.data();
 
     connect(magicproc,
             SIGNAL(processExited(KProcess *)),this, SLOT(magicdone(KProcess*)));
@@ -2300,20 +2300,19 @@ KSCD::magicslot(int )
 
     if(!result)
         KMessageBox::error(this, i18n("Cannot start kscdmagic."));
-
     return;
 } // magicslot
 
 void 
 KSCD::magicdone(KProcess* proc)
 {
-    if(proc->normalExit()){
+    if(proc->normalExit())
+      {
         //    fprintf(stderr,"kscdmagic exit status %d\n",proc->exitStatus());
         if(proc->exitStatus()!=0)
-            KMessageBox::error(this, i18n("KSCD Magic exited abnormally.\n"
-                                          "Are you sure kscdmagic is installed?"));
-    }
-
+	  KMessageBox::error(this, i18n("KSCD Magic exited abnormally.\n"
+					"Are you sure kscdmagic is installed?"));
+      }
     //  printf("KSCD Magic Process Exited\n");
 
     if(proc)
