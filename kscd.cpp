@@ -699,10 +699,11 @@ void KSCD::ejectClicked()
       statuslabel->setText(i18n("Ejecting"));
       kapp->processEvents();
       kapp->flushX();
-      updateArtistAndTitle();
       setTitle(0);
       artist="";
       title="";
+      infoStatus="";
+      updateArtistAndTitle();
       tracktitlelist.clear();
       extlist.clear();
       category = "";
@@ -831,10 +832,11 @@ void KSCD::setDevicePaths()
     kdDebug(67000) << "Device changed to " << Prefs::cdDevice() << ". returns status  " << ret << "\n";
 #endif
 
-    updateArtistAndTitle();
     setTitle(0);
     artist="";
     title="";
+    infoStatus="";
+    updateArtistAndTitle();
     tracktitlelist.clear();
     extlist.clear();
     clearSongList();
@@ -1118,12 +1120,13 @@ void KSCD::cdModeChanged(int previous, int cdmode)
 
             artist="";
 	    title="";
+	    infoStatus="";
+	    updateArtistAndTitle();
             tracktitlelist.clear();
             extlist.clear();
             clearSongList();
             totaltimelabel->clear();
             totaltimelabel->lower();
-	    updateArtistAndTitle();
 
             updateDisplayedTrack(N_TRACK_UNKNOW);
             break;
@@ -1269,7 +1272,7 @@ void KSCD::get_cddb_info()
 
     KCDDB::TrackOffsetList querylist;
     artist="";
-    title=i18n("Start freedb lookup.");
+    infoStatus=i18n("Start freedb lookup.");
     tracktitlelist.clear();
     populateSongList();
 
@@ -1297,7 +1300,7 @@ void KSCD::cddb_done(CDDB::Result result)
     if ((result != 0 /*KCDDB::CDDB::Success*/) &&
         (result != KCDDB::CDDB::MultipleRecordFound))
     {
-        cddb_failed();
+        cddb_failed(result);
         return;
     }
     KCDDB::CDInfo cddbInfo = cddb->bestLookupResponse();
@@ -1341,6 +1344,7 @@ void KSCD::cddb_done(CDDB::Result result)
     
     artist="";
     title="";
+    infoStatus="";
     tracktitlelist.clear();
     extlist.clear();
 
@@ -1430,7 +1434,8 @@ void KSCD::cddb_no_info()
     kdDebug(67000) << "cddb_no_info() called\n" << endl;
 
     artist="";
-    title = i18n("No matching freedb entry found.");
+    title="";
+    infoStatus = i18n("No matching freedb entry found.");
     tracktitlelist.clear();
     extlist.clear();
 
@@ -1439,15 +1444,16 @@ void KSCD::cddb_no_info()
     get_cdtext_info();
 } // cddb_no_info
 
-void KSCD::cddb_failed()
+void KSCD::cddb_failed(CDDB::Result result)
 {
-    // TODO differentiate between those casees where the communcition really
-    // failed and those where we just couldn't find anything
-    //        cddb_ready_bug = 0;
-    kdDebug(67000) << "cddb_failed() called\n" << endl;
+    kdDebug(67000) << k_funcinfo << endl;
 
     artist="";
-    title = i18n("Error getting freedb entry.");
+    title="";
+    if (result == CDDB::NoRecordFound)
+      cddb_no_info();
+    else
+      infoStatus = i18n("Error getting freedb entry.");
     tracktitlelist.clear();
     extlist.clear();
     revision=year=0;
@@ -1544,7 +1550,7 @@ void KSCD::titlelabeltimeout()
 void KSCD::updateArtistAndTitle()
 {
     if (artist.isEmpty() && title.isEmpty()) {
-      artistlabel->setText(i18n("<Unknown>"));
+        artistlabel->setText(infoStatus);
     } else {
         if (artist.isEmpty())
 	  artistlabel->setText(artist);

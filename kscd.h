@@ -282,13 +282,14 @@ private:
     QStringList     extlist;
     QString         artist;
     QString         title;
+    QString         infoStatus;
     QString         category;
     QString         genre;
 
 // cddb support
 public slots:
     void cddb_done(CDDB::Result);
-    void cddb_failed();
+    void cddb_failed(CDDB::Result);
     void cddb_no_info();
     void mycddb_inexact_read();
     void CDDialogSelected();
