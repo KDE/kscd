@@ -587,7 +587,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
   if( !file.open( IO_WriteOnly  )) 
     {
       QString str = i18n("Unable to write to file:\n%1\nPlease check "
-			 "your permissions and make your category directories exist.")
+			 "your permissions and ensure your category directories exist.")
 	.arg(path);
 
       KMessageBox::error(this, str);
@@ -804,7 +804,7 @@ CDDialog::checkit()
   if(track_list.count() < 2)
     {
       KMessageBox::sorry(this,
-			 i18n("Not all track titles can be empty.\n"\
+			 i18n("At least one track title must be entered.\n"\
 			      "Please correct the entry and try again."),
 			 i18n("Invalid Database Entry"));
       return false;
@@ -827,7 +827,7 @@ CDDialog::checkit()
     {
       
       KMessageBox::sorry(this,
-			 i18n("Not all track titles can be empty.\n"\
+			 i18n("At least one track title must be entered.\n"\
 			      "Please correct the entry and try again."),
 			 i18n("Invalid Database Entry"));
       return false;

@@ -2909,7 +2909,7 @@ KSCD::edm_save_cddb_entry(QString& path)
     if( !file.open( IO_WriteOnly  ))
     {
         QString str = i18n("Unable to write to file:\n%1\nPlease check "
-                           "your permissions and make your category directories exist.")
+                           "your permissions and ensure your category directories exist.")
                       .arg(path);
 
         KMessageBox::error(this, str);
