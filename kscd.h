@@ -338,7 +338,6 @@ public slots:
     void smtpMessageSent(void);
     void smtpError(int);
     void cddb_done(CDDB::Result);
-    void cddb_timed_out();
     void cddb_failed();
     void cddb_no_info();
     void mycddb_inexact_read();
@@ -367,12 +366,9 @@ private:
     QString         mailcmd;
     QString         submitaddress;
     QStringList     cddbsubmitlist;
-    bool            cddb_inexact_sentinel;
     bool            updateDialog;
     bool            Fetch_remote_cddb;
     int             revision;
-    bool            cddb_remote_enabled;
-    bool            cddb_auto_enabled;
 
 // kscd magic stuff
 public slots:

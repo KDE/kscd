@@ -101,10 +101,6 @@ void            kcdworker(int );
 
 //void          parseargs(char* buf, char** args);
 extern QTime framestoTime(int frames);
-extern void cddb_decode(QString& str); //!!!!
-extern void cddb_encode(QString& str, QStringList &returnlist);  //!!!!
-extern void cddb_playlist_encode(QStringList& list,QString& playstr);  //!!!!
-extern bool cddb_playlist_decode(QStringList& list, QString& str);  //!!!!
 
 static QString formatTrack(int d1, int d2)
 {
@@ -191,11 +187,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
     ejectonfinish(false),
     randomonce(true),
     currentlyejected(false),
-    cddb_inexact_sentinel(false), //!!!!
     updateDialog(false), //!!!!
-    revision(0), // The first freedb revision is "0" //!!!!
-    cddb_remote_enabled(false), //!!!!
-    cddb_auto_enabled(false)   //!!!!
+    revision(0) // The first freedb revision is "0" //!!!!
 #if KSCDMAGIC
     ,
     magicproc(0L),
@@ -2167,7 +2160,6 @@ KSCD::cddb_no_info()
     }
     led_off();
     timer.start(1000);
-    cddb_inexact_sentinel =false;
 } // cddb_no_info
 
 void
@@ -2204,42 +2196,7 @@ KSCD::cddb_failed()
     }
     timer.start(1000);
     led_off();
-    cddb_inexact_sentinel =false;
 } // cddb_failed
-
-void
-KSCD::cddb_timed_out()
-{
-    struct cdtext_info* cdtext_i;
-    kdDebug() << "cddb_timed_out() called\n" << endl;
-    tracktitlelist.clear();
-    setArtistAndTitle("", "");
-    extlist.clear();
-    tracktitlelist.append(i18n("freedb query timed out."));
-
-    cdtext_i = wm_cd_get_cdtext();
-    if(cdtext_i && cdtext_i->valid)
-    {
-        cdtext(cdtext_i);
-    }
-    else
-    {
-      for(int i = 0 ; i <= cd->ntracks; i++)
-        tracktitlelist.append("");
-
-      extlist.clear();
-      for(int i = 0 ; i <= cd->ntracks; i++)
-        extlist.append("");
-
-      discidlist.clear();
-      populateSongList();
-
-      setArtistAndTitle(i18n("freedb query timed out."),"");
-    }
-    timer.start(1000);
-    led_off();
-    cddb_inexact_sentinel =false;
-} // cddb_timed_out()
 
 void
 KSCD::mycddb_inexact_read()
@@ -2292,7 +2249,7 @@ KSCD::mycddb_inexact_read()
 } // mycddb_inexact_read
 
 void
-KSCD::led_off() //!!!!
+KSCD::led_off()
 {
     queryledtimer.stop();
     queryled->off();
@@ -2303,7 +2260,7 @@ KSCD::led_off() //!!!!
 } // led_off
 
 void
-KSCD::led_on() //!!!!
+KSCD::led_on()
 {
     totaltimelabel->hide();
     totaltimelabel->lower();
