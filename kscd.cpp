@@ -131,7 +131,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   magic_height        = 135;
   magic_brightness    = 3;
   magic_pointsAreDiamonds = false;
-  
+
   cycle_flag          = false;
   cddb_remote_enabled = false;
   cddb_auto_enabled   = false;
@@ -150,20 +150,20 @@ KSCD::KSCD( QWidget *parent, const char *name )
   ejectedBefore       = false;
   currentlyejected    = false;
   cddialog        = 0L;
-	
+
   have_new_cd = true;
-  
+
   drawPanel();
   loadBitmaps();
   setColors();
   setToolTips();
-  
+
   timer           = new QTimer( this );
   queryledtimer   = new QTimer( this );
   titlelabeltimer = new QTimer( this );
   initimer        = new QTimer( this );
   cycletimer      = new QTimer( this );
-  
+
   connect( initimer, SIGNAL(timeout()),this,  SLOT(initCDROM()) );
   connect( queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
@@ -189,33 +189,33 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( shufflebutton, SIGNAL(clicked()), SLOT(randomSelected()));
   connect( cddbbutton, SIGNAL(clicked()), SLOT(CDDialogSelected()));
   connect(kapp,SIGNAL(kdisplayPaletteChanged()),this,SLOT(setColors()));
-  
+
   readSettings();
   setColors();
   initWorkMan();
-  
+
   setupPopups();
   volstartup = TRUE;
   volSB->setValue(volume);
-  
+
   if(looping)
     {
       loopled->on();
     }
-  
+
   dock_widget = new DockWidget( this, "dockw");
   if(docking)
     {
       dock_widget->show();
         connect(this, SIGNAL(trackChanged(const QString&)), dock_widget, SLOT(setToolTip(const QString&)));
     }
-  
+
   smtpMailer = new SMTP;
   connect(smtpMailer, SIGNAL(messageSent()), this, SLOT(smtpMessageSent()));
   connect(smtpMailer, SIGNAL(error(int)), this, SLOT(smtpError(int)));
-  
+
   setFocusPolicy ( QWidget::NoFocus );
-  
+
   initimer->start(500,TRUE);
 } // KSCD
 
@@ -233,7 +233,7 @@ void
 KSCD::smtpError(int errornum)
 {
   QString str, lstr;
-  
+
   switch(errornum){
   case 10:
     lstr = i18n("Error connecting to server.");
@@ -282,12 +282,12 @@ KSCD::initCDROM()
   initimer->stop();
   kapp->processEvents();
   kapp->flushX();
-  
+
   cdMode();
   volstartup = FALSE;
   if(cddrive_is_ok)
     volChanged(volume);
-  
+
   timer->start(1000);
 } // initCDROM
 
@@ -299,10 +299,10 @@ int
 KSCD::smallPtSize()
 {
   static int theSmallPtSize = 0;
-  
+
   if ( theSmallPtSize != 0 )
     return theSmallPtSize;
-  
+
   // Find a font that fits the 13 and 14 pixel widgets
   theSmallPtSize = 10;
   QFont fn( "Helvetica", theSmallPtSize, QFont::Bold );
@@ -345,15 +345,15 @@ KSCD::drawPanel()
   const int WIDTH = 90;
   const int HEIGHT = 27;
   const int SBARWIDTH = 220;
-  
+
   aboutPB = makeButton( ix, iy, WIDTH, 2 * HEIGHT, i18n("About") );
-  
+
   ix = 0;
   iy += 2 * HEIGHT;
-  
+
   infoPB = makeButton( ix, iy, WIDTH/2, HEIGHT, "" );
   ejectPB = makeButton( ix + WIDTH/2, iy, WIDTH/2, HEIGHT, "" );
-  
+
   iy += HEIGHT;
 #if KSCDMAGIC
   dockPB = makeButton( ix, iy, WIDTH/2, HEIGHT, i18n("Quit") );
@@ -363,13 +363,13 @@ KSCD::drawPanel()
 #endif
   ix += WIDTH;
   iy = 0;
-  
+
   backdrop = new QFrame(this);
   backdrop->setGeometry(ix,iy,SBARWIDTH -2, 2* HEIGHT + HEIGHT /2 -1);
   backdrop->setFocusPolicy ( QWidget::NoFocus );
-  
+
   int D = 6;
-  
+
   ix = WIDTH + 8;
   for (int u = 0; u<5;u++)
     {
@@ -378,111 +378,111 @@ KSCD::drawPanel()
       trackTimeLED[u]->setLEDoffColor(background_color);
       trackTimeLED[u]->setLEDColor(led_color,background_color);
     }
-  
+
   QString zeros("--:--");
   setLEDs(zeros);
-  
+
   artistlabel = new QLabel(this);
   artistlabel->setGeometry(WIDTH + 5, iy + 38 , SBARWIDTH -15, 13);
   artistlabel->setFont( QFont( "helvetica", smallPtSize(), QFont::Bold) );
   artistlabel->setAlignment( AlignLeft );
   artistlabel->clear();
-  
+
   titlelabel = new QLabel(this);
   titlelabel->setGeometry(WIDTH + 5, iy + 50 , SBARWIDTH -15, 13);
   QFont ledfont( "Helvetica", smallPtSize()-2, QFont::Bold );
   titlelabel->setFont( ledfont );
   titlelabel->setAlignment( AlignLeft );
   titlelabel->clear();
-  
+
   statuslabel = new QLabel(this);
   statuslabel->setGeometry(WIDTH + 110, iy  +D, 50, 14);
   statuslabel->setFont( ledfont );
   statuslabel->setAlignment( AlignLeft );
-  
+
   queryled = new LedLamp(this);
   queryled->move(WIDTH + 200, iy  +D +1 );
   queryled->off();
   queryled->hide();
-  
+
   loopled = new LedLamp(this, LedLamp::Loop);
   loopled->move(WIDTH + 200, iy  +D +18 );
   loopled->off();
-  
+
   volumelabel = new QLabel(this);
   volumelabel->setGeometry(WIDTH + 110, iy + 14 + D, 50, 14);
   volumelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
   volumelabel->setAlignment( AlignLeft );
   volumelabel->setText(i18n("Vol: --"));
-  
+
   tracklabel = new QLabel(this);
   tracklabel->setGeometry(WIDTH + 168, iy + 14 +D, 30, 14);
   tracklabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
   tracklabel->setAlignment( AlignLeft );
   tracklabel->setText("--/--");
-  
+
   totaltimelabel = new QLabel(this);
   totaltimelabel->setGeometry(WIDTH + 168, iy  +D, 50, 14);
   totaltimelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
   totaltimelabel->setAlignment( AlignLeft );
   totaltimelabel->hide();
-  
+
   ix = WIDTH;
   iy = HEIGHT + HEIGHT + HEIGHT/2;
-  
+
   volSB = new QSlider( 0, 100, 5,  50, QSlider::Horizontal, this, "Slider" );
   volSB->setGeometry( ix, iy, SBARWIDTH, HEIGHT/2 );
   volSB->setFocusPolicy ( QWidget::NoFocus );
-  
+
   iy += HEIGHT/2  +1 ;
   cddbbutton = new QPushButton( this );
   cddbbutton->setGeometry( ix , iy, SBARWIDTH/10 *2 , HEIGHT );
   cddbbutton->setFocusPolicy ( QWidget::NoFocus );
-  
+
   ix += SBARWIDTH/10*2;
   shufflebutton = new QPushButton( this );
   shufflebutton->setGeometry( ix , iy, SBARWIDTH/10 *2  , HEIGHT );
   shufflebutton->setFocusPolicy ( QWidget::NoFocus );
-  
+
   ix += SBARWIDTH/10*2;
-  
+
   optionsbutton = new QPushButton( this );
   optionsbutton->setGeometry( ix, iy, SBARWIDTH/10 *2  , HEIGHT );
   optionsbutton->setFocusPolicy ( QWidget::NoFocus );
-  
+
   ix = 0;
   iy += HEIGHT;
   songListCB = new QComboBox( this );
   songListCB->setGeometry( ix, iy, SBARWIDTH/10*18+6, HEIGHT );
   songListCB->setFont( QFont( "helvetica", smallPtSize() ) );
   songListCB->setFocusPolicy ( QWidget::NoFocus );
-  
+
   iy = 0;
   ix = WIDTH + SBARWIDTH + 2;
   playPB = makeButton( ix, iy, WIDTH, HEIGHT*2, "Play/Pause" );
-  
+
   iy += HEIGHT + HEIGHT;
   stopPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Stop" );
-  
+
   ix += WIDTH / 2;
   replayPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Replay" );
-  
+
   ix = WIDTH + SBARWIDTH/10*6;
   iy += HEIGHT;
   bwdPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Bwd" );
-  
+
   ix += WIDTH / 2;
   fwdPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Fwd" );
-  
+
   ix = WIDTH + SBARWIDTH + 2;
   prevPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Prev" );
-  
+
   ix += WIDTH / 2;
   nextPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Next" );
-  
+
   this->adjustSize();
   this->setFixedSize(this->width(),this->height());
-  
+
 } // drawPanel
 
 void
@@ -968,7 +968,7 @@ KSCD::ejectClicked()
 	    setArtistAndTitle("", "");
 	    tracktitlelist.clear();
 	    extlist.clear();
-	    
+
 	    wm_cd_stop();
 	    //  timer->stop();
 	    /*
@@ -991,20 +991,21 @@ KSCD::randomSelected()
     if(randomplay == TRUE)
     {
         randomplay = FALSE;
-    } else {
+    }
+    else
+    {
         if( randomonce )
-        {
             statuslabel->setText(i18n("Shuffle"));
-        } else {
+        else
             statuslabel->setText(i18n("Random"));
-        }
 
         randomplay = TRUE;
-
+        if(tracktitlelist.count()==0)
+            return;
         make_random_list(); /* koz: Build a unique, once, random list */
         int j = randomtrack();
         tracklabel->setText(formatTrack(j, cd->ntracks));
-        if(j < (int)tracktitlelist.count())
+        if(tracktitlelist.count()!=0 && j < (int)tracktitlelist.count())
         {
             setArtistAndTitle(tracktitlelist.first(),
                               *tracktitlelist.at(j));
@@ -1316,16 +1317,16 @@ KSCD::randomtrack()
  * - Data discs not recognized as data discs.
  *
  */
-void 
-KSCD::cdMode() 
+void
+KSCD::cdMode()
 {
-  
+
   static char *p = new char[10];
   static bool damn = TRUE;
   QString str;
-		
+
   sss = wm_cd_status();
-  if( sss == 2 ) 
+  if( sss == 2 )
       have_new_cd = true;
 
   if(sss < 0)
@@ -1593,7 +1594,7 @@ KSCD::readSettings()
     randomonce = (bool)config->readBoolEntry("RANDOMONCE",true);
     looping    = config->readBoolEntry("Looping",false);
     browsercmd = config->readEntry("CustomBrowserCmd","kfmclient openURL %s");
-    
+
 
 #ifdef DEFAULT_CD_DEVICE
 
@@ -2180,7 +2181,7 @@ KSCD::mycddb_inexact_read()
 	setArtistAndTitle("", "");
 	tracktitlelist.clear();
 	extlist.clear();
-			
+
     if( inexact_list.count() == 1)
     {
         pick = inexact_list.first();
