@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
 <class>configWidgetUI</class>
 <widget class="QWidget">
     <property name="name">
@@ -9,8 +9,11 @@
             <x>0</x>
             <y>0</y>
             <width>450</width>
-            <height>451</height>
+            <height>511</height>
         </rect>
+    </property>
+    <property name="caption">
+        <string>configWidgetUI</string>
     </property>
     <vbox>
         <property name="name">
@@ -46,7 +49,7 @@
                         <cstring>textLabel2</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;Background Color:</string>
+                        <string>&amp;Background color:</string>
                     </property>
                     <property name="buddy" stdset="0">
                         <cstring>bgColorBtn</cstring>
@@ -79,7 +82,7 @@
                         <cstring>textLabel1</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;LCD Color:</string>
+                        <string>&amp;LCD color:</string>
                     </property>
                     <property name="buddy" stdset="0">
                         <cstring>ledColorBtn</cstring>
@@ -241,6 +244,9 @@
                     <property name="text">
                         <string>Selec&amp;t audio device:</string>
                     </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>audioDevice</cstring>
+                    </property>
                 </widget>
                 <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="3">
                     <property name="name">
@@ -262,6 +268,12 @@
                     </property>
                     <property name="text">
                         <string>Select &amp;audio backend:</string>
+                    </property>
+                    <property name="indent">
+                        <number>0</number>
+                    </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>audioBackend</cstring>
                     </property>
                 </widget>
                 <widget class="QLineEdit" row="3" column="1" rowspan="1" colspan="2">
@@ -290,6 +302,8 @@
         </spacer>
     </vbox>
 </widget>
+<customwidgets>
+</customwidgets>
 <connections>
     <connection>
         <sender>digitalPlaybackChckbx</sender>
@@ -317,11 +331,8 @@
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>
-    <includehint>kcolorbutton.h</includehint>
-    <includehint>kcolorbutton.h</includehint>
     <includehint>knuminput.h</includehint>
     <includehint>knuminput.h</includehint>
-    <includehint>kurlrequester.h</includehint>
     <includehint>klineedit.h</includehint>
     <includehint>kpushbutton.h</includehint>
 </includehints>
