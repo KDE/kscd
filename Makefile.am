@@ -54,9 +54,6 @@ bin_PROGRAMS = kscd
 
 SUBDIRS = bitmaps libwm
 
-CDDB_DIRS = rock blues classical jazz newage soundtrack \
-	reggae folk country misc data
-
 bin_SCRIPTS = workman2cddb.pl
 
 EXTRA_DIST = kscdlogo.xpm xmcd.desktop kscd.desktop kscd-script $(bin_SCRIPTS) config.h.std
@@ -68,14 +65,6 @@ apps_DATA = kscd.desktop
 mime_DATA = xmcd.desktop
 
 pics_DATA = kscdlogo.xpm cdsmall.xpm
-
-install-data-local:
-	for i in $(CDDB_DIRS); do \
-	if test ! -d $(DESTDIR)$(CDDBDIR)/$$i; then \
-		$(mkinstalldirs) $(DESTDIR)$(CDDBDIR)/$$i ;\
-		chmod 0777 $(DESTDIR)$(CDDBDIR)/$$i ;\
-	fi ;\
-	done
 
 messages:
 	$(XGETTEXT) *.cpp -o $(podir)/kscd.pot
