@@ -246,6 +246,12 @@
                     <property name="text">
                         <string>&amp;Use direct digital playback</string>
                     </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="checked">
+                        <bool>false</bool>
+                    </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected KsCD will attempt to play the CD using direct digital playback. This option is useful if the CD-ROM is not connected directly to the sound output on the computer. Note that digital playback is slower than the normal method of playback.</string>
                     </property>
