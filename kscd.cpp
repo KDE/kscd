@@ -1864,11 +1864,8 @@ KSCD::writeSettings()
 void
 KSCD::CDDialogSelected()
 {
-    kdDebug() << "CDDialogSelected" << endl;
     if(cddialog)
         return;
-
-    kdDebug() << "dialog was empty" << endl;
 
     cddialog = new CDDialog();
 
@@ -1885,7 +1882,6 @@ KSCD::CDDialogSelected()
 void
 KSCD::CDDialogDone()
 {
-  //kdDebug() << "cddialog -> done" << endl;
   delete cddialog;
   cddialog = 0L;
 }
@@ -2046,7 +2042,6 @@ KSCD::get_cddb_info(bool _updateDialog)
     }
 
     if(!res){
-
         kdDebug() << "STARTING REMOTE QUERY\n" << endl;
         cddb.cddb_connect(current_server);
         Fetch_remote_cddb = true;
@@ -2110,7 +2105,6 @@ KSCD::cddb_ready()
 } // cddb_ready
 
 
-#ifdef DEFINE_CDTEXT
 void KSCD::cdtext()
 {
     kdDebug() << "cdtext() called" << endl;
@@ -2129,7 +2123,6 @@ void KSCD::cdtext()
         songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));
     }
 }
-#endif
 
 void
 KSCD::cddb_no_info()
@@ -2138,14 +2131,13 @@ KSCD::cddb_no_info()
     tracktitlelist.clear();
     extlist.clear();
     //    tracktitlelist.append(i18n("No matching freedb entry found."));
-#ifdef DEFINE_CDTEXT
+
     wm_cd_get_cdtext();
     if(wm_cdtext_info.valid)
     {
         cdtext();
     }
     else
-#endif /* DEFINE_CDTEXT */
     {
        discidlist.clear();
        populateSongList();
@@ -2167,13 +2159,12 @@ KSCD::cddb_failed()
     tracktitlelist.clear();
     extlist.clear();
     tracktitlelist.append(i18n("Error getting freedb entry."));
-#ifdef DEFINE_CDTEXT
+
     if(wm_cdtext_info.valid)
     {
         cdtext();
     }
     else
-#endif /* DEFINE_CDTEXT */
     {
       for(int i = 0 ; i < cd->ntracks; i++)
         tracktitlelist.append("");
@@ -2195,18 +2186,17 @@ KSCD::cddb_failed()
 void
 KSCD::cddb_timed_out()
 {
-  kdDebug() << "cddb_timed_out() called\n" << endl;
-  tracktitlelist.clear();
-  setArtistAndTitle("", "");
-  extlist.clear();
-  tracktitlelist.append(i18n("freedb query timed out."));
-#ifdef DEFINE_CDTEXT
+    kdDebug() << "cddb_timed_out() called\n" << endl;
+    tracktitlelist.clear();
+    setArtistAndTitle("", "");
+    extlist.clear();
+    tracktitlelist.append(i18n("freedb query timed out."));
+
     if(wm_cdtext_info.valid)
     {
         cdtext();
     }
     else
-#endif /* DEFINE_CDTEXT */
     {
       for(int i = 0 ; i <= cd->ntracks; i++)
         tracktitlelist.append("");
@@ -2513,8 +2503,7 @@ KSCD::getArtist(QString& artist)
 void
 KSCD::performances(int i)
 {
-    kdDebug() << "preformances " << i << "\n" << endl;
-
+    //kdDebug() << "preformances " << i << "\n" << endl;
     QString artist;
     QString str;
 
@@ -2542,7 +2531,7 @@ KSCD::performances(int i)
 void
 KSCD::purchases(int i)
 {
-    kdDebug() << "purchases " << i << "\n" << endl;
+    //kdDebug() << "purchases " << i << "\n" << endl;
 
     QString artist;
     QString str;
@@ -2628,7 +2617,7 @@ KSCD::magicdone(KProcess* proc)
 void
 KSCD::information(int i)
 {
-    kdDebug() << "Information " << i << "\n" << endl;
+    //kdDebug() << "Information " << i << "\n" << endl;
 
     QString artist;
     QString str;

@@ -330,9 +330,8 @@ private:
     void    drawPanel();
     void    loadBitmaps();
     void    setLEDs(const QString& symbols);
-#ifdef DEFINE_CDTEXT
     void    cdtext();
-#endif
+
   /**
    * select a random track from the current disc.
    *
