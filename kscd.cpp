@@ -1110,6 +1110,11 @@ KSCD::randomSelected()
 void
 KSCD::trackSelected( int trk )
 {
+    if (trk < 0)
+    {
+        return;
+    }
+    
     randomplay = false;
     tracklabel->setText( formatTrack( trk + 1, cd->ntracks ) );
 

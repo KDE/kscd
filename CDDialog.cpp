@@ -125,7 +125,7 @@ CDDialog::cancel()
 void 
 CDDialog::play(QListViewItem *item)
 {
-  emit play_signal(item->text(0).toInt());
+  emit play_signal(item->text(0).toInt() - 1);
 } // play
 
 
