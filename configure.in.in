@@ -57,7 +57,8 @@ AC_MSG_CHECKING(if kscd can be compiled)
 case "$host" in
   *-*-linux*) kscd_compile=yes;;
   *-*-*bsdi*) kscd_compile=yes;; 
-  *-*-*bsd*) kscd_compile=no;;
+  *-*-*freebsd*) kscd_compile=yes;;
+  *-*-*bsd*) kscd:compile=no;;
   *) kscd_compile=yes;;
 esac
 AC_MSG_RESULT($kscd_compile)
