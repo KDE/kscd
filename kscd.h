@@ -27,6 +27,9 @@
 
 #include "bwlednum.h"
 
+// CD support.
+class KCompactDisc;
+
 // CDDB support via libkcddb
 #include <libkcddb/cddb.h>
 #include <libkcddb/client.h>
@@ -44,36 +47,6 @@
 #include <qtooltip.h>
 #include <qpopupmenu.h>
 #include <qvaluelist.h>
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <signal.h>
-#include <sys/utsname.h>
-#include <unistd.h>
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-
-/* this is for glibc 2.x which the ust structure in ustat.h not stat.h */
-#ifdef __GLIBC__
-#include <sys/ustat.h>
-#endif
-
-#ifdef __FreeBSD__
-#include <sys/param.h>
-#include <sys/ucred.h>
-#include <sys/mount.h>
-#endif
-
-#ifdef __linux__
-#include <mntent.h>
-#define KSCDMAGIC 0
-#endif
 
 #include "ledlamp.h"
 #include "panel.h"
@@ -155,7 +128,6 @@ public slots:
     void randomSelected();
     void setShuffle(int shuffle); /* 0 -off, 1 - on, 2 - remake random list */
     void writeSettings();
-    void initCDROM();
     void playClicked();
     bool nextClicked();
     void prevClicked();
@@ -166,9 +138,6 @@ public slots:
     void loopOn();
     void loopOff();
     void loopClicked();
-    void setRandomLabel(int mode);
-    void cdMode();
-    void cdModeChanged(int previous, int current);
     void trackSelected(int);
     void showConfig();
     void incVolume();
@@ -185,22 +154,13 @@ public slots:
 
     void make_random_list(); /* koz: 15/01/00 */
 
-protected slots:
-    void configDone();
-    void configureKeys();
-    void setIcons();
-
-    void timeSliderPressed();
-    void timeSliderReleased();
-    void timeSliderMoved(int seconds);
-
 protected:
     // mostly start up stuff
     void readSettings();
     void initFont();
     void drawPanel();
     void setupPopups();
-    void setLEDs(const QString& symbols);
+    void setLEDs(int milliseconds);
     void resetTimeSlider(bool enabled);
 
     void dragTime(int sec);
@@ -211,12 +171,8 @@ protected:
     //    void focusOutEvent(QFocusEvent *e);
     void playtime();
     void playtime(int seconds);
-    QString calculateDisplayedTime();
-    QString calculateDisplayedTime(int sec);
-    QString calculateDisplayedTime(int sec, int track);
-
-    void updateDisplayedTrack(int track);
-
+    void calculateDisplayedTime();
+    void calculateDisplayedTime(int sec);
     void setSongListTo(int whichTrack);
     void populateSongList(QString infoStatus);
     void updatePlayPB(bool playing);
@@ -231,7 +187,7 @@ private:
 
     BW_LED_Number       *trackTimeLED[6];
 
-    QTimer              timer;
+    KCompactDisc *m_cd;
     QTimer              titlelabeltimer;
     QTimer              queryledtimer;
     QTimer              cycletimer;
@@ -247,8 +203,6 @@ private:
     LedLamp             *queryled;
     LedLamp             *loopled;
     bool                randomplay_pending;
-    bool                cddrive_is_ok;
-    bool                have_new_cd;
     bool                updateTime;
     QStringList         audio_systems_list;
 
@@ -266,8 +220,6 @@ private:
      * Info from CDDB, and exploded versions thereof.
      */
     KCDDB::CDInfo cddbInfo;
-    KCDDB::TrackOffsetList trackStartFrames;
-    QStringList     tracktitlelist;
     QStringList     playlist;
 
 // cddb support
@@ -288,6 +240,20 @@ private:
     KToggleAction* m_togglePopupsAction;
     KVolumeControl* m_volume;
     DockWidget* m_dockWidget;
+private slots:
+    void discStopped();
+    void trackUpdate(unsigned track, unsigned trackPosition);
+    void trackChanged(unsigned track, unsigned trackLength);
+    void discChanged(unsigned discId);
+//    void trayClosing();
+    void trayOpening();
+    void configDone();
+    void configureKeys();
+    void setIcons();
+
+    void timeSliderPressed();
+    void timeSliderReleased();
+    void timeSliderMoved(int milliseconds);
 };
 
 
