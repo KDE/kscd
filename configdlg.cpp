@@ -52,7 +52,7 @@ static inline QPixmap loadIcon( const char * name )
     ->loadIcon( QString::fromLatin1(name), KIcon::NoGroup, KIcon::SizeMedium );
 }
 
-ConfigDlg::ConfigDlg(KSCD* player, const char* name = 0, bool modal = false)
+ConfigDlg::ConfigDlg(KSCD* player, const char* name, bool modal)
   :  KDialogBase(KDialogBase::IconList, i18n("kscd Configuraton"),
                  KDialogBase::Help | 
                  KDialogBase::Ok | 
