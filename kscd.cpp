@@ -1963,7 +1963,7 @@ void KSCD::information(int i)
             break;
     } // switch()
 
-    KRun::runURL(str, "text/html");
+    KRun::runURL(KURL( str ), "text/html");
 } // information
 
 /**
