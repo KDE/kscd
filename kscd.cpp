@@ -1989,10 +1989,8 @@ KSCD::get_cddb_info(bool _updateDialog)
         fmt.sprintf("%02d:%02d",dml.minute(),dml.second());
 
     totaltimelabel->setText(fmt);
-
     get_pathlist(pathlist);
     cddb.setPathList(pathlist);
-
     if(!connected){
         connect(&cddb,SIGNAL(cddb_ready()),this,SLOT(cddb_ready()));
         connect(&cddb,SIGNAL(cddb_failed()),this,SLOT(cddb_failed()));
@@ -2003,7 +2001,6 @@ KSCD::get_cddb_info(bool _updateDialog)
         connected = 1;
     }
     led_on();
-
     bool res = cddb.local_query(
         cddb_discid(),
         xmcd_data,

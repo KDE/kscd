@@ -168,10 +168,9 @@ CDDialog::setData(
     // put one of these into the destructor too..
     if(cdinfo.cddbtoc)
       delete [] cdinfo.cddbtoc;
-
-    
+    if(!cd)
+      return;
     cdinfo.cddbtoc =  new struct mytoc [cd->ntracks + 2];
-
     /*
      * Avoid people who need to edit titles of "no discs" to crash kscd.
      */
@@ -185,7 +184,6 @@ CDDialog::setData(
         tracksList->clear();
         return;
       }
-
     cdinfo.magicID = cddb_discid();	/* cddb magic disk id            */
     cdinfo.ntracks = cd->ntracks;	/* Number of tracks on the disc  */
     cdinfo.length  = cd->length;	/* Total running time in seconds */
