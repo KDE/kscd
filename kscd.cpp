@@ -1346,7 +1346,7 @@ void KSCD::cddb_done(CDDB::Result result)
 
     
     // CDDBTODO: we really should get the artist off the 'tracktitlelist'
-    if(codec) {
+/*    if(codec) {
         tracktitlelist << codec->toUnicode(cddbInfo.artist.ascii()) + " / " + codec->toUnicode(cddbInfo.title.ascii());
     
         for (; it != end; ++it) {
@@ -1360,6 +1360,13 @@ void KSCD::cddb_done(CDDB::Result result)
             tracktitlelist << (*it).title.ascii();
             extlist << (*it).extt.ascii();
         }
+//    }*/
+
+    tracktitlelist << cddbInfo.artist + " / " + cddbInfo.title;
+    
+    for (; it != end; ++it) {
+        tracktitlelist << (*it).title;
+        extlist << (*it).extt;
     }
  
     populateSongList();
@@ -1428,6 +1435,8 @@ void KSCD::cddb_failed()
     tracktitlelist.clear();
     extlist.clear();
     tracktitlelist.append(i18n("Error getting freedb entry."));
+    revision=year=0;
+    category=genre=QString::null;
 
     led_off();
     
