@@ -737,7 +737,7 @@ void KSCD::configureKeys()
 
 void KSCD::setDevicePaths()
 {
-    m_cd->setDevice(Prefs::cdDevice(), Prefs::volume());
+    m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback());
     if (Prefs::autoplay() && !m_cd->isPlaying())
     {
         playClicked();
