@@ -144,7 +144,7 @@ particular order.</para>
 <screenshot>
 <screeninfo>The Control Panel</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd2.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd2.png" format="PNG"></imageobject>
 <textobject><phrase>The Control Panel</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -359,7 +359,7 @@ options</guilabel></link></para></listitem>
 <screenshot>
 <screeninfo>The <guilabel>CDDB</guilabel> tab of the configuration dialog</screeninfo>
 <mediaobject>
-<imageobject> <imagedata fileref="kscd14.png" format="png"> </imageobject>
+<imageobject> <imagedata fileref="kscd14.png" format="PNG"> </imageobject>
 <textobject><phrase>The <guilabel>CDDB</guilabel> tab of the configuration
 dialog</phrase></textobject>
 </mediaobject>
@@ -782,7 +782,7 @@ order to get &kscd; to compile on your platform.</para>
 
 
 
-<![ %addindex; [ &kdedocindex; ]]>
+<![ %addindex; [ &documentation.index; ]]>
 </book>
 <!--
 Local Variables:
