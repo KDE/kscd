@@ -10,7 +10,7 @@ INCLUDES= -I$(top_srcdir) $(all_includes)
 noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
 	CDDialog.h CDDialogData.h CDDBSetup.h CDDBSetupData.h mgconfdlg.h \
 	configdlg.h version.h docking.h smtpconfig.h \
-	smtp.h configWidget.h
+	smtp.h configWidget.h kvolumecontrol.h
 
 #	struct.h wmcdda.h
 
