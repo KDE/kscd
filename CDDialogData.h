@@ -16,7 +16,7 @@
 #include <qdialog.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qlistbox.h>
+#include <qlistview.h>
 #include <qpushbutton.h>
 
 class CDDialogData : public QDialog
@@ -41,13 +41,14 @@ protected slots:
 
 
 protected:
-    QLineEdit* titleedit;
-    QListBox* listbox;
-    QLineEdit* trackedit;
-    QLineEdit* progseq_edit;
-    QPushButton* save_button;
+    QListView* tracksList;
+    QLineEdit* trackEdit;   // track title edit
+    QLineEdit* progseq_edit;// sequence of tracks for this disc edit
+    QLineEdit* titleEdit;   // disc title edit
+    QLineEdit* artistEdit;  // disc artist name edit
     QPushButton* load_button;
     QPushButton* ok_button;
+    QPushButton* cancel_button;
     QPushButton* ext_info_title_button;
     QPushButton* ext_info_button;
     QLabel* disc_id_label;

@@ -71,17 +71,18 @@ CDDialog::CDDialog
 	cdinfo.length  = 0;	/* Total running time in seconds */
 	cdinfo.cddbtoc = 0L;
 
-	connect(listbox,     SIGNAL(highlighted(int)),this,SLOT(titleselected(int)));
-	connect(listbox,     SIGNAL(selected(int)),this,SLOT(play(int)));
-	connect(trackedit,   SIGNAL(returnPressed()) ,this,SLOT(trackchanged()));
-	connect(save_button, SIGNAL(clicked())       ,this,SLOT(save()));
+	connect(tracksList,     SIGNAL(selectionChanged(QListViewItem *)),this,SLOT(titleselected(QListViewItem *)));
+	connect(tracksList,     SIGNAL(selectionChanged(QListViewItem *)),this,SLOT(play(QListViewItem *)));
+	connect(trackEdit,   SIGNAL(textChanged( const QString & )) ,this,SLOT(trackchanged( const QString & )));
+	connect(trackEdit,   SIGNAL( returnPressed ()) ,this,SLOT(nextTrack()));
+	connect(ok_button, SIGNAL(clicked())       ,this,SLOT(save()));
 	connect(upload_button, SIGNAL(clicked())       ,this,SLOT(upload()));
-	connect(ok_button, SIGNAL(clicked())       ,this,SLOT(ok()));
-	connect(load_button, SIGNAL(clicked())       ,this,SLOT(load_cddb()));
+	connect(cancel_button, SIGNAL(clicked())       ,this,SLOT(cancel()));
+	//connect(load_button, SIGNAL(clicked())       ,this,SLOT(load_cddb()));
 	connect(ext_info_title_button, SIGNAL(clicked()) ,this,SLOT(extITB()));
 	connect(ext_info_button, SIGNAL(clicked())       ,this,SLOT(extIB()));
-	connect(titleedit,   SIGNAL(textChanged(const QString &)),
-		             this,SLOT(titlechanged(const QString &)));
+	connect(titleEdit,   SIGNAL(textChanged(const QString &)), this,SLOT(titlechanged()));
+	connect(artistEdit,   SIGNAL(textChanged(const QString &)), this,SLOT(titlechanged()));
 	ext_info_button->setEnabled(false);
 	
 	setFixedSize(width(),height());
@@ -111,7 +112,6 @@ CDDialog::~CDDialog()
 void 
 CDDialog::closeEvent(QCloseEvent*)
 {
-    kdDebug() << "emmitting done()" << endl;
     emit dialog_done();
 } // closeEvent
 
@@ -123,15 +123,15 @@ CDDialog::keyPressEvent(QKeyEvent *e)
 } // keyPressEvent
 
 void 
-CDDialog::ok()
+CDDialog::cancel()
 {
   emit dialog_done();
 } // ok
 
 void 
-CDDialog::play(int i)
+CDDialog::play(QListViewItem *item)
 {
-  emit play_signal(i);
+  emit play_signal(item->text(0).toInt());
 } // play
 
 
@@ -186,10 +186,9 @@ CDDialog::setData(
         cdinfo.magicID = 0;
         cdinfo.ntracks = 0;
         cdinfo.length = 0;
-        titleedit->setText("No Disc");      
+        titleEdit->setText("No Disc");      
         disc_id_label->clear();
-        listbox->clear();
-        listbox->repaint();
+        tracksList->clear();
         return;
       }
 
@@ -235,9 +234,9 @@ CDDialog::setData(
       {
 	ext_list.remove(ext_list.at(ext_list.count() - 1));
       }
-    
 
-    titleedit->setText(track_list.first());
+    artistEdit->setText((track_list.first().section('/',0,0)).stripWhiteSpace());
+    titleEdit->setText((track_list.first().section('/',1,1)).stripWhiteSpace());
 
     QString idstr;
     idstr.sprintf("%08lx",cddb_discid());
@@ -258,22 +257,18 @@ CDDialog::setData(
     QString 	fmt;
     QTime 	dml;
 
-    listbox->clear();
+    tracksList->clear();
 
     for(int i = 1; i <= cdinfo.ntracks; i++)
       {
 	dml = framestoTime(cdinfo.cddbtoc[i].absframe - cdinfo.cddbtoc[i-1].absframe);
 	
+        QListViewItem * item = new QListViewItem( tracksList, 0 );
+        item->setText( 0, QString().sprintf("%02d",i) );
+        item->setText( 1, QString().sprintf("%02d:%02d",dml.minute(),dml.second()) );
 	if((ntr >=  i) && (ntr > 0))
-	  {
-	    fmt.sprintf("%02d   %02d:%02d   %s",i, dml.minute(),dml.second(),(*track_list.at(i)).utf8().data());
-	  } else {
-	    fmt.sprintf("%02d   %02d:%02d",i,dml.minute(),dml.second());
-	  }
-	listbox->insertItem(fmt,-1);
+            item->setText( 2,  *(track_list.at(i)));
       }
-    
-    listbox->repaint();
     
     QString str;
     cddb_playlist_encode(playlist,str);
@@ -284,16 +279,13 @@ void
 CDDialog::extIB()
 {
   
-  int item;
-  item = listbox->currentItem();
-  if(item == -1)
-    return;
+  int iNr = tracksList->currentItem()->text(0).toInt();
 
   InexactDialog *dialog;
   dialog = new InexactDialog(0,"dialog",false);
   dialog->setTitle(i18n("Use this editor to annotate this track"));
 
-  dialog->insertText(*ext_list.at(item + 1));
+  dialog->insertText(*ext_list.at(iNr + 1));
   
   if(dialog->exec() != QDialog::Accepted)
     {
@@ -304,9 +296,7 @@ CDDialog::extIB()
   QString text;
   dialog->getSelection(text);
 
-  *ext_list.at(item + 1) = text;
-  //ext_list.remove( ext_list.at(item + 1) );
-  //ext_list.insert( ext_list.at(item + 1) , text);
+  *ext_list.at(iNr + 1) = text;
 
   delete dialog;
 } // extIB
@@ -335,42 +325,31 @@ CDDialog::extITB()
   delete dialog;
 } // extITB
 
-void CDDialog::titleselected(int i)
+void CDDialog::titleselected(QListViewItem *item)
 {
-  ext_info_button->setEnabled(true);
-  if(i + 1 < (int)track_list.count())
-    trackedit->setText(*track_list.at(i+1));
+    ext_info_button->setEnabled(true);
+    trackEdit->setEnabled(true);
+    if(item->text(0).toInt() <  (int)track_list.count()) {
+        trackEdit->setText(item->text(2));
+        trackEdit->setFocus();
+    }
+    
 } // titleselected
 
-void 
-CDDialog::trackchanged()
-{
-  int i;
+void CDDialog::trackchanged( const QString &text ) {
+    int i = tracksList->currentItem()->text(0).toInt();
+    track_list.insert(track_list.at(i),text);
+    track_list.remove(track_list.at(i+1));
 
-  i = listbox->currentItem();
-  if (i == -1)
-    return;
-  
-  QTime dml = framestoTime(cdinfo.cddbtoc[i+1].absframe - cdinfo.cddbtoc[i].absframe);
-
-  QString fmt;
-
-  fmt.sprintf("%02d   %02d:%02d   %s",i+1,dml.minute(),dml.second(),trackedit->text().utf8().data());
-
-  //  *track_list.at(i+1) = trackedit->text();
-  track_list.insert(track_list.at(i+1),trackedit->text());
-  track_list.remove(track_list.at(i+2));
-
-  listbox->insertItem(fmt, i);
-  listbox->removeItem(i+1);
-  listbox->repaint();
-  if ( i <(int) listbox->count() -1 )
-    {
-      listbox->setCurrentItem(i+1);
-      listbox->centerCurrentItem();
-    }
+    tracksList->currentItem()->setText( 2,  text);
 } // trackchanged
 
+void CDDialog::nextTrack() {
+    int i = tracksList->currentItem()->text(0).toInt();
+    QListViewItem  *item = tracksList->findItem ( QString().sprintf("%02d",i+1), 0,ExactMatch);
+    tracksList->setSelected(item, true);
+    tracksList->ensureItemVisible(item);
+}
 
 QTime 
 framestoTime(int _frames)
@@ -396,12 +375,12 @@ framestoTime(int _frames)
   return dml;
 } // framestotime
 
-void 
-CDDialog::titlechanged(const QString &t)
-{
-  *track_list.begin() = t;
-  //track_list.remove(track_list.begin());
-  //track_list.insert(track_list.begin(), t);
+void CDDialog::titlechanged() {
+    QString title = titleEdit->text().stripWhiteSpace();
+    QString artist = artistEdit->text().stripWhiteSpace();
+    if(title.isEmpty() || artist.isEmpty()) return;
+    title = QString("%1 / %2").arg(artist).arg(title);
+    *track_list.begin() = title;
 } // titlechanged
 
 QString submitcat;
@@ -477,7 +456,7 @@ CDDialog::upload()
       
   QString cmd;
 
-  cmd = "sendmail -tU";
+  cmd = "/usr/sbin/sendmail -tU";
 
   kdDebug() << "Submitting freedb entry: " << cmd << "\n" << endl;
   
@@ -810,30 +789,25 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
 bool 
 CDDialog::checkit()
 {
-  QString title = titleedit->text();
-  title = title.stripWhiteSpace();
+  QString title = titleEdit->text().stripWhiteSpace();
   if(title.isEmpty())
     {
       KMessageBox::sorry(this,
-			 i18n("The Disc Artist / Title field is not filled in.\n"\
+			 i18n("The title of the disc has to be entered.\n"
 			      "Please correct the entry and try again."),
 			 i18n("Invalid Database Entry"));
       return false;
     }
   
-  int pos;
-  pos = title.find('/',0,true);
-  if(pos == -1)
+  QString artist = artistEdit->text().stripWhiteSpace();
+  if(artist.isEmpty())
     {
       KMessageBox::sorry(this,
-			 i18n("The Disc Artist / Title field is not filled in correctly.\n"\
-			      "Please separate the artist from the title of the CD with \n"\
-			      "a forward slash, such as in: Peter Gabriel / Greatest Hits\n"),
+			 i18n("The artist name of the disc has to be entered.\n"
+			      "Please correct the entry and try again."),
 			 i18n("Invalid Database Entry"));
       return false;
     }
-
-  
 
   if(track_list.count() < 2)
     {
@@ -843,7 +817,6 @@ CDDialog::checkit()
 			 i18n("Invalid Database Entry"));
       return false;
     }
-
 
   bool have_nonempty_title = false;
   for ( QStringList::Iterator it = track_list.at(1);
@@ -902,7 +875,7 @@ CDDialog::checkit()
   if(!ret)
     {
       KMessageBox::sorry(this,
-			 i18n("Invalid Playlist\n"));
+			 i18n("Invalid Playlist\nPlease use tracknumbers only, seperated by commas."));
       return false;
     }
   

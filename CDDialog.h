@@ -78,16 +78,17 @@ class CDDialog : public CDDialogData
   void closeEvent(QCloseEvent* e);
   void keyPressEvent(QKeyEvent* e);
  public slots:
-  void titleselected(int);
-  void titlechanged(const QString &);
-  void trackchanged();
+  void titleselected(QListViewItem *);
+  void titlechanged();
+  void trackchanged(const QString &);
   void save();
   void extITB();
   void extIB();
   void load_cddb();
   void upload();
-  void ok();
-  void play(int i);
+  void cancel();
+  void play(QListViewItem *);
+  void nextTrack();
 
 signals:
 

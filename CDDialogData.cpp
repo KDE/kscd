@@ -1,100 +1,113 @@
-/**********************************************************************
-
-	--- Dlgedit generated file ---
-
-	File: CDDialogData.cpp
-	Last generated: Thu Jan 1 15:56:19 1998
-
-	FILE WAS MODIFIED to add layouts
-
- *********************************************************************/
-
 #include "CDDialogData.h"
-
-#define Inherited QDialog
 
 #include <qframe.h>
 #include <qlabel.h>
-#include <klocale.h>
-#include <kapp.h>
-
+#include <qgroupbox.h>
+#include <qheader.h>
+#include <qlistview.h>
 #include <qlayout.h>
 #include <qfontmetrics.h>
 
+#include <klocale.h>
+#include <kapp.h>
 
-CDDialogData::CDDialogData
-(
-	QWidget* parent,
-	const char* name
-)
-	:
-	Inherited( parent, name )
-{
+CDDialogData::CDDialogData ( QWidget* parent, const char* name) : QDialog( parent, name ) {
+    QVBoxLayout *dialogLayout = new QVBoxLayout( this, 11, 6);
 
-	QBoxLayout * lay1 = new QVBoxLayout ( this, 10, 5 );
+    QGroupBox *discGroupBox = new QGroupBox( this, "Disc" );
+    discGroupBox->setTitle( i18n( "Disc" ) );
+    discGroupBox->setColumnLayout(0, Qt::Vertical );
+    discGroupBox->layout()->setSpacing( 6 );
+    discGroupBox->layout()->setMargin( 11 );
+    QGridLayout *discGroupBoxLayout = new QGridLayout( discGroupBox->layout() );
+    discGroupBoxLayout->setAlignment( Qt::AlignTop );
 
-	QLabel * label1 = new QLabel( i18n("Disc Artist / Title"), this, "Label_4" );
-	lay1->addWidget ( label1 );
-	QBoxLayout * lay2 = new QHBoxLayout ( lay1 );
-	titleedit = new QLineEdit( this, "titleedit" );
-	lay2->addWidget ( titleedit, 1 );
-	titleedit->setMaxLength( 70 );
-	ext_info_title_button = new QPushButton( i18n("Ext Info"), this, "PushButton_5" );
-	lay2->addWidget ( ext_info_title_button );
+    artistEdit = new QLineEdit( discGroupBox, "artist" );
+    discGroupBoxLayout->addMultiCellWidget( artistEdit, 0, 0, 1, 3 );
 
-	lay1->addSpacing ( 10 );
-	QGridLayout * glay = new QGridLayout ( lay1, 2, 2, 5 );
-	glay->setColStretch ( 1, 1 );
-	QLabel * label2 = new QLabel( i18n("Disc ID: "), this, "Label_7" );
-	glay->addWidget ( label2, 0, 0 );
-	disc_id_label = new QLabel( this, "diskid_label" );
-	glay->addWidget ( disc_id_label, 0, 1, AlignLeft );
-	QLabel * label22 = new QLabel( i18n("Total time: "), this );
-	glay->addWidget ( label22, 1, 0 );
-	total_time_label = new QLabel( this, "diskid_label" );
-	glay->addWidget ( total_time_label, 1, 1, AlignLeft );
+    titleEdit = new QLineEdit( discGroupBox, "titleEdit" );
+    discGroupBoxLayout->addMultiCellWidget( titleEdit, 1, 1, 1, 3 );
 
-	lay1->addSpacing ( 10 );
-	QLabel * label3 = new QLabel( i18n("Track / Time / Title"), this, "Label_5" );
-	lay1->addWidget ( label3 );
-	
-	listbox = new QListBox( this, "listbox" );
-	lay1->addWidget ( listbox );
-	connect( listbox, SIGNAL(highlighted(int)), SLOT(titleselected(int)) );
+    QLabel *diskID = new QLabel( i18n( "Disc ID:" ),discGroupBox, "diskID" );
+    discGroupBoxLayout->addWidget( diskID, 2, 0 );
 
-	lay1->addSpacing ( 10 );
-	QLabel * label4 = new QLabel( i18n("Edit Track Title"), this, "Label_3" );
-	lay1->addWidget ( label4 );
-	QBoxLayout * lay4 = new QHBoxLayout ( lay1 );
-	trackedit = new QLineEdit( this, "trackedit" );
-	lay4->addWidget ( trackedit, 1 );
-	trackedit->setMaxLength( 70 );
-	ext_info_button = new QPushButton( i18n("Ext Info"), this, "extinfo_button" );
-	lay4->addWidget ( ext_info_button );
+    QLabel *timeLabel = new QLabel( i18n( "Total Time:" ), discGroupBox, "timeLabel" );
+    discGroupBoxLayout->addWidget( timeLabel, 3, 0 );
 
-	lay1->addSpacing ( 10 );
-	QLabel * label5 = new QLabel( i18n("Edit Play Sequence"), this, "Label_2" );
-	lay1->addWidget ( label5 );
-	progseq_edit = new QLineEdit( this, "programsequence_edit" );
-	lay1->addWidget ( progseq_edit );
+    QLabel *titleLabel = new QLabel(titleEdit, i18n( "&Title:" ),discGroupBox, "title" );
+    discGroupBoxLayout->addWidget( titleLabel, 1, 0 );
+
+    QLabel *artistLabel = new QLabel(artistEdit, i18n( "&Artist:" ), discGroupBox, "artistLabel" );
+    discGroupBoxLayout->addWidget( artistLabel, 0, 0 );
+
+    disc_id_label = new QLabel( i18n( "id" ), discGroupBox, "idLabel" );
+    discGroupBoxLayout->addWidget( disc_id_label, 2, 1 );
+
+    total_time_label = new QLabel(i18n( "time" ),  discGroupBox, "timeLabel" );
+    discGroupBoxLayout->addWidget( total_time_label, 3, 1 );
+
+    ext_info_title_button = new QPushButton( i18n( "Comment" ), discGroupBox, "discComment" );
+    discGroupBoxLayout->addMultiCellWidget( ext_info_title_button, 2, 3, 3, 3 );
+
+    QSpacerItem* spacer = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    discGroupBoxLayout->addItem( spacer, 2, 2 );
+    dialogLayout->addWidget( discGroupBox );
+
+    QGroupBox *tracksGroup = new QGroupBox( this, "TracksGroup" );
+    tracksGroup->setTitle( i18n( "Tracks" ) );
+    tracksGroup->setColumnLayout(0, Qt::Vertical );
+    tracksGroup->layout()->setSpacing( 6 );
+    tracksGroup->layout()->setMargin( 11 );
+    QVBoxLayout *gbLayout = new QVBoxLayout( tracksGroup->layout() );
+    gbLayout->setAlignment( Qt::AlignTop );
+
+    tracksList = new QListView( tracksGroup, "TracksList" );
+    tracksList->addColumn( i18n( "Nr" ) );
+    tracksList->addColumn( i18n( "Time" ) );
+    tracksList->header()->setClickEnabled( FALSE, tracksList->header()->count() - 1 );
+    tracksList->addColumn( i18n( "Title" ) );
+    tracksList->header()->setClickEnabled( FALSE, tracksList->header()->count() - 1 );
+
+    gbLayout->addWidget( tracksList );
+
+    QHBoxLayout *layout1 = new QHBoxLayout( 0, 0, 6);
+
+    trackEdit = new QLineEdit( tracksGroup, "trackTitleEdit" );
+	trackEdit->setMaxLength( 70 );
+	trackEdit->setEnabled(false);
+    QLabel *trackTitleLabel = new QLabel( trackEdit, i18n( "Title:" ), tracksGroup, "trackTitleLabel" );
+    layout1->addWidget( trackTitleLabel );
+    layout1->addWidget( trackEdit );
+
+    ext_info_button = new QPushButton( i18n( "Comment" ), tracksGroup, "ext_info_button" );
+    layout1->addWidget( ext_info_button );
+    gbLayout->addLayout( layout1 );
+    dialogLayout->addWidget( tracksGroup );
+
+    QHBoxLayout *layout2 = new QHBoxLayout( 0, 0, 6);
+
+    progseq_edit = new QLineEdit( this, "playingOrderEdit" );
+    QLabel *playingOrderLabel = new QLabel( progseq_edit, i18n( "Playing order:" ), this, "playingOrder" );
 	progseq_edit->setMaxLength( 70 );
+    layout2->addWidget( playingOrderLabel );
+    layout2->addWidget( progseq_edit );
+    dialogLayout->addLayout( layout2 );
 
-	lay1->addSpacing ( 10 );
-	QBoxLayout * lay5 = new QHBoxLayout ( lay1 );
-	lay5->addStretch ( 1 );
-	save_button = new QPushButton( i18n("Save"), this, "save_button" );
-	lay5->addWidget ( save_button );
-	lay5->addStretch ( 1 );
-	load_button = new QPushButton( i18n("Load"), this, "PushButton_3" );
-	lay5->addWidget ( load_button );
-	lay5->addStretch ( 1 );
-	upload_button = new QPushButton( i18n("Upload"), this, "PushButton_8" );
-	lay5->addWidget ( upload_button );
-	lay5->addStretch ( 1 );
-	ok_button = new QPushButton( i18n("Close"), this, "PushButton_4" );
-	lay5->addWidget ( ok_button );
-	lay5->addStretch ( 1 );
-	
+    QHBoxLayout *layout3 = new QHBoxLayout( 0, 0, 6);
+    QSpacerItem* spacer_2 = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout3->addItem( spacer_2 );
+
+    upload_button = new QPushButton( i18n( "Upload" ), this, "uploadButton" );
+    layout3->addWidget( upload_button );
+
+    ok_button = new QPushButton( i18n( "&OK" ), this, "okButton" );
+    ok_button->setDefault(true);
+    layout3->addWidget( ok_button );
+
+    cancel_button = new QPushButton( i18n( "&Cancel" ), this, "cancelButton" );
+    layout3->addWidget( cancel_button );
+    dialogLayout->addLayout( layout3 );
+
 	resize ( 400, 500 );
 }
 
@@ -106,4 +119,3 @@ void CDDialogData::titleselected(int)
 {
 }
 
-#undef Inherited
