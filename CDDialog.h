@@ -58,15 +58,15 @@ class CDDialog : public CDDialogData
 #else
 			   struct wm_cdinfo *cd,
 #endif
-			   QStringList& tracktitlelist,
-			   QStringList& extlist,
-			   QString& xmcddata,
-			   QString& cat,
-			   QString& _genre,
+			   const QStringList& tracktitlelist,
+			   const QStringList& extlist,
+			   const QString& xmcddata,
+			   const QString& cat,
+			   const QString& _genre,
 			   int revision,
 			   int _year,
-			   QStringList& playlist,
-			   QStringList& pathlist
+			   const QStringList& playlist,
+			   const QStringList& pathlist
 			   );
   
   bool checkit();

@@ -105,15 +105,15 @@ CDDialog::play(QListViewItem *item)
 void
 CDDialog::setData(
         struct wm_cdinfo *cd,
-        QStringList& tracktitlelist,
-        QStringList& extlist,
-        QString& _xmcd_data,
-        QString& cat,
-	QString& _genre,
+        const QStringList& tracktitlelist,
+        const QStringList& extlist,
+        const QString& _xmcd_data,
+        const QString& cat,
+        const QString& _genre,
         int rev,
 	int _year,
-        QStringList& _playlist,
-        QStringList& _pathlist
+        const QStringList& _playlist,
+        const QStringList& _pathlist
         )
 {
     int ntr;
@@ -138,7 +138,6 @@ CDDialog::setData(
       delete [] cdinfo.cddbtoc;
     if(!cd)
       return;
-    cdinfo.cddbtoc =  new struct mytoc [cd->ntracks + 2];
     /*
      * Avoid people who need to edit titles of "no discs" to crash kscd.
      */
@@ -153,6 +152,7 @@ CDDialog::setData(
         return;
       }
 
+    cdinfo.cddbtoc =  new struct mytoc [cd->ntracks + 2];
     cdinfo.ntracks = cd->ntracks;	/* Number of tracks on the disc  */
     cdinfo.length  = cd->length;	/* Total running time in seconds */
 
