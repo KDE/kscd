@@ -123,16 +123,24 @@
 
 #if defined(__FreeBSD__) || defined(__NetBSD__)
 
-/* Is this the most commonly used cd device on FreeBSD ? */
+#ifdef __FreeBSD__
 
+/* Is this the most commonly used cd device on FreeBSD ? */
 #define DEFAULT_CD_DEVICE       "/dev/rmatcd0c"
 
-/*
-#define DEFAULT_CD_DEVICE       "/dev/rcd0d"
-*/
+#else /* __NetBSD__ */
 
-/* Please have a look at void KSCD::playClicked() in kscd.cpp. You will find there
-   the following code:
+/* The raw partition on disk device is *d on i386, *c on everything else */
+#ifdef __i386__
+#define DEFAULT_CD_DEVICE       "/dev/rcd0d"
+#else
+#define DEFAULT_CD_DEVICE       "/dev/rcd0c"
+#endif
+
+#endif /* __FreeBSD__ */
+
+/* Please have a look at void KSCD::playClicked() in kscd.cpp. You will find
+   there the following code:
 
 #ifdef __FreeBSD__
 	if (cur_cdmode == STOPPED || cur_cdmode == UNKNOWN  || cur_cdmode == BACK) {
