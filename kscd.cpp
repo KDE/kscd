@@ -2002,6 +2002,11 @@ void
 KSCD::get_cddb_info(bool _updateDialog)
 {
     updateDialog = _updateDialog;
+    if (!cddrive_is_ok ||
+        !wm_cd_status())
+    {
+         return;
+    }
 
     // Don't crash if no disc is in
     if( cd->length == 0 ) {
