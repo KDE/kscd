@@ -80,7 +80,7 @@ void CDDBDlg::setData(
         ntracks = 0;
         KCDDB::CDInfo tmp;
         tmp.title = "No Disc";
-        m_dlgBase->setInfo(tmp);
+        m_dlgBase->setInfo(tmp, trackStartFrames);
         return;
     }
 
@@ -89,7 +89,6 @@ void CDDBDlg::setData(
     cddbInfo = _cddbInfo;
     playlist = _playlist;
     ntracks = cd->ntracks;
-    unsigned length = cd->length * 75;
 
     trackStartFrames.clear();
     for (int i = 0; i < cd->ntracks + 1; i++)
@@ -109,17 +108,8 @@ void CDDBDlg::setData(
     }
 
     // Write the complete record to the dialog.
-    m_dlgBase->setInfo(cddbInfo);
-
+    m_dlgBase->setInfo(cddbInfo, trackStartFrames);
     // FIXME: KDE4, move this logic into m_dlgBase->setInfo() once KCDDB:CDInfo is updated.
-    m_dlgBase->m_length->setText(framesTime(length));
-
-    unsigned i = 0;
-    for (QListViewItem *item = m_dlgBase->m_trackList->firstChild(); item; item=item->nextSibling(), i++)
-    {
-        item->setText(CDInfoDialogBase::TRACK_TIME, framesTime(trackStartFrames[i + 1] - trackStartFrames[i]));
-    }
-
     m_dlgBase->m_playOrder->setText( playlist.join( "," ) );
 } // setData
 
@@ -137,23 +127,6 @@ void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
     KMessageBox::error(this, str, i18n("Record Submission"));
   }
 } // submitFinished()
-
-QString CDDBDlg::framesTime(unsigned frames)
-{
-    QTime time;
-    double ms;
-
-    ms = frames * 1000 / 75.0;
-    time = time.addMSecs((int)ms);
-
-    // Use ".zzz" for milliseconds...
-    QString temp2;
-    if (time.hour() > 0)
-        temp2 = time.toString("hh:mm:ss");
-    else
-        temp2 = time.toString("mm:ss");
-    return temp2;
-} // framesTime
 
 void CDDBDlg::upload()
 {
