@@ -36,6 +36,13 @@
 
 <othercredit role="developer">
 <firstname>Dirk</firstname>
+<surname>Forsterling</surname>
+<affiliation><address><email>milliByte@gmx.net</email></address></affiliation>
+<contrib>Developer</contrib>
+</othercredit>
+
+<othercredit role="developer">
+<firstname>Dirk</firstname>
 <surname>Foersterling</surname>
 <affiliation><address><email>milliByte@gmx.net</email></address></affiliation>
 <contrib>Developer</contrib>
@@ -57,6 +64,7 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
   
+
 <date>08/02/2001</date>
 <releaseinfo>1.03.00</releaseinfo>
 
@@ -786,6 +794,7 @@ order to get &kscd; to compile on your platform.</para>
 </book>
 <!--
 Local Variables:
+mode: sgml
 sgml-minimize-attributes: nil
 sgml-general-insert-case: lower
 End:
