@@ -740,7 +740,7 @@ bool CDDB::local_query(
     QStrList& playlist
 )
 {
-    QStringList pathlist = KGlobal::dirs()->getResourceDirs("cddb");
+    QStringList pathlist = KGlobal::dirs()->resourceDirs("cddb");
 
     if(pathlist.count() == 0)
 	return false;

@@ -202,7 +202,7 @@ void CDDBSetup::set_defaults()
     server_listbox->repaint();
     server_listbox->setCurrentItem(0);
 
-    basedirstring = KGlobal::dirs()->getResourceDirs("cddb").last();
+    basedirstring = KGlobal::dirs()->resourceDirs("cddb").last();
     basedir_edit->setText(basedirstring);
 
     submission_listbox->setAutoUpdate(false);

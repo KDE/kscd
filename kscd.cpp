@@ -1441,7 +1441,7 @@ void KSCD::setColors(){
 
 void KSCD::readSettings()
 {
-    config = kapp->getConfig();
+    config = kapp->config();
 
     config->setGroup("GENERAL");
     volume     = config->readNumEntry("Volume",40);
@@ -1544,7 +1544,7 @@ void KSCD::readSettings()
 
 void KSCD::writeSettings(){
 		
-    config = kapp->getConfig();
+    config = kapp->config();
 
     config->setGroup("GENERAL");	
     config->writeEntry("ToolTips", tooltips);
@@ -2321,9 +2321,9 @@ void KSCD::doSM()
 #warning Session management is broken
 #else
     if (isVisible())
-	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->getCaption()+"\"");
+	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\"");
     else
-	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->getCaption()+"\" -hide ");
+	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\" -hide ");
 #endif
 }
 
@@ -2362,7 +2362,7 @@ int main( int argc, char *argv[] )
 #endif
     a.setTopWidget(k);
     a.setMainWidget( k );
-    k->setCaption(a.getCaption());
+    k->setCaption(a.caption());
     if (!hide)
 	k->show();
 
