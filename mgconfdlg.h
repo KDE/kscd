@@ -30,13 +30,11 @@
 
 #include <qgroupbox.h> 
 #include <qdialog.h>
-#include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qlabel.h>
 #include <qframe.h>
 #include <qcheckbox.h>
-#include <qlineedit.h>
 #include <qradiobutton.h>
 #include <qbutton.h> 
 #include <qbuttongroup.h> 
