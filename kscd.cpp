@@ -249,7 +249,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect(&cddb,SIGNAL(cddb_timed_out()),this,SLOT(cddb_timed_out()));
   connect(&cddb,SIGNAL(cddb_inexact_read()),this,SLOT(mycddb_inexact_read()));
   connect(&cddb,SIGNAL(cddb_no_info()),this,SLOT(cddb_no_info()));
-  
+
   // set up the actions and keyboard accels
   KAccel* accels = new KAccel(this);
   KActionCollection* actions = new KActionCollection(this);
@@ -279,7 +279,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action->plugAccel(accels);
   action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), this, "DecVolume");
   action->plugAccel(accels);
-  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig), this);
+  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), this);
   action->plugAccel(accels);
   action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), this, "Shuffle");
   action->plugAccel(accels);
@@ -297,7 +297,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   smtpMailer = new SMTP;
   connect(smtpMailer, SIGNAL(messageSent()), this, SLOT(smtpMessageSent()));
   connect(smtpMailer, SIGNAL(error(int)), this, SLOT(smtpError(int)));
-  
+
   dock_widget = new DockWidget( this, "dockw");
   setDocking(docking);
 
@@ -404,7 +404,7 @@ KSCD::initCDROM()
   volstartup = FALSE;
   if(cddrive_is_ok)
     volChanged(volume);
-  
+
   if (autoplay)
   {
     playClicked();
@@ -692,7 +692,7 @@ KSCD::setRandomOnce(bool shuffle)
 {
     randomonce = shuffle;
     QToolTip::remove(shufflebutton);
-    
+
     if (tooltips)
     {
         if (!randomonce)
@@ -721,7 +721,7 @@ KSCD::setToolTips(bool on)
         QToolTip::add(stopPB,          i18n("Stop"));
         QToolTip::add(replayPB,        i18n("Loop"));
         QToolTip::add(songListCB,      i18n("Track Selection"));
-        
+
         // if you change these, change them in Config Done as well!
         QToolTip::add(fwdPB,           i18n("%1 Secs Forward").arg(skipDelta));
         QToolTip::add(bwdPB,           i18n("%1 Secs Backward").arg(skipDelta));
@@ -774,7 +774,7 @@ KSCD::setToolTips(bool on)
 void
 KSCD::playClicked()
 {
-    if (!cddrive_is_ok || 
+    if (!cddrive_is_ok ||
         wm_cd_status() < 1)
     {
         return;
@@ -784,13 +784,13 @@ KSCD::playClicked()
     qApp->flushX();
 
 
-    
+
 #ifdef NEW_BSD_PLAYCLICKED
-    if(cur_cdmode == WM_CDM_STOPPED || 
-       cur_cdmode == WM_CDM_UNKNOWN || 
+    if(cur_cdmode == WM_CDM_STOPPED ||
+       cur_cdmode == WM_CDM_UNKNOWN ||
        cur_cdmode == WM_CDM_BACK)
 #else
-    if(cur_cdmode == WM_CDM_STOPPED || 
+    if(cur_cdmode == WM_CDM_STOPPED ||
        cur_cdmode == WM_CDM_UNKNOWN)
 #endif
     {
@@ -805,7 +805,7 @@ KSCD::playClicked()
         {
             if(playlistpointer >=(int) playlist.count())
                 playlistpointer = 0;
-            
+
             if (playlist.at(playlistpointer) != playlist.end())
             {
                 wm_cd_play (atoi((*playlist.at(playlistpointer)).ascii()), 0,
@@ -816,8 +816,8 @@ KSCD::playClicked()
             {
                 wm_cd_play (save_track, 0, cur_ntracks + 1);
             }
-        } 
-        else 
+        }
+        else
         {
             wm_cd_play (save_track, 0, cur_ntracks + 1);
         }
@@ -1000,7 +1000,7 @@ KSCD::quitClicked()
     randomplay = FALSE;
     statuslabel->clear();
     setLEDs( "--:--" );
-    
+
     // Good GOD this is evil
     qApp->processEvents();
     qApp->flushX();
@@ -1122,7 +1122,7 @@ KSCD::randomSelected()
 {
     randomplay = !randomplay;
 
-    if (randomplay) 
+    if (randomplay)
     {
         if( randomonce )
             statuslabel->setText(i18n("Shuffle"));
@@ -1186,7 +1186,7 @@ KSCD::configDone()
 {
     // dialog deletes itself
     configDialog = 0L;
-    
+
     // update the tooltips
     if (tooltips)
     {
@@ -1301,13 +1301,13 @@ KSCD::setDocking(bool dock)
         //TODO: make it skip the taskbar when minimized something like:
         //KWin::setState(winId(), KWin::info(winId()).state | NET::SkipTaskbar);
         dock_widget->show();
-        connect(this, SIGNAL(trackChanged(const QString&)), 
+        connect(this, SIGNAL(trackChanged(const QString&)),
                 dock_widget, SLOT(setToolTip(const QString&)));
     }
     else
     {
         dock_widget->hide();
-        disconnect(this, SIGNAL(trackChanged(const QString&)), 
+        disconnect(this, SIGNAL(trackChanged(const QString&)),
                    dock_widget, SLOT(setToolTip(const QString&)));
     }
 }
@@ -1360,8 +1360,8 @@ KSCD::randomtrack()
             {
                 stopClicked();
                 return -1;
-            } 
-            else 
+            }
+            else
             {
                 random_current = random_list.begin();
             }
@@ -2106,9 +2106,9 @@ KSCD::cddb_ready()
 void KSCD::cdtext()
 {
     kdDebug() << "cdtext() called" << endl;
-    setArtistAndTitle("", ""); 
-    tracktitlelist.clear(); 
-    extlist.clear(); 
+    setArtistAndTitle("", "");
+    tracktitlelist.clear();
+    extlist.clear();
     tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->name[0]),(const char*)(wm_cdtext_info.blocks[0]->performer[0])));
     titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));
     artistlabel->setText(tracktitlelist.first());
@@ -3132,7 +3132,7 @@ void KSCD::setSongListTo(int whichTrack)
     songListCB->setCurrentItem(whichTrack);
     if (tooltips)
     {
-        // drop the number. 
+        // drop the number.
         // for Mahlah, a picky though otherwise wonderful person - AJS
         QString justTheName = songListCB->currentText();
         justTheName = justTheName.right(justTheName.length() - 4);
