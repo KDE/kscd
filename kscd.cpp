@@ -54,7 +54,7 @@ extern "C" {
     // from within our own directory
 #include "libwm/include/workman.h"
 }
-#include "config.h"
+#include "libwm/include/wm_config.h"
 #include "inexact.h"
 #include "CDDialog.h"
 #include "CDDBSetup.h"
