@@ -161,7 +161,7 @@ public slots:
     void setColors();
     void togglequeryled();
     void randomSelected();
-    void setShuffle(bool shuffle);
+    void setShuffle(int shuffle); /* 0 -off, 1 - on, 2 - remake random list */
     void writeSettings();
     void initCDROM();
     void playClicked();
@@ -175,11 +175,12 @@ public slots:
     void loopOff();
     void loopClicked();
     void cdMode();
-    void trackSelected( int );
+    void cdModeLong();
+    void trackSelected(int);
     void showConfig();
     void incVolume();
     void decVolume();
-    void volChanged( int );
+    void volChanged(int);
     void led_on();
     void led_off();
     void titlelabeltimeout();
@@ -221,7 +222,7 @@ protected:
     QString calculateDisplayedTime(int sec);
     QString calculateDisplayedTime(int sec, int track);
 
-    void updateDisplayedTrack(int track);
+    void updateDisplayedTrack(unsigned int track);
 
     bool getArtist(QString& artist);
 
@@ -263,7 +264,6 @@ private:
     LedLamp             *queryled;
     LedLamp             *loopled;
     bool                randomplay_pending;
-    void song_list_complete(void);
     bool                cddrive_is_ok;
     bool                have_new_cd;
     bool                updateTime;
@@ -282,9 +282,9 @@ private:
 
   /**
    * set the artist and title labels as well as the dock tooltip.
-   *
    */
-    void setArtistAndTitle(const QString& artist, const QString& title);
+    void setArtist(const QString& artist);
+    void setTitle(unsigned int track);
 
     QStringList     pathlist;
     QStringList     tracktitlelist;
