@@ -275,7 +275,7 @@ private:
     QPushButton         *makeButton( int, int, int, int, const QString& );
 
 
-    int                 smallPtSize();
+    void                initFont();
     void                initWorkMan();
     //  void            checkMount();
 
@@ -330,6 +330,8 @@ private:
         QString         submitaddress;
         QStringList        cddbsubmitlist;
         QString         browsercmd;
+        QFont           smallfont;
+        QFont           verysmallfont;
         bool            cddb_remote_enabled;
         /* edm new section */
         bool            cddb_auto_enabled;

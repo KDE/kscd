@@ -157,7 +157,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   have_new_cd = true;
 
-
+  initFont();
   drawPanel();
   loadBitmaps();
   setColors();
@@ -344,34 +344,32 @@ KSCD::initCDROM()
 } // initCDROM
 
 /**
- * Return fitting Helvetica font size for the 13 and 14 pixel widgets.
- * @return a reasonably small font size
+ * Initialize smallfont which fits into the 13 and 14 pixel widgets
+ * and verysmallfont which is slightly smaller.
  */
-int
-KSCD::smallPtSize()
+void
+KSCD::initFont()
 {
-  static int theSmallPtSize = 0;
-
-  if ( theSmallPtSize != 0 )
-    return theSmallPtSize;
+  int theSmallPtSize = 10;
 
   // Find a font that fits the 13 and 14 pixel widgets
-  theSmallPtSize = 10;
-  QFont fn( "Helvetica", theSmallPtSize, QFont::Bold );
+  QFont fn( KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold );
   bool fits = false;
   while (!fits && theSmallPtSize > 1)
-    {
+  {
       QFontMetrics metrics(fn);
       if(metrics.height() > 13)
-        {
-    --theSmallPtSize;
-    fn.setPointSize(theSmallPtSize);
-        } else {
-    fits = true;
-        }
-    }
-  return theSmallPtSize;
-} // smallPtSize()
+      {
+          --theSmallPtSize;
+          fn.setPointSize(theSmallPtSize);
+      } else {
+          fits = true;
+      }
+  }
+  
+  smallfont = QFont(  KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold );
+  verysmallfont = QFont(  KGlobalSettings::generalFont().family(), theSmallPtSize-2, QFont::Bold );
+} // initFont()
 
 QPushButton *
 KSCD::makeButton( int x, int y, int w, int h, const QString& n )
@@ -436,20 +434,19 @@ KSCD::drawPanel()
 
   artistlabel = new QLabel(this);
   artistlabel->setGeometry(WIDTH + 5, iy + 38 , SBARWIDTH -15, 13);
-  artistlabel->setFont( QFont( "helvetica", smallPtSize(), QFont::Bold) );
+  artistlabel->setFont( smallfont );
   artistlabel->setAlignment( AlignLeft );
   artistlabel->clear();
 
   titlelabel = new QLabel(this);
   titlelabel->setGeometry(WIDTH + 5, iy + 50 , SBARWIDTH -15, 13);
-  QFont ledfont( "Helvetica", smallPtSize()-2, QFont::Bold );
-  titlelabel->setFont( ledfont );
+  titlelabel->setFont( verysmallfont );
   titlelabel->setAlignment( AlignLeft );
   titlelabel->clear();
 
   statuslabel = new QLabel(this);
   statuslabel->setGeometry(WIDTH + 110, iy  +D, 50, 14);
-  statuslabel->setFont( ledfont );
+  statuslabel->setFont( verysmallfont );
   statuslabel->setAlignment( AlignLeft );
 
   queryled = new LedLamp(this);
@@ -463,19 +460,19 @@ KSCD::drawPanel()
 
   volumelabel = new QLabel(this);
   volumelabel->setGeometry(WIDTH + 110, iy + 14 + D, 50, 14);
-  volumelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
+  volumelabel->setFont( smallfont );
   volumelabel->setAlignment( AlignLeft );
   volumelabel->setText(i18n("Vol: --"));
 
   tracklabel = new QLabel(this);
   tracklabel->setGeometry(WIDTH + 168, iy + 14 +D, 30, 14);
-  tracklabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
+  tracklabel->setFont( smallfont );
   tracklabel->setAlignment( AlignLeft );
   tracklabel->setText("--/--");
 
   totaltimelabel = new QLabel(this);
   totaltimelabel->setGeometry(WIDTH + 168, iy  +D, 50, 14);
-  totaltimelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
+  totaltimelabel->setFont( smallfont );
   totaltimelabel->setAlignment( AlignLeft );
   totaltimelabel->hide();
 
@@ -506,7 +503,7 @@ KSCD::drawPanel()
   iy += HEIGHT;
   songListCB = new QComboBox( this );
   songListCB->setGeometry( ix, iy, SBARWIDTH/10*18+6, HEIGHT );
-  songListCB->setFont( QFont( "helvetica", smallPtSize() ) );
+  songListCB->setFont( smallfont );
   songListCB->setFocusPolicy ( QWidget::NoFocus );
 
   iy = 0;
@@ -1647,13 +1644,13 @@ KSCD::setColors()
         trackTimeLED[u]->setLEDColor(led_color,background_color);
     }
 
-    titlelabel ->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
-    artistlabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
-    volumelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
-    statuslabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
-    tracklabel ->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
-    totaltimelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
-    artistlabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
+    titlelabel ->setFont( smallfont );
+    artistlabel->setFont( smallfont );
+    volumelabel->setFont( smallfont );
+    statuslabel->setFont( smallfont );
+    tracklabel ->setFont( smallfont );
+    totaltimelabel->setFont( smallfont );
+    artistlabel->setFont( smallfont );
 
 }
 
