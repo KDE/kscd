@@ -477,7 +477,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
 //      smtpMailer = new SMTP;
 
       smtpMailer->setServerHost(smtpConfigData->serverHost);
-      smtpMailer->setPort(smtpConfigData->serverPort.toInt());
+      smtpMailer->setPort(smtpConfigData->serverPort.toUInt());
       
       smtpMailer->setSenderAddress(smtpConfigData->senderAddress.data());
       smtpMailer->setRecipientAddress(submitaddress.data());

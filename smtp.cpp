@@ -29,7 +29,7 @@
 
 extern bool debugflag;
 
-SMTP::SMTP(char *serverhost, int port, int timeout)
+SMTP::SMTP(char *serverhost, unsigned short int port, int timeout)
 {
     struct utsname uts;
 
@@ -82,7 +82,7 @@ void SMTP::setServerHost(const QString& serverhost)
     serverHost = serverhost;
 }
 
-void SMTP::setPort(int port)
+void SMTP::setPort(unsigned short int port)
 {
     hostPort = port;
 }
@@ -159,7 +159,7 @@ void SMTP::connectTimerTick(void)
     }
 
     if(debugflag)
-        printf("connecting to %s:%d ..... \n", serverHost.data(), hostPort);
+        printf("connecting to %s:%u ..... \n", serverHost.data(), hostPort);
     sock = new KSocket(serverHost, hostPort);
 
     if(sock == 0L || sock->socket() < 0){

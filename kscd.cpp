@@ -1117,7 +1117,7 @@ void KSCD::aboutClicked(){
 
         bool cddb_proxy_enabled;
         QString cddb_proxy_host;
-        int cddb_proxy_port;
+        unsigned short int cddb_proxy_port;
 
         setup->getData(cddbserverlist,
                        cddbsubmitlist,
@@ -1635,7 +1635,7 @@ void KSCD::getCDDBservers(){
     // Get current server and proxy settings from CDDB setup dialog befoe proceed
     bool    cddb_proxy_enabled;
     QString cddb_proxy_host;
-    int     cddb_proxy_port;
+    unsigned short int cddb_proxy_port;
     setup->getData(cddbserverlist,
                    cddbsubmitlist,
                    cddbbasedir,

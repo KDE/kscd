@@ -34,7 +34,7 @@ public slots:
                  bool& _remote_enabled,
                  bool&    http_proxy_enabled,
                  QString  &http_proxy_host,
-                 int      &http_proxy_port
+                 unsigned short int &http_proxy_port
                 );
 
     void insertData(const QStrList& _serverlist,
@@ -45,7 +45,7 @@ public slots:
                     const bool&    _remote_enabled,
                     const bool&    http_proxy_enabled,
                     const QString  &http_proxy_host,
-                    const int      &http_proxy_port
+                    const unsigned short int &http_proxy_port
                    );
 
 protected slots:

@@ -160,7 +160,7 @@ void CDDBSetup::insertData(const QStrList& _serverlist,
 			   const bool&    remote_enabled,
 			   const bool&    http_proxy_enabled,
 			   const QString& http_proxy_host,
-			   const int&     http_proxy_port)
+			   const unsigned short int& http_proxy_port)
 {
 
     current_server_string = _current_server.copy();
@@ -231,7 +231,7 @@ void CDDBSetup::getData(QStrList& _serverlist,
 			bool&    remote_enabled,
 			bool&    http_proxy_enabled,
 			QString  &http_proxy_host,
-			int      &http_proxy_port)
+			unsigned short int &http_proxy_port)
 {
     uint i;
 

@@ -55,7 +55,7 @@ extern bool debugflag;
 int Ret;
 extern char cddbbasedirtext[4096];
 
-CDDB::CDDB(char *host, int _port,int _timeout)
+CDDB::CDDB(char *host, unsigned short int _port,int _timeout)
 {
     hostname   = host;
     port       = _port;
@@ -1184,7 +1184,7 @@ bool CDDB::normalize_server_list_entry(QString &entry)
     }
 }
 
-void CDDB::setHTTPProxy(QString host, int port)
+void CDDB::setHTTPProxy(QString host, unsigned short int port)
 {
     proxyhost=host;
     proxyport=port;
@@ -1200,7 +1200,7 @@ bool    CDDB::useHTTPProxy()
     return use_http_proxy;
 }
 
-int     CDDB::getHTTPProxyPort()
+unsigned short int CDDB::getHTTPProxyPort()
 {
     return proxyport;
 }

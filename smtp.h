@@ -62,11 +62,11 @@ class SMTP:public QObject
 {
     Q_OBJECT
 public:
-    SMTP(char *serverhost = 0, int port = 0, int timeout = DEFAULT_SMTP_TIMEOUT);
+    SMTP(char *serverhost = 0, unsigned short int port = 0, int timeout = DEFAULT_SMTP_TIMEOUT);
     ~SMTP();
     
     void setServerHost(const QString& serverhost);
-    void setPort(int port);
+    void setPort(unsigned short int port);
     void setTimeOut(int timeout);
     
     bool isConnected(){return connected;};
@@ -134,7 +134,7 @@ signals:
 
 private:
     QString serverHost;
-    int hostPort;
+    unsigned short int hostPort;
     int timeOut;
 
     bool connected;
