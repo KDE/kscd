@@ -126,7 +126,8 @@ void SMTPConfig::commitData(void)
     configData->senderAddress = senderAddressEdit->text();
     configData->senderReplyTo = senderReplyToEdit->text();
     configData->mailProfile = mailProfileCombo->currentText();
-    if( (configData->serverHost == "") || (!configData->senderAddress.contains("@")))
+    if( enableCB->isChecked() && ((configData->serverHost == "") ||
+                                  (!configData->senderAddress.contains("@"))))
       {
 	KMessageBox::sorry(this, i18n("freedb submissions via SMTP have been disabled\n"
 				      "because the E-Mail profile you selected is\n"
