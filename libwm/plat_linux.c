@@ -61,6 +61,7 @@ static char plat_linux_id[] = "$Id$";
 #include <sys/time.h>
 #include <sys/ioctl.h>
 #include <linux/cdrom.h>
+#inckude <linux/version.h>
 
 #include "include/wm_cdda.h"
 #include "include/wm_struct.h"
@@ -247,7 +248,7 @@ wm_scsi( struct wm_drive *d, unsigned char *cdb, int cdblen,
  * send packet over cdrom interface
  * kernel >= 2.2.16
  *----------------------------------------*/
-#ifdef CDROM_SEND_PACKET	
+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,2,16))
 
   struct cdrom_generic_command cdc;
   struct request_sense sense;
