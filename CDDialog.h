@@ -59,6 +59,7 @@ class CDDialog : public CDDialogData
 			   QStringList& extlist,
 			   QString& xmcddata,
 			   QString& cat,
+			   QString& _genre,
 			   int& revision,
 			   QStringList& playlist,
 			   QStringList& pathlist,
@@ -68,7 +69,6 @@ class CDDialog : public CDDialogData
   
   bool checkit();
   void save_cddb_entry(QString& path,bool upload);
-  void getCategoryFromPathName(char* pathname, QString& _category);
   void setCdInfo(KCDDB::CDInfo &info, const QString& category);
   
  protected:
@@ -105,6 +105,7 @@ private:
   QString     submitaddress;
   QString 	category;
   QString     playorder;
+  QString     genre;
   struct dialogcdinfo cdinfo;
   bool            messageNotSent;
 };

@@ -313,6 +313,7 @@ private:
     int             playlistpointer;
     QStringList     extlist;
     QString         category;
+    QString         genre;
     QFont           smallfont;
     QFont           verysmallfont;
     bool            docking;

@@ -883,6 +883,7 @@ KSCD::ejectClicked()
       tracktitlelist.clear();
       extlist.clear();
       category = "";
+      genre = "";
 
       wm_cd_stop();
       //  timer.stop();
@@ -1628,7 +1629,7 @@ KSCD::CDDialogSelected()
 
     cddialog = new CDDialog();
 
-    cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category,
+    cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category, genre,
                       revision,playlist,pathlist,submitaddress, smtpConfigData);
 
     connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
@@ -1778,6 +1779,7 @@ KSCD::cddb_done(CDDB::Result result)
 
     revision = cddbInfo.revision;
     category = cddbInfo.category;
+    genre = cddbInfo.genre;
 
     KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
     KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());

@@ -135,6 +135,7 @@ CDDialog::setData(
         QStringList& extlist,
         QString& _xmcd_data,
         QString& cat,
+	QString& _genre,
         int& rev,
         QStringList& _playlist,
         QStringList& _pathlist,
@@ -148,6 +149,7 @@ CDDialog::setData(
     track_list 	= tracktitlelist;
     xmcd_data   = _xmcd_data.copy();
     category 	= cat.copy();
+    genre       = _genre.copy();
     revision    = rev;
     playlist	= _playlist;
     pathlist	= _pathlist;
@@ -493,31 +495,12 @@ CDDialog::upload()
 } // upload
 
 void
-CDDialog::getCategoryFromPathName(char* pathname, QString& _category)
-{
-  QString path = pathname;
-  path = path.stripWhiteSpace();
-
-  while(path.right(1) == QString("/"))
-    {
-      path = path.left(path.length() - 1);
-    }
-
-  int pos = 0;
-  pos  = path.findRev("/",-1,true);
-  if(pos == -1)
-    _category = path.copy();
-  else
-    _category = path.mid(pos+1,path.length());
-} // getCategoryFromPathName
-
-void
 CDDialog::setCdInfo(KCDDB::CDInfo &info, const QString& category)
 {
   info.artist = track_list.first().section('/',0,0).stripWhiteSpace();
   info.title = track_list.first().section('/',1,1).stripWhiteSpace();
   info.category = category;
-  // TODO Genre
+  info.genre = genre;
   info.id = cdinfo.magicID;
   info.extd = ext_list.first();
   // No year available?
