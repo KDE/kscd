@@ -61,7 +61,7 @@ static char plat_linux_id[] = "$Id$";
 #include <sys/time.h>
 #include <sys/ioctl.h>
 #include <linux/cdrom.h>
-#inckude <linux/version.h>
+#include <linux/version.h>
 
 #include "include/wm_cdda.h"
 #include "include/wm_struct.h"
