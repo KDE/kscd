@@ -163,6 +163,21 @@ CDDialog::setData(
     
     cdinfo.cddbtoc =  new struct mytoc [cd->ntracks + 2];
 
+    /*
+     * Avoid people who need to edit titles of "no discs" to crash kscd.
+     */
+    if( cd->ntracks == 0 ) 
+      {
+        cdinfo.magicID = 0;
+        cdinfo.ntracks = 0;
+        cdinfo.length = 0;
+        titleedit->setText("No Disc");      
+        disc_id_label->clear();
+        listbox->clear();
+        listbox->repaint();
+        return;
+      }
+
     cdinfo.magicID = cddb_discid();	/* cddb magic disk id            */
     cdinfo.ntracks = cd->ntracks;	/* Number of tracks on the disc  */
     cdinfo.length  = cd->length;	/* Total running time in seconds */
@@ -170,12 +185,12 @@ CDDialog::setData(
 
     for( int i = 0; i < cd->ntracks + 1; i++)
       {
-	cdinfo.cddbtoc[i].min = cd->trk[i].start / 4500;
-	cdinfo.cddbtoc[i].sec = (cd->trk[i].start % 4500) / 75;
-	cdinfo.cddbtoc[i].frame = cd->trk[i].start - ((cd->trk[i].start / 75)*75);
-	cdinfo.cddbtoc[i].absframe = cd->trk[i].start;
+        cdinfo.cddbtoc[i].min = cd->trk[i].start / 4500;
+        cdinfo.cddbtoc[i].sec = (cd->trk[i].start % 4500) / 75;
+        cdinfo.cddbtoc[i].frame = cd->trk[i].start - ((cd->trk[i].start / 75)*75);
+        cdinfo.cddbtoc[i].absframe = cd->trk[i].start;
       }
-    
+
     // some sanity provisions
 
     if((int)track_list.count() < cdinfo.ntracks + 1)
@@ -213,10 +228,7 @@ CDDialog::setData(
     idstr.sprintf("%08lx",cddb_discid());
     idstr = category + '\n' + idstr;
 
-    if(cdinfo.ntracks > 0)
-      disc_id_label->setText(idstr);
-    else
-      disc_id_label->clear();
+    disc_id_label->setText(idstr);
 
     QTime   dl;
     dl 	=  dl.addSecs(cdinfo.length);
@@ -277,7 +289,6 @@ CDDialog::extIB()
   QString text;
   dialog->getSelection(text);
 
-//  ext_list.insert( item, text );
   *ext_list.at(item + 1) = text;
   //ext_list.remove( ext_list.at(item + 1) );
   //ext_list.insert( ext_list.at(item + 1) , text);
@@ -331,9 +342,9 @@ CDDialog::trackchanged()
 
   fmt.sprintf("%02d   %02d:%02d   %s",i+1,dml.minute(),dml.second(),trackedit->text().utf8().data());
 
-  *track_list.at(i+1) = trackedit->text();
-  //track_list.insert(track_list.at(i+1),trackedit->text());
-  //track_list.remove(track_list.at(i+2));
+  //  *track_list.at(i+1) = trackedit->text();
+  track_list.insert(track_list.at(i+1),trackedit->text());
+  track_list.remove(track_list.at(i+2));
 
   listbox->insertItem(fmt, i);
   listbox->removeItem(i+1);
@@ -710,25 +721,24 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
   num = 1;
   for ( QStringList::Iterator it = track_list.begin();
         it != track_list.end();
-        ++it, num++ )
+        ++it)
     {
       tmp2 = *it;
       cddb_encode(tmp2,returnlist);  
-      
-      if(returnlist.isEmpty())
-	{
-	  // sanity provision
-	  tmp = QString("TTITLE%1=%2\n").arg(num-1).arg("");
-	  t << tmp;
-	} else {
-          for ( QStringList::Iterator it1 = track_list.begin();
-            it1 != track_list.end();
-            ++it1 )
+     
+      // no perfect solution, but it's working so far.
+      if( it != track_list.begin() ) {
+        if(returnlist.isEmpty())
           {
-	    tmp = QString("TTITLE%1=%2\n").arg(num-1).arg(*it1);
-	    t << tmp;
-	  }
-	}
+            // sanity provision
+            tmp = QString("TTITLE%1=%2\n").arg(num-1).arg("");
+            t << tmp;
+          } else {
+            tmp = QString("TTITLE%1=%2\n").arg(num-1).arg(*it);
+            t << tmp;
+          }
+        num++;
+      }
     }
   
   tmp2 = ext_list.first();
