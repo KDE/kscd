@@ -1783,6 +1783,9 @@ KSCD::readSettings()
 	// Set this to false by default. Look at the settings dialog source code
 	// for the reason. - Juraj.
 	cddb_remote_enabled = config->readBoolEntry( "CDDBRemoteEnabled", false );
+#if QT_VERSION == 0x030102 // ### REMOVEME
+    cddb_remote_enabled = false;
+#endif
 	cddb.useHTTPProxy( config->readBoolEntry("CDDBHTTPProxyEnabled", KProtocolManager::useProxy()) );
 	KURL proxyURL;
 	QString proxyHost;

@@ -47,10 +47,10 @@ CDDBSetup::CDDBSetup
     connect(submission_listbox,SIGNAL(highlighted(int)),
             this,SLOT(set_current_submission_address(int)));
 
-    connect(remote_cddb_cb,SIGNAL(toggled(bool)),
-            this,SLOT(enable_remote_cddb(bool)));
-
-    cddb_timeout_ef->setEnabled(remote_cddb_cb->isChecked());
+#if QT_VERSION == 0x030102 // ### remove this altogether
+    remote_cddb_cb->setEnabled( false ); // this option causes QSocket crashes with Qt 3.1.2
+#endif
+    cddb_timeout_ef->setEnabled(remote_cddb_cb->isChecked() && remote_cddb_cb->isEnabled());
 
     connect(currentServerAddPB, SIGNAL(clicked()), this, SLOT(insertSL()));
     connect(currentServerDelPB, SIGNAL(clicked()), this, SLOT(removeSL()));
@@ -183,7 +183,9 @@ CDDBSetup::insertData(const QStringList& _serverlist,
     basedirstring = _basedir.copy();
     basedir_edit->lineEdit()->setText(basedirstring);
     enable_auto_save_cddb->setChecked(auto_save_enabled);
+#if QT_VERSION != 0x030102 // ### remove only the #if condition
     remote_cddb_cb->setChecked(remote_enabled);
+#endif
 
     char timeout_str[40];
     sprintf(timeout_str,"%d",cddb_timeout);
@@ -218,7 +220,9 @@ CDDBSetup::set_defaults()
     submission_listbox->repaint();
     submission_listbox->setCurrentItem(0);
 
+#if QT_VERSION != 0x030102 // ### remove only the #if conditional
     remote_cddb_cb->setChecked(true);
+#endif
     cddb_http_cb->setChecked(false);
     // Leave proxy host and port values unchanged, just disable them
     cddb_timeout_ef->setText("30");
