@@ -1671,7 +1671,7 @@ KSCD::readSettings()
     KURL proxyURL;
     QString proxyHost;
     int proxyPort;
-    QString proxy = KProtocolManager::httpProxy();
+    QString proxy = KProtocolManager::proxyFor("http");
     if( !proxy.isEmpty() )
       {
 	proxyURL = proxy;
@@ -2996,7 +2996,7 @@ KSCD::edm_save_cddb_entry(QString& path)
  * Save state on session termination
  */
 bool
-KSCD::saveState(QSessionManager& sm)
+KSCD::saveState(QSessionManager& /*sm*/)
 {
   writeSettings();
   return true;
