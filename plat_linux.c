@@ -23,7 +23,7 @@
  */
 
 /*
- * $Id:$
+ * $Id$
  *
  * Linux-specific drive control routines.  Very similar to the Sun module.
  */
@@ -63,7 +63,6 @@ int	max_volume = MAX_VOLUME;
 
 
 void *malloc();
-char *strchr();
 
 extern char	*cd_device;
 
