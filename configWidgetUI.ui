@@ -4,12 +4,15 @@
     <property name="name">
         <cstring>configWidgetUI</cstring>
     </property>
+    <property name="enabled">
+        <bool>true</bool>
+    </property>
     <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
             <width>539</width>
-            <height>608</height>
+            <height>605</height>
         </rect>
     </property>
     <property name="caption">
@@ -143,23 +146,6 @@
                 </widget>
             </grid>
         </widget>
-        <spacer>
-            <property name="name">
-                <cstring>spacer1_2</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>292</width>
-                    <height>20</height>
-                </size>
-            </property>
-        </spacer>
         <widget class="QButtonGroup">
             <property name="name">
                 <cstring>buttonGroup1</cstring>
@@ -370,6 +356,67 @@
                         <string>When this option is selected, you have the ability to select encoding for the results of a CDDB request. The standard describes CDDB results as being strictly Latin1. This is not true, as non-English speaking users often use other 8-bit encodings.</string>
                     </property>
                 </widget>
+                <widget class="QComboBox">
+                    <item>
+                        <property name="text">
+                            <string>AUTO</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>utf8</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>CP1250</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>CP1251</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>CP1252</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>CP1253</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>CP1254</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>CP1255</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>CP1256</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>CP1257</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>kcfg_SelectedEncoding</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="duplicatesEnabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
             </hbox>
         </widget>
         <spacer>
@@ -385,7 +432,7 @@
             <property name="sizeHint">
                 <size>
                     <width>20</width>
-                    <height>56</height>
+                    <height>45</height>
                 </size>
             </property>
         </spacer>
@@ -406,6 +453,12 @@
         <receiver>kcfg_TrackAnnouncement</receiver>
         <slot>setEnabled(bool)</slot>
     </connection>
+    <connection>
+        <sender>kcfg_SelectEncoding</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>configWidgetUI</receiver>
+        <slot>kcfg_SelectEncoding_toggled(bool)</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>kcfg_ledColor</tabstop>
@@ -423,7 +476,7 @@
 </tabstops>
 <slots>
     <slot>kcfg_DigitalPlayback_toggled( bool )</slot>
-    <slot>kcfg_ledFont_pressed()</slot>
+    <slot>kcfg_SelectEncoding_toggled(bool)</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>

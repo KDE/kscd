@@ -3,6 +3,7 @@
  *
  * Copyright (c) 1997 Bernd Johannes wuebben@math.cornell.edu
  * Copyright (c) 2002-2003 Aaron J. Seigo <aseigo@kde.org>
+ * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1294,14 +1295,45 @@ void KSCD::cddb_done(CDDB::Result result)
     }
     KCDDB::CDInfo cddbInfo = cddb->bestLookupResponse();
 
-    //That will be configurable via SelectEncoding
-    QTextCodec *codec = QTextCodec::codecForName("utf8");
+    QTextCodec *codec = NULL;
+    
+    if(Prefs::selectEncoding()) {
+        switch(Prefs::selectedEncoding()) {
+        case Prefs::EnumSelectedEncoding::AUTO:
+            codec = QTextCodec::codecForContent(cddbInfo.title.ascii(), cddbInfo.title.length());
+            break;
+        case Prefs::EnumSelectedEncoding::utf8:
+            codec = QTextCodec::codecForName("utf8");
+            break;
+        case Prefs::EnumSelectedEncoding::CP1250:
+            codec = QTextCodec::codecForName("CP1250");
+            break;
+        case Prefs::EnumSelectedEncoding::CP1251:
+            codec = QTextCodec::codecForName("CP1251");
+            break;
+        case Prefs::EnumSelectedEncoding::CP1252:
+            codec = QTextCodec::codecForName("CP1252");
+            break;
+        case Prefs::EnumSelectedEncoding::CP1253:
+            codec = QTextCodec::codecForName("CP1253");
+            break;
+        case Prefs::EnumSelectedEncoding::CP1254:
+            codec = QTextCodec::codecForName("CP1254");
+            break;
+        case Prefs::EnumSelectedEncoding::CP1255:
+            codec = QTextCodec::codecForName("CP1255");
+            break;
+        case Prefs::EnumSelectedEncoding::CP1256:
+            codec = QTextCodec::codecForName("CP1256");
+            break;
+        case Prefs::EnumSelectedEncoding::CP1257:
+            codec = QTextCodec::codecForName("CP1257");
+            break;
+        }
+    }
     
     tracktitlelist.clear();
     extlist.clear();
-
-    // CDDBTODO: we really should get the artist off the 'tracktitlelist'
-    tracktitlelist << codec->toUnicode(cddbInfo.artist.ascii()) + " / " + codec->toUnicode(cddbInfo.title.ascii());
 
     revision = cddbInfo.revision;
     category = cddbInfo.category;
@@ -1313,12 +1345,23 @@ void KSCD::cddb_done(CDDB::Result result)
     KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
 
     
-    for (; it != end; ++it)
-    {
-        tracktitlelist << codec->toUnicode((*it).title.ascii());
-        extlist << codec->toUnicode((*it).extt.ascii());
+    // CDDBTODO: we really should get the artist off the 'tracktitlelist'
+    if(codec) {
+        tracktitlelist << codec->toUnicode(cddbInfo.artist.ascii()) + " / " + codec->toUnicode(cddbInfo.title.ascii());
+    
+        for (; it != end; ++it) {
+            tracktitlelist << codec->toUnicode((*it).title.ascii());
+            extlist << codec->toUnicode((*it).extt.ascii());
+        }
+    } else {
+        tracktitlelist << QString(cddbInfo.artist.ascii()) + " / " + cddbInfo.title.ascii();
+    
+        for (; it != end; ++it) {
+            tracktitlelist << (*it).title.ascii();
+            extlist << (*it).extt.ascii();
+        }
     }
-
+ 
     populateSongList();
 
     led_off();

@@ -4,6 +4,7 @@
  * $Id:
  *
  * Copyright (c) 2002 Aaron J. Seigo <aseigo@kde.org>
+ * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +49,9 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
         setName("configWidget");
     }
     
-    kcfg_DigitalPlayback_toggled(false); //mPlayer->digitalPlayback());
-    kcfg_DigitalPlayback->setChecked(false); //mPlayer->digitalPlayback());
 #if defined(BUILD_CDDA)
+    kcfg_DigitalPlayback_toggled(Prefs::digitalPlayback());
+    
     // fill ComboBox audioBackend
     kcfg_AudioSystem->insertStringList(mPlayer->audioSystems());
 
@@ -59,9 +60,15 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
         kcfg_AudioSystem->setCurrentItem(t);
 
     kcfg_AudioDevice->lineEdit()->setText(Prefs::audioDevice());
+    
+    kcfg_DigitalPlayback->setChecked(Prefs::digitalPlayback());
 #else
+    kcfg_DigitalPlayback_toggled(false);
+    
+    kcfg_DigitalPlayback->setChecked(false);
     kcfg_DigitalPlayback->hide();
 #endif
+    kcfg_SelectEncoding_toggled(Prefs::selectEncoding());
 }
 
 configWidget::~configWidget()
@@ -80,6 +87,15 @@ void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
         textLabel4->hide();
         kcfg_AudioDevice->hide();
         textLabel5->hide();
+    }
+}
+
+void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
+{
+    if(toggle) {
+        kcfg_SelectedEncoding->show();
+    } else {
+        kcfg_SelectedEncoding->hide();
     }
 }
 

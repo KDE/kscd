@@ -2,6 +2,7 @@
  * configWidget - the config dialog page for KSCD settings
  *
  * Copyright (c) 2002 Aaron J. Seigo <aseigo@kde.org>
+ * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +40,7 @@ class configWidget : public configWidgetUI
 
    public slots:
        virtual void kcfg_DigitalPlayback_toggled(bool);
+       virtual void kcfg_SelectEncoding_toggled(bool);
        virtual void configDone();
 };
 

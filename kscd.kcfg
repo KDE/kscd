@@ -86,5 +86,20 @@
             <whatsthis>When this option is selected, you have the ability to select encoding for the results of a CDDB request. The standard describes CDDB results as being strictly Latin1. This is not true, as non-English speaking users often use other 8-bit encodings.</whatsthis>
             <default>false</default>
         </entry>
+        <entry name="SelectedEncoding" type="Enum">
+            <choices>
+                <choice name="AUTO"/>
+                <choice name="utf8"/>
+                <choice name="CP1250"/>
+                <choice name="CP1251"/>
+                <choice name="CP1252"/>
+                <choice name="CP1253"/>
+                <choice name="CP1254"/>
+                <choice name="CP1255"/>
+                <choice name="CP1256"/>
+                <choice name="CP1257"/>
+            </choices>
+            <default>utf8</default>
+        </entry>
     </group>
 </kcfg>
