@@ -21,7 +21,7 @@ kscd_SOURCES = kscd.cpp kscd.skel configdlg.cpp ledlamp.cpp CDDialog.cpp \
 
 kscd_LDFLAGS = $(all_libraries)
 kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
-             $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) -lkcddb
+             $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) $(top_builddir)/libkcddb/libkcddb.la
 
 #SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp
 #	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
