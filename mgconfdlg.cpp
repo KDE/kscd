@@ -93,7 +93,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
 
   // Are Points Diamonds?
 
-  pointsAreDiamondsCB = new QCheckBox(this,"Points are Diamonds");
+  pointsAreDiamondsCB = new QCheckBox(this,"Points are diamonds");
   pointsAreDiamondsCB->setGeometry(20,150,160,30);
   pointsAreDiamondsCB->setText(i18n("Points are diamonds"));
   pointsAreDiamondsCB->setChecked(mgconfigdata.pointsAreDiamonds);
