@@ -17,9 +17,9 @@ kscd_SOURCES = kvolumecontrol.cpp panel.ui kscd.cpp kscd.skel ledlamp.cpp \
 
 kde_kcfg_DATA = kscd.kcfg
 
-kscd_LDFLAGS = $(all_libraries) -lkutils
+kscd_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
-             $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) $(top_builddir)/libkcddb/libkcddb.la
+             $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) -lkutils $(top_builddir)/libkcddb/libkcddb.la
 
 profiledata_DATA = kscd.profile.xml
 profiledatadir = $(kde_datadir)/profiles
