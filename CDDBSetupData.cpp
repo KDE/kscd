@@ -44,7 +44,7 @@ CDDBSetupData::CDDBSetupData
 	QBoxLayout * lay2 = new QVBoxLayout ( group, 10, 0 );
 
 	QBoxLayout * lay3 = new QHBoxLayout ( lay2, 5 );
-	remote_cddb_cb = new QCheckBox( i18n("Enable Remote freedb"), group, "CheckBox_1" );
+	remote_cddb_cb = new QCheckBox( i18n("Enable remote freedb"), group, "CheckBox_1" );
 	connect( remote_cddb_cb, SIGNAL(toggled(bool)), SLOT(enable_remote_cddb(bool)) );
 	lay3->addWidget ( remote_cddb_cb );
 	lay3->addSpacing ( 15 );
