@@ -380,7 +380,9 @@ KSCD::initFont()
   }
   
   smallfont = QFont(KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold);
-  verysmallfont = QFont(KGlobalSettings::generalFont().family(), theSmallPtSize-2, QFont::Bold);
+  verysmallfont = QFont(KGlobalSettings::generalFont().family(), 
+                        (theSmallPtSize > 4) ? theSmallPtSize - 2 : 2, 
+                        QFont::Bold);
 } // initFont()
 
 QPushButton *
