@@ -52,6 +52,8 @@ CDDBSetup::CDDBSetup
     connect(remote_cddb_cb,SIGNAL(toggled(bool)),
             this,SLOT(enable_remote_cddb(bool)));
 
+    cddb_timeout_ef->setEnabled(remote_cddb_cb->isChecked());
+
     connect(currentServerAddPB, SIGNAL(clicked()), this, SLOT(insertSL()));
     connect(currentServerDelPB, SIGNAL(clicked()), this, SLOT(removeSL()));
 
@@ -64,100 +66,115 @@ CDDBSetup::CDDBSetup
 
     proxy_port_ef->setEnabled(cddb_http_cb->isChecked());
     proxy_host_ef->setEnabled(cddb_http_cb->isChecked());
-}
+} // CDDBSetup
 
 CDDBSetup::~CDDBSetup()
 {
-}
+} // ~CDDBSetup
 
-void CDDBSetup::insertSL(void)
+void 
+CDDBSetup::insertSL(void)
 {
     uint i;
 
     current_server_string = currentServerLE->text();
-    for(i = 0; i < server_listbox->count(); i++){
-        if(current_server_string == server_listbox->text(i)){
+    for(i = 0; i < server_listbox->count(); i++)
+      {
+        if(current_server_string == server_listbox->text(i))
+	  {
             server_listbox->setCurrentItem(i);
             server_listbox->centerCurrentItem();
             return;
-        }
-    }
+	  }
+      }
     server_listbox->insertItem(current_server_string);
     server_listbox->setCurrentItem(server_listbox->count()-1);
     server_listbox->centerCurrentItem();
-}
+} // insertSL
 
-void CDDBSetup::removeSL(void)
+void 
+CDDBSetup::removeSL(void)
 {
     int it = server_listbox->currentItem();
     if(it == -1)
         return;
     server_listbox->removeItem(it);
-}
+} // removeSL
 
-void CDDBSetup::insertSUL(void)
+void 
+CDDBSetup::insertSUL(void)
 {
     uint i;
 
     submitaddressstring = currentSubmitLE->text();
-    for(i = 0; i < submission_listbox->count(); i++){
-        if(submitaddressstring == submission_listbox->text(i)){
-            submission_listbox->setCurrentItem(i);
+    for(i = 0; i < submission_listbox->count(); i++)
+      {
+        if(submitaddressstring == submission_listbox->text(i))
+	  {
+	    submission_listbox->setCurrentItem(i);
             submission_listbox->centerCurrentItem();
             return;
-        }
-    }
+	  }
+      }
     submission_listbox->insertItem(submitaddressstring);
     submission_listbox->setCurrentItem(submission_listbox->count()-1);
     submission_listbox->centerCurrentItem();
-}
+} // insertSUL
 
-void CDDBSetup::removeSUL(void)
+void 
+CDDBSetup::removeSUL(void)
 {
     int it = submission_listbox->currentItem();
     if(it == -1)
         return;
     submission_listbox->removeItem(it);
-}
+} // removeSUL
 
 
-void CDDBSetup::set_current_server(int i)
+void 
+CDDBSetup::set_current_server(int i)
 {
     current_server_string = server_listbox->text(i);
     currentServerLE->setText(current_server_string);
     emit updateCurrentServer();
-}
+} // set_current_server
 
-void CDDBSetup::set_current_submission_address(int i)
+void 
+CDDBSetup::set_current_submission_address(int i)
 {
     submitaddressstring = submission_listbox->text(i);
     currentSubmitLE->setText(submitaddressstring);
-}
+} // set_current_submission_address
 
-void CDDBSetup::basedir_changed(const QString &str)
+void 
+CDDBSetup::basedir_changed(const QString &str)
 {
     basedirstring = str;
-}
+} // basedir_changed
 
-void CDDBSetup::enable_remote_cddb(bool)
+void 
+CDDBSetup::enable_remote_cddb(bool state)
 {
-}
+     cddb_timeout_ef->setEnabled(state);
+} // enable_remote_cddb
 
-void CDDBSetup::help()
+void 
+CDDBSetup::help()
 {
     kapp->invokeHTMLHelp("kscd/kscd.html","");
+} // help
 
-}
-
-void CDDBSetup::insertData(const QStrList& _serverlist,
-                           const QStrList& _submitlist,
-			   const QString& _basedir,
-			   const QString& _submitaddress,
-			   const QString& _current_server,
-			   const bool&    remote_enabled,
-			   const bool&    http_proxy_enabled,
-			   const QString& http_proxy_host,
-			   const unsigned short int& http_proxy_port)
+void 
+CDDBSetup::insertData(const QStrList& _serverlist,
+		      const QStrList& _submitlist,
+		      const QString& _basedir,
+		      const QString& _submitaddress,
+		      const QString& _current_server,
+		      const bool&    remote_enabled,
+		      const unsigned short int& cddb_timeout,
+		      const bool&    http_proxy_enabled,
+		      const QString& http_proxy_host,
+		      const unsigned short int& http_proxy_port)
 {
 
     current_server_string = _current_server.copy();
@@ -167,13 +184,14 @@ void CDDBSetup::insertData(const QStrList& _serverlist,
     currentSubmitLE->setText(submitaddressstring);
 
     submitlist.clear();
-    for(uint i = 0; i < _submitlist.count(); i++){
+    for(uint i = 0; i < _submitlist.count(); i++)
+      {
         submitlist.append(QStrList(_submitlist).at(i));
-    }
+      }
     
     insertServerList(_serverlist);
 //    server_listbox->setCurrentItem(_serverlist.find(_current_server.data()));
-    //server_listbox->find(_current_server.data());
+//    server_listbox->find(_current_server.data());
 //    server_listbox->centerCurrentItem();
 
     debug("check point: server_listbox->centerCurrentItem()\n");
@@ -182,15 +200,21 @@ void CDDBSetup::insertData(const QStrList& _serverlist,
     basedir_edit->setText(basedirstring);
     
     remote_cddb_cb->setChecked(remote_enabled);
+
+    char timeout_str[40];
+    sprintf(timeout_str,"%d",cddb_timeout);
+    cddb_timeout_ef->setText(timeout_str);
+
     cddb_http_cb->setChecked(http_proxy_enabled);
     proxy_host_ef->setText(http_proxy_host);
     char port_str[40];
     sprintf(port_str,"%d",http_proxy_port);
     proxy_port_ef->setText(port_str);
     debug("check point: ::insertData{...;return;}\n");
-}
+} // insertData
 
-void CDDBSetup::set_defaults()
+void 
+CDDBSetup::set_defaults()
 {
     server_listbox->setAutoUpdate(false);
     server_listbox->clear();
@@ -218,48 +242,57 @@ void CDDBSetup::set_defaults()
     // Leave proxy host and port values unchanged, just disable them
 
     emit updateCurrentServer();
-}
-void CDDBSetup::getData(QStrList& _serverlist,
-                        QStrList& _submitlist,
-			QString& _basedir,
-			QString& _submitaddress, 
-			QString& _current_server,
-			bool&    remote_enabled,
-			bool&    http_proxy_enabled,
-			QString  &http_proxy_host,
-			unsigned short int &http_proxy_port)
+} // set_defaults
+
+void 
+CDDBSetup::getData(QStrList& _serverlist,
+		   QStrList& _submitlist,
+		   QString& _basedir,
+		   QString& _submitaddress, 
+		   QString& _current_server,
+		   bool&    remote_enabled,
+		   unsigned short int &cddb_timeout,
+		   bool&    http_proxy_enabled,
+		   QString  &http_proxy_host,
+		   unsigned short int &http_proxy_port)
 {
     uint i;
 
     _serverlist.clear();
     _submitlist.clear();
-    for(i = 0; i < server_listbox->count();i++){
+    for(i = 0; i < server_listbox->count();i++)
+      {
         _serverlist.append(server_listbox->text(i).ascii());
-    }
-    for(i = 0; i < submission_listbox->count(); i++){
+      }
+    for(i = 0; i < submission_listbox->count(); i++)
+      {
         _submitlist.append(submission_listbox->text(i).ascii());
-    }
+      }
     _basedir = basedirstring.copy();
     _submitaddress = submitaddressstring.copy();
 
     _current_server     = current_server_string.copy();
     remote_enabled      = remote_cddb_cb->isChecked();
+    cddb_timeout        = atoi(cddb_timeout_ef->text().ascii());
     http_proxy_enabled  = cddb_http_cb->isChecked();
     http_proxy_host     = proxy_host_ef->text();
     http_proxy_port     = atoi(proxy_port_ef->text().ascii());
-}
+} // getData
 
-void CDDBSetup::getCurrentServer(QString& ser)
+void 
+CDDBSetup::getCurrentServer(QString& ser)
 {
     ser = current_server_string.copy();
-}
+} // getCurrentServer
 
-void CDDBSetup::serverlist_update()
+void 
+CDDBSetup::serverlist_update()
 {
     emit updateCDDBServers();
-}
+} // serverlist_update
 
-void CDDBSetup::insertServerList(const QStrList& list)
+void 
+CDDBSetup::insertServerList(const QStrList& list)
 {
     QString current_server_string_backup;
     uint i;
@@ -276,7 +309,7 @@ void CDDBSetup::insertServerList(const QStrList& list)
     QListIterator<char> it(list);
 
     for(;it.current();++it)
-    {
+      {
         char ser   [CDDB_FIELD_BUFFER_LEN];
         char por   [CDDB_FIELD_BUFFER_LEN];
         char proto [CDDB_FIELD_BUFFER_LEN];
@@ -287,34 +320,36 @@ void CDDBSetup::insertServerList(const QStrList& list)
         sscanf(srv,"%s %s %s %s",ser,proto,por,extra);
         CDDB::transport t=CDDB::decodeTransport(proto);
         if(t==CDDB::UNKNOWN)
+	  {
             continue;
-        else
+	  } else {
             if(t==CDDB::SMTP)
-            {
+	      {
                 sprintf(email,"%s@%s",extra,ser);
                 have_email=true;
                 submission_listbox->insertItem(email, -1);
-            }
-            else
-            {
+	      } else {
                 have_srv=true;
                 server_listbox->insertItem(srv, -1);
-            }
-    }
- 
+	      }
+	  }
+      }
+    
     if(!have_srv)
-    {
+      {
         server_listbox->insertItem(DEFAULT_CDDB_SERVER, -1);
         server_listbox->insertItem(DEFAULT_CDDBHTTP_SERVER, -1); 
-    }
+      }
     
-    if(!have_email){
-        for(i = 0; i < submitlist.count(); i++){
-            submission_listbox->insertItem(submitlist.at(i));
-        }
+    if(!have_email)
+      {
+	for(i = 0; i < submitlist.count(); i++)
+	  {
+	    submission_listbox->insertItem(submitlist.at(i));
+	  }
 //        submission_listbox->insertItem(DEFAULT_SUBMIT_EMAIL,-1);
 //        submission_listbox->insertItem(DEFAULT_TEST_EMAIL, -1);
-    }
+      }
    
     server_listbox->setAutoUpdate(true);
     server_listbox->repaint();
@@ -326,41 +361,49 @@ void CDDBSetup::insertServerList(const QStrList& list)
     current_server_string = current_server_string_backup.copy();
     //current_server_string = currentServerLE->text();
     debug("current_server_string: %s\n", current_server_string.data());
-    for(i = 0; i < server_listbox->count(); i++){
-        if(current_server_string == server_listbox->text(i)){
+    for(i = 0; i < server_listbox->count(); i++)
+      {
+        if(current_server_string == server_listbox->text(i))
+	  {
             server_listbox->setCurrentItem(i);
             server_listbox->centerCurrentItem();
             found = 1;
             break;
-        }
-    }
-    if(!found){
+	  }
+      }
+
+    if(!found)
+      {
         server_listbox->setCurrentItem(0);
         server_listbox->centerCurrentItem();
-    }
+      }
 
 //    submitaddressstring = currentSubmitLE->text();
-    for(i = 0; i < submission_listbox->count(); i++){
-        if(submitaddressstring == submission_listbox->text(i)){
+    for(i = 0; i < submission_listbox->count(); i++)
+      {
+        if(submitaddressstring == submission_listbox->text(i))
+	  {
             submission_listbox->setCurrentItem(i);
             submission_listbox->centerCurrentItem();
             found = 1;
             break;
-        }
-    }
-    if(!found){
+	  }
+      }
+    if(!found)
+      {
         submission_listbox->setCurrentItem(0);
         submission_listbox->centerCurrentItem();
-    }
+      }
 //    server_listbox->setCurrentItem(0);
 //    submission_listbox->setCurrentItem(0);
-}
+} // insertServerList
 
-void CDDBSetup::http_access_toggled(bool state)
+void 
+CDDBSetup::http_access_toggled(bool state)
 {
     proxy_port_ef->setEnabled(state);
     proxy_host_ef->setEnabled(state);
-}
+} // http_access_toggled
 
 #include "CDDBSetup.moc"
 #include "CDDBSetupData.moc"

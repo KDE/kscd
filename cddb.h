@@ -49,7 +49,7 @@ class CDDB:public QObject
 
 	public:
 
-    CDDB(char *hostname=0, unsigned short int port = 0, int timeout = 60);
+    CDDB(char *hostname=0, unsigned short int port = 0, unsigned short int timeout = 60);
     ~CDDB();
 
     typedef enum { INIT=0, ERROR_INIT=1,
@@ -113,6 +113,9 @@ class CDDB:public QObject
     void setHTTPProxy(QString host, unsigned short int port);
     void useHTTPProxy(bool flag);
 
+    void setTimeout(unsigned short int timeout);
+    unsigned short int getTimeout();
+
     bool    useHTTPProxy();
     QString getHTTPProxyHost();
     unsigned short int getHTTPProxyPort();
@@ -166,7 +169,7 @@ class CDDB:public QObject
     QString     respbuffer;
     QString     tempbuffer;
     QString     lastline;
-    int		timeout;
+    unsigned short int	timeout;
     unsigned short int port;
     bool    	connected;
     bool	readonly;

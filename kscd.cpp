@@ -767,6 +767,8 @@ KSCD::nextClicked()
     if(randomplay)
       {
         int j = randomtrack();
+	if ( j < 0 )
+	  return;
         QString str;
         str.sprintf("%02d/%02d",j,cd->ntracks );
         tracklabel->setText(str);
@@ -801,7 +803,6 @@ KSCD::nextClicked()
 void 
 KSCD::fwdClicked()
 {
-
     qApp->processEvents();
     qApp->flushX();
 
@@ -1093,6 +1094,7 @@ KSCD::aboutClicked()
                       submitaddress,
                       current_server,
                       cddb_remote_enabled,
+		      cddb.getTimeout(),
                       cddb.useHTTPProxy(),
                       cddb.getHTTPProxyHost(),
                       cddb.getHTTPProxyPort()
@@ -1147,6 +1149,7 @@ KSCD::aboutClicked()
         bool cddb_proxy_enabled;
         QString cddb_proxy_host;
         unsigned short int cddb_proxy_port;
+	unsigned short int cddb_timeout;
 
         setup->getData(cddbserverlist,
                        cddbsubmitlist,
@@ -1154,10 +1157,12 @@ KSCD::aboutClicked()
                        submitaddress,
                        current_server,
                        cddb_remote_enabled,
+		       cddb_timeout,
                        cddb_proxy_enabled,
                        cddb_proxy_host,
                        cddb_proxy_port
         );
+	cddb.setTimeout(cddb_timeout);
         cddb.setHTTPProxy(cddb_proxy_host,cddb_proxy_port);
         cddb.useHTTPProxy(cddb_proxy_enabled);
 
@@ -1230,7 +1235,7 @@ KSCD::randomtrack()
 	      if( !looping )
 		{
 		  stopClicked();
-		  return 0;
+		  return -1;
 		} else {
 		  random_current=0;
 		}
@@ -1244,7 +1249,7 @@ KSCD::randomtrack()
 	      if( !looping )
 		{
 		  stopClicked();
-		  return 0;
+		  return -1;
 		} else {
 		  random_current = 0;
 		}
@@ -1535,7 +1540,8 @@ KSCD::readSettings()
     stopexit = config->readBoolEntry("STOPEXIT", true);
     ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);
     mailcmd    =        config->readEntry("UnixMailCommand","/bin/mail -s \"%s\"");
-    randomonce = (bool)config->readNumEntry("RANDOMONCE",1);
+    randomonce = (bool)config->readBoolEntry("RANDOMONCE",true);
+
 
 #ifdef DEFAULT_CD_DEVICE
 
@@ -1567,6 +1573,8 @@ KSCD::readSettings()
     smtpConfigData.senderAddress = config->readEntry("senderAddress", "someone@somewhere.org");
 
     config->setGroup("CDDB");
+
+    cddb.setTimeout(config->readNumEntry("CDDBTimeout",60));
 
     cddbbasedir = config->readEntry("LocalBaseDir");
     if (!cddbbasedir.isNull())
@@ -1653,6 +1661,7 @@ KSCD::writeSettings()
 
     config->setGroup("CDDB");
     config->writeEntry("CDDBRemoteEnabled",cddb_remote_enabled);
+    config->writeEntry("CDDBTimeout",cddb.getTimeout());
     config->writeEntry("LocalBaseDir",cddbbasedir);
     config->writeEntry("SeverList",cddbserverlist);
     config->writeEntry("SubmitList", cddbsubmitlist);
@@ -1708,16 +1717,20 @@ KSCD::getCDDBservers()
     bool    cddb_proxy_enabled;
     QString cddb_proxy_host;
     unsigned short int cddb_proxy_port;
+    unsigned short int cddb_timeout;
+
     setup->getData(cddbserverlist,
                    cddbsubmitlist,
                    cddbbasedir,
                    submitaddress,
                    current_server,
                    cddb_remote_enabled,
+		   cddb_timeout,
                    cddb_proxy_enabled,
                    cddb_proxy_host,
                    cddb_proxy_port
     );
+    cddb.setTimeout(cddb_timeout);
     cddb.setHTTPProxy(cddb_proxy_host,cddb_proxy_port);
     cddb.useHTTPProxy(cddb_proxy_enabled);
 
@@ -2605,12 +2618,17 @@ KSCD::make_random_list()
   if( (size = playlist.count()) <= 0 )
     size = cur_ntracks;
 
+  debug ( "Playlist has %d entries\n", size );
   random_list = (int *)malloc((size_t)size*sizeof(int));
   for( i=0; i < size; i++ ) 
     {
       do {
 	rejected = false;
-	selected = 1+ (int)((double)size*rand()/(RAND_MAX+1.0));
+	if( playlist.count() <= 0 )
+	  selected = 1+ (int)((double)size*rand()/(RAND_MAX+1.0));
+	else
+	  selected = (int)((double)size*rand()/(RAND_MAX+1.0));
+
 	for(j=0;j<i;j++) 
 	  {
 	    if(random_list[j] == selected) 

@@ -59,7 +59,7 @@ LedLamp::drawContents(QPainter *painter)
       switch (ledtype)
 	{
 	case Rect:
-	  painter->drawRect(1,1,width-2, height-2);
+	  painter->drawRect(1,1,width-3, height-2);
 	  break;
 	case Loop:
 	  painter->setBrush(lightBrush);
@@ -82,7 +82,7 @@ LedLamp::drawContents(QPainter *painter)
       switch (ledtype)
 	{
 	case Rect:
-	  painter->drawRect(1,1,width-2, height-2);
+	  painter->drawRect(1,1,width-3, height-2);
 	  break;
 	case Loop:
 	  painter->setBrush(darkBrush);

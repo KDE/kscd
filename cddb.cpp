@@ -54,7 +54,7 @@ void cddb_playlist_encode(QStrList& playlist,QString&  value);
 int Ret;
 extern char cddbbasedirtext[4096];
 
-CDDB::CDDB(char *host, unsigned short int _port,int _timeout)
+CDDB::CDDB(char *host, unsigned short int _port, unsigned short int _timeout)
 {
     hostname   = host;
     port       = _port;
@@ -96,16 +96,29 @@ CDDB::CDDB(char *host, unsigned short int _port,int _timeout)
 
 CDDB::~CDDB()
 {
-    if(sock){
+    if(sock)
+      {
 	delete sock;
 	sock = 0L;
-    }
-
+      }
     timeouttimer.stop();
     starttimer.stop();
-}
+} // ~CDDB
 
-void CDDB::sighandler(int signum)
+void
+CDDB::setTimeout(unsigned short int _timeout)
+{
+  timeout = _timeout;
+} // setTimeout
+
+unsigned short int 
+CDDB::getTimeout( void )
+{
+  return timeout;
+} // getTimeout
+
+void 
+CDDB::sighandler(int signum)
 {
     signum = signum;
     
@@ -135,9 +148,10 @@ void CDDB::setalarm()
     val1.it_value    = tval2;
 
     setitimer(ITIMER_REAL, &val1, 0);
-}
+} // setalarm
 
-void CDDB::cddbgetServerList(QString& _server)
+void 
+CDDB::cddbgetServerList(QString& _server)
 {
     char ser   [CDDB_FIELD_BUFFER_LEN];
     char por   [CDDB_FIELD_BUFFER_LEN];
@@ -157,28 +171,27 @@ void CDDB::cddbgetServerList(QString& _server)
     mode = SERVER_LIST_GET;
 
     if(protocol==CDDBHTTP)
-    {
+      {
 	cddb_connect_internal();
 	if(connected)
-	{
+	  {
 	    QString cmd="sites";
 	    send_http_command(cmd);
 	    if(use_http_proxy)
-	    {
+	      {
 		saved_state=SERVER_LIST_WAIT;
 		state=HTTP_REQUEST;
-	    } else
-	    {
+	      } else {
 		state = SERVER_LIST_WAIT;
-	    }
-	}
-    } else 
-    {
+	      }
+	  }
+      } else {
 	starttimer.start(100,TRUE);
-    }
-}
+      }
+} // cddbgetServerList
 
-void CDDB::cddb_connect(QString& _server)
+void 
+CDDB::cddb_connect(QString& _server)
 {
     char ser[CDDB_FIELD_BUFFER_LEN];
     char por[CDDB_FIELD_BUFFER_LEN];
@@ -194,77 +207,80 @@ void CDDB::cddb_connect(QString& _server)
   
     mode = REGULAR;
     if(protocol==CDDBP)
-    {
+      {
+	// --HERE--
 	starttimer.start(100,TRUE);
-    } else
-    {
+      } else {
 	emit cddb_ready();
-    }
-}
+      }
+} // cddb_connect
 
-void CDDB::cddb_connect_internal()
+void 
+CDDB::cddb_connect_internal()
 {
     starttimer.stop();
     timeouttimer.start(timeout*1000,TRUE);
 
-    if(sock) {
+    debug("timeout = %d\n", timeout*1000);
+
+    if(sock) 
+      {
 	delete sock;
 	sock = 0L;
-    }
+      }
 
     // signal( SIGALRM , CDDB::sighandler );
     // setalarm();
 
     if(protocol==CDDBHTTP && use_http_proxy)
-    {
+      {
 	debug("CONNECTING TO %s:%d ....\n",proxyhost.data(),proxyport);
 	sock = new KSocket(proxyhost.data(),proxyport);
-    }
-    else 
-    {
+	debug("SOCKET SET");
+      } else {
 	debug("CONNECTING TO %s:%d ....\n",hostname.data(),port);
 	sock = new KSocket(hostname.data(),port);
-    }
-   
+	debug("SOCKET SET");
+      }
+    
     //signal( SIGALRM , SIG_DFL );
 
     if(sock == 0L || sock->socket() < 0)
-    {
+      {
 	timeouttimer.stop();
-
+	
 	debug("CONNECT FAILED\n");
-
+	
 	if(mode == REGULAR )
 	    emit cddb_failed();      
 	else // mode == SERVER_LIST_GET
-	    emit get_server_list_failed();
-
+	  emit get_server_list_failed();
+	
 	connected = false;
 	return;    
-    }
-
+      }
+    
     connected = true;
     respbuffer = "";
-
+    
     connect(sock,SIGNAL(readEvent(KSocket*)),this,SLOT(cddb_read(KSocket*)));
     connect(sock,SIGNAL(closeEvent(KSocket*)),this,SLOT(cddb_close(KSocket*)));
     sock->enableRead(true);
-
+    
     if(protocol==CDDBHTTP)
-    {
+      {
 	protocol_level=3;
 	state=READY;
-    }
-    else
-    {
+      } else {
 	protocol_level=1;
 	state = INIT;
-    }
+      }
     
     debug("CONNECTED\n");
-}
+} // cddb_connect_internal
 
-void CDDB::send_http_command(QString &command)
+void 
+CDDB::send_http_command(QString &command)
 {
     QString request;
     QString prt;
@@ -289,9 +305,10 @@ void CDDB::send_http_command(QString &command)
     write(sock->socket(),request.data(),request.length());
     timeouttimer.stop();
     timeouttimer.start(timeout*1000,TRUE);
-}
+} // send_http_command
 
-void CDDB::cddb_timed_out_slot()
+void 
+CDDB::cddb_timed_out_slot()
 {
     timeouttimer.stop();
 
@@ -306,18 +323,21 @@ void CDDB::cddb_timed_out_slot()
     state = CDDB_TIMEDOUT;
     debug("SOCKET CONNECTION TIMED OUT\n");
     cddb_close(sock);
-}
+} // cddb_timed_out_slot
 
 // called externally if we want to close or interrupt the cddb connection
-void CDDB::close_connection()
+void 
+CDDB::close_connection()
 {
     if(sock)
     {
 	cddb_close(sock);
 	sock = 0L;
     }
-}
-void CDDB::cddb_close(KSocket *socket)
+} // close_connection
+
+void 
+CDDB::cddb_close(KSocket *socket)
 {
     timeouttimer.stop();
     disconnect(socket,SIGNAL(readEvent(KSocket*)),this,SLOT(cddb_read(KSocket*)));
@@ -325,12 +345,13 @@ void CDDB::cddb_close(KSocket *socket)
     socket->enableRead(false);
     debug("SOCKET CONNECTION TERMINATED\n");
     connected = false;
-    if(socket){
+    if(socket)
+      {
 	delete socket;
 	socket = 0L;
 	sock = 0L;
-    }
-}
+      }
+} // cddb_close
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -338,7 +359,8 @@ void CDDB::cddb_close(KSocket *socket)
 #include <kstddirs.h>
 #include <kglobal.h>
 
-void CDDB::cddb_read(KSocket *socket)
+void 
+CDDB::cddb_read(KSocket *socket)
 {
     int  n;
     char buffer[CDDB_READ_BUFFER_LEN];
@@ -355,21 +377,24 @@ void CDDB::cddb_read(KSocket *socket)
 
     while(next_token())
         do_state_machine();
-}
+} // cddb_read
 
-bool CDDB::next_token()
+bool 
+CDDB::next_token()
 {
     int newlinepos = tempbuffer.find('\n');
     if(newlinepos != -1)
-    {
+      {
 	lastline    = tempbuffer.left(newlinepos);
 	tempbuffer  = tempbuffer.right(tempbuffer.length() - newlinepos -1);
 	return true;
-    } else 
+      } else {
 	return false;
-}
+      }
+} // next_token
 
-void CDDB::queryCD(unsigned long _magicID,QStrList& querylist)
+void 
+CDDB::queryCD(unsigned long _magicID,QStrList& querylist)
 {
 //    if(state == DO_NOTHING)
 //        return;
@@ -384,29 +409,27 @@ void CDDB::queryCD(unsigned long _magicID,QStrList& querylist)
 
     str = str.sprintf("cddb query %08lx %u ",magicID,querylist.count()-1);
     for(int i = 0; i <(int) querylist.count(); i++) 
-    {
+      {
 	str += querylist.at(i);
 	str += " ";
-    }
+      }
 
     if(protocol==CDDBHTTP)
-    {
+      {
 	cddb_connect_internal();
 	if(connected)
-	{
+	  {
 	    QString param = str;
 	    send_http_command(param);
 	    if(use_http_proxy)
-	    {
+	      {
 		saved_state = QUERY;
 		state       = HTTP_REQUEST;
-	    } else {
+	      } else {
 		state  = QUERY;
-	    }
-	}
-    }
-    else
-    {
+	      }
+	  }
+      } else {
 	// CDDB
 	timeouttimer.stop();
 	timeouttimer.start(timeout*1000,TRUE);
@@ -414,63 +437,61 @@ void CDDB::queryCD(unsigned long _magicID,QStrList& querylist)
 	debug("strdata: %s\n", str.data());
 	write(sock->socket(),str.data(),str.length());
         state  = QUERY;
-    }
+      }
+} // queryCD
 
-  
-}
-
-void CDDB::query_exact(QString line)
+void 
+CDDB::query_exact(QString line)
 {
-    int category_start = 0;
-    int category_end 	 = 0;
-    int magic_start 	 = 0;
-    int magic_end 	 = 0;
-
-    QString magicstr;
-      
-    category_start = line.find(" ",0,true) + 1;
-    category_end = line.find(" ",category_start,true);
-    category = line.mid(category_start,category_end-category_start);
-
-    magic_start = category_end + 1;
-    magic_end = line.find(" ",magic_start,true);
-    magicstr = line.mid( magic_start, magic_end - magic_start);
-
-    title = line.mid(magic_end + 1,line.length());
-
-    QString readstring;
-    if((sock == 0L || sock ->socket() < 0) && protocol==CDDBP)
+  int category_start = 0;
+  int category_end 	 = 0;
+  int magic_start 	 = 0;
+  int magic_end 	 = 0;
+  
+  QString magicstr;
+  
+  category_start = line.find(" ",0,true) + 1;
+  category_end = line.find(" ",category_start,true);
+  category = line.mid(category_start,category_end-category_start);
+  
+  magic_start = category_end + 1;
+  magic_end = line.find(" ",magic_start,true);
+  magicstr = line.mid( magic_start, magic_end - magic_start);
+  
+  title = line.mid(magic_end + 1,line.length());
+  
+  QString readstring;
+  if((sock == 0L || sock ->socket() < 0) && protocol==CDDBP)
     {
-	debug("sock = 0L!!!\n");
-	return;
+      debug("sock = 0L!!!\n");
+      return;
     }
-
-    if(protocol==CDDBHTTP)
+  
+  if(protocol==CDDBHTTP)
     {
-	cddb_connect_internal();
-	if(connected)
+      cddb_connect_internal();
+      if(connected)
 	{
-	    readstring.sprintf("cddb read %s %s",category.data(),magicstr.data());
-	    send_http_command(readstring);
+	  readstring.sprintf("cddb read %s %s",category.data(),magicstr.data());
+	  send_http_command(readstring);
 	}
+    } else {
+      // CDDB
+      timeouttimer.stop();
+      timeouttimer.start(timeout*1000,TRUE);
+      //  readstring.sprintf("cddb read %s %lx \n",category.data(),magicID);
+      readstring.sprintf("cddb read %s %s \n",category.data(),magicstr.data());
+      write(sock->socket(),readstring.data(),readstring.length());
     }
-    else
-    {
-	// CDDB
-	timeouttimer.stop();
-	timeouttimer.start(timeout*1000,TRUE);
-	//  readstring.sprintf("cddb read %s %lx \n",category.data(),magicID);
-	readstring.sprintf("cddb read %s %s \n",category.data(),magicstr.data());
-	write(sock->socket(),readstring.data(),readstring.length());
-    }
+  
+  state = CDDB_READ;
+  respbuffer = "";
+  sock->enableRead(true);
+} // query_exact
 
-    state = CDDB_READ;
-    respbuffer = "";
-    sock->enableRead(true);
 
-}
-
-void CDDB::do_state_machine()
+void 
+CDDB::do_state_machine()
 {
     static int cddbfh = 0;
     int cddblinelen;
@@ -479,228 +500,227 @@ void CDDB::do_state_machine()
     debug("STATE MACHINE: State: %d Got: %s\n",(int)state,lastline.data());
 
     switch (state)
-    {
-    case HTTP_HEADER:
+      {
+      case HTTP_HEADER:
         
         if(lastline.stripWhiteSpace()==QString(""))
-        {
+	  {
             state=saved_state;
-                debug("HTTP Header is done. Moving on.\n");
-        }
+	    debug("HTTP Header is done. Moving on.\n");
+	  }
         break;
-
-    case HTTP_REQUEST:
+	
+      case HTTP_REQUEST:
 	//Parse responce and check numeric code.
 	char proto [CDDB_FIELD_BUFFER_LEN];
 	char code  [CDDB_FIELD_BUFFER_LEN];
 	sscanf(lastline.data(),"%s %s",proto,code);
 	if(strcmp(code,"200")==0)
-	{
+	  {
             if(use_http_proxy)
-            {
+	      {
                 state=HTTP_HEADER;
                 debug("HTTP request is OK. Reading HTTP header.\n");
-            } else {
+	      } else {
                 state=saved_state;
                 debug("HTTP request is OK. Mooving on.\n");
-            }
-	}
-	else {
-		debug("HTTP error: %s\n",lastline.data());
+	      }
+	  } else {
+	    debug("HTTP error: %s\n",lastline.data());
 	    if(saved_state==SERVER_LIST_WAIT)
+	      {
 		emit get_server_list_failed();
-          
+	      }
 	    state=CDDB_DONE; //TODO: some error state
-	}
+	  }
 	break;
-      
-    case INIT:
+	
+      case INIT:
         debug("case INIT == true\n");
 	if((lastline.left(3) == QString("201")) ||(lastline.left(3) == QString("200")) )
-        {
+	  {
 	    debug("next if == true\n");
 	    QString hellostr;
-
+	    
 	    // cddb hello username hostname clientname version
 	    hellostr = QString("cddb hello %1 %2 Kscd %3\n")
-			.arg(username)
-			.arg(domainname)
-			.arg(KSCDVERSION);
+	      .arg(username)
+	      .arg(domainname)
+	      .arg(KSCDVERSION);
             debug("hellostr: %s\n", hellostr.data());
-
+	    
 	    Ret = write(sock->socket(),hellostr.data(),hellostr.length());
 	    debug("write() returned: %d [%s]\n", Ret, strerror(errno));
 	    state = HELLO;
-	}
-	else {
+	  } else {
 	    state = ERROR_INIT;	
 	    cddb_close(sock);
 	    debug("ERROR_INIT\n");
 	    emit cddb_failed();
-	}
+	  }
 
 	respbuffer = "";
 	break;
-
-    case HELLO:
+	
+      case HELLO:
 	if(lastline.left(3) == QString("200"))
-        {
+	  {
 	    // Negotiate protocol level
 	    state = PROTO;
 	    // Let's try to request protocol level 3
 	    // so we'll get list of servers with protocol.
 	    write(sock->socket(),"proto 3\n",8); 
-	}
-	else {
+	  } else {
 	    state = ERROR_HELLO;
 	    cddb_close(sock);
 	    debug("ERROR_HELLO\n");
 	    emit cddb_failed();
-	}
-
+	  }
+	
 	respbuffer = "";
 	break;
 	
-    case PROTO:
+      case PROTO:
 	if(lastline.left(3) == QString("201"))
-	    protocol_level=3;
+	  protocol_level=3;
 	else
-	    protocol_level=1;
+	  protocol_level=1;
 	
 	state = READY;
 	if(mode == REGULAR)
+	  {
 	    emit cddb_ready();
-	else {
+	  } else {
 	    write(sock->socket(),"sites\n",6);
 	    state = SERVER_LIST_WAIT;
-	}
+	  }
 	break;
-
-    case QUERY:
+	
+      case QUERY:
 	if(lastline.left(3) == QString("200"))
-	{
+	  {
 	    query_exact(lastline);
-	}
-	else if(lastline.left(3) == QString("211"))
-	{
-            inexact_list.clear();
-            state = INEX_READ;
-	}
-	else if(lastline.left(3) == QString("202"))
-        {
-	    state = CDDB_DONE;
-	    
-	    cddb_close(sock);
-	    emit cddb_no_info();
-	}
-	else {
-	    state = ERROR_QUERY;
-	    cddb_close(sock);
-	    debug("ERROR_QUERY\n");
-	    emit cddb_failed();
-	}
-
+	  } else {
+	    if(lastline.left(3) == QString("211"))
+	      {
+		inexact_list.clear();
+		state = INEX_READ;
+	      } else {
+		if(lastline.left(3) == QString("202"))
+		  {
+		    state = CDDB_DONE;
+		    
+		    cddb_close(sock);
+		    emit cddb_no_info();
+		  } else {
+		    state = ERROR_QUERY;
+		    cddb_close(sock);
+		    debug("ERROR_QUERY\n");
+		    emit cddb_failed();
+		  }
+	      }
+	  }
 	break;
 
-    case INEX_READ:
-
+      case INEX_READ:
+	
 	if(lastline.at(0) == '.')
-        {
+	  {
 	    state = CDDB_DONE;
 	    timeouttimer.stop();
 	    emit cddb_inexact_read();
-	} else {
+	  } else {
  	    inexact_list.append(lastline.ascii());
-        }
+	  }
 	break;
 
-    case CDDB_READING:
+      case CDDB_READING:
 	if(lastline.at(0) == '.')
-	{
-            close(cddbfh);
-            cddbfh = 0;
+	  {
+	    close(cddbfh);
+	    cddbfh = 0;
             if(protocol!=CDDBHTTP)
-                write(sock->socket(),"quit\n",6);
+	      write(sock->socket(),"quit\n",6);
             state = CDDB_DONE;
 	    
 	    cddb_close(sock);
 	    emit cddb_done();
-	} else {
-            if(!cddbfh){
+	  } else {
+            if(!cddbfh)
+	      {
 		QString file;
 		file.sprintf("%s/%08lx", category.ascii(), magicID);
-                file = locate("cddb", file);
-
-                debug("dir/file path: %s\n", file.ascii());
-                cddbfh = open(file.ascii(), O_CREAT|O_WRONLY|O_TRUNC,
-                              S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
-            }
+		file = locate("cddb", file);
+		
+		debug("dir/file path: %s\n", file.ascii());
+		cddbfh = open(file.ascii(), O_CREAT|O_WRONLY|O_TRUNC,
+			      S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
+	      }
             cddblinelen = lastline.length();
             write(cddbfh, lastline.data(), cddblinelen);
             write(cddbfh, "\n", strlen("\n"));
-//            debug("line written: %d\n", cddblinelen);
+	    //            debug("line written: %d\n", cddblinelen);
             
             respbuffer.prepend("\n");
             respbuffer.prepend(lastline);
-        }
+	  }
         break;
 
     case CDDB_READ:
 
 	if(lastline.at(0) == '4')
-	{
+	  {
 	    state = ERROR_CDDB_READ;
 	    debug("ERROR_CDDB_READ\n");
 	    cddb_close(sock);
 	    emit cddb_failed();
-	} else {
+	  } else {
             respbuffer="";
             state = CDDB_READING;
-        }
+	  }
 	break;
-
-    case SERVER_LIST_WAIT:
+	
+      case SERVER_LIST_WAIT:
 
 	if(lastline.left(3) == QString("210"))
-        {
+	  {
             serverlist.clear();
             state=GETTING_SERVER_LIST;
-        } else {
+	  } else {
             state=CDDB_DONE;
             emit get_server_list_failed();
-        }
+	  }
         break;
-
-    case GETTING_SERVER_LIST:
+	
+      case GETTING_SERVER_LIST:
 	if(lastline.at(0) == '.')
-	{
+	  {
             debug("GOT SERVERLIST\n");
             if(protocol!=CDDBHTTP)
-                write(sock->socket(),"quit\n",6);
+	      write(sock->socket(),"quit\n",6);
 	    cddb_close(sock);
 	    emit get_server_list_done();
 	    state = CDDB_DONE;
-	} else
-        {
-            parse_serverlist_entry();
-        }
+	  } else {
+	    parse_serverlist_entry();
+	  }
 	break;
-
-    default:
+	
+      default:
 	break;
-
-    }
-
+      }
     lastline="";
+} // do_state_machine
+
+
+void 
+CDDB::serverList(QStrList& list)
+{
+  list = serverlist;
 }
 
-
-void CDDB::serverList(QStrList& list){
-
-    list = serverlist;
-}
-
-void CDDB::parse_serverlist_entry()
+void
+CDDB::parse_serverlist_entry()
 {
     char serv  [CDDB_FIELD_BUFFER_LEN];
     char po    [CDDB_FIELD_BUFFER_LEN];
@@ -710,69 +730,72 @@ void CDDB::parse_serverlist_entry()
     QString tempstr;
 
     if(protocol_level<3)
-    {
+      {
         sscanf(lastline.data(),"%s %s",serv,po);
         tempstr = tempstr.sprintf("%s cddbp %s -",serv,po);
         serverlist.append(tempstr.data());
-    } else
-    {
+      } else {
         sscanf(lastline.data(),"%s %s %s %s",serv,proto,po,extra);
         tempstr = tempstr.sprintf("%s %s %s %s",serv,proto,po,extra);
-//         transport tr=decodeTransport(proto);
-//         if(tr==CDDBP || tr==CDDBHTTP)
+	//         transport tr=decodeTransport(proto);
+	//         if(tr==CDDBP || tr==CDDBHTTP)
         serverlist.append(tempstr.data());
-    }
-}
+      }
+} // parse_serverlist_entry
 
-void CDDB::get_inexact_list(QStrList& p_inexact_list)
+void 
+CDDB::get_inexact_list(QStrList& p_inexact_list)
 {
     p_inexact_list=inexact_list;
-}
+} // get_inexact_list
 
-bool CDDB::local_query(
-    unsigned  long magicID,
-    QString&  data,
-    QStrList& titlelist,
-    QStrList& extlist,
-    QString&  _category,
-    QStrList& discidlist,
-    int&	 revision,
-    QStrList& playlist
-)
+bool 
+CDDB::local_query(
+		  unsigned  long magicID,
+		  QString&  data,
+		  QStrList& titlelist,
+		  QStrList& extlist,
+		  QString&  _category,
+		  QStrList& discidlist,
+		  int&	 revision,
+		  QStrList& playlist
+		  )
 {
-    QStringList pathlist = KGlobal::dirs()->resourceDirs("cddb");
-
-    if(pathlist.count() == 0)
-	return false;
-
-    QDir d;
-    
-    for(QStringList::ConstIterator it = pathlist.begin() ; it != pathlist.end(); it++){
-
-	d.setPath(*it);
-	d.setFilter( QDir::Dirs);
-	d.setSorting( QDir::Size);
-	
-	QStringList list = d.entryList();
-	QStringList::Iterator it2;    
-	
-	for(it2 = list.begin(); it2 != list.end(); it2++){
-	    if (*it2 != "." && *it2 != "..")
-		if(checkDir(magicID, *it + *it2)) {
-		    category = *it2;
-		    
-		    getData(data,titlelist,extlist,_category,discidlist,revision,playlist);
-		    return true;
-		}
-	}
-
-    }
-
+  QStringList pathlist = KGlobal::dirs()->resourceDirs("cddb");
+  
+  if(pathlist.count() == 0)
     return false;
+  
+  QDir d;
+  
+  for(QStringList::ConstIterator it = pathlist.begin() ; it != pathlist.end(); it++)
+    { 
+      d.setPath(*it);
+      d.setFilter( QDir::Dirs);
+      d.setSorting( QDir::Size);
+      
+      QStringList list = d.entryList();
+      QStringList::Iterator it2;    
+      
+      for(it2 = list.begin(); it2 != list.end(); it2++)
+	{
+	  if (*it2 != "." && *it2 != "..")
+	    {
+	      if(checkDir(magicID, *it + *it2))
+		{
+		  category = *it2;
+		  
+		  getData(data,titlelist,extlist,_category,discidlist,revision,playlist);
+		  return true;
+		}
+	    }
+	}
+    }
+  return false;
+} // local_query
 
-}
-
-bool CDDB::checkDir(unsigned long magicID, const QString& dir)
+bool 
+CDDB::checkDir(unsigned long magicID, const QString& dir)
 {
     QString mag;
     mag.sprintf("%s/%08lx",dir.ascii(),magicID);
@@ -785,63 +808,63 @@ bool CDDB::checkDir(unsigned long magicID, const QString& dir)
 
     QFile file(mag.data());
 
-    if( !file.open( IO_ReadOnly )) {
+    if( !file.open( IO_ReadOnly )) 
+      {
 	return false;
-    }
-
+      }
+    
     QTextStream t(&file);
-
-    while ( !t.eof() ) {
-
+    
+    while ( !t.eof() ) 
+      {
 	QString s = t.readLine() + "\n";
 	if(!t.eof())
-	    respbuffer += s;
-    }  
-
+	  respbuffer += s;
+      }
 
     file.close();
-    
     return true;
-
-}
+} // checkDir
 
 // scan the relevant parts of the cddba database entry in the the provied structures
-void CDDB::getData(
-    QString& data,
-    QStrList& titles, 
-    QStrList& extlist,
-    QString& categ,
-    QStrList& discidlist, 
-    int& revision,
-    QStrList& playlist
-){
-
-    data = "";
-    titles.clear();
-    extlist.clear();
-    discidlist.clear();
-    categ      = category;
-    data       = respbuffer;
+void 
+CDDB::getData(
+	      QString& data,
+	      QStrList& titles, 
+	      QStrList& extlist,
+	      QString& categ,
+	      QStrList& discidlist, 
+	      int& revision,
+	      QStrList& playlist
+	      )
+{
+  data = "";
+  titles.clear();
+  extlist.clear();
+  discidlist.clear();
+  categ      = category;
+  data       = respbuffer;
     
   
     int pos1,pos2,pos3,pos4 = 0;
 
     int revtmp = data.find("Revision:",0,true);
     if(revtmp == -1)
+      {
 	revision = 1;
-    else{
+      } else {
 	QString revstr;
 	int revtmp2;
 	revtmp2 = data.find("\n",revtmp,true);
 	if(revtmp2 - revtmp - 9 >=0)
-	    revstr = data.mid(revtmp +9,revtmp2 - revtmp -9);
+	  revstr = data.mid(revtmp +9,revtmp2 - revtmp -9);
 	revstr.stripWhiteSpace();
 	bool ok;
 	revision = revstr.toInt(&ok);
 	if(!ok)
-	    revision = 1;
+	  revision = 1;
 	debug("REVISION %d\n",revision);
-    }
+      }
     
     // lets get all DISCID's in the data. Remeber there can be many DISCID's on
     // several lines separated by commas on each line
@@ -850,50 +873,48 @@ void CDDB::getData(
     // DISCID= 47fd2934,4h48343,47839492,43879074
 
     while((pos3 = data.find("DISCID=",pos4,true))!= -1)
-    {
+      {
 	pos1 = pos3;
 	pos2 = data.find("\n",pos1,true);
-
+	
 	QString discidtemp;
 	QString temp3;
-
-	if( pos2 - pos1 -7 >= 0){
+	
+	if( pos2 - pos1 -7 >= 0)
+	  {
 	    discidtemp = data.mid(pos1 + 7,pos2- pos1 -7);
-	}
-	else{
+	  } else {
 	    debug("ANOMALY 1\n");
-	}
+	  }
 
 	debug("DISCDID %s\n",discidtemp.data());
 
 	pos1 = 0;
-	while((pos2 = discidtemp.find(",",pos1,true)) != -1){
-
-
-	    if( pos2 - pos1 >= 0){
+	while((pos2 = discidtemp.find(",",pos1,true)) != -1)
+	  {
+	    if( pos2 - pos1 >= 0)
+	      {
 		temp3 = discidtemp.mid(pos1,pos2-pos1);
-	    }
-	    else{
+	      } else {
 		debug("ANOMALY 2\n");
-	    }
-
+	      }
+	    
 	    temp3 = temp3.stripWhiteSpace();
-
+	    
 	    if(!temp3.isEmpty())
-		discidlist.append(temp3.data());
-
+	      discidlist.append(temp3.data());
 	    pos1 = pos2 + 1;
-	}
+	  }
 
 	temp3 = discidtemp.mid(pos1,discidtemp.length());
 	temp3.stripWhiteSpace();
-
+	
 	if(!temp3.isEmpty())
+	  {
 	    discidlist.append(temp3.data());
-
+	  }
 	pos4 = pos3 + 1;
-
-    }// end get DISCID's
+      }// end get DISCID's
 
     debug("FOUND %d DISCID's\n",discidlist.count());
 
@@ -909,27 +930,27 @@ void CDDB::getData(
 
     int counter = 0;
     key = key.sprintf("TTITLE%d=",counter);
-    while(getValue(key,value,data)){
+    while(getValue(key,value,data))
+      {
 	titles.append(value.ascii());
 	key = key.sprintf("TTITLE%d=",++counter);
-    }
-
+      }
+    
     key = "EXTD=";
     getValue(key,value,data);
     extlist.append(value.ascii());
-
+    
     counter = 0;
     key = key.sprintf("EXTT%d=",counter);
-    while(getValue(key,value,data)){
+    while(getValue(key,value,data))
+      {
 	extlist.append(value.ascii());
 	key = key.sprintf("EXTT%d=",++counter);
-    }
-   
+      }
+    
     key = "PLAYORDER=";
     getValue(key,value,data);
     cddb_playlist_decode(playlist, value);
-  
-
 }
 
 QString CDDB::getCategoryFromPathName(const QString& pathname){
@@ -948,9 +969,11 @@ QString CDDB::getCategoryFromPathName(const QString& pathname){
     else
 	return path.mid(pos+1,path.length());
 
-}
+} // getData
 
-bool CDDB::getValue(QString& key,QString& value, QString& data){
+bool 
+CDDB::getValue(QString& key,QString& value, QString& data)
+{
 
     bool found_one = false;
     int pos1 = 0;
@@ -958,49 +981,54 @@ bool CDDB::getValue(QString& key,QString& value, QString& data){
 
     value = "";
 
-    while((  pos1 = data.find(key.data(),pos1,true)) != -1){
+    while((  pos1 = data.find(key.data(),pos1,true)) != -1)
+      {
 	found_one = true;
 	pos2 = data.find("\n",pos1,true);
-	if( (pos2 - pos1 - (int)key.length()) >= 0){
+	if( (pos2 - pos1 - (int)key.length()) >= 0)
+	  {
 	    value += data.mid(pos1 + key.length(), pos2 - pos1 - key.length());
-	}
-	else{
+	  } else {
 	    debug("GET VALUE ANOMALY 1\n");
-	}
+	  }
 	pos1 = pos1 + 1;
-    }
+      }
 
     if(value.isNull())
 	value = "";
 
     cddb_decode(value);
     return found_one;
-}
+} // getValue
 
-void cddb_playlist_encode(QStrList& list,QString& playstr){
-
-    playstr = "";
-    for( uint i = 0; i < list.count(); i++){
-	playstr += list.at(i);
-	if(i < list.count() -1)
-	    playstr += ",";
+void 
+cddb_playlist_encode(QStrList& list,QString& playstr)
+{
+  playstr = "";
+  for( uint i = 0; i < list.count(); i++)
+    {
+      playstr += list.at(i);
+      if(i < list.count() -1)
+	playstr += ",";
     }
-}
+} // cddb_playlist_encode
 
 
-bool cddb_playlist_decode(QStrList& list, QString& str){
- 
-    bool isok = true;
-    int pos1, pos2;
-    pos1 = 0;
-    pos2 = 0;
-
-    list.clear();
-
-    while((pos2 = str.find(",",pos1,true)) != -1){
-
-	if(pos2 > pos1){
-	    list.append(str.mid(pos1,pos2 - pos1).ascii());
+bool 
+cddb_playlist_decode(QStrList& list, QString& str)
+{ 
+  bool isok = true;
+  int pos1, pos2;
+  pos1 = 0;
+  pos2 = 0;
+  
+  list.clear();
+  
+  while((pos2 = str.find(",",pos1,true)) != -1)
+    {
+      if(pos2 > pos1)
+	{
+	  list.append(str.mid(pos1,pos2 - pos1).ascii());
 	}
     
 	pos1 = pos2 + 1;
@@ -1013,118 +1041,131 @@ bool cddb_playlist_decode(QStrList& list, QString& str){
     bool 	ok1;
     int   num;
 
-    for(uint i = 0; i < list.count(); i++){
+    for(uint i = 0; i < list.count(); i++)
+      {
 	check = list.at(i);
 	check = check.stripWhiteSpace();
-
-	if(check.isEmpty()){
+	
+	if(check.isEmpty())
+	  {
 	    list.remove(i);
 	    i--;
 	    continue;
-	}
+	  }
 
-	if(check == QString (",")){
+	if(check == QString (","))
+	  {
 	    list.remove(i);
 	    i--;
 	    continue;
-	}
+	  }
     
 	num = check.toInt(&ok1);
-	if(!ok1 || num < 1){
+	if(!ok1 || num < 1)
+	  {
 	    list.remove(i);
 	    i--;
 	    isok = false;
 	    continue;
-	}
+	  }
     
 	list.remove(i);
 	list.insert(i, check.ascii());
-
-    }
+      }
 
     /*  for(uint i = 0; i < list.count(); i++){
 	printf("playlist %d=%s\n",i,list.at(i));
 	}*/
     return isok;
-}
+} // cddb_playlist_decode
 
-void cddb_decode(QString& str){
-
+void 
+cddb_decode(QString& str)
+{
     int pos1 = 0;
     int pos2 = 0;
 
-    while((pos2 = str.find("\\n",pos1,true)) !=-1  ){
-	if(pos2>0){
-	    if(str.mid(pos2-1,3) == QString("\\\\n")){
+    while((pos2 = str.find("\\n",pos1,true)) !=-1  )
+      {
+	if(pos2>0)
+	  {
+	    if(str.mid(pos2-1,3) == QString("\\\\n"))
+	      {
 		pos1 = pos2 + 2;
 		continue;
-	    }
-	}
+	      }
+	  }
 	str.replace(pos2 , 2 , "\n");
 	pos1 = pos2 + 1;
-    }
+      }
 
     pos1 = 0;
     pos2 = 0;
 
-    while((pos2 = str.find("\\t",pos1,true)) !=-1){
-	if(pos2>0){
-	    if(str.mid(pos2-1,3) == QString("\\\\t")){
+    while((pos2 = str.find("\\t",pos1,true)) !=-1)
+      {
+	if( pos2 > 0 )
+	  {
+	    if(str.mid(pos2-1,3) == QString("\\\\t"))
+	      {
 		pos1 = pos2 + 2;
 		continue;
-	    }
-	}
+	      }
+	  }
 	str.replace(pos2 , 2 , "\t");
 	pos1 = pos2 + 1;
-    }
-
+      }
+    
     pos1 = 0;
     pos2 = 0;
-
-    while((pos2 = str.find("\\\\",pos1,true)) !=-1){
+    
+    while((pos2 = str.find("\\\\",pos1,true)) !=-1)
+      {
 	str.replace(pos2 , 2 , "\\");
 	pos1 = pos2 + 1;
-    }
+      }
+} // cddb_decode
 
-
-}
-
-void cddb_encode(QString& str, QStrList &returnlist){
-
+void 
+cddb_encode(QString& str, QStrList &returnlist)
+{
     returnlist.clear();
-
+    
     int pos1 = 0;
     int pos2 = 0;
-
-    while((pos2 = str.find("\\",pos1,true)) !=-1){
+    
+    while((pos2 = str.find("\\",pos1,true)) !=-1)
+      {
 	str.replace(pos2 , 1 , "\\\\");
 	pos1 = pos2 + 1;
-    }
+      }
 
     pos1 = 0;
     pos2 = 0;
 
-    while((pos2 = str.find("\n",pos1,true)) !=-1){
+    while((pos2 = str.find("\n",pos1,true)) !=-1)
+      {
 	str.replace(pos2 , 1 , "\\n");
 	pos1 = pos2 + 1;
-    }
+      }
 
     pos1 = 0;
     pos2 = 0;
 
-    while((pos2 = str.find("\t",pos1,true)) !=-1){
+    while((pos2 = str.find("\t",pos1,true)) !=-1)
+      {
 	str.replace(pos2 , 1 , "\\t");
 	pos1 = pos2 + 1;
-    }
+      }
 
-    while(str.length() > 70){
+    while(str.length() > 70)
+      {
 	returnlist.append(str.left(70).ascii());
 	str = str.mid(70,str.length());
-    }
+      }
 
     returnlist.append(str.ascii());
-
-}
+} // cddb_encode
 
 // This function converts server list entry from "Server Port" format
 // To "Server Protocol Port Address".
@@ -1142,7 +1183,8 @@ void cddb_encode(QString& str, QStrList &returnlist){
 //             "-" if no additional addressing information is needed.
 //
 // Returns 'true' if format have been converted.
-bool CDDB::normalize_server_list_entry(QString &entry)
+bool 
+CDDB::normalize_server_list_entry(QString &entry)
 {
     char serv [CDDB_FIELD_BUFFER_LEN];
     char proto[CDDB_FIELD_BUFFER_LEN];
@@ -1150,45 +1192,50 @@ bool CDDB::normalize_server_list_entry(QString &entry)
     char extra[CDDB_FIELD_BUFFER_LEN];
     
     if(sscanf(entry.data(),"%s %s %s %s",serv,proto,po,extra)==2) 
-    {
+      {
 	// old format
 	sprintf(extra,"%s cddbp %s -",serv, proto);
 	entry=extra;
 	return true;
-    } else
-    {
+      } else {
 	// Otherwise let us leave the item unchanged.
 	return false;
-    }
-}
+      }
+} // normalize_server_list_entry
 
-void CDDB::setHTTPProxy(QString host, unsigned short int port)
+void 
+CDDB::setHTTPProxy(QString host, unsigned short int port)
 {
-    proxyhost=host;
-    proxyport=port;
-}
+  proxyhost=host;
+  proxyport=port;
+} // setHTTPProxy
 
-void CDDB::useHTTPProxy(bool flag)
+void 
+CDDB::useHTTPProxy(bool flag)
 {
     use_http_proxy=flag;
-}
+} // useHTTPProxy(bool)
 
-bool    CDDB::useHTTPProxy()
+bool
+CDDB::useHTTPProxy()
 {
     return use_http_proxy;
-}
+} // useHTTPProxy
 
-unsigned short int CDDB::getHTTPProxyPort()
+unsigned short 
+int CDDB::getHTTPProxyPort()
 {
     return proxyport;
-}
+} // getHTTPProxyPort
 
-QString CDDB::getHTTPProxyHost()
+QString 
+CDDB::getHTTPProxyHost()
 {
     return proxyhost;
-}
+} // getHTTPProxyHost
 
-CDDB::transport CDDB::decodeTransport(const char *proto)
+CDDB::transport 
+CDDB::decodeTransport(const char *proto)
 {
     if(strcasecmp(proto,"cddbp")==0)
         return CDDBP;
@@ -1200,9 +1247,10 @@ CDDB::transport CDDB::decodeTransport(const char *proto)
                 return SMTP;
             else
                 return UNKNOWN;
-}
+} // decodeTransport
 
-void CDDB::cddb_http_xlat(QString &s)
+void 
+CDDB::cddb_http_xlat(QString &s)
 {
     char q[6];
 
@@ -1211,34 +1259,35 @@ void CDDB::cddb_http_xlat(QString &s)
 
     unsigned int pos=0;
     while(pos < s.length()+1)
-    {
+      {
         switch (s[pos].latin1()) 
-        {
-        case ' ':
+	  {
+	  case ' ':
             s[pos]='+';
             pos++;
             break;
-        case '?':
-        case '=':
-        case '+':
-        case '&':
-        case '%':
+	  case '?':
+	  case '=':
+	  case '+':
+	  case '&':
+	  case '%':
             (void) sprintf(q, "%%%02X", (char) s[pos].latin1());
             s.remove(pos,1);
             s.insert(pos+1,q);
             pos += 3;
             break;
-        default:
+	  default:
             pos++;
-        }
-    }
-}
+	  }
+      }
+} // cddb_http_xlat
 
 
-void CDDB::setPathList(QStrList& _paths)
+void 
+CDDB::setPathList(QStrList& _paths)
 {
     pathlist = _paths; // automatically makes deep copies is _paths has deep copies
-}
+} // setPathList
 
 #include "cddb.moc"
 

@@ -1,3 +1,15 @@
+/***********************************************************************
+ *
+ * I can't get no dlgedit running. So I put this note here:
+ *
+ *
+ *      --- This file has been manually midified ---
+ *
+ *
+ * $Id$
+ *
+ ***********************************************************************/
+
 /**********************************************************************
 
 	--- Dlgedit generated file ---
@@ -77,54 +89,56 @@ CDDialog::CDDialog
         setFixedSize(width(),height());
 
 	
-}
+} // CDDialog
 
 
-CDDialog::~CDDialog(){
-
+CDDialog::~CDDialog()
+{
     if(cdinfo.cddbtoc)
       delete [] cdinfo.cddbtoc;
-}
+} // ~CDDialog
 
-void CDDialog::closeEvent(QCloseEvent*)
+void 
+CDDialog::closeEvent(QCloseEvent*)
 {
     emit dialog_done();
-}
+} // closeEvent
 
-void CDDialog::keyPressEvent(QKeyEvent *e)
+void 
+CDDialog::keyPressEvent(QKeyEvent *e)
 {
     if(e->state() == 0 && e->key() == Key_Escape)
         emit dialog_done();
-}
+} // keyPressEvent
 
-void CDDialog::ok(){
-
+void 
+CDDialog::ok()
+{
   emit dialog_done();
+} // ok
 
-
-}
-
-void CDDialog::play(int i){
-
+void 
+CDDialog::play(int i)
+{
   emit play_signal(i);
+} // play
 
-}
 
-
-void CDDialog::setData(
-                       struct cdinfo_wm *cd,
-                       QStrList& tracktitlelist,
-                       QStrList& extlist,
-                       QStrList& discidl,
-                       QString& _xmcd_data,
-                       QString& cat,
-                       int& rev,
-                       QStrList& _playlist,
-                       QStrList& _pathlist,
-                       QString& _mailcmd,
-                        QString& _submitaddress,
-                       SMTPConfig::SMTPConfigData *_smtpConfigData
-                      )
+void 
+CDDialog::setData(
+		  struct cdinfo_wm *cd,
+		  QStrList& tracktitlelist,
+		  QStrList& extlist,
+		  QStrList& discidl,
+		  QString& _xmcd_data,
+		  QString& cat,
+		  int& rev,
+		  QStrList& _playlist,
+		  QStrList& _pathlist,
+		  QString& _mailcmd,
+		  QString& _submitaddress,
+		  SMTPConfig::SMTPConfigData *_smtpConfigData
+		  )
 {
     int ntr, etr;
 
@@ -158,36 +172,43 @@ void CDDialog::setData(
     cdinfo.length  = cd->length;	/* Total running time in seconds */
 
 
-    for( int i = 0; i < cd->ntracks + 1; i++){
-      cdinfo.cddbtoc[i].min = cd->cddbtoc[i].min;
-      cdinfo.cddbtoc[i].sec = cd->cddbtoc[i].sec;
-      cdinfo.cddbtoc[i].frame = cd->cddbtoc[i].frame;
-      cdinfo.cddbtoc[i].absframe = cd->cddbtoc[i].absframe;
-    }
+    for( int i = 0; i < cd->ntracks + 1; i++)
+      {
+	cdinfo.cddbtoc[i].min = cd->cddbtoc[i].min;
+	cdinfo.cddbtoc[i].sec = cd->cddbtoc[i].sec;
+	cdinfo.cddbtoc[i].frame = cd->cddbtoc[i].frame;
+	cdinfo.cddbtoc[i].absframe = cd->cddbtoc[i].absframe;
+      }
     
     // some sanity provisions
 
-    if((int)track_list.count() < cdinfo.ntracks + 1){
-      int k = track_list.count();
-      for(int i = 0 ; i < (int)( cdinfo.ntracks + 1 - k) ; i ++){
-	track_list.append("");
+    if((int)track_list.count() < cdinfo.ntracks + 1)
+      {
+	int k = track_list.count();
+	for(int i = 0 ; i < (int)( cdinfo.ntracks + 1 - k) ; i ++)
+	  {
+	    track_list.append("");
+	  }
       }
-    }
-
-    if((int)ext_list.count() < cdinfo.ntracks + 1){
-      int l = ext_list.count();
-      for(int i = 0 ; i < (int) ( cdinfo.ntracks + 1 - l) ; i ++){
-	ext_list.append("");
+    
+    if((int)ext_list.count() < cdinfo.ntracks + 1)
+      {
+	int l = ext_list.count();
+	for(int i = 0 ; i < (int) ( cdinfo.ntracks + 1 - l) ; i ++)
+	  {
+	    ext_list.append("");
+	  }
       }
-    }
-
-    while((int)track_list.count() > cdinfo.ntracks + 1){
-      track_list.remove(track_list.count() - 1);
-    }
-
-    while((int)ext_list.count() > cdinfo.ntracks + 1){
-      ext_list.remove(ext_list.count() - 1);
-    }
+    
+    while((int)track_list.count() > cdinfo.ntracks + 1)
+      {
+	track_list.remove(track_list.count() - 1);
+      }
+    
+    while((int)ext_list.count() > cdinfo.ntracks + 1)
+      {
+	ext_list.remove(ext_list.count() - 1);
+      }
     
 
     titleedit->setText(track_list.at(0));
@@ -217,31 +238,31 @@ void CDDialog::setData(
     listbox->setAutoUpdate(false);
     listbox->clear();
 
-    for(int i = 1; i <= cdinfo.ntracks; i++){
-
-      dml = framestoTime(cdinfo.cddbtoc[i].absframe - cdinfo.cddbtoc[i-1].absframe);
-
-      if((ntr >=  i) && (ntr > 0)){
-	fmt.sprintf("%02d   %02d:%02d   %s",i,
-		   dml.minute(),dml.second(),track_list.at(i));
+    for(int i = 1; i <= cdinfo.ntracks; i++)
+      {
+	dml = framestoTime(cdinfo.cddbtoc[i].absframe - cdinfo.cddbtoc[i-1].absframe);
+	
+	if((ntr >=  i) && (ntr > 0))
+	  {
+	    fmt.sprintf("%02d   %02d:%02d   %s",i,
+			dml.minute(),dml.second(),track_list.at(i));
+	  } else {
+	    fmt.sprintf("%02d   %02d:%02d",i,dml.minute(),dml.second());
+	  }
+	listbox->insertItem(fmt,-1);
       }
-      else
-	fmt.sprintf("%02d   %02d:%02d",i,dml.minute(),dml.second());
-     
-      listbox->insertItem(fmt,-1);
-
-    }
-
+    
     listbox->setAutoUpdate(true);
     listbox->repaint();
-
+    
     QString str;
     cddb_playlist_encode(playlist,str);
     progseq_edit->setText(str);
+} // setData
 
-}
-
-void CDDialog::extIB(){
+void 
+CDDialog::extIB()
+{
   
   int item;
   item = listbox->currentItem();
@@ -254,10 +275,11 @@ void CDDialog::extIB(){
 
   dialog->insertText(ext_list.at(item + 1));
   
-  if(dialog->exec() != QDialog::Accepted){
-    delete dialog;
-    return;
-  }
+  if(dialog->exec() != QDialog::Accepted)
+    {
+      delete dialog;
+      return;
+    }
   
   QString text;
   dialog->getSelection(text);
@@ -267,21 +289,21 @@ void CDDialog::extIB(){
   ext_list.insert(item + 1, text.ascii());
 
   delete dialog;
+} // extIB
 
-}
-
-void CDDialog::extITB(){
-
-  
+void 
+CDDialog::extITB()
+{
   InexactDialog *dialog;
   dialog = new InexactDialog(0,"dialog",false);
   dialog->insertText(ext_list.at(0));
   dialog->setTitle(i18n("Use this Editor to annotate the title"));
   
-  if(dialog->exec() != QDialog::Accepted){
-    delete dialog;
-    return;
-  }
+  if(dialog->exec() != QDialog::Accepted)
+    {
+      delete dialog;
+      return;
+    }
   
   QString text;
   dialog->getSelection(text);
@@ -290,20 +312,18 @@ void CDDialog::extITB(){
   ext_list.remove( 1 );
 
   delete dialog;
+} // extITB
 
-}
-
-void CDDialog::titleselected(int i){
-
+void CDDialog::titleselected(int i)
+{
   ext_info_button->setEnabled(true);
   if(i + 1 < (int)track_list.count())
     trackedit->setText(track_list.at(i+1));
+} // titleselected
 
-}
-
-void CDDialog::trackchanged(){
-
-
+void 
+CDDialog::trackchanged()
+{
   int i;
 
   i = listbox->currentItem();
@@ -325,16 +345,17 @@ void CDDialog::trackchanged(){
   listbox->removeItem(i+1);
   listbox->setAutoUpdate(true);
   listbox->repaint();
-  if ( i <(int) listbox->count() -1 ){
-    listbox->setCurrentItem(i+1);
-    listbox->centerCurrentItem();
-  }
-  
-}
+  if ( i <(int) listbox->count() -1 )
+    {
+      listbox->setCurrentItem(i+1);
+      listbox->centerCurrentItem();
+    }
+} // trackchanged
 
 
-QTime framestoTime(int _frames){
-
+QTime 
+framestoTime(int _frames)
+{
   QTime 	dml;
   double 	frames;
   double 	dsecs;
@@ -346,28 +367,28 @@ QTime framestoTime(int _frames){
 
   dsecs = frames/ (75.0);
 
-  if(modf(dsecs,&ip) >= 0.5){
-    ip = ip + 1.0;
-  }
+  if(modf(dsecs,&ip) >= 0.5)
+    {
+      ip = ip + 1.0;
+    }
   secs = (int) ip;
-
+  
   dml = dml.addSecs(secs);
   return dml;
-}
+} // framestotime
 
-void CDDialog::titlechanged(const QString &t){
-
-
+void 
+CDDialog::titlechanged(const QString &t)
+{
   track_list.remove((uint)0);
   track_list.insert(0, t.ascii());
-
-
-}
+} // titlechanged
 
 QString submitcat;
 
-void CDDialog::upload(){
-
+void 
+CDDialog::upload()
+{
   if(!checkit())
     return;
 
@@ -426,10 +447,11 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   dialog->insertList(catlist);
   dialog->setErrorString(i18n("Please select a Category or press Cancel"));
   dialog->setTitle(i18n("To which category does the CD belong?"));
-  if(dialog->exec() != QDialog::Accepted){
-    delete dialog;
-    return;
-  }
+  if(dialog->exec() != QDialog::Accepted)
+    {
+      delete dialog;
+      return;
+    }
 
   dialog->getSelection(submitcat);
   delete dialog;
@@ -452,10 +474,11 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   formatstr += " ";
   formatstr += submitaddress;
   */
-  if(smtpConfigData->enabled){
+  if(smtpConfigData->enabled)
+    {
       debug("Submitting cddb entry via SMTP...\n");
       QFile file(tempfile);
-
+      
       file.open(IO_ReadOnly);
       QTextStream ti(&file);
 
@@ -485,7 +508,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
       smtpMailer->sendMessage();
       
       return;
-  }
+    }
 
       
   QString cmd;
@@ -523,13 +546,15 @@ I would like you ask you to upload as many test submissions as possible.\n"\
 
   //to << "Content-Transfer-Encoding: quoted-printable\n";
 
-  while ( !ti.eof() ) {
+  while ( !ti.eof() ) 
+    {
       s = ti.readLine();
-      if(!ti.eof()){
+      if(!ti.eof())
+	{
           //  mimetranslate(s);
           to << s << '\n';
-      }
-  }
+	}
+    }
 
   pclose(mailpipe);
 
@@ -538,30 +563,30 @@ I would like you ask you to upload as many test submissions as possible.\n"\
 
   unlink(tempfile.data());
   debug("DONE SENDING\n");
-}
+} // upload
 
-void CDDialog::getCategoryFromPathName(char* pathname, QString& _category){
-  
+void 
+CDDialog::getCategoryFromPathName(char* pathname, QString& _category)
+{
   QString path = pathname;
   path = path.stripWhiteSpace();
 
-  while(path.right(1) == QString("/")){
-    path = path.left(path.length() - 1);
-  }
-
+  while(path.right(1) == QString("/"))
+    {
+      path = path.left(path.length() - 1);
+    }
+  
   int pos = 0;
   pos  = path.findRev("/",-1,true);
   if(pos == -1)
     _category = path.copy();
   else
     _category = path.mid(pos+1,path.length());
+} // getCategoryFromPathName
 
-  
-
-}
-
-void CDDialog::save(){
-
+void 
+CDDialog::save()
+{
   if(!checkit())
     return;
 
@@ -574,21 +599,23 @@ void CDDialog::save(){
   // Let's get rid of some ugly double slashes such as in 
   // /usr/local/kde/share/apps/kscd/cddb//rock 
   
-  for(int i = 0; i < (int)pathlist.count();i++){
-    QString temp = pathlist.at(i);
-    temp = temp.replace( QRegExp("//"), "/" );
-    pathlist.insert(i,temp.ascii());
-    pathlist.remove(i+1);
-  }
+  for(int i = 0; i < (int)pathlist.count();i++)
+    {
+      QString temp = pathlist.at(i);
+      temp = temp.replace( QRegExp("//"), "/" );
+      pathlist.insert(i,temp.ascii());
+      pathlist.remove(i+1);
+    }
 
   dialog->insertList(pathlist);
   dialog->setErrorString(i18n("Please select a Category or press Cancel"));
   dialog->setTitle(i18n("Under which category would you like to store this CDDB entry?"));
 
-  if(dialog->exec() != QDialog::Accepted){
-    delete dialog;
-    return;
-  }
+  if(dialog->exec() != QDialog::Accepted)
+    {
+      delete dialog;
+      return;
+    }
 
   dialog->getSelection(path);
   QString mag;
@@ -597,12 +624,11 @@ void CDDialog::save(){
   save_cddb_entry(mag,false);
   load();
   delete dialog;
+} // save
 
-}
-
-void CDDialog::save_cddb_entry(QString& path,bool upload){
-
-
+void 
+CDDialog::save_cddb_entry(QString& path,bool upload)
+{
   QString magic;
   magic.sprintf("%08lx",cdinfo.magicID);
   bool have_magic_already = false;
@@ -611,65 +637,73 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
   // Steve and Ti contacted me and said they have changed the cddb upload specs
   // Now, an uploaded entry must only contain one DISCID namely the one corresponding
   // to the CD the user actually owns.
-  if( !upload ){
-    for(int i = 0 ; i < (int)discidlist.count();i ++){
-      if(magic == (QString)discidlist.at(i)){
-	have_magic_already = true;
-	break;
-      }
-    }
-
-    if(!have_magic_already)
+  if( !upload )
+    {
+      for(int i = 0 ; i < (int)discidlist.count();i ++)
+	{
+	  if(magic == (QString)discidlist.at(i))
+	    {
+	      have_magic_already = true;
+	      break;
+	    }
+	}
+      
+      if(!have_magic_already)
+	discidlist.insert(0,magic.data());
+    } else { // uploading 
+      discidlist.clear();
       discidlist.insert(0,magic.data());
-  }
-  else{ // uploading 
-    discidlist.clear();
-    discidlist.insert(0,magic.data());
-  }
+    }
 
   QFile file(path.data());
 
 
-  if( !file.open( IO_WriteOnly  )) {
-    
-    QString str = i18n("Unable to write to file:\n%1\nPlease check "
-		"your permissions and make your category directories exist.")
-		.arg(path);
+  if( !file.open( IO_WriteOnly  )) 
+    {
+      QString str = i18n("Unable to write to file:\n%1\nPlease check "
+			 "your permissions and make your category directories exist.")
+	.arg(path);
 
-    KMessageBox::error(this, str);
-    return;
-  }
+      KMessageBox::error(this, str);
+      return;
+    }
 
   QString tmp;
   QTextStream t(&file);
 
 
-  if(upload && !smtpConfigData->enabled){
+  if(upload && !smtpConfigData->enabled)
+    {
       QString subject;
       subject.sprintf("cddb %s %08lx", submitcat.data(), cdinfo.magicID);
-
+      
       t << "To: " + submitaddress + "\n";
       tmp = QString("Subject: %1\n").arg(subject);
       t << tmp;
-  }
+    }
 
   t << "# xmcd CD database file\n";
-
-  if(!upload)
-  t << "# Copyright (C) 1997 - 1998  Bernd Johannes Wuebben\n";
-
+  
   QString datestr;
   datestr = QDateTime::currentDateTime().toString();
   tmp = QString("# Generated: %1 by KSCD\n").arg(datestr);
   t << tmp;
 
+  // Waste some disk space
+  if(!upload) {
+    t << "# Copyright (C) 1997-1999 Bernd Johannes Wuebben.\n";
+    t << "# Copyright (C) 2000 Dirk Foersterling.\n";
+  }
+  
+
   t << "# \n";
   t << "# Track frame offsets:\n";
 
-  for(int i = 0 ; i < cdinfo.ntracks;i ++){
-    tmp = QString("#       %1\n").arg(cdinfo.cddbtoc[i].absframe);
-    t << tmp;
-  }
+  for(int i = 0 ; i < cdinfo.ntracks;i ++)
+    {
+      tmp = QString("#       %1\n").arg(cdinfo.cddbtoc[i].absframe);
+      t << tmp;
+    }
 
   t << "#\n";
   tmp = QString("# Disc length: %1 seconds\n").arg(cdinfo.length);
@@ -687,19 +721,22 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
   tmp = "DISCID=";
   int counter = 0;
 
-  for(int i = 0 ; i < (int)discidlist.count();i ++){
-
-    tmp += discidlist.at(i);
-
-    if( i < (int) discidlist.count() - 1){
-      if( counter++ == 3 ){
-	tmp += "\nDISCID=";
-	counter = 0;
-      }
-      else
-	tmp += ",";
+  for(int i = 0 ; i < (int)discidlist.count();i ++)
+    {
+      
+      tmp += discidlist.at(i);
+      
+      if( i < (int) discidlist.count() - 1)
+	{
+	  if( counter++ == 3 )
+	    {
+	      tmp += "\nDISCID=";
+	      counter = 0;
+	    } else {
+	      tmp += ",";
+	    }
+	}
     }
-  }
 
   tmp += "\n";
   t << tmp;
@@ -710,162 +747,162 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
   tmp2 = track_list.at(0);
   cddb_encode(tmp2,returnlist);  
 
-  if(returnlist.count() == 0){
-    // sanity provision
-    tmp = QString("DTITLE=%1\n").arg("");
-    t << tmp;
-  }
-  else{
-    for(int i = 0; i < (int) returnlist.count();i++){
-      tmp = QString("DTITLE=%1\n").arg(returnlist.at(i));
-      t << tmp;
-    }
-  }
-
-  for(int i = 1 ; i < (int)track_list.count();i ++){
-
-    tmp2 = track_list.at(i);
-    cddb_encode(tmp2,returnlist);  
-    
-    if(returnlist.count() == 0){
+  if(returnlist.count() == 0)
+    {
       // sanity provision
-      tmp = QString("TTITLE%1=%2\n").arg(i-1).arg("");
+      tmp = QString("DTITLE=%1\n").arg("");
       t << tmp;
+    } else {
+      for(int i = 0; i < (int) returnlist.count();i++)
+	{
+	  tmp = QString("DTITLE=%1\n").arg(returnlist.at(i));
+	  t << tmp;
+	}
     }
-    else{
-      for(int j = 0; j < (int) returnlist.count();j++){
-	tmp = QString("TTITLE%1=%2\n").arg(i-1).arg(returnlist.at(j));
-	t << tmp;
-      }
-    }
-  }
 
+  for(int i = 1 ; i < (int)track_list.count();i ++)
+    {
+      tmp2 = track_list.at(i);
+      cddb_encode(tmp2,returnlist);  
+      
+      if(returnlist.count() == 0)
+	{
+	  // sanity provision
+	  tmp = QString("TTITLE%1=%2\n").arg(i-1).arg("");
+	  t << tmp;
+	} else {
+	  for(int j = 0; j < (int) returnlist.count();j++)
+	    {
+	      tmp = QString("TTITLE%1=%2\n").arg(i-1).arg(returnlist.at(j));
+	      t << tmp;
+	    }
+	}
+    }
+  
   tmp2 = ext_list.at(0);
   cddb_encode(tmp2,returnlist);  
 
-  if(returnlist.count() == 0){
-    // sanity provision
-    tmp = tmp.sprintf("EXTD=%s\n","");
-    t << tmp;
-  }
-  else{
-    for(int i = 0; i < (int) returnlist.count();i++){
-      tmp = QString("EXTD=%1\n").arg(returnlist.at(i));
-      t << tmp;
-    }
-  }
-
-  for(int i = 1 ; i < (int)ext_list.count();i ++){
-
-    tmp2 = ext_list.at(i);
-    cddb_encode(tmp2,returnlist);  
-
-    if(returnlist.count() == 0){
+  if(returnlist.count() == 0)
+    {
       // sanity provision
-      tmp = tmp.sprintf("EXTT%d=%s\n",i-1,"");
+      tmp = tmp.sprintf("EXTD=%s\n","");
+      t << tmp;
+    } else {
+      for(int i = 0; i < (int) returnlist.count();i++)
+	{
+	  tmp = QString("EXTD=%1\n").arg(returnlist.at(i));
+	  t << tmp;
+	}
+    }
+
+  for(int i = 1 ; i < (int)ext_list.count();i ++)
+    {
+      tmp2 = ext_list.at(i);
+      cddb_encode(tmp2,returnlist);  
+      
+      if(returnlist.count() == 0)
+	{
+	  // sanity provision
+	  tmp = tmp.sprintf("EXTT%d=%s\n",i-1,"");
+	  t << tmp;
+	} else {
+	  for(int j = 0; j < (int) returnlist.count();j++)
+	    {
+	      tmp = tmp.sprintf("EXTT%d=%s\n",i-1,returnlist.at(j));
+	      t << tmp;
+	    }
+	}
+    }
+  
+  if(!upload)
+    {
+      cddb_encode(playorder,returnlist);  
+      
+      for(int i = 0; i < (int) returnlist.count();i++)
+	{
+	  tmp = tmp.sprintf("PLAYORDER=%s\n",returnlist.at(i));
+	  t << tmp;
+	}
+    } else {
+      tmp = tmp.sprintf("PLAYORDER=\n");
       t << tmp;
     }
-    else{
-      for(int j = 0; j < (int) returnlist.count();j++){
-	tmp = tmp.sprintf("EXTT%d=%s\n",i-1,returnlist.at(j));
-	t << tmp;
-      }
-    }
-  }
-
-  if(!upload){
-    cddb_encode(playorder,returnlist);  
-
-    for(int i = 0; i < (int) returnlist.count();i++){
-      tmp = tmp.sprintf("PLAYORDER=%s\n",returnlist.at(i));
-      t << tmp;
-    }
-  }
-  else{
-    tmp = tmp.sprintf("PLAYORDER=\n");
-    t << tmp;
-  }
 
   t << "\n";
 
   file.close();
   chmod(file.name().ascii(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH );
   return;
-
-}
-
-
-bool CDDialog::checkit(){
+} // save_cddb_entry
 
 
+bool 
+CDDialog::checkit()
+{
   QString title = titleedit->text();
   title = title.stripWhiteSpace();
-  if(title.isEmpty()){
-
-    KMessageBox::sorry(this,
+  if(title.isEmpty())
+    {
+      KMessageBox::sorry(this,
 			 i18n("The Disc Artist / Title field is not filled in.\n"\
-			 "Please correct the entry and try again."),
+			      "Please correct the entry and try again."),
 			 i18n("Invalid Database Entry"));
-     return false;
-  }
-
-
-
-
+      return false;
+    }
+  
   int pos;
   pos = title.find("/",0,true);
-  if(pos == -1){
-
-    KMessageBox::sorry(this,
+  if(pos == -1)
+    {
+      KMessageBox::sorry(this,
 			 i18n("The Disc Artist / Title field is not filled in correctly.\n"\
-			 "Please separate the artist from the title of the CD with \n"\
-			 "a forward slash, such as in: Peter Gabriel / Greatest Hits\n"),
+			      "Please separate the artist from the title of the CD with \n"\
+			      "a forward slash, such as in: Peter Gabriel / Greatest Hits\n"),
 			 i18n("Invalid Database Entry"));
-     return false;
-
-  }
+      return false;
+    }
 
   
 
-  if(track_list.count() < 2){
-
-    KMessageBox::sorry(this,
+  if(track_list.count() < 2)
+    {
+      KMessageBox::sorry(this,
 			 i18n("Not all track titles can be empty.\n"\
-			 "Please correct the entry and try again."),
+			      "Please correct the entry and try again."),
 			 i18n("Invalid Database Entry"));
-     return false;
-  }
+      return false;
+    }
 
 
   bool have_nonempty_title = false;
-  for(int i = 1; i < (int)track_list.count(); i++){
-
-    title = track_list.at(i);
-    title = title.stripWhiteSpace();
-    if(!title.isEmpty()){
-      have_nonempty_title = true;
-      break;
+  for(int i = 1; i < (int)track_list.count(); i++)
+    {
+      title = track_list.at(i);
+      title = title.stripWhiteSpace();
+      if(!title.isEmpty()){
+	have_nonempty_title = true;
+	break;
+      }
     }
-  }
-
-  if(!have_nonempty_title){
-
-    KMessageBox::sorry(this,
+  
+  if(!have_nonempty_title)
+    {
+      
+      KMessageBox::sorry(this,
 			 i18n("Not all track titles can be empty.\n"\
-			 "Please correct the entry and try again."),
+			      "Please correct the entry and try again."),
 			 i18n("Invalid Database Entry"));
-     return false;
+      return false;
+    }
 
-  }
-
-  if(cdinfo.ntracks +1 != (int)track_list.count() ){
-
-    KMessageBox::error(this,
+  if(cdinfo.ntracks +1 != (int)track_list.count() )
+    {
+      KMessageBox::error(this,
 			 i18n("cdinfo.ntracks != title_list->count() + 1\n"
-			 "Please email the author."),
+			      "Please email the author."),
 			 i18n("Internal Error"));
-     return false;
-  }
+      return false;
+    }
 
   QString str;
   QStrList strlist;
@@ -878,66 +915,64 @@ bool CDDialog::checkit(){
   bool ok;
   int  num;
 
-  for(uint i = 0; i < strlist.count();i++){
-
-    teststr = strlist.at(i);
-    num = teststr.toInt(&ok);
-
-    if( num > cdinfo.ntracks || !ok)
-      ret = false;
-  }
-
-  if(!ret){
+  for(uint i = 0; i < strlist.count();i++)
+    {
+      teststr = strlist.at(i);
+      num = teststr.toInt(&ok);
+      
+      if( num > cdinfo.ntracks || !ok)
+	ret = false;
+    }
+  
+  if(!ret)
+    {
       KMessageBox::sorry(this,
 			 i18n("Invalid Playlist\n"));
       return false;
-  }
-
+    }
+  
   cddb_playlist_encode(strlist,playorder);
   return true;
+} // checkit
 
-}
 
-
-void CDDialog::load(){
-
+void 
+CDDialog::load()
+{
   emit cddb_query_signal(true);
-
-}
+} // load
 
 // simplyfied quoted printable mime encoding that should be good enough 
 // for our purposed. The encoding differs from the 'real' encoding in
 // that we don't need to worry about trailing \n, \t or lines exeeding the
 // spec length.
 
-void  mimetranslate(QString& s){
-
+void 
+mimetranslate(QString& s)
+{
   QString q;
   QString hex;
-
-  s = s.stripWhiteSpace(); // there is no harm in doing this and it
-                           // will simplify the quoted printable mime encoding.
-
-  for(uint i = 0 ; i < s.length(); i++){
-
-    if (((s.data()[i] >= 32) && (s.data()[i] <= 60)) || 
-	  ((s.data()[i] >= 62) && (s.data()[i] <= 126))) {
-
-      q += s.at(i);
-    }
-    else{
-
-        hex = hex.sprintf("=%02X", (unsigned char)s.data()[i]);
-	q += hex;
-
-    }
-    
-  }
-
   
+  s = s.stripWhiteSpace(); // there is no harm in doing this and it
+  // will simplify the quoted printable mime encoding.
+  
+  for(uint i = 0 ; i < s.length(); i++)
+    {
+      if (((s.data()[i] >= 32) && (s.data()[i] <= 60)) || 
+	  ((s.data()[i] >= 62) && (s.data()[i] <= 126))) 
+	{
+	  
+	  q += s.at(i);
+	} else {
+	  
+	  hex = hex.sprintf("=%02X", (unsigned char)s.data()[i]);
+	  q += hex; 
+	}
+    }
+
   //  printf("%s\n",q.data());
   s = q.copy();
 
-}
+} // mimetranslate
 
 #undef Inherited

@@ -1,3 +1,14 @@
+/***********************************************************************
+ *
+ * I can't get no qtarch running. So I put this note here:
+ *
+ *
+ *      --- This file has been manually midified ---
+ *
+ *
+ * $Id$
+ *
+ ***********************************************************************/
 /**********************************************************************
 
 	--- Qt Architect generated file ---
@@ -112,10 +123,29 @@ CDDBSetupData::CDDBSetupData
 	remote_cddb_cb->setGeometry( 20, 15, 270, 30 );
 	remote_cddb_cb->setMinimumSize( 10, 10 );
 	remote_cddb_cb->setMaximumSize( 32767, 32767 );
+	connect( remote_cddb_cb, SIGNAL(toggled(bool)), SLOT(remote_cddb_toggled(bool)) );
 	remote_cddb_cb->setText( i18n("Enable Remote CDDB") );
         remote_cddb_cb->setFixedSize( remote_cddb_cb->sizeHint() );
 	remote_cddb_cb->setAutoRepeat( FALSE );
 	remote_cddb_cb->setAutoResize( FALSE );
+
+	QLabel* cddb_timeout_lb;
+	cddb_timeout_lb = new QLabel( this, "CDDBTimeoutLabel" );
+	cddb_timeout_lb->setGeometry( 285, 15, 150, 20 );
+	cddb_timeout_lb->setMinimumSize( 10, 10 );
+	cddb_timeout_lb->setMaximumSize( 32767, 32767 );
+	cddb_timeout_lb->setText( i18n("seconds CDDB timeout") );
+	cddb_timeout_lb->setAlignment( 289 );
+	cddb_timeout_lb->setMargin( -1 );
+
+	cddb_timeout_ef = new QLineEdit( this, "CDDBTimeout" );
+	cddb_timeout_ef->setGeometry( 230, 15, 45, 20 );
+	cddb_timeout_ef->setMinimumSize( 10, 10 );
+	cddb_timeout_ef->setMaximumSize( 32767, 32767 );
+	cddb_timeout_ef->setText( "30" );
+	cddb_timeout_ef->setMaxLength( 5 );
+	cddb_timeout_ef->setEchoMode( QLineEdit::Normal );
+	cddb_timeout_ef->setFrame( TRUE );
 
 	defaults_button = new QPushButton( this, "PushButton_2" );
 	defaults_button->setGeometry( 230, 400, 90, 25 );
@@ -216,12 +246,14 @@ CDDBSetupData::CDDBSetupData
 	resize( 535,435 );
 	setMinimumSize( 0, 0 );
 	setMaximumSize( 32767, 32767 );
-}
+} // CDDBSetupData
 
 
 CDDBSetupData::~CDDBSetupData()
 {
-}
-void CDDBSetupData::http_access_toggled(bool)
+} // ~CDDBSetupData
+
+void 
+CDDBSetupData::http_access_toggled(bool)
 {
-}
+} // http_access_toggled

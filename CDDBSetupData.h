@@ -47,6 +47,7 @@ protected:
     QPushButton* update_button;
     
     QCheckBox* remote_cddb_cb;
+    QLineEdit* cddb_timeout_ef;
     QPushButton* defaults_button;
     QPushButton* help_button;
     QCheckBox* cddb_http_cb;
@@ -61,7 +62,6 @@ protected:
     QLineEdit *currentSubmitLE;
     QPushButton *currentSubmitAddPB;
     QPushButton *currentSubmitDelPB;
-
 };
 
 #endif // CDDBSetupData_included

@@ -32,6 +32,7 @@ public slots:
                  QString& _submitaddress,
                  QString& _current_server,
                  bool& _remote_enabled,
+                 unsigned short int &cddb_timeout,
                  bool&    http_proxy_enabled,
                  QString  &http_proxy_host,
                  unsigned short int &http_proxy_port
@@ -43,6 +44,7 @@ public slots:
                     const QString& _submitaddress,
                     const QString& _current_server,
                     const bool&    _remote_enabled,
+                    const unsigned short int &cddb_timeout,
                     const bool&    http_proxy_enabled,
                     const QString  &http_proxy_host,
                     const unsigned short int &http_proxy_port
@@ -77,3 +79,13 @@ private:
    QStrList submitlist;
 };
 #endif // CDDBSetup_included
+
+
+
+
+
+
+
+
+
+
