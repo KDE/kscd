@@ -37,7 +37,9 @@ SMTP::SMTP(char *serverhost, unsigned short int port, int timeout)
     hostPort = port;
     timeOut = timeout * 1000;
 
+    // The following defaults are supposed to be overwritten
     senderAddress = "user@host.ext";
+    senderReplyTo = "";
     recipientAddress = "user@host.ext";
     messageSubject = "cddb unknown unknown";
     messageBody = "empty";
@@ -53,11 +55,10 @@ SMTP::SMTP(char *serverhost, unsigned short int port, int timeout)
     domainName = uts.nodename;
     
     
+    // this is for the HELO
     if(domainName.isEmpty())
         domainName = "somemachine.nowhere.org";
 
-    kdDebug() << "SMTP object created" << endl;
-    
     connect(&connectTimer, SIGNAL(timeout()), this, SLOT(connectTimerTick()));
     connect(&timeOutTimer, SIGNAL(timeout()), this, SLOT(connectTimedOut()));
     connect(&interactTimer, SIGNAL(timeout()), this, SLOT(interactTimedOut()));
@@ -94,6 +95,11 @@ void SMTP::setTimeOut(int timeout)
 void SMTP::setSenderAddress(const QString& sender)
 {
     senderAddress = sender;
+}
+
+void SMTP::setSenderReplyTo(const QString& replyto)
+{
+    senderReplyTo = replyto;
 }
 
 void SMTP::setRecipientAddress(const QString& recipient)
@@ -295,6 +301,11 @@ void SMTP::processLine(QString *line)
         //        writeString = QString::fromLatin1("Subject: %1\n%2\n.\n").arg(messageSubject).arg(messageBody);
         writeString = QString::fromLatin1("Subject: %1\r\n").arg(messageSubject);
 	writeString += QString::fromLatin1("From: %1\r\n").arg(senderAddress);
+	kdDebug() << senderReplyTo << endl;
+	if( (senderReplyTo != NULL) && senderReplyTo.contains("@") )
+	  {
+	    writeString += QString::fromLatin1("Reply-To: %1\r\n").arg(senderReplyTo);
+	  }
 	writeString += QString::fromLatin1("To: %1\r\n\r\n").arg(recipientAddress);
         writeString += messageBody;
         writeString += QString::fromLatin1(".\r\n");

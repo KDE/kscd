@@ -39,6 +39,7 @@
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <dcopclient.h>
+#include <kemailsettings.h>
 
 #include "docking.h"
 #include "kscd.h"
@@ -1611,9 +1612,20 @@ KSCD::readSettings()
 
     config->setGroup("SMTP");
     smtpConfigData.enabled = config->readBoolEntry("enabled", true);
-    smtpConfigData.serverHost = config->readEntry("serverHost", "localhost");
-    smtpConfigData.serverPort = config->readEntry("serverPort", "25");
-    smtpConfigData.senderAddress = config->readEntry("senderAddress", "someone@somewhere.org");
+    smtpConfigData.mailProfile = config->readEntry("mailProfile", i18n("Default"));
+
+    // Same as follows happens in smtpconfig.cpp. Try to remove one.
+    KEMailSettings *kes = new KEMailSettings();
+    kes->setProfile( smtpConfigData.mailProfile );
+    smtpConfigData.serverHost = kes->getSetting( KEMailSettings::OutServer );
+    smtpConfigData.serverPort = "25";
+    smtpConfigData.senderAddress = kes->getSetting( KEMailSettings::EmailAddress );
+    smtpConfigData.senderReplyTo = kes->getSetting( KEMailSettings::ReplyToAddress );
+    // Don't accept obviously bogus settings.
+    if( (smtpConfigData.serverHost == "") || (!smtpConfigData.senderAddress.contains("@")))
+      {
+	smtpConfigData.enabled = false;
+      }
 
     config->setGroup("CDDB");
 
@@ -1705,9 +1717,7 @@ KSCD::writeSettings()
 
     config->setGroup("SMTP");
     config->writeEntry("enabled", smtpConfigData.enabled);
-    config->writeEntry("serverHost", smtpConfigData.serverHost);
-    config->writeEntry("serverPort", smtpConfigData.serverPort);
-    config->writeEntry("senderAddress", smtpConfigData.senderAddress);
+    config->writeEntry("mailProfile", smtpConfigData.mailProfile);
 
     config->setGroup("CDDB");
     config->writeEntry("CDDBRemoteEnabled",cddb_remote_enabled);

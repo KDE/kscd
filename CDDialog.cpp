@@ -458,6 +458,7 @@ CDDialog::upload()
       smtpMailer->setPort(smtpConfigData->serverPort.toUInt());
       
       smtpMailer->setSenderAddress(smtpConfigData->senderAddress);
+      smtpMailer->setSenderReplyTo(smtpConfigData->senderReplyTo);
       smtpMailer->setRecipientAddress(submitaddress);
       
       subject.sprintf("cddb %s %08lx", submitcat.utf8().data(), cdinfo.magicID);
