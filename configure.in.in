@@ -58,7 +58,7 @@ case "$host" in
   *-*-linux*) kscd_compile=yes;;
   *-*-*bsdi*) kscd_compile=yes;; 
   *-*-*freebsd*) kscd_compile=yes;;
-  *-*-*bsd*) kscd:compile=no;;
+  *-*-*bsd*) kscd_compile=no;;
   *) kscd_compile=yes;;
 esac
 AC_MSG_RESULT($kscd_compile)
