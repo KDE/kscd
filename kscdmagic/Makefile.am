@@ -36,5 +36,5 @@ kscdmagic_LDADD   =       -lm $(LIB_KDEUI)
 noinst_HEADERS = bitmap.h    symbol.h    syna.h      xlib.h magicconf.h
 
 messages:
-#	$(XGETTEXT) -C -ktranslate -kTRANS -ki18n -x $(includedir)/kde.pot $(kscdmagic_SOURCES)
+#	$(XGETTEXT) -kTRANS $(kscdmagic_SOURCES)
 
