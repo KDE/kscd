@@ -1044,10 +1044,10 @@ KSCD::aboutClicked()
     QString labelstring;
     labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
-    "Copyright (c) 1997-1998 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
+    "Copyright (c) 1997-2000 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
     "Copyright (c) 1999-2000 \nDirk Försterling <milliByte@gmx.net>\n"
     "   (current Maintainer)\n\n"
-    "Kscd is based on WorkMan,\n"
+    "Kscd is based in part on WorkMan,\n"
                                       "Copyright (c) 1991-1996 Steven Grimm\n"
                                       "Copyright (c) 1996-2000 Dirk Försterling <milliByte@gmx.net>\n\n"
                                       "Special thanks to Ti Kan and "
