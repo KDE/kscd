@@ -873,7 +873,7 @@ CDDialog::checkit()
   if(!ret)
     {
       KMessageBox::sorry(this,
-			 i18n("Invalid Playlist\nPlease use tracknumbers only, seperated by commas."));
+			 i18n("Invalid Playlist\nPlease use track numbers only, separated by commas."));
       return false;
     }
   
