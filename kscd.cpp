@@ -1487,8 +1487,8 @@ void KSCD::readSettings()
 
     config->setGroup("CDDB");
     QString basedirdefault;
-    basedirdefault = mykapp->kde_datadir().copy();
-    basedirdefault += "/kscd/cddb/";
+    basedirdefault = mykapp->localkdedir().copy();
+    basedirdefault += "/share/apps/kscd/cddb/";
 
     cddbbasedir = config->readEntry("LocalBaseDir",basedirdefault.data());
     strncpy(cddbbasedirtext, cddbbasedir.data(), 4095);
@@ -2404,6 +2404,62 @@ int main( int argc, char *argv[] )
     mykapp = new KApplication( argc, argv,"kscd" );
     k = new KSCD();
 
+    QDir qd;
+    QString path = mykapp->localkdedir().copy();
+    path += "/share/apps/kscd";
+    qd.setPath(path.data());
+    if (!qd.exists())
+      qd.mkdir(path.data());
+    path += "/cddb";
+    qd.setPath(path.data());
+    if (!qd.exists())
+      qd.mkdir(path.data());
+    QString path2 = path.copy();
+    path2 += "/blues";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/classical";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/country";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/data";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/folk";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/jazz";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/misc";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/newage";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/reggae";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/rock";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+    path2 = path.copy() + "/soundtrack";
+    qd.setPath(path2.data());
+    if (!qd.exists())
+      qd.mkdir(path2.data());
+      
     cur_track = 1;
 
     bool hide = FALSE;

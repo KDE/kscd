@@ -42,6 +42,7 @@
 #include <qtabdlg.h>
 #include <qtooltip.h>
 #include <qpopmenu.h>
+#include <qdir.h>
 
 #include <stdlib.h>
 #include <stdio.h>

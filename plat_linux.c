@@ -28,7 +28,7 @@
  * Linux-specific drive control routines.  Very similar to the Sun module.
  */
 
-#ifdef linux
+#ifdef __linux__
 
 #include <unistd.h>
 #include <sys/ioctl.h>    
@@ -39,13 +39,12 @@
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-
-/* this is for glibc 2.x which defines ust structure in ustat.h not stat.h */
-#ifdef __GLIBC__
+#include <linux/version.h>
+#if defined(__GLIBC__)
 #include <sys/ustat.h>
 #endif
-
 #include <linux/cdrom.h>
+
 #include "struct.h"
 
 #include "config.h"
