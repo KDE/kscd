@@ -1403,7 +1403,7 @@ KSCD::cdMode()
             statuslabel->setText( i18n("Error") );
             cddrive_is_ok = false;
             QString errstring =
-                i18n("CDROM read or access error (or no audio disc in drive).\n"\
+                i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
                      "Please make sure you have access permissions to:\n%1")
                 .arg(cd_device);
             KMessageBox::error(this, errstring, i18n("Error"));
@@ -2824,7 +2824,7 @@ KSCD::checkMount()
     {
     if (strcmp (mnt->mnt_type, "iso9660") == 0)
         {
-        fputs (i18n("CDROM already mounted. Operation aborted.\n"),
+        fputs (i18n("CD-ROM already mounted. Operation aborted.\n"),
                  stderr);
           endmntent (fp);
           exit (1);
@@ -2845,7 +2845,7 @@ KSCD::checkMount()
     {
     if (mnt[i].f_type == MOUNT_CD9660)
         {
-        fputs(i18n("CDROM already mounted. Operation aborted.\n"),
+        fputs(i18n("CD-ROM already mounted. Operation aborted.\n"),
                 stderr);
           exit(1);
         }
