@@ -279,7 +279,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action->plugAccel(accels);
   action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), this, "DecVolume");
   action->plugAccel(accels);
-  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), this);
+  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), this, "Options");
   action->plugAccel(accels);
   action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), this, "Shuffle");
   action->plugAccel(accels);
