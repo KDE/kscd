@@ -137,8 +137,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
   setColors();
 
   /* debug
-    wm_cd_set_verbosity(255);
-   */
+   wm_cd_set_verbosity(255);
+  */
 
   // the time slider
   timeIcon->setPixmap(SmallIcon("player_time"));
@@ -1159,9 +1159,13 @@ void KSCD::cdMode()
 
     if (cur_cdmode == prev_cdmode)
     {
-        if (cur_cdmode == WM_CDM_PLAYING && updateTime)
+        if (cur_cdmode == WM_CDM_PLAYING)
         {
-            playtime();
+            if ( updateTime)
+            {
+                playtime();
+            }
+            updateDisplayedTrack(track);
         }
         return;
     }
