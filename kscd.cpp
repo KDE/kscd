@@ -1258,7 +1258,7 @@ KSCD::randomtrack()
   /* set, the original code.  */
   if( randomonce )
     {
-      if( !playlist.isEmpty() ) 
+      if( !playlist.isEmpty() )
 	{
 	  /* Check to see if we are at the end of the list */
 	  if( (unsigned int)random_current >= playlist.count() ) 
@@ -1297,7 +1297,7 @@ KSCD::randomtrack()
       return atoi( (*playlist.at(j)).ascii() );
     } else {
       int j;
-      j = 1 + (int) randSequence.getLong(cur_ntracks);
+      j = (cur_ntracks == 0) ? 0 : (1 + (int) randSequence.getLong(cur_ntracks));
       return j;
     }
 } // randomtrack
@@ -1575,7 +1575,6 @@ KSCD::readSettings()
     ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);
     mailcmd    =        config->readEntry("UnixMailCommand","/bin/mail -s \"%s\"");
     randomonce = (bool)config->readBoolEntry("RANDOMONCE",true);
-
 
 #ifdef DEFAULT_CD_DEVICE
 
