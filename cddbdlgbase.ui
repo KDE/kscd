@@ -251,6 +251,7 @@
     </connection>
 </connections>
 <includes>
+    <include location="local" impldecl="in implementation">kdialog.h</include>
     <include location="local" impldecl="in implementation">cddbdlgbase.ui.h</include>
 </includes>
 <signals>
