@@ -109,22 +109,18 @@ KSCD::KSCD( QWidget *parent, const char *name )
     cddialog(0L),  //!!!!
     background_color(black),
     led_color(green),
-
     jumpToTrack(0L),
     skipDelta(30),
     volume(40),
     randomplay(false),
-    randomplay_pending(false),
     looping(false),
     cddrive_is_ok(true),
     have_new_cd(true),
     time_display_mode(TRACK_SEC),
-
     docking(true),
     autoplay(false),
     stopexit(true),
     ejectonfinish(false),
-    currentlyejected(false),
     updateDialog(false), //!!!!
     revision(0) // The first freedb revision is "0" //!!!!
 {
@@ -170,7 +166,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( &queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
   connect( &cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
-  connect( &timer, SIGNAL(timeout()),  SLOT(cdMode()) );
+  connect( &timer, SIGNAL(timeout()), SLOT(cdMode()) );
   connect( &jumpTrackTimer, SIGNAL(timeout()),  SLOT(jumpTracks()) );
 /*
   these are always connected in base class
@@ -226,7 +222,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   songListCB->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
   adjustSize();
   setFixedHeight(this->height());
-  QTimer::singleShot(100, this, SLOT(initCDROM()));
+  QTimer::singleShot(0, this, SLOT(initCDROM()));
 } // KSCD
 
 
@@ -282,10 +278,9 @@ KSCD::initWorkMan()
 void
 KSCD::initCDROM()
 {
-  kapp->processEvents();
-  kapp->flushX();
-
   cdMode();
+  populateSongList();
+
   if(cddrive_is_ok)
     volChanged(volume);
 
@@ -294,10 +289,8 @@ KSCD::initCDROM()
   {
     playClicked();
   }
-  else
-  {
-    timer.start(1000);
-  }
+
+  timer.start(1000);
 } // initCDROM
 
 void
@@ -502,8 +495,8 @@ KSCD::playClicked()
         return;
     }
 
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
     bool playing = false;
 
 
@@ -517,11 +510,12 @@ KSCD::playClicked()
 #endif
     {
         statuslabel->setText( i18n("Playing") );
+        playing = true;
         setLEDs( "00:00" );
         populateSongList();
 
-        qApp->processEvents();
-        qApp->flushX();
+        kapp->processEvents();
+        kapp->flushX();
 
         if(randomplay)
         {
@@ -554,6 +548,7 @@ KSCD::playClicked()
         {
             case WM_CDM_PLAYING:
                 statuslabel->setText( i18n("Pause") );
+                playing = false;
                 wm_cd_pause();
                 break;
             case WM_CDM_PAUSED:
@@ -570,25 +565,38 @@ KSCD::playClicked()
                 break;
 
             default:
-                // next release: force "stop".
+                // TODO: next release: force "stop".
                 statuslabel->setText( i18n("Strange...") );
                 break;
         } // switch
 
-        qApp->processEvents();
-        qApp->flushX();
+        kapp->processEvents();
+        kapp->flushX();
     } // if (WM_CDM_STOPPED||UNKNOWN) else
 
-    playPB->setText(playing ? i18n("Pause") : i18n("Play"));
+    updatePlayPB(playing);
     cdMode();
 } // playClicked()
 
+void KSCD::updatePlayPB(bool playing)
+{
+    if (playing)
+    {
+        playPB->setIconSet(SmallIconSet("player_pause"));
+        playPB->setText(i18n("Pause"));
+    }
+    else
+    {
+        playPB->setIconSet(SmallIconSet("player_play"));
+        playPB->setText(i18n("Play"));
+    }
+}
+
 void KSCD::song_list_complete(void)
 {
-    if (randomplay_pending) {
+    if (randomplay) {
         setShuffle(false);
         setShuffle(true);
-        randomplay_pending = false;
     }
 }
 
@@ -600,7 +608,9 @@ void KSCD::setShuffle(bool shuffle)
     }
 
     randomplay = shuffle;
+    shufflePB->blockSignals(true);
     shufflePB->setOn(shuffle);
+    shufflePB->blockSignals(false);
 
     if (randomplay) {
         statuslabel->setText(i18n("Shuffle"));
@@ -615,13 +625,13 @@ void KSCD::setShuffle(bool shuffle)
 void
 KSCD::stopClicked()
 {
-    //    looping = FALSE;
+    //    looping = false;
     stoppedByUser = true;
     statuslabel->setText(i18n("Stopped"));
-    playPB->setText(i18n("Play"));
+    updatePlayPB(false);
     setLEDs("--:--");
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
     save_track = 1;
     playlistpointer = 0;
@@ -633,8 +643,8 @@ KSCD::prevClicked()
 {
     int track;
     setLEDs("00:00");
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
     if(randomplay) {
         if((track = prev_randomtrack()) < 0)
@@ -667,8 +677,8 @@ KSCD::nextClicked()
 {
     int track;
     setLEDs("00:00");
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
     if(randomplay) {
         if((track = next_randomtrack()) < 0)
@@ -694,8 +704,8 @@ KSCD::nextClicked()
 void
 KSCD::jumpToTime(int seconds)
 {
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
     int track = wm_cd_getcurtrack();
 
@@ -724,15 +734,15 @@ KSCD::quitClicked()
     setLEDs( "--:--" );
 
     // Good GOD this is evil
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
     if(stopexit)
         wm_cd_stop();
 
     wm_cd_destroy();
 
-    qApp->quit();
+    kapp->quit();
 } // quitClicked()
 
 
@@ -771,8 +781,8 @@ KSCD::closeEvent( QCloseEvent *e )
 
     setLEDs( "--:--" );
 
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
     // TODO: is this really necessary given the stopClicked() above?
     if (stopexit)
@@ -794,8 +804,8 @@ KSCD::loopOn()
     looping = true;
     loopled->on();
     loopled->show();
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 } // loopOn;
 
 void
@@ -804,8 +814,8 @@ KSCD::loopOff()
     looping = false;
     loopled->off();
     loopled->show();
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 } // loopOff;
 
 void
@@ -828,14 +838,27 @@ KSCD::ejectClicked()
 {
     if(!cddrive_is_ok)
         return;
-    if(!currentlyejected)
-    {
-      // preserve the shuffle preference between discs
-      randomplay_pending = randomplay;
 
+    // no matter what happens after this,
+    // we aren't going to be playing the CD anymore
+    // in theory, we should only need this when !curentlyejected
+    // but better safe than sorry (or until i get the time to
+    // do more testing ;) AJS
+    updatePlayPB(false);
+
+    if (wm_cd_status() == WM_CDM_EJECTED)
+    {
+      statuslabel->setText(i18n("Closing"));
+      kapp->processEvents();
+      kapp->flushX();
+      have_new_cd = true;
+      wm_cd_closetray();
+    }
+    else
+    {
       statuslabel->setText(i18n("Ejecting"));
-      qApp->processEvents();
-      qApp->flushX();
+      kapp->processEvents();
+      kapp->flushX();
       setArtistAndTitle("", "");
       tracktitlelist.clear();
       extlist.clear();
@@ -843,19 +866,11 @@ KSCD::ejectClicked()
       genre = "";
 
       wm_cd_stop();
-      //  timer.stop();
-      /*
-       * new checkmount goes here
-       *
-       */
       wm_cd_eject();
-    } else {
-      statuslabel->setText(i18n("Closing"));
-      qApp->processEvents();
-      qApp->flushX();
-      have_new_cd = true;
-      wm_cd_closetray();
     }
+
+    // if you can read this, you're too close
+    cdMode();
 } // ejectClicked
 
 void
@@ -876,7 +891,7 @@ KSCD::trackSelected( int trk )
         return;
     }
 
-    randomplay = false;
+    setShuffle(false);
     tracklabel->setText( formatTrack( trk + 1, cd->ntracks ) );
 
     if(trk+1 < (int)tracktitlelist.count())
@@ -891,11 +906,11 @@ KSCD::trackSelected( int trk )
     }
 
     setLEDs("00:00");
-    qApp->processEvents();
-    qApp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
-    //  pause_cd();
-    wm_cd_play( trk + 1, 0, WM_ENDTRACK );
+    wm_cd_play(trk + 1, 0, trk + 2);
+    updatePlayPB(true);
 } // trackSelected
 
 void
@@ -1091,7 +1106,7 @@ KSCD::prev_randomtrack()
 void
 KSCD::cdMode()
 {
-    static bool damn = TRUE;
+    static bool damn = true;
     int cur_cdmode = wm_cd_status();
     int track = wm_cd_getcurtrack();
 
@@ -1117,9 +1132,6 @@ KSCD::cdMode()
 
     cddrive_is_ok = true; // cd drive ok
 
-    // FIXME: does this need to be set EVERY time? ok, so it's only one bool
-    currentlyejected = (cur_cdmode == WM_CDM_EJECTED);
-
     if (device_change == true)
     {
         device_change = false;
@@ -1133,7 +1145,7 @@ KSCD::cdMode()
         case WM_CDM_UNKNOWN:
             save_track = 1;
             statuslabel->setText( "" ); // TODO how should I properly handle this
-            damn = TRUE;
+            damn = true;
             break;
 
         case WM_CDM_TRACK_DONE: // == WM_CDM_BACK
@@ -1164,7 +1176,7 @@ KSCD::cdMode()
             {
                 save_track = 1;
                 statuslabel->clear(); // TODO how should I properly handle this
-                damn = TRUE;
+                damn = true;
             }
             break;
 
@@ -1196,7 +1208,7 @@ KSCD::cdMode()
                                   *tracktitlelist.at(track));
             }
 
-            damn = TRUE;
+            damn = true;
             stoppedByUser = false;
             break;
 
@@ -1205,7 +1217,7 @@ KSCD::cdMode()
 
         case WM_CDM_PAUSED:
             statuslabel->setText( i18n("Pause") );
-            damn = TRUE;
+            damn = true;
             break;
 
         case WM_CDM_STOPPED:
@@ -1228,16 +1240,13 @@ KSCD::cdMode()
                                       *tracktitlelist.at( w ));
                 }
             }
-            damn = FALSE;
-            if(have_new_cd){
-
-                //      timer.stop();
+            damn = false;
+            if (have_new_cd)
+            {
                 save_track = 1;
                 have_new_cd = false;
-                // timer must be restarted when we are doen
-                // with getting the cddb info
                 get_cddb_info(false); // false == do not update dialog if open
-                if(autoplay && currentlyejected)
+                if(autoplay && cur_cdmode == WM_CDM_EJECTED)
                     playClicked();
             }
 
@@ -1254,7 +1263,7 @@ KSCD::cdMode()
             setArtistAndTitle("", "");
             totaltimelabel->clear();
             totaltimelabel->lower();
-            damn = TRUE;
+            damn = true;
             break;
 
         case WM_CDM_NO_DISC:
@@ -1268,7 +1277,7 @@ KSCD::cdMode()
             setArtistAndTitle("", "");
             totaltimelabel->clear();
             totaltimelabel->lower();
-            damn = TRUE;
+            damn = true;
       break;
     }
 } /* cdMode */
@@ -1339,7 +1348,7 @@ KSCD::readSettings()
 
 	config->setGroup("GENERAL");
 	volume     	= config->readNumEntry("Volume", volume);
-	randomplay_pending = config->readBoolEntry("RandomPlay", false);
+	randomplay = config->readBoolEntry("RandomPlay", false);
 	docking = config->readBoolEntry("DOCKING", docking);
 	autoplay		= config->readBoolEntry("AUTOPLAY", autoplay);
 	stopexit 	= config->readBoolEntry("STOPEXIT", stopexit);
@@ -1398,19 +1407,20 @@ KSCD::writeSettings()
 void
 KSCD::CDDialogSelected()
 {
-    if(cddialog)
-        return;
+    if (!cddialog)
+    {
+        cddialog = new CDDialog();
 
-    cddialog = new CDDialog();
+        cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category, genre,
+                        revision,playlist,pathlist);
 
-    cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category, genre,
-                      revision,playlist,pathlist);
-
-    connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
-    connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
-    connect(cddialog,SIGNAL(play_signal(int)),this,SLOT(trackSelected(int)));
+        connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
+        connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
+        connect(cddialog,SIGNAL(play_signal(int)),this,SLOT(trackSelected(int)));
+    }
 
     cddialog->show();
+    cddialog->raise();
 }
 
 void
@@ -1794,7 +1804,7 @@ KSCD::cycleplaytimemode()
             break;
     }
 
-    cycletimer.start(3000,TRUE);
+    cycletimer.start(3000, true);
 } // cycleplaymode
 
 void
@@ -1804,7 +1814,6 @@ KSCD::cycletimeout()
     QString str;
     str = QString::fromUtf8( QCString().sprintf(i18n("Vol: %02d%%").utf8(),volume) );
     volumelabel->setText(str);
-
 } // cycletimeout
 
 
@@ -2080,6 +2089,7 @@ void KSCD::populateSongList()
                                .arg(QString::number(i + 1).rightJustify(2, '0'))
                                .arg(*it));
     }
+
     for(; i < cd->ntracks; ++i)
     {
         songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );

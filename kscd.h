@@ -228,6 +228,7 @@ protected:
     void clearSongList();
     void setSongListTo(int whichTrack);
     void populateSongList();
+    void updatePlayPB(bool playing);
 
 private:
     ConfigDlg       *configDialog;
@@ -315,7 +316,6 @@ private:
     bool            stopexit;
     bool            ejectonfinish;
     bool            digitalplayback;
-    bool            currentlyejected;
 
 // cddb support
 public slots:
