@@ -142,7 +142,7 @@ CDDialog::setData(
 		  QStringList& _pathlist,
 		  QString& _cddbbasedir,
 		  QString& _submitaddress,
-		  SMTPConfig::SMTPConfigData *_smtpConfigData
+		  SMTPConfigData *_smtpConfigData
 		  )
 {
     int ntr, etr;

@@ -142,9 +142,6 @@ CDDBSetupData::CDDBSetupData
 	defaults_button = new QPushButton( i18n("Defaults"), group, "PushButton_2" );
 	lay7->addWidget ( defaults_button );
 	lay7->addStretch ( 1 );
-	help_button = new QPushButton( i18n("Help"), group, "PushButton_3" );
-	lay7->addWidget ( help_button );
-	lay7->addStretch ( 1 );
 } // CDDBSetupData
 
 

@@ -55,7 +55,6 @@ protected:
     QCheckBox* remote_cddb_cb;
     QLineEdit* cddb_timeout_ef;
     QPushButton* defaults_button;
-    QPushButton* help_button;
     QCheckBox* cddb_http_cb;
     QLineEdit* proxy_port_ef;
     QLineEdit* proxy_host_ef;

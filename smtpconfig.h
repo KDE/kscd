@@ -33,18 +33,21 @@
 #include <kcombobox.h>
 #include <kemailsettings.h>
 
+struct SMTPConfigData 
+{
+//public:
+    bool enabled;
+    QString serverHost;
+    QString serverPort;
+    QString senderAddress;
+    QString senderReplyTo;
+    QString mailProfile;
+};
+
 class SMTPConfig:public QWidget
 {
     Q_OBJECT
 public:
-    struct SMTPConfigData{
-        bool enabled;
-        QString serverHost;
-        QString serverPort;
-        QString senderAddress;
-        QString senderReplyTo;
-        QString mailProfile;
-    };
 
     SMTPConfig(QWidget *parent = NULL, const char *name = NULL, struct SMTPConfigData *_configData = NULL);
     ~SMTPConfig() {};

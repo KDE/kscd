@@ -15,13 +15,14 @@ LINK    = $(CXXLINK)
 noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
 	CDDialog.h CDDialogData.h CDDBSetup.h CDDBSetupData.h mgconfdlg.h \
 	configdlg.h cddb.h version.h docking.h smtpconfig.h \
-	smtp.h
+	smtp.h configWidget.h
 
 #	struct.h wmcdda.h
 
 kscd_SOURCES = kscd.cpp kscd.skel configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cpp \
 	CDDialogData.cpp CDDBSetup.cpp CDDBSetupData.cpp docking.cpp \
-	smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp
+	smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
+        configWidget.cpp
 
 #	plat_scor5.c plat_sun.c plat_hpux.c plat_linux.c plat_news.c \
 #	plat_bsd386.c plat_ultrix.c cdrom.c scsi.c drv_toshiba.c drv_sony.c \

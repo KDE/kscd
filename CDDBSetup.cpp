@@ -41,9 +41,6 @@ CDDBSetup::CDDBSetup
     connect(defaults_button,SIGNAL(clicked()),
             this,SLOT(set_defaults()));
 
-    connect(help_button,SIGNAL(clicked()),
-            this,SLOT(help()));
-
     connect(server_listbox, SIGNAL(highlighted(int)), this,
             SLOT(set_current_server(int)));
 
@@ -137,7 +134,7 @@ CDDBSetup::set_current_server(int i)
 {
     current_server_string = server_listbox->text(i);
     currentServerLE->setText(current_server_string);
-    emit updateCurrentServer();
+    emit updateCurrentServer(current_server_string);
 } // set_current_server
 
 void
@@ -158,12 +155,6 @@ CDDBSetup::enable_remote_cddb(bool state)
 {
      cddb_timeout_ef->setEnabled(state);
 } // enable_remote_cddb
-
-void
-CDDBSetup::help()
-{
-     kapp->invokeHelp( QString::null,"kscd" );
-} // help
 
 void
 CDDBSetup::insertData(const QStringList& _serverlist,
@@ -240,7 +231,7 @@ CDDBSetup::set_defaults()
     cddb_http_cb->setChecked(false);
     // Leave proxy host and port values unchanged, just disable them
 
-    emit updateCurrentServer();
+    emit updateCurrentServer(current_server_string);
 } // set_defaults
 
 void
@@ -279,12 +270,6 @@ CDDBSetup::getData(QStringList& _serverlist,
     http_proxy_host     = proxy_host_ef->text();
     http_proxy_port     = atoi(proxy_port_ef->text().ascii());
 } // getData
-
-void
-CDDBSetup::getCurrentServer(QString& ser)
-{
-    ser = current_server_string.copy();
-} // getCurrentServer
 
 void
 CDDBSetup::serverlist_update()

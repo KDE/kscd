@@ -10,10 +10,11 @@
 #ifndef CDDialog_included
 #define CDDialog_included
 
-#include "CDDialogData.h"
 #include <qstrlist.h>
 #include <qdatetime.h>
-#include <smtpconfig.h>
+
+#include "CDDialogData.h"
+#include "smtpconfig.h"
 
 extern "C" {
 #include "libwm/include/workman.h"
@@ -63,7 +64,7 @@ class CDDialog : public CDDialogData
 			   QStringList& pathlist,
 			   QString& cddbbasedir,
 			   QString& _submitaddress,
-			   SMTPConfig::SMTPConfigData *_smtpConfigData
+			   SMTPConfigData *_smtpConfigData
 			   );
   
   bool checkit();
@@ -93,7 +94,7 @@ signals:
   void play_signal(int i);
   
 private:
-  SMTPConfig::SMTPConfigData *smtpConfigData;
+  SMTPConfigData *smtpConfigData;
   QStringList 	ext_list;
   QStringList 	track_list;
   QStringList pathlist;

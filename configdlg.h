@@ -1,12 +1,13 @@
-
 /*
  *
- * kscd -- A simple CD player for the KDE project
+ * ConfigDlg - the configuration dialog for kscd
  *
  * $Id$
  *
- * Copyright (C) 1997 Bernd Johannes Wuebben
- * wuebben@math.cornell.edu
+ * Copyright (C) 2002 Aaron J. Seigo <aseigo@olympusproject.org>
+ * 
+ * there was a class of the same name written in 1997 by 
+ * Bernd Johannes Wuebben, but it was rewritten.
  *
  *
  * This library is free software; you can redistribute it and/or
@@ -29,94 +30,47 @@
 #ifndef _CONFIG_DLG_H_
 #define _CONFIG_DLG_H_
 
-#include <qgroupbox.h>
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qpainter.h>
-#include <qlabel.h>
-#include <qframe.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qradiobutton.h>
-#include <qbutton.h>
-#include <qbuttongroup.h>
-#include <kcolordlg.h>
+#include <kdialogbase.h>
 
+class KSCD;
+class configWidget;
+class CDDBSetup;
+class SMTPConfig;
+class MGConfigDlg;
 
-#include "kscd.h"
+class ConfigDlg : public KDialogBase 
+{
+    Q_OBJECT
 
+    public:
+        ConfigDlg(KSCD* player, const char* name = 0, bool modal = false);
+        ~ConfigDlg();
 
-class ConfigDlg : public QWidget {
+        /*
+         * TODO: remove this last of the mo-hack-ans someday with cleverness
+         */
+        CDDBSetup* cddb() { return mCDDBConfig; }
 
-Q_OBJECT
+    protected slots: 
+        void slotApply();
+        void slotOk();
+        void finis();
 
-public:
+    private:
+        configWidget* mKCSDConfig;
+        CDDBSetup* mCDDBConfig;
+        SMTPConfig* mSMTPConfig;
+        KSCD* mPlayer;
+#if KSCDMAGIC
+        MGConfigDlg* mMagicConfig;
+#endif
 
-  ConfigDlg(QWidget *parent=0, struct configstruct * data=0,const char *name=0);
-  ~ConfigDlg() {}
-
-
-  struct configstruct * getData();
-
-private slots:
-  void set_led_color();
-  void set_background_color();
-  void help();
-  void ttclicked();
-  void dockclicked();
-  void autoPlayClicked();
-  void stopOnExitClicked();
-  void ejectOnFinishClicked();
-  void device_changed(const QString&);
-  void randomOnceClicked();
-  void custombutton_clicked();
-  void kfmbutton_clicked();
-
-signals:
-  void color_change();
-
-public:
-  bool colors_changed;
-
-private:
-
-  struct configstruct configdata;
-  QGroupBox *box;
-
-  QLabel *label1;
-  QFrame *qframe1;
-  QPushButton *button1;
-
-  QLabel *label2;
-  QFrame *qframe2;
-  QPushButton *button2;
-
-  QLabel *label3;
-  QFrame *qframe3;
-  QPushButton *button3;
-
-  QLabel *label4;
-  QFrame *qframe4;
-  QPushButton *button4;
-
-  QLabel *tooltipslabel;
-  QCheckBox *ttcheckbox;
-  QCheckBox *dockcheckbox;
-  QCheckBox *cdAutoPlayCB;
-  QCheckBox *stopOnExitCB;
-  QCheckBox *ejectOnFinishCB;
-  QCheckBox *randomOnceCB;
-
-  QLabel *label5;
-  QLineEdit *cd_device_edit;
-
-  QButtonGroup *browserbox;
-
-  QRadioButton *kfmbutton;
-  QRadioButton *custombutton;
-
-  QLineEdit *custom_edit;
-
+        enum pages
+        {
+            KSCDPAGE  = 0,
+            CDDBPAGE  = 1,
+            SMTPPAGE  = 2,
+            ABOUTPAGE = 3
+        };
 };
 #endif

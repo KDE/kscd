@@ -43,7 +43,6 @@
 #include <qtooltip.h>
 #include <qpopupmenu.h>
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -75,31 +74,19 @@
 #endif
 
 #include "cddb.h"
-#include "smtpconfig.h"
 #include "smtp.h"
 #include "ledlamp.h"
-#include "CDDialog.h"
-#include "CDDBSetup.h"
 
 #include <kapp.h>
 #include <kprocess.h>
 #include <dcopobject.h>
 
-struct configstruct
-{
-  QColor led_color;
-  QColor background_color;
-  bool   tooltips;
-  QString cd_device;
-  QString mailcmd;
-  QString browsercmd;
-  bool  use_kfm;
-  bool  docking;
-  bool  autoplay;
-  bool stopexit;
-  bool ejectonfinish;
-  bool randomonce;
-};
+class CDDBSetup;
+class ConfigDlg;
+class CDDialog;
+
+class SMTPConfig;
+struct SMTPConfigData;
 
 struct mgconfigstruct
 {
@@ -136,12 +123,42 @@ k_dcop:
     void optionDialog() { aboutClicked(); }
     void setTrack(int t) { trackSelected(t >= 1 ? t - 1 : 0); }
     void setVolume(int v) { volChanged(v); volSB->setValue(v); }
-    int currentTrack() { return cur_track; }
-    QString currentTrackTitle() { return tracktitlelist[cur_track]; }
-    QStringList trackList() { return tracktitlelist; }
+    int currentTrack();
+    QString currentTrackTitle();
+    QStringList trackList();
+
+public:
+    KSCD( QWidget *parent = 0, const char *name = 0 );
+    ~KSCD();
+    void initialShow();
+	virtual bool saveState(QSessionManager& sm);
+    
+    bool dock() { return docking; }
+    void setDocking(bool dock);    
+    bool randomOnce() { return randomonce; }
+    void setRandomOnce(bool shuffle);
+    bool stopOnExit() { return stopexit; }
+    void setStopOnExit(bool stop) { stopexit = stop; }
+    bool autoPlay() { return autoplay; }
+    void setAutoplay(bool play) { autoplay = play; }
+    bool ejectOnFinish() { return ejectonfinish; }
+    void setEjectOnFinish(bool eject) { ejectonfinish = eject; }
+    unsigned int skipInterval() { return skipDelta; }
+    void setSkipInterval(unsigned int skip) { skipDelta = skip; }
+    QColor ledColor() { return led_color; }
+    QColor bgColor() { return background_color; }
+    void setColors(const QColor& LEDs, const QColor& bground);
+    void setToolTips(bool on);
+    bool toolTips() { return tooltips; }
+    void setDevicePath(QString path);
+    QString devicePath() { return cd_device_str; }
+    SMTPConfigData* smtpData() { return smtpConfigData; }
+
+signals:
+    void trackChanged(const QString&);
+    void newServerList(const QStringList&);
 
 public slots:
-
     void smtpMessageSent(void);
     void smtpError(int);
     void magicdone(KProcess*);
@@ -153,9 +170,7 @@ public slots:
     void cddb_ready();
     void edm_save_cddb_entry(QString& path);
     void cddb_failed();
-    void setToolTips();
     void randomSelected();
-
     void readSettings();
     void writeSettings();
     void setColors();
@@ -190,21 +205,43 @@ public slots:
     void getCDDBservers();
     void getCDDBserversDone();
     void getCDDBserversFailed();
-    void updateCurrentCDDBServer();
+    void updateCurrentCDDBServer(const QString&);
     void performances(int);
     void purchases(int);
     void information(int);
     void showPopup();
     void jumpTracks();
-  //    void doSM();
+    
+    /*
+     * TODO
+     * not the prettiest things in the world
+     * but getting rid of them will require some more work
+     * with the CDDB and magic config pages
+     */
+    void getCDDBOptions(CDDBSetup* config);
+    void setCDDBOptions(CDDBSetup* config);
+    void getMagicOptions(mgconfigstruct& config);
+    void setMagicOptions(mgconfigstruct& config);
 
     void make_random_list(); /* koz: 15/01/00 */
 
+protected slots:
+    void configDone();
+
+protected:
+    void closeEvent( QCloseEvent *e );
+    void keyPressEvent( QKeyEvent* e );
+    bool event( QEvent *e );
+    //    void focusOutEvent(QFocusEvent *e);
+    void playtime();
+    void setupPopups();
+    void startBrowser(const QString& querystring);
+    bool getArtist(QString& artist);
+    void get_pathlist(QStringList& _patlist);
+
 private:
-    CDDBSetup       *setup;
-
-    SMTPConfig::SMTPConfigData  smtpConfigData;
-
+    SMTPConfigData  *smtpConfigData;   
+    ConfigDlg       *configDialog;
     CDDialog        *cddialog;
     QPushButton     *playPB;
     QPushButton     *stopPB;
@@ -248,7 +285,7 @@ private:
 
     KProcess*           magicproc;
     int                 jumpToTrack;
-    int									skipDelta;
+    unsigned int        skipDelta;
     int                 volChnl;
     int                 mixerFd;
     int                 volume;
@@ -329,14 +366,12 @@ private:
         QString         mailcmd;
         QString         submitaddress;
         QStringList        cddbsubmitlist;
-        QString         browsercmd;
         QFont           smallfont;
         QFont           verysmallfont;
         bool            cddb_remote_enabled;
         /* edm new section */
         bool            cddb_auto_enabled;
         /* edm new section end */
-        bool            use_kfm;
         bool            docking;
         bool            autoplay;
         bool            stopexit;
@@ -347,26 +382,6 @@ private:
         bool            updateDialog;
         bool            ejectedBefore;
         bool            currentlyejected;
-public:
-
-        KSCD( QWidget *parent = 0, const char *name = 0 );
-        void initialShow();
-	virtual bool saveState(QSessionManager& sm);
-
-signals:
-        void trackChanged(const QString&);
-
-protected:
-
-    void closeEvent( QCloseEvent *e );
-    void keyPressEvent( QKeyEvent* e );
-    bool event( QEvent *e );
-    //    void focusOutEvent(QFocusEvent *e);
-    void playtime();
-    void setupPopups();
-    void startBrowser(const QString& querystring);
-    bool getArtist(QString& artist);
-    void get_pathlist(QStringList& _patlist);
 };
 
 

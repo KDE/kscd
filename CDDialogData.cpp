@@ -113,8 +113,9 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) :
     resize ( 400, 500 );
 }
 
-
 CDDialogData::~CDDialogData()
 {
 }
+
+
 

@@ -34,9 +34,6 @@ public:
 
     virtual ~CDDialogData();
 
-protected slots:
-
-
 protected:
     QListView* tracksList;
     QLineEdit* trackEdit;   // track title edit

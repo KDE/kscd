@@ -25,6 +25,7 @@ public:
 
 public slots:
     void serverlist_update();
+    void insertServerList(const QStringList& list);
 
     void getData(QStringList& _serverlist,
                  QStringList& _submitlist,
@@ -53,7 +54,6 @@ public slots:
                    );
 
 protected slots:
-   void help();
    void enable_remote_cddb(bool);
    void basedir_changed(const QString &str);
    void set_current_server(int i);
@@ -67,11 +67,7 @@ protected slots:
 
 signals:
    void updateCDDBServers();
-   void updateCurrentServer();
-
-public:
-   void insertServerList(const QStringList& list);
-   void getCurrentServer(QString& ser);
+   void updateCurrentServer(const QString& newCurrentServer);
 
 private:
 
