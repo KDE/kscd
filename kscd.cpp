@@ -23,7 +23,7 @@
 
 #include <qdir.h>
 #include <qregexp.h>
-#include <qtextstream.h> 
+#include <qtextstream.h>
 #include <qlayout.h>
 
 #include <kcharsets.h>
@@ -40,6 +40,7 @@
 #include <kcmdlineargs.h>
 #include <dcopclient.h>
 #include <kemailsettings.h>
+#include <kstringhandler.h>
 
 #include "docking.h"
 #include "kscd.h"
@@ -47,8 +48,8 @@
 #include "mgconfdlg.h"
 #include "version.h"
 extern "C" {
-  // We don't have libWorkMan installed already, so get everything
-  // from within our own directory
+    // We don't have libWorkMan installed already, so get everything
+    // from within our own directory
 #include "libwm/include/workman.h"
 }
 #include "config.h"
@@ -99,10 +100,10 @@ KRandomSequence randSequence;
 
 static QString formatTrack(int d1, int d2)
 {
-  QString str = QString::fromLatin1("%1/%2")
-    .arg( QString::number(d1).rightJustify(2, '0') )
-    .arg( QString::number(d2).rightJustify(2, '0') );
-  return str;
+    QString str = QString::fromLatin1("%1/%2")
+                  .arg( QString::number(d1).rightJustify(2, '0') )
+                  .arg( QString::number(d2).rightJustify(2, '0') );
+    return str;
 }
 
 int cddb_error = 0;
@@ -115,7 +116,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
     :   QWidget( parent, name ), DCOPObject("CDPlayer")
 {
 
-  //    connect(kapp, SIGNAL (saveYourself() ), SLOT (doSM()));
+    //    connect(kapp, SIGNAL (saveYourself() ), SLOT (doSM()));
     magicproc           = 0L;
     cd_device_str       = "";
     background_color    = black;
@@ -197,9 +198,10 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
     dock_widget = new DockWidget( this, "dockw");
     if(docking)
-      {
+    {
         dock_widget->show();
-      }
+        connect(this, SIGNAL(trackChanged(const QString&)), dock_widget, SLOT(setToolTip(const QString&)));
+    }
 
     smtpMailer = new SMTP;
     connect(smtpMailer, SIGNAL(messageSent()), this, SLOT(smtpMessageSent()));
@@ -214,7 +216,7 @@ void
 KSCD::smtpMessageSent(void)
 {
     KMessageBox::information(this, i18n("Record submitted successfully"),
-                                   i18n("Record Submission"));
+                             i18n("Record Submission"));
 } // smtpMessageSent()
 
 void
@@ -223,23 +225,23 @@ KSCD::smtpError(int errornum)
     QString str, lstr;
 
     switch(errornum){
-    case 10:
-        lstr = i18n("Error connecting to server.");
-        break;
-    case 11:
-        lstr = i18n("Not connected.");
-        break;
-    case 15:
-        lstr = i18n("Connection timed out.");
-        break;
-    case 16:
-        lstr = i18n("Time out waiting for server interaction.");
-        break;
-    default:
-        lstr = i18n("Server said:\n\"%1\"").arg(smtpMailer->getLastLine());
+        case 10:
+            lstr = i18n("Error connecting to server.");
+            break;
+        case 11:
+            lstr = i18n("Not connected.");
+            break;
+        case 15:
+            lstr = i18n("Connection timed out.");
+            break;
+        case 16:
+            lstr = i18n("Time out waiting for server interaction.");
+            break;
+        default:
+            lstr = i18n("Server said:\n\"%1\"").arg(smtpMailer->getLastLine());
     }
     str = i18n("Error #%1 sending message via SMTP.\n\n%2")
-      .arg(errornum).arg(lstr);
+          .arg(errornum).arg(lstr);
     KMessageBox::error(this, str, i18n("Record Submission"));
 } // smptError()
 
@@ -260,22 +262,22 @@ KSCD::initWorkMan()
 void
 KSCD::initCDROM()
 {
-printf("initCDROM\n");
+    printf("initCDROM\n");
     initimer->stop();
     kapp->processEvents();
     kapp->flushX();
 
-printf("~initCDROM1\n");
+    printf("~initCDROM1\n");
     cdMode();
     volstartup = FALSE;
-printf("~initCDROM2\n");
+    printf("~initCDROM2\n");
     if(cddrive_is_ok)
         volChanged(volume);
 
-printf("~initCDROM4\n");
+    printf("~initCDROM4\n");
     timer->start(1000);
     //  cdMode();
-printf("~initCDROM\n");
+    printf("~initCDROM\n");
 } // initCDROM
 
 
@@ -289,23 +291,23 @@ KSCD::smallPtSize()
     static int theSmallPtSize = 0;
 
     if ( theSmallPtSize != 0 )
-      return theSmallPtSize;
+        return theSmallPtSize;
 
     // Find a font that fits the 13 and 14 pixel widgets
     theSmallPtSize = 10;
     QFont fn( "Helvetica", theSmallPtSize, QFont::Bold );
     bool fits = false;
     while (!fits && theSmallPtSize > 1)
-      {
+    {
         QFontMetrics metrics(fn);
         if(metrics.height() > 13)
-          {
+        {
             --theSmallPtSize;
             fn.setPointSize(theSmallPtSize);
-          } else {
+        } else {
             fits = true;
-          }
-      }
+        }
+    }
     return theSmallPtSize;
 } // smallPtSize()
 
@@ -357,18 +359,18 @@ KSCD::drawPanel()
     //ix += 2 * SBARWIDTH / 7;
     ix = WIDTH + 8;
     /*
-      nLEDs = new QLabel(this);
+    nLEDs = new QLabel(this);
       nLEDs->setGeometry(ix + 20,iy +5 + D, 100, 30);
       nLEDs->setFont( QFont( "Helvetica", 26, QFont::Bold ) );
-    */
+*/
 
     for (int u = 0; u<5;u++)
-      {
+    {
         trackTimeLED[u] = new BW_LED_Number(this );
         trackTimeLED[u]->setGeometry( ix  + u*18, iy + D, 23 ,  30 );
         trackTimeLED[u]->setLEDoffColor(background_color);
         trackTimeLED[u]->setLEDColor(led_color,background_color);
-      }
+    }
 
     QString zeros("--:--");
     setLEDs(zeros);
@@ -422,11 +424,11 @@ KSCD::drawPanel()
     totaltimelabel->hide();
 
     /*
-      trackTimeLED = new QLEDNumber( this );
+    trackTimeLED = new QLEDNumber( this );
       trackTimeLED->setGeometry( ix -10, iy+5, 100    , 2 * HEIGHT );// petit
       trackTimeLED->display("");
       trackTimeLED->setFrameStyle( QFrame::NoFrame );
-    */
+*/
 
     ix = WIDTH;
     iy = HEIGHT + HEIGHT + HEIGHT/2;
@@ -592,7 +594,7 @@ void
 KSCD::setToolTips()
 {
     if(tooltips)
-      {
+    {
         QToolTip::add( playPB,          i18n("Play/Pause") );
         QToolTip::add( stopPB,          i18n("Stop") );
         QToolTip::add( replayPB,        i18n("Loop") );
@@ -610,13 +612,13 @@ KSCD::setToolTips()
         QToolTip::add( ejectPB,         i18n("Eject CD") );
         QToolTip::add( infoPB,          i18n("The Artist on the Web") );
         if (!randomonce)
-          QToolTip::add( shufflebutton,         i18n("Random Play") );
+            QToolTip::add( shufflebutton,         i18n("Random Play") );
         else
-          QToolTip::add( shufflebutton,         i18n("Shuffle Play") );
+            QToolTip::add( shufflebutton,         i18n("Shuffle Play") );
 
         QToolTip::add( cddbbutton,      i18n("CDDB Dialog") );
         QToolTip::add( volSB,           i18n("CD Volume Control") );
-      } else {
+    } else {
         QToolTip::remove( playPB);
         QToolTip::remove( stopPB);
         QToolTip::remove( replayPB);
@@ -643,16 +645,16 @@ void
 KSCD::cleanUp()
 {
     if (thiscd.trk != NULL)
-      {
+    {
         delete thiscd.trk;
         thiscd.trk = 0L;
-      }
+    }
     signal (SIGINT, SIG_DFL);
     if(magicproc)
-      {
+    {
         delete magicproc;
         magicproc = 0L;
-      }
+    }
 } // cleanUp()
 
 void
@@ -668,7 +670,7 @@ KSCD::playClicked()
 #else
         cur_cdmode == WM_CDM_STOPPED || cur_cdmode == WM_CDM_UNKNOWN
 #endif
-    ){
+        ){
 
         statuslabel->setText( i18n("Playing") );
         songListCB->clear();
@@ -679,61 +681,61 @@ KSCD::playClicked()
         ++it;
         int i = 0;
         for ( ; it != tracktitlelist.end(); ++it )
-          {
+        {
             i++;
             QString str = QString::fromLatin1("%1: %2")
-              .arg(QString::number(i).rightJustify(2, '0'))
-              .arg(*it);
+                          .arg(QString::number(i).rightJustify(2, '0'))
+                          .arg(*it);
             songListCB->insertItem( str );
-          }
+        }
 
         // We don't know the rest, but we should still have entries
         for( ; i < cur_ntracks; i++)
-          {
+        {
             songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1) ) );
-          }
+        }
 
         qApp->processEvents();
         qApp->flushX();
 
         if(!playlist.isEmpty())
-          {
+        {
             if(playlistpointer >=(int) playlist.count())
-              playlistpointer = 0;
+                playlistpointer = 0;
             wm_cd_play (atoi((*playlist.at(playlistpointer)).ascii()), 0,
-                     atoi((*playlist.at(playlistpointer)).ascii()) + 1);
+                        atoi((*playlist.at(playlistpointer)).ascii()) + 1);
             save_track = cur_track = atoi((*playlist.at(playlistpointer)).ascii());
-          } else {
+        } else {
             wm_cd_play (save_track, 0, cur_ntracks + 1);
-          }
+        }
     } else { // if (WM_CDM_STOPPED||UNKNOWN)
-      if (cur_cdmode == WM_CDM_PLAYING || cur_cdmode == WM_CDM_PAUSED)
+        if (cur_cdmode == WM_CDM_PLAYING || cur_cdmode == WM_CDM_PAUSED)
         {
 
             switch (cur_cdmode)
-              {
-              case WM_CDM_PLAYING:
-                statuslabel->setText( i18n("Pause") );
-                wm_cd_pause();
-                break;
-              case WM_CDM_PAUSED:
-                if(randomplay)
-                  {
-                    if (randomonce)
-                      statuslabel->setText( i18n("Shuffle") );
-                    else
-                      statuslabel->setText( i18n("Random") );
-                  } else {
-                    statuslabel->setText( i18n("Playing") );
-                  }
-                wm_cd_pause();
-                break;
+            {
+                case WM_CDM_PLAYING:
+                    statuslabel->setText( i18n("Pause") );
+                    wm_cd_pause();
+                    break;
+                case WM_CDM_PAUSED:
+                    if(randomplay)
+                    {
+                        if (randomonce)
+                            statuslabel->setText( i18n("Shuffle") );
+                        else
+                            statuslabel->setText( i18n("Random") );
+                    } else {
+                        statuslabel->setText( i18n("Playing") );
+                    }
+                    wm_cd_pause();
+                    break;
 
-              default:
-                // next release: force "stop".
-                statuslabel->setText( i18n("Strange....") );
-                break;
-              } // switch
+                default:
+                    // next release: force "stop".
+                    statuslabel->setText( i18n("Strange....") );
+                    break;
+            } // switch
             qApp->processEvents();
             qApp->flushX();
         } // if (PLAYING||PAUSED)
@@ -745,7 +747,7 @@ void
 KSCD::stopClicked()
 {
 
-  //    looping = FALSE;
+    //    looping = FALSE;
     randomplay = FALSE;
     stoppedByUser = TRUE;
     statuslabel->setText(i18n("Stopped"));
@@ -767,29 +769,29 @@ KSCD::prevClicked()
     qApp->flushX();
 
     if(!playlist.isEmpty())
-      {
+    {
         playlistpointer--;
         if(playlistpointer < 0 )
-          {
+        {
             playlistpointer = playlist.count() -1;
-          }
+        }
         cur_track = atoi((*playlist.at(playlistpointer)).ascii());
-      } else {
+    } else {
         // djoham@netscape.net suggested the real-world cd-player behaviour
         // of only jumping to the beginning of the current track if playing
         // advanced more than 2 seconds. I think that's good, but maybe I'll
         // make this configurable.
         if(!(cur_pos_rel > 2))
-          cur_track--;
+            cur_track--;
         if (cur_track < 1)
-          cur_track = cur_ntracks;
-      }
+            cur_track = cur_ntracks;
+    }
     if(randomplay)
-      {
+    {
         wm_cd_play (cur_track, 0, cur_track + 1);
-      } else {
+    } else {
         wm_cd_play (cur_track, 0, cur_ntracks + 1);
-      }
+    }
 } // prevClicked()
 
 void
@@ -800,36 +802,36 @@ KSCD::nextClicked()
     qApp->flushX();
 
     if(randomplay)
-      {
+    {
         int j = randomtrack();
         if ( j < 0 )
-          return;
+            return;
         tracklabel->setText(formatTrack(j, cd->ntracks));
 
         if(j < (int)tracktitlelist.count())
-          {
-            titlelabel->setText(*tracktitlelist.at(j));
-            artistlabel->setText(tracktitlelist.first());
-          }
+        {
+            setArtistAndTitle(tracktitlelist.first(),
+                              *tracktitlelist.at(j));
+        }
         qApp->processEvents();
         qApp->flushX();
 
         wm_cd_play( j, 0, j + 1 );
 
-      } else if(!playlist.isEmpty()) {
+    } else if(!playlist.isEmpty()) {
         if(playlistpointer < (int)playlist.count() - 1)
-          playlistpointer++;
+            playlistpointer++;
         else
-          playlistpointer = 0;
+            playlistpointer = 0;
 
         wm_cd_play (atoi((*playlist.at(playlistpointer)).ascii()),
-                 0, atoi((*playlist.at(playlistpointer)).ascii()) + 1);
+                    0, atoi((*playlist.at(playlistpointer)).ascii()) + 1);
         cur_track = atoi( (*playlist.at(playlistpointer)).ascii() );
-      } else {
+    } else {
         if (cur_track == cur_ntracks)
-          cur_track = 0;
+            cur_track = 0;
         wm_cd_play (cur_track + 1, 0, cur_ntracks + 1);
-      }
+    }
 } // nextClicked()
 
 void
@@ -839,16 +841,16 @@ KSCD::fwdClicked()
     qApp->flushX();
 
     if (cur_cdmode == WM_CDM_PLAYING)
-      {
+    {
         tmppos = cur_pos_rel + 30;
         if (tmppos < thiscd.trk[cur_track - 1].length)
-          {
+        {
             if(randomplay || !playlist.isEmpty())
-              wm_cd_play (cur_track, tmppos, cur_track + 1);
+                wm_cd_play (cur_track, tmppos, cur_track + 1);
             else
-              wm_cd_play (cur_track, tmppos, cur_ntracks + 1);
-          }
-      }
+                wm_cd_play (cur_track, tmppos, cur_ntracks + 1);
+        }
+    }
 } // fwdClicked()
 
 void
@@ -858,13 +860,13 @@ KSCD::bwdClicked()
     qApp->flushX();
 
     if (cur_cdmode == WM_CDM_PLAYING)
-      {
+    {
         tmppos = cur_pos_rel - 30;
         if(randomplay || !playlist.isEmpty())
-          wm_cd_play (cur_track, tmppos > 0 ? tmppos : 0, cur_track + 1);
+            wm_cd_play (cur_track, tmppos > 0 ? tmppos : 0, cur_track + 1);
         else
-          wm_cd_play (cur_track, tmppos > 0 ? tmppos : 0, cur_ntracks + 1);
-      }
+            wm_cd_play (cur_track, tmppos > 0 ? tmppos : 0, cur_ntracks + 1);
+    }
     cdMode();
 } // bwdClicked()
 
@@ -926,66 +928,66 @@ KSCD::event( QEvent *e )
 void
 KSCD::loopOn()
 {
-  looping = true;
-  loopled->on();
-  loopled->show();
-  qApp->processEvents();
-  qApp->flushX();
+    looping = true;
+    loopled->on();
+    loopled->show();
+    qApp->processEvents();
+    qApp->flushX();
 } // loopOn;
 
 void
 KSCD::loopOff()
 {
-  looping = false;
-  loopled->off();
-  loopled->show();
-  qApp->processEvents();
-  qApp->flushX();
+    looping = false;
+    loopled->off();
+    loopled->show();
+    qApp->processEvents();
+    qApp->flushX();
 } // loopOff;
 
 void
 KSCD::loopClicked()
 {
-  //    randomplay = FALSE;
+    //    randomplay = FALSE;
 
     if(looping)
-      {
+    {
         loopOff();
-      } else {
+    } else {
         loopOn();
-      }
+    }
 } // loopClicked
 
 void
 KSCD::ejectClicked()
 {
-  if(!cddrive_is_ok)
-    return;
-  if(!currentlyejected)
+    if(!cddrive_is_ok)
+        return;
+    if(!currentlyejected)
     {
-      //      looping = FALSE;
-      randomplay = FALSE;
-      statuslabel->setText(i18n("Ejecting"));
-      qApp->processEvents();
-      qApp->flushX();
-      artistlabel->clear();
-      titlelabel->clear();
-      tracktitlelist.clear();
-      extlist.clear();
+        //      looping = FALSE;
+        randomplay = FALSE;
+        statuslabel->setText(i18n("Ejecting"));
+        qApp->processEvents();
+        qApp->flushX();
+        artistlabel->clear();
+        titlelabel->clear();
+        tracktitlelist.clear();
+        extlist.clear();
 
-      wm_cd_stop();
-      //  timer->stop();
-      /*
-       * new checkmount goes here
-       *
-       */
-      wm_cd_eject();
+        wm_cd_stop();
+        //  timer->stop();
+        /*
+        * new checkmount goes here
+        *
+        */
+ wm_cd_eject();
     } else {
-      statuslabel->setText(i18n("Closing"));
-      qApp->processEvents();
-      qApp->flushX();
-      have_new_cd = true;
-      wm_cd_closetray();
+        statuslabel->setText(i18n("Closing"));
+        qApp->processEvents();
+        qApp->flushX();
+        have_new_cd = true;
+        wm_cd_closetray();
     }
 } // ejectClicked
 
@@ -993,15 +995,15 @@ void
 KSCD::randomSelected()
 {
     if(randomplay == TRUE)
-      {
+    {
         randomplay = FALSE;
-      } else {
+    } else {
         if( randomonce )
-          {
+        {
             statuslabel->setText(i18n("Shuffle"));
-          } else {
+        } else {
             statuslabel->setText(i18n("Random"));
-          }
+        }
 
         randomplay = TRUE;
 
@@ -1009,16 +1011,16 @@ KSCD::randomSelected()
         int j = randomtrack();
         tracklabel->setText(formatTrack(j, cd->ntracks));
         if(j < (int)tracktitlelist.count())
-          {
-            titlelabel->setText(*tracktitlelist.at(j));
-            artistlabel->setText(tracktitlelist.first());
-          }
+        {
+            setArtistAndTitle(tracktitlelist.first(),
+                              *tracktitlelist.at(j));
+        }
         qApp->processEvents();
         qApp->flushX();
 
         wm_cd_play( j, 0, j + 1 );
         cur_track = j;
-      }
+    }
 } // randomSelected
 
 void
@@ -1028,10 +1030,10 @@ KSCD::trackSelected( int trk )
     tracklabel->setText( formatTrack( trk + 1, cd->ntracks ) );
 
     if(trk+1 < (int)tracktitlelist.count())
-      {
-        titlelabel->setText(*tracktitlelist.at(trk+1));
-        artistlabel->setText(tracktitlelist.first());
-      }
+    {
+        setArtistAndTitle(tracktitlelist.first(),
+                          *tracktitlelist.at(trk+1));
+    }
 
     setLEDs("00:00");
     qApp->processEvents();
@@ -1070,25 +1072,25 @@ KSCD::aboutClicked()
     QString labelstring;
     labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
-    "Copyright (c) 1997-2001 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
-    "Copyright (c) 1999-2001 \nDirk FÃ¶rsterling <milliByte@gmx.net>\n"
-    "   (current Maintainer)\n\n"
-    "Kscd is based in part on WorkMan,\n"
-                                      "Copyright (c) 1991-1996 Steven Grimm\n"
-                                      "Copyright (c) 1996-2001 Dirk FÃ¶rsterling <milliByte@gmx.net>\n\n"
-                                      "Special thanks to Ti Kan and "
-                                      "Steve Scherf, the inventors of "
-                                      "the CDDB database concept. "
-                                      "Visit http://www.cddb.com/ for "
-                                      "more information on CDDB.\n\n"
-                                     );
+        "Copyright (c) 1997-2001 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
+        "Copyright (c) 1999-2001 \nDirk FÃ¶rsterling <milliByte@gmx.net>\n"
+        "   (current Maintainer)\n\n"
+        "Kscd is based in part on WorkMan,\n"
+        "Copyright (c) 1991-1996 Steven Grimm\n"
+        "Copyright (c) 1996-2001 Dirk FÃ¶rsterling <milliByte@gmx.net>\n\n"
+        "Special thanks to Ti Kan and "
+        "Steve Scherf, the inventors of "
+        "the CDDB database concept. "
+        "Visit http://www.cddb.com/ for "
+        "more information on CDDB.\n\n"
+        );
 
 #if KSCDMAGIC
-     labelstring += i18n(
+    labelstring += i18n(
         "KSCD Magic based on Synaesthesia by "
         "Paul Harrison <pfh@yoyo.cc.monash.edu.au>\n\n");
 #endif
-     labelstring += i18n(
+    labelstring += i18n(
         "Thanks to Vadim Zaliva <lord@crocodile.org>\n"
         "for his work on the http proxy code.\n\n") ;
 
@@ -1123,13 +1125,13 @@ KSCD::aboutClicked()
                       cddbbasedir,
                       submitaddress,
                       current_server,
-		      cddb_auto_enabled,
+                      cddb_auto_enabled,
                       cddb_remote_enabled,
                       cddb.getTimeout(),
                       cddb.useHTTPProxy(),
                       cddb.getHTTPProxyHost(),
                       cddb.getHTTPProxyPort()
-    );
+        );
 
     MGConfigDlg* mgdlg;
     struct mgconfigstruct mgconfig;
@@ -1152,7 +1154,7 @@ KSCD::aboutClicked()
 
 
     if(tabdialog->exec() == QDialog::Accepted)
-      {
+    {
         smtpconfig->commitData();
         background_color = dlg->getData()->background_color;
         led_color = dlg->getData()->led_color;
@@ -1168,15 +1170,15 @@ KSCD::aboutClicked()
         randomonce = dlg->getData()->randomonce;
 
         if( (QString)cd_device != dlg->getData()->cd_device)
-          {
+        {
             cd_device_str = dlg->getData()->cd_device;
             /*
             wmcd_close();
-            */
+*/
             // FIXME
             cd_device = (char *)qstrdup(QFile::encodeName(cd_device_str));
 
-          }
+        }
         cddrive_is_ok = true;
 
         magic_width = mgdlg->getData()->width;
@@ -1194,13 +1196,13 @@ KSCD::aboutClicked()
                        cddbbasedir,
                        submitaddress,
                        current_server,
-		       cddb_auto_enabled,
+                       cddb_auto_enabled,
                        cddb_remote_enabled,
                        cddb_timeout,
                        cddb_proxy_enabled,
                        cddb_proxy_host,
                        cddb_proxy_port
-        );
+            );
         cddb.setTimeout(cddb_timeout);
         cddb.setHTTPProxy(cddb_proxy_host,cddb_proxy_port);
         cddb.useHTTPProxy(cddb_proxy_enabled);
@@ -1213,12 +1215,12 @@ KSCD::aboutClicked()
         else
             dock_widget->hide();
 
-      } else {
+    } else {
         // reset the current server in case we played with it ...
 
         current_server = server_copy;
         kdDebug() << "RESETTING SERVER TO: " << current_server << "\n" << endl;
-      }
+    }
 
     disconnect(setup,SIGNAL(updateCDDBServers()),this,SLOT(getCDDBservers()));
     disconnect(setup,SIGNAL(updateCurrentServer()),this,SLOT(updateCurrentCDDBServer()));
@@ -1238,10 +1240,10 @@ void
 KSCD::updateCurrentCDDBServer()
 {
     if(setup)
-      {
+    {
         setup->getCurrentServer(current_server);
         kdDebug() << "SET SERVER TO: " << current_server << "\n" << endl;
-      }
+    }
 } // updateCurrentCDDBServer
 
 void
@@ -1261,52 +1263,52 @@ KSCD::volChanged( int vol )
 int
 KSCD::randomtrack()
 {
-  /* koz: 15/01/00. Check to see if we want to do a randomonce. If so */
-  /* we execute the first set of statements. Else we execute the second */
-  /* set, the original code.  */
-  if( randomonce )
+    /* koz: 15/01/00. Check to see if we want to do a randomonce. If so */
+    /* we execute the first set of statements. Else we execute the second */
+    /* set, the original code.  */
+    if( randomonce )
     {
-      if( !playlist.isEmpty() )
+        if( !playlist.isEmpty() )
         {
-          /* Check to see if we are at the end of the list */
-          if( (unsigned int)random_current >= playlist.count() )
+            /* Check to see if we are at the end of the list */
+            if( (unsigned int)random_current >= playlist.count() )
             {
-              if( !looping )
+                if( !looping )
                 {
-                  stopClicked();
-                  return -1;
+                    stopClicked();
+                    return -1;
                 } else {
-                  random_current=0;
+                    random_current=0;
                 }
             }
-          int j = random_list[random_current++];
-          playlistpointer = j;
-          return atoi( (*playlist.at(j)).ascii() );
+            int j = random_list[random_current++];
+            playlistpointer = j;
+            return atoi( (*playlist.at(j)).ascii() );
         } else { // playlist.count > 0
-          if( random_current >= cur_ntracks )
+            if( random_current >= cur_ntracks )
             {
-              if( !looping )
+                if( !looping )
                 {
-                  stopClicked();
-                  return -1;
+                    stopClicked();
+                    return -1;
                 } else {
-                  random_current = 0;
+                    random_current = 0;
                 }
             }
-          return( random_list[random_current++] );
+            return( random_list[random_current++] );
         } // playlist.count > 0
     } // randomonce
 
-  if( !playlist.isEmpty() )
+    if( !playlist.isEmpty() )
     {
-      int j;
-      j = (int) randSequence.getLong(playlist.count());
-      playlistpointer = j;
-      return atoi( (*playlist.at(j)).ascii() );
+        int j;
+        j = (int) randSequence.getLong(playlist.count());
+        playlistpointer = j;
+        return atoi( (*playlist.at(j)).ascii() );
     } else {
-      int j;
-      j = (cur_ntracks == 0) ? 0 : (1 + (int) randSequence.getLong(cur_ntracks));
-      return j;
+        int j;
+        j = (cur_ntracks == 0) ? 0 : (1 + (int) randSequence.getLong(cur_ntracks));
+        return j;
     }
 } // randomtrack
 
@@ -1326,22 +1328,22 @@ KSCD::cdMode()
 
     sss = wm_cd_status();
     if( sss == 2 )
-      have_new_cd = true;
+        have_new_cd = true;
 
     if(sss < 0)
-      {
+    {
         if(cddrive_is_ok && (sss != WM_ERR_SCSI_INQUIRY_FAILED))
-          {
+        {
             statuslabel->setText( i18n("Error") );
             cddrive_is_ok = false;
             QString errstring =
-              i18n("CDROM read or access error (or no audio disc in drive).\n"\
-                   "Please make sure you have access permissions to:\n%1")
-              .arg(cd_device);
+                i18n("CDROM read or access error (or no audio disc in drive).\n"\
+                     "Please make sure you have access permissions to:\n%1")
+                .arg(cd_device);
             KMessageBox::error(this, errstring, i18n("Error"));
-          }
+        }
         return;
-      }
+    }
     cddrive_is_ok = true; // cd drive ok
 
     if(cur_cdmode == 5)
@@ -1350,168 +1352,167 @@ KSCD::cdMode()
         currentlyejected = false;
 
     switch (cur_cdmode) {
-    case WM_CDM_UNKNOWN:
-        cur_track = save_track = 1;
-        statuslabel->setText( "" ); // TODO how should I properly handle this
-        damn = TRUE;
-        break;
-
-    case WM_CDM_TRACK_DONE: // == WM_CDM_BACK
-        if( randomplay )
-          {
-            int j = randomtrack();
-            wm_cd_play( j, 0, j + 1 );
-
-          }
-        else if (playlist.count() > 0)
-          {
-            if(playlistpointer < (int)playlist.count() - 1)
-              playlistpointer++;
-            else
-              playlistpointer = 0;
-            wm_cd_play(atoi( (*playlist.at(playlistpointer)).ascii() ),0,atoi((*playlist.at(playlistpointer)).ascii())+1);
-          }
-        else if ( looping )
-          {
-            if (cur_track == cur_ntracks)
-              {
-                cur_track = 0;
-                wm_cd_play (1, 0, cur_ntracks + 1);
-              }
-
-          } else {
+        case WM_CDM_UNKNOWN:
             cur_track = save_track = 1;
-            statuslabel->clear(); // TODO how should I properly handle this
+            statuslabel->setText( "" ); // TODO how should I properly handle this
             damn = TRUE;
-          }
-        break;
+            break;
 
-    case WM_CDM_PLAYING:
-        playtime ();
-        if(randomplay)
-          if(randomonce)
+        case WM_CDM_TRACK_DONE: // == WM_CDM_BACK
+            if( randomplay )
             {
-              statuslabel->setText( i18n("Shuffle") );
-            } else {
-              statuslabel->setText( i18n("Random") );
-            }
-        //        else if(looping)
-        //            statuslabel->setText( i18n("Loop") );
-        else
-            statuslabel->setText( i18n("Playing") );
+                int j = randomtrack();
+                wm_cd_play( j, 0, j + 1 );
 
-        sprintf( p, "%02d  ", cur_track );
-        if (songListCB->count() == 0)
-          {
-            // we are in here when we start kscd and
-            // the cdplayer is already playing.
-            int i = 0;
-            songListCB->clear();
-            QStringList::Iterator it = tracktitlelist.begin();
-            ++it;
-            for ( ; it != tracktitlelist.end(); ++it )
-              {
-                i++;
-                songListCB->insertItem( QString("").sprintf("%02d: %s", i, (*it).utf8().data()));
-              }
-            for(; i < cur_ntracks; i++)
-              {
-                songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
-              }
+            }
+            else if (playlist.count() > 0)
+            {
+                if(playlistpointer < (int)playlist.count() - 1)
+                    playlistpointer++;
+                else
+                    playlistpointer = 0;
+                wm_cd_play(atoi( (*playlist.at(playlistpointer)).ascii() ),0,atoi((*playlist.at(playlistpointer)).ascii())+1);
+            }
+            else if ( looping )
+            {
+                if (cur_track == cur_ntracks)
+                {
+                    cur_track = 0;
+                    wm_cd_play (1, 0, cur_ntracks + 1);
+                }
+
+            } else {
+                cur_track = save_track = 1;
+                statuslabel->clear(); // TODO how should I properly handle this
+                damn = TRUE;
+            }
+            break;
+
+        case WM_CDM_PLAYING:
+            playtime ();
+            if(randomplay)
+                if(randomonce)
+                {
+                    statuslabel->setText( i18n("Shuffle") );
+                } else {
+                    statuslabel->setText( i18n("Random") );
+                }
+            //        else if(looping)
+            //            statuslabel->setText( i18n("Loop") );
+            else
+                statuslabel->setText( i18n("Playing") );
+
+            sprintf( p, "%02d  ", cur_track );
+            if (songListCB->count() == 0)
+            {
+                // we are in here when we start kscd and
+                // the cdplayer is already playing.
+                int i = 0;
+                songListCB->clear();
+                QStringList::Iterator it = tracktitlelist.begin();
+                ++it;
+                for ( ; it != tracktitlelist.end(); ++it )
+                {
+                    i++;
+                    songListCB->insertItem( QString("").sprintf("%02d: %s", i, (*it).utf8().data()));
+                }
+                for(; i < cur_ntracks; i++)
+                {
+                    songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
+                }
 
 //            for (int i = 0; i < cur_ntracks; i++){
 //                songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("Track %02d").utf8(),i + 1 ) ) );
 //            }
-            songListCB->setCurrentItem( cur_track - 1 );
-            have_new_cd = false;
-            get_cddb_info(false); // false == do not update dialog if open
-        } else {
-          songListCB->setCurrentItem( cur_track - 1 );
-        }
-        tracklabel->setText( formatTrack(cur_track, cd->ntracks) );
-
-        if((cur_track < (int)tracktitlelist.count()) && (cur_track >= 0))
-          {
-            titlelabel->setText(*tracktitlelist.at(cur_track));
-            artistlabel->setText(tracktitlelist.first());
-          }
-
-        setLEDs( tmptime );
-        damn = TRUE;
-        stoppedByUser = false;
-        break;
-
-    case WM_CDM_FORWARD:
-        break;
-
-    case WM_CDM_PAUSED:
-        statuslabel->setText( i18n("Pause") );
-        damn = TRUE;
-        break;
-
-    case WM_CDM_STOPPED:
-        if (damn) {
-            if(ejectonfinish && !stoppedByUser){
-                stoppedByUser = true;
-                ejectClicked();
-                break;
+                songListCB->setCurrentItem( cur_track - 1 );
+                have_new_cd = false;
+                get_cddb_info(false); // false == do not update dialog if open
+            } else {
+                songListCB->setCurrentItem( cur_track - 1 );
             }
-            statuslabel->setText( i18n("Ready") );
-            setLEDs( "--:--" );
-            songListCB->clear();
+            tracklabel->setText( formatTrack(cur_track, cd->ntracks) );
 
-            int i = 0;
-            songListCB->clear();
-            QStringList::Iterator it = tracktitlelist.begin();
-            ++it;
-            for ( ; it != tracktitlelist.end(); ++it )
+            if((cur_track < (int)tracktitlelist.count()) && (cur_track >= 0))
             {
-                i++;
-                songListCB->insertItem( QString().sprintf("%02d: %s", i, (*it).utf8().data()));
+                setArtistAndTitle(tracktitlelist.first(),
+                                  *tracktitlelist.at(cur_track));
             }
-            for(; i < cur_ntracks; i++){
-                songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
-            }
+
+            setLEDs( tmptime );
+            damn = TRUE;
+            stoppedByUser = false;
+            break;
+
+        case WM_CDM_FORWARD:
+            break;
+
+        case WM_CDM_PAUSED:
+            statuslabel->setText( i18n("Pause") );
+            damn = TRUE;
+            break;
+
+        case WM_CDM_STOPPED:
+            if (damn) {
+                if(ejectonfinish && !stoppedByUser){
+                    stoppedByUser = true;
+                    ejectClicked();
+                    break;
+                }
+                statuslabel->setText( i18n("Ready") );
+                setLEDs( "--:--" );
+                songListCB->clear();
+
+                int i = 0;
+                songListCB->clear();
+                QStringList::Iterator it = tracktitlelist.begin();
+                ++it;
+                for ( ; it != tracktitlelist.end(); ++it )
+                {
+                    i++;
+                    songListCB->insertItem( QString().sprintf("%02d: %s", i, (*it).utf8().data()));
+                }
+                for(; i < cur_ntracks; i++){
+                    songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
+                }
 
 //            for (i = 0; i < cur_ntracks; i++)
 //                songListCB->insertItem( QString( 0 ).sprintf( i18n("Track %02d"), i + 1 ) );
 
-            int w = ((cur_track >= 0) ? cur_track : 1);
+                int w = ((cur_track >= 0) ? cur_track : 1);
 
-            tracklabel->setText( formatTrack( cur_track >= 0 ? cur_track : 1, cd->ntracks) );
+                tracklabel->setText( formatTrack( cur_track >= 0 ? cur_track : 1, cd->ntracks) );
 
-            if( w < (int)tracktitlelist.count()){
-                titlelabel->setText(*tracktitlelist.at( w ));
-                artistlabel->setText(tracktitlelist.first());
+                if( w < (int)tracktitlelist.count()){
+                    setArtistAndTitle(tracktitlelist.first(),
+                                      *tracktitlelist.at( w ));
+                }
             }
-        }
-        damn = FALSE;
-        if(have_new_cd){
+            damn = FALSE;
+            if(have_new_cd){
 
-            //      timer->stop();
-            have_new_cd = false;
-            // timer must be restarted when we are doen
-            // with getting the cddb info
-            get_cddb_info(false); // false == do not update dialog if open
-            if(autoplay && ejectedBefore)
-                playClicked();
-        }
+                //      timer->stop();
+                have_new_cd = false;
+                // timer must be restarted when we are doen
+                // with getting the cddb info
+                get_cddb_info(false); // false == do not update dialog if open
+                if(autoplay && ejectedBefore)
+                    playClicked();
+            }
 
-        break;
+            break;
 
-    case WM_CDM_EJECTED:
-        statuslabel->setText( i18n("Ejected") );
-        songListCB->clear();
-        setLEDs( "--:--" );
-        tracklabel->setText( "--/--" );
-        titlelabel->clear();
-        artistlabel->clear();
-        totaltimelabel->clear();
-        totaltimelabel->lower();
-        damn = TRUE;
-        ejectedBefore = TRUE;
+        case WM_CDM_EJECTED:
+            statuslabel->setText( i18n("Ejected") );
+            songListCB->clear();
+            setLEDs( "--:--" );
+            tracklabel->setText( "--/--" );
+            setArtistAndTitle("", "");
+            totaltimelabel->clear();
+            totaltimelabel->lower();
+            damn = TRUE;
+            ejectedBefore = TRUE;
 
-        break;
+            break;
     }
 } /* cdMode */
 
@@ -1623,9 +1624,9 @@ KSCD::readSettings()
     smtpConfigData.senderReplyTo = kes->getSetting( KEMailSettings::ReplyToAddress );
     // Don't accept obviously bogus settings.
     if( (smtpConfigData.serverHost == "") || (!smtpConfigData.senderAddress.contains("@")))
-      {
-	smtpConfigData.enabled = false;
-      }
+    {
+        smtpConfigData.enabled = false;
+    }
 
     config->setGroup("CDDB");
 
@@ -1784,13 +1785,13 @@ KSCD::getCDDBservers()
                    cddbbasedir,
                    submitaddress,
                    current_server,
-		   cddb_auto_enabled,
+                   cddb_auto_enabled,
                    cddb_remote_enabled,
                    cddb_timeout,
                    cddb_proxy_enabled,
                    cddb_proxy_host,
                    cddb_proxy_port
-    );
+        );
     cddb.setTimeout(cddb_timeout);
     cddb.setHTTPProxy(cddb_proxy_host,cddb_proxy_port);
     cddb.useHTTPProxy(cddb_proxy_enabled);
@@ -1800,7 +1801,7 @@ KSCD::getCDDBservers()
 
     // For now, just don't update if there's no current server.
     if(!current_server.isEmpty())
-      cddb.cddbgetServerList(current_server);
+        cddb.cddbgetServerList(current_server);
 } // getCDDBservers()
 
 void
@@ -1810,8 +1811,7 @@ KSCD::getCDDBserversFailed()
     led_off();
     disconnect(&cddb,SIGNAL(get_server_list_done()),this,SLOT(getCDDBserversDone()));
     disconnect(&cddb,SIGNAL(get_server_list_failed()),this,SLOT(getCDDBserversFailed()));
-    titlelabel->setText(i18n("Unable to get CDDB server list."));
-    artistlabel->clear();
+    setArtistAndTitle(i18n("Unable to get CDDB server list."), "");
     titlelabeltimer->start(10000,TRUE); // 10 secs
 }
 
@@ -1831,49 +1831,49 @@ KSCD::getCDDBserversDone()
 int
 cddb_sum(int n)
 {
-        char    buf[12];
-        char    *p;
-        int     ret = 0;
-        long unsigned int ntemp = 0;
-        ntemp = (long unsigned int) n;
+    char    buf[12];
+    char    *p;
+    int     ret = 0;
+    long unsigned int ntemp = 0;
+    ntemp = (long unsigned int) n;
 
-        /* For backward compatibility this algorithm must not change */
-        sprintf(buf, "%lu", ntemp);
-        for (p = buf; *p != '\0'; p++)
-                ret += (*p - '0');
+    /* For backward compatibility this algorithm must not change */
+    sprintf(buf, "%lu", ntemp);
+    for (p = buf; *p != '\0'; p++)
+        ret += (*p - '0');
 
-        return (ret);
+    return (ret);
 }
 
 unsigned long
 cddb_discid()
 {
-        int     i;
-        int     t = 0;
-        int     n = 0;
-        int     min, sec;
+    int     i;
+    int     t = 0;
+    int     n = 0;
+    int     min, sec;
 
 
-        /* For backward compatibility this algorithm must not change */
-        for (i = 0; i < thicd.ntracks; i++)
-          {
-            /*
-            min = thiscd.trk[i].start / (4500); // 60 * 75
+    /* For backward compatibility this algorithm must not change */
+    for (i = 0; i < thicd.ntracks; i++)
+    {
+        /*
+        min = thiscd.trk[i].start / (4500); // 60 * 75
             sec = (thiscd.trk[i].start % (4500)) / 75;
             n += cddb_sum((min * 60) + sec);
-            */
-            n += cddb_sum(thiscd.trk[i].start / 75);
-          }
+*/
+        n += cddb_sum(thiscd.trk[i].start / 75);
+    }
 
-        /*
-        t = ((thiscd.cddbtoc[thiscd.ntracks].min * 60)
+    /*
+    t = ((thiscd.cddbtoc[thiscd.ntracks].min * 60)
              + thiscd.cddbtoc[thiscd.ntracks].sec) -
              ((thiscd.cddbtoc[0].min * 60) + thiscd.cddbtoc[0].sec);
-        */
-        t = ((thiscd.trk[thiscd.ntracks].start / 75) -
-             (thiscd.trk[0].start / 75));
+*/
+    t = ((thiscd.trk[thiscd.ntracks].start / 75) -
+         (thiscd.trk[0].start / 75));
 
-        return ((n % 0xff) << 24 | t << 8 | thiscd.ntracks);
+    return ((n % 0xff) << 24 | t << 8 | thiscd.ntracks);
 }
 
 #endif
@@ -1919,7 +1919,7 @@ KSCD::get_cddb_info(bool _updateDialog)
         discidlist,
         revision,
         playlist
-    );
+        );
     Fetch_remote_cddb = false;
     if(!res && !cddb_remote_enabled){
         //    have_new_cd = false;
@@ -1931,13 +1931,13 @@ KSCD::get_cddb_info(bool _updateDialog)
 
         kdDebug() << "STARTING REMOTE QUERY\n" << endl;
         cddb.cddb_connect(current_server);
-	Fetch_remote_cddb = true;
-	
+        Fetch_remote_cddb = true;
+
     }
     else{
         kdDebug() << "FOUND RECORD LOCALLY\n" << endl;
         if((int)tracktitlelist.count() != (cd->ntracks + 1)){
-                kdDebug() << "WARNING LOCAL QUERY tracktitleslist.count = " << tracktitlelist.count() << " != cd->ntracks +1 = " << cd->ntracks + 1 << "\n" << endl;
+            kdDebug() << "WARNING LOCAL QUERY tracktitleslist.count = " << tracktitlelist.count() << " != cd->ntracks +1 = " << cd->ntracks + 1 << "\n" << endl;
         }
 
         if((int)extlist.count() != (cd->ntracks + 1)){
@@ -1945,8 +1945,8 @@ KSCD::get_cddb_info(bool _updateDialog)
         }
 
         if(tracktitlelist.count() > 1){
-            titlelabel->setText(*tracktitlelist.at(1));
-            artistlabel->setText(tracktitlelist.first());
+            setArtistAndTitle(tracktitlelist.first(),
+                              *tracktitlelist.at(1));
         }
 
         int i = 0;
@@ -1985,7 +1985,7 @@ KSCD::cddb_ready()
     if(!cd)
         return;
 /*    if(cddb_ready_bug)
-        return;
+      return;
     cddb_ready_bug = 1;
 */
     querylist.clear();
@@ -1996,9 +1996,9 @@ KSCD::cddb_ready()
     QCString num;
 
     for(int i = 0 ; i < cd->ntracks; i++)
-      {
+    {
         querylist.append(num.setNum(cd->trk[i].start));
-      }
+    }
 
     querylist.append(num.setNum(cd->trk[cd->ntracks].start/75));
     cddb_inexact_sentinel =false;
@@ -2011,7 +2011,7 @@ KSCD::cddb_no_info()
     //        cddb_ready_bug = 0;
     kdDebug() << "cddb_no_info() called\n" << endl;
 
-    titlelabel->setText(i18n("No matching CDDB entry found."));
+    setArtistAndTitle(i18n("No matching CDDB entry found."), "");
 //    artistlabel->clear();
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
@@ -2050,8 +2050,7 @@ KSCD::cddb_failed()
 
     discidlist.clear();
 
-    titlelabel->setText(i18n("Error getting CDDB entry."));
-    artistlabel->clear();
+    setArtistAndTitle(i18n("Error getting CDDB entry."), "");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
     timer->start(1000);
@@ -2063,7 +2062,7 @@ KSCD::cddb_failed()
 void
 KSCD::cddb_timed_out()
 {
-    //    cddb_ready_bug = 0;
+//    cddb_ready_bug = 0;
     kdDebug() << "cddb_timed_out() called\n" << endl;
     tracktitlelist.clear();
     tracktitlelist.append(i18n("CDDB query timed out."));
@@ -2076,8 +2075,7 @@ KSCD::cddb_timed_out()
 
     discidlist.clear();
 
-    titlelabel->setText(i18n("CDDB query timed out."));
-    artistlabel->clear();
+    setArtistAndTitle(i18n("CDDB query timed out."),"");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
     timer->start(1000);
@@ -2100,34 +2098,34 @@ KSCD::mycddb_inexact_read()
 
 
     if( inexact_list.count() == 1)
-      {
+    {
         pick = inexact_list.first();
         cddb.query_exact("200 " + pick);
         return;
-      }
+    }
 
     InexactDialog *dialog;
     dialog = new InexactDialog(0,"inexactDialog",true);
     dialog->insertList(inexact_list);
 
     if(dialog->exec() != QDialog::Accepted)
-      {
+    {
         cddb.close_connection();
         timer->start(1000);
         led_off();
         return;
-      }
+    }
 
     dialog->getSelection(pick);
     delete dialog;
 
 
     if(pick.isEmpty())
-      {
+    {
         timer->start(1000);
         led_off();
         return;
-      }
+    }
 
     pick = "200 " + pick;
     cddb.query_exact(pick);
@@ -2179,20 +2177,20 @@ KSCD::cddb_done()
 
     led_off();
     if(Fetch_remote_cddb)
-      {
-	if(cddb_auto_enabled)
-	  {
-	    QString path,tmp;
-	    tmp.sprintf("/%08lx",cddb_discid());
-	    path = cddbbasedir;
-	    path += "/";
-	    path += category;
-	    path += tmp;
-	    //	    kdDebug() << path << endl << cddbbasedir << category << cddb_discid() << endl;
-	    path.replace(QRegExp("//"),"/");
-	    edm_save_cddb_entry(path);
-	  }
-      }
+    {
+        if(cddb_auto_enabled)
+        {
+            QString path,tmp;
+            tmp.sprintf("/%08lx",cddb_discid());
+            path = cddbbasedir;
+            path += "/";
+            path += category;
+            path += tmp;
+            //      kdDebug() << path << endl << cddbbasedir << category << cddb_discid() << endl;
+            path.replace(QRegExp("//"),"/");
+            edm_save_cddb_entry(path);
+        }
+    }
     timer->start(1000);
 } // cddb_done
 
@@ -2237,6 +2235,28 @@ KSCD::titlelabeltimeout()
 } // titlelabeltimeout
 
 void
+KSCD::setArtistAndTitle(const QString& artist, const QString& title)
+{
+    QString tooltip = "";
+    if (!artist.isEmpty()) {
+        artistlabel->setText(artist);
+        tooltip = KStringHandler::rsqueeze(artist, 30) + "\n";
+    }
+    else {
+        artistlabel->clear();
+    }
+
+    if (!title.isEmpty()) {
+        titlelabel->setText(title);
+        tooltip += KStringHandler::rsqueeze(title,30);
+    }
+    else {
+        titlelabel->clear();
+    }
+
+    emit trackChanged(tooltip);
+}
+void
 KSCD::playtime()
 {
     static int mymin;
@@ -2245,36 +2265,36 @@ KSCD::playtime()
 
     switch(time_display_mode){
 
-    case TRACK_REM:
+        case TRACK_REM:
 
-        tmp = cur_tracklen - cur_pos_rel;
-        mysec = tmp % 60;
-        mymin = tmp / 60;
-        break;
+            tmp = cur_tracklen - cur_pos_rel;
+            mysec = tmp % 60;
+            mymin = tmp / 60;
+            break;
 
-    case TOTAL_SEC:
+        case TOTAL_SEC:
 
-        mysec = cur_pos_abs % 60;
-        mymin = cur_pos_abs / 60;
-        break;
+            mysec = cur_pos_abs % 60;
+            mymin = cur_pos_abs / 60;
+            break;
 
-    case TOTAL_REM:
+        case TOTAL_REM:
 
-        tmp = cur_cdlen - cur_pos_abs;
-        mysec = tmp % 60;
-        mymin = tmp / 60;
+            tmp = cur_cdlen - cur_pos_abs;
+            mysec = tmp % 60;
+            mymin = tmp / 60;
 
-        break;
+            break;
 
-    case TRACK_SEC:
-    default:
+        case TRACK_SEC:
+        default:
 
-        if (cur_pos_rel > 0 && (tmp = cur_pos_rel % 60) == mysec)
-            return;
-        mysec = tmp;
-        mymin = cur_pos_rel / 60;
+            if (cur_pos_rel > 0 && (tmp = cur_pos_rel % 60) == mysec)
+                return;
+            mysec = tmp;
+            mymin = cur_pos_rel / 60;
 
-        break;
+            break;
     }
 
 
@@ -2296,22 +2316,22 @@ KSCD::cycleplaytimemode()
 
     switch(time_display_mode){
 
-    case TRACK_REM:
-        volumelabel->setText(i18n("Tra Rem"));
-        break;
+        case TRACK_REM:
+            volumelabel->setText(i18n("Tra Rem"));
+            break;
 
-    case TOTAL_SEC:
-        volumelabel->setText(i18n("Tot Sec"));
-        break;
+        case TOTAL_SEC:
+            volumelabel->setText(i18n("Tot Sec"));
+            break;
 
-    case TOTAL_REM:
-        volumelabel->setText(i18n("Tot Rem"));
-        break;
+        case TOTAL_REM:
+            volumelabel->setText(i18n("Tot Rem"));
+            break;
 
-    case TRACK_SEC:
-    default:
-        volumelabel->setText(i18n("Tra Sec"));
-        break;
+        case TRACK_SEC:
+        default:
+            volumelabel->setText(i18n("Tra Sec"));
+            break;
     }
 
     cycletimer->start(3000,TRUE);
@@ -2362,16 +2382,16 @@ KSCD::performances(int i)
     artist = artist.replace( QRegExp(" "), "+" );
 
     switch(i){
-    case 0:
-        str =
-            QString("http://www.tourdates.com/cgi-bin/search.cgi?type=Artist&search=%1")
-            .arg(artist);
-        startBrowser(str);
+        case 0:
+            str =
+                QString("http://www.tourdates.com/cgi-bin/search.cgi?type=Artist&search=%1")
+                .arg(artist);
+            startBrowser(str);
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
 } // performances
@@ -2391,23 +2411,23 @@ KSCD::purchases(int i)
     artist = artist.replace( QRegExp(" "), "+" );
 
     switch(i){
-    case 0:
-        str =
-            QString("http://cdnow.com/switch/from=sr-288025/target=buyweb_products/artfs=%1")
-            .arg(artist);
-        startBrowser(str);
+        case 0:
+            str =
+                QString("http://cdnow.com/switch/from=sr-288025/target=buyweb_products/artfs=%1")
+                .arg(artist);
+            startBrowser(str);
 
-        break;
-    case 1:
-        str =
-            QString("http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1")
-            .arg(artist);
-        startBrowser(str);
+            break;
+        case 1:
+            str =
+                QString("http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1")
+                .arg(artist);
+            startBrowser(str);
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
 } // purchases
@@ -2415,16 +2435,16 @@ KSCD::purchases(int i)
 void
 KSCD::magicslot()
 {
-  magicslot(0);
+    magicslot(0);
 }
 
 void
 KSCD::magicslot( int )
 {
     if(magicproc && magicproc->isRunning())
-      {
+    {
         return;
-      }
+    }
 
     magicproc = 0L;
     magicproc = new KProcess;
@@ -2453,12 +2473,12 @@ void
 KSCD::magicdone(KProcess* proc)
 {
     if(proc->normalExit())
-      {
+    {
         //    fprintf(stderr,"kscdmagic exit status %d\n",proc->exitStatus());
         if(proc->exitStatus()!=0)
-          KMessageBox::error(this, i18n("KSCD Magic exited abnormally.\n"
-                                        "Are you sure kscdmagic is installed?"));
-      }
+            KMessageBox::error(this, i18n("KSCD Magic exited abnormally.\n"
+                                          "Are you sure kscdmagic is installed?"));
+    }
     //  printf("KSCD Magic Process Exited\n");
 
     if(proc)
@@ -2469,77 +2489,77 @@ KSCD::magicdone(KProcess* proc)
 void
 KSCD::information(int i)
 {
-  kdDebug() << "Information " << i << "\n" << endl;
+    kdDebug() << "Information " << i << "\n" << endl;
 
-  QString artist;
-  QString str;
+    QString artist;
+    QString str;
 
-  if(!getArtist(artist))
-    return;
+    if(!getArtist(artist))
+        return;
 
-  // primitive incomplete http encoding TODO fix!
-  artist = artist.replace( QRegExp(" "), "+" );
+    // primitive incomplete http encoding TODO fix!
+    artist = artist.replace( QRegExp(" "), "+" );
 
-  switch(i)
+    switch(i)
     {
-    case 0:
-      str =
-        QString("http://www.ubl.com/find/form?SEARCH=%1")
-        .arg(artist);
-      startBrowser(str);
-      break;
+        case 0:
+            str =
+                QString("http://www.ubl.com/find/form?SEARCH=%1")
+                .arg(artist);
+            startBrowser(str);
+            break;
 
-    case 2:
-      str =
-        QString("http://x8.dejanews.com/dnquery.xp?QRY=%1&defaultOp=AND&svcclass=dncurrent&maxhits=20&ST=QS&format=terse&DBS=2")
-        .arg(artist);
-      startBrowser(str);
-      break;
+        case 2:
+            str =
+                QString("http://x8.dejanews.com/dnquery.xp?QRY=%1&defaultOp=AND&svcclass=dncurrent&maxhits=20&ST=QS&format=terse&DBS=2")
+                .arg(artist);
+            startBrowser(str);
+            break;
 
-    case 3:
-      str =
-        QString("http://www.excite.com/search.gw?c=web&search=%1&trace=a")
-        .arg(artist);
-      startBrowser(str);
-      break;
+        case 3:
+            str =
+                QString("http://www.excite.com/search.gw?c=web&search=%1&trace=a")
+                .arg(artist);
+            startBrowser(str);
+            break;
 
-    case 4:
-      str =
-        QString("http://www.search.hotbot.com/hResult.html?SW=web&SM=MC&MT=%1&DC=10&DE=2&RG=NA&_v=2")
-        .arg(artist);
-      startBrowser(str);
-      break;
+        case 4:
+            str =
+                QString("http://www.search.hotbot.com/hResult.html?SW=web&SM=MC&MT=%1&DC=10&DE=2&RG=NA&_v=2")
+                .arg(artist);
+            startBrowser(str);
+            break;
 
-    case 5:
-      str =
-        QString("http://www.infoseek.com/Titles?qt=%1&col=WW&sv=IS&lk=ip-noframes&nh=10")
-        .arg(artist);
-      startBrowser(str);
-      break;
+        case 5:
+            str =
+                QString("http://www.infoseek.com/Titles?qt=%1&col=WW&sv=IS&lk=ip-noframes&nh=10")
+                .arg(artist);
+            startBrowser(str);
+            break;
 
-    case 6:
-      str =
-        QString("http://www.lycos.com/cgi-bin/pursuit?cat=lycos&query=%1")
-        .arg(artist);
-      startBrowser(str);
-      break;
+        case 6:
+            str =
+                QString("http://www.lycos.com/cgi-bin/pursuit?cat=lycos&query=%1")
+                .arg(artist);
+            startBrowser(str);
+            break;
 
-    case 7:
-      str =
-        QString("http://www.mckinley.com/search.gw?search=%1&c=web&look=magellan")
-        .arg(artist);
-      startBrowser(str);
-      break;
+        case 7:
+            str =
+                QString("http://www.mckinley.com/search.gw?search=%1&c=web&look=magellan")
+                .arg(artist);
+            startBrowser(str);
+            break;
 
-    case 8:
-      str =
-        QString("http://search.yahoo.com/bin/search?p=%1")
-        .arg(artist);
-      startBrowser(str);
-      break;
+        case 8:
+            str =
+                QString("http://search.yahoo.com/bin/search?p=%1")
+                .arg(artist);
+            startBrowser(str);
+            break;
 
-    default:
-      break;
+        default:
+            break;
     } // switch()
 } // information
 
@@ -2550,13 +2570,13 @@ KSCD::information(int i)
 void
 KSCD::startBrowser(const QString &querystring)
 {
-  if(use_kfm || browsercmd.isEmpty()) // default browser is KDE browser, no?
+    if(use_kfm || browsercmd.isEmpty()) // default browser is KDE browser, no?
     {
-      (void) new KRun ( querystring ); // replacement for KFM::openURL (David)
+        (void) new KRun ( querystring ); // replacement for KFM::openURL (David)
     } else {
-      KProcess proc;
-      proc << browsercmd << querystring;
-      proc.start(KProcess::DontCare);
+        KProcess proc;
+        proc << browsercmd << querystring;
+        proc.start(KProcess::DontCare);
     }
 } //startBrowser
 
@@ -2564,44 +2584,44 @@ KSCD::startBrowser(const QString &querystring)
 void
 KSCD::get_pathlist(QStringList& _pathlist)
 {
-  QDir d;
-  QStringList list;
-  InexactDialog *dialog;
+    QDir d;
+    QStringList list;
+    InexactDialog *dialog;
 
-  d.setFilter( QDir::Dirs);
-  d.setSorting( QDir::Size);
-  d.setPath(cddbbasedir);
-  if(!d.exists())
+    d.setFilter( QDir::Dirs);
+    d.setSorting( QDir::Size);
+    d.setPath(cddbbasedir);
+    if(!d.exists())
     {
-      dialog = new InexactDialog(0, "dialog", false);
-      dialog->insertText(cddbbasedir);
-      dialog->setTitle(i18n("Enter the local CDDB base Directory"));
+        dialog = new InexactDialog(0, "dialog", false);
+        dialog->insertText(cddbbasedir);
+        dialog->setTitle(i18n("Enter the local CDDB base Directory"));
 
-      if(dialog->exec() != QDialog::Accepted)
+        if(dialog->exec() != QDialog::Accepted)
         {
-          delete dialog;
-          return;
+            delete dialog;
+            return;
         }
 
-      dialog->getSelection(cddbbasedir);
-      d.setPath(cddbbasedir);
-      delete dialog;
+        dialog->getSelection(cddbbasedir);
+        d.setPath(cddbbasedir);
+        delete dialog;
     }
 
-  if(!d.exists()) // Bogus directory, don't try to read it
-    return;
+    if(!d.exists()) // Bogus directory, don't try to read it
+        return;
 
-  _pathlist.clear();
-  list = d.entryList();
+    _pathlist.clear();
+    list = d.entryList();
 
-  for ( QStringList::ConstIterator it = list.begin();
-        it != list.end();
-        ++it )
+    for ( QStringList::ConstIterator it = list.begin();
+          it != list.end();
+          ++it )
     {
-      if( *it != QString::fromLatin1(".") &&
-          *it != QString::fromLatin1("..") )
+        if( *it != QString::fromLatin1(".") &&
+            *it != QString::fromLatin1("..") )
         {
-          _pathlist.append( cddbbasedir + '/' +  *it);
+            _pathlist.append( cddbbasedir + '/' +  *it);
         }
     }
 } // get_pathlist
@@ -2611,21 +2631,21 @@ KSCD::get_pathlist(QStringList& _pathlist)
 void KSCD::doSM()
 {
 //WABA: Session management has changed
-#if 1
-#warning Session management is broken
+  #if 1
+  #warning Session management is broken
 #else
     if (isVisible())
         kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\"");
     else
-        kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\" -hide ");
+    kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\" -hide ");
 #endif
 } // doSM
-*/
+ */
 
-void
-kcderror(const QString& title, const QString& message)
+    void
+    kcderror(const QString& title, const QString& message)
 {
-  KMessageBox::information(0L, message, title);
+    KMessageBox::information(0L, message, title);
 }
 
 /* I am dropping this code for now. People seem to be having nothing
@@ -2647,22 +2667,22 @@ KSCD::checkMount()
 {
   if ((fp = setmntent (MOUNTED, "r")) == NULL)
     {
-      fprintf (stderr, i18n("Couldn't open %s: %s\n"),
+    fprintf (stderr, i18n("Couldn't open %s: %s\n"),
                MOUNTED, strerror (errno));
       exit (1);
     }
 
-  while ((mnt = getmntent (fp)) != NULL)
+    while ((mnt = getmntent (fp)) != NULL)
     {
-      if (strcmp (mnt->mnt_type, "iso9660") == 0)
+    if (strcmp (mnt->mnt_type, "iso9660") == 0)
         {
-          fputs (i18n("CDROM already mounted. Operation aborted.\n"),
+        fputs (i18n("CDROM already mounted. Operation aborted.\n"),
                  stderr);
           endmntent (fp);
           exit (1);
         }
-    }
-  endmntent (fp);
+        }
+        endmntent (fp);
 } // checkMount()
 
 #elif defined (__FreeBSD__)
@@ -2675,244 +2695,244 @@ KSCD::checkMount()
   n = getmntinfo(&mnt, MNT_WAIT);
   for (i=0; i<n; i++)
     {
-      if (mnt[i].f_type == MOUNT_CD9660)
+    if (mnt[i].f_type == MOUNT_CD9660)
         {
-          fputs(i18n("CDROM already mounted. Operation aborted.\n"),
+        fputs(i18n("CDROM already mounted. Operation aborted.\n"),
                 stderr);
           exit(1);
         }
-    }
-}
+        }
+        }
 
-#else
+        #else
 
 // TODO Can I do this for other platforms?
-void
-KSCD::checkMount()
+   void
+   KSCD::checkMount()
 {
 }
 
 #endif
-*/
+ */
 
 void
 KSCD::make_random_list()
 {
-  /* koz: 15/01/00. I want a random list that does not repeat tracks. Ie, */
-  /* a list is created in which each track is listed only once. The tracks */
-  /* are picked off one by one until the end of the list */
+    /* koz: 15/01/00. I want a random list that does not repeat tracks. Ie, */
+    /* a list is created in which each track is listed only once. The tracks */
+    /* are picked off one by one until the end of the list */
 
-  int selected,size,i,j;
-  bool rejected;
+    int selected,size,i,j;
+    bool rejected;
 
-  if ( playlist.isEmpty() )
-    size = cur_ntracks;
-  else
-    size = playlist.count();
+    if ( playlist.isEmpty() )
+        size = cur_ntracks;
+    else
+        size = playlist.count();
 
-  kdDebug() << "Playlist has " << size << " entries\n" << endl;
-  random_list = (int *)malloc((size_t)size*sizeof(int));
-  for( i=0; i < size; i++ )
+    kdDebug() << "Playlist has " << size << " entries\n" << endl;
+    random_list = (int *)malloc((size_t)size*sizeof(int));
+    for( i=0; i < size; i++ )
     {
-      do {
-        rejected = false;
-        if( playlist.isEmpty() )
-          selected = 1 + (int) randSequence.getLong(size);
-        else
-          selected = (int) randSequence.getLong(size);
+        do {
+            rejected = false;
+            if( playlist.isEmpty() )
+                selected = 1 + (int) randSequence.getLong(size);
+            else
+                selected = (int) randSequence.getLong(size);
 
-        for(j=0;j<i;j++)
-          {
-            if(random_list[j] == selected)
-              {
-                rejected = true;
-                break;
-              }
-          }
-      } while(rejected == true);
-      random_list[i] = selected;
+            for(j=0;j<i;j++)
+            {
+                if(random_list[j] == selected)
+                {
+                    rejected = true;
+                    break;
+                }
+            }
+        } while(rejected == true);
+        random_list[i] = selected;
     }
-  random_current = 0; /* Index of array we are on */
-  return;
+    random_current = 0; /* Index of array we are on */
+    return;
 } // make_random_list()
 
 
-void 
+void
 KSCD::edm_save_cddb_entry(QString& path)
 {
 
-  kdDebug() << "::save_cddb_entry(): path: " << path << " edm" << "\n" << endl;
+    kdDebug() << "::save_cddb_entry(): path: " << path << " edm" << "\n" << endl;
 
-  QFile file(path); //open the file
+    QFile file(path); //open the file
 
 
-  if( !file.open( IO_WriteOnly  )) 
+    if( !file.open( IO_WriteOnly  ))
     {
-      QString str = i18n("Unable to write to file:\n%1\nPlease check "
-			 "your permissions and make your category directories exist.")
-	.arg(path);
+        QString str = i18n("Unable to write to file:\n%1\nPlease check "
+                           "your permissions and make your category directories exist.")
+                      .arg(path);
 
-      KMessageBox::error(this, str);
-      return;
+        KMessageBox::error(this, str);
+        return;
     }
 
-  QString tmp;
-  QTextStream t(&file);
+    QString tmp;
+    QTextStream t(&file);
 
-  t << "# xmcd CD database file\n";
-  
-  QString datestr;
-  datestr = QDateTime::currentDateTime().toString();
-  tmp = QString("# Generated: %1 by KSCD\n").arg(datestr);
-  t << tmp;
+    t << "# xmcd CD database file\n";
 
-  // Waste some disk space
-  t << "# Copyright (C) 1997-1999 Bernd Johannes Wuebben.\n";
-  t << "# Copyright (C) 1999-2001 Dirk Foersterling.\n";
+    QString datestr;
+    datestr = QDateTime::currentDateTime().toString();
+    tmp = QString("# Generated: %1 by KSCD\n").arg(datestr);
+    t << tmp;
 
-  
+    // Waste some disk space
+    t << "# Copyright (C) 1997-1999 Bernd Johannes Wuebben.\n";
+    t << "# Copyright (C) 1999-2001 Dirk Foersterling.\n";
 
-  t << "# \n";
-  t << "# Track frame offsets:\n";
 
-  for(int i = 0 ; i < cd->ntracks+1 ;i ++)
+
+    t << "# \n";
+    t << "# Track frame offsets:\n";
+
+    for(int i = 0 ; i < cd->ntracks+1 ;i ++)
     {
-      tmp = QString("#       %1\n").arg(cd->trk[i].start);
-      t << tmp;
+        tmp = QString("#       %1\n").arg(cd->trk[i].start);
+        t << tmp;
     }
 
-  t << "#\n";
-  tmp = QString("# Disc length: %1 seconds\n").arg(cd->length);
-  t << tmp;
-  t << "#\n";
-  tmp = QString("# Revision: %1\n").arg("8"); //if no revision put 8
-  t << tmp;
-  t << "# Submitted via: Kscd "KSCDVERSION"\n";
-  t << "#\n";
+    t << "#\n";
+    tmp = QString("# Disc length: %1 seconds\n").arg(cd->length);
+    t << tmp;
+    t << "#\n";
+    tmp = QString("# Revision: %1\n").arg("8"); //if no revision put 8
+    t << tmp;
+    t << "# Submitted via: Kscd "KSCDVERSION"\n";
+    t << "#\n";
 
 
-  tmp = "DISCID=";
-  int counter = 0;
+    tmp = "DISCID=";
+    int counter = 0;
 
-  int num = 0;
-  for ( QStringList::Iterator it = discidlist.begin();
-        it != discidlist.end();
-        ++it, ++num )
+    int num = 0;
+    for ( QStringList::Iterator it = discidlist.begin();
+          it != discidlist.end();
+          ++it, ++num )
     {
-      
-      tmp += *it;
-      
-      if( num < (int) discidlist.count() - 1)
-	{
-	  if( counter++ == 3 )
-	    {
-	      tmp += "\nDISCID=";
-	      counter = 0;
-	    } else {
-	      tmp += ",";
-	    }
-	}
+
+        tmp += *it;
+
+        if( num < (int) discidlist.count() - 1)
+        {
+            if( counter++ == 3 )
+            {
+                tmp += "\nDISCID=";
+                counter = 0;
+            } else {
+                tmp += ",";
+            }
+        }
     }
 
-  tmp += "\n";
-  t << tmp;
+    tmp += "\n";
+    t << tmp;
 
-  QStringList returnlist;
-  QString tmp2;
+    QStringList returnlist;
+    QString tmp2;
 
-  tmp2 = *tracktitlelist.at(0);
-  cddb_encode(tmp2,returnlist);  
+    tmp2 = *tracktitlelist.at(0);
+    cddb_encode(tmp2,returnlist);
 
-  if(returnlist.count() == 0)
+    if(returnlist.count() == 0)
     {
-      // sanity provision
-      tmp = QString("DTITLE=%1\n").arg("");
-      t << tmp;
+        // sanity provision
+        tmp = QString("DTITLE=%1\n").arg("");
+        t << tmp;
     } else {
-      for ( QStringList::Iterator it = returnlist.begin();
-            it != returnlist.end(); 
-            ++it )
-	{
-	  tmp = QString("DTITLE=%1\n").arg(*it);
-	  t << tmp;
-	}
+        for ( QStringList::Iterator it = returnlist.begin();
+              it != returnlist.end();
+              ++it )
+        {
+            tmp = QString("DTITLE=%1\n").arg(*it);
+            t << tmp;
+        }
     }
 
-  num = 1;
-  for ( QStringList::Iterator it = tracktitlelist.begin();
-        it != tracktitlelist.end();
-        ++it)
+    num = 1;
+    for ( QStringList::Iterator it = tracktitlelist.begin();
+          it != tracktitlelist.end();
+          ++it)
     {
-      tmp2 = *it;
-      cddb_encode(tmp2,returnlist);  
-     
-      // no perfect solution, but it's working so far.
-      if( it != tracktitlelist.begin() ) {
-        if(returnlist.isEmpty())
-          {
+        tmp2 = *it;
+        cddb_encode(tmp2,returnlist);
+
+        // no perfect solution, but it's working so far.
+        if( it != tracktitlelist.begin() ) {
+            if(returnlist.isEmpty())
+            {
+                // sanity provision
+                tmp = QString("TTITLE%1=%2\n").arg(num-1).arg("");
+                t << tmp;
+            } else {
+                tmp = QString("TTITLE%1=%2\n").arg(num-1).arg(*it);
+                t << tmp;
+            }
+            num++;
+        }
+    }
+
+    tmp2 = extlist.first();
+    cddb_encode(tmp2,returnlist);
+
+    if(returnlist.isEmpty())
+    {
+        // sanity provision
+        tmp = tmp.sprintf("EXTD=%s\n","");
+        t << tmp;
+    } else {
+        for ( QStringList::Iterator it = returnlist.begin();
+              it != returnlist.end();
+              ++it )
+        {
+            tmp = QString("EXTD=%1\n").arg(*it);
+            t << tmp;
+        }
+    }
+
+    int i = 1;
+    for ( QStringList::Iterator it = extlist.at(1);
+          it != extlist.end();
+          ++it, i++ )
+    {
+        tmp2 = *it;
+        cddb_encode(tmp2,returnlist);
+
+        if(returnlist.count() == 0)
+        {
             // sanity provision
-            tmp = QString("TTITLE%1=%2\n").arg(num-1).arg("");
+            tmp = tmp.sprintf("EXTT%d=%s\n",i-1,"");
             t << tmp;
-          } else {
-            tmp = QString("TTITLE%1=%2\n").arg(num-1).arg(*it);
-            t << tmp;
-          }
-        num++;
-      }
+        } else {
+            for(int j = 0; j < (int) returnlist.count();j++)
+            {
+                tmp = tmp.sprintf("EXTT%d=%s\n",i-1,(*returnlist.at(j)).utf8().data());
+                t << tmp;
+            }
+        }
     }
-  
-  tmp2 = extlist.first();
-  cddb_encode(tmp2,returnlist);  
+    QString     playorder;
+    cddb_encode(playorder,returnlist);
 
-  if(returnlist.isEmpty())
+    for(int i = 0; i < (int) returnlist.count();i++)
     {
-      // sanity provision
-      tmp = tmp.sprintf("EXTD=%s\n","");
-      t << tmp;
-    } else {
-      for ( QStringList::Iterator it = returnlist.begin();
-            it != returnlist.end();
-            ++it )
-	{
-	  tmp = QString("EXTD=%1\n").arg(*it);
-	  t << tmp;
-	}
+        tmp = tmp.sprintf("PLAYORDER=%s\n", (*returnlist.at(i)).utf8().data());
+        t << tmp;
     }
+    t << "\n";
 
-  int i = 1;
-  for ( QStringList::Iterator it = extlist.at(1);
-        it != extlist.end(); 
-        ++it, i++ )
-    {
-      tmp2 = *it;
-      cddb_encode(tmp2,returnlist);  
-      
-      if(returnlist.count() == 0)
-	{
-	  // sanity provision
-	  tmp = tmp.sprintf("EXTT%d=%s\n",i-1,"");
-	  t << tmp;
-	} else {
-	  for(int j = 0; j < (int) returnlist.count();j++)
-	    {
-	      tmp = tmp.sprintf("EXTT%d=%s\n",i-1,(*returnlist.at(j)).utf8().data());
-	      t << tmp;
-	    }
-	}
-    }
-  QString     playorder;
-   cddb_encode(playorder,returnlist);  
-  
-   for(int i = 0; i < (int) returnlist.count();i++)
-     {
-       tmp = tmp.sprintf("PLAYORDER=%s\n", (*returnlist.at(i)).utf8().data());
-       t << tmp;
-     }
-  t << "\n";
-
-  file.close();
-  chmod(QFile::encodeName(file.name()), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH );
-  return;
+    file.close();
+    chmod(QFile::encodeName(file.name()), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH );
+    return;
 } // save_cddb_entry
 
 
@@ -2923,61 +2943,60 @@ int
 main( int argc, char *argv[] )
 {
 
-  KAboutData aboutData( "kscd", I18N_NOOP("kscd"),
-                        KSCDVERSION, description,
-                        KAboutData::License_GPL,
-                        "(c) 2001, Dirk Försterling");
-  aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
-  aboutData.addAuthor("Dirk Försterling",0, "milliByte@gmx.net");
+    KAboutData aboutData( "kscd", I18N_NOOP("kscd"),
+                          KSCDVERSION, description,
+                          KAboutData::License_GPL,
+                          "(c) 2001, Dirk Försterling");
+    aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
+    aboutData.addAuthor("Dirk Försterling",0, "milliByte@gmx.net");
 
-  KCmdLineArgs::init( argc, argv, &aboutData );
+    KCmdLineArgs::init( argc, argv, &aboutData );
 
-  KApplication a;
+    KApplication a;
 
-  kapp->dcopClient()->attach();
-  kapp->dcopClient()->registerAs("kscd");
-  kapp->dcopClient()->setDefaultObject("CDPlayer");
+    kapp->dcopClient()->attach();
+    kapp->dcopClient()->registerAs("kscd");
+    kapp->dcopClient()->setDefaultObject("CDPlayer");
 
-  KGlobal::dirs()->addResourceType("cddb",
-                                   KStandardDirs::kde_default("data") +
-                                   "kscd/cddb/");
+    KGlobal::dirs()->addResourceType("cddb",
+                                     KStandardDirs::kde_default("data") +
+                                     "kscd/cddb/");
 
-  //  if (a.isRestored())
-  //    {
-  //        RESTORE(KSCD);
-  //    } else {
+    //  if (a.isRestored())
+    //    {
+    //        RESTORE(KSCD);
+    //    } else {
 
-  KSCD *k = new KSCD();
-  cur_track = 1;
+    KSCD *k = new KSCD();
+    cur_track = 1;
 
-  bool hide = FALSE;
+    bool hide = FALSE;
 
-  for(int i = 0; i < argc; i++)
+    for(int i = 0; i < argc; i++)
     {
-      if(strcmp(argv[i],"-hide") == 0)
+        if(strcmp(argv[i],"-hide") == 0)
         {
-          hide = TRUE;
+            hide = TRUE;
         }
 
-          if(strcmp(argv[i],"-h") == 0)
-            {
+        if(strcmp(argv[i],"-h") == 0)
+        {
             printf("KSCD "KSCDVERSION
                    "\n Copyright 1997-99 Bernd Johannes Wuebben wuebben@kde.org\n"
                    " Copyright 1999-2001 Dirk Foersterling milliByte@gmx.de\n");
             printf(i18n("-h: display commandline options\n").local8Bit());
             printf(i18n("-d: enable debugging output.\n").local8Bit());
             exit(0);
-          }
         }
+    }
 
-      a.setTopWidget(k);
-      a.setMainWidget( k );
-      k->setCaption(a.caption());
-      if(!hide)
+    a.setTopWidget(k);
+    a.setMainWidget( k );
+    k->setCaption(a.caption());
+    if(!hide)
         k->show();
-      //    }
-      return a.exec();
+    //    }
+    return a.exec();
 } // main()
 
 #include "kscd.moc"
-
