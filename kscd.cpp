@@ -2077,7 +2077,6 @@ KSCD::get_cddb_info(bool _updateDialog)
 
 } // get_cddb_info
 
-int cddb_ready_bug = 0;
 void
 KSCD::cddb_ready()
 {
@@ -2115,7 +2114,9 @@ void KSCD::cdtext()
     titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));
     artistlabel->setText(tracktitlelist.first());
     songListCB->clear();
-    for (int at = 1; at < (wm_cdtext_info.count_of_entries); ++at ) {
+
+    int at = 1;
+    for (at = 1; at < (wm_cdtext_info.count_of_entries); ++at ) {
         songListCB->insertItem( QString().sprintf("%02d: %s", at, wm_cdtext_info.blocks[0]->name[at]));
         tracktitlelist.append((const char*)(wm_cdtext_info.blocks[0]->name[at]));
     }
@@ -2142,10 +2143,9 @@ KSCD::cddb_no_info()
        discidlist.clear();
        populateSongList();
     }
-    timer.start(1000);
     led_off();
+    timer.start(1000);
     cddb_inexact_sentinel =false;
-
 } // cddb_no_info
 
 void
