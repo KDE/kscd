@@ -315,7 +315,7 @@
                 <cstring>groupBox9</cstring>
             </property>
             <property name="title">
-                <string> Music information services </string>
+                <string> Music Information Services </string>
             </property>
             <hbox>
                 <property name="name">
@@ -326,7 +326,7 @@
                         <cstring>kcfg_SelectEncoding</cstring>
                     </property>
                     <property name="text">
-                        <string>Allow en&amp;coding selection</string>
+                        <string>Allow en&amp;coding selection:</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected, you have the ability to select encoding for the results of a CDDB request. The standard describes CDDB results as being strictly Latin1. This is not true, as non-English speaking users often use other 8-bit encodings.</string>
