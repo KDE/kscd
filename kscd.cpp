@@ -714,7 +714,6 @@ void KSCD::ejectClicked()
       infoStatus="";
       updateArtistAndTitle();
       tracktitlelist.clear();
-      extlist.clear();
 
       wm_cd_stop();
       wm_cd_eject();
@@ -835,9 +834,9 @@ void KSCD::setDevicePaths()
 		QStringList properties = rep;
 		kdDebug(67000) << "Got properties " << properties << endl;
 		deviceUrl.setPath(properties[5]);
-	      }	     
+	      }
     }
-    
+
     int ret = wm_cd_init(
 #if defined(BUILD_CDDA)
         (Prefs::digitalPlayback())?WM_CDDA:WM_CDIN,
@@ -860,7 +859,6 @@ void KSCD::setDevicePaths()
     infoStatus="";
     updateArtistAndTitle();
     tracktitlelist.clear();
-    extlist.clear();
     clearSongList();
     cddrive_is_ok = true;
     initCDROM();
@@ -1144,7 +1142,6 @@ void KSCD::cdModeChanged(int previous, int cdmode)
             infoStatus="";
             updateArtistAndTitle();
             tracktitlelist.clear();
-            extlist.clear();
             clearSongList();
             totaltimelabel->clear();
             totaltimelabel->lower();
@@ -1330,17 +1327,11 @@ void KSCD::cddb_done(CDDB::Result result)
 
     infoStatus="";
     tracktitlelist.clear();
-    extlist.clear();
-
-    extlist << cddbInfo.extd;
-
     KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
     KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
-
-
-    for (; it != end; ++it) {
+    for (; it != end; ++it)
+    {
         tracktitlelist << (*it).title;
-        extlist << (*it).extt;
     }
 
     populateSongList();
@@ -1358,7 +1349,6 @@ void KSCD::get_cdtext_info(void)
     kdDebug(67000) << "get_cdtext_info() called" << endl;
     cddbInfo.clear();
     tracktitlelist.clear();
-    extlist.clear();
 
     p_cdtext = wm_cd_get_cdtext();
     if(p_cdtext && p_cdtext->valid) {
@@ -1393,7 +1383,6 @@ void KSCD::cddb_no_info()
     cddbInfo.clear();
     infoStatus = i18n("No matching freedb entry found.");
     tracktitlelist.clear();
-    extlist.clear();
 
     led_off();
 
@@ -1410,7 +1399,6 @@ void KSCD::cddb_failed(CDDB::Result result)
     else
       infoStatus = i18n("Error getting freedb entry.");
     tracktitlelist.clear();
-    extlist.clear();
 
     led_off();
 
@@ -1933,7 +1921,7 @@ int main( int argc, char *argv[] )
     if (!KUniqueApplication::start())
     {
         fprintf(stderr, "kscd is already running!\n");
-	if (args->count()>0 || args->isSet("start")) 
+	if (args->count()>0 || args->isSet("start"))
 	{
 	    DCOPClient cli;
 	    if (!cli.attach()) exit(0);
@@ -1972,7 +1960,7 @@ int main( int argc, char *argv[] )
     {
         k->show();
     }
-    
+
     if (args->count()>0) Prefs::self()->setCdDevice(args->arg(0));
     if (args->isSet("start")) Prefs::self()->setAutoplay(true);
 

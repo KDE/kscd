@@ -274,7 +274,6 @@ private:
     QString         infoStatus;
     QStringList     tracktitlelist;
     QStringList     playlist;
-    QStringList     extlist;
 
 // cddb support
 public slots:
