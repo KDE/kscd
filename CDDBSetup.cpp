@@ -175,17 +175,9 @@ CDDBSetup::insertData(const QStringList& _serverlist,
     submitaddressstring = _submitaddress.copy();
     currentSubmitLE->setText(submitaddressstring);
 
-    //submitlist.clear();
-    //for(uint i = 0; i < _submitlist.count(); i++)
-    //  {
-    //    submitlist.append(*_submitlist.at(i));
-    //  }
     submitlist = _submitlist;
 
     insertServerList(_serverlist);
-//    server_listbox->setCurrentItem(_serverlist.find(_current_server.data()));
-//    server_listbox->find(_current_server.data());
-//    server_listbox->centerCurrentItem();
 
     kdDebug() << "check point: server_listbox->centerCurrentItem()\n" << endl;
 
@@ -217,7 +209,8 @@ CDDBSetup::set_defaults()
     server_listbox->repaint();
     server_listbox->setCurrentItem(0);
 
-    basedirstring = KGlobal::dirs()->resourceDirs("cddb").last();
+	 // Changed to local user KDE dir
+    basedirstring = KGlobal::dirs()->resourceDirs("cddb").first();
     basedir_edit->lineEdit()->setText(basedirstring);
 
     submission_listbox->clear();

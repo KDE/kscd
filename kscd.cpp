@@ -624,10 +624,6 @@ KSCD::setupPopups()
     infoPopup->insertItem("Magellan", 6);
     infoPopup->insertItem("Yahoo!", 7);
 
-    // Disabled for now; website no longer exists
-    //mainPopup->insertItem (i18n("Performances"), perfPopup);
-    //connect( perfPopup, SIGNAL(activated(int)), SLOT(performances(int)) );
-
     mainPopup->insertItem (i18n("Purchases"), purchPopup);
     connect( purchPopup, SIGNAL(activated(int)), SLOT(purchases(int)) );
 
@@ -1668,146 +1664,145 @@ KSCD::setColors(const QColor& LEDs, const QColor& bground)
 void
 KSCD::readSettings()
 {
-    config = kapp->config();
-
-    config->setGroup("GENERAL");
-    volume     = config->readNumEntry("Volume",40);
-    tooltips   = config->readBoolEntry("ToolTips", true);
-    randomplay = config->readBoolEntry("RandomPlay", false);
-    docking    = config->readBoolEntry("DOCKING", true);
-    autoplay = config->readBoolEntry("AUTOPLAY", false);
-    stopexit = config->readBoolEntry("STOPEXIT", true);
-    ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);
-    randomonce = (bool)config->readBoolEntry("RANDOMONCE",true);
-    looping    = config->readBoolEntry("Looping",false);
-    hidden_controls = config->readBoolEntry("HiddenControls",false);
-    skipDelta = config->readNumEntry("SkipDelta", 30);
-    time_display_mode = config->readNumEntry("TimeDisplay", TRACK_SEC);
-
+	config = kapp->config();
+	
+	config->setGroup("GENERAL");
+	volume     	= config->readNumEntry("Volume",40);
+	tooltips   	= config->readBoolEntry("ToolTips", true);
+	randomplay 	= config->readBoolEntry("RandomPlay", false);
+	docking   	= config->readBoolEntry("DOCKING", true);
+	autoplay		= config->readBoolEntry("AUTOPLAY", false);
+	stopexit 	= config->readBoolEntry("STOPEXIT", true);
+	ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);
+	randomonce 	= (bool)config->readBoolEntry("RANDOMONCE",true);
+	looping    	= config->readBoolEntry("Looping",false);
+	hidden_controls = config->readBoolEntry("HiddenControls",false);
+	skipDelta = config->readNumEntry("SkipDelta", 30);
+	time_display_mode = config->readNumEntry("TimeDisplay", TRACK_SEC);
+	
 #ifdef DEFAULT_CD_DEVICE
-
-    // sun ultrix etc have a canonical cd rom device specified in the
-    // respective plat_xxx.c file. On those platforms you need nnot
-    // specify the cd rom device and DEFAULT_CD_DEVICE is not defined
-    // in config.h
-
-    cd_device_str = config->readEntry("CDDevice",DEFAULT_CD_DEVICE);
-    // FIXME
-    cd_device = (char *)qstrdup(QFile::encodeName(cd_device_str));
+	
+	// sun ultrix etc have a canonical cd rom device specified in the
+	// respective plat_xxx.c file. On those platforms you need nnot
+	// specify the cd rom device and DEFAULT_CD_DEVICE is not defined
+	// in config.h
+	
+	cd_device_str = config->readEntry("CDDevice",DEFAULT_CD_DEVICE);
+   cd_device = (char *)qstrdup(QFile::encodeName(cd_device_str));
 
 #endif
 
 
-    QColor defaultback = black;
-    QColor defaultled = QColor(226,224,255);
-    background_color = config->readColorEntry("BackColor",&defaultback);
-    led_color = config->readColorEntry("LEDColor",&defaultled);
-
-    config->setGroup("MAGIC");
-    magic_width      = config->readNumEntry("magicwidth",320);
-    magic_height     = config->readNumEntry("magicheight",200);
-    magic_brightness = config->readNumEntry("magicbrightness", 3);
-    magic_pointsAreDiamonds = config->readBoolEntry("magicPointsAreDiamonds", false);
-
-    config->setGroup("SMTP");
-    smtpConfigData->enabled = config->readBoolEntry("enabled", true);
-    smtpConfigData->useGlobalSettings = config->readBoolEntry("useGlobalSettings", true);
-    smtpConfigData->serverHost = config->readEntry("serverHost");
-    smtpConfigData->serverPort = config->readEntry("serverPort", "25");
-    smtpConfigData->senderAddress = config->readEntry("senderAddress");
-    smtpConfigData->senderReplyTo = config->readEntry("senderReplyTo");
-
-    // serverHost used to be stored via KEMailSettings, so we attempt to read the
-    // value via KEMailSettings to preserve the user's settings when upgrading.
-    if( !config->readEntry("mailProfile").isNull() )
-    {
-        KEMailSettings kes;
-        kes.setProfile( i18n("Default") );
-        smtpConfigData->serverHost = kes.getSetting( KEMailSettings::OutServer );
-    }
-
-    if(smtpConfigData->useGlobalSettings)
-        smtpConfigData->loadGlobalSettings();
-
-    // Don't accept obviously bogus settings.
-    if(!smtpConfigData->isValid())
-        smtpConfigData->enabled = false;
-
-    config->setGroup("CDDB");
-
-    cddb.setTimeout(config->readNumEntry("CDDBTimeout",60));
-    cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",true);
-    cddbbasedir = config->readEntry("LocalBaseDir");
-    if (cddbbasedir.isEmpty())
-        cddbbasedir = KGlobal::dirs()->resourceDirs("cddb").last();
-    KGlobal::dirs()->addResourceDir("cddb", cddbbasedir);
-
-// Set this to false by default. Look at the settings dialog source code
-// for the reason. - Juraj.
-    cddb_remote_enabled = config->readBoolEntry("CDDBRemoteEnabled",
-                                                false);
-    cddb.useHTTPProxy(config->readBoolEntry("CDDBHTTPProxyEnabled",
-                                            KProtocolManager::useProxy()));
-    KURL proxyURL;
-    QString proxyHost;
-    int proxyPort;
-    QString proxy = KProtocolManager::proxyFor("http");
-    if( !proxy.isEmpty() )
-      {
-  proxyURL = proxy;
-  proxyHost = proxyURL.host();
-  proxyPort = proxyURL.port();
-      } else {
-  proxyHost = "";
-  proxyPort = 0;
-  cddb.useHTTPProxy(false);
-      }
-    cddb.setHTTPProxy(config->readEntry("HTTPProxyHost",proxyHost),
-                      config->readNumEntry("HTTPProxyPort",proxyPort));
-
-    current_server = config->readEntry("CurrentServer",DEFAULT_CDDB_SERVER);
-    //Let's check if it is in old format and if so, convert it to new one:
-    if(CDDB::normalize_server_list_entry(current_server))
-    {
-        kdDebug() << "Default freedb server entry converted to new format and saved.\n" << endl;
-        config->writeEntry("CurrentServer",current_server);
-        config->sync();
-    }
-    submitaddress = config->readEntry("CDDBSubmitAddress","freedb-submit@freedb.org");
-    cddbserverlist = config->readListEntry("SeverList", ',');
-    int num = cddbserverlist.count();
-    if (num == 0)
-        cddbserverlist.append(DEFAULT_CDDB_SERVER);
-    else
-    {
-        //Let's check if it is in old format and if so, convert it to new one:
-        bool needtosave=false;
-        QStringList nlist;
-
-        for ( QStringList::Iterator it = cddbserverlist.begin();
-              it != cddbserverlist.end();
-              ++it )
-        {
-            needtosave|=CDDB::normalize_server_list_entry(*it);
-            nlist.append(*it);
-        }
-        if(needtosave)
-        {
-            // I have to recreate list because of sytange behaviour of sync()
-            // function in configuration - it does not notice if QStringList
-            // String contents is changed.
-            cddbserverlist=nlist;
-            kdDebug() << "freedb server list converted to new format and saved.\n" << endl;
-            config->writeEntry("SeverList",cddbserverlist,',',true);
-            config->sync();
-        }
-    }
-    cddbsubmitlist = config->readListEntry("SubmitList", ',');
-    num = cddbsubmitlist.count();
-    if(!num){
-        cddbsubmitlist.append(DEFAULT_SUBMIT_EMAIL);
-        cddbsubmitlist.append(DEFAULT_TEST_EMAIL);
-    }
+	QColor defaultback = black;
+	QColor defaultled = QColor(226,224,255);
+	background_color = config->readColorEntry("BackColor",&defaultback);
+	led_color = config->readColorEntry("LEDColor",&defaultled);
+	
+	config->setGroup("MAGIC");
+	magic_width      = config->readNumEntry("magicwidth",320);
+	magic_height     = config->readNumEntry("magicheight",200);
+	magic_brightness = config->readNumEntry("magicbrightness", 3);
+	magic_pointsAreDiamonds = config->readBoolEntry("magicPointsAreDiamonds", false);
+	
+	config->setGroup("SMTP");
+	smtpConfigData->enabled = config->readBoolEntry("enabled", true);
+	smtpConfigData->useGlobalSettings = config->readBoolEntry("useGlobalSettings", true);
+	smtpConfigData->serverHost = config->readEntry("serverHost");
+	smtpConfigData->serverPort = config->readEntry("serverPort", "25");
+	smtpConfigData->senderAddress = config->readEntry("senderAddress");
+	smtpConfigData->senderReplyTo = config->readEntry("senderReplyTo");
+	
+	// serverHost used to be stored via KEMailSettings, so we attempt to read the
+   // value via KEMailSettings to preserve the user's settings when upgrading.
+   if( !config->readEntry("mailProfile").isNull() )
+	{
+		KEMailSettings kes;
+		kes.setProfile( i18n("Default") );
+		smtpConfigData->serverHost = kes.getSetting( KEMailSettings::OutServer );
+	}
+	
+	if(smtpConfigData->useGlobalSettings)
+		smtpConfigData->loadGlobalSettings();
+	
+	// Don't accept obviously bogus settings.
+	if(!smtpConfigData->isValid())
+		smtpConfigData->enabled = false;
+	
+	config->setGroup("CDDB");
+	
+	cddb.setTimeout(config->readNumEntry("CDDBTimeout",60));
+	cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",true);
+	cddbbasedir = config->readEntry("LocalBaseDir");
+	
+	// Changed global KDE apps dir by local KDE apps dir
+	if (cddbbasedir.isEmpty())
+		cddbbasedir = KGlobal::dirs()->resourceDirs("cddb").first();
+	KGlobal::dirs()->addResourceDir("cddb", cddbbasedir);
+	
+	// Set this to false by default. Look at the settings dialog source code
+	// for the reason. - Juraj.
+	cddb_remote_enabled = config->readBoolEntry( "CDDBRemoteEnabled", false );
+	cddb.useHTTPProxy( config->readBoolEntry("CDDBHTTPProxyEnabled", KProtocolManager::useProxy()) );
+	KURL proxyURL;
+	QString proxyHost;
+	int proxyPort;
+	QString proxy = KProtocolManager::proxyFor("http");
+	if( !proxy.isEmpty() )
+	{
+		proxyURL = proxy;
+		proxyHost = proxyURL.host();
+		proxyPort = proxyURL.port();
+	} 
+	else 
+	{
+		proxyHost = "";
+		proxyPort = 0;
+		cddb.useHTTPProxy(false);
+	}
+	cddb.setHTTPProxy(config->readEntry("HTTPProxyHost",proxyHost),
+			config->readNumEntry("HTTPProxyPort",proxyPort));
+	
+	current_server = config->readEntry("CurrentServer",DEFAULT_CDDB_SERVER);
+	//Let's check if it is in old format and if so, convert it to new one:
+	if(CDDB::normalize_server_list_entry(current_server))
+	{
+		kdDebug() << "Default freedb server entry converted to new format and saved.\n" << endl;
+		config->writeEntry("CurrentServer",current_server);
+		config->sync();
+	}
+	submitaddress = config->readEntry("CDDBSubmitAddress","freedb-submit@freedb.org");
+	cddbserverlist = config->readListEntry("SeverList", ',');
+	int num = cddbserverlist.count();
+	if (num == 0)
+		cddbserverlist.append(DEFAULT_CDDB_SERVER);
+	else
+	{
+		//Let's check if it is in old format and if so, convert it to new one:
+      bool needtosave=false;
+		QStringList nlist;
+		
+		for ( QStringList::Iterator it = cddbserverlist.begin(); it != cddbserverlist.end(); ++it )
+		{
+			needtosave|=CDDB::normalize_server_list_entry(*it);
+			nlist.append(*it);
+		}
+		if(needtosave)
+		{
+			// I have to recreate list because of sytange behaviour of sync()
+			// function in configuration - it does not notice if QStringList
+         // String contents is changed.
+         cddbserverlist=nlist;
+			kdDebug() << "freedb server list converted to new format and saved.\n" << endl;
+			config->writeEntry("SeverList",cddbserverlist,',',true);
+			config->sync();
+		}
+	}
+	cddbsubmitlist = config->readListEntry("SubmitList", ',');
+	num = cddbsubmitlist.count();
+	if(!num){
+		cddbsubmitlist.append(DEFAULT_SUBMIT_EMAIL);
+		cddbsubmitlist.append(DEFAULT_TEST_EMAIL);
+	}
 }
 
 /**
@@ -2770,40 +2765,29 @@ KSCD::get_pathlist(QStringList& _pathlist)
 
     d.setFilter( QDir::Dirs);
     d.setSorting( QDir::Size);
-    d.setPath(cddbbasedir);
-    if(!d.exists())
+    d.setPath( cddbbasedir );
+    if( !d.exists() )
     {
-        dialog = new InexactDialog(0, "dialog", false);
-        dialog->insertText(cddbbasedir);
-        dialog->setTitle(i18n("Enter the Local freedb Base Directory"));
-
-        if(dialog->exec() != QDialog::Accepted)
-        {
-            delete dialog;
-            return;
-        }
-
-        dialog->getSelection(cddbbasedir);
-        d.setPath(cddbbasedir);
-        delete dialog;
-    }
-
-    if(!d.exists()) // Bogus directory, don't try to read it
-        return;
-
-    _pathlist.clear();
-    list = d.entryList();
-
-    for ( QStringList::ConstIterator it = list.begin();
-          it != list.end();
-          ++it )
-    {
-        if( *it != QString::fromLatin1(".") &&
-            *it != QString::fromLatin1("..") )
-        {
-            _pathlist.append( cddbbasedir + '/' +  *it);
-        }
-    }
+		 if ( ! KStandardDirs::makeDir( cddbbasedir ) )
+		 {
+			 QString msg = i18n("Can't create directory ") + cddbbasedir +
+				 i18n("\nCheck Permissions !" );
+			 KMessageBox::error( this, msg );
+			 return;
+		 }
+		 
+	 }
+	 
+	 _pathlist.clear();
+	 list = d.entryList();
+	 
+	 for ( QStringList::ConstIterator it = list.begin(); it != list.end(); ++it )
+	 {
+		 if( *it != QString::fromLatin1(".") && *it != QString::fromLatin1("..") )
+		 {
+			 _pathlist.append( cddbbasedir + '/' +  *it);
+		 }
+	 }
 } // get_pathlist
 
 void
@@ -2927,16 +2911,30 @@ KSCD::edm_save_cddb_entry(QString& path)
 
     kdDebug() << "::save_cddb_entry(): path: " << path << " edm" << "\n" << endl;
 
-    QFile file(path); //open the file
-
+    QFile file( path ); //open the file
+	 QFileInfo fileinfo( file );
+	 QDir dir( fileinfo.dirPath() ); // Directory manipulation
+	 
+	 if( ! dir.exists() )
+	 {
+		 
+		 if( ! dir.mkdir( fileinfo.dirPath() ) )
+		 {
+			 kdDebug() << "Output directory: " << fileinfo.dirPath() << endl;
+			 QString str = i18n("Unable to write to file:\n%1\nPlease check "
+					 "your permissions and ensure your category directories exist.")
+				 .arg(path);
+			 KMessageBox::error(this, str);
+			 return;
+		 }
+	 }
 
     if( !file.open( IO_WriteOnly  ))
     {
         QString str = i18n("Unable to write to file:\n%1\nPlease check "
-                           "your permissions and ensure your category directories exist.")
-                      .arg(path);
-
-        KMessageBox::error(this, str);
+				  "your permissions and ensure your category directories exist.")
+			  .arg(path);
+		  KMessageBox::error(this, str);
         return;
     }
 
