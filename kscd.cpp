@@ -1161,11 +1161,14 @@ void KSCD::cdMode()
     {
         if (cur_cdmode == WM_CDM_PLAYING)
         {
-            if ( updateTime)
+            if ( updateTime )
             {
                 playtime();
             }
-            updateDisplayedTrack(track);
+            if ( track - 1 != songListCB->currentItem() )
+            {
+                updateDisplayedTrack(track);
+            }
         }
         return;
     }
