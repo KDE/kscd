@@ -231,7 +231,7 @@ private:
     QPopupMenu      *infoPopup;
 
     BW_LED_Number       *trackTimeLED[6];
-    
+
     QTimer              timer;
     QTimer              titlelabeltimer;
     QTimer              queryledtimer;
@@ -267,16 +267,14 @@ private:
     void updateArtistAndTitle();
     void setTitle(int track);
 
+    /**
+     * Info from CDDB, and exploded versions thereof.
+     */
+    KCDDB::CDInfo cddbInfo;
     QString         infoStatus;
     QStringList     tracktitlelist;
     QStringList     playlist;
     QStringList     extlist;
-    QString         artist;
-    QString         title;
-    QString         category;
-    QString         genre;
-    int             revision;
-    int             year;
 
 // cddb support
 public slots:

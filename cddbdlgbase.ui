@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>CDDBDlgBase</class>
 <widget class="QWidget">
     <property name="name">
@@ -8,20 +8,23 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>339</width>
-            <height>423</height>
+            <width>450</width>
+            <height>670</height>
         </rect>
     </property>
-    <grid>
+    <property name="caption">
+        <string>CDDBDlgBase</string>
+    </property>
+    <vbox>
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
         <property name="margin">
             <number>0</number>
         </property>
-        <widget class="QGroupBox" row="0" column="0" rowspan="1" colspan="2">
+        <widget class="QGroupBox">
             <property name="name">
-                <cstring>groupBox1</cstring>
+                <cstring>groupDisc</cstring>
             </property>
             <property name="frameShape">
                 <enum>GroupBoxPanel</enum>
@@ -32,91 +35,152 @@
             <property name="title">
                 <string>Disc</string>
             </property>
-            <grid>
+            <hbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLabel" row="0" column="0">
+                <widget class="QLayoutWidget">
                     <property name="name">
-                        <cstring>textLabel1</cstring>
+                        <cstring>layout6</cstring>
                     </property>
-                    <property name="frameShape">
-                        <enum>NoFrame</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Artist:</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>le_artist</cstring>
-                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="3">
+                            <property name="name">
+                                <cstring>le_artist</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" row="2" column="1">
+                            <property name="name">
+                                <cstring>le_genre</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="4" column="2">
+                            <property name="name">
+                                <cstring>textLabel3</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Disc id:</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="2" column="2">
+                            <property name="name">
+                                <cstring>lb_category</cstring>
+                            </property>
+                            <property name="text">
+                                <string>&amp;Category:</string>
+                            </property>
+                            <property name="buddy" stdset="0">
+                                <cstring>le_category</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="4" column="0">
+                            <property name="name">
+                                <cstring>textLabel4</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Total time:</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton" row="5" column="3">
+                            <property name="name">
+                                <cstring>pb_discInfo</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Comment...</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" row="2" column="3">
+                            <property name="name">
+                                <cstring>le_category</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="3" column="0">
+                            <property name="name">
+                                <cstring>lb_year</cstring>
+                            </property>
+                            <property name="text">
+                                <string>&amp;Year:</string>
+                            </property>
+                            <property name="buddy" stdset="0">
+                                <cstring>le_title</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="1" column="0">
+                            <property name="name">
+                                <cstring>textLabel2</cstring>
+                            </property>
+                            <property name="text">
+                                <string>&amp;Title:</string>
+                            </property>
+                            <property name="buddy" stdset="0">
+                                <cstring>le_title</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="0" column="0">
+                            <property name="name">
+                                <cstring>lb_artist</cstring>
+                            </property>
+                            <property name="frameShape">
+                                <enum>NoFrame</enum>
+                            </property>
+                            <property name="frameShadow">
+                                <enum>Plain</enum>
+                            </property>
+                            <property name="text">
+                                <string>&amp;Artist:</string>
+                            </property>
+                            <property name="buddy" stdset="0">
+                                <cstring>le_artist</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="2" column="0">
+                            <property name="name">
+                                <cstring>lb_genre</cstring>
+                            </property>
+                            <property name="text">
+                                <string>&amp;Genre:</string>
+                            </property>
+                            <property name="buddy" stdset="0">
+                                <cstring>le_title</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" row="3" column="1">
+                            <property name="name">
+                                <cstring>le_year</cstring>
+                            </property>
+                            <property name="inputMask">
+                                <string>D999; </string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="4" column="1">
+                            <property name="name">
+                                <cstring>lb_totalTime</cstring>
+                            </property>
+                            <property name="text">
+                                <string></string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="4" column="3">
+                            <property name="name">
+                                <cstring>lb_discId</cstring>
+                            </property>
+                            <property name="text">
+                                <string></string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="3">
+                            <property name="name">
+                                <cstring>le_title</cstring>
+                            </property>
+                        </widget>
+                    </grid>
                 </widget>
-                <widget class="QLabel" row="1" column="0">
-                    <property name="name">
-                        <cstring>textLabel2</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Title:</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>le_title</cstring>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="2" column="0">
-                    <property name="name">
-                        <cstring>textLabel3</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Disc id:</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>le_artist</cstring>
-                    </property>
-                </widget>
-                <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>le_title</cstring>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="2" column="2">
-                    <property name="name">
-                        <cstring>pb_discInfo</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Comment...</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="3" column="0">
-                    <property name="name">
-                        <cstring>textLabel4</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Total time:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="2" column="1">
-                    <property name="name">
-                        <cstring>lb_discId</cstring>
-                    </property>
-                    <property name="text">
-                        <string></string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="3" column="1">
-                    <property name="name">
-                        <cstring>lb_totalTime</cstring>
-                    </property>
-                    <property name="text">
-                        <string></string>
-                    </property>
-                </widget>
-            </grid>
+            </hbox>
         </widget>
-        <widget class="QGroupBox" row="1" column="0" rowspan="1" colspan="2">
+        <widget class="QGroupBox">
             <property name="name">
                 <cstring>groupBox2</cstring>
             </property>
@@ -200,20 +264,20 @@
                 </widget>
             </grid>
         </widget>
-        <widget class="QLabel" row="2" column="0">
+        <widget class="QLabel">
             <property name="name">
-                <cstring>textLabel8</cstring>
+                <cstring>lb_playingOrder</cstring>
             </property>
             <property name="text">
                 <string>Playing order:</string>
             </property>
         </widget>
-        <widget class="QLineEdit" row="2" column="1">
+        <widget class="QLineEdit">
             <property name="name">
                 <cstring>le_playOrder</cstring>
             </property>
         </widget>
-    </grid>
+    </vbox>
 </widget>
 <connections>
     <connection>

@@ -15,23 +15,6 @@ extern "C" {
 
 class CDDBDlgBase;
 
-struct mytoc
-{
-  int	min;
-  int	sec;
-  int	frame;
-  int     absframe;
-};
-
-
-struct dialogcdinfo 
-{
-  QString magicID;	/*cddb magic disk id BERND*/
-  int	ntracks;	/* Number of tracks on the disc */
-  int	length;		/* Total running time in seconds */
-  struct mytoc *cddbtoc;
-};
-
 class CDDBDlg : public KDialogBase
 {
   Q_OBJECT
@@ -42,15 +25,8 @@ class CDDBDlg : public KDialogBase
 
     void setData(
       struct wm_cdinfo *cd,
-      const QString& artist,
-      const QString& title,
-      const QStringList& tracktitlelist,
-      const QStringList& extlist,
-      const QString& cat,
-      const QString& _genre,
-      int revision,
-      int _year,
-      const QStringList& playlist
+      const KCDDB::CDInfo &_cddbInfo,
+      const QStringList  &_playlist
     );
 
     bool checkit();
@@ -71,17 +47,12 @@ class CDDBDlg : public KDialogBase
     void updateTrackList();
 
     CDDBDlgBase *m_dlgBase;
-    QString artist;
-    QString title;
-    QStringList ext_list;
-    QStringList track_list;
     QStringList catlist;
+    KCDDB::CDInfo cddbInfo;
     QStringList playlist;
-    int revision;
-    int year;
-    QString category;
-    QString genre;
-    struct dialogcdinfo cdinfo;
+    unsigned ntracks;   /* Number of tracks on the disc */
+    int length;         /* Total running time in seconds */
+    struct mytoc *cddbtoc;
     KCDDB::Client *cddbClient;
 };
 #endif // CDDBDLG_H

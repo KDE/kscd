@@ -29,6 +29,14 @@ extern "C" {
 #include "libwm/include/workman.h"
 }
 
+struct mytoc
+{
+  int	min;
+  int	sec;
+  int	frame;
+  int     absframe;
+};
+
 QTime framestoTime(int frames);
 
 CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
@@ -41,10 +49,9 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
   setButtonText( User1, i18n( "Upload" ) );
   setButtonText( User2, i18n( "Fetch Info" ) );
 
-  cdinfo.magicID = QString::null;	/*cddb magic disk id BERND*/
-  cdinfo.ntracks = 0;	/* Number of tracks on the disc */
-  cdinfo.length  = 0;	/* Total running time in seconds */
-  cdinfo.cddbtoc = 0L;
+  ntracks = 0;	/* Number of tracks on the disc */
+  length  = 0;	/* Total running time in seconds */
+  cddbtoc = 0;
 
   connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
   connect( this, SIGNAL( user1Clicked() ), SLOT( upload() ) );
@@ -74,44 +81,24 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
 
 CDDBDlg::~CDDBDlg()
 {
-  if(cdinfo.cddbtoc)
-    delete [] cdinfo.cddbtoc;
+  if(cddbtoc)
+    delete [] cddbtoc;
   delete cddbClient;
 }
 
 void CDDBDlg::setData(
-        struct wm_cdinfo *cd,
-	const QString& _artist,
-	const QString& _title,
-        const QStringList& tracktitlelist,
-        const QStringList& extlist,
-        const QString& cat,
-        const QString& _genre,
-        int rev,
-        int _year,
-        const QStringList& _playlist
-        )
+  struct wm_cdinfo *cd,
+  const KCDDB::CDInfo &_cddbInfo,
+  const QStringList &_playlist)
 {
-  int ntr;
-
-  artist = _artist;
-  title = _title;
-  ext_list = extlist;
-  track_list = tracktitlelist;
-  category = cat.copy();
-  genre = _genre.copy();
-  revision = rev;
-  year = _year;
-  playlist = _playlist;
-
-  ntr = track_list.count()+1;
-
   // Let's make a deep copy of the cd struct info so that the data won't
   // change the cd changes while we are playing with the dialog.
+  cddbInfo = _cddbInfo;
+  playlist = _playlist;
 
   // put one of these into the destructor too..
-  if(cdinfo.cddbtoc)
-    delete [] cdinfo.cddbtoc;
+  if(cddbtoc)
+    delete [] cddbtoc;
   if(!cd)
     return;
   /*
@@ -119,74 +106,56 @@ void CDDBDlg::setData(
    */
   if( cd->ntracks == 0 )
   {
-    cdinfo.magicID = QString::null;
-    cdinfo.ntracks = 0;
-    cdinfo.length = 0;
+    ntracks = 0;
+    length = 0;
     m_dlgBase->le_title->setText("No Disc");
     m_dlgBase->lb_discId->clear();
     m_dlgBase->lv_trackList->clear();
     return;
   }
 
-  cdinfo.cddbtoc =  new struct mytoc [cd->ntracks + 2];
-  cdinfo.ntracks = cd->ntracks;	/* Number of tracks on the disc  */
-  cdinfo.length  = cd->length;	/* Total running time in seconds */
+  cddbtoc =  new struct mytoc [cd->ntracks + 2];
+  ntracks = cd->ntracks;	/* Number of tracks on the disc  */
+  length  = cd->length;	/* Total running time in seconds */
 
   KCDDB::TrackOffsetList offsetList;
 
   for( int i = 0; i < cd->ntracks + 1; i++)
   {
-    cdinfo.cddbtoc[i].min = cd->trk[i].start / 4500;
-    cdinfo.cddbtoc[i].sec = (cd->trk[i].start % 4500) / 75;
-    cdinfo.cddbtoc[i].frame = cd->trk[i].start - ((cd->trk[i].start / 75)*75);
-    cdinfo.cddbtoc[i].absframe = cd->trk[i].start;
+    cddbtoc[i].min = cd->trk[i].start / 4500;
+    cddbtoc[i].sec = (cd->trk[i].start % 4500) / 75;
+    cddbtoc[i].frame = cd->trk[i].start - ((cd->trk[i].start / 75)*75);
+    cddbtoc[i].absframe = cd->trk[i].start;
     if (i < cd->ntracks)
       offsetList.append(cd->trk[i].start);
   }
   offsetList.append(cd->trk[0].start);
   offsetList.append(cd->trk[cd->ntracks].start);
-  cdinfo.magicID = KCDDB::CDDB::trackOffsetListToId(offsetList);
 
-  // some sanity provisions
-
-  if ((int)track_list.count() < cdinfo.ntracks)
+  // Some sanity provisions to ensure that the number of records matches what
+  // the CD actually contains.
+  while (cddbInfo.trackInfoList.count() < ntracks)
   {
-    int k = track_list.count();
-    for (int i = 0 ; i < (int)( cdinfo.ntracks - k) ; i ++)
-      track_list.append("");
+      cddbInfo.trackInfoList.append(KCDDB::TrackInfo());
+  }
+  while (cddbInfo.trackInfoList.count() > ntracks)
+  {
+      cddbInfo.trackInfoList.remove(cddbInfo.trackInfoList.end());
   }
 
-  if ((int)ext_list.count() < cdinfo.ntracks)
-  {
-    int l = ext_list.count();
-    for (int i = 0 ; i < (int) ( cdinfo.ntracks - l) ; i ++)
-      ext_list.append("");
-  }
-
-  while((int)track_list.count() > cdinfo.ntracks)
-  {
-    track_list.remove(track_list.at(track_list.count() - 1));
-  }
-
-  while((int)ext_list.count() > cdinfo.ntracks)
-  {
-    ext_list.remove(ext_list.at(ext_list.count() - 1));
-  }
-
-  m_dlgBase->le_artist->setText(artist.stripWhiteSpace());
-  m_dlgBase->le_title->setText(title.stripWhiteSpace());
-
-  QString idstr;
-  idstr = category + "  " + cdinfo.magicID;
-
-  m_dlgBase->lb_discId->setText(idstr.stripWhiteSpace());
+  m_dlgBase->le_artist->setText(cddbInfo.artist.stripWhiteSpace());
+  m_dlgBase->le_title->setText(cddbInfo.title.stripWhiteSpace());
+  m_dlgBase->le_genre->setText(cddbInfo.genre.stripWhiteSpace());
+  m_dlgBase->le_category->setText(cddbInfo.category.stripWhiteSpace());
+  m_dlgBase->le_year->setText(QString::number(cddbInfo.year));
+  m_dlgBase->lb_discId->setText(cddbInfo.id.stripWhiteSpace());
 
   QTime   dl;
-  dl = dl.addSecs(cdinfo.length);
+  dl = dl.addSecs(length);
 
   QString temp2;
   if(dl.hour() > 0)
-    temp2 = dl.toString("hh:mm:ss:");
+    temp2 = dl.toString("hh:mm:ss");
   else
     temp2 = dl.toString("mm:ss");
   m_dlgBase->lb_totalTime->setText(temp2);
@@ -195,9 +164,9 @@ void CDDBDlg::setData(
 
   m_dlgBase->lv_trackList->clear();
 
-  for(int i = 1; i <= cdinfo.ntracks; i++)
+  for(unsigned i = 1; i <= ntracks; i++)
   {
-    dl = framestoTime(cdinfo.cddbtoc[i].absframe-cdinfo.cddbtoc[i-1].absframe);
+    dl = framestoTime(cddbtoc[i].absframe-cddbtoc[i-1].absframe);
 
     QListViewItem * item = new QListViewItem( m_dlgBase->lv_trackList, 0 );
     item->setText( 0, QString().sprintf("%02d",i) );
@@ -206,8 +175,7 @@ void CDDBDlg::setData(
     else
       item->setText( 1, dl.toString("mm:ss"));
 
-    if((ntr >=  i) && (ntr > 0))
-      item->setText( 2,  *(track_list.at(i-1)));
+    item->setText( 2,  cddbInfo.trackInfoList[i-1].title);
   }
 
   m_dlgBase->le_playOrder->setText( playlist.join( "," ) );
@@ -215,7 +183,7 @@ void CDDBDlg::setData(
 
 void CDDBDlg::extITB( int trackNumber )
 {
-  QString trackTitle = track_list[ trackNumber-1 ];
+  QString trackTitle = cddbInfo.trackInfoList[trackNumber-1].title;
   QString dialogTitle;
   bool ok;
 
@@ -226,10 +194,10 @@ void CDDBDlg::extITB( int trackNumber )
     dialogTitle = i18n("Annotate track #%1").arg(trackNumber);
 
   QString s = KInputDialog::getMultiLineText( i18n( "Annotate Track" ),
-      dialogTitle, *ext_list.at( trackNumber ), &ok, this );
+      dialogTitle, cddbInfo.trackInfoList[trackNumber].extt, &ok, this );
 
   if ( ok )
-    *ext_list.at( trackNumber ) = s;
+    cddbInfo.trackInfoList[trackNumber].extt = s;
 } // extIB
 
 void CDDBDlg::extIB()
@@ -237,11 +205,11 @@ void CDDBDlg::extIB()
   bool ok;
 
   QString s = KInputDialog::getMultiLineText( i18n( "Annotate Album" ),
-      i18n( "Enter annotation for this album:" ), ext_list.first(),
+      i18n( "Enter annotation for this album:" ), cddbInfo.trackInfoList[0].extt,
       &ok, this );
 
   if ( ok )
-    *ext_list.at(0) = s;
+    cddbInfo.trackInfoList[0].extt = s;
 } // extITB
 
 void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
@@ -291,7 +259,7 @@ void CDDBDlg::upload()
 
   QString submitcat;
 
-  if( category.isEmpty() )
+  if( cddbInfo.category.isEmpty() )
   {
     bool ok;
 
@@ -303,7 +271,7 @@ void CDDBDlg::upload()
       return;
   }
   else
-    submitcat = category.copy();
+    submitcat = cddbInfo.category.copy();
 
   KCDDB::CDInfo info;
   setCdInfo(info, submitcat);
@@ -315,38 +283,19 @@ void CDDBDlg::upload()
   for( int i = 0; i < cd->ntracks + 1; i++)
   {
     if (i < cd->ntracks)
-      offsetList.append(cdinfo.cddbtoc[i].absframe);
+      offsetList.append(cddbtoc[i].absframe);
   }
-  offsetList.append(cdinfo.cddbtoc[0].absframe);
-  offsetList.append(cdinfo.cddbtoc[cdinfo.ntracks].absframe);
+  offsetList.append(cddbtoc[0].absframe);
+  offsetList.append(cddbtoc[ntracks].absframe);
 
   cddbClient->submit(info, offsetList);
 } // upload
 
 void CDDBDlg::setCdInfo(KCDDB::CDInfo &info, const QString& category)
 {
-  info.artist = artist;
-  info.title = title;
+  info = cddbInfo;
   info.category = category;
-  info.genre = genre;
-  info.id = cdinfo.magicID;
-  info.extd = ext_list.first();
-  info.year = year;
-  info.length = cdinfo.length;
-  info.revision = revision;
-
-  info.trackInfoList.clear();
-  
-  unsigned i=0;
-  for (QStringList::Iterator it = track_list.begin(); it != track_list.end(); ++it)
-  {
-    TrackInfo t;
-    t.title = *it;
-    t.extt = ext_list[i];
-
-    info.trackInfoList.append(t);
-    ++i;
-  }
+  info.extd = cddbInfo.trackInfoList[0].extt;
 } // setCdInfo
 
 void CDDBDlg::save()
@@ -358,7 +307,7 @@ void CDDBDlg::save()
 
   QString savecat;
 
-  if( category.isEmpty() )
+  if( cddbInfo.category.isEmpty() )
   {
     bool ok;
 
@@ -370,7 +319,7 @@ void CDDBDlg::save()
       return;
   }
   else
-    savecat = category.copy();
+    savecat = cddbInfo.category.copy();
 
   KCDDB::CDInfo info;
   setCdInfo(info, savecat);
@@ -403,7 +352,7 @@ bool CDDBDlg::checkit()
     return false;
   }
 
-  if(track_list.count() < 1)
+  if(cddbInfo.trackInfoList.count() < 1)
   {
     KMessageBox::sorry(this,
         i18n("At least one track title must be entered.\n"\
@@ -413,11 +362,11 @@ bool CDDBDlg::checkit()
   }
 
   bool have_nonempty_title = false;
-  for ( QStringList::Iterator it = track_list.begin();
-        it != track_list.end();
-        ++it )
+  KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
+  KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
+  for (; it != end; ++it)
   {
-    QString songTitle = *it;
+    QString songTitle = (*it).title;
     title = songTitle.stripWhiteSpace();
     if(!songTitle.isEmpty())
     {
@@ -435,10 +384,10 @@ bool CDDBDlg::checkit()
     return false;
   }
 
-  if(cdinfo.ntracks != (int)track_list.count() )
+  if(ntracks != cddbInfo.trackInfoList.count() )
   {
     KMessageBox::error(this,
-        i18n("cdinfo.ntracks != track_list->count() \n"
+        i18n("ntracks != track_list->count() \n"
              "Please email the author."),
     i18n("Internal Error"));
     return false;
@@ -450,7 +399,7 @@ bool CDDBDlg::checkit()
 
   QString teststr;
   bool ok;
-  int num;
+  unsigned num;
 
   for ( QStringList::Iterator it = strlist.begin();
         it != strlist.end();
@@ -459,7 +408,7 @@ bool CDDBDlg::checkit()
     teststr = *it;
     num = teststr.toInt(&ok);
 
-    if( !ok || num > cdinfo.ntracks )
+    if( !ok || num > ntracks )
       ret = false;
   }
 
@@ -476,20 +425,20 @@ bool CDDBDlg::checkit()
 
 void CDDBDlg::updateTrackList()
 {
-  title = m_dlgBase->le_title->text().stripWhiteSpace();
-  artist = m_dlgBase->le_artist->text().stripWhiteSpace();
+  cddbInfo.title = m_dlgBase->le_title->text().stripWhiteSpace();
+  cddbInfo.artist = m_dlgBase->le_artist->text().stripWhiteSpace();
 
   m_dlgBase->lv_trackList->setSorting(0, true);
 
   unsigned int i=0;
   for (QListViewItem* item = m_dlgBase->lv_trackList->firstChild(); item ; item=item->nextSibling())
   {
-    if (track_list.count() <= i)
+    if (cddbInfo.trackInfoList.count() <= i)
     {
       kdWarning() << "track_list.count <= " << i << endl;
       continue;
     }
-    track_list[i] = item->text(2);
+    cddbInfo.trackInfoList[i].title = item->text(2);
     i++;
   }
 }
