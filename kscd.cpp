@@ -319,9 +319,6 @@ void KSCD::drawPanel()
 
   setIcons();
 
-  backdrop->setFixedSize(SBARWIDTH, BACKDROPHEIGHT);
-  backdrop->setFocusPolicy(QWidget::NoFocus);
-
   // mildly gross.. but...
   // take the height of the buttons add the three pixels of space in between.
   // then subtract that from the height of the LED and the
@@ -365,12 +362,12 @@ void KSCD::drawPanel()
   statuslabel->setGeometry(110, D, 60, 14);
 
   queryled = new LedLamp(backdrop);
-  queryled->move(220, D + 1);
+  queryled->move(SBARWIDTH-20, D + 1);
   queryled->off();
   queryled->hide();
 
   loopled = new LedLamp(backdrop, LedLamp::Loop);
-  loopled->move(220, D + 18);
+  loopled->move(SBARWIDTH-20, D + 18);
   loopled->off();
 
   volumelabel = new QLabel(backdrop);
@@ -1474,14 +1471,10 @@ void KSCD::cdtext(struct cdtext_info* p_cdtext)
             title = reinterpret_cast<char*>(p_cdtext->blocks[0]->name[at]);
         }
 
-        songListCB->insertItem(QString().sprintf("%02d: ", at) +  title);
         tracktitlelist.append(title);
     }
 
-    for(; at < cd->ntracks; ++at)
-    {
-        songListCB->insertItem(QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));
-    }
+    populateSongList();
 }
 
 void KSCD::cddb_no_info()
@@ -1497,7 +1490,7 @@ void KSCD::cddb_no_info()
     if(cdtext_i && cdtext_i->valid) {
         cdtext(cdtext_i);
     } else {
-       populateSongList();
+        populateSongList();
     }
 
     led_off();
@@ -1519,14 +1512,7 @@ void KSCD::cddb_failed()
     if(cdtext_i && cdtext_i->valid) {
         cdtext(cdtext_i);
     } else {
-      for(int i = 0 ; i < cd->ntracks; i++)
-        tracktitlelist.append("");
-
-      extlist.clear();
-      for(int i = 0 ; i <= cd->ntracks; i++)
-        extlist.append("");
-
-      populateSongList();
+        populateSongList();
     }
 
     led_off();

@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>kscdPanelDlg</class>
 <widget class="QWidget">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>412</width>
-            <height>175</height>
+            <width>447</width>
+            <height>177</height>
         </rect>
     </property>
     <property name="sizePolicy">
@@ -162,7 +162,10 @@
                                 </size>
                             </property>
                             <property name="text">
-                                <string>Play</string>
+                                <string>Pla&amp;y</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+Y</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
@@ -190,7 +193,10 @@
                                 <bool>true</bool>
                             </property>
                             <property name="text">
-                                <string>Next</string>
+                                <string>&amp;Next</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+N</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
@@ -204,7 +210,10 @@
                                 <bool>true</bool>
                             </property>
                             <property name="text">
-                                <string>Previous</string>
+                                <string>Pre&amp;vious</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+V</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
@@ -218,7 +227,10 @@
                                 <bool>true</bool>
                             </property>
                             <property name="text">
-                                <string>Eject</string>
+                                <string>E&amp;ject</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+J</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
@@ -229,7 +241,10 @@
                                 <cstring>shufflePB</cstring>
                             </property>
                             <property name="text">
-                                <string>Random</string>
+                                <string>R&amp;andom</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+A</string>
                             </property>
                             <property name="toggleButton">
                                 <bool>true</bool>
@@ -294,8 +309,8 @@
                             </property>
                             <property name="maximumSize">
                                 <size>
-                                    <width>240</width>
-                                    <height>66</height>
+                                    <width>32767</width>
+                                    <height>32767</height>
                                 </size>
                             </property>
                             <property name="paletteForegroundColor">
@@ -349,7 +364,10 @@
                                 </sizepolicy>
                             </property>
                             <property name="text">
-                                <string>CDDB</string>
+                                <string>&amp;CDDB</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+C</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
@@ -368,7 +386,10 @@
                                 </sizepolicy>
                             </property>
                             <property name="text">
-                                <string>Extras</string>
+                                <string>E&amp;xtras</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+X</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
