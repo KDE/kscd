@@ -5,6 +5,7 @@
  *
  *      --- This file has been manually midified ---
  *
+ * WABA: Can you use kmidi to play it?
  *
  * $Id$
  *
@@ -86,7 +87,7 @@ CDDBSetupData::CDDBSetupData
 	QLabel* dlgedit_Label_8 = new QLabel( i18n("freedb Base Directory:"), group, "Label_8" );
 	lay2->addWidget ( dlgedit_Label_8 );
         basedir_edit = new KURLRequester(group, "LineEdit_4" );
-        basedir_edit->fileDialog()->setMode(KFile::Directory);
+        basedir_edit->setMode(KFile::Directory);
 
 	lay2->addWidget ( basedir_edit );
 
