@@ -224,7 +224,7 @@ CDDB::cddb_connect_internal()
     starttimer.stop();
     timeouttimer.start(timeout*1000,TRUE);
 
-	//    kdDebug() << "cddb_connect_internal_timeout = " << timeout*1000 << "\n" << endl;
+    //    kdDebug() << "cddb_connect_internal_timeout = " << timeout*1000 << "\n" << endl;
 
     if(sock) 
       {
@@ -377,8 +377,6 @@ CDDB::cddb_read(KSocket *socket)
     n = read(socket->socket(), buffer, CDDB_READ_BUFFER_LEN-1 );
     buffer[n] = '\0';
     tempbuffer += buffer;
-
-//    kdDebug() << "BUFFER: '" << buffer << "'" << endl;
 
     while(next_token())
         do_state_machine();
@@ -657,10 +655,8 @@ CDDB::do_state_machine()
 		{
 		  state = CDDB_DONE;
 		  timeouttimer.stop();
-		  kdDebug() << "INEX_READ: end of data reached" << endl;
 		  emit cddb_inexact_read();
 		} else {
-		  kdDebug() << "INEX_READ: appending '" << lastline << "'" << endl;
 		  inexact_list.append(lastline);
 		}
 	  break;
@@ -670,10 +666,8 @@ CDDB::do_state_machine()
 		{
 		  state = CDDB_DONE;
 		  timeouttimer.stop();
-		  kdDebug() << "MULTEX_READ: end of data reached" << endl;
 		  emit cddb_inexact_read();
 		} else {
-		  kdDebug() << "MULTEX_READ: appending '" << lastline << "'" << endl;
 		  inexact_list.append(lastline);
 		}
 	  break;
