@@ -47,7 +47,7 @@ DockWidget::DockWidget(const char *name)
   //     printf("trying to load %s\n",pixdir.data());
   // load pixmaps
 
-  cdsmall_pixmap = ICON("cdsmall.xpm");
+  cdsmall_pixmap = BarIcon("cdsmall.xpm");
 
   // popup menu for right mouse button
   popup_m = new QPopupMenu();
