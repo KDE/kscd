@@ -1,0 +1,405 @@
+/*
+ *  KCompactDisc - A CD drive interface for the KDE Project.
+ *
+ *  Copyright (c) 2005 Shaheedur R. Haque <srhaque@iee.org>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2, or (at your option)
+ *  any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+#include <dcopclient.h>
+#include <dcopref.h>
+#include <qfile.h>
+#include <kdebug.h>
+#include <klocale.h>
+#include <kprotocolmanager.h>
+#include <krun.h>
+#include "kcompactdisc.h"
+#include <netwm.h>
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <signal.h>
+#include <sys/utsname.h>
+#include <unistd.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+
+/* this is for glibc 2.x which the ust structure in ustat.h not stat.h */
+#ifdef __GLIBC__
+#include <sys/ustat.h>
+#endif
+
+#ifdef __FreeBSD__
+#include <sys/param.h>
+#include <sys/ucred.h>
+#include <sys/mount.h>
+#endif
+
+#ifdef __linux__
+#include <mntent.h>
+#define KSCDMAGIC 0
+#endif
+
+#include <kprocess.h>
+#include <config.h>
+
+extern "C"
+{
+// We don't have libWorkMan installed already, so get everything
+// from within our own directory
+#include "libwm/include/wm_cddb.h"
+#include "libwm/include/wm_cdrom.h"
+#include "libwm/include/wm_cdtext.h"
+#include "libwm/include/wm_config.h"
+#include "libwm/include/wm_cdinfo.h"
+
+// Sun, Ultrix etc. have a canonical CD device specified in the
+// respective plat_xxx.c file. On those platforms you need not
+// specify the CD device and DEFAULT_CD_DEVICE is not defined
+// in config.h.
+#ifndef DEFAULT_CD_DEVICE
+#define DEFAULT_CD_DEVICE "/dev/cdrom"
+#endif
+}
+
+#include <qtextcodec.h>
+#include <fixx11h.h>
+
+#define FRAMES_TO_MS(frames) \
+((frames) * 1000 / 75)
+
+const QString KCompactDisc::defaultDevice = DEFAULT_CD_DEVICE;
+
+KCompactDisc::KCompactDisc() :
+    m_device(""),
+    m_status(0),
+    m_previousStatus(123456),
+    m_discId((unsigned)-1),
+    m_previousDiscId(0),
+    m_artist(""),
+    m_title(""),
+    m_track(0),
+    m_previousTrack(99999999)
+{
+    // Debug.
+    // wm_cd_set_verbosity(0xffff);
+    m_trackArtists.clear();
+    m_trackTitles.clear();
+    m_trackStartFrames.clear();
+    connect(&timer, SIGNAL(timeout()), SLOT(timerExpired()));
+}
+
+KCompactDisc::~KCompactDisc()
+{
+    // Ensure nothing else starts happening.
+    timer.stop();
+    wm_cd_stop();
+    wm_cd_set_verbosity(0x0);
+    wm_cd_destroy();
+}
+
+const QString &KCompactDisc::device() const
+{
+    return m_device;
+}
+
+unsigned KCompactDisc::discLength() const
+{
+    return FRAMES_TO_MS(m_trackStartFrames[m_tracks - 1] - m_trackStartFrames[0]);
+}
+
+unsigned KCompactDisc::discPosition() const
+{
+    return cur_pos_abs * 1000;
+}
+
+QString KCompactDisc::discStatus(int status)
+{
+    QString message;
+
+    switch (status)
+    {
+    case WM_CDM_TRACK_DONE: // == WM_CDM_BACK
+        message = i18n("Back/Track Done");
+        break;
+    case WM_CDM_PLAYING:
+        message = i18n("Playing");
+        break;
+    case WM_CDM_FORWARD:
+        message = i18n("Forward");
+        break;
+    case WM_CDM_PAUSED:
+        message = i18n("Paused");
+        break;
+    case WM_CDM_STOPPED:
+        message = i18n("Stopped");
+        break;
+    case WM_CDM_EJECTED:
+        message = i18n("Ejected");
+        break;
+    case WM_CDM_NO_DISC:
+        message = i18n("No Disc");
+        break;
+    case WM_CDM_UNKNOWN:
+        message = i18n("Unknown");
+        break;
+    case WM_CDM_CDDAERROR:
+        message = i18n("CDDA Error");
+        break;
+    case WM_CDM_CDDAACK:
+        message = i18n("CDDA Ack");
+        break;
+    default:
+        if (status <= 0)
+            message = strerror(-status);
+        else
+            message = QString::number(status);
+        break;
+    }
+    return message;
+}
+
+/**
+ * Do everything needed if the user requested to eject the disc.
+ */
+void KCompactDisc::eject()
+{
+    if (m_status == WM_CDM_EJECTED)
+    {
+        emit trayClosing();
+        wm_cd_closetray();
+    }
+    else
+    {
+        wm_cd_stop();
+        wm_cd_eject();
+    }
+}
+
+unsigned KCompactDisc::track() const
+{
+    return m_track;
+}
+
+bool KCompactDisc::isPaused() const
+{
+    return (m_status == WM_CDM_PAUSED);
+}
+
+bool KCompactDisc::isPlaying() const
+{
+    return WM_CDS_DISC_PLAYING(m_status) && (m_status != WM_CDM_PAUSED);
+}
+
+void KCompactDisc::pause()
+{
+    // wm_cd_pause "does the right thing" by flipping between pause and resume.
+    wm_cd_pause();
+}
+
+void KCompactDisc::play(unsigned startTrack, unsigned startTrackPosition, unsigned endTrack)
+{
+    wm_cd_play((startTrack == 0) ? 1 : startTrack, startTrackPosition / 1000, (endTrack == 0) ? WM_ENDTRACK : endTrack);
+}
+
+void KCompactDisc::setDevice(
+    const QString &device,
+    unsigned volume,
+    bool digitalPlayback,
+    const QString &audioSystem,
+    const QString &audioDevice)
+{
+    timer.stop();
+    KURL deviceUrl(device);
+    if (deviceUrl.protocol() == "media")
+    {
+        kdDebug() << "Asking mediamanager for " << deviceUrl.path(-1).mid(1) << endl;
+        DCOPRef mediamanager("kded", "mediamanager");
+        // mediamanager does not like paths with leading /
+        DCOPReply reply = mediamanager.call("properties(QString)", deviceUrl.path(-1).mid(1));
+        if (!reply.isValid())
+        {
+            kdError() << "Invalid reply from mediamanager" << endl;
+            deviceUrl.setPath(defaultDevice);
+        }
+        else
+        {
+            QStringList properties = reply;
+            deviceUrl.setPath(properties[5]);
+            kdDebug() << "Reply from mediamanager " << properties[5] << endl;
+        }
+    }
+
+#if !defined(BUILD_CDDA)
+    digitalPlayback = false;
+#endif
+    int status = wm_cd_init(
+                    digitalPlayback ? WM_CDDA : WM_CDIN,
+                    QFile::encodeName(deviceUrl.path(-1)),
+                    digitalPlayback ? audioSystem.ascii() : 0,
+                    digitalPlayback ? audioDevice.ascii() : 0,
+                    0);
+    kdDebug() << "Device change: "
+        << (digitalPlayback ? "WM_CDDA, " : "WM_CDIN, ")
+        << deviceUrl.path() << ", "
+        << (digitalPlayback ? audioSystem : "") << ", "
+        << (digitalPlayback ? audioDevice : "") << ", status: "
+        << discStatus(status) << endl;
+    m_device = wm_drive_device();
+
+    // Init CD-ROM and display.
+    setVolume(volume);
+    timer.start(1000, true);
+}
+
+void KCompactDisc::setVolume(unsigned volume)
+{
+    int status = wm_cd_volume(volume, WM_BALANCE_SYMMETRED);
+    kdDebug() << "Volume change: " << volume << ", status: " << discStatus(status) << endl;
+}
+
+void KCompactDisc::stop()
+{
+    wm_cd_stop();
+}
+
+unsigned KCompactDisc::trackLength() const
+{
+    return trackLength(m_track);
+}
+
+unsigned KCompactDisc::trackLength(unsigned track) const
+{
+    return cd->trk[track - 1].length * 1000;
+}
+
+unsigned KCompactDisc::trackPosition() const
+{
+    return cur_pos_rel * 1000;
+}
+
+unsigned KCompactDisc::tracks() const
+{
+    return m_tracks;
+}
+
+/*
+ * timerExpired
+ *
+ * - Data discs not recognized as data discs.
+ *
+ */
+void KCompactDisc::timerExpired()
+{
+    // No device, no work to do!
+    if (m_device.length() == 0)
+        return;
+
+    m_status = wm_cd_status();
+    if (WM_CDS_NO_DISC(m_status))
+    {
+        m_previousDiscId = 0;
+    }
+    else
+    {
+        m_discId = cddb_discid();
+        if (m_previousDiscId != m_discId)
+        {
+            m_previousDiscId = m_discId;
+            kdDebug() << "New discId=" << m_discId << endl;
+            // Initialise the album and its signature from the CD.
+            struct cdtext_info *info = wm_cd_get_cdtext();
+            if (info && info->valid)
+            {
+                m_artist = reinterpret_cast<char*>(info->blocks[0]->performer[0]);
+                m_title = reinterpret_cast<char*>(info->blocks[0]->name[0]);
+            }
+            else
+            {
+                m_artist = i18n("Unknown Artist");
+                m_title = i18n("Unknown Title");
+            }
+
+            // Read or default CD data.
+            m_trackArtists.clear();
+            m_trackTitles.clear();
+            m_trackStartFrames.clear();
+            m_tracks = wm_cd_getcountoftracks();
+            for (unsigned i = 1; i <= m_tracks; i++)
+            {
+                if (info && info->valid)
+                {
+                    m_trackArtists.append(reinterpret_cast<char*>(info->blocks[0]->performer[i]));
+                    m_trackTitles.append(reinterpret_cast<char*>(info->blocks[0]->name[i]));
+                }
+                else
+                {
+                    m_trackArtists.append(i18n("Unknown Artist"));
+                    m_trackTitles.append(i18n("Track %1").arg(QString::number(i).rightJustify(2, '0')));
+                }
+                // FIXME: KDE4
+                // track.length = cd->trk[i - 1].length;
+                m_trackStartFrames.append(cd->trk[i - 1].start);
+            }
+            m_trackStartFrames.append(cd->trk[0].start);
+            m_trackStartFrames.append(cd->trk[m_tracks].start);
+            emit discChanged(m_discId);
+        }
+    }
+
+    // Per-event processing.
+    m_track = wm_cd_getcurtrack();
+    if (m_previousTrack != m_track)
+    {
+        m_previousTrack = m_track;
+
+        // Update the current track and its length.
+        emit trackChanged(m_track, trackLength());
+    }
+    if (isPlaying())
+    {
+        // Update the current playing position.
+        emit trackPlaying(m_track, trackPosition());
+    }
+    else
+    if (m_previousStatus != m_status)
+    {
+        m_previousStatus = m_status;
+        kdDebug() << m_device << " status change to " << discStatus(m_status) << endl;
+
+        // If we are not playing, then we are either paused, or stopped.
+        switch (m_status)
+        {
+        case WM_CDM_PAUSED:
+            emit trackPaused(m_track, trackPosition());
+            break;
+        case WM_CDM_EJECTED:
+            emit trayOpening();
+            break;
+        default:
+            emit discStopped();
+            break;
+        }
+    }
+    timer.start(1000, true);
+}
+
+#include "kcompactdisc.moc"
