@@ -474,7 +474,6 @@ void KSCD::playClicked()
         {
             updateDisplayedTrack(N_TRACK_FIRST);
             wm_cd_play(N_TRACK_FIRST, 0, playlist.isEmpty() ? WM_ENDTRACK : N_TRACK_FIRST + 1);
-            timer.start(1000);
         }
     }
     else if (cur_cdmode == WM_CDM_PLAYING)
@@ -487,7 +486,6 @@ void KSCD::playClicked()
     }
     else
     {
-        return;
 /*
         stoppedByUser = false;
         setLEDs("--:--");
@@ -517,7 +515,7 @@ void KSCD::updatePlayPB(bool playing)
 void KSCD::setShuffle(int shuffle)
 {
     if (shuffle == 2) {
-        if(Prefs::randomPlay()) {
+        if(Prefs::randomPlay() && cd && cd->ntracks > 0) {
             make_random_list(); /* koz: Build a unique, once, random list */
             if(WM_CDM_PLAYING == wm_cd_status())
                 nextClicked();
@@ -531,12 +529,10 @@ void KSCD::setShuffle(int shuffle)
     shufflePB->setOn(shuffle);
     shufflePB->blockSignals(false);
 
-    if (Prefs::randomPlay()) {
-        if(cd && cd->ntracks > 0) {
-            make_random_list(); /* koz: Build a unique, once, random list */
-            if(WM_CDM_PLAYING == wm_cd_status())
-                nextClicked();
-        }
+    if (Prefs::randomPlay()cd && cd->ntracks > 0) {
+        make_random_list(); /* koz: Build a unique, once, random list */
+        if(WM_CDM_PLAYING == wm_cd_status())
+            nextClicked();
     }
     cdModeLong();
 }
@@ -576,7 +572,6 @@ void KSCD::prevClicked()
     kapp->processEvents();
     kapp->flushX();
     wm_cd_play(track, 0, playlist.isEmpty() ? WM_ENDTRACK : track);
-    timer.start(1000);
 } // prevClicked()
 
 bool KSCD::nextClicked()
@@ -606,7 +601,6 @@ bool KSCD::nextClicked()
     kapp->processEvents();
     kapp->flushX();
     wm_cd_play(track, 0, playlist.isEmpty() ? WM_ENDTRACK : track + 1);
-    timer.start(1000);
     return true;
 } // nextClicked()
 
@@ -640,7 +634,6 @@ void KSCD::jumpToTime(int seconds, bool forcePlay)
         {
             wm_cd_play (track, seconds, WM_ENDTRACK);
         }
-        timer.start(1000);
     }
     playtime(seconds);
 } // jumpToTime(int seconds)
@@ -821,7 +814,6 @@ void KSCD::trackSelected( int cb_index )
 
     updateDisplayedTrack(track);
     wm_cd_play(track, 0, WM_ENDTRACK);
-    timer.start(1000);
 } // trackSelected
 
 void KSCD::showConfig()
@@ -1451,7 +1443,6 @@ void KSCD::cddb_done(CDDB::Result result)
     populateSongList();
 
     led_off();
-    timer.start(1000);
 } // cddb_done
 
 void KSCD::cdtext(struct cdtext_info* p_cdtext)
@@ -1510,7 +1501,6 @@ void KSCD::cddb_no_info()
     }
 
     led_off();
-    timer.start(1000);
 } // cddb_no_info
 
 void KSCD::cddb_failed()
@@ -1540,7 +1530,6 @@ void KSCD::cddb_failed()
     }
 
     led_off();
-    timer.start(1000);
 } // cddb_failed
 
 void KSCD::mycddb_inexact_read()
@@ -1919,7 +1908,6 @@ void KSCD::jumpTracks()
     if (jumpToTrack > 0 && jumpToTrack <= (int)tracktitlelist.count())
     {
         wm_cd_play(jumpToTrack, 0, jumpToTrack + 1);
-        timer.start(1000);
     }
 
     jumpToTrack = 0;
