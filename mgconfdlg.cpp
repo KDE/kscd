@@ -26,6 +26,7 @@
 
 
 #include <qspinbox.h>
+#include <qlineedit.h>
 
 #include "mgconfdlg.h"
 #include <klocale.h>
