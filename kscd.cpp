@@ -967,6 +967,10 @@ KSCD::loopClicked()
     }
 } // loopClicked
 
+/**
+ * Do everything needed if the user requested to eject the disc.
+ *
+ */
 void
 KSCD::ejectClicked()
 {
@@ -974,28 +978,28 @@ KSCD::ejectClicked()
         return;
     if(!currentlyejected)
     {
-        //      looping = FALSE;
-        randomplay = FALSE;
-        statuslabel->setText(i18n("Ejecting"));
-        qApp->processEvents();
-        qApp->flushX();
-        setArtistAndTitle("", "");
-        tracktitlelist.clear();
-        extlist.clear();
-
-        wm_cd_stop();
-        //  timer->stop();
-        /*
-        * new checkmount goes here
-        *
-        */
- wm_cd_eject();
+	    //      looping = FALSE;
+	    randomplay = FALSE;
+		statuslabel->setText(i18n("Ejecting"));
+		qApp->processEvents();
+		qApp->flushX();
+		setArtistAndTitle("", "");
+		tracktitlelist.clear();
+		extlist.clear();
+		
+		wm_cd_stop();
+		//  timer->stop();
+		/*
+		 * new checkmount goes here
+		 *
+		 */
+		wm_cd_eject();
     } else {
-        statuslabel->setText(i18n("Closing"));
-        qApp->processEvents();
-        qApp->flushX();
-        have_new_cd = true;
-        wm_cd_closetray();
+	    statuslabel->setText(i18n("Closing"));
+		qApp->processEvents();
+		qApp->flushX();
+		have_new_cd = true;
+		wm_cd_closetray();
     }
 } // ejectClicked
 
@@ -1031,6 +1035,10 @@ KSCD::randomSelected()
     }
 } // randomSelected
 
+/**
+ * A Track was selected for playback from the drop down box.
+ *
+ */
 void
 KSCD::trackSelected( int trk )
 {
@@ -1511,7 +1519,10 @@ KSCD::cdMode()
 
         case WM_CDM_EJECTED:
             statuslabel->setText( i18n("Ejected") );
-            songListCB->clear();
+			setArtistAndTitle("", "");
+			tracktitlelist.clear();
+			extlist.clear();
+			songListCB->clear();
             setLEDs( "--:--" );
             tracklabel->setText( "--/--" );
             setArtistAndTitle("", "");
@@ -2014,7 +2025,8 @@ KSCD::cddb_ready()
 */
     querylist.clear();
     tracktitlelist.clear();
-    extlist.clear();
+	setArtistAndTitle("", "");
+	extlist.clear();
     discidlist.clear();
 
     QCString num;
@@ -2034,7 +2046,9 @@ KSCD::cddb_ready()
     if(wm_cdtext_info.valid){\
 	kdDebug() << "CDTEXT_MACRO called" << endl;\
 	int at;\
-	tracktitlelist.clear();\
+    setArtistAndTitle("", ""); \
+    tracktitlelist.clear(); \
+    extlist.clear(); \
 	tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->name[0]),(const char*)(wm_cdtext_info.blocks[0]->performer[0])));\
 	titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));\
 	artistlabel->setText(tracktitlelist.first());\
@@ -2051,6 +2065,7 @@ KSCD::cddb_ready()
 void
 KSCD::cddb_no_info()
 {
+
     //        cddb_ready_bug = 0;
     kdDebug() << "cddb_no_info() called\n" << endl;
 
@@ -2058,7 +2073,10 @@ KSCD::cddb_no_info()
 //    artistlabel->clear();
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
-    tracktitlelist.clear();
+
+	setArtistAndTitle("", "");
+	tracktitlelist.clear();
+	extlist.clear();
     tracktitlelist.append(i18n("No matching CDDB entry found."));
 #ifdef DEFINE_CDTEXT
     wm_cd_get_cdtext();
@@ -2088,7 +2106,9 @@ KSCD::cddb_failed()
     // failed and those where we just couldn't find anything
     //        cddb_ready_bug = 0;
     kdDebug() << "cddb_failed() called\n" << endl;
-    tracktitlelist.clear();
+	setArtistAndTitle("", "");
+	tracktitlelist.clear();
+	extlist.clear();
     tracktitlelist.append(i18n("Error getting CDDB entry."));
 #ifdef DEFINE_CDTEXT
     CDTEXT_MACRO
@@ -2118,7 +2138,9 @@ KSCD::cddb_timed_out()
 {
 //    cddb_ready_bug = 0;
     kdDebug() << "cddb_timed_out() called\n" << endl;
-    tracktitlelist.clear();
+	tracktitlelist.clear();
+	setArtistAndTitle("", "");
+	extlist.clear();
     tracktitlelist.append(i18n("CDDB query timed out."));
 #ifdef DEFINE_CDTEXT
     CDTEXT_MACRO
@@ -2153,9 +2175,13 @@ KSCD::mycddb_inexact_read()
 
     cddb_inexact_sentinel = true;
     QStringList inexact_list;
-    cddb.get_inexact_list(inexact_list);
+	cddb.get_inexact_list(inexact_list);
 
-
+    // Whatever happens, we better clear the list beforehand
+	setArtistAndTitle("", "");
+	tracktitlelist.clear();
+	extlist.clear();
+			
     if( inexact_list.count() == 1)
     {
         pick = inexact_list.first();
@@ -2689,22 +2715,22 @@ KSCD::get_pathlist(QStringList& _pathlist)
 /*
 void KSCD::doSM()
 {
-//WABA: Session management has changed
-  #if 1
-  #warning Session management is broken
-#else
+  //WABA: Session management has changed
+ #if 1
+ #warning Session management is broken
+ #else
     if (isVisible())
-        kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\"");
+	  kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\"");
     else
-    kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\" -hide ");
-#endif
+	  kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\" -hide ");
+ #endif
 } // doSM
- */
+*/
 
-    void
-    kcderror(const QString& title, const QString& message)
+void
+kcderror(const QString& title, const QString& message)
 {
-    KMessageBox::information(0L, message, title);
+ KMessageBox::information(0L, message, title);
 }
 
 /* I am dropping this code for now. People seem to be having nothing
