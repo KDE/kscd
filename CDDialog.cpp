@@ -448,7 +448,7 @@ CDDialog::upload()
       
   QString cmd;
 
-  cmd = "/usr/sbin/sendmail -tU";
+  cmd = "/usr/sbin/sendmail -t";
 
   kdDebug() << "Submitting freedb entry: " << cmd << "\n" << endl;
   
