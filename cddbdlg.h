@@ -7,12 +7,6 @@
 #include "libkcddb/cddb.h"
 #include "libkcddb/client.h"
 
-using KCDDB::CDDB;
-
-extern "C" {
-#include "libwm/include/wm_cdinfo.h"
-}
-
 class CDInfoDialogBase;
 
 class CDDBDlg : public KDialogBase
@@ -24,10 +18,9 @@ class CDDBDlg : public KDialogBase
     ~CDDBDlg();
 
     void setData(
-      struct wm_cdinfo *cd,
       const KCDDB::CDInfo &_cddbInfo,
-      const QStringList  &_playlist
-    );
+      const KCDDB::TrackOffsetList &_trackStartFrames,
+      const QStringList  &_playlist);
 
   private slots:
     void save();
@@ -44,9 +37,8 @@ class CDDBDlg : public KDialogBase
 
     CDInfoDialogBase *m_dlgBase;
     KCDDB::CDInfo cddbInfo;
+    KCDDB::TrackOffsetList trackStartFrames;
     QStringList playlist;
-    unsigned ntracks;   /* Number of tracks on the disc */
-    QValueList<unsigned> trackStartFrames;
     KCDDB::Client *cddbClient;
 };
 #endif // CDDBDLG_H

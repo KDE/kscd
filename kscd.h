@@ -217,9 +217,8 @@ protected:
 
     void updateDisplayedTrack(int track);
 
-    void clearSongList();
     void setSongListTo(int whichTrack);
-    void populateSongList();
+    void populateSongList(QString infoStatus);
     void updatePlayPB(bool playing);
 
     void updateConfigDialog(configWidget* widget);
@@ -261,32 +260,27 @@ private:
     int                 prev_randomtrack();
     int                 real_randomtrack();
 
-  /**
-   * set the artist and title labels as well as the dock tooltip.
-   */
-    void updateArtistAndTitle();
     void setTitle(int track);
 
     /**
      * Info from CDDB, and exploded versions thereof.
      */
     KCDDB::CDInfo cddbInfo;
-    QString         infoStatus;
+    KCDDB::TrackOffsetList trackStartFrames;
     QStringList     tracktitlelist;
     QStringList     playlist;
 
 // cddb support
 public slots:
-    void cddb_done(CDDB::Result);
     void cddb_failed(CDDB::Result);
-    void cddb_no_info();
     void mycddb_inexact_read();
     void CDDialogSelected();
     void CDDialogDone();
-    void get_cddb_info();
+    void lookupCDDB();
+    void lookupCDDBDone(CDDB::Result);
 
 private:
-    void get_cdtext_info();
+    void lookupDevice();
 
 private:
     KCDDB::Client*  cddb;
