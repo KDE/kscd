@@ -119,6 +119,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
 {
   random_current      = random_list.begin();
 
+  cddb = new KCDDB::Client();
+
 #if defined(BUILD_CDDA)
   audio_systems_list
                      << "arts"
@@ -207,8 +209,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
     repeatPB->setOn(true);
   }
   
-  cddb = new KCDDB::Client();
-
   setDocking(Prefs::docking());
 
   setFocusPolicy(QWidget::NoFocus);
