@@ -80,6 +80,7 @@ extern "C" {
 #include "cddbdlg.h"
 #include "configWidget.h"
 #include "kvolumecontrol.h"
+#include <qtextcodec.h>
 
 #define N_TRACK_FIRST   1
 #define N_TRACK_STOP 0
@@ -265,12 +266,11 @@ void KSCD::setVolume(int v)
 }
 
 /**
- * Initialize smallfont which fits into the 13 and 14 pixel widgets
- * and verysmallfont which is slightly smaller.
+ * Initialize smallfont which fits into the 13 and 14 pixel widgets.
  */
 void KSCD::initFont()
 {
-  int theSmallPtSize = 10;
+/*  int theSmallPtSize = 10;
 
   // Find a font that fits the 13 and 14 pixel widgets
   QFont fn( KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold );
@@ -286,11 +286,8 @@ void KSCD::initFont()
           fits = true;
       }
   }
-
   smallfont = QFont(KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold);
-  verysmallfont = QFont(KGlobalSettings::generalFont().family(),
-                        (theSmallPtSize > 4) ? theSmallPtSize - 2 : 2,
-                        QFont::Bold);
+*/
 } // initFont()
 
 /**
@@ -786,8 +783,8 @@ void KSCD::showConfig()
                 m->load();
                 KCDDB::Config* cfg = new KCDDB::Config();
                 cfg->readConfig();
-                configDialog -> addPage(m, cfg, QString("freedb"), "cdtrack", i18n("Configure Fetching Items"));
-
+                configDialog -> addPage(m, cfg, QString("CDDB"), "cdtrack", i18n("Configure Fetching Items"));
+  
                 connect(configDialog, SIGNAL(okClicked()), m, SLOT(save()));
                 connect(configDialog, SIGNAL(applyClicked()), m, SLOT(save()));
                 connect(configDialog, SIGNAL(defaultClicked()), m, SLOT(defaults()));
@@ -1177,12 +1174,12 @@ void KSCD::setColors()
         trackTimeLED[u]->setLEDColor(led_color,background_color);
     }
 
-    titlelabel ->setFont( smallfont );
-    artistlabel->setFont( smallfont );
-    volumelabel->setFont( smallfont );
-    statuslabel->setFont( smallfont );
-    tracklabel ->setFont( smallfont );
-    totaltimelabel->setFont( smallfont );
+    titlelabel ->setFont( Prefs::ledFont() );
+    artistlabel->setFont( Prefs::ledFont() );
+    volumelabel->setFont( Prefs::ledFont() );
+    statuslabel->setFont( Prefs::ledFont() );
+    tracklabel ->setFont( Prefs::ledFont() );
+    totaltimelabel->setFont( Prefs::ledFont() );
 }
 
 void KSCD::readSettings()
@@ -1297,11 +1294,14 @@ void KSCD::cddb_done(CDDB::Result result)
     }
     KCDDB::CDInfo cddbInfo = cddb->bestLookupResponse();
 
+    //That will be configurable via SelectEncoding
+    QTextCodec *codec = QTextCodec::codecForName("utf8");
+    
     tracktitlelist.clear();
     extlist.clear();
 
     // CDDBTODO: we really should get the artist off the 'tracktitlelist'
-    tracktitlelist << cddbInfo.artist + " / " + cddbInfo.title;
+    tracktitlelist << codec->toUnicode(cddbInfo.artist.ascii()) + " / " + codec->toUnicode(cddbInfo.title.ascii());
 
     revision = cddbInfo.revision;
     category = cddbInfo.category;
@@ -1311,10 +1311,12 @@ void KSCD::cddb_done(CDDB::Result result)
 
     KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
     KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
+
+    
     for (; it != end; ++it)
     {
-        tracktitlelist << (*it).title;
-        extlist << (*it).extt;
+        tracktitlelist << codec->toUnicode((*it).title.ascii());
+        extlist << codec->toUnicode((*it).extt.ascii());
     }
 
     populateSongList();

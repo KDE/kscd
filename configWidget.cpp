@@ -70,17 +70,17 @@ configWidget::~configWidget()
 
 void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 {
-        if(toggle) {
-                kcfg_AudioSystem->show();
-                textLabel4->show();
-                kcfg_AudioDevice->show();
-                textLabel5->show();
-        } else {
-                kcfg_AudioSystem->hide();
-                textLabel4->hide();
-                kcfg_AudioDevice->hide();
-                textLabel5->hide();
-        }
+    if(toggle) {
+        kcfg_AudioSystem->show();
+        textLabel4->show();
+        kcfg_AudioDevice->show();
+        textLabel5->show();
+    } else {
+        kcfg_AudioSystem->hide();
+        textLabel4->hide();
+        kcfg_AudioDevice->hide();
+        textLabel5->hide();
+    }
 }
 
 void configWidget::configDone()

@@ -284,8 +284,6 @@ private:
     QStringList     extlist;
     QString         category;
     QString         genre;
-    QFont           smallfont;
-    QFont           verysmallfont;
 
 // cddb support
 public slots:
