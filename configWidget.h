@@ -36,8 +36,11 @@ class configWidget : public configWidgetUI
 
         void apply();
 
-    protected:
+   protected:
         KSCD* mPlayer;
+
+   public slots:
+        virtual void digitalPlaybackChckbx_toggled(bool);
 };
 
 #endif // CONFIGWIDGET_H

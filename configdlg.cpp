@@ -62,6 +62,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
                  0, "configDialog", modal, true),
      mPlayer(player)
 {
+
     setHelp(QString::null);
     KWin::setIcons(winId(), kapp->icon(), kapp->miniIcon());
     connect(this, SIGNAL(finished()), this, SLOT(finis()));
@@ -79,7 +80,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
      */
 
     KService::Ptr libkcddb = KService::serviceByDesktopName("libkcddb");
-    if (libkcddb->isValid())
+    if (libkcddb && libkcddb->isValid())
     {
         KCModuleInfo info(libkcddb->desktopEntryPath(), "settings");
         if (info.service()->isValid())

@@ -21,9 +21,6 @@
  *
  */
 
-#include "configWidget.h"
-#include "kscd.h"
-
 #include <kaccel.h>
 #include <kcolorbutton.h>
 #include <kdialog.h>
@@ -35,6 +32,11 @@
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
+
+#include <config.h>
+
+#include "configWidget.h"
+#include "kscd.h"
 
 /*
  *  Constructs a configWidget which is a child of 'parent', with the
@@ -60,7 +62,19 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     ejectChkbx->setChecked(mPlayer->ejectOnFinish());
     stopOnExitChckbx->setChecked(mPlayer->stopOnExit());
     cdDevice->setURL(mPlayer->devicePath());
+
+    digitalPlaybackChckbx_toggled(mPlayer->digitalPlayback());
     digitalPlaybackChckbx->setChecked(mPlayer->digitalPlayback());
+#if defined(BUILD_CDDA)
+    // fill ComboBox audioBackend
+    audioBackend->insertStringList(mPlayer->audioSystems());
+
+    if(audioBackend->listBox()->findItem(mPlayer->audioSystem()))
+        audioBackend->setCurrentText(mPlayer->audioSystem());
+    audioDevice->setText(mPlayer->audioDevice());
+#else
+    digitalPlaybackChckbx->hide();
+#endif
 }
 
 configWidget::~configWidget()
@@ -75,6 +89,23 @@ void configWidget::apply()
     mPlayer->setAutoplay(autoplayChkbx->isChecked());
     mPlayer->setEjectOnFinish(ejectChkbx->isChecked());
     mPlayer->setStopOnExit(stopOnExitChckbx->isChecked());
-    mPlayer->setDevicePath(cdDevice->lineEdit()->text());
-    mPlayer->setDigitalPlayback(digitalPlaybackChckbx->isChecked());
+    if(digitalPlaybackChckbx->isChecked())
+        mPlayer->setDevicePaths(cdDevice->lineEdit()->text(), audioBackend->currentText(), audioDevice->text());
+    else
+        mPlayer->setDevicePaths(cdDevice->lineEdit()->text(), QString(""), QString(""));
+}
+
+void configWidget::digitalPlaybackChckbx_toggled(bool toggle)
+{
+        if(toggle) {
+                audioBackend->show();
+                textLabel4->show();
+                audioDevice->show();
+                textLabel5->show();
+        } else {
+                audioBackend->hide();
+                textLabel4->hide();
+                audioDevice->hide();
+                textLabel5->hide();
+        }
 }

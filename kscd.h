@@ -157,15 +157,17 @@ public:
     void setAutoplay(bool play) { autoplay = play; }
     bool ejectOnFinish() { return ejectonfinish; }
     void setEjectOnFinish(bool eject) { ejectonfinish = eject; }
-    bool digitalPlayback() { return digitalplayback; }
-    void setDigitalPlayback(bool digital) { digitalplayback = digital; }
+    bool digitalPlayback();
     unsigned int skipInterval() { return skipDelta; }
     void setSkipInterval(unsigned int skip) { skipDelta = skip; }
     QColor ledColor() { return led_color; }
     QColor bgColor() { return background_color; }
     void setColors(const QColor& LEDs, const QColor& bground);
-    void setDevicePath(QString path);
+    void setDevicePaths(QString cd_device, QString audio_system, QString audio_device);
     QString devicePath() { return cd_device_str; }
+    QString audioSystem() { return audio_system_str; }
+    QString audioDevice() { return audio_device_str; }
+    QStringList audioSystems() { return audio_systems_list; }
     SMTPConfigData* smtpData() { return smtpConfigData; }
     void setToolTips();
 
@@ -295,7 +297,9 @@ private:
     bool                have_new_cd;
     int                 time_display_mode;
     QString             cd_device_str;
-
+    QString             audio_system_str; /* arts, alsa or sun. empty means no cdda */
+    QString             audio_device_str; /* for alsa hw:0,0, for sun /dev/audio */
+    QStringList         audio_systems_list;
 
     QPushButton         *makeButton( int, int, int, int, const QString& );
 

@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>450</width>
-            <height>377</height>
+            <height>451</height>
         </rect>
     </property>
     <property name="caption">
@@ -218,7 +218,7 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="KURLRequester" row="0" column="0">
+                <widget class="KURLRequester" row="0" column="0" rowspan="1" colspan="3">
                     <property name="name">
                         <cstring>cdDevice</cstring>
                     </property>
@@ -226,7 +226,26 @@
                         <string>The CD-ROM device to use when playing CDs. This will typically look something like "/dev/cdrom". To have KsCD autodetect your CD-ROM, leave this field empty.</string>
                     </property>
                 </widget>
-                <widget class="QCheckBox" row="1" column="0">
+                <widget class="QComboBox" row="2" column="2">
+                    <property name="name">
+                        <cstring>audioBackend</cstring>
+                    </property>
+                    <property name="insertionPolicy">
+                        <enum>NoInsertion</enum>
+                    </property>
+                    <property name="duplicatesEnabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="3" column="0">
+                    <property name="name">
+                        <cstring>textLabel5</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Selec&amp;t audio device:</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="3">
                     <property name="name">
                         <cstring>digitalPlaybackChckbx</cstring>
                     </property>
@@ -238,6 +257,19 @@
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected KsCD will attempt to play the CD using direct digital playback. This option is useful if the CD-ROM is not connected directly to the sound output on the computer. Note that digital playback is slower than the normal method of playback.</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>textLabel4</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Select &amp;audio backend:</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit" row="3" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>audioDevice</cstring>
                     </property>
                 </widget>
             </grid>
@@ -255,17 +287,44 @@
             <property name="sizeHint">
                 <size>
                     <width>20</width>
-                    <height>51</height>
+                    <height>40</height>
                 </size>
             </property>
         </spacer>
     </vbox>
 </widget>
-<customwidgets>
-</customwidgets>
+<connections>
+    <connection>
+        <sender>digitalPlaybackChckbx</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>configWidgetUI</receiver>
+        <slot>digitalPlaybackChckbx_toggled(bool)</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>ledColorBtn</tabstop>
+    <tabstop>bgColorBtn</tabstop>
+    <tabstop>systrayChckbx</tabstop>
+    <tabstop>skipInterval</tabstop>
+    <tabstop>autoplayChkbx</tabstop>
+    <tabstop>ejectChkbx</tabstop>
+    <tabstop>stopOnExitChckbx</tabstop>
+    <tabstop>cdDevice</tabstop>
+    <tabstop>digitalPlaybackChckbx</tabstop>
+    <tabstop>audioDevice</tabstop>
+    <tabstop>audioBackend</tabstop>
+</tabstops>
+<slots>
+    <slot>digitalPlaybackChckbx_toggled(bool)</slot>
+    <slot>digitalPlaybackChckbx_stateChanged(int)</slot>
+</slots>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>
+    <includehint>kcolorbutton.h</includehint>
+    <includehint>kcolorbutton.h</includehint>
     <includehint>knuminput.h</includehint>
+    <includehint>knuminput.h</includehint>
+    <includehint>kurlrequester.h</includehint>
     <includehint>klineedit.h</includehint>
     <includehint>kpushbutton.h</includehint>
 </includehints>

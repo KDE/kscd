@@ -60,6 +60,8 @@
 #include <kwin.h>
 #include <netwm.h>
 
+#include <config.h>
+
 extern "C" {
     // We don't have libWorkMan installed already, so get everything
     // from within our own directory
@@ -189,7 +191,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
     autoplay(false),
     stopexit(true),
     ejectonfinish(false),
-    digitalplayback(false),
     currentlyejected(false),
     updateDialog(false), //!!!!
     revision(0) // The first freedb revision is "0" //!!!!
@@ -209,6 +210,19 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect(cddb, SIGNAL(finished(CDDB::Result)),
           this, SLOT(cddb_done(CDDB::Result)));
 
+  audio_systems_list
+#if defined(BUILD_CDDA)
+                     << "arts"
+#if defined(HAVE_ARTS_LIBASOUND2)
+                     << "alsa"
+#endif
+#ifdef USE_SUN_AUDIO
+                     << "sun"
+#endif
+#endif
+  ;
+
+
   readSettings();
   initFont();
   drawPanel();
@@ -219,6 +233,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   setToolTips();
 
+  /* FIXME check for return value */
+  setDevicePaths(cd_device_str, audio_system_str, audio_device_str);
 
   // set the volume BEFORE setting up the signals
   volSB->setValue(volume);
@@ -311,6 +327,14 @@ KSCD::~KSCD()
     delete cddb;
 } // ~KSCD
 
+bool
+KSCD::digitalPlayback() {
+#if defined(BUILD_CDDA)
+        return !(audio_system_str.isEmpty());
+#else
+        return false;
+#endif
+}
 
 void
 KSCD::initialShow()
@@ -1166,17 +1190,35 @@ KSCD::setCDDBOptions(CDDBSetup* config)  //!!!!
 } // setCDDBOptions
 
 void
-KSCD::setDevicePath(QString path)
+KSCD::setDevicePaths(QString cd_device, QString audio_system, QString audio_device)
 {
-    if (cd_device_str == path)
+    static bool first_init = true;
+    if(first_init) {
+        first_init = false;
+    } else if (cd_device_str == cd_device &&
+        audio_system_str == audio_system &&
+        audio_device_str == audio_device)
     {
         return;
     }
 
     cddrive_is_ok = false;
-    cd_device_str = path;
-    int ret = wm_cd_init(WM_CDIN, QFile::encodeName(cd_device_str), 0, 0, 0);
-    kdDebug() << "Device changed to " << cd_device_str << ", return " << ret << "\n";
+    cd_device_str = cd_device;
+    audio_system_str = audio_system;
+    audio_device_str = audio_device;
+
+    int ret = wm_cd_init(
+#if defined(BUILD_CDDA)
+        audio_system_str.isEmpty()?WM_CDIN:WM_CDDA,
+        QFile::encodeName(cd_device_str), audio_system_str.ascii(), audio_device_str.ascii(), 0);
+    kdDebug() << "Device changed to " << cd_device_str << ", " << audio_system_str
+        << ", " << audio_device_str << ". return " << ret << "\n";
+#else
+        WM_CDIN, QFile::encodeName(cd_device_str), 0, 0, 0);
+    kdDebug() << "Device changed to " << cd_device_str << ". return " << ret << "\n";
+#endif
+    printf("setDevicePatches return %i\n", ret);
+
     device_change = true;
     setArtistAndTitle("", "");
     tracktitlelist.clear();
@@ -1567,7 +1609,6 @@ KSCD::setColors(const QColor& LEDs, const QColor& bground)
     setColors();
 }
 
-
 void
 KSCD::readSettings()
 {
@@ -1577,7 +1618,7 @@ KSCD::readSettings()
 	volume     	= config->readNumEntry("Volume", volume);
         // TODO: this breaks if randomplay comes up true to begin with!
 //	randomplay 	= config->readBoolEntry("RandomPlay", false);
-    docking = config->readBoolEntry("DOCKING", docking);
+        docking = config->readBoolEntry("DOCKING", docking);
 	autoplay		= config->readBoolEntry("AUTOPLAY", autoplay);
 	stopexit 	= config->readBoolEntry("STOPEXIT", stopexit);
 	ejectonfinish = config->readBoolEntry("EJECTONFINISH", ejectonfinish);
@@ -1585,19 +1626,17 @@ KSCD::readSettings()
 	skipDelta = config->readNumEntry("SkipDelta", skipDelta);
 	time_display_mode = config->readNumEntry("TimeDisplay", TRACK_SEC);
 
-#ifdef DEFAULT_CD_DEVICE
-
+#ifndef DEFAULT_CD_DEVICE
+#define DEFAULT_CD_DEVICE "/dev/cdrom"
 	// sun ultrix etc have a canonical cd rom device specified in the
 	// respective plat_xxx.c file. On those platforms you need nnot
 	// specify the cd rom device and DEFAULT_CD_DEVICE is not defined
 	// in config.h
-
-	cd_device_str = config->readEntry("CDDevice",DEFAULT_CD_DEVICE);
-	/* FIXME check for return value */
-	wm_cd_init(WM_CDIN, QFile::encodeName(cd_device_str), 0, 0, 0);
-
 #endif
 
+        cd_device_str = config->readEntry("CDDevice", DEFAULT_CD_DEVICE);
+        audio_system_str = config->readEntry("AudioSystem", "");
+        audio_device_str = config->readEntry("AudioDevice", "");
 
 	QColor defaultback = black;
 	QColor defaultled = QColor(226,224,255);
@@ -1732,6 +1771,8 @@ KSCD::writeSettings()
     config->writeEntry("STOPEXIT", stopexit);
     config->writeEntry("EJECTONFINISH", ejectonfinish);
     config->writeEntry("CDDevice", cd_device_str);
+    config->writeEntry("AudioSystem", audio_system_str);
+    config->writeEntry("AudioDevice", audio_device_str);
     config->writeEntry("Volume", volume);
     config->writeEntry("BackColor",background_color);
     config->writeEntry("LEDColor",led_color);
