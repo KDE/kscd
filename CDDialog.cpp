@@ -275,7 +275,7 @@ CDDialog::extIB()
 
   InexactDialog *dialog;
   dialog = new InexactDialog(0,"dialog",false);
-  dialog->setTitle(i18n("Use this Editor to Annotate this Track"));
+  dialog->setTitle(i18n("Use this editor to annotate this track."));
 
   dialog->insertText(*ext_list.at(iNr + 1));
   
@@ -299,7 +299,7 @@ CDDialog::extITB()
   InexactDialog *dialog;
   dialog = new InexactDialog(0,"dialog",false);
   dialog->insertText(ext_list.first());
-  dialog->setTitle(i18n("Use this Editor to Annotate the Title"));
+  dialog->setTitle(i18n("Use this editor to annotate the title."));
   
   if(dialog->exec() != QDialog::Accepted)
     {
@@ -377,7 +377,7 @@ void CDDialog::titlechanged() {
 
 QString submitcat;
 
-void 
+void
 CDDialog::upload()
 {
   if(!checkit())

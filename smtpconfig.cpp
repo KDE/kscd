@@ -65,7 +65,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     QGridLayout * glay = new QGridLayout ( lay2, 2, 4, 5 );
     glay->setColStretch ( 1, 1 );
 
-    mailProfileLabel = new QLabel(i18n("Current Email Profile"), mainBox, "mailProfileLabel");
+    mailProfileLabel = new QLabel(i18n("Current email profile:"), mainBox, "mailProfileLabel");
     glay->addWidget ( mailProfileLabel, 0, 0 );
     mailProfileCombo = new KComboBox( FALSE, mainBox, "mailProfileCombo" );
     glay->addMultiCellWidget( mailProfileCombo, 0,0, 1,3);
@@ -82,7 +82,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
 	  }
       }
 
-    serverHostLabel = new QLabel(i18n("SMTP Address:Port"), mainBox, "serverHostLabel");
+    serverHostLabel = new QLabel(i18n("SMTP address:port :"), mainBox, "serverHostLabel");
     glay->addWidget ( serverHostLabel, 1, 0 );
     serverHostEdit = new QLineEdit(mainBox, "serverHostEdit");
     glay->addWidget ( serverHostEdit, 1, 1 );
@@ -98,7 +98,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     serverPortEdit->setEnabled(configData->enabled);
     serverPortEdit->setReadOnly( true );
 
-    senderAddressLabel = new QLabel(i18n("Your Email Address"), mainBox, "senderAddressLabel");
+    senderAddressLabel = new QLabel(i18n("Your email address:"), mainBox, "senderAddressLabel");
     glay->addWidget ( senderAddressLabel, 2, 0 );
     senderAddressEdit = new QLineEdit(mainBox, "senderAddressEdit");
     glay->addMultiCellWidget ( senderAddressEdit, 2,2, 1,3 );
@@ -106,7 +106,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     senderAddressEdit->setEnabled(configData->enabled);
     senderAddressEdit->setReadOnly( true );
 
-    senderReplyToLabel = new QLabel(i18n("Your Reply Address"), mainBox, "senderReplyToLabel");
+    senderReplyToLabel = new QLabel(i18n("Your reply address:"), mainBox, "senderReplyToLabel");
     glay->addWidget ( senderReplyToLabel, 3, 0 );
     senderReplyToEdit = new QLineEdit(mainBox, "senderReplyToEdit");
     glay->addMultiCellWidget ( senderReplyToEdit, 3,3, 1,3 );

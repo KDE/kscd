@@ -76,10 +76,10 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
 
   QBoxLayout * lay2 = new QHBoxLayout ( lay1 );
   lay2->addStretch ( 1 );
-  ok_button = new QPushButton(i18n("OK"),this,"ok_button");
+  ok_button = new QPushButton(i18n("&OK"),this,"ok_button");
   lay2->addWidget ( ok_button );
   lay2->addStretch ( 1 );
-  cancel_button = new QPushButton(i18n("Cancel"),this,"cancel_button");
+  cancel_button = new QPushButton(i18n("&Cancel"),this,"cancel_button");
   lay2->addWidget ( cancel_button );
   lay2->addStretch ( 1 );
 
