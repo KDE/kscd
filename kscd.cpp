@@ -1027,7 +1027,7 @@ void KSCD::cdMode()
           return;
         }
 
-    
+
         lookupDevice();
 
         if(Prefs::autoplay() && cdmode == WM_CDM_STOPPED)
@@ -1298,7 +1298,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
         }
         c++;
       }
-  
+
       bool ok(false);
       QString res = KInputDialog::getItem(
               i18n("Select CDDB Entry"),
@@ -1318,7 +1318,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
         // user pressed Cancel
       }
     }
-  
+
     // Some sanity provisions to ensure that the number of records matches what
     // the CD actually contains.
     while (info.trackInfoList.count() < cddbInfo.trackInfoList.count())
@@ -1859,7 +1859,6 @@ void KSCD::setSongListTo(int cb_index)
 
 static const KCmdLineOptions options[] =
 {
-    {"s",0,0},
     {"start",I18N_NOOP("Start playing"),0},
     {"+[device]",I18N_NOOP("CD device, can be a path or a media:/ URL"),0},
     KCmdLineLastOption
