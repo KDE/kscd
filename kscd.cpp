@@ -684,22 +684,22 @@ KSCD::playClicked()
               .arg(*it);
             songListCB->insertItem( str );
           }
-
+        
         // We don't know the rest, but we should still have entries
         for( ; i < cur_ntracks; i++)
           {
             songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1) ) );
           }
-
+        
         qApp->processEvents();
         qApp->flushX();
-
+        
         if(!playlist.isEmpty())
           {
             if(playlistpointer >=(int) playlist.count())
               playlistpointer = 0;
             wm_cd_play (atoi((*playlist.at(playlistpointer)).ascii()), 0,
-                     atoi((*playlist.at(playlistpointer)).ascii()) + 1);
+                        atoi((*playlist.at(playlistpointer)).ascii()) + 1);
             save_track = cur_track = atoi((*playlist.at(playlistpointer)).ascii());
           } else {
             wm_cd_play (save_track, 0, cur_ntracks + 1);
@@ -707,8 +707,8 @@ KSCD::playClicked()
     } else { // if (WM_CDM_STOPPED||UNKNOWN)
       if (cur_cdmode == WM_CDM_PLAYING || cur_cdmode == WM_CDM_PAUSED)
         {
-
-            switch (cur_cdmode)
+          fprintf(stderr, "Not Stopped. Mode = %d\n", cur_cdmode);
+          switch (cur_cdmode)
               {
               case WM_CDM_PLAYING:
                 statuslabel->setText( i18n("Pause") );
@@ -724,7 +724,6 @@ KSCD::playClicked()
                   } else {
                     statuslabel->setText( i18n("Playing") );
                   }
-                fprintf(stderr, "yeah");
                 wm_cd_pause();
                 break;
 
