@@ -1806,27 +1806,22 @@ KSCD::cddb_done(CDDB::Result result)
         cddb_failed();
         return;
     }
-    // CDDBTODO: handle multiple records returned
-    KCDDB::CDInfoList cddbInfoList = cddb->lookupResponse();
+    KCDDB::CDInfo cddbInfo = cddb->bestLookupResponse();
 
     // shouldn't need to clear it, but i fear the maintainability monster
     // so let's just clear it to be safe, m'kay
     tracktitlelist.clear();
 
-    if (!cddbInfoList.isEmpty())
+    setArtistAndTitle(cddbInfo.artist, cddbInfo.title);
+
+    // CDDBTODO: we really should get the artist off the 'tracktitlelist'
+    tracktitlelist << cddbInfo.artist + " / " + cddbInfo.title;
+
+    KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
+    KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
+    for (; it != end; ++it)
     {
-        KCDDB::CDInfo cddbInfo(cddbInfoList.first());
-        setArtistAndTitle(cddbInfo.artist, cddbInfo.title);
-
-        // CDDBTODO: we really should get the artist off the 'tracktitlelist'
-        tracktitlelist << cddbInfo.artist + " / " + cddbInfo.title;
-
-        KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
-        KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
-        for (; it != end; ++it)
-        {
-            tracktitlelist << (*it).title;
-        }
+        tracktitlelist << (*it).title;
     }
 
     playlistpointer = 0;
