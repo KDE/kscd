@@ -53,7 +53,7 @@ static inline QPixmap loadIcon( const char * name )
 }
 
 ConfigDlg::ConfigDlg(KSCD* player, const char* name, bool modal)
-  :  KDialogBase(KDialogBase::IconList, i18n("kscd Configuration"),
+  :  KDialogBase(KDialogBase::IconList, i18n("CD Player Configuration"),
                  KDialogBase::Help |
                  KDialogBase::Ok |
                  KDialogBase::Apply |

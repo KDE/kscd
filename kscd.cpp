@@ -47,6 +47,7 @@
 #include <kstdaction.h>
 #include <kstringhandler.h>
 #include <kurl.h>
+#include <kuniqueapplication.h>
 
 #include "docking.h"
 #include "kscd.h"
@@ -126,7 +127,7 @@ int cddb_error = 0;
 *****************************************************************************/
 
 KSCD::KSCD( QWidget *parent, const char *name )
-  :   QWidget( parent, name ), DCOPObject("CDPlayer")
+  :   QWidget( parent, name, Qt::WDestructiveClose ), DCOPObject("CDPlayer")
 {
   magicproc           = 0L;
   cd_device_str       = "";
@@ -620,8 +621,9 @@ KSCD::setupPopups()
     infoPopup->insertItem("Magellan", 6);
     infoPopup->insertItem("Yahoo!", 7);
 
-    mainPopup->insertItem (i18n("Performances"), perfPopup);
-    connect( perfPopup, SIGNAL(activated(int)), SLOT(performances(int)) );
+    // Disabled for now; website no longer exists
+    //mainPopup->insertItem (i18n("Performances"), perfPopup);
+    //connect( perfPopup, SIGNAL(activated(int)), SLOT(performances(int)) );
 
     mainPopup->insertItem (i18n("Purchases"), purchPopup);
     connect( purchPopup, SIGNAL(activated(int)), SLOT(purchases(int)) );
@@ -683,12 +685,12 @@ KSCD::setToolTips(bool on)
         QToolTip::add(bwdPB,           i18n("30 Secs Backward"));
         QToolTip::add(nextPB,          i18n("Next Track"));
         QToolTip::add(prevPB,          i18n("Previous Track"));
-        QToolTip::add(dockPB,          i18n("Quit Kscd"));
+        QToolTip::add(dockPB,          i18n("Quit CD Player"));
 #if KSCDMAGIC
         QToolTip::add(magicPB,         i18n("Run Kscd Magic"));
 #endif
         QToolTip::add(aboutPB,         i18n("Cycle Time Display"));
-        QToolTip::add(optionsbutton,   i18n("Configure Kscd"));
+        QToolTip::add(optionsbutton,   i18n("Configure CD Player"));
         QToolTip::add(ejectPB,         i18n("Eject CD"));
         QToolTip::add(infoPB,          i18n("The Artist on the Web"));
         QToolTip::add(cddbbutton,      i18n("freedb Dialog"));
@@ -984,6 +986,10 @@ KSCD::quitClicked()
 void
 KSCD::closeEvent( QCloseEvent *e )
 {
+    // Stop playing the CD
+    if ( cur_cdmode == WM_CDM_PLAYING )
+        stopClicked();
+
     quitPending = true;
     randomplay = FALSE;
 
@@ -1720,7 +1726,7 @@ KSCD::readSettings()
     config->setGroup("CDDB");
 
     cddb.setTimeout(config->readNumEntry("CDDBTimeout",60));
-    cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",false);
+    cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",true);
     cddbbasedir = config->readEntry("LocalBaseDir");
     if (cddbbasedir.isEmpty())
         cddbbasedir = KGlobal::dirs()->resourceDirs("cddb").last();
@@ -2327,6 +2333,21 @@ KSCD::cddb_done()
             QString path,tmp;
             tmp.sprintf("/%08lx",cddb_discid());
             path = cddbbasedir;
+
+            // check to see if the category dir is there yet and
+            // create it (with the right permissions) if it's not
+            QDir checkCat;
+            checkCat.setPath(path);
+            if ( !checkCat.exists(category) )
+            {
+                checkCat.mkdir(category);
+                QString fulldir(QDir::cleanDirPath(checkCat.path()));
+                fulldir += '/';
+                fulldir += category;
+                struct stat tmpBuf;
+                stat (fulldir.local8Bit().data(), &tmpBuf);
+                chmod(fulldir.local8Bit().data(), tmpBuf.st_mode | S_IWGRP);
+            }
             path += "/";
             path += category;
             path += tmp;
@@ -2646,7 +2667,7 @@ KSCD::information(int i)
     {
         case 0:
             str =
-                QString("http://www.ubl.com/find/form?SEARCH=%1")
+                QString("http://ubl.artistdirect.com/cgi-bin/gx.cgi/AppLogic+Search?select=MusicArtist&searchstr=%1&searchtype=NormalSearch")
                 .arg(artist);
             startBrowser(str);
             break;
@@ -3075,7 +3096,11 @@ KSCD::keyPressEvent(QKeyEvent* e)
     bool isNum;
     int value = e->text().toInt(&isNum);
 
-    if (isNum)
+    if (e->key() == Qt::Key_Fq)
+    {
+        kapp->invokeHelp();
+    }
+    else if (isNum)
     {
         value = (jumpToTrack * 10) + value;
 
@@ -3134,10 +3159,16 @@ main( int argc, char *argv[] )
 
     KCmdLineArgs::init( argc, argv, &aboutData );
 
-    KApplication a;
+    KUniqueApplication::addCmdLineOptions();
 
-    kapp->dcopClient()->attach();
-    kapp->dcopClient()->registerAs("kscd");
+    if (!KUniqueApplication::start())
+    {
+        fprintf(stderr, "kscd is already running!\n");
+        exit(0);
+    }
+
+    KUniqueApplication a;
+
     kapp->dcopClient()->setDefaultObject("CDPlayer");
 
     KGlobal::dirs()->addResourceType("cddb",
