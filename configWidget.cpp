@@ -24,10 +24,18 @@
 
 #include <kdebug.h>
 #include <klineedit.h>
+#include <dcopref.h>
 #include <kurlrequester.h>
 #include <qcheckbox.h>
+#include <kcombobox.h>
 
 #include <config.h>
+extern "C" {
+    // We don't have libWorkMan installed already, so get everything
+    // from within our own directory
+#include "libwm/include/wm_config.h"
+}
+
 
 #include "configWidget.h"
 #include "kscd.h"
@@ -48,6 +56,9 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     {
         setName("configWidget");
     }
+
+    kcfg_cdDevice->comboBox()->insertItem(DEFAULT_CD_DEVICE);
+    getMediaDevices();
     
 #if defined(BUILD_CDDA)
     kcfg_DigitalPlayback_toggled(Prefs::digitalPlayback());
@@ -89,6 +100,33 @@ void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
         textLabel5->hide();
     }
 }
+
+void configWidget::getMediaDevices()
+{
+    DCOPRef ref("kded","mediamanager");
+    DCOPReply rep = ref.call("fullList()");
+    if (!rep.isValid()) {
+        return;
+    }
+    QStringList list = rep;
+    QStringList::const_iterator it = list.begin();
+    QStringList::const_iterator itEnd = list.end();
+    // it would be much better if libmediacommon was in kdelibs
+    while (it != itEnd) {
+        it++;
+        if (it == itEnd) break;
+        QString url="media:/"+(*it); // is it always right? ervin?
+        kdDebug() << "checking " << url << endl;
+        for (int i=0;i<9;i++) ++it;  // go to mimetype (MIME_TYPE-NAME from medium.h)
+        kdDebug() << "Mime: " << *it << endl;
+        if (it!=itEnd && (*it)=="media/audiocd") {
+            kcfg_cdDevice->comboBox()->insertItem(url);
+        }
+        while (it !=itEnd && (*it)!="---") ++it;  // go to end of current device's properties
+        ++it;
+    }
+}
+ 
 
 void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
 {

@@ -242,7 +242,7 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="KURLRequester" row="0" column="0" rowspan="1" colspan="3">
+                <widget class="KURLComboRequester" row="0" column="0" rowspan="1" colspan="3">
                     <property name="name">
                         <cstring>kcfg_cdDevice</cstring>
                     </property>

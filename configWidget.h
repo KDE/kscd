@@ -42,6 +42,8 @@ class configWidget : public configWidgetUI
        virtual void kcfg_DigitalPlayback_toggled(bool);
        virtual void kcfg_SelectEncoding_toggled(bool);
        virtual void configDone();
+   private:
+       void getMediaDevices();
 };
 
 #endif // CONFIGWIDGET_H

@@ -1,0 +1,9 @@
+[Desktop Entry]
+ServiceTypes=media/audiocd
+Actions=Play;
+X-KDE-Priority=TopLevel
+
+[Desktop Action Play]
+Name=Play
+Exec=kscd -s -caption "%c" %i %m %u
+

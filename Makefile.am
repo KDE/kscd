@@ -24,6 +24,9 @@ kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
 profiledata_DATA = kscd.profile.xml
 profiledatadir = $(kde_datadir)/profiles
 
+servicedata_DATA = audiocd_play.desktop
+servicedatadir = $(kde_datadir)/konqueror/servicemenus
+
 DISTCLEANFILES = config.h
 
 bin_PROGRAMS = kscd

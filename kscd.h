@@ -123,6 +123,7 @@ k_dcop:
     void volumeDown() { decVolume(); }
     void volumeUp() { incVolume(); }
     void setVolume(int v);
+    void setDevice(const QString& dev);
     int  getVolume() { return Prefs::volume(); }
     int currentTrack();
     int currentTrackLength();

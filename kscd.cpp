@@ -34,6 +34,7 @@
 #include <kaboutdata.h>
 #include <kaccel.h>
 #include <kaction.h>
+#include <dcopref.h>
 #include <kcharsets.h>
 #include <kcmdlineargs.h>
 #include <kconfig.h>
@@ -263,6 +264,11 @@ void KSCD::setVolume(int v)
 {
     volChanged(v);
     volumeSlider->setValue(v);
+}
+
+void KSCD::setDevice(const QString& dev) {
+    Prefs::self()->setCdDevice(dev);
+    setDevicePaths();
 }
 
 /**
@@ -820,21 +826,37 @@ void KSCD::configureKeys()
 void KSCD::setDevicePaths()
 {
     cddrive_is_ok = false;
+    KURL deviceUrl(Prefs::cdDevice());
+    kdDebug() << "Current device is " << deviceUrl.url() << endl;
+    if (deviceUrl.protocol()=="media")
+    {
+    	kdDebug(67000) << "Asking mediamanager for " << deviceUrl.path(-1).mid(1) << endl;
+        DCOPRef mediamanager("kded","mediamanager");
+	// mediamanager does not like paths with leading /
+        DCOPReply rep = mediamanager.call("properties(QString)",deviceUrl.path(-1).mid(1));
+	if (!rep.isValid()) deviceUrl.setPath(DEFAULT_CD_DEVICE);
+	else {
+		QStringList properties = rep;
+		kdDebug(67000) << "Got properties " << properties << endl;
+		deviceUrl.setPath(properties[5]);
+	      }	     
+    }
+    
     int ret = wm_cd_init(
 #if defined(BUILD_CDDA)
         (Prefs::digitalPlayback())?WM_CDDA:WM_CDIN,
-        QFile::encodeName(Prefs::cdDevice()),
+        QFile::encodeName(deviceUrl.path(-1)),
         (Prefs::digitalPlayback())?Prefs::audioSystem().ascii():"",
         (Prefs::digitalPlayback())?Prefs::audioDevice().ascii():"",
         0);
     kdDebug(67000) << "Device changed to "
         << ((Prefs::digitalPlayback())?"WM_CDDA, ":"WM_CDIN, ")
-        << Prefs::cdDevice() << ", "
+        << deviceUrl.path() << ", "
         << ((Prefs::digitalPlayback())?Prefs::audioSystem():"") << ", "
         << ((Prefs::digitalPlayback())?Prefs::audioDevice():"") << ". returns status " << ret << "\n";
 #else
-        WM_CDIN, QFile::encodeName(Prefs::cdDevice()), 0, 0, 0);
-    kdDebug(67000) << "Device changed to " << Prefs::cdDevice() << ". returns status  " << ret << "\n";
+        WM_CDIN, QFile::encodeName(deviceUrl.path(-1)), 0, 0, 0);
+    kdDebug(67000) << "Device changed to " << deviceUrl.path() << ". returns status  " << ret << "\n";
 #endif
 
     setTitle(0);
@@ -1947,6 +1969,15 @@ void KSCD::setSongListTo(int cb_index)
     QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
 }
 
+static const KCmdLineOptions options[] =
+{
+    {"s",0,0},
+    {"start",I18N_NOOP("Start playing"),0},
+    {"+[device]",I18N_NOOP("CD device, can be a path or a media:/ URL"),0},
+    KCmdLineLastOption
+};
+
+
 /**
  * main()
  */
@@ -1967,12 +1998,27 @@ int main( int argc, char *argv[] )
     aboutData.addCredit("freedb.org", I18N_NOOP("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
     KCmdLineArgs::init( argc, argv, &aboutData );
-
+    KCmdLineArgs::addCmdLineOptions(options);
     KUniqueApplication::addCmdLineOptions();
 
+    KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
     if (!KUniqueApplication::start())
     {
         fprintf(stderr, "kscd is already running!\n");
+	if (args->count()>0 || args->isSet("start")) 
+	{
+	    DCOPClient cli;
+	    if (!cli.attach()) exit(0);
+	    DCOPRef ref("kscd","CDPlayer");
+	    if (args->count()>0)
+	    {
+	        ref.send("setDevice(QString)",QString(args->arg(0)));
+            }
+	    if (args->isSet("start"))
+	    {
+	        ref.send("play()");
+            }
+	}
         exit(0);
     }
 
@@ -1998,6 +2044,9 @@ int main( int argc, char *argv[] )
     {
         k->show();
     }
+    
+    if (args->count()>0) Prefs::self()->setCdDevice(args->arg(0));
+    if (args->isSet("start")) Prefs::self()->setAutoplay(true);
 
     return a.exec();
 } // main()
