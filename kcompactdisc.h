@@ -77,8 +77,8 @@ public:
         const QString &device = defaultDevice,
         unsigned volume = 50,
         bool digitalPlayback = true,
-        const QString &audioSystem = "",
-        const QString &audioDevice = "");
+        const QString &audioSystem = QString::null,
+        const QString &audioDevice = QString::null);
 
     void setVolume(unsigned volume);
 
@@ -95,7 +95,7 @@ public:
     /**
      * Current device.
      *
-     * @return Empty string if no usable device set.
+     * @return Null string if no usable device set.
      */
     const QString &device() const;
 
@@ -117,14 +117,14 @@ public:
     /**
      * Artist for whole disc.
      *
-     * @return Disc artist or empty string.
+     * @return Disc artist or null string.
      */
     const QString &discArtist() const { return m_artist; }
 
     /**
      * Title of disc.
      *
-     * @return Disc title or empty string.
+     * @return Disc title or null string.
      */
     const QString &discTitle() const { return m_title; }
 
@@ -144,28 +144,28 @@ public:
     /**
      * Artist of current track.
      *
-     * @return Track artist or empty string.
+     * @return Track artist or null string.
      */
     const QString &trackArtist() const;
 
     /**
      * Artist of given track.
      *
-     * @return Track artist or empty string.
+     * @return Track artist or null string.
      */
     const QString &trackArtist(unsigned track) const;
 
     /**
      * Title of current track.
      *
-     * @return Track title or empty string.
+     * @return Track title or null string.
      */
     const QString &trackTitle() const;
 
     /**
      * Title of given track.
      *
-     * @return Track title or empty string.
+     * @return Track title or null string.
      */
     const QString &trackTitle(unsigned track) const;
 
@@ -222,12 +222,7 @@ signals:
     /**
      * A disc was inserted or removed.
      *
-     * @param discId Zero if there is no (audio) disc.
-     * @param artist Empty string if unknown.
-     * @param album Empty string if unknown.
-     * @param trackNames Array of track names, each item empty string if unknown.
-     * @param trackStartTimes CDDB-compatible array of track start times (i.e. two
-     *        more entries than tracks).
+     * @param discId Current disc, missingDisc if no disc.
      */
     void discChanged(unsigned discId);
 

@@ -97,13 +97,13 @@ const QString KCompactDisc::defaultDevice = DEFAULT_CD_DEVICE;
 const unsigned KCompactDisc::missingDisc = (unsigned)-1;
 
 KCompactDisc::KCompactDisc() :
-    m_device(""),
+    m_device(QString::null),
     m_status(0),
     m_previousStatus(123456),
     m_discId(missingDisc),
     m_previousDiscId(0),
-    m_artist(""),
-    m_title(""),
+    m_artist(QString::null),
+    m_title(QString::null),
     m_track(0),
     m_previousTrack(99999999)
 {
@@ -271,14 +271,14 @@ bool KCompactDisc::setDevice(
     kdDebug() << "Device change: "
         << (digitalPlayback ? "WM_CDDA, " : "WM_CDIN, ")
         << m_device << ", "
-        << (digitalPlayback ? audioSystem : "") << ", "
-        << (digitalPlayback ? audioDevice : "") << ", status: "
+        << (digitalPlayback ? audioSystem : QString::null) << ", "
+        << (digitalPlayback ? audioDevice : QString::null) << ", status: "
         << discStatus(status) << endl;
 
     if (status < 0)
     {
         // Severe (OS-level) error.
-        m_device = "";
+        m_device = QString::null;
     }
     else
     {
@@ -286,7 +286,7 @@ bool KCompactDisc::setDevice(
         setVolume(volume);
     }
     timer.start(1000, true);
-    return !(m_device.length() == 0);
+    return m_device != QString::null;
 }
 
 void KCompactDisc::setVolume(unsigned volume)
@@ -308,7 +308,7 @@ const QString &KCompactDisc::trackArtist() const
 const QString &KCompactDisc::trackArtist(unsigned track) const
 {
     if (NO_DISC || !TRACK_VALID(track))
-        return "";
+        return QString::null;
     return m_trackArtists[track - 1];
 }
 
@@ -342,7 +342,7 @@ const QString &KCompactDisc::trackTitle() const
 const QString &KCompactDisc::trackTitle(unsigned track) const
 {
     if (NO_DISC || !TRACK_VALID(track))
-        return "";
+        return QString::null;
     return m_trackTitles[track - 1];
 }
 
@@ -355,7 +355,7 @@ const QString &KCompactDisc::trackTitle(unsigned track) const
 void KCompactDisc::timerExpired()
 {
     m_status = wm_cd_status();
-    if (WM_CDS_NO_DISC(m_status) || (m_device.length() == 0))
+    if (WM_CDS_NO_DISC(m_status) || (m_device == QString::null))
     {
         if (m_previousStatus != m_status)
         {
