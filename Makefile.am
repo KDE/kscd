@@ -2,7 +2,6 @@
 
 mimedir = $(kde_mimedir)/text/
 picsdir  = $(kde_datadir)/kscd/pics/
-appsdir = $(kde_appsdir)/Multimedia
 CDDBDIR = $(kde_datadir)/kscd/cddb/
 
 LDFLAGS	= $(LIB_KIO) $(all_libraries) $(KDE_RPATH)
@@ -52,7 +51,7 @@ EXTRA_DIST = kscdlogo.xpm xmcd.desktop kscd.desktop kscd-script $(bin_SCRIPTS) c
 
 KDE_ICON = kscd
 
-apps_DATA = kscd.desktop
+xdg_apps_DATA = kscd.desktop
 
 mime_DATA = xmcd.desktop
 
