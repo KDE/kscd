@@ -80,7 +80,9 @@ extern "C" {
 #include "bitmaps/rew.xbm"
 #include "bitmaps/info.xbm"
 #include "bitmaps/poweroff.xbm"
+#if KSCDMAGIC
 #include "bitmaps/magic.xbm"
+#endif
 #include "bitmaps/eject.xbm"
 #include "bitmaps/db.xbm"
 #include "bitmaps/logo.xbm"
