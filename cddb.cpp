@@ -133,7 +133,8 @@ CDDB::sighandler(int signum)
 
 }
 
-void CDDB::setalarm()
+void 
+CDDB::setalarm()
 {
     struct itimerval  val1;
     struct timeval  tval1;
@@ -232,8 +233,10 @@ CDDB::cddb_connect_internal()
     // signal( SIGALRM , CDDB::sighandler );
     // setalarm();
 
+    fprintf(stderr, "proto = %d, proxy=%s\n", protocol, use_http_proxy?"true":"false");
     if(protocol==CDDBHTTP && use_http_proxy)
       {
+        fprintf(stderr, "PROX\n");
 	debug("CONNECTING TO %s:%d ....\n",proxyhost.data(),proxyport);
 	sock = new KSocket(proxyhost.data(),proxyport);
 	debug("SOCKET SET");
@@ -818,7 +821,9 @@ CDDB::checkDir(unsigned long magicID, const QString& dir)
     while ( !t.eof() ) 
       {
 	QString s = t.readLine() + "\n";
-	if(!t.eof())
+	// The following swallowed the last line of the file
+	// no matter if it's just a newline or a whole entry.
+	//	if(!t.eof())    
 	  respbuffer += s;
       }
 
@@ -951,9 +956,10 @@ CDDB::getData(
     key = "PLAYORDER=";
     getValue(key,value,data);
     cddb_playlist_decode(playlist, value);
-}
+} // getData
 
-QString CDDB::getCategoryFromPathName(const QString& pathname){
+QString 
+CDDB::getCategoryFromPathName(const QString& pathname){
   
     QString path = pathname;
     path = path.stripWhiteSpace();
@@ -969,7 +975,7 @@ QString CDDB::getCategoryFromPathName(const QString& pathname){
     else
 	return path.mid(pos+1,path.length());
 
-} // getData
+} // getCategoryFromPathName
 
 bool 
 CDDB::getValue(QString& key,QString& value, QString& data)
