@@ -243,9 +243,6 @@ private:
     QPushButton         *makeButton( int, int, int, int, const QString& );
 
 
-    int                 theSmallPtSize;
-
-
     int                 smallPtSize();
     void		initWorkMan();
     //	void		checkMount();

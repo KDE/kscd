@@ -37,27 +37,27 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
 {
 
   setCaption("Kscd");
-
+  
   listbox = _listbox;
-  if(listbox){
-    list_box = new QListBox(this,"debugwindow");
-    list_box->setGeometry(2,5,400, 300);
-    connect(list_box,SIGNAL(highlighted(int)),SLOT(setStatusBar(int)));
-  }
-  else{
-    edit = new QMultiLineEdit(this,"debugwindow");
-    edit->setGeometry(2,5,400, 300);
-  }
-
-
+  if(listbox)
+    {
+      list_box = new QListBox(this,"debugwindow");
+      list_box->setGeometry(2,5,400, 300);
+      connect(list_box,SIGNAL(highlighted(int)),SLOT(setStatusBar(int)));
+    } else {
+      edit = new QMultiLineEdit(this,"debugwindow");
+      edit->setGeometry(2,5,400, 300);
+    }
+  
+  
   text = new QLabel(this,"textlabel");
   text->setAlignment(WordBreak|AlignCenter);
-
+  
   text->setText(i18n("No exact match could be found. Please select the appropriate"\
-		" CD from the list of choices presented below."));
-
+		     " CD from the list of choices presented below."));
+  
   errorstring = i18n("Please select a Disk Title or press Cancel");
-
+  
   statuslabel = new QLabel( this, "statuslabel" );
   
   statuslabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
@@ -65,7 +65,7 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
   statuslabel->setAlignment( AlignCenter );
   statuslabel->setGeometry(2, 307, 400, 20);
   //statusPageLabel->setFont( QFont("helvetica",12,QFont::Normal) );
-
+  
   cancel_button = new QPushButton(this,"cancel_button");
   cancel_button->setGeometry(330,340,70,30);
   cancel_button->setText(i18n("Cancel"));
@@ -85,88 +85,95 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
   adjustSize();
   setMinimumSize(width(),height());
   
+} // InexactDialog()
+
+
+InexactDialog::~InexactDialog() 
+{
 }
 
-
-InexactDialog::~InexactDialog() {
-
-}
-
-void InexactDialog::setTitle(const QString& t){
-
+void 
+InexactDialog::setTitle(const QString& t)
+{
   titlestring = t;
   text->setText(t);
-
 }
 
-void InexactDialog::setErrorString(const QString& t){
-
+void 
+InexactDialog::setErrorString(const QString& t)
+{
   errorstring = t;
 }
 
-void InexactDialog::checkit(){
-
-  if(listbox){
-    if(list_box->currentItem() == -1){
-      KMessageBox::information(this, errorstring);
-      return;
+void 
+InexactDialog::checkit()
+{
+  if(listbox)
+    {
+      if(list_box->currentItem() == -1)
+	{
+	  KMessageBox::information(this, errorstring);
+	  return;
+	}
+      returnstring = list_box->text(list_box->currentItem());
+    } else {
+      returnstring = edit->text();
     }
-    returnstring = list_box->text(list_box->currentItem());
-  }
-  else{
-
-    returnstring = edit->text();
-  }
-
   accept();
 }
 
-void InexactDialog::getSelection(QString& string){
-
+void 
+InexactDialog::getSelection(QString& string)
+{
   string = returnstring;
 }
 
 
-void InexactDialog::insertList(QStrList& strlist){
-
-  if(listbox){
-    list_box->setAutoUpdate(FALSE);
-    list_box->insertStrList(&strlist,-1);
-    list_box->setAutoUpdate(TRUE);
-  }
-
+void 
+InexactDialog::insertList(QStrList& strlist)
+{
+  if(listbox)
+    {
+      list_box->setAutoUpdate(FALSE);
+      list_box->insertStrList(&strlist,-1);
+      list_box->setAutoUpdate(TRUE);
+    }
 }
 
-void InexactDialog::insertText(const QString& str){
-
-  if(!listbox){
-    edit->setAutoUpdate(FALSE);
-    edit->setText(str);
-    edit->setAutoUpdate(TRUE);
-  }
-
+void 
+InexactDialog::insertText(const QString& str)
+{
+  if(!listbox)
+    {
+      edit->setAutoUpdate(FALSE);
+      edit->setText(str);
+      edit->setAutoUpdate(TRUE);
+    }
 }
 
-void InexactDialog::setStatusBar(int i){
-
+void 
+InexactDialog::setStatusBar(int i)
+{
   returnstring = list_box->text(i);
   statuslabel->setText(returnstring);
-
 }
-void InexactDialog::resizeEvent(QResizeEvent *){
 
+void 
+InexactDialog::resizeEvent(QResizeEvent *)
+{
+  
   int w = width() ;
   int h = height();
   text->setGeometry(10,5,w-10,45);
   if(listbox)
-    list_box->setGeometry(2,45 + 5,w - 2 ,h - 60 -45 );
-  else
-    edit->setGeometry(2,45 + 5,w - 2 ,h - 60 -45 );
-
+    {
+      list_box->setGeometry(2,45 + 5,w - 2 ,h - 60 -45 );
+    } else {
+      edit->setGeometry(2,45 + 5,w - 2 ,h - 60 -45 );
+    }
   statuslabel->setGeometry(2, h - 53 , w -2 , 20);
   ok_button->setGeometry(w - 72 - 80 , h - 28, 70, 25);
   cancel_button->setGeometry(w - 72 , h - 28, 70, 25);
-  
 }
 
 #include "inexact.moc"

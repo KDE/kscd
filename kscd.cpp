@@ -310,6 +310,7 @@ KSCD::initCDROM()
 int
 KSCD::smallPtSize()
 {
+    static int theSmallPtSize = 0;
 
     if ( theSmallPtSize != 0 )
       return theSmallPtSize;
@@ -2015,35 +2016,45 @@ KSCD::mycddb_inexact_read()
     if(cddb_inexact_sentinel == true)
         return;
 
+    QString pick;
+
     cddb_inexact_sentinel = true;
     QStrList inexact_list;
     cddb.get_inexact_list(inexact_list);
+
+
+    if( inexact_list.count() == 1)
+      {
+	pick = inexact_list.getFirst();
+	cddb.query_exact("200 " + pick);
+	return;
+      }
 
     InexactDialog *dialog;
     dialog = new InexactDialog(0,"inexactDialog",true);
     dialog->insertList(inexact_list);
 
-    if(dialog->exec() != QDialog::Accepted){
+    if(dialog->exec() != QDialog::Accepted)
+      {
         cddb.close_connection();
         timer->start(1000);
         led_off();
         return;
-    }
+      }
 
-    QString pick;
     dialog->getSelection(pick);
     delete dialog;
+    
 
-
-    if(pick.isEmpty()){
+    if(pick.isEmpty())
+      {
         timer->start(1000);
         led_off();
         return;
-    }
+      }
 
     pick = "200 " + pick;
     cddb.query_exact(pick);
-
 } // mycddb_inexact_read
 
 void 
