@@ -1487,6 +1487,7 @@ void KSCD::setTitle(int track)
             title = *tracktitlelist.at(track);
 
         titlelabel->setText(title);
+	tooltip += " / ";
         tooltip += KStringHandler::rsqueeze(title, 30);
     }
 
