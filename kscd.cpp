@@ -295,45 +295,18 @@ void KSCD::initFont()
                         QFont::Bold);
 } // initFont()
 
-QPushButton* KSCD::makeButton( int x, int y, int w, int h, const QString& n )
-{
-  // ML XXX
-  QPushButton *pb = new QPushButton(n, this);
-  pb->setFocusPolicy(QWidget::NoFocus);
-  if (w <= 1 && h <= 1) outerLO->addWidget(pb, y, x);
-  else outerLO->addMultiCellWidget(pb, y, h + y - 1 , x, w + x - 1);
-  pb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-  return pb;
-} // makeButton
-
 /**
  * drawPanel() constructs KSCD's little black LED area
+ * all settings are made via panel.ui
  */
 void KSCD::drawPanel()
 {
-  const int SBARWIDTH = 240;
-  const int SBARHEIGHT = 27;
-  const int BACKDROPHEIGHT = (2 * SBARHEIGHT) + (SBARHEIGHT / 2) - 1;
-
   setIcons();
-
-  // mildly gross.. but...
-  // take the height of the buttons add the three pixels of space in between.
-  // then subtract that from the height of the LED and the
-  // button height we're after and voila, peace on earth....
-  // well, would you believe a decent looking layout?
   adjustSize();
-  int buttonHeight = shufflePB->height();
-  int buttonStackHeight = playPB->height() + stopPB->height() + prevPB->height() + buttonHeight + 3;
-  int ledSpacing = buttonStackHeight - (BACKDROPHEIGHT + buttonHeight) - 1;
-  infoPB->setFixedHeight(buttonHeight);
-  cddbPB->setFixedHeight(buttonHeight);
-  ledLayout->setRowSpacing(1, ledSpacing);
-
+  
   const int D = 6;
-
   for (int u = 0; u < 5; u++) {
-     trackTimeLED[u] = new BW_LED_Number(backdrop);
+     trackTimeLED[u] = new BW_LED_Number(frameleds);
      trackTimeLED[u]->setLEDoffColor(Prefs::backColor());
      trackTimeLED[u]->setLEDColor(Prefs::ledColor(), Prefs::backColor());
      trackTimeLED[u]->setGeometry(2 + u * 18, D, 23,  30);
@@ -342,48 +315,16 @@ void KSCD::drawPanel()
 
   QString zeros("--:--");
   setLEDs(zeros);
-  artistlabel = new QLabel(backdrop);
-  artistlabel->setFont(smallfont);
-  artistlabel->setAlignment(AlignLeft);
-  artistlabel->setGeometry(5, 38, SBARWIDTH -15, 13);
-  artistlabel->clear();
-
-  titlelabel = new QLabel(backdrop);
-  titlelabel->setFont(verysmallfont);
-  titlelabel->setAlignment(AlignLeft);
-  titlelabel->setGeometry(5, 50, SBARWIDTH -15, 13);
-  titlelabel->clear();
-
-  statuslabel = new QLabel(backdrop);
-  statuslabel->setFont(verysmallfont);
-  statuslabel->setAlignment(AlignLeft);
-  statuslabel->setGeometry(110, D, 60, 14);
-
-  queryled = new LedLamp(backdrop);
-  queryled->move(SBARWIDTH-20, D + 1);
+  
+  queryled = new LedLamp(symbols);
+  queryled->move(symbols->width()-20, D + 1);
   queryled->off();
   queryled->hide();
 
-  loopled = new LedLamp(backdrop, LedLamp::Loop);
-  loopled->move(SBARWIDTH-20, D + 18);
+  loopled = new LedLamp(symbols, LedLamp::Loop);
+  loopled->move(symbols->width()-20, D + 18);
   loopled->off();
 
-  volumelabel = new QLabel(backdrop);
-  volumelabel->setFont(smallfont);
-  volumelabel->setAlignment(AlignLeft);
-  volumelabel->setGeometry(110, 14 + D, 60, 14);
-  volumelabel->setText(i18n("Vol: --"));
-
-  tracklabel = new QLabel(backdrop);
-  tracklabel->setFont(smallfont);
-  tracklabel->setAlignment(AlignLeft);
-  tracklabel->setGeometry(178, 14 + D, 40, 14);
-  tracklabel->setText("--/--");
-
-  totaltimelabel = new QLabel(backdrop);
-  totaltimelabel->setFont( smallfont );
-  totaltimelabel->setAlignment( AlignLeft );
-  totaltimelabel->setGeometry(178, D, 60, 14);
   totaltimelabel->hide();
 } // drawPanel
 
@@ -1227,8 +1168,6 @@ void KSCD::setColors()
     statuslabel->setPalette( QPalette(colgrp,colgrp,colgrp) );
     tracklabel ->setPalette( QPalette(colgrp,colgrp,colgrp) );
     totaltimelabel->setPalette( QPalette(colgrp,colgrp,colgrp) );
-    // nLEDs->setPalette( QPalette(colgrp,colgrp,colgrp) );
-
 
     queryled->setPalette( QPalette(colgrp,colgrp,colgrp) );
     loopled->setPalette( QPalette(colgrp,colgrp,colgrp) );
@@ -1244,8 +1183,6 @@ void KSCD::setColors()
     statuslabel->setFont( smallfont );
     tracklabel ->setFont( smallfont );
     totaltimelabel->setFont( smallfont );
-    artistlabel->setFont( smallfont );
-
 }
 
 void KSCD::readSettings()

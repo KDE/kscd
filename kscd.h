@@ -235,21 +235,12 @@ protected:
     void updateConfigDialog(configWidget* widget);
 private:
     ConfigDlg       *configDialog;
-    CDDBDlg        *cddialog;
+    CDDBDlg         *cddialog;
     QPopupMenu      *mainPopup;
     QPopupMenu      *infoPopup;
 
-    // ML XXX
-    QGridLayout                *outerLO;
-
     BW_LED_Number       *trackTimeLED[6];
-    QLabel              *statuslabel;
-    QLabel              *titlelabel;
-    QLabel              *artistlabel;
-    QLabel              *volumelabel;
-    QLabel              *tracklabel;
-    QLabel              *totaltimelabel;
-    QLabel              *nLEDs;
+    
     QTimer              timer;
     QTimer              titlelabeltimer;
     QTimer              queryledtimer;
@@ -271,7 +262,6 @@ private:
     bool                updateTime;
     QStringList         audio_systems_list;
 
-    QPushButton         *makeButton( int, int, int, int, const QString& );
     void cdtext(struct cdtext_info* p_cdtext);
 
   /**
