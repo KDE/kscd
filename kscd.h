@@ -335,6 +335,7 @@ private:
     QStringList     cddbsubmitlist;
     bool            updateDialog;
     int             revision;
+    int             year;
     KActionCollection* m_actions;
     KVolumeControl* m_volume;
 };
