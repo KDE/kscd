@@ -95,15 +95,21 @@ get KSCD to compile on your platform.
 
 <sect1>Basic operation
 
+<sect2>Main window
+
+<p>
 <img src="kscd1.gif">
 
-<p>This is the main window of kscd. You should see something like this
+This is the main window of kscd. You should see something like this
 when you start <bf/kscd/. The controls in this window are explained below,
 in no particular order.
 
+<sect2>Main control panel
+
+<p>
 <img src="kscd2.gif">
 
-<p>This is the main control panel for <bf/kscd/. The function of these buttons 
+This is the main control panel for <bf/kscd/. The function of these buttons 
 should be familiar to anyone who has ever used a CD player. The uppermost 
 button in the above diagram toggles between playing and pausing the CD. The left 
 button in the second row stops playing the CD. The right button in the second row 
@@ -113,16 +119,22 @@ the CD backward <em/(left)/ or forward <em/(right)/ 30 seconds. The buttons
 in the fourth row skip forward <em/(right)/ or backward <em/(left)/ to the
 beginning of the next or previous track.
 
+<sect2>Eject button
+
+<p>
 <img src="kscd2a.gif">
 
-<p>This button ejects the CD. Note that the eject button on your CD-ROM drive 
+This button ejects the CD. Note that the eject button on your CD-ROM drive 
 may not respond if an audio CD is in the drive and <bf/kscd/ is started. Some 
 very old CD-ROM drives may not support software eject. You may also have to close 
 the CD-ROM drive manually after inserting a new disc.
 
+<sect2>Status display
+
+<p>
 <img src="kscd3.gif">
 
-<p>This is the status display. Starting at the top, from right to left, is the
+This is the status display. Starting at the top, from right to left, is the
 main time display <em>(See below for a discussion of the various possible time 
 display modes)</em>, the status of the CD-ROM drive, the total play time of the
 audio CD, the current volume setting, and the current and maximum track 
@@ -130,52 +142,75 @@ numbers (<em/curr./ / <em/max./). The bottommost two lines of text display
 the artist and title of the CD, and then the title of the track, assuming that
 appropriate entries exist in the local or network CDDB <em/(CD Data Base)/.
 
+<sect2>Time display mode button
+
 <p>
 <img src="kscd4.gif">
 
-<p>This button toggles between the possible main time display modes. By default, 
+This button toggles between the possible main time display modes. By default, 
 <bf/kscd/ displays the elapsed time of the current track, if the CD is 
 playing, or either --:-- or 00:00 if the CD is not playing. Pressing this button 
 toggles in sequence between remaining track time, total elapsed time, and total 
 remaining time.
 
+<sect2>Configuration button
+
+<p>
 <img src="kscd5.gif">
 
-<p>This button opens the <bf/kscd/ configuration panel. This allows you
+This button opens the <bf/kscd/ configuration panel. This allows you
 to configure <bf/kscd/ to work on your machine. See <ref id="configure" name="Configuring kscd">
 for details about configuring <bf/kscd/. 
 
+<sect2>CDDB Editor button
+
+<p>
 <img src="kscd6.gif">
 
-<p>This button opens the CDDB <em/(Compact Disc Data Base)/ entry editor
+This button opens the CDDB <em/(Compact Disc Data Base)/ entry editor
 panel. The CDDB can identify your CD and often download a list of tracks for
 that CD or load it from the filesystem. See <ref id="editor" name="The CD Database Editor"> for details
 about using this tool.
 
+<sect2>Information button
+
+<p>
 <img src="kscd7.gif"><label id="information">
 
-<p>This button will help you search for information about the artist on the
+This button will help you search for information about the artist on the
 Internet. You can find out about performance dates, purchase information,
 and other information by pressing this button and choosing the appropriate
 option in the pop-up menu that appears.
 
+<sect2>On / off button
+
+<p>
 <img src="kscd9.gif">
 
-<p>This button closes <bf/kscd/.
+This button closes <bf/kscd/.
 
+<sect2>Volume slider
+
+<p>
 <img src="kscd10.gif">
 
-<p>This slider controls the volume of the audio output of the CD. Right is
+This slider controls the volume of the audio output of the CD. Right is
 louder, left is quieter. If you are playing your CD through your sound card, 
 the sound card mixer will affect the playback volume as well.
 
+<sect2>Direct track selection
+
+<p>
 <img src="kscd11.gif">
 
-<p>This combo box lets you directly select a track to play.
+This combo box lets you directly select a track to play.
 
+<sect2>Random order button
+
+<p>
 <img src="kscd15.gif">
 
-<p>This button plays the CD tracks in random order.
+This button plays the CD tracks in random order.
 
 <sect1>Configuring <bf/kscd/ <label id="configure">
 
@@ -358,9 +393,9 @@ time.
 <itemize>
 <item>Q. I see this dialog when I start <bf/kscd/. What's wrong?
 
+<p>
 <img src="kscd16.gif">
 
-<p>
 A. This means that <bf/kscd/ couldn't open your CDROM drive. The name of the device
 in the &quot;CDROM Device&quot; field of the &quot;<bf/kscd/ Configuration&quot; must
 actually refer to the block device associated with your CD-ROM drive. This will often
