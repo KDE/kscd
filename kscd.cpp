@@ -740,7 +740,7 @@ void KSCD::showConfig()
     confWidget = new configWidget(this, 0, "Kscd");
 
     // kscd config page
-    configDialog -> addPage(confWidget, i18n("CD Player"), "kscd", i18n("Settings & Behavior"));
+    configDialog->addPage(confWidget, i18n("CD Player"), "kscd", i18n("Settings & Behavior"));
 
     // libkcddb page
     KService::Ptr libkcddb = KService::serviceByDesktopName("libkcddb");

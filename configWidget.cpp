@@ -57,6 +57,7 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
         setName("configWidget");
     }
 
+    kcfg_cdDevice->comboBox()->setEditable(true);
     kcfg_cdDevice->comboBox()->insertItem(DEFAULT_CD_DEVICE);
     getMediaDevices();
     
