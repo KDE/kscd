@@ -94,8 +94,10 @@ void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
 
 void CDDBDlg::upload()
 {
-    if (!updateFromDialog())
+    if (!validInfo())
         return;
+
+    updateFromDialog();
 
     // Create a copy with a bumped revision number.
     KCDDB::CDInfo copyInfo = cddbInfo;
@@ -105,16 +107,17 @@ void CDDBDlg::upload()
 
 void CDDBDlg::save()
 {
-    if (!updateFromDialog())
-        return;
+    updateFromDialog();
+
     KCDDB::Cache::store(cddbInfo);
 
     emit cddbQuery();
 } // save
 
-bool CDDBDlg::updateFromDialog()
+bool CDDBDlg::validInfo()
 {
   KCDDB::CDInfo copy = m_dlgBase->info();
+
   if (copy.artist.isEmpty())
   {
     KMessageBox::sorry(this,
@@ -152,6 +155,13 @@ bool CDDBDlg::updateFromDialog()
     return false;
   }
 
+  return true;
+}
+
+void CDDBDlg::updateFromDialog()
+{
+  KCDDB::CDInfo copy = m_dlgBase->info();
+
   // Playorder...
   QStringList strlist = QStringList::split( ',', m_dlgBase->m_playOrder->text() );
 
@@ -177,12 +187,9 @@ bool CDDBDlg::updateFromDialog()
     KMessageBox::sorry(this,
         i18n("Invalid Playlist\nPlease use valid track numbers, "
              "separated by commas."));
-    return false;
   }
 
-  // The information all passed our checks. Update the stored values from the dialog.
   cddbInfo = copy;
-  return true;
 } // updateFromDialog
 
 #include "cddbdlg.moc"

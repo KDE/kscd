@@ -32,7 +32,8 @@ class CDDBDlg : public KDialogBase
     void play(int i);
 
   private:
-    bool updateFromDialog();
+    bool validInfo();
+    void updateFromDialog();
     QString framesTime(unsigned frames);
 
     CDInfoDialogBase *m_dlgBase;
