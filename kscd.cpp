@@ -222,9 +222,9 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   setFocusPolicy(QWidget::NoFocus);
 
+  songListCB->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
   adjustSize();
-  setFixedSize(this->width(), this->height());
-
+  setFixedHeight(this->height());
   QTimer::singleShot(100, this, SLOT(initCDROM()));
 } // KSCD
 

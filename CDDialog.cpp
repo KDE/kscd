@@ -284,36 +284,38 @@ CDDialog::extIB()
     dialogTitle = i18n("Use this editor to annotate track #%1.").arg(trackNumber);
   }
 
-  InexactDialog dialog(0,"dialog",false);
-  dialog.setTitle(dialogTitle);
+  InexactDialog *dialog = new InexactDialog(this,"dialog",false);
+  dialog->setTitle(dialogTitle);
 
-  dialog.insertText(*ext_list.at(trackNumber));
+  dialog->insertText(*ext_list.at(trackNumber));
 
-  if(dialog.exec() == QDialog::Accepted)
+  if(dialog->exec() == QDialog::Accepted)
   {
     QString text;
-    text = dialog.selection();
+    text = dialog->selection();
 
     *ext_list.at(trackNumber) = text;
   }
+  delete dialog;
 } // extIB
 
 void
 CDDialog::extITB()
 {
-  InexactDialog dialog(0,"dialog",false);
-  dialog.insertText(ext_list.first());
-  dialog.setTitle(i18n("Enter annotation for this album:"));
+  InexactDialog *dialog = new InexactDialog(this,"dialog",false);
+  dialog->insertText(ext_list.first());
+  dialog->setTitle(i18n("Enter annotation for this album:"));
 
-  if(dialog.exec() == QDialog::Accepted)
+  if(dialog->exec() == QDialog::Accepted)
   {
     QString text;
-    text = dialog.selection();
+    text = dialog->selection();
 
     *ext_list.at(0) = text;
     //ext_list.insert( 0 , text );
     //ext_list.remove( 1 );
   }
+  delete dialog;
 } // extITB
 
 void CDDialog::titleselected(QListViewItem *item)
@@ -400,7 +402,7 @@ CDDialog::upload()
     return;
 
   InexactDialog *dialog;
-  dialog = new InexactDialog(0,"Dialog",true);
+  dialog = new InexactDialog(this,"Dialog",true);
 
   if( category.length() < 1 )
 	{
