@@ -1002,7 +1002,7 @@ KSCD::closeEvent( QCloseEvent *e )
         caller = caller->parent();
     }
 
-    if (docking && !caller/* FIXME: breaks compiling && !kapp->sessionSaving()*/)
+    if (docking && !caller && !kapp->sessionSaving())
     {
         hide();
         e->ignore();
