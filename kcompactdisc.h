@@ -40,7 +40,8 @@
  * @see #trackPaused(): A track was paused.
  * @see #discStopped(): The disc stopped.
  *
- *  All times in this interface are is milliseconds.
+ *  All times in this interface are in milliseconds. Valid track numbers are
+ *  positive numbers; zero is not a valid track number.
  */
 class KCompactDisc :
     public QObject
@@ -108,11 +109,24 @@ public:
      */
     unsigned discId() const { return m_discId; }
 
+    /**
+     * CDDB signature of disc.
+     */
+    const QValueList<unsigned> &discSignature() const { return m_trackStartFrames; }
+
+    /**
+     * Artist for whole disc.
+     *
+     * @return Disc artist or empty string.
+     */
     const QString &discArtist() const { return m_artist; }
+
+    /**
+     * Title of disc.
+     *
+     * @return Disc title or empty string.
+     */
     const QString &discTitle() const { return m_title; }
-    const QString &trackArtist(unsigned track) const { return m_trackArtists[track - 1]; }
-    const QString &trackTitle(unsigned track) const { return m_trackTitles[track - 1]; }
-    const QValueList<unsigned> &cddbSignature() const { return m_trackStartFrames; }
 
     /**
      * Length of disc.
@@ -127,6 +141,33 @@ public:
      * @return Position in milliseconds.
      */
     unsigned discPosition() const;
+    /**
+     * Artist of current track.
+     *
+     * @return Track artist or empty string.
+     */
+    const QString &trackArtist() const;
+
+    /**
+     * Artist of given track.
+     *
+     * @return Track artist or empty string.
+     */
+    const QString &trackArtist(unsigned track) const;
+
+    /**
+     * Title of current track.
+     *
+     * @return Track title or empty string.
+     */
+    const QString &trackTitle() const;
+
+    /**
+     * Title of given track.
+     *
+     * @return Track title or empty string.
+     */
+    const QString &trackTitle(unsigned track) const;
 
     /**
      * Current track.

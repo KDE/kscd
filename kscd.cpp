@@ -1075,7 +1075,7 @@ void KSCD::CDDialogSelected()
     {
         cddialog = new CDDBDlg(this);
 
-        cddialog->setData(cddbInfo, m_cd->cddbSignature(), playlist);
+        cddialog->setData(cddbInfo, m_cd->discSignature(), playlist);
         connect(cddialog,SIGNAL(cddbQuery()),SLOT(lookupCDDB()));
         connect(cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
         connect(cddialog,SIGNAL(play(int)),SLOT(trackSelected(int)));
@@ -1105,7 +1105,7 @@ void KSCD::lookupCDDB()
 
     cddb->config().reparse();
     cddb->setBlockingMode(false);
-    cddb->lookup(m_cd->cddbSignature());
+    cddb->lookup(m_cd->discSignature());
 } // lookupCDDB
 
 void KSCD::lookupCDDBDone(CDDB::Result result)
@@ -1178,7 +1178,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
 
     // In case the cddb dialog is open, update it
     if (cddialog)
-      cddialog->setData(cddbInfo, m_cd->cddbSignature(), playlist);
+      cddialog->setData(cddbInfo, m_cd->discSignature(), playlist);
 } // lookupCDDBDone
 
 void KSCD::led_off()
