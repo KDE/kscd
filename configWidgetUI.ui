@@ -37,9 +37,6 @@
                     <property name="text">
                         <string>Show icon in &amp;system tray</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+S</string>
-                    </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</string>
                     </property>
@@ -156,9 +153,6 @@
                     <property name="text">
                         <string>Auto&amp;play when CD inserted</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+P</string>
-                    </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</string>
                     </property>
@@ -169,9 +163,6 @@
                     </property>
                     <property name="text">
                         <string>&amp;Eject CD when finished playing</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+E</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will automatically eject when it is finished.</string>
@@ -254,9 +245,6 @@
                     </property>
                     <property name="text">
                         <string>&amp;Use direct digital playback</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+U</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected KsCD will attempt to play the CD using direct digital playback. This option is useful if the CD-ROM is not connected directly to the sound output on the computer. Note that digital playback is slower than the normal method of playback.</string>
