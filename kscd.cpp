@@ -1176,7 +1176,7 @@ KSCD::aboutClicked()
 void
 KSCD::configDone()
 {
-    delete configDialog;
+    // dialog deletes itself
     configDialog = 0L;
 }
 
@@ -1243,7 +1243,7 @@ KSCD::getMagicOptions(mgconfigstruct& config)
 
 
 void
-KSCD::setMagicOptions(mgconfigstruct& config)
+KSCD::setMagicOptions(const mgconfigstruct& config)
 {
     magic_width = config.width;
     magic_height = config.height;

@@ -133,9 +133,9 @@ public:
     ~KSCD();
     void initialShow();
 	virtual bool saveState(QSessionManager& sm);
-    
+
     bool dock() { return docking; }
-    void setDocking(bool dock);    
+    void setDocking(bool dock);
     bool randomOnce() { return randomonce; }
     void setRandomOnce(bool shuffle);
     bool stopOnExit() { return stopexit; }
@@ -212,7 +212,7 @@ public slots:
     void information(int);
     void showPopup();
     void jumpTracks();
-    
+
     /*
      * TODO
      * not the prettiest things in the world
@@ -222,7 +222,7 @@ public slots:
     void getCDDBOptions(CDDBSetup* config);
     void setCDDBOptions(CDDBSetup* config);
     void getMagicOptions(mgconfigstruct& config);
-    void setMagicOptions(mgconfigstruct& config);
+    void setMagicOptions(const mgconfigstruct& config);
 
     void make_random_list(); /* koz: 15/01/00 */
 
@@ -241,7 +241,7 @@ protected:
     void get_pathlist(QStringList& _patlist);
 
 private:
-    SMTPConfigData  *smtpConfigData;   
+    SMTPConfigData  *smtpConfigData;
     ConfigDlg       *configDialog;
     CDDialog        *cddialog;
     QPushButton     *playPB;
