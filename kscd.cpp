@@ -978,10 +978,10 @@ KSCD::ejectClicked()
       wm_cd_eject();
     } else {
       statuslabel->setText(i18n("Closing"));
-      wm_cd_closetray();
+      qApp->processEvents();
+      qApp->flushX();
       have_new_cd = true;
-      cdMode();
-      //      wm_cd_status();
+      wm_cd_closetray();
     }
 } // ejectClicked
 
