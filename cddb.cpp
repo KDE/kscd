@@ -1040,14 +1040,14 @@ cddb_playlist_decode(QStringList& list, QString& str)
 
         if (check.isEmpty())
           {
-            list.remove(it);
+            it = list.remove(it);
             continue;
           }
 	
 	num = check.toInt(&ok1);
 	if(!ok1 || num < 1)
 	  {
-	    list.remove(it);
+	    it = list.remove(it);
 	    isok = false;
 	    continue;
 	  }
