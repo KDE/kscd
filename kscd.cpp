@@ -1063,7 +1063,7 @@ KSCD::aboutClicked()
     label->setAlignment(AlignLeft|WordBreak|ExpandTabs);
     label->setText(labelstring);
 
-    QPixmap pm = BarIcon("kscdlogo.xpm");
+    QPixmap pm = UserIcon("kscdlogo");
     QLabel *logo = new QLabel(box);
     logo->setPixmap(pm);
     logo->setGeometry(40, 50, pm.width(), pm.height());

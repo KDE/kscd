@@ -36,7 +36,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
   : KDockWindow( parent, name ) 
 {
 
-    setPixmap( BarIcon("cdsmall.xpm") );
+    setPixmap( UserIcon("cdsmall") );
       
       // popup menu for right mouse button
     QPopupMenu* popup = contextMenu();
