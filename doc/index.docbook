@@ -34,6 +34,13 @@
 <contrib>Developer</contrib>
 </othercredit>
 
+<othercredit role="developer">
+<firstname>Dirk</firstname>
+<surname>Foersterling</surname>
+<affiliation><address><email>milliByte@gmx.net</email></address></affiliation>
+<contrib>Developer</contrib>
+</othercredit>
+
 <othercredit role="reviewer">
 <firstname>Lauri</firstname>
 <surname>Watts</surname>
@@ -50,7 +57,7 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
   
-<date>16/12/2000</date>
+<date>08/02/2001</date>
 <releaseinfo>1.3.0</releaseinfo>
 
 <abstract>
@@ -570,24 +577,31 @@ Database Editor without saving.</para>
 </chapter>
 
 <chapter id="using-kscd-in-the-panel">
-<title>Using &kscd; in the KDE Panel</title>
+<title>Using &kscd; in the &kde; Panel</title>
 
 <screenshot>
-<screeninfo>Using KSCD in the KDE Panel</screeninfo>
+<screeninfo>Using &kscd; in the &kde; Panel</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd18.png" format="PNG"></imageobject>
-<textobject><phrase>Using KSCD in the KDE Panel</phrase></textobject>
+<textobject><phrase>Using &kscd; in the &kde; Panel</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> When the <guilabel>Enable KPanel Docking</guilabel> box is checked, a
+<para>When the <guilabel>Enable KPanel Docking</guilabel> box is checked, a
 small &kscd; applet is also displayed in the <application>KDE
 panel</application>. Unlike the main &kscd; window, this applet is available on
 any desktop. <mousebutton>Right</mousebutton> click on the applet to pop up a
 menu to control &CD; playback. A <mousebutton>left</mousebutton> click on the
 applet takes you to the main &kscd; window. If the main window is minimized, a
 <mousebutton>left</mousebutton> click on the applet restores it. </para>
-   
+
+<note><para>To be precise, the applet is displayed in the <application>system
+tray</application> in the panel. If no applet appears when &kscd; is minimized,
+you may have removed the tray. To add it, <mousebutton>right</mousebutton> click
+on an empty spot on the panel and select <menuchoice><guisubmenu>Add</guisubmenu>
+<guisubmenu>Applet</guisubmenu> <guimenuitem>System Tray</guimenuitem>
+</menuchoice></para></note>
+
 </chapter>
 
 <chapter id="cddb-support">
