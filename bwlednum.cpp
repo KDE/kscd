@@ -5,54 +5,6 @@
  *
  * $Id$
  *
- * $Log$
- * Revision 1.8  1999/06/27 17:57:37  kulow
- * fixes for --enable-final and other problems :)
- *
- * Revision 1.7  1999/05/17 13:45:35  porten
- * * added SCO support
- * * (Q)char fix
- *
- * Revision 1.6  1999/03/01 23:37:46  kulow
- * CVS_SILENT ported to Qt 2.0
- *
- * Revision 1.5.6.1  1999/02/22 22:28:30  kulow
- * CVS_SILENT replaced old qt header names with new ones
- *
- * Revision 1.5  1998/01/02 00:47:17  wuebben
- * Bernd: Monster Commit !! Finished CDDB support and Web intergration
- * Let the games begin
- *
- * Revision 1.4  1997/10/25 15:15:34  wuebben
- * Bernd: fixed the segfault error if you had no permiision to access the cdrom
- * drive
- *
- * Revision 1.2  1997/08/15 22:51:25  wuebben
- * *** empty log message ***
- *
- * Revision 1.2  1997/08/15 22:42:54  wuebben
- * Bernd -- Version 0.4
- * o Support for cdda on Solaris
- * o Support for Irix
- * o New interactive configuration script
- * o  lot of header, define and configuration changes. -- Keep your
- *   fingers crossed .... ;-)
- *
- * Revision 1.1  1997/08/14 23:51:07  wuebben
- * Initial revision
- *
- * Revision 1.1  1997/06/21 23:09:10  wuebben
- * Initial revision
- *
- * Revision 1.2  1997/03/22 22:09:37  wuebben
- * Added support for visibe non-illuminated Segments
- *
- * Revision 1.1  1997/03/22 12:45:25  wuebben
- * Initial revision
- *
- *
- *
- *
  */
 
 

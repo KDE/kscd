@@ -7,30 +7,6 @@
 //
 //  $Id$
 //
-//  $Log$
-//  Revision 1.2.4.1  1999/02/22 22:28:47  kulow
-//  CVS_SILENT replaced old qt header names with new ones
-//
-//  Revision 1.2  1999/01/17 19:54:52  bieker
-//  i18n() some more strings.
-//
-//  Revision 1.1.1.1  1997/07/04 21:23:49  kulow
-//  Coolo: added Bernd's kscd
-//
-//  Revision 1.1  1997/06/21 23:10:11  wuebben
-//  Initial revision
-//
-//  Revision 1.3  1997/03/22 22:18:55  wuebben
-//  minor changes
-//
-//  Revision 1.2  1997/03/22 22:09:37  wuebben
-//  Added support for visibe non-illuminated Segments
-//
-//  Revision 1.1  1997/03/22 12:45:25  wuebben
-//  Initial revision
-//
-//
-//
 
 #include <qdialog.h>
 #include <qapplication.h>
