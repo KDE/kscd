@@ -1912,10 +1912,14 @@ KSCD::get_cddb_info(bool _updateDialog)
     static int connected = 0;
 
     updateDialog = _updateDialog;
-
+   if( !cd || cd->length == 0) {
+      kdDebug()<<" CD length seems to be zoom" <<endl;
+      cddb_no_info();
+      return;
+    }
+ 
     QTime dml;
     dml = dml.addSecs(cd->length);
-
     QString fmt;
     if(dml.hour() > 0)
         fmt.sprintf("%02d:%02d:%02d",dml.hour(),dml.minute(),dml.second());
@@ -1923,10 +1927,8 @@ KSCD::get_cddb_info(bool _updateDialog)
         fmt.sprintf("%02d:%02d",dml.minute(),dml.second());
 
     totaltimelabel->setText(fmt);
-
     get_pathlist(pathlist);
     cddb.setPathList(pathlist);
-
     if(!connected){
         connect(&cddb,SIGNAL(cddb_ready()),this,SLOT(cddb_ready()));
         connect(&cddb,SIGNAL(cddb_failed()),this,SLOT(cddb_failed()));
@@ -1937,7 +1939,6 @@ KSCD::get_cddb_info(bool _updateDialog)
         connected = 1;
     }
     led_on();
-
     bool res = cddb.local_query(
         cddb_discid(),
         xmcd_data,

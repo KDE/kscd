@@ -281,7 +281,9 @@ wm_cd_status( void )
 	enum wm_cd_modes		mode;
 	int			status, trackno = cur_track;
 	int			ret = WM_CDS_DISC_READY;
-
+        
+	//if(drive.get_drive_status == NULL)
+	//return (-1);
 
 	if( cur_cdmode == WM_CDM_DEVICECHANGED )
 	  {
@@ -304,7 +306,8 @@ wm_cd_status( void )
          */
 	if( (cur_cdmode == WM_CDM_STOPPED) || (cur_cdmode == WM_CDM_PLAYING) )
 		oldmode = cur_cdmode;
-
+	if(drive.get_drive_status == NULL)
+	  return (-1);
 	if( (drive.get_drive_status)(&drive, oldmode, &mode, &cur_frame,
 					&trackno, &cur_index) < 0)
 	{
@@ -577,7 +580,7 @@ wm_cd_stop( void )
 void
 wm_cd_get_cdtext( void )
 {
-	wm_get_cdtext(&drive);
+  wm_get_cdtext(&drive);
 }
 
 /*
@@ -588,6 +591,9 @@ wm_cd_get_cdtext( void )
 void
 wm_cd_play_chunk( int start, int end, int realstart )
 {
+        if(drive.get_drive_status == NULL)
+	  return;
+
 	if (cur_cdmode == WM_CDM_EJECTED || cd == NULL)
 		return;
 
