@@ -36,6 +36,7 @@
 #include <qpushbutton.h>
 #include <qlistbox.h>
 #include <qstrlist.h>
+#include <qmultilineedit.h>
 
 class InexactDialog : public QDialog {
 
