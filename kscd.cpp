@@ -1299,7 +1299,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
   
       bool ok(false);
       QString res = KInputDialog::getItem(
-              i18n("Select CDDB entry"),
+              i18n("Select CDDB Entry"),
               i18n("Select a CDDB entry:"), list, defaultChoice, false, &ok,
               this );
       if ( ok ) {
