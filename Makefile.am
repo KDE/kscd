@@ -1,8 +1,8 @@
 # $Id$
 
-mimedir = $(kde_mimedir)/text/
-picsdir  = $(kde_datadir)/kscd/pics/
-CDDBDIR = $(kde_datadir)/kscd/cddb/
+mimedir = $(kde_mimedir)/text
+picsdir  = $(kde_datadir)/kscd/pics
+CDDBDIR = $(kde_datadir)/kscd/cddb
 
 LDFLAGS	= $(LIB_KIO) $(all_libraries) $(KDE_RPATH)
 kscd_LDADD   = libwm/libworkman.la $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) $(LIB_KDEUI)

@@ -15,7 +15,6 @@
 #include <sys/stat.h>
 
 #include <qkeycode.h>
-#include <qregexp.h> 
 #include <qdatetime.h> 
 #include <qtextstream.h> 
 #include <qfile.h>
@@ -159,7 +158,7 @@ CDDialog::setData(
 	cddbbasedir = _cddbbasedir.copy();
     submitaddress = _submitaddress.copy();
     smtpConfigData = _smtpConfigData;
-    
+
     ntr = track_list.count();
 
     // Let's make a deep copy of the cd struct info so that the data won't
@@ -216,12 +215,12 @@ CDDialog::setData(
 	    ext_list.append("");
 	  }
       }
-    
+
     while((int)track_list.count() > cdinfo.ntracks + 1)
       {
 	track_list.remove(track_list.at(track_list.count() - 1));
       }
-    
+
     while((int)ext_list.count() > cdinfo.ntracks + 1)
       {
 	ext_list.remove(ext_list.at(ext_list.count() - 1));
@@ -261,7 +260,7 @@ CDDialog::setData(
 	if((ntr >=  i) && (ntr > 0))
             item->setText( 2,  *(track_list.at(i)));
       }
-    
+
     QString str;
     cddb_playlist_encode(playlist,str);
     progseq_edit->setText(str);
@@ -296,7 +295,7 @@ CDDialog::extIB()
   if(dialog.exec() == QDialog::Accepted)
   {
     QString text;
-    dialog.getSelection(text);
+    text = dialog.selection();
 
     *ext_list.at(trackNumber) = text;
   }
@@ -312,7 +311,7 @@ CDDialog::extITB()
   if(dialog.exec() == QDialog::Accepted)
   {
     QString text;
-    dialog.getSelection(text);
+    text = dialog.selection();
 
     *ext_list.at(0) = text;
     //ext_list.insert( 0 , text );
@@ -328,7 +327,7 @@ void CDDialog::titleselected(QListViewItem *item)
         trackEdit->setText(item->text(2));
         trackEdit->setFocus();
     }
-    
+
 } // titleselected
 
 void CDDialog::trackchanged( const QString &text ) {
@@ -365,7 +364,7 @@ framestoTime(int _frames)
       ip = ip + 1.0;
     }
   secs = (int) ip;
-  
+
   dml = dml.addSecs(secs);
   return dml;
 } // framestotime
@@ -399,8 +398,8 @@ CDDialog::upload()
 		  delete dialog;
 		  return;
 		}
-	  
-	  dialog->getSelection(submitcat);
+
+	  submitcat = dialog->selection();
 	  delete dialog;
 	} else {
 	  submitcat = category.copy();
@@ -448,7 +447,7 @@ CDDialog::upload()
 
     return;
   }
-      
+
   FILE* mailpipe;
   mailpipe = popen("/usr/sbin/sendmail -t","w");
 
@@ -500,7 +499,7 @@ CDDialog::getCategoryFromPathName(char* pathname, QString& _category)
     {
       path = path.left(path.length() - 1);
     }
-  
+
   int pos = 0;
   pos  = path.findRev("/",-1,true);
   if(pos == -1)
@@ -535,7 +534,7 @@ CDDialog::save()
       return;
     }
 
-    dialog->getSelection(savecat);
+    savecat = dialog->selection();
     delete dialog;
   } 
   else 
@@ -650,9 +649,9 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
         it != discidlist.end();
         ++it, ++num )
     {
-      
+
       tmp += *it;
-      
+
       if( num < (int) discidlist.count() - 1)
 	{
 	  if( counter++ == 3 )
@@ -713,7 +712,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
         num++;
       }
     }
-  
+
   // start going through the extra data
   // first is the title
   QStringList::Iterator it = ext_list.begin();
@@ -767,7 +766,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
   if(!upload)
     {
       cddb_encode(playorder,returnlist);
-      
+
       for(int i = 0; i < (int) returnlist.count();i++)
 	{
 	  tmp = tmp.sprintf("PLAYORDER=%s\n", (*returnlist.at(i)).utf8().data());
@@ -798,7 +797,7 @@ CDDialog::checkit()
 			 i18n("Invalid Database Entry"));
       return false;
     }
-  
+
   QString artist = artistEdit->text().stripWhiteSpace();
   if(artist.isEmpty())
     {
@@ -830,7 +829,7 @@ CDDialog::checkit()
 	break;
       }
     }
-  
+
   if(!have_nonempty_title)
     {
       
@@ -856,7 +855,7 @@ CDDialog::checkit()
 
   bool ret;
   ret = cddb_playlist_decode(strlist, str);
-  
+
   QString teststr;
   bool ok;
   int  num;
@@ -867,18 +866,18 @@ CDDialog::checkit()
     {
       teststr = *it;
       num = teststr.toInt(&ok);
-      
+
       if( num > cdinfo.ntracks || !ok)
 	ret = false;
     }
-  
+
   if(!ret)
     {
       KMessageBox::sorry(this,
 			 i18n("Invalid Playlist\nPlease use track numbers only, separated by commas."));
       return false;
     }
-  
+
   cddb_playlist_encode(strlist,playorder);
   return true;
 } // checkit
@@ -899,19 +898,19 @@ mimetranslate(QString& s)
 {
   QString q;
   QString hex;
-  
+
   s = s.stripWhiteSpace(); // there is no harm in doing this and it
   // will simplify the quoted printable mime encoding.
-  
+
   for(uint i = 0 ; i < s.length(); i++)
     {
       if (((s[i] >= 32) && (s[i] <= 60)) || 
 	  ((s[i] >= 62) && (s[i] <= 126))) 
 	{
-	  
+
 	  q += s.at(i);
 	} else {
-	  
+
 	  hex = hex.sprintf("=%02X", (unsigned char)s.local8Bit().at(i));
 	  q += hex; 
 	}

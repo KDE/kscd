@@ -28,17 +28,16 @@
 
 #include <stdlib.h>
 
-#include <qdialog.h>
-#include <qfont.h>
 #include <qstring.h>
-#include <qpainter.h>
 #include <qlabel.h>
 #include <qmultilineedit.h>
 #include <qpushbutton.h>
 #include <qlistbox.h>
 #include <qstrlist.h>
 
-class InexactDialog : public QDialog {
+#include <kdialogbase.h>
+
+class InexactDialog : public KDialogBase {
 
 Q_OBJECT
 
@@ -48,7 +47,7 @@ public:
 
   void insertList(const QStringList& list);
   void insertText(const QString& str);
-  void getSelection(QString& string);
+  QString selection();
 
   void setTitle(const QString& t);
   void setErrorString(const QString& t);
@@ -59,9 +58,6 @@ private slots:
   void checkit();
 
 private:
-    bool            listbox;
-    QPushButton     *ok_button;
-    QPushButton     *cancel_button;
     QListBox 	    *list_box;
     QMultiLineEdit  *edit;
     QLabel 	    *statuslabel;

@@ -2325,9 +2325,8 @@ KSCD::mycddb_inexact_read()
         return;
     }
 
-    dialog->getSelection(pick);
+    pick = dialog->selection();
     delete dialog;
-
 
     if(pick.isEmpty())
     {

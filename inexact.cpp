@@ -37,61 +37,46 @@
 
 
 InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
-  : QDialog(parent, name, TRUE)
+  : KDialogBase(parent, name, true, "Kscd", Ok|Cancel),
+    list_box( 0 ), edit( 0 ), statuslabel( 0 )
 {
-
-  setCaption("Kscd");
-
-  QBoxLayout * lay1 = new QVBoxLayout ( this, 10 );
-  text = new QLabel(this,"textlabel");
+  QFrame *frame = makeMainWidget();
+  QVBoxLayout * lay1 = new QVBoxLayout ( frame, 0, KDialog::spacingHint() );
+  text = new QLabel(frame,"textlabel");
 //  text->setAlignment(WordBreak|AlignCenter);
   lay1->addWidget ( text );
 
-  listbox = _listbox;
-  if(listbox)
+  if(_listbox)
     {
-      list_box = new QListBox(this,"debugwindow");
+      list_box = new QListBox(frame,"debugwindow");
       list_box->setColumnMode(QListBox::FitToWidth);
       lay1->addWidget ( list_box );
       connect(list_box,SIGNAL(highlighted(int)),SLOT(setStatusBar(int)));
       connect(list_box,SIGNAL(selected(int)), SLOT(checkit()));
     } else {
-      edit = new QMultiLineEdit(this,"debugwindow");
+      edit = new QMultiLineEdit(frame,"debugwindow");
       lay1->addWidget ( edit );
    }
 
-
-
-  text->setText(i18n("No exact match or multiple exact matches found.\nPlease select the appropriate"\
-                     " CD from the list of choices presented below."));
+  text->setText(i18n("No exact match or multiple exact matches found.\n"
+        "Please select the appropriate CD from the list of choices "
+        "presented below."));
   errorstring = i18n("Please select a Disk Title or press Cancel");
 
+  if ( _listbox )
+    {
+      statuslabel = new QLabel( frame, "statuslabel" );
+      lay1->addWidget ( statuslabel );
+      statuslabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
+      statuslabel->setText( "" );
+      statuslabel->setAlignment( AlignCenter );
+    }
 
-  statuslabel = new QLabel( this, "statuslabel" );
-  lay1->addWidget ( statuslabel );
-  statuslabel->setFrameStyle( QFrame::Panel | QFrame::Sunken );
-  statuslabel->setText( "" );
-  statuslabel->setAlignment( AlignCenter );
-  //statusPageLabel->setFont( QFont("helvetica",12,QFont::Normal) );
-
-  QBoxLayout * lay2 = new QHBoxLayout ( lay1 );
-  lay2->addStretch ( 1 );
-  ok_button = new QPushButton(i18n("&OK"),this,"ok_button");
-  lay2->addWidget ( ok_button );
-  lay2->addStretch ( 1 );
-  cancel_button = new QPushButton(i18n("&Cancel"),this,"cancel_button");
-  lay2->addWidget ( cancel_button );
-  lay2->addStretch ( 1 );
-
-  if(listbox)
+  if(list_box)
     list_box->setFocus();
   else
     edit->setFocus();
-  
-  connect(ok_button,SIGNAL(clicked()),SLOT(checkit()));
-  connect(cancel_button,SIGNAL(clicked()),SLOT(reject()));
 
-  returnstring = "";
 } // InexactDialog()
 
 
@@ -115,7 +100,7 @@ InexactDialog::setErrorString(const QString& t)
 void
 InexactDialog::checkit()
 {
-  if(listbox)
+  if(list_box)
     {
       if(list_box->currentItem() == -1)
         {
@@ -129,17 +114,17 @@ InexactDialog::checkit()
   accept();
 }
 
-void
-InexactDialog::getSelection(QString& string)
+QString
+InexactDialog::selection()
 {
-  string = returnstring;
+  return returnstring;
 }
 
 
 void
 InexactDialog::insertList(const QStringList& stringlist)
 {
-  if(listbox)
+  if(list_box)
     {
       list_box->insertStringList(stringlist,-1);
     }
@@ -148,19 +133,22 @@ InexactDialog::insertList(const QStringList& stringlist)
 void
 InexactDialog::insertText(const QString& str)
 {
-  if(!listbox)
+  if(!list_box)
     {
-      edit->setAutoUpdate(FALSE);
+      edit->setAutoUpdate(false);
       edit->setText(str);
-      edit->setAutoUpdate(TRUE);
+      edit->setAutoUpdate(true);
     }
 }
 
 void
 InexactDialog::setStatusBar(int i)
 {
-  returnstring = list_box->text(i);
-  statuslabel->setText(returnstring);
+  if ( list_box )
+    {
+      returnstring = list_box->text(i);
+      statuslabel->setText(returnstring);
+    }
 }
 
 #include "inexact.moc"
