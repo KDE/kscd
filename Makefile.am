@@ -23,6 +23,10 @@ kscd_LDFLAGS = $(all_libraries) -lkutils
 kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
              $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) $(top_builddir)/libkcddb/libkcddb.la
 
+profiledata_DATA = kscd.profile.xml
+profiledatadir = $(kde_datadir)/profiles
+EXTRA_DIST = $(profiledata_DATA)
+
 #SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp
 #	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
 

@@ -1,0 +1,303 @@
+<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<class>kscdPanel</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>kscdPanel</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>398</width>
+            <height>179</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
+    </property>
+    <property name="iconText">
+        <string></string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>0</number>
+        </property>
+        <widget class="QPushButton" row="2" column="1">
+            <property name="name">
+                <cstring>ejectPB</cstring>
+            </property>
+            <property name="enabled">
+                <bool>true</bool>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image0</pixmap>
+            </property>
+            <property name="flat">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1">
+            <property name="name">
+                <cstring>fwdPB</cstring>
+            </property>
+            <property name="enabled">
+                <bool>true</bool>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image1</pixmap>
+            </property>
+            <property name="flat">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0">
+            <property name="name">
+                <cstring>prevPB</cstring>
+            </property>
+            <property name="enabled">
+                <bool>true</bool>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image2</pixmap>
+            </property>
+            <property name="flat">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>stopPB</cstring>
+            </property>
+            <property name="enabled">
+                <bool>true</bool>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image3</pixmap>
+            </property>
+            <property name="flat">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="2">
+            <property name="name">
+                <cstring>volumePB</cstring>
+            </property>
+            <property name="text">
+                <string>Vol</string>
+            </property>
+            <property name="flat">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QSlider" row="3" column="3">
+            <property name="name">
+                <cstring>timeSlider</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="0">
+            <property name="name">
+                <cstring>shuflePB</cstring>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image4</pixmap>
+            </property>
+            <property name="toggleButton">
+                <bool>true</bool>
+            </property>
+            <property name="flat">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="1">
+            <property name="name">
+                <cstring>repeatPB</cstring>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image5</pixmap>
+            </property>
+            <property name="toggleButton">
+                <bool>true</bool>
+            </property>
+            <property name="flat">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLayoutWidget" row="5" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>layout21</cstring>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>cddbPB</cstring>
+                    </property>
+                    <property name="text">
+                        <string></string>
+                    </property>
+                    <property name="pixmap">
+                        <pixmap>image6</pixmap>
+                    </property>
+                    <property name="flat">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>infoPB</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>1</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="text">
+                        <string></string>
+                    </property>
+                    <property name="pixmap">
+                        <pixmap>image7</pixmap>
+                    </property>
+                    <property name="flat">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="Line" row="4" column="0" rowspan="1" colspan="4">
+            <property name="name">
+                <cstring>line4</cstring>
+            </property>
+            <property name="minimumSize">
+                <size>
+                    <width>0</width>
+                    <height>0</height>
+                </size>
+            </property>
+            <property name="frameShape">
+                <enum>HLine</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="0" column="0" rowspan="1" colspan="4">
+            <property name="name">
+                <cstring>sonbListCB</cstring>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>playPB</cstring>
+            </property>
+            <property name="minimumSize">
+                <size>
+                    <width>150</width>
+                    <height>0</height>
+                </size>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image8</pixmap>
+            </property>
+            <property name="flat">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QFrame" row="1" column="2" rowspan="2" colspan="2">
+            <property name="name">
+                <cstring>backdrop</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>0</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="minimumSize">
+                <size>
+                    <width>240</width>
+                    <height>66</height>
+                </size>
+            </property>
+            <property name="maximumSize">
+                <size>
+                    <width>240</width>
+                    <height>66</height>
+                </size>
+            </property>
+            <property name="frameShape">
+                <enum>StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<images>
+    <image name="image0">
+        <data format="XPM.GZ" length="397">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523234530022230543251d2e25658564056503300071f540dc34300073d1001962caca1862caca3041b898b2325c1026a6ac8c10848a292b230942c49495910549731f36bdc48a116147ad3517006440455a</data>
+    </image>
+    <image name="image1">
+        <data format="XPM.GZ" length="397">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523234530022230543251d2e25658564056503300071f540dc34300073d1004962ca60a632aa18980b27a162ca609e32aa98b21e9c448829c349fc6258f462b1038b5bb0b899dc30a8b5e602000fa54570</data>
+    </image>
+    <image name="image2">
+        <data format="XPM.GZ" length="397">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523234530022230543251d2e25658564056503300071f540dc34300073d1003962ca50122ca60ce6c1498498329c848b292bc34998983298a74c500c9b5eac76a0bb059b9bc90d835a6b2e0012914570</data>
+    </image>
+    <image name="image3">
+        <data format="XPM.GZ" length="397">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523234530022230543251d2e25658564056503300071f540dc34300073d10035c494a160b08a51cdbfb5d65c0064e545f4</data>
+    </image>
+    <image name="image4">
+        <data format="XPM.GZ" length="397">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523234530022230543251d2e25658564056503300071f540dc34300073d10015c49481004d0c248010848a81987071847910b520122e0656822a06d185ae17d37d484ea186df50c56aadb9004393476a</data>
+    </image>
+    <image name="image5">
+        <data format="XPM.GZ" length="397">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523234530022230543251d2e25658564056503300071f540dc34300073d100b5c49451c5942100220e11535686a903b1a06208c3f08b29c3ac40e805f1e1d620bb056e00d5fd5b6bcd050044644754</data>
+    </image>
+    <image name="image6">
+        <data format="XPM.GZ" length="461">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232325030345330523054d2e152d253485650360003105719c44d0303b02c16001657c600507174d5ca04d443392095d8c4c18878f5b8ccc7210e7522c5e6502e8e2d9c6badb90065984abb</data>
+    </image>
+    <image name="image7">
+        <data format="XPM.GZ" length="397">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523234530022230543251d2e25658564056503300071f540dc34300073d100544c19534c198b3a2c62caca20416528808b2101dcea709b87ee3e6c6e0603653d14f330edc5aa0eb77978c56aadb9003ac945c8</data>
+    </image>
+    <image name="image8">
+        <data format="XPM.GZ" length="653">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232365230345300124a3a5c4aca0ac90aca066000e2ea81b8696000e612005455a3ac8c4546192c0a22a16ab0a8c2a2064315563568aa70a8415145811a6ab899b0df09872101403535b5d65c00b85c718a</data>
+    </image>
+</images>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

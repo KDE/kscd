@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE profile SYSTEM "profile.dtd">
+
+<profile id="kscd" servicename="KsCD">
+	<name>KsCD</name>
+	<author>Aaron J. Seigo</author>
+	<action objid="CDPlayer" prototype="void play()" class="play" repeat="0" autostart="1">
+		<name>Play/Pause</name>
+		<comment>Toggles between playing and pausing.</comment>
+	</action>
+	<action objid="CDPlayer" prototype="void stop()" class="stop" repeat="0" autostart="0">
+		<name>Stop</name>
+		<comment>Stops the CD.</comment>
+	</action>
+	<action objid="CDPlayer" prototype="void eject()" class="eject" repeat="0" autostart="0">
+		<name>Eject</name>
+		<comment>Ejects the CD.</comment>
+	</action>
+	<action objid="CDPlayer" prototype="void forward()" class="forward" repeat="1" autostart="0">
+		<name>Fast Forward</name>
+		<comment>Skips forwards in the current track.</comment>
+	</action>
+	<action objid="CDPlayer" prototype="void backward()" class="rewind" repeat="1" autostart="0">
+		<name>Rewind</name>
+		<comment>Skips backwards in the current track.</comment>
+	</action>
+	<action objid="CDPlayer" prototype="void previous()" class="previous" repeat="0" autostart="0">
+		<name>Previous</name>
+		<comment>Skips to the previous track on the CD.</comment>
+	</action>
+	<action objid="CDPlayer" prototype="void next()" class="next" repeat="0" autostart="0">
+		<name>Next</name>
+		<comment>Skips to the next track on the CD.</comment>
+	</action>
+	<action objid="CDPlayer" prototype="void setTrack(int)" class="number" repeat="0" autostart="1">
+		<name>Set Track</name>
+		<comment>Skips to a specific track on the CD.</comment>
+		<argument type="int">
+			<comment>The number of the track to skip to.</comment>
+			<range min="0" max="100"/>
+		</argument>
+	</action>
+	<action objid="CDPlayer" prototype="void setVolume(int)" repeat="0" autostart="0">
+		<name>Set Volume</name>
+		<comment>Sets the play volume.</comment>
+		<argument type="int">
+			<comment>The volume to set the CD player to.</comment>
+			<range min="0" max="100"/>
+		</argument>
+	</action>
+	<action objid="CDPlayer" prototype="void toggleLoop()" repeat="0" autostart="0">
+		<name>Loop</name>
+		<comment>Toggles looping on and off.</comment>
+	</action>
+	<action objid="CDPlayer" prototype="void toggleShuffle()" repeat="0" autostart="0">
+		<name>Shffule</name>
+		<comment>Toggles track shuffling on and off.</comment>
+	</action>
+</profile>
