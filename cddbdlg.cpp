@@ -282,24 +282,14 @@ QTime framestoTime(int _frames)
   return dml;
 } // framestotime
 
-void CDDBDlg::titlechanged()
-{
-  QString title = m_dlgBase->le_title->text().stripWhiteSpace();
-  QString artist = m_dlgBase->le_artist->text().stripWhiteSpace();
-
-  if(title.isEmpty() || artist.isEmpty())
-    return;
-
-  title = QString("%1 / %2").arg(artist).arg(title);
-  *track_list.begin() = title;
-} // titlechanged
-
-QString submitcat;
-
 void CDDBDlg::upload()
 {
+  updateTrackList();
+
   if(!checkit())
     return;
+
+  QString submitcat;
 
   if( category.isEmpty() )
   {
@@ -362,6 +352,8 @@ void CDDBDlg::setCdInfo(KCDDB::CDInfo &info, const QString& category)
 
 void CDDBDlg::save()
 {
+  updateTrackList();
+
   if(!checkit())
     return;
 
@@ -487,5 +479,28 @@ void CDDBDlg::load_cddb()
 {
   emit cddbQuery(true);
 } // load
+
+void CDDBDlg::updateTrackList()
+{
+  QString title = m_dlgBase->le_title->text().stripWhiteSpace();
+  QString artist = m_dlgBase->le_artist->text().stripWhiteSpace();
+
+  title = QString("%1 / %2").arg(artist).arg(title);
+  *track_list.begin() = title;
+
+  m_dlgBase->lv_trackList->setSorting(0, true);
+
+  unsigned int i=1;
+  for (QListViewItem* item = m_dlgBase->lv_trackList->firstChild(); item ; item=item->nextSibling())
+  {
+    if (track_list.count() <= i)
+    {
+      kdWarning() << "track_list.count <= " << i << endl;
+      continue;
+    }
+    track_list[i] = item->text(2);
+    i++;
+  }
+}
 
 #include "cddbdlg.moc"

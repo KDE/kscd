@@ -58,7 +58,6 @@ class CDDBDlg : public KDialogBase
     void setCdInfo(KCDDB::CDInfo &info, const QString& category);
 
   public slots:
-    void titlechanged();
     void save();
     void extITB( int trackNum );
     void extIB();
@@ -71,6 +70,8 @@ class CDDBDlg : public KDialogBase
     void play(int i);
 
   private:
+    void updateTrackList();
+
     CDDBDlgBase *m_dlgBase;
     QStringList ext_list;
     QStringList track_list;
