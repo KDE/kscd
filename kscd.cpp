@@ -617,6 +617,10 @@ void KSCD::closeEvent( QCloseEvent *e )
     {
         if (caller == m_dockWidget)
         {
+            if (!m_dockWidget->confirmQuit())
+            {
+                return;
+            }
             break;
         }
         caller = caller->parent();
