@@ -2770,8 +2770,8 @@ KSCD::get_pathlist(QStringList& _pathlist)
     {
 		 if ( ! KStandardDirs::makeDir( cddbbasedir ) )
 		 {
-			 QString msg = i18n("Can't create directory ") + cddbbasedir +
-				 i18n("\nCheck Permissions !" );
+			 QString msg = i18n("Unable to create directory ") + cddbbasedir +
+				 i18n("\nCheck permissions!" );
 			 KMessageBox::error( this, msg );
 			 return;
 		 }
