@@ -345,6 +345,8 @@ void CDDB::cddb_close(KSocket *socket)
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <kstddirs.h>
+#include <kglobal.h>
 
 void CDDB::cddb_read(KSocket *socket)
 {
@@ -482,8 +484,6 @@ void CDDB::query_exact(QString line)
 
 void CDDB::do_state_machine()
 {
-    QString tbuf;
-    char idStr[20];
     static int cddbfh = 0;
     int cddblinelen;
 
@@ -637,7 +637,7 @@ void CDDB::do_state_machine()
 	break;
 
     case CDDB_READING:
-	if(lastline.left(1) == QString("."))
+	if(lastline.left(1).at(0) == '.')
 	{
             close(cddbfh);
             cddbfh = 0;
@@ -649,18 +649,16 @@ void CDDB::do_state_machine()
 	    emit cddb_done();
 	} else {
             if(!cddbfh){
-                tbuf = cddbbasedirtext;
-                tbuf += "/";
-                tbuf += category.data();
-                tbuf += "/";
-                sprintf(idStr, "%08lx", magicID);
-                tbuf += idStr;
+		QString file;
+		file.sprintf("%s/%08lx", category.ascii(), magicID);
+                file = locate("cddb", file);
+
                 if(debugflag)
-                  fprintf(stderr, "dir/file path: %s\n", (const char *)tbuf);
-                cddbfh = open((const char*)tbuf, O_CREAT|O_WRONLY|O_TRUNC,
+                  fprintf(stderr, "dir/file path: %s\n", file.ascii());
+                cddbfh = open(file.ascii(), O_CREAT|O_WRONLY|O_TRUNC,
                               S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
             }
-            cddblinelen = strlen(lastline.data());
+            cddblinelen = lastline.length();
             write(cddbfh, lastline.data(), cddblinelen);
             write(cddbfh, "\n", strlen("\n"));
 //            if(debugflag)
@@ -765,33 +763,47 @@ bool CDDB::local_query(
     QStrList& discidlist,
     int&	 revision,
     QStrList& playlist
-){
+)
+{
+    QStringList pathlist = KGlobal::dirs()->getResourceDirs("cddb");
+    debug("pathlist %d", pathlist.count());
 
     if(pathlist.count() == 0)
 	return false;
 
-    for(int i = 0 ; i <(int) pathlist.count(); i++){
+    QDir d;
+    
+    for(QStringList::ConstIterator it = pathlist.begin() ; it != pathlist.end(); it++){
 
-	if (debugflag) fprintf(stderr,"Checking %s\n",pathlist.at(i));
-
-	if(checkDir(magicID,pathlist.at(i))){
-	    getCategoryFromPathName(pathlist.at(i),category);
-	    
-	    getData(data,titlelist,extlist,_category,discidlist,revision,playlist);
-	    return true;
+	d.setPath(*it);
+	d.setFilter( QDir::Dirs);
+	d.setSorting( QDir::Size);
+	
+	QStringList list = d.entryList();
+	QStringList::Iterator it2;    
+	
+	for(it2 = list.begin(); it2 != list.end(); it2++){
+	    if (*it2 != "." && *it2 != "..")
+		if(checkDir(magicID, *it + *it2)) {
+		    category = *it2;
+		    
+		    getData(data,titlelist,extlist,_category,discidlist,revision,playlist);
+		    return true;
+		}
 	}
+
     }
 
     return false;
 
 }
 
-bool CDDB::checkDir(unsigned long magicID, char* dir)
+bool CDDB::checkDir(unsigned long magicID, const QString& dir)
 {
     QString mag;
-    mag.sprintf("%s/%08lx",dir,magicID);
+    mag.sprintf("%s/%08lx",dir.ascii(),magicID);
 
-    QFileInfo info(mag.data());
+    QFileInfo info(mag);
     if(!info.isReadable())
 	return false;
 
@@ -819,12 +831,6 @@ bool CDDB::checkDir(unsigned long magicID, char* dir)
 
 }
 
-
-void CDDB::setPathList(QStrList& _paths)
-{
-    pathlist = _paths; // automatically makes deep copies is _paths has deep copies
-}
-
 // scan the relevant parts of the cddba database entry in the the provied structures
 void CDDB::getData(
     QString& data,
@@ -840,7 +846,7 @@ void CDDB::getData(
     titles.clear();
     extlist.clear();
     discidlist.clear();
-    categ      = category.copy();
+    categ      = category;
     data       = respbuffer;
     
   
@@ -952,23 +958,21 @@ void CDDB::getData(
 
 }
 
-void CDDB::getCategoryFromPathName(char* pathname, QString& category){
+QString CDDB::getCategoryFromPathName(const QString& pathname){
   
     QString path = pathname;
     path = path.stripWhiteSpace();
 
-    while(path.right(1) == QString("/")){
+    while(path.right(1).at(1) == '/'){
 	path = path.left(path.length() - 1);
     }
 
     int pos = 0;
     pos  = path.findRev("/",-1,true);
     if(pos == -1)
-	category = path.copy();
+	return path;
     else
-	category = path.mid(pos+1,path.length());
-
-    
+	return path.mid(pos+1,path.length());
 
 }
 

@@ -83,8 +83,7 @@ class CDDB:public QObject
 
     void  get_inexact_list(QStrList& inexact_list);
     void  query_exact(QString line);
-    void  setPathList(QStrList& paths);
-    bool  checkDir(unsigned long magicID, char* dir);
+    bool  checkDir(unsigned long magicID, const QString& dir);
     bool  getValue(QString& key,QString& value, QString& data);
     void  serverList(QStrList& list);
     void  cddbgetServerList(QString& server);
@@ -106,7 +105,7 @@ class CDDB:public QObject
 	int& revision,
 	QStrList& playlist
     );
-    void getCategoryFromPathName(char* pathname, QString& string);
+    QString getCategoryFromPathName(const QString& pathname);
 
     static bool normalize_server_list_entry(QString &entry);
 
@@ -155,7 +154,6 @@ class CDDB:public QObject
     QTimer 	timeouttimer;
     QTimer      expecttimer;
 
-    QStrList    pathlist;
     QString 	hostname;
 
     QString     proxyhost;

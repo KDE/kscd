@@ -29,6 +29,8 @@
 
 #include "docking.h"
 #include <klocale.h>
+#include <kiconloader.h>
+#include <kglobal.h>
 
 
 extern KApplication *mykapp;
@@ -42,31 +44,12 @@ DockWidget::DockWidget(const char *name)
 
   docked = false;
 
-  QString pixdir = mykapp->kde_datadir() + "/kscd/pics/";
   QString tmp;
-
-#define PMERROR(pm) \
-  tmp = i18n("Could not load %1!").arg(pm); \
-  QMessageBox::warning(this, i18n("Error"), tmp, i18n("OK"));
 
   //     printf("trying to load %s\n",pixdir.data());
   // load pixmaps
 
-  if (!cdsmall_pixmap.load(pixdir + "cdsmall.xpm")){
-    PMERROR("cdsmall.xpm");
-  }
-
-     /*
-     if (!dock_left_pixmap.load(pixdir + "dock_left.xpm")){
-    PMERROR("dock_left.xpm");
-  }
-  if (!dock_right_pixmap.load(pixdir + "dock_right.xpm")){
-    PMERROR("dock_right.xpm");
-  }
-  if (!dock_both_pixmap.load(pixdir + "dock_both.xpm")){
-    PMERROR("dock_both.xpm");
-  }
-  */
+  cdsmall_pixmap = ICON("cdsmall.xpm");
 
   // popup menu for right mouse button
   popup_m = new QPopupMenu();

@@ -59,6 +59,8 @@ extern "C" {
 
 #include <kwm.h>
 #include <kglobal.h>
+#include <kiconloader.h>
+#include <kstddirs.h>
 
 KApplication 	*mykapp;
 KSCD 	         *k;
@@ -124,7 +126,6 @@ int info_modified;
 int cur_stopmode;
 int cur_playnew;
 int mark_a, mark_b;
-    char cddbbasedirtext[4096];
 
 int cddb_error = 0;
 
@@ -359,11 +360,10 @@ void KSCD::drawPanel()
     titlelabel = new QLabel(this);
     titlelabel->setGeometry(WIDTH + 5, iy + 50 , SBARWIDTH -15, 13);
     QFont ledfont( "Helvetica", 10, QFont::Bold );
-    KGlobal::charsets()->setQFont(ledfont);
+    //    KGlobal::charsets()->setQFont(ledfont);
     titlelabel->setFont( ledfont );
     titlelabel->setAlignment( AlignLeft );
     titlelabel->setText("");
-
 
     statuslabel = new QLabel(this);
     statuslabel->setGeometry(WIDTH + 110, iy  +D, 50, 14);
@@ -989,7 +989,7 @@ void KSCD::trackSelected( int trk ){
 void KSCD::aboutClicked(){
 
     QString server_copy;
-    server_copy = current_server.copy();
+    server_copy = current_server;
 
     QTabDialog * tabdialog;
 
@@ -1034,9 +1034,7 @@ void KSCD::aboutClicked(){
     label->setAlignment(AlignLeft|WordBreak|ExpandTabs);
     label->setText(labelstring);
 
-    QString pixdir = mykapp->kde_datadir() + QString("/kscd/pics/");
-
-    QPixmap pm((pixdir + "kscdlogo.xpm"));
+    QPixmap pm = ICON("kscdlogo.xpm");
     QLabel *logo = new QLabel(box);
     logo->setPixmap(pm);
     logo->setGeometry(40, 50, pm.width(), pm.height());
@@ -1047,8 +1045,8 @@ void KSCD::aboutClicked(){
     config.led_color = led_color;
     config.tooltips = tooltips;
     config.cd_device = cd_device;
-    config.mailcmd = mailcmd.copy();
-    config.browsercmd = browsercmd.copy();
+    config.mailcmd = mailcmd;
+    config.browsercmd = browsercmd;
     config.use_kfm    = use_kfm;
     config.docking    = docking;
     config.autoplay   = autoplay;
@@ -1063,7 +1061,7 @@ void KSCD::aboutClicked(){
     connect(setup,SIGNAL(updateCurrentServer()),this,SLOT(updateCurrentCDDBServer()));
     setup->insertData(cddbserverlist,
                       cddbsubmitlist,
-                      cddbbasedir,
+		      cddbbasedir,
                       submitaddress,
                       current_server,
                       cddb_remote_enabled,
@@ -1095,9 +1093,9 @@ void KSCD::aboutClicked(){
         background_color = dlg->getData()->background_color;
         led_color = dlg->getData()->led_color;
         tooltips = dlg->getData()->tooltips;
-        mailcmd = dlg->getData()->mailcmd.copy();
+        mailcmd = dlg->getData()->mailcmd;
 
-        browsercmd = dlg->getData()->browsercmd.copy();
+        browsercmd = dlg->getData()->browsercmd;
         use_kfm = dlg->getData()->use_kfm;
         docking = dlg->getData()->docking;
         autoplay = dlg->getData()->autoplay;
@@ -1155,7 +1153,7 @@ void KSCD::aboutClicked(){
     else{
         // reset the current server in case we played with it ...
 
-        current_server = server_copy.copy();
+        current_server = server_copy;
         if(debugflag) printf("RESETTING SERVER TO: %s\n",current_server.ascii());
     }
 
@@ -1478,31 +1476,29 @@ void KSCD::readSettings()
     background_color = config->readColorEntry("BackColor",&defaultback);	
     led_color = config->readColorEntry("LEDColor",&defaultled);
 
-
     config->setGroup("MAGIC");
     magic_width      = config->readNumEntry("magicwidth",320);
     magic_height     = config->readNumEntry("magicheight",200);
     magic_brightness = config->readNumEntry("magicbrightness", 3);
 
     config->setGroup("SMTP");
-    smtpConfigData.enabled = (bool)config->readNumEntry("enabled", 1);
+    smtpConfigData.enabled = config->readBoolEntry("enabled", true);
     smtpConfigData.serverHost = config->readEntry("serverHost", "localhost");
     smtpConfigData.serverPort = config->readEntry("serverPort", "25");
     smtpConfigData.senderAddress = config->readEntry("senderAddress", "someone@somewhere.org");
 
     config->setGroup("CDDB");
-    QString basedirdefault = mykapp->kde_datadir();
-    basedirdefault += "/kscd/cddb/";
 
-    cddbbasedir = config->readEntry("LocalBaseDir",basedirdefault);
-    strncpy(cddbbasedirtext, cddbbasedir.data(), 4095);
-    cddbbasedirtext[4095] = 0;
+    cddbbasedir = config->readEntry("LocalBaseDir");
+    if (!cddbbasedir.isNull()) 
+	KGlobal::dirs()->addResourceDir("cddb", cddbbasedir);
+
 // Set this to false by default. Look at the settings dialog source code
 // for the reason. - Juraj.
-    cddb_remote_enabled = (bool) config->readNumEntry("CDDBRemoteEnabled",
-                                                      (int)false);
-    cddb.useHTTPProxy((bool)config->readNumEntry("CDDBHTTPProxyEnabled",
-                                                 (int)false));
+    cddb_remote_enabled = config->readBoolEntry("CDDBRemoteEnabled",
+						false);
+    cddb.useHTTPProxy(config->readBoolEntry("CDDBHTTPProxyEnabled",
+					    false));
     cddb.setHTTPProxy(config->readEntry("HTTPProxyHost",""),
                       config->readNumEntry("HTTPProxyPort",0));
 
@@ -1584,15 +1580,15 @@ void KSCD::writeSettings(){
     config->writeEntry("senderAddress", smtpConfigData.senderAddress);
 
     config->setGroup("CDDB");
-    config->writeEntry("CDDBRemoteEnabled",(int)cddb_remote_enabled);
+    config->writeEntry("CDDBRemoteEnabled",cddb_remote_enabled);
     config->writeEntry("LocalBaseDir",cddbbasedir);
     config->writeEntry("SeverList",cddbserverlist);
     config->writeEntry("SubmitList", cddbsubmitlist);
     config->writeEntry("CDDBSubmitAddress",submitaddress);
     config->writeEntry("CurrentServer",current_server);
-    config->writeEntry("CDDBHTTPProxyEnabled",(int)cddb.useHTTPProxy());
+    config->writeEntry("CDDBHTTPProxyEnabled",cddb.useHTTPProxy());
     config->writeEntry("HTTPProxyHost",cddb.getHTTPProxyHost());
-    config->writeEntry("HTTPProxyPort",cddb.getHTTPProxyPort());
+    config->writeEntry("HTTPProxyPort",(int)cddb.getHTTPProxyPort());
 
     config->setGroup("MAGIC");
     config->writeEntry("magicwidth",magic_width);
@@ -1611,7 +1607,7 @@ void KSCD::CDDialogSelected(){
     cddialog = new CDDialog();
 
     cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
-                      revision,playlist,pathlist,mailcmd,submitaddress, &smtpConfigData);
+                      revision,playlist,mailcmd,submitaddress, &smtpConfigData);
 
     connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
     connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
@@ -1693,9 +1689,6 @@ void KSCD::get_cddb_info(bool _updateDialog){
 
     totaltimelabel->setText(fmt);
 
-    get_pathlist(pathlist);
-    cddb.setPathList(pathlist);
-
     if(!connected){
         connect(&cddb,SIGNAL(cddb_ready()),this,SLOT(cddb_ready()));
         connect(&cddb,SIGNAL(cddb_failed()),this,SLOT(cddb_failed()));
@@ -1765,7 +1758,7 @@ void KSCD::get_cddb_info(bool _updateDialog){
 
         if(cddialog && updateDialog)
             cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
-                              revision,playlist,pathlist,mailcmd,submitaddress, &smtpConfigData);
+                              revision,playlist,mailcmd,submitaddress, &smtpConfigData);
         playlistpointer = 0;
     }
 
@@ -1944,7 +1937,7 @@ void KSCD::cddb_done()
 
     if(cddialog && updateDialog)
         cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
-                          revision,playlist,pathlist,mailcmd,submitaddress, &smtpConfigData);
+                          revision,playlist,mailcmd,submitaddress, &smtpConfigData);
 
     int i = 0;
     songListCB->clear();
@@ -2333,7 +2326,7 @@ void KSCD::startBrowser(const QString &querystring){
 
         const char* shell = 0L;
 
-        QString bw = browsercmd.copy();
+        QString bw = browsercmd;
         QString cmd;
         cmd = cmd.sprintf(bw.data(),querystring.ascii());
 
@@ -2353,43 +2346,6 @@ void KSCD::startBrowser(const QString &querystring){
 
 }
 
-void KSCD::get_pathlist(QStrList& _pathlist){
-
-    QDir d;
-    InexactDialog *dialog;
-
-    d.setFilter( QDir::Dirs);
-    d.setSorting( QDir::Size);
-    d.setPath(cddbbasedir);
-    if(!d.exists()){
-
-        dialog = new InexactDialog(0, "dialog", false);
-        dialog->insertText(cddbbasedir);
-        dialog->setTitle(i18n("Enter the local CDDB base Directory"));
-
-        if(dialog->exec() != QDialog::Accepted){
-            delete dialog;
-            return;
-        }
-
-        dialog->getSelection(cddbbasedir);
-        d.setPath(cddbbasedir);
-        delete dialog;
-    }
-
-    if(!d.exists()) // Bogus directory, don't try to read it
-      return;
-
-    _pathlist.clear();
-    QStringList list = d.entryList();
-    QStringList::Iterator it;
-    for(it = list.begin(); it != list.end(); it++){
-        if (*it!= "." && *it != "..")
-            _pathlist.append( QString (cddbbasedir + "/" +  *it));
-
-    }
-}
-
 void KSCD::doSM()
 {
     if (isVisible())
@@ -2401,7 +2357,10 @@ void KSCD::doSM()
 
 int main( int argc, char *argv[] )
 {
+    
     mykapp = new KApplication( argc, argv,"kscd" );
+    KGlobal::dirs()->addResourceType("cddb", KStandardDirs::kde_default("data") + "kscd/cddb/");
+
     k = new KSCD();
 
     cur_track = 1;

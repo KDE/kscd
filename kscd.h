@@ -260,7 +260,6 @@ private:
 
 	CDDB 		cddb;
 	QStrList        querylist;
-	QStrList        pathlist;
 	QStrList        discidlist;
 	QStrList	tracktitlelist;
 	QStrList	playlist;
@@ -302,7 +301,6 @@ protected:
     void setupPopups();
     void startBrowser(const QString& querystring);
     bool getArtist(QString& artist);
-    void get_pathlist(QStrList& _patlist);
 
 };
 

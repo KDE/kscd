@@ -122,7 +122,6 @@ void CDDialog::setData(
                        QString& cat,
                        int& rev,
                        QStrList& _playlist,
-                       QStrList& _pathlist,
                        QString& _mailcmd,
                         QString& _submitaddress,
                        SMTPConfig::SMTPConfigData *_smtpConfigData
@@ -137,7 +136,6 @@ void CDDialog::setData(
     discidlist  = discidl;
     revision    = rev;
     playlist	= _playlist;
-    pathlist    = _pathlist;
     mailcmd	= _mailcmd.copy();
     submitaddress = _submitaddress.copy();
     smtpConfigData = _smtpConfigData;

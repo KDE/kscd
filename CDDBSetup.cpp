@@ -13,6 +13,8 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <kglobal.h>
+#include <kstddirs.h>
 
 extern KApplication 	*mykapp;
 
@@ -205,8 +207,7 @@ void CDDBSetup::set_defaults()
     server_listbox->repaint();
     server_listbox->setCurrentItem(0);
 
-    basedirstring = mykapp->kde_datadir().copy();
-    basedirstring += "/kscd/cddb/";
+    basedirstring = KGlobal::dirs()->getResourceDirs("cddb").last();
     basedir_edit->setText(basedirstring);
 
     submission_listbox->setAutoUpdate(false);
