@@ -380,11 +380,11 @@ lookup attempt times out can be set. To use an &HTTP; proxy, check the
 <guilabel>Use HTTP proxy to access freedb</guilabel> and
 enter the &URL; in the field below.</para>
 
-<para>The <guilabel>freedb Base Directory</guilabel> text field lets you choose
+<para>The <guilabel>freedb Base Directory:</guilabel> text field lets you choose
 the directory where you want <acronym>CDDB</acronym> entries to be stored
 locally.</para>
 
-<para>The <guilabel>freedb Server</guilabel> list box shows a list of known
+<para>The <guilabel>freedb server:</guilabel> list box shows a list of known
 freedb servers. Select an entry from this list and it will
 appear in the text field above the selection box. Press the
 <guibutton>Update</guibutton> button to update the list of servers in the list
@@ -393,14 +393,14 @@ value, <userinput>freedb.freedb.org cddbp 888 -</userinput>, which will permit y
 update the list with a fresh list of freedb servers listed with
 the master freedb site at <systemitem
 class="systemname">freedb.freedb.org</systemitem>. Hit the
-<guibutton>-</guibutton> button to delete the selected entry from the
+<guiicon>-</guiicon> button to delete the selected entry from the
 list.</para>
 
 <para>The <guilabel>Send freedb submissions to:</guilabel> field contains the
 e-mail address to which to submit <abbrev>CDDB</abbrev> entries. The default address
 is <email>freedb-submit@freedb.org</email>. As of version 0.8,
 <acronym>CDDB</acronym> entries from &kscd; are accepted for inclusion in the
-database. Hit the <guibutton>-</guibutton> button to delete the selected entry
+database. Hit the <guiicon>-</guiicon> button to delete the selected entry
 from the list. The <guibutton>Defaults</guibutton> button restores all settings
 to the default values.The <guibutton>Help</guibutton> button opens the &kscd;
 help home page (this document).</para>
@@ -410,7 +410,7 @@ help home page (this document).</para>
 </sect1>
 
 <sect1 id="smtp-options">
-<title>The <guilabel>SMTP Options</guilabel> tab</title> 
+<title>The <guilabel>SMTP</guilabel> tab</title> 
 
 <screenshot>
 <screeninfo>The SMTP Options tab</screeninfo>
@@ -429,71 +429,83 @@ email address in the lower text field. </para>
 </sect1>
 
 <sect1 id="kscd-options-tab">
-<title>The <guilabel>KSCD Options</guilabel> tab</title> 
+<title>The <guilabel>CD Player</guilabel> tab</title> 
 
 <screenshot>
-<screeninfo>The <guilabel>KSCD Options</guilabel> tab</screeninfo>
+<screeninfo>The <guilabel>CD Player</guilabel> tab</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd12.png" format="PNG"/></imageobject>
-<textobject><phrase>The <guilabel>KSCD Options</guilabel> tab</phrase></textobject>
+<textobject><phrase>The <guilabel>KSCD Configuration</guilabel> tab</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para>The <guilabel>LED Color:</guilabel> and <guilabel>Background
-Color:</guilabel> fields show the color selected for the foreground and
-background of the status display. Press the <guibutton>Change</guibutton> button
-next to the color box to change these colors.</para>
+<para>The <guilabel>LCD Color</guilabel> and <guilabel>Background
+Color</guilabel> fields show the color selected for the foreground and
+background of the status display. Press the
+<guibutton>Change</guibutton> button next to the color box to change
+these colors.</para>
 
-<para>The <guilabel>CDROM Device</guilabel> field contains the name of the
-&CD-ROM; device to be used to play audio &CD;s. The default value is
-<filename>/dev/cdrom</filename>. The permissions on this device must be set to
-allow opening this device read-only. Changing the permissions on this device
-file will in almost all cases require superuser privileges and can be done from
-the command line, or in the Super User Mode of &konqueror;.</para>
+<para>The <guilabel>CD-ROM Device</guilabel> field contains the name
+of the &CD-ROM; device to be used to play audio &CD;s. The default
+value is <filename>/dev/cdrom</filename>. The permissions on this
+device must be set to allow opening this device read-only. Changing
+the permissions on this device file will in almost all cases require
+superuser privileges and can be done from the command line, or in the
+Super User Mode of &konqueror;.</para>
 
-<para>The <guilabel>Unix mail command</guilabel> field shows the command used to
-send new <acronym>CDDB</acronym> entries to the database. The default value is
-<userinput><command>mail</command> <option>-s
-<replaceable>%s</replaceable></option></userinput>. You will need to make sure
-this command will actually send mail to non-local systems if you want to submit
-<acronym>CDDB</acronym> entries, especially if you access the Internet through a
-dial-up connection. Check the documentation for your Linux distribution for
-details. Some Linux distributions that use sendmail to deliver e-mail require
-only that you enter your mail host into the <guilabel>"Smart" relay
-host</guilabel> field in <filename>/etc/sendmail.cf</filename>. In addition, the
-<acronym>CDDB</acronym> site will want to be able to mail you back; it may
-therefore also be necessary to edit <filename>/etc/sendmail.cf</filename> to
-ensure that the return address on the submission is valid. Your mileage is
-likely to vary. If all else fails, use <link linkend="smtp-options">SMTP</link>
+<!-- 
+<para>The <guilabel>Unix mail command</guilabel> field shows the
+command used to send new <acronym>CDDB</acronym> entries to the
+database. The default value is <userinput><command>mail</command>
+<option>-s <replaceable>%s</replaceable></option></userinput>. You
+will need to make sure this command will actually send mail to
+non-local systems if you want to submit <acronym>CDDB</acronym>
+entries, especially if you access the Internet through a dial-up
+connection. Check the documentation for your &Linux; distribution for
+details. Some Linux distributions that use sendmail to deliver e-mail
+require only that you enter your mail host into the
+<option>&quot;Smart&quot; relay host</option> field in
+<filename>/etc/sendmail.cf</filename>. In addition, the
+<acronym>CDDB</acronym> site will want to be able to mail you back; it
+may therefore also be necessary to edit
+<filename>/etc/sendmail.cf</filename> to ensure that the return
+address on the submission is valid. Your mileage is likely to vary. If
+all else fails, use <link linkend="smtp-options">SMTP</link>
 instead.</para>
-
+ 
 <para>The <guilabel>WWW-Browser</guilabel> section lets you choose which web
 browser to use to access the web sites in the <link linkend="information-button">information button</link> menus.  You can choose
 either &konqueror; or a custom browser with the radio buttons. By default, the
 <guilabel>Use Custom Browser</guilabel> field contains
 <userinput><command>kfmclient</command>
 <option><replaceable>openURL %s</replaceable></option></userinput>.</para>
+-->
 
-<para>The <guilabel>Show Tool Tips</guilabel> checkbox turns tooltips (tiny
+<para>The <guilabel>Show tool tips</guilabel> checkbox turns tooltips (tiny
 windows that pop up when the mouse is <quote>parked</quote> briefly over a
 control) on or off.</para>
 
-<para><guilabel>Enable KPanel Docking</guilabel> causes a &kscd; control to
+<para><guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
 appear in the &kicker; panel.</para>
 
-<para><guilabel>Play on Tray Close</guilabel> causes &CD; play to start when the
-tray is closed, with no need to press the <guibutton>Play</guibutton>
-button.</para>
+<para><guilabel>Autoplay when CD inserted</guilabel> causes &CD; play to
+start when the tray is closed, with no need to press the
+<guibutton>Play</guibutton> button.</para>
 
-<para><guilabel>Stop Playing on Exit</guilabel> causes &CD; playback to stop
+<para><guilabel>Stop playing on exit</guilabel> causes &CD; playback to stop
 when &kscd; is closed.</para>
 
-<para><guilabel>Eject on Finish</guilabel> causes the &CD; to be ejected when
-playback ends.</para>
+<para><guilabel>Eject CD when finished playing</guilabel> causes the
+&CD; to be ejected when playback ends.</para> 
 
-<para><guilabel>Random is Shuffle</guilabel> means that when <link
-linkend="randomize-button">random play</link> is used, each track is played only
-once.</para>
+<!--<para><guilabel>Random is Shuffle</guilabel> means that when <link
+linkend="randomize-button">random play</link> is used, each track is
+played only once.</para> -->
+
+<para>You can choose how random play operates, from two
+self-explanatory options: <guilabel>Shuffle order and play each song
+only once</guilabel> and <guilabel>Randomly select songs (may
+repeat)</guilabel>.</para>
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
 page.</para>
@@ -504,10 +516,11 @@ page.</para>
 </sect1>
 
 <sect1 id="about">
-<title>The <guilabel>About</guilabel> tab </title>
+<title>The <guilabel>Credits</guilabel> tab </title>
 
-<para> The <guilabel>About</guilabel> tab displays information about the version
-of &kscd; you are using and some copyright information. </para>
+<para> The <guilabel>Credits</guilabel> tab displays information about
+the version of &kscd; you are using and some copyright
+information. </para>
 
 </sect1>
 </chapter>
@@ -527,37 +540,40 @@ of &kscd; you are using and some copyright information. </para>
 and upload <link linkend="cddb-support"><acronym>CDDB</acronym> (Compact Disc
 Data Base)</link> entries.</para>
 
-<para>If there is an entry in your local <acronym>CDDB</acronym> tree (see the
-<link linkend="freedb-tab">CDDB subsection</link> in the Configuration chapter)
-for the &CD; in your &CD-ROM; drive, or if the disc could be found in the
-freedb, you will see the name of the artist and the title of
-the &CD; in the <guilabel>Disc Artist / Title</guilabel> field and a list of
-tracks with song titles in the <guilabel>Track / Time / Title</guilabel>
-selection box. Otherwise, you will see a list of tracks and play times without
-titles.</para>
+<para>If there is an entry in your local <acronym>CDDB</acronym> tree
+(see the <link linkend="freedb-tab">CDDB subsection</link> in the
+Configuration chapter) for the &CD; in your &CD-ROM; drive, or if the
+disc could be found in the freedb, you will see the name of the artist
+and the title of the &CD; in the <guilabel>Artist:</guilabel> and
+<guilabel>Title</guilabel> fields and a list of tracks with song
+titles in the <interface>Tracks</interface> selection box. Otherwise,
+you will see a list of tracks and play times without titles.</para>
 
-<para>You can make an annotation for the entire disc with the <guibutton>Ext
-Info</guibutton> button next to the <guilabel>Disc Artist / Title</guilabel>
-field, or for a selected track in the <guilabel>Track / Time /Title</guilabel>
-selection box with the adjacent <guibutton>Ext Info</guibutton> button. If you
-select a track in the <guilabel>Track / Time / Title</guilabel> selection box,
-the title, if present, will appear in the <guilabel>Edit Track Title</guilabel>
-field below. You can type a title for the track in the box, or edit the entry to
-suit your needs. Press the <keycap>Return</keycap> key on your keyboard, and the
+<para>You can make an annotation for the entire disc with the
+<guibutton>Comment</guibutton> button under the
+<guilabel>Title</guilabel> field, or for a selected track in the
+<guilabel>Tracks</guilabel> selection box with the adjacent
+<guibutton>Comment</guibutton> button. If you select a track in the
+<guilabel>Tracks</guilabel> selection box, the title, if present, will
+appear in the <guilabel>Title</guilabel> field below. You can type a
+title for the track in the box, or edit the entry to suit your
+needs. Press the <keycap>Return</keycap> key on your keyboard, and the
 text will appear in the proper line in the selection box.</para>
 
-<para>Once all tracks have been given titles and the <guilabel>Disc Artist /
-Title</guilabel> field has been filled out, you can press the
-<guibutton>Submit</guibutton> button to send your submission by e-mail to freedb.</para>
+<para>Once all tracks have been given titles and the
+<guilabel>Artist:</guilabel> and <guilabel>Title</guilabel> fields have
+been filled out, you can press the <guibutton>Upload</guibutton>
+button to send your submission by e-mail to freedb.</para>
 
-<para>You will be prompted to select a category for the submission. The
-<guilabel>Disc ID</guilabel> section displays the 32 bit <acronym>ID</acronym>
-code used by freedb to identify a compact disc. Above the
-<acronym>ID</acronym> code is the category of the <guilabel>CDDB</guilabel>
-entry. These categories correspond to the subdirectories tree of the directory
-chosen in the <guilabel>freedb Base Directory</guilabel> in the <link
-linkend="freedb-tab"><abbrev>CDDB</abbrev> tab</link> of the &kscd; Configuration
-window.</para>
+<para>You will be prompted to select a category for the
+submission. The <guilabel>Disc ID</guilabel> section displays the 32
+bit <acronym>ID</acronym> code used by freedb to identify a compact
+disc. Above the <acronym>ID</acronym> code is the category of the
+<guilabel>freedb</guilabel> entry. These categories correspond to the
+subdirectories tree of the directory chosen in the <guilabel>freedb
+Base Directory:</guilabel> in the <link
+linkend="freedb-tab"><guilabel>freedb</guilabel> tab</link> of the &kscd;
+Configuration window.</para>
 
 <para>The <guilabel>Total Time:</guilabel> display shows the total play time of
 the &CD;.</para>
@@ -632,6 +648,7 @@ for example, cannot be accepted.</para></listitem>
 <listitem><para>Use only one <keysym>/</keysym> character in the
 <guilabel>Disc Artist / Title</guilabel> field in the &CD; Database
 Editor.</para>
+
 <para>For classical &CD;s, it is standard practice to put the composer's name in
 the Artist section (before the slash) and the performer's name in the Title
 section (after the slash).</para></listitem> 
