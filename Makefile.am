@@ -25,7 +25,6 @@ kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
 
 profiledata_DATA = kscd.profile.xml
 profiledatadir = $(kde_datadir)/profiles
-EXTRA_DIST = $(profiledata_DATA)
 
 #SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp
 #	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
@@ -51,10 +50,6 @@ bin_PROGRAMS = kscd
 SUBDIRS = bitmaps libwm
 
 bin_SCRIPTS = workman2cddb.pl
-
-EXTRA_DIST = xmcd.desktop kscd.desktop kscd-script $(bin_SCRIPTS) config.h.std
-
-KDE_ICON = kscd
 
 kscdicondir = $(kde_datadir)/kscd/icons
 kscdicon_ICON = AUTO
