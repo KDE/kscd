@@ -2,3 +2,10 @@
 * allow to choose email submisson address from server list entries with protocol SMTP
 * Session Management
 * change the GUI
+
+AJS:
+o make SMTP CDDB submissions work again
+o fix eject button
+o don't show "no disc" error on startup
+o direct digital playback
+o better GUI layout for LCD panel
