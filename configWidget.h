@@ -28,17 +28,18 @@ class KSCD;
 
 class configWidget : public configWidgetUI
 {
+   Q_OBJECT
+
    public:
         configWidget(KSCD* player, QWidget* parent = 0, const char* name = 0);
         ~configWidget();
-
-        void apply();
 
    protected:
         KSCD* mPlayer;
 
    public slots:
-        virtual void digitalPlaybackChckbx_toggled(bool);
+       virtual void digitalPlaybackChckbx_toggled(bool);
+       virtual void configDone();
 };
 
 #endif // CONFIGWIDGET_H

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg>
+    <kcfgfile name="kscdrc"/>
+    <group name="GENERAL">
+        <entry name="Volume" type="UInt">
+            <label>Output Volume</label>
+            <default>40</default>
+        </entry>
+        <entry name="RandomPlay" type="Bool">
+            <label>Play random tracks.</label>
+            <whatsthis>When this option is selected the playing order
+            of the CD tracks is chosen at random.</whatsthis>
+            <default>false</default>
+        </entry>
+        <entry name="Docking" type="Bool" key="DOCKING">
+            <label>Show an icon in the system tray.</label>
+            <whatsthis>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</whatsthis>
+            <default>true</default>
+        </entry>
+        <entry name="Autoplay" type="Bool" key="AUTOPLAY">
+            <label>Start playing when a CD is inserted.</label>
+            <whatsthis>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</whatsthis>
+            <default>false</default>
+        </entry>
+        <entry name="StopExit" type="Bool" key="STOPEXIT">
+            <label>Stop playing the CD on program exit.</label>
+            <whatsthis>When this option is selected the CD will automatically stop playing when quitting KsCD.</whatsthis>
+            <default>true</default>
+        </entry>
+        <entry name="EjectOnFinish" type="Bool" key="EJECTONFINISH">
+            <label>Eject CD when playing is finished.</label>
+            <whatsthis>When this option is selected the CD will automatically eject when it is finished.</whatsthis>
+            <default>false</default>
+        </entry>
+        <entry name="Looping" type="Bool">
+            <label>Loop tracks.</label>
+            <default>false</default>
+        </entry>
+        <entry name="SkipDelta" type="UInt">
+            <label>Skip interval.</label>
+            <whatsthis>This option controls the number of seconds KsCD will skip when the skip forwards or backwards buttons are pressed.</whatsthis>
+            <default>30</default>
+        </entry>
+        <entry name="TimeDisplayMode" type="Enum" key="TimeDisplay">
+            <choices>
+                <choice name="TRACK_SEC"/>
+                <choice name="TRACK_REM"/>
+                <choice name="TOTAL_SEC"/>
+                <choice name="TOTAL_REM"/>
+            </choices>
+            <default>TRACK_SEC</default>
+        </entry>
+        <entry name="cdDevice" type="String" key="CDDevice">
+            <label>Name of the CD-ROM device.</label>
+            <whatsthis>The CD-ROM device to use when playing CDs. This will typically look something like "/dev/cdrom". To have KsCD autodetect your CD-ROM, leave this field empty.</whatsthis>
+        </entry>
+        <entry name="AudioSystem" type="String">
+            <label>The audio backend KsCD uses.</label>
+        </entry>
+        <entry name="AudioDevice" type="String">
+            <label>The audio device KsCD uses.</label>
+        </entry>
+        <entry name="DigitalPlayback" type="Bool">
+            <label>Use direct digital playback.</label>
+            <whatsthis>When this option is selected KsCD will attempt to play the CD using direct digital playback. This option is useful if the CD-ROM is not connected directly to the sound output on the computer. Note that digital playback is slower than the normal method of playback.</whatsthis>
+            <default>false</default>
+        </entry>
+        <entry name="ledColor" type="Color" key="LEDColor">
+            <label>The foreground color that will be used in the LCD display.</label>
+            <default>#e2e0ff</default>
+        </entry>
+        <entry name="BackColor" type="Color">
+            <label>The background color that will be used for the LCD display.</label>
+            <default>black</default>
+        </entry>
+        <entry name="HiddenControls" type="Bool">
+            <label>Hide controls.</label>
+            <default>false</default>
+        </entry>
+    </group>
+</kcfg>

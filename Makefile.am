@@ -10,14 +10,16 @@ METASOURCES = AUTO
 
 noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
 	CDDialog.h CDDialogData.h mgconfdlg.h \
-	configdlg.h version.h docking.h \
+	version.h docking.h \
 	configWidget.h kvolumecontrol.h
 
-kscd_SOURCES = kvolumecontrol.cpp panel.ui kscd.cpp kscd.skel configdlg.cpp ledlamp.cpp CDDialog.cpp \
+kscd_SOURCES = kvolumecontrol.cpp panel.ui kscd.cpp kscd.skel ledlamp.cpp CDDialog.cpp \
 	       CDDialogData.cpp docking.cpp \
 	       inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
-	       configWidget.cpp configWidgetUI.ui
+	       configWidget.cpp configWidgetUI.ui prefs.kcfgc
 
+kde_kcfg_DATA = kscd.kcfg
+           
 kscd_LDFLAGS = $(all_libraries) -lkutils
 kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
              $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) $(top_builddir)/libkcddb/libkcddb.la

@@ -21,22 +21,16 @@
  *
  */
 
-#include <kaccel.h>
-#include <kcolorbutton.h>
-#include <kdialog.h>
-#include <klocale.h>
+#include <kdebug.h>
 #include <klineedit.h>
-#include <knuminput.h>
 #include <kurlrequester.h>
-
 #include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
 
 #include <config.h>
 
 #include "configWidget.h"
 #include "kscd.h"
+#include "prefs.h"
 
 /*
  *  Constructs a configWidget which is a child of 'parent', with the
@@ -53,27 +47,18 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     {
         setName("configWidget");
     }
-
-    bgColorBtn->setColor(mPlayer->bgColor());
-    ledColorBtn->setColor(mPlayer->ledColor());
-    systrayChckbx->setChecked(mPlayer->dock());
-    skipInterval->setValue(mPlayer->skipInterval());
-    autoplayChkbx->setChecked(mPlayer->autoPlay());
-    ejectChkbx->setChecked(mPlayer->ejectOnFinish());
-    stopOnExitChckbx->setChecked(mPlayer->stopOnExit());
-    cdDevice->setURL(mPlayer->devicePath());
-
+    
     digitalPlaybackChckbx_toggled(false); //mPlayer->digitalPlayback());
-    digitalPlaybackChckbx->setChecked(false); //mPlayer->digitalPlayback());
+    kcfg_DigitalPlayback->setChecked(false); //mPlayer->digitalPlayback());
 #if defined(BUILD_CDDA)
     // fill ComboBox audioBackend
-    audioBackend->insertStringList(mPlayer->audioSystems());
+    audioSystemComboBox->insertStringList(mPlayer->audioSystems());
 
-    if(audioBackend->listBox()->findItem(mPlayer->audioSystem()))
-        audioBackend->setCurrentText(mPlayer->audioSystem());
-    audioDevice->lineEdit()->setText(mPlayer->audioDevice());
+    if(audioSystemComboBox->listBox()->findItem(Prefs::audioSystem()))
+        audioSystemComboBox->setCurrentText(Prefs::audioSystem());
+    kcfg_AudioDevice->lineEdit()->setText(Prefs::audioDevice());
 #else
-    digitalPlaybackChckbx->hide();
+    kcfg_DigitalPlayback->hide();
 #endif
 }
 
@@ -81,31 +66,24 @@ configWidget::~configWidget()
 {
 }
 
-void configWidget::apply()
-{
-    mPlayer->setColors(ledColorBtn->color(), bgColorBtn->color());
-    mPlayer->setDocking(systrayChckbx->isChecked());
-    mPlayer->setSkipInterval(skipInterval->value());
-    mPlayer->setAutoplay(autoplayChkbx->isChecked());
-    mPlayer->setEjectOnFinish(ejectChkbx->isChecked());
-    mPlayer->setStopOnExit(stopOnExitChckbx->isChecked());
-    if(digitalPlaybackChckbx->isChecked())
-        mPlayer->setDevicePaths(cdDevice->lineEdit()->text(), audioBackend->currentText(), audioDevice->lineEdit()->text());
-    else
-        mPlayer->setDevicePaths(cdDevice->lineEdit()->text(), QString(""), QString(""));
-}
-
 void configWidget::digitalPlaybackChckbx_toggled(bool toggle)
 {
         if(toggle) {
-                audioBackend->show();
+                audioSystemComboBox->show();
                 textLabel4->show();
-                audioDevice->show();
+                kcfg_AudioDevice->show();
                 textLabel5->show();
         } else {
-                audioBackend->hide();
+                audioSystemComboBox->hide();
                 textLabel4->hide();
-                audioDevice->hide();
+                kcfg_AudioDevice->hide();
                 textLabel5->hide();
         }
 }
+
+void configWidget::configDone()
+{
+    Prefs::setAudioSystem(audioSystemComboBox->currentText());
+}
+
+#include "configWidget.moc"

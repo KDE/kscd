@@ -80,6 +80,7 @@
 
 #include "ledlamp.h"
 #include "panel.h"
+#include "prefs.h"
 #include <kapplication.h>
 #include <kprocess.h>
 #include <krandomsequence.h>
@@ -88,6 +89,7 @@
 class CDDBSetup;
 class ConfigDlg;
 class CDDialog;
+class DockWidget;
 class QGridLayout;
 class KActionCollection;
 class KVolumeControl;
@@ -131,7 +133,7 @@ k_dcop:
     void optionDialog() { showConfig(); }
     void setTrack(int t) { trackSelected(t >= 1 ? t - 1 : 0); }
     void setVolume(int v);
-    int  getVolume() { return volume; }
+    int  getVolume() { return Prefs::volume(); }
     int currentTrack();
     QString currentTrackTitle();
     QString currentAlbum();
@@ -144,24 +146,9 @@ public:
     void initialShow();
     virtual bool saveState(QSessionManager& sm);
 
-    bool dock() { return docking; }
     void setDocking(bool dock);
-    bool stopOnExit() { return stopexit; }
-    void setStopOnExit(bool stop) { stopexit = stop; }
-    bool autoPlay() { return autoplay; }
-    void setAutoplay(bool play) { autoplay = play; }
-    bool ejectOnFinish() { return ejectonfinish; }
-    void setEjectOnFinish(bool eject) { ejectonfinish = eject; }
     bool digitalPlayback();
-    unsigned int skipInterval() { return skipDelta; }
-    void setSkipInterval(unsigned int skip) { skipDelta = skip; }
-    QColor ledColor() { return led_color; }
-    QColor bgColor() { return background_color; }
-    void setColors(const QColor& LEDs, const QColor& bground);
     void setDevicePaths(QString cd_device, QString audio_system, QString audio_device);
-    QString devicePath() { return cd_device_str; }
-    QString audioSystem() { return audio_system_str; }
-    QString audioDevice() { return audio_device_str; }
     QStringList audioSystems() { return audio_systems_list; }
 
 signals:
@@ -197,8 +184,6 @@ public slots:
     void cycleplaytimemode();
     void cycletimeout();
 
-    void performances(int);
-    void purchases(int);
     void information(int);
     void jumpTracks();
 
@@ -234,14 +219,11 @@ private:
     ConfigDlg       *configDialog;
     CDDialog        *cddialog;
     QPopupMenu      *mainPopup;
-    QPopupMenu      *purchPopup;
     QPopupMenu      *infoPopup;
 
     // ML XXX
     QGridLayout		*outerLO;
 
-    QColor              background_color;
-    QColor              led_color;
     BW_LED_Number       *trackTimeLED[6];
     QLabel              *statuslabel;
     QLabel              *titlelabel;
@@ -263,20 +245,12 @@ private:
 
 
     int                 jumpToTrack;
-    unsigned int        skipDelta;
-    int                 volume;
     LedLamp             *queryled;
     LedLamp             *loopled;
-    bool                randomplay;
     bool                randomplay_pending;
     void song_list_complete(void);
-    bool                looping;
     bool                cddrive_is_ok;
     bool                have_new_cd;
-    int                 time_display_mode;
-    QString             cd_device_str;
-    QString             audio_system_str; /* arts, alsa or sun. empty means no cdda */
-    QString             audio_device_str; /* for alsa hw:0,0, for sun /dev/audio */
     QStringList         audio_systems_list;
 
     QPushButton         *makeButton( int, int, int, int, const QString& );
@@ -311,11 +285,6 @@ private:
     QString         genre;
     QFont           smallfont;
     QFont           verysmallfont;
-    bool            docking;
-    bool            autoplay;
-    bool            stopexit;
-    bool            ejectonfinish;
-    bool            digitalplayback;
 
 // cddb support
 public slots:
@@ -338,6 +307,7 @@ private:
     int             year;
     KActionCollection* m_actions;
     KVolumeControl* m_volume;
+    DockWidget* m_dockWidget;
 };
 
 

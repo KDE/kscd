@@ -37,9 +37,6 @@
 #include <qpoint.h>
 #include <kdockwindow.h>
 
-extern int      ibytes;
-extern int      obytes;
-
 class KSCD;
 
 class DockWidget : public KSystemTray {
@@ -55,7 +52,6 @@ public slots:
 
 private:
   QString tip;
-
 };
 
 #endif

@@ -21,15 +21,16 @@
  * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "docking.h"
 #include "kscd.h"
 
 #include <qtooltip.h>
-#include <kapplication.h>
 
-#include "docking.h"
+#include <kaboutdata.h>
+#include <kapplication.h>
 #include <klocale.h>
-#include <kiconloader.h>
 #include <kglobal.h>
+#include <kiconloader.h>
 #include <kpopupmenu.h>
 
 DockWidget::DockWidget( KSCD* parent, const char *name)
@@ -47,8 +48,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_start", KIcon::Small), i18n("Previous"), parent, SLOT(prevClicked()));
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_eject", KIcon::Small), i18n("Eject"), parent, SLOT(ejectClicked()));
 
-    tip = "";
-    setToolTip(tip);
+    QToolTip::add(this, kapp->aboutData()->programName());
 }
 
 DockWidget::~DockWidget() {
@@ -57,14 +57,21 @@ DockWidget::~DockWidget() {
 void DockWidget::setToolTip(const QString& text)
 {
     if (tip == text)
+    {
         return;
-    if (text.isEmpty())
-        tip = "KSCD";
-    else
-        tip = text;
-    QToolTip::remove(this);
-    QToolTip::add(this, tip);
+    }
 
+    tip = text;
+    QToolTip::remove(this);
+
+    if (text.isEmpty())
+    {
+        QToolTip::add(this, kapp->aboutData()->programName());
+    }
+    else
+    {
+        QToolTip::add(this, text);
+    }
 }
 
 

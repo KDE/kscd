@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>450</width>
-            <height>515</height>
+            <height>517</height>
         </rect>
     </property>
     <property name="caption">
@@ -32,10 +32,13 @@
                 </property>
                 <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>systrayChckbx</cstring>
+                        <cstring>kcfg_Docking</cstring>
                     </property>
                     <property name="text">
                         <string>Show icon in &amp;system tray</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+S</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</string>
@@ -49,12 +52,12 @@
                         <string>&amp;Background color:</string>
                     </property>
                     <property name="buddy" stdset="0">
-                        <cstring>bgColorBtn</cstring>
+                        <cstring>kcfg_BackColor</cstring>
                     </property>
                 </widget>
                 <widget class="KColorButton" row="0" column="1">
                     <property name="name">
-                        <cstring>ledColorBtn</cstring>
+                        <cstring>kcfg_ledColor</cstring>
                     </property>
                     <property name="text">
                         <string></string>
@@ -65,7 +68,7 @@
                 </widget>
                 <widget class="KColorButton" row="1" column="1">
                     <property name="name">
-                        <cstring>bgColorBtn</cstring>
+                        <cstring>kcfg_BackColor</cstring>
                     </property>
                     <property name="text">
                         <string></string>
@@ -82,7 +85,7 @@
                         <string>&amp;LCD color:</string>
                     </property>
                     <property name="buddy" stdset="0">
-                        <cstring>ledColorBtn</cstring>
+                        <cstring>kcfg_ledColor</cstring>
                     </property>
                 </widget>
                 <spacer row="1" column="2">
@@ -117,7 +120,7 @@
                 </property>
                 <widget class="KIntNumInput" row="0" column="1">
                     <property name="name">
-                        <cstring>skipInterval</cstring>
+                        <cstring>kcfg_SkipDelta</cstring>
                     </property>
                     <property name="minValue">
                         <number>1</number>
@@ -143,15 +146,18 @@
                         <string>Skip &amp;interval:</string>
                     </property>
                     <property name="buddy" stdset="0">
-                        <cstring>skipInterval</cstring>
+                        <cstring>kcfg_SkipDelta</cstring>
                     </property>
                 </widget>
                 <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>autoplayChkbx</cstring>
+                        <cstring>kcfg_Autoplay</cstring>
                     </property>
                     <property name="text">
                         <string>Auto&amp;play when CD inserted</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+P</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</string>
@@ -159,10 +165,13 @@
                 </widget>
                 <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>ejectChkbx</cstring>
+                        <cstring>kcfg_EjectOnFinish</cstring>
                     </property>
                     <property name="text">
                         <string>&amp;Eject CD when finished playing</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+E</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will automatically eject when it is finished.</string>
@@ -170,7 +179,7 @@
                 </widget>
                 <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>stopOnExitChckbx</cstring>
+                        <cstring>kcfg_StopExit</cstring>
                     </property>
                     <property name="text">
                         <string>Stop playing CD on exit</string>
@@ -211,7 +220,7 @@
                 </property>
                 <widget class="KURLRequester" row="0" column="0" rowspan="1" colspan="3">
                     <property name="name">
-                        <cstring>cdDevice</cstring>
+                        <cstring>kcfg_cdDevice</cstring>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>The CD-ROM device to use when playing CDs. This will typically look something like "/dev/cdrom". To have KsCD autodetect your CD-ROM, leave this field empty.</string>
@@ -219,7 +228,7 @@
                 </widget>
                 <widget class="QComboBox" row="2" column="2">
                     <property name="name">
-                        <cstring>audioBackend</cstring>
+                        <cstring>audioSystemComboBox</cstring>
                     </property>
                     <property name="insertionPolicy">
                         <enum>NoInsertion</enum>
@@ -236,24 +245,27 @@
                         <string>Selec&amp;t audio device:</string>
                     </property>
                     <property name="buddy" stdset="0">
-                        <cstring>audioDevice</cstring>
+                        <cstring>kcfg_AudioDevice</cstring>
                     </property>
                 </widget>
                 <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="3">
                     <property name="name">
-                        <cstring>digitalPlaybackChckbx</cstring>
+                        <cstring>kcfg_DigitalPlayback</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
                     </property>
                     <property name="text">
                         <string>&amp;Use direct digital playback</string>
                     </property>
-                    <property name="enabled">
-                        <bool>false</bool>
+                    <property name="accel">
+                        <string>Alt+U</string>
                     </property>
                     <property name="checked">
                         <bool>false</bool>
                     </property>
                     <property name="whatsThis" stdset="0">
-                        <string>When this option is selected KsCD will attempt to play the CD using direct digital playback. This option is useful if the CD-ROM is not connected directly to the sound output on the computer. Note that digital playback is slower than the normal method of playback.</string>
+                        <string>When this option is selected KsCD will attempt to play the CD using direct digital playback. This option is useful if the CD-ROM is not connected directly to the sound output on the computer. Note that digital playback consumes more system resources than the normal method of playback.</string>
                     </property>
                 </widget>
                 <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
@@ -267,12 +279,12 @@
                         <number>0</number>
                     </property>
                     <property name="buddy" stdset="0">
-                        <cstring>audioBackend</cstring>
+                        <cstring>audioSystemComboBox</cstring>
                     </property>
                 </widget>
                 <widget class="KURLRequester" row="3" column="1" rowspan="1" colspan="2">
                     <property name="name">
-                        <cstring>audioDevice</cstring>
+                        <cstring>kcfg_AudioDevice</cstring>
                     </property>
                 </widget>
             </grid>
@@ -296,31 +308,29 @@
         </spacer>
     </vbox>
 </widget>
-<customwidgets>
-</customwidgets>
 <connections>
     <connection>
-        <sender>digitalPlaybackChckbx</sender>
+        <sender>kcfg_DigitalPlayback</sender>
         <signal>toggled(bool)</signal>
         <receiver>configWidgetUI</receiver>
-        <slot>digitalPlaybackChckbx_toggled(bool)</slot>
+        <slot>kcfg_DigitalPlayback_toggled(bool)</slot>
     </connection>
 </connections>
 <tabstops>
-    <tabstop>ledColorBtn</tabstop>
-    <tabstop>bgColorBtn</tabstop>
-    <tabstop>systrayChckbx</tabstop>
-    <tabstop>skipInterval</tabstop>
-    <tabstop>autoplayChkbx</tabstop>
-    <tabstop>ejectChkbx</tabstop>
-    <tabstop>stopOnExitChckbx</tabstop>
-    <tabstop>cdDevice</tabstop>
-    <tabstop>digitalPlaybackChckbx</tabstop>
-    <tabstop>audioBackend</tabstop>
+    <tabstop>kcfg_ledColor</tabstop>
+    <tabstop>kcfg_BackColor</tabstop>
+    <tabstop>kcfg_Docking</tabstop>
+    <tabstop>kcfg_SkipDelta</tabstop>
+    <tabstop>kcfg_Autoplay</tabstop>
+    <tabstop>kcfg_EjectOnFinish</tabstop>
+    <tabstop>kcfg_StopExit</tabstop>
+    <tabstop>kcfg_cdDevice</tabstop>
+    <tabstop>kcfg_DigitalPlayback</tabstop>
+    <tabstop>audioSystemComboBox</tabstop>
 </tabstops>
 <slots>
-    <slot>digitalPlaybackChckbx_toggled(bool)</slot>
-    <slot>digitalPlaybackChckbx_stateChanged(int)</slot>
+    <slot>kcfg_DigitalPlayback_toggled(bool)</slot>
+    <slot>kcfg_DigitalPlayback_stateChanged(int)</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>
