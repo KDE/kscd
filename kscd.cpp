@@ -1297,7 +1297,7 @@ KSCD::randomtrack()
       return atoi( (*playlist.at(j)).ascii() );
     } else {
       int j;
-      j = 1 + (int) randSequence.getLong(cur_ntracks);
+      j = (cur_ntracks == 0) ? 0 : (1 + (int) randSequence.getLong(cur_ntracks));
       return j;
     }
 } // randomtrack
