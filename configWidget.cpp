@@ -52,10 +52,12 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     kcfg_DigitalPlayback->setChecked(false); //mPlayer->digitalPlayback());
 #if defined(BUILD_CDDA)
     // fill ComboBox audioBackend
-    audioSystemComboBox->insertStringList(mPlayer->audioSystems());
+    kcfg_AudioSystem->insertStringList(mPlayer->audioSystems());
 
-    if(audioSystemComboBox->listBox()->findItem(Prefs::audioSystem()))
-        audioSystemComboBox->setCurrentText(Prefs::audioSystem());
+    int t = kcfg_AudioSystem->listBox()->index(kcfg_AudioSystem->listBox()->findItem(Prefs::audioSystem()));
+    if(t != -1)
+        kcfg_AudioSystem->setCurrentItem(t);
+
     kcfg_AudioDevice->lineEdit()->setText(Prefs::audioDevice());
 #else
     kcfg_DigitalPlayback->hide();
@@ -69,12 +71,12 @@ configWidget::~configWidget()
 void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 {
         if(toggle) {
-                audioSystemComboBox->show();
+                kcfg_AudioSystem->show();
                 textLabel4->show();
                 kcfg_AudioDevice->show();
                 textLabel5->show();
         } else {
-                audioSystemComboBox->hide();
+                kcfg_AudioSystem->hide();
                 textLabel4->hide();
                 kcfg_AudioDevice->hide();
                 textLabel5->hide();
@@ -83,7 +85,8 @@ void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 
 void configWidget::configDone()
 {
-    Prefs::setAudioSystem(audioSystemComboBox->currentText());
+    Prefs::setAudioSystem(kcfg_AudioSystem->currentText());
 }
+
 
 #include "configWidget.moc"
