@@ -318,8 +318,8 @@ private:
         int             revision;
         QString         category;
         QString         xmcd_data;
-        QString         cddbbasedir;
         QStringList     cddbserverlist;
+        QString         cddbbasedir;
         QString         current_server;
         QString         mailcmd;
         QString         submitaddress;

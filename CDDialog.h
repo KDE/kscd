@@ -21,94 +21,97 @@ extern "C" {
 
 struct mytoc 
 {
-	int	min;
-	int	sec;
-	int	frame;
-        int     absframe;
+  int	min;
+  int	sec;
+  int	frame;
+  int     absframe;
 };
 
 
 struct dialogcdinfo 
 {
   unsigned long magicID;	/*cddb magic disk id BERND*/
-	int	ntracks;	/* Number of tracks on the disc */
-	int	length;		/* Total running time in seconds */
-        struct mytoc *cddbtoc;
+  int	ntracks;	/* Number of tracks on the disc */
+  int	length;		/* Total running time in seconds */
+  struct mytoc *cddbtoc;
 };
 
 class CDDialog : public CDDialogData
 {
-    Q_OBJECT
-
-public:
-
-    CDDialog
+  Q_OBJECT
+	
+	public:
+  
+  CDDialog
     (
-        QWidget* parent = NULL,
-        const char* name = NULL
-    );
-
-    virtual ~CDDialog();
-
-
-    void setData(
+	 QWidget* parent = NULL,
+	 const char* name = NULL
+	 );
+  
+  virtual ~CDDialog();
+  
+  
+  void setData(
 #ifdef OLD_WM_CODE
-		 struct cdinfo_wm *cd,
+			   struct cdinfo_wm *cd,
 #else
-		 struct wm_cdinfo *cd,
+			   struct wm_cdinfo *cd,
 #endif
-		 QStringList& tracktitlelist,
-		 QStringList& extlist,
-		 QStringList& discidlist,
-		 QString& xmcddata,
-		 QString& cat,
-		 int& revision,
-		 QStringList& playlist,
-		 QStringList& pathlist,
-		 QString& _mailcmd,
-                 QString& _submitaddress,
-                 SMTPConfig::SMTPConfigData *_smtpConfigData
-		 );
-
-    bool checkit();
-    void save_cddb_entry(QString& path,bool upload);
-    void getCategoryFromPathName(char* pathname, QString& _category);
-    
-protected:
-    void closeEvent(QCloseEvent* e);
-    void keyPressEvent(QKeyEvent* e);
-public slots:
-    void titleselected(int);
-    void titlechanged(const QString &);
-    void trackchanged();
-    void save();
-    void extITB();
-    void extIB();
-    void load();
-    void upload();
-    void ok();
-    void play(int i);
+			   QStringList& tracktitlelist,
+			   QStringList& extlist,
+			   QStringList& discidlist,
+			   QString& xmcddata,
+			   QString& cat,
+			   int& revision,
+			   QStringList& playlist,
+			   QStringList& pathlist,
+			   QString& cddbbasedir,
+			   QString& _mailcmd,
+			   QString& _submitaddress,
+			   SMTPConfig::SMTPConfigData *_smtpConfigData
+			   );
+  
+  bool checkit();
+  void save_cddb_entry(QString& path,bool upload);
+  void getCategoryFromPathName(char* pathname, QString& _category);
+  
+ protected:
+  void closeEvent(QCloseEvent* e);
+  void keyPressEvent(QKeyEvent* e);
+ public slots:
+  void titleselected(int);
+  void titlechanged(const QString &);
+  void trackchanged();
+  void save();
+  void extITB();
+  void extIB();
+  void load_cddb();
+  void upload();
+  void ok();
+  void play(int i);
 
 signals:
 
-    void cddb_query_signal(bool);
-    void dialog_done();
-    void play_signal(int i);
-
+  void cddb_query_signal(bool);
+  void dialog_done();
+  void play_signal(int i);
+  
 private:
-    SMTPConfig::SMTPConfigData *smtpConfigData;
-    QStringList 	ext_list;
-    QStringList 	track_list;
-    QStringList pathlist;
-    QStringList	playlist;
-    QString  	xmcd_data;
-    QStringList 	discidlist;
-    int      	revision;
-    QString     submitaddress;
-    QString 	category;
-    QString	mailcmd;
-    QString     playorder;
-    struct dialogcdinfo cdinfo;
-    bool            messageNotSent;
+  SMTPConfig::SMTPConfigData *smtpConfigData;
+  QStringList 	ext_list;
+  QStringList 	track_list;
+  QStringList pathlist;
+  QStringList catlist;
+  QString cddbbasedir;
+  QStringList	playlist;
+  QString  	xmcd_data;
+  QStringList 	discidlist;
+  int      	revision;
+  QString     submitaddress;
+  QString 	category;
+  QString	mailcmd;
+  QString     playorder;
+  struct dialogcdinfo cdinfo;
+  bool            messageNotSent;
 };
 #endif // CDDialog_included

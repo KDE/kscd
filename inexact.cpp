@@ -60,7 +60,7 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
 
 
 
-  text->setText(i18n("No exact match could be found. Please select the appropriate"\
+  text->setText(i18n("No exact match or multiple exact matches found.\nPlease select the appropriate"\
                      " CD from the list of choices presented below."));
 
   errorstring = i18n("Please select a Disk Title or press Cancel");

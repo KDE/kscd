@@ -40,21 +40,22 @@ CDDBSetupData::CDDBSetupData
 	QBoxLayout * lay2 = new QVBoxLayout ( group, 10, 0 );
 
 	QBoxLayout * lay3 = new QHBoxLayout ( lay2, 5 );
-	remote_cddb_cb = new QCheckBox( i18n("Enable Remote CDDB"), group, "CheckBox_1" );
+	remote_cddb_cb = new QCheckBox( i18n("Enable Remote freedb"), group, "CheckBox_1" );
 	connect( remote_cddb_cb, SIGNAL(toggled(bool)), SLOT(enable_remote_cddb(bool)) );
 	lay3->addWidget ( remote_cddb_cb );
 	lay3->addSpacing ( 15 );
+
 	cddb_timeout_ef = new QLineEdit( group, "CDDBTimeout" );
 	cddb_timeout_ef->setText( "30" );
 	cddb_timeout_ef->setMaxLength ( 5 );
 	cddb_timeout_ef->setFixedWidth ( 5*fm.maxWidth() );
 	lay3->addWidget ( cddb_timeout_ef );
-	QLabel* cddb_timeout_lb = new QLabel( i18n("seconds CDDB timeout"), group, "CDDBTimeoutLabel" );
+	QLabel* cddb_timeout_lb = new QLabel( i18n("seconds freedb timeout"), group, "CDDBTimeoutLabel" );
         lay3->addWidget ( cddb_timeout_lb );
         lay3->addStretch ( 1 );
 
 	lay2->addSpacing ( fm.lineSpacing() );
-	cddb_http_cb = new QCheckBox( i18n("Use HTTP proxy to access CDDB"), group, "CheckBox_2" );
+	cddb_http_cb = new QCheckBox( i18n("Use HTTP proxy to access freedb"), group, "CheckBox_2" );
 	connect( cddb_http_cb, SIGNAL(toggled(bool)), SLOT(http_access_toggled(bool)) );
 	lay2->addWidget ( cddb_http_cb );
 	QBoxLayout * lay4 = new QHBoxLayout ( lay2, 5 );
@@ -71,13 +72,13 @@ CDDBSetupData::CDDBSetupData
 	
 	/* edm new section start */
 	lay2->addSpacing ( fm.lineSpacing() );
-	enable_auto_save_cddb = new QCheckBox( i18n("Enable auto save to local cddb"), group, "CheckBox_3" );
+	enable_auto_save_cddb = new QCheckBox( i18n("Enable auto save to local database"), group, "CheckBox_3" );
 	connect( cddb_http_cb, SIGNAL(toggled(bool)), SLOT(http_access_toggled(bool)) );
 	lay2->addWidget ( enable_auto_save_cddb );
 	/* edm new section end */
 
 	lay2->addSpacing ( fm.lineSpacing() );
-	QLabel* dlgedit_Label_8 = new QLabel( i18n("CDDB Base Directory:"), group, "Label_8" );
+	QLabel* dlgedit_Label_8 = new QLabel( i18n("freedb Base Directory:"), group, "Label_8" );
 	lay2->addWidget ( dlgedit_Label_8 );
 	basedir_edit = new QLineEdit( group, "LineEdit_4" );
 	lay2->addWidget ( basedir_edit );
@@ -88,9 +89,9 @@ CDDBSetupData::CDDBSetupData
 	glay->setRowStretch ( 2, 1 );
 	glay->setColStretch ( 0, 1 );
 	glay->setColStretch ( 2, 1 );
-	QLabel* dlgedit_Label_10 = new QLabel( i18n("CDDB server:"), group, "Label_10" );
+	QLabel* dlgedit_Label_10 = new QLabel( i18n("freedb server:"), group, "Label_10" );
 	glay->addWidget ( dlgedit_Label_10, 0, 0, AlignLeft );
-	QLabel* dlgedit_Label_9 = new QLabel( i18n("Send CDDB submissions to:"), group, "Label_9" );
+	QLabel* dlgedit_Label_9 = new QLabel( i18n("Send freedb submissions to:"), group, "Label_9" );
 	glay->addWidget ( dlgedit_Label_9, 0, 2, AlignLeft );
 
 	// The default sizeHint() for "+" and "-" buttons is huge for some reason ...

@@ -61,7 +61,7 @@ class CDDB:public QObject
                    INEX_READ=11,
                    REQUEST_SERVER_LIST=12, SERVER_LIST_WAIT=13, GETTING_SERVER_LIST=14,
                    HTTP_REQUEST=15, HTTP_HEADER=16,
-		   PROTO=17, DO_NOTHING=127
+				   PROTO=17, MULTEX_READ=18, DO_NOTHING=127
     } CDDBState;
     
     typedef enum { REGULAR=100, SERVER_LIST_GET=101 } CDDBMode;
@@ -72,14 +72,14 @@ class CDDB:public QObject
     bool  isConnected() {return connected;};
 
     void getData(
-	QString& data,
-	QStringList& titlelist,
-	QStringList& extlist, 
-	QString& cat, 
-	QStringList& discidlist,
-	int& revision,
-	QStringList& playlist
-    );
+				 QString& data,
+				 QStringList& titlelist,
+				 QStringList& extlist, 
+				 QString& cat, 
+				 QStringList& discidlist,
+				 int& revision,
+				 QStringList& playlist
+				 );
 
     void  get_inexact_list(QStringList& inexact_list);
     void  query_exact(QString line);
@@ -97,15 +97,15 @@ class CDDB:public QObject
     void        queryCD(unsigned long magicID,QStringList& querylist);
 
     bool local_query(
-	unsigned long magicID,
-	QString&  data,
-	QStringList& titlelist,
-	QStringList& extlist,
-	QString&  category,
-	QStringList& discidlist,
-	int& revision,
-	QStringList& playlist
-    );
+					 unsigned long magicID,
+					 QString&  data,
+					 QStringList& titlelist,
+					 QStringList& extlist,
+					 QString&  category,
+					 QStringList& discidlist,
+					 int& revision,
+					 QStringList& playlist
+					 );
     QString getCategoryFromPathName(const QString& pathname);
 
     static bool normalize_server_list_entry(QString &entry);

@@ -39,6 +39,7 @@
 #include "version.h"
 #include "smtp.h"
 #include "smtpconfig.h"
+#include "kscd.h"
 
 extern "C" {
 #include "libwm/include/workman.h"
@@ -76,16 +77,28 @@ CDDialog::CDDialog
 	connect(save_button, SIGNAL(clicked())       ,this,SLOT(save()));
 	connect(upload_button, SIGNAL(clicked())       ,this,SLOT(upload()));
 	connect(ok_button, SIGNAL(clicked())       ,this,SLOT(ok()));
-	connect(load_button, SIGNAL(clicked())       ,this,SLOT(load()));
+	connect(load_button, SIGNAL(clicked())       ,this,SLOT(load_cddb()));
 	connect(ext_info_title_button, SIGNAL(clicked()) ,this,SLOT(extITB()));
 	connect(ext_info_button, SIGNAL(clicked())       ,this,SLOT(extIB()));
 	connect(titleedit,   SIGNAL(textChanged(const QString &)),
 		             this,SLOT(titlechanged(const QString &)));
 	ext_info_button->setEnabled(false);
-
-        setFixedSize(width(),height());
-
 	
+	setFixedSize(width(),height());
+
+
+	catlist.append("rock");
+	catlist.append("classical");
+	catlist.append("jazz");
+	catlist.append("soundtrack");
+	catlist.append("newage");
+	catlist.append("blues");
+	catlist.append("folk");
+	catlist.append("country");
+	catlist.append("reggae");
+	catlist.append("misc");
+	catlist.append("data");
+
 } // CDDialog
 
 
@@ -98,6 +111,7 @@ CDDialog::~CDDialog()
 void 
 CDDialog::closeEvent(QCloseEvent*)
 {
+    kdDebug() << "emmitting done()" << endl;
     emit dialog_done();
 } // closeEvent
 
@@ -132,6 +146,7 @@ CDDialog::setData(
 		  int& rev,
 		  QStringList& _playlist,
 		  QStringList& _pathlist,
+		  QString& _cddbbasedir,
 		  QString& _mailcmd,
 		  QString& _submitaddress,
 		  SMTPConfig::SMTPConfigData *_smtpConfigData
@@ -147,6 +162,7 @@ CDDialog::setData(
     revision    = rev;
     playlist	= _playlist;
     pathlist	= _pathlist;
+	cddbbasedir = _cddbbasedir.copy();
     mailcmd	= _mailcmd.copy();
     submitaddress = _submitaddress.copy();
     smtpConfigData = _smtpConfigData;
@@ -399,34 +415,24 @@ CDDialog::upload()
     return;
 
   InexactDialog *dialog;
-
   dialog = new InexactDialog(0,"Dialog",true);
 
-  QStringList catlist;
-
-  catlist.append("rock");
-  catlist.append("classical");
-  catlist.append("jazz");
-  catlist.append("soundtrack");
-  catlist.append("newage");
-  catlist.append("blues");
-  catlist.append("folk");
-  catlist.append("country");
-  catlist.append("reggae");
-  catlist.append("misc");
-  catlist.append("data");
-
-  dialog->insertList(catlist);
-  dialog->setErrorString(i18n("Please select a category or press Cancel"));
-  dialog->setTitle(i18n("To which category does the CD belong?"));
-  if(dialog->exec() != QDialog::Accepted)
-    {
-      delete dialog;
-      return;
-    }
-
-  dialog->getSelection(submitcat);
-  delete dialog;
+  if( category.length() < 1 )
+	{
+	  dialog->insertList(catlist);
+	  dialog->setErrorString(i18n("Please select a category or press Cancel"));
+	  dialog->setTitle(i18n("To which category does the CD belong?"));
+	  if(dialog->exec() != QDialog::Accepted)
+		{
+		  delete dialog;
+		  return;
+		}
+	  
+	  dialog->getSelection(submitcat);
+	  delete dialog;
+	} else {
+	  submitcat = category.copy();
+	}
 
   KTempFile tmpFile;
   tmpFile.setAutoDelete(true); // delete file when we are done.
@@ -440,7 +446,7 @@ CDDialog::upload()
 
   if(smtpConfigData->enabled)
     {
-      kdDebug() << "Submitting cddb entry via SMTP...\n" << endl;
+      kdDebug() << "Submitting freedb entry via SMTP...\n" << endl;
       QFile file(tempfile);
       
       file.open(IO_ReadOnly);
@@ -475,7 +481,7 @@ CDDialog::upload()
 
   cmd = "sendmail -tU";
 
-  kdDebug() << "Submitting cddb entry: " << cmd << "\n" << endl;
+  kdDebug() << "Submitting freedb entry: " << cmd << "\n" << endl;
   
   FILE* mailpipe;
   mailpipe = popen(QFile::encodeName(cmd),"w");
@@ -546,39 +552,35 @@ CDDialog::save()
   if(!checkit())
     return;
 
-  QString path;
+  QString savecat;
 
   InexactDialog *dialog;
-
   dialog = new InexactDialog(0,"Dialog",true);
 
-  // Let's get rid of some ugly double slashes such as in 
-  // /usr/local/kde/share/apps/kscd/cddb//rock 
-  
-  for ( QStringList::Iterator it = pathlist.begin();
-        it != pathlist.end();
-        ++it )
-    (*it).replace( QRegExp("//"), "/" );
+  if( category.length() < 1 )
+	{
+	  dialog->insertList(catlist);
+	  dialog->setErrorString(i18n("Please select a category or press Cancel"));
+	  dialog->setTitle(i18n("Under which category would you like to store this disc's information?"));
+	  
+	  if(dialog->exec() != QDialog::Accepted)
+		{
+		  delete dialog;
+		  return;
+		}
+	  
+	  dialog->getSelection(savecat);
+	} else {
+	  savecat = category.copy();
+	}
 
-  // Don't use the paths ?
-  dialog->insertList(pathlist);
-
-  dialog->setErrorString(i18n("Please select a category or press Cancel"));
-  dialog->setTitle(i18n("Under which category would you like to store this CDDB entry?"));
-
-  if(dialog->exec() != QDialog::Accepted)
-    {
-      delete dialog;
-      return;
-    }
-
-  dialog->getSelection(path);
   QString mag;
-  mag.sprintf("%s/%08lx",path.utf8().data(),cdinfo.magicID);
+  mag.sprintf("%s%s/%08lx",cddbbasedir.utf8().data(),savecat.utf8().data(),cdinfo.magicID);
 
   save_cddb_entry(mag,false);
-  load();
+  load_cddb();
   delete dialog;
+  emit dialog_done();
 } // save
 
 void 
@@ -589,9 +591,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
   bool have_magic_already = false;
 
   kdDebug() << "::save_cddb_entry(): path: " << path << " upload = " << upload << "\n" << endl;
-  // Steve and Ti contacted me and said they have changed the cddb upload specs
-  // Now, an uploaded entry must only contain one DISCID namely the one corresponding
-  // to the CD the user actually owns.
+
   if( !upload )
     {
       for ( QStringList::Iterator it = discidlist.begin();
@@ -914,7 +914,7 @@ CDDialog::checkit()
 
 
 void 
-CDDialog::load()
+CDDialog::load_cddb()
 {
   emit cddb_query_signal(true);
 } // load

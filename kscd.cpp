@@ -464,33 +464,36 @@ KSCD::drawPanel()
     //    optionsbutton->setFont( QFont( "helvetica", 12 ) );
     optionsbutton->setFocusPolicy ( QWidget::NoFocus );
 
-    ix += SBARWIDTH/10*2;
+	//    ix += SBARWIDTH/10*2;
+	ix = 0;
+	iy += HEIGHT;
     songListCB = new QComboBox( this );
-    songListCB->setGeometry( ix, iy, SBARWIDTH/10*4, HEIGHT );
+	//    songListCB->setGeometry( ix, iy, SBARWIDTH/10*4, HEIGHT );
+    songListCB->setGeometry( ix, iy, SBARWIDTH/10*18+6, HEIGHT );
     songListCB->setFont( QFont( "helvetica", smallPtSize() ) );
     songListCB->setFocusPolicy ( QWidget::NoFocus );
 
     kdDebug() << "Width " << WIDTH << " Height " << HEIGHT << "\n" << endl;
 
     iy = 0;
-    ix = WIDTH + SBARWIDTH;
-    playPB = makeButton( ix, iy, WIDTH, HEIGHT, "Play/Pause" );
+    ix = WIDTH + SBARWIDTH + 2;
+    playPB = makeButton( ix, iy, WIDTH, HEIGHT*2, "Play/Pause" );
 
-    iy += HEIGHT;
+    iy += HEIGHT + HEIGHT;
     stopPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Stop" );
 
     ix += WIDTH / 2;
     replayPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Replay" );
 
-    ix = WIDTH + SBARWIDTH;
+    ix = WIDTH + SBARWIDTH/10*6;
     iy += HEIGHT;
     bwdPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Bwd" );
 
     ix += WIDTH / 2;
     fwdPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Fwd" );
 
-    ix = WIDTH + SBARWIDTH;
-    iy += HEIGHT;
+    ix = WIDTH + SBARWIDTH + 2;
+	//    iy += HEIGHT;
     prevPB = makeButton( ix, iy, WIDTH / 2, HEIGHT, "Prev" );
 
     ix += WIDTH / 2;
@@ -623,7 +626,7 @@ KSCD::setToolTips()
         else
             QToolTip::add( shufflebutton,         i18n("Shuffle Play") );
 
-        QToolTip::add( cddbbutton,      i18n("CDDB Dialog") );
+        QToolTip::add( cddbbutton,      i18n("freedb Dialog") );
         QToolTip::add( volSB,           i18n("CD Volume Control") );
     } else {
         QToolTip::remove( playPB);
@@ -1094,11 +1097,11 @@ KSCD::aboutClicked()
         "Kscd is based in part on WorkMan,\n"
         "Copyright (c) 1991-1996 Steven Grimm\n"
         "Copyright (c) 1996-2001 Dirk Försterling <milliByte@gmx.net>\n\n"
-        "Special thanks to Ti Kan and "
-        "Steve Scherf, the inventors of "
-        "the CDDB database concept. "
-        "Visit http://www.cddb.com/ for "
-        "more information on CDDB.\n\n"
+        "Special thanks to freedb.org for "
+        "providing a free CDDB-like "
+        "CD database."
+        "Visit http://www.freedb.org/ for "
+        "more information on freedb.\n\n"
         );
 
 #if KSCDMAGIC
@@ -1159,7 +1162,7 @@ KSCD::aboutClicked()
 
     smtpconfig = new SMTPConfig(tabdialog, "smtpconfig", &smtpConfigData);
 
-    tabdialog->addTab(setup,"CDDB");
+    tabdialog->addTab(setup,"freedb");
     tabdialog->addTab(smtpconfig, i18n("SMTP Setup"));
     tabdialog->addTab(dlg,i18n("Kscd Options"));
 #if KSCDMAGIC
@@ -1685,11 +1688,11 @@ KSCD::readSettings()
     //Let's check if it is in old format and if so, convert it to new one:
     if(CDDB::normalize_server_list_entry(current_server))
     {
-        kdDebug() << "Default CDDB server entry converted to new format and saved.\n" << endl;
+        kdDebug() << "Default freedb server entry converted to new format and saved.\n" << endl;
         config->writeEntry("CurrentServer",current_server);
         config->sync();
     }
-    submitaddress = config->readEntry("CDDBSubmitAddress","xmcd-cddb@amb.org");
+    submitaddress = config->readEntry("CDDBSubmitAddress","freedb-submit@freedb.org");
     cddbserverlist = config->readListEntry("SeverList", ',');
     int num = cddbserverlist.count();
     if (num == 0)
@@ -1713,7 +1716,7 @@ KSCD::readSettings()
             // function in configuration - it does not notice if QStringList
             // String contents is changed.
             cddbserverlist=nlist;
-            kdDebug() << "CDDB server list converted to new format and saved.\n" << endl;
+            kdDebug() << "freedb server list converted to new format and saved.\n" << endl;
             config->writeEntry("SeverList",cddbserverlist,',',true);
             config->sync();
         }
@@ -1782,13 +1785,16 @@ KSCD::writeSettings()
 void
 KSCD::CDDialogSelected()
 {
+    kdDebug() << "CDDialogSelected" << endl;
     if(cddialog)
         return;
+
+	kdDebug() << "dialog was empty" << endl;
 
     cddialog = new CDDialog();
 
     cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
-                      revision,playlist,pathlist,mailcmd,submitaddress, &smtpConfigData);
+                      revision,playlist,pathlist,cddbbasedir,mailcmd,submitaddress, &smtpConfigData);
 
     connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
     connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
@@ -1800,6 +1806,7 @@ KSCD::CDDialogSelected()
 void
 KSCD::CDDialogDone()
 {
+	kdDebug() << "cddialog -> done" << endl;
     delete cddialog;
     cddialog = 0L;
 }
@@ -1847,7 +1854,7 @@ KSCD::getCDDBserversFailed()
     led_off();
     disconnect(&cddb,SIGNAL(get_server_list_done()),this,SLOT(getCDDBserversDone()));
     disconnect(&cddb,SIGNAL(get_server_list_failed()),this,SLOT(getCDDBserversFailed()));
-    setArtistAndTitle(i18n("Unable to get CDDB server list."), "");
+    setArtistAndTitle(i18n("Unable to get freedb server list."), "");
     titlelabeltimer->start(10000,TRUE); // 10 secs
 }
 
@@ -2004,7 +2011,7 @@ KSCD::get_cddb_info(bool _updateDialog)
 
         if(cddialog && updateDialog)
             cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
-                              revision,playlist,pathlist,mailcmd,submitaddress, &smtpConfigData);
+                              revision,playlist,pathlist,cddbbasedir,mailcmd,submitaddress, &smtpConfigData);
         playlistpointer = 0;
     }
 
@@ -2070,7 +2077,7 @@ KSCD::cddb_no_info()
     //        cddb_ready_bug = 0;
     kdDebug() << "cddb_no_info() called\n" << endl;
 
-    setArtistAndTitle(i18n("No matching CDDB entry found."), "");
+    setArtistAndTitle(i18n("No matching freedb entry found."), "");
 //    artistlabel->clear();
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
@@ -2078,7 +2085,7 @@ KSCD::cddb_no_info()
 	setArtistAndTitle("", "");
 	tracktitlelist.clear();
 	extlist.clear();
-    tracktitlelist.append(i18n("No matching CDDB entry found."));
+    tracktitlelist.append(i18n("No matching freedb entry found."));
 #ifdef DEFINE_CDTEXT
     wm_cd_get_cdtext();
     CDTEXT_MACRO
@@ -2110,7 +2117,7 @@ KSCD::cddb_failed()
 	setArtistAndTitle("", "");
 	tracktitlelist.clear();
 	extlist.clear();
-    tracktitlelist.append(i18n("Error getting CDDB entry."));
+    tracktitlelist.append(i18n("Error getting freedb entry."));
 #ifdef DEFINE_CDTEXT
     CDTEXT_MACRO
     else
@@ -2125,7 +2132,7 @@ KSCD::cddb_failed()
 
       discidlist.clear();
 
-      setArtistAndTitle(i18n("Error getting CDDB entry."), "");
+      setArtistAndTitle(i18n("Error getting freedb entry."), "");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
     }
     timer->start(1000);
@@ -2142,7 +2149,7 @@ KSCD::cddb_timed_out()
 	tracktitlelist.clear();
 	setArtistAndTitle("", "");
 	extlist.clear();
-    tracktitlelist.append(i18n("CDDB query timed out."));
+    tracktitlelist.append(i18n("freedb query timed out."));
 #ifdef DEFINE_CDTEXT
     CDTEXT_MACRO
     else
@@ -2157,7 +2164,7 @@ KSCD::cddb_timed_out()
 
       discidlist.clear();
 
-      setArtistAndTitle(i18n("CDDB query timed out."),"");
+      setArtistAndTitle(i18n("freedb query timed out."),"");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
     }
     timer->start(1000);
@@ -2242,7 +2249,7 @@ KSCD::cddb_done()
 
     if(cddialog && updateDialog)
         cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
-                          revision,playlist,pathlist,mailcmd,submitaddress, &smtpConfigData);
+                          revision,playlist,pathlist,cddbbasedir,mailcmd,submitaddress, &smtpConfigData);
 
     int i = 0;
     songListCB->clear();
@@ -2681,7 +2688,7 @@ KSCD::get_pathlist(QStringList& _pathlist)
     {
         dialog = new InexactDialog(0, "dialog", false);
         dialog->insertText(cddbbasedir);
-        dialog->setTitle(i18n("Enter the local CDDB base Directory"));
+        dialog->setTitle(i18n("Enter the local freedb base Directory"));
 
         if(dialog->exec() != QDialog::Accepted)
         {

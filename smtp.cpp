@@ -41,7 +41,7 @@ SMTP::SMTP(char *serverhost, unsigned short int port, int timeout)
     senderAddress = "user@host.ext";
     senderReplyTo = "";
     recipientAddress = "user@host.ext";
-    messageSubject = "cddb unknown unknown";
+    messageSubject = "freedb unknown unknown";
     messageBody = "empty";
     
     connected = false;

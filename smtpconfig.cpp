@@ -128,10 +128,10 @@ void SMTPConfig::commitData(void)
     configData->mailProfile = mailProfileCombo->currentText();
     if( (configData->serverHost == "") || (!configData->senderAddress.contains("@")))
       {
-	KMessageBox::sorry(this, i18n("CDDB submissions via SMTP have been disabled\n"
+	KMessageBox::sorry(this, i18n("freedb submissions via SMTP have been disabled\n"
 				      "because the E-Mail profile you selected is\n"
 				      "incomplete. Please review your E-Mail settings\n"
-				      "and try again."), i18n("CDDB submissions disabled"));
+				      "and try again."), i18n("freedb submissions disabled"));
 	configData->enabled = false;
       } 
 } // commitData
