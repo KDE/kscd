@@ -24,18 +24,18 @@ kscd_SOURCES = kscd.cpp kscd.skel configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cp
 	smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
         configWidget.cpp
 
-#	plat_scor5.c plat_sun.c plat_hpux.c plat_linux.c plat_news.c \
-#	plat_bsd386.c plat_ultrix.c cdrom.c scsi.c drv_toshiba.c drv_sony.c \
+#	plat_scor5.c plat_sun.c plat_hpux.c plat_linux.c plat_news.c 
+#	plat_bsd386.c plat_ultrix.c cdrom.c scsi.c drv_toshiba.c drv_sony.c 
 #	plat_svr4.c plat_freebsd.c plat_osf1.c plat_irix.c
 
 
 #cddaslave_SOURCES = cddaslave.c
 #cddaslave_LDADD = libwm/libworkman.la
 
-#SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp \
+#SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp 
 #	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
 
-#OBJECTS3=kscdmagic/bitmap.o  kscdmagic/core.o kscdmagic/main.o \
+#OBJECTS3=kscdmagic/bitmap.o  kscdmagic/core.o kscdmagic/main.o 
 #	kscdmagic/sound.o kscdmagic/xlibwrap.o kscdmagic/xlib.o
 
 METASOURCES = kscd.moc bwlednum.moc configdlg.moc cddb.moc ledlamp.moc \
