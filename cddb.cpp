@@ -1138,7 +1138,7 @@ cddb_encode(QString& str, QStringList &returnlist)
     while((pos2 = str.find("\\",pos1,true)) !=-1)
       {
 	str.replace(pos2 , 1 , "\\\\");
-	pos1 = pos2 + 1;
+	pos1 = pos2 + 2;
       }
 
     pos1 = 0;
@@ -1147,7 +1147,7 @@ cddb_encode(QString& str, QStringList &returnlist)
     while((pos2 = str.find("\n",pos1,true)) !=-1)
       {
 	str.replace(pos2 , 1 , "\\n");
-	pos1 = pos2 + 1;
+	pos1 = pos2 + 2;
       }
 
     pos1 = 0;
@@ -1156,7 +1156,7 @@ cddb_encode(QString& str, QStringList &returnlist)
     while((pos2 = str.find("\t",pos1,true)) !=-1)
       {
 	str.replace(pos2 , 1 , "\\t");
-	pos1 = pos2 + 1;
+	pos1 = pos2 + 2;
       }
 
     while(str.length() > 70)
