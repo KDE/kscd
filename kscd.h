@@ -229,7 +229,6 @@ protected:
     //    void focusOutEvent(QFocusEvent *e);
     void playtime();
     bool getArtist(QString& artist);
-    void get_pathlist(QStringList& _patlist);
 
     void clearSongList();
     void setSongListTo(int whichTrack);
@@ -352,7 +351,6 @@ private:
     KCDDB::Client*  cddb;
     QString         xmcd_data;
     QStringList     cddbserverlist;
-    QString         cddbbasedir;
     QString         current_server;
     QString         mailcmd;
     QString         submitaddress;

@@ -63,7 +63,6 @@ class CDDialog : public CDDialogData
 			   int& revision,
 			   QStringList& playlist,
 			   QStringList& pathlist,
-			   QString& cddbbasedir,
 			   QString& _submitaddress,
 			   SMTPConfigData *_smtpConfigData
 			   );
@@ -101,7 +100,6 @@ private:
   QStringList 	track_list;
   QStringList pathlist;
   QStringList catlist;
-  QString cddbbasedir;
   QStringList	playlist;
   QString  	xmcd_data;
   QStringList 	discidlist;

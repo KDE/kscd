@@ -977,7 +977,6 @@ KSCD::getCDDBOptions(CDDBSetup* /*config*/)  //!!!!
 
     config->insertData(cddbserverlist,
                        cddbsubmitlist,
-                       cddbbasedir,
                        submitaddress,
                        current_server,
                        cddb_auto_enabled,
@@ -1004,7 +1003,6 @@ KSCD::setCDDBOptions(CDDBSetup* config)  //!!!!
 
     config->getData(cddbserverlist,
                    cddbsubmitlist,
-                   cddbbasedir,
                    submitaddress,
                    current_server,
                    cddb_auto_enabled,
@@ -1492,12 +1490,6 @@ KSCD::readSettings()
 
 	cddb->setTimeout(config->readNumEntry("CDDBTimeout",60));
 	cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",true);
-	cddbbasedir = config->readPathEntry("LocalBaseDir");
-
-	// Changed global KDE apps dir by local KDE apps dir
-	if (cddbbasedir.isEmpty())
-		cddbbasedir = KGlobal::dirs()->resourceDirs("cddb").first();
-	KGlobal::dirs()->addResourceDir("cddb", cddbbasedir);
 
 	// Set this to false by default. Look at the settings dialog source code
 	// for the reason. - Juraj.
@@ -1617,7 +1609,6 @@ KSCD::writeSettings()
     config->writeEntry("CDDBTimeout", static_cast<int>(cddb->getTimeout()));
     config->writeEntry("CDDBLocalAutoSaveEnabled",cddb_auto_enabled);
 
-    config->writePathEntry("LocalBaseDir",cddbbasedir);
     config->writeEntry("SeverList",cddbserverlist);
     config->writeEntry("SubmitList", cddbsubmitlist);
     config->writeEntry("CDDBSubmitAddress",submitaddress);
@@ -1638,7 +1629,7 @@ KSCD::CDDialogSelected()
     cddialog = new CDDialog();
 
     cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
-                      revision,playlist,pathlist,cddbbasedir,submitaddress, smtpConfigData);
+                      revision,playlist,pathlist,submitaddress, smtpConfigData);
 
     connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
     connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
@@ -1678,7 +1669,6 @@ KSCD::getCDDBservers()
 
         configDialog->cddb()->getData(cddbserverlist,
                                       cddbsubmitlist,
-                                      cddbbasedir,
                                       submitaddress,
                                       current_server,
                                       cddb_auto_enabled,
@@ -2305,39 +2295,6 @@ KSCD::information(int i)
 
     KRun::runURL(str, "text/html");
 } // information
-
-void
-KSCD::get_pathlist(QStringList& _pathlist)
-{
-    QDir d;
-    QStringList list;
-
-    d.setFilter( QDir::Dirs);
-    d.setSorting( QDir::Size);
-    d.setPath( cddbbasedir );
-    if( !d.exists() )
-    {
-		 if ( ! KStandardDirs::makeDir( cddbbasedir ) )
-		 {
-			 QString msg = i18n("Unable to create directory %1"
-                                "\nCheck permissions!" ).arg(cddbbasedir);
-			 KMessageBox::error( this, msg );
-			 return;
-		 }
-
-	 }
-
-	 _pathlist.clear();
-	 list = d.entryList();
-
-	 for ( QStringList::ConstIterator it = list.begin(); it != list.end(); ++it )
-	 {
-		 if( *it != QString::fromLocal8Bit(".") && *it != QString::fromLocal8Bit("..") )
-		 {
-			 _pathlist.append( cddbbasedir + '/' +  *it);
-		 }
-	 }
-} // get_pathlist
 
 void
 kcderror(const QString& title, const QString& message)
