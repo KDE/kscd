@@ -1,8 +1,6 @@
 * Make it portable, and less dependant on stupid Linuxisms like bytesex.h
 * fix html encoding
 * allow to choose email submisson address from server list entries with protocol SMTP
-* FIX Kscd Magic! 
 * Session Management
-* aRts compatibility (Kscd Magic)
-* remove libwm from the CVS repository
-* make it work properly
+* change the GUI
+* optimize freedb support (& rename cddb to freedb)

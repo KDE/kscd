@@ -1604,6 +1604,7 @@ KSCD::readSettings()
     mailcmd    =        config->readEntry("UnixMailCommand","/bin/mail -s \"%s\"");
     randomonce = (bool)config->readBoolEntry("RANDOMONCE",true);
     looping    = config->readBoolEntry("Looping",false);
+    browsercmd = config->readEntry("CustomBrowserCmd","kfmclient openURL %s");
     
 
 #ifdef DEFAULT_CD_DEVICE
@@ -1744,7 +1745,7 @@ KSCD::writeSettings()
     config->writeEntry("EJECTONFINISH", ejectonfinish);
     config->writeEntry("RANDOMONCE", randomonce);
     config->writeEntry("CDDevice", QFile::decodeName(cd_device));
-    config->writeEntry("CustomBroserCmd",browsercmd);
+    config->writeEntry("CustomBrowserCmd",browsercmd);
     config->writeEntry("Volume", volume);
     config->writeEntry("BackColor",background_color);
     config->writeEntry("LEDColor",led_color);
