@@ -294,6 +294,8 @@ void SMTP::processLine(QString *line)
         state = DATA;
         //        writeString = QString::fromLatin1("Subject: %1\n%2\n.\n").arg(messageSubject).arg(messageBody);
         writeString = QString::fromLatin1("Subject: %1\r\n").arg(messageSubject);
+	writeString += QString::fromLatin1("From: %1\r\n").arg(senderAddress);
+	writeString += QString::fromLatin1("To: %1\r\n\r\n").arg(recipientAddress);
         writeString += messageBody;
         writeString += QString::fromLatin1(".\r\n");
         write(sock->socket(), writeString.ascii(), writeString.length());
@@ -316,6 +318,6 @@ void SMTP::processLine(QString *line)
         socketClose(sock);
         emit error(UNKNOWNRESPONSE);
     }
-}
+} // processLine
 
 #include "smtp.moc"

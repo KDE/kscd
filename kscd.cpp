@@ -1069,12 +1069,12 @@ KSCD::aboutClicked()
     QString labelstring;
     labelstring = i18n("kscd %1\n").arg(KSCDVERSION);
     labelstring += i18n(
-    "Copyright (c) 1997-2000 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
-    "Copyright (c) 1999-2000 \nDirk FÃ¶rsterling <milliByte@gmx.net>\n"
+    "Copyright (c) 1997-2001 \nBernd Johannes Wuebben <wuebben@kde.org>\n"
+    "Copyright (c) 1999-2001 \nDirk FÃ¶rsterling <milliByte@gmx.net>\n"
     "   (current Maintainer)\n\n"
     "Kscd is based in part on WorkMan,\n"
                                       "Copyright (c) 1991-1996 Steven Grimm\n"
-                                      "Copyright (c) 1996-2000 Dirk FÃ¶rsterling <milliByte@gmx.net>\n\n"
+                                      "Copyright (c) 1996-2001 Dirk FÃ¶rsterling <milliByte@gmx.net>\n\n"
                                       "Special thanks to Ti Kan and "
                                       "Steve Scherf, the inventors of "
                                       "the CDDB database concept. "
@@ -2758,7 +2758,7 @@ KSCD::edm_save_cddb_entry(QString& path)
 
   // Waste some disk space
   t << "# Copyright (C) 1997-1999 Bernd Johannes Wuebben.\n";
-  t << "# Copyright (C) 2000 Dirk Foersterling.\n";
+  t << "# Copyright (C) 1999-2001 Dirk Foersterling.\n";
 
   
 
@@ -2916,7 +2916,7 @@ main( int argc, char *argv[] )
   KAboutData aboutData( "kscd", I18N_NOOP("kscd"),
                         KSCDVERSION, description,
                         KAboutData::License_GPL,
-                        "(c) 2000, Dirk Försterling");
+                        "(c) 2001, Dirk Försterling");
   aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
   aboutData.addAuthor("Dirk Försterling",0, "milliByte@gmx.net");
 
@@ -2952,8 +2952,8 @@ main( int argc, char *argv[] )
           if(strcmp(argv[i],"-h") == 0)
             {
             printf("KSCD "KSCDVERSION
-                   "\n Copyright 1997-98 Bernd Johannes Wuebben wuebben@kde.org\n"
-                   " Copyright 2000 Dirk Foersterling milliByte@gmx.de\n");
+                   "\n Copyright 1997-99 Bernd Johannes Wuebben wuebben@kde.org\n"
+                   " Copyright 1999-2001 Dirk Foersterling milliByte@gmx.de\n");
             printf(i18n("-h: display commandline options\n").local8Bit());
             printf(i18n("-d: enable debugging output.\n").local8Bit());
             exit(0);
