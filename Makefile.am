@@ -68,3 +68,10 @@ plat_ultrix.c:config.h
 
 KDE_OPTIONS = nofinal
 
+
+cddbdlg.o: ../libkcddb/configbase.h ../libkcddb/cdinfodialogbase.h
+configWidget.o: ../libkcddb/configbase.h
+docking.o: ../libkcddb/configbase.h
+kscd.o: ../libkcddb/configbase.h
+kscd_skel.o: ../libkcddb/configbase.h panel.h prefs.h configWidgetUI.h
+
