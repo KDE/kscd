@@ -277,6 +277,7 @@ KSCD::initWorkMan()
   save_track   = 1;
   thiscd.trk   = NULL;
   thiscd.lists = NULL;
+  thiscd.ntracks = 0;
   tottime      = tmptime;
 } // initWorkMan()
 
@@ -644,6 +645,7 @@ KSCD::cleanUp()
     {
         delete thiscd.trk;
         thiscd.trk = 0L;
+        thiscd.ntracks = 0;
     }
     signal (SIGINT, SIG_DFL);
     if(magicproc)
