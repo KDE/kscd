@@ -15,6 +15,7 @@
 #include <kdebug.h>
 #include <kinputdialog.h>
 #include <klocale.h>
+#include <kcombobox.h>
 #include <kmessagebox.h>
 
 #include <stdio.h>
@@ -44,6 +45,180 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
       Ok|Cancel|User1|User2, Ok, true )
 {
   m_dlgBase = new CDDBDlgBase( this, "m_dlgBase" );
+
+  // These are only 11 Category values defined by CDDB. See
+  //
+  // http://www.freedb.org/modules.php?name=Sections&sop=viewarticle&artid=26
+  //
+  // DON'T i18n them!
+  m_dlgBase->m_category->insertItem("blues");
+  m_dlgBase->m_category->insertItem("classical");
+  m_dlgBase->m_category->insertItem("country");
+  m_dlgBase->m_category->insertItem("data");
+  m_dlgBase->m_category->insertItem("folk");
+  m_dlgBase->m_category->insertItem("jazz");
+  m_dlgBase->m_category->insertItem("newage");
+  m_dlgBase->m_category->insertItem("reggae");
+  m_dlgBase->m_category->insertItem("rock");
+  m_dlgBase->m_category->insertItem("soundtrack");
+  m_dlgBase->m_category->insertItem("misc");
+
+  // On the other hand, the Genre is completely arbitrary. But we follow
+  // kaudiocreator's cue and make life easy for people.
+  //
+  // In addition, DON'T i18n this first one! It is to catch stupid people
+  // who don't bother setting the genre and encoders that barf on empty
+  // strings for the genre (e.g. lame).
+  m_dlgBase->m_genre->insertItem("Unknown");
+  m_dlgBase->m_genre->insertItem(i18n("A Cappella"));
+  m_dlgBase->m_genre->insertItem(i18n("Acid Jazz"));
+  m_dlgBase->m_genre->insertItem(i18n("Acid Punk"));
+  m_dlgBase->m_genre->insertItem(i18n("Acid"));
+  m_dlgBase->m_genre->insertItem(i18n("Acoustic"));
+  m_dlgBase->m_genre->insertItem(i18n("Alternative"));
+  m_dlgBase->m_genre->insertItem(i18n("Alt. Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Ambient"));
+  m_dlgBase->m_genre->insertItem(i18n("Anime"));
+  m_dlgBase->m_genre->insertItem(i18n("Avantgarde"));
+  m_dlgBase->m_genre->insertItem(i18n("Ballad"));
+  m_dlgBase->m_genre->insertItem(i18n("Bass"));
+  m_dlgBase->m_genre->insertItem(i18n("Beat"));
+  m_dlgBase->m_genre->insertItem(i18n("Bebop"));
+  m_dlgBase->m_genre->insertItem(i18n("Big Band"));
+  m_dlgBase->m_genre->insertItem(i18n("Black Metal"));
+  m_dlgBase->m_genre->insertItem(i18n("Bluegrass"));
+  m_dlgBase->m_genre->insertItem(i18n("Blues"));
+  m_dlgBase->m_genre->insertItem(i18n("Booty Bass"));
+  m_dlgBase->m_genre->insertItem(i18n("BritPop"));
+  m_dlgBase->m_genre->insertItem(i18n("Cabaret"));
+  m_dlgBase->m_genre->insertItem(i18n("Celtic"));
+  m_dlgBase->m_genre->insertItem(i18n("Chamber Music"));
+  m_dlgBase->m_genre->insertItem(i18n("Chanson"));
+  m_dlgBase->m_genre->insertItem(i18n("Chorus"));
+  m_dlgBase->m_genre->insertItem(i18n("Christian Gangsta Rap"));
+  m_dlgBase->m_genre->insertItem(i18n("Christian Rap"));
+  m_dlgBase->m_genre->insertItem(i18n("Christian Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Classical"));
+  m_dlgBase->m_genre->insertItem(i18n("Classic Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Club-house"));
+  m_dlgBase->m_genre->insertItem(i18n("Club"));
+  m_dlgBase->m_genre->insertItem(i18n("Comedy"));
+  m_dlgBase->m_genre->insertItem(i18n("Contemporary Christian"));
+  m_dlgBase->m_genre->insertItem(i18n("Country"));
+  m_dlgBase->m_genre->insertItem(i18n("Crossover"));
+  m_dlgBase->m_genre->insertItem(i18n("Cult"));
+  m_dlgBase->m_genre->insertItem(i18n("Dance Hall"));
+  m_dlgBase->m_genre->insertItem(i18n("Dance"));
+  m_dlgBase->m_genre->insertItem(i18n("Darkwave"));
+  m_dlgBase->m_genre->insertItem(i18n("Death Metal"));
+  m_dlgBase->m_genre->insertItem(i18n("Disco"));
+  m_dlgBase->m_genre->insertItem(i18n("Dream"));
+  m_dlgBase->m_genre->insertItem(i18n("Drum & Bass"));
+  m_dlgBase->m_genre->insertItem(i18n("Drum Solo"));
+  m_dlgBase->m_genre->insertItem(i18n("Duet"));
+  m_dlgBase->m_genre->insertItem(i18n("Easy Listening"));
+  m_dlgBase->m_genre->insertItem(i18n("Electronic"));
+  m_dlgBase->m_genre->insertItem(i18n("Ethnic"));
+  m_dlgBase->m_genre->insertItem(i18n("Eurodance"));
+  m_dlgBase->m_genre->insertItem(i18n("Euro-House"));
+  m_dlgBase->m_genre->insertItem(i18n("Euro-Techno"));
+  m_dlgBase->m_genre->insertItem(i18n("Fast-Fusion"));
+  m_dlgBase->m_genre->insertItem(i18n("Folklore"));
+  m_dlgBase->m_genre->insertItem(i18n("Folk/Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Folk"));
+  m_dlgBase->m_genre->insertItem(i18n("Freestyle"));
+  m_dlgBase->m_genre->insertItem(i18n("Funk"));
+  m_dlgBase->m_genre->insertItem(i18n("Fusion"));
+  m_dlgBase->m_genre->insertItem(i18n("Game"));
+  m_dlgBase->m_genre->insertItem(i18n("Gangsta Rap"));
+  m_dlgBase->m_genre->insertItem(i18n("Goa"));
+  m_dlgBase->m_genre->insertItem(i18n("Gospel"));
+  m_dlgBase->m_genre->insertItem(i18n("Gothic Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Gothic"));
+  m_dlgBase->m_genre->insertItem(i18n("Grunge"));
+  m_dlgBase->m_genre->insertItem(i18n("Hardcore"));
+  m_dlgBase->m_genre->insertItem(i18n("Hard Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Heavy Metal"));
+  m_dlgBase->m_genre->insertItem(i18n("Hip-Hop"));
+  m_dlgBase->m_genre->insertItem(i18n("House"));
+  m_dlgBase->m_genre->insertItem(i18n("Humor"));
+  m_dlgBase->m_genre->insertItem(i18n("Indie"));
+  m_dlgBase->m_genre->insertItem(i18n("Industrial"));
+  m_dlgBase->m_genre->insertItem(i18n("Instrumental Pop"));
+  m_dlgBase->m_genre->insertItem(i18n("Instrumental Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Instrumental"));
+  m_dlgBase->m_genre->insertItem(i18n("Jazz+Funk"));
+  m_dlgBase->m_genre->insertItem(i18n("Jazz"));
+  m_dlgBase->m_genre->insertItem(i18n("JPop"));
+  m_dlgBase->m_genre->insertItem(i18n("Jungle"));
+  m_dlgBase->m_genre->insertItem(i18n("Latin"));
+  m_dlgBase->m_genre->insertItem(i18n("Lo-Fi"));
+  m_dlgBase->m_genre->insertItem(i18n("Meditative"));
+  m_dlgBase->m_genre->insertItem(i18n("Merengue"));
+  m_dlgBase->m_genre->insertItem(i18n("Metal"));
+  m_dlgBase->m_genre->insertItem(i18n("Musical"));
+  m_dlgBase->m_genre->insertItem(i18n("National Folk"));
+  m_dlgBase->m_genre->insertItem(i18n("Native American"));
+  m_dlgBase->m_genre->insertItem(i18n("Negerpunk"));
+  m_dlgBase->m_genre->insertItem(i18n("New Age"));
+  m_dlgBase->m_genre->insertItem(i18n("New Wave"));
+  m_dlgBase->m_genre->insertItem(i18n("Noise"));
+  m_dlgBase->m_genre->insertItem(i18n("Oldies"));
+  m_dlgBase->m_genre->insertItem(i18n("Opera"));
+  m_dlgBase->m_genre->insertItem(i18n("Other"));
+  m_dlgBase->m_genre->insertItem(i18n("Polka"));
+  m_dlgBase->m_genre->insertItem(i18n("Polsk Punk"));
+  m_dlgBase->m_genre->insertItem(i18n("Pop-Funk"));
+  m_dlgBase->m_genre->insertItem(i18n("Pop/Funk"));
+  m_dlgBase->m_genre->insertItem(i18n("Pop"));
+  m_dlgBase->m_genre->insertItem(i18n("Porn Groove"));
+  m_dlgBase->m_genre->insertItem(i18n("Power Ballad"));
+  m_dlgBase->m_genre->insertItem(i18n("Pranks"));
+  m_dlgBase->m_genre->insertItem(i18n("Primus"));
+  m_dlgBase->m_genre->insertItem(i18n("Progressive Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Psychedelic Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Psychedelic"));
+  m_dlgBase->m_genre->insertItem(i18n("Punk Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Punk"));
+  m_dlgBase->m_genre->insertItem(i18n("R&B"));
+  m_dlgBase->m_genre->insertItem(i18n("Rap"));
+  m_dlgBase->m_genre->insertItem(i18n("Rave"));
+  m_dlgBase->m_genre->insertItem(i18n("Reggae"));
+  m_dlgBase->m_genre->insertItem(i18n("Retro"));
+  m_dlgBase->m_genre->insertItem(i18n("Revival"));
+  m_dlgBase->m_genre->insertItem(i18n("Rhythmic Soul"));
+  m_dlgBase->m_genre->insertItem(i18n("Rock & Roll"));
+  m_dlgBase->m_genre->insertItem(i18n("Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Salsa"));
+  m_dlgBase->m_genre->insertItem(i18n("Samba"));
+  m_dlgBase->m_genre->insertItem(i18n("Satire"));
+  m_dlgBase->m_genre->insertItem(i18n("Showtunes"));
+  m_dlgBase->m_genre->insertItem(i18n("Ska"));
+  m_dlgBase->m_genre->insertItem(i18n("Slow Jam"));
+  m_dlgBase->m_genre->insertItem(i18n("Slow Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Sonata"));
+  m_dlgBase->m_genre->insertItem(i18n("Soul"));
+  m_dlgBase->m_genre->insertItem(i18n("Sound Clip"));
+  m_dlgBase->m_genre->insertItem(i18n("Soundtrack"));
+  m_dlgBase->m_genre->insertItem(i18n("Southern Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Space"));
+  m_dlgBase->m_genre->insertItem(i18n("Speech"));
+  m_dlgBase->m_genre->insertItem(i18n("Swing"));
+  m_dlgBase->m_genre->insertItem(i18n("Symphonic Rock"));
+  m_dlgBase->m_genre->insertItem(i18n("Symphony"));
+  m_dlgBase->m_genre->insertItem(i18n("Synthpop"));
+  m_dlgBase->m_genre->insertItem(i18n("Tango"));
+  m_dlgBase->m_genre->insertItem(i18n("Techno-Industrial"));
+  m_dlgBase->m_genre->insertItem(i18n("Techno"));
+  m_dlgBase->m_genre->insertItem(i18n("Terror"));
+  m_dlgBase->m_genre->insertItem(i18n("Thrash Metal"));
+  m_dlgBase->m_genre->insertItem(i18n("Top 40"));
+  m_dlgBase->m_genre->insertItem(i18n("Trailer"));
+  m_dlgBase->m_genre->insertItem(i18n("Trance"));
+  m_dlgBase->m_genre->insertItem(i18n("Tribal"));
+  m_dlgBase->m_genre->insertItem(i18n("Trip-Hop"));
+  m_dlgBase->m_genre->insertItem(i18n("Vocal"));
+
   setMainWidget( m_dlgBase );
 
   setButtonText( User1, i18n( "Upload" ) );
@@ -145,8 +320,8 @@ void CDDBDlg::setData(
 
   m_dlgBase->le_artist->setText(cddbInfo.artist.stripWhiteSpace());
   m_dlgBase->le_title->setText(cddbInfo.title.stripWhiteSpace());
-  m_dlgBase->le_genre->setText(cddbInfo.genre.stripWhiteSpace());
-  m_dlgBase->le_category->setText(cddbInfo.category.stripWhiteSpace());
+  m_dlgBase->m_category->setCurrentText(cddbInfo.category.stripWhiteSpace());
+  m_dlgBase->m_genre->setCurrentText(cddbInfo.genre.stripWhiteSpace());
   m_dlgBase->le_year->setText(QString::number(cddbInfo.year));
   m_dlgBase->le_revision->setText(QString::number(cddbInfo.revision));
   m_dlgBase->lb_discId->setText(cddbInfo.id.stripWhiteSpace());
