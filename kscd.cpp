@@ -938,15 +938,14 @@ KSCD::nextClicked()
             playlistpointer = 0;
 
         cur_track = atoi( (*playlist.at(playlistpointer)).ascii() );
-        wm_cd_play(cur_track, 0, cur_track + 1);
+        wm_cd_play(cur_track, 0, cur_ntracks + 1);
     }
     else
     {
         if (cur_track == cur_ntracks)
             cur_track = 0;
 
-        // TODO: determine if this should indeed be cur_track + 2?
-        wm_cd_play (cur_track + 1, 0, cur_track + 2);
+        wm_cd_play (cur_track + 1, 0, cur_ntracks + 1);
     }
 } // nextClicked()
 
@@ -2379,7 +2378,7 @@ KSCD::setArtistAndTitle(const QString& artist, const QString& title)
 
     if (!title.isEmpty()) {
         titlelabel->setText(title);
-        tooltip += KStringHandler::rsqueeze(title,30);
+        tooltip += KStringHandler::rsqueeze(title, 30);
     }
     else {
         titlelabel->clear();
