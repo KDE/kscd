@@ -15,6 +15,10 @@
 
 #include "CDDialogData.h"
 #include "libkcddb/cdinfo.h"
+#include "libkcddb/cddb.h"
+#include "libkcddb/client.h"
+
+using KCDDB::CDDB;
 
 extern "C" {
 #include "libwm/include/wm_cdinfo.h"
@@ -83,6 +87,7 @@ class CDDialog : public CDDialogData
   void cancel();
   void play(QListViewItem *);
   void nextTrack();
+  void submitFinished(CDDB::Result);
 
 signals:
 
@@ -103,5 +108,6 @@ private:
   QString     genre;
   struct dialogcdinfo cdinfo;
   bool            messageNotSent;
+  KCDDB::Client *cddbClient;
 };
 #endif // CDDialog_included

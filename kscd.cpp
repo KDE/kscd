@@ -262,40 +262,6 @@ KSCD::initialShow()
     }
 }
 
-void
-KSCD::cddbInformationSent(void)
-{
-  KMessageBox::information(this, i18n("Record submitted successfully"),
-         i18n("Record Submission"));
-} // cddbInformationSent()
-
-void
-KSCD::cddbInformationNotSent(void/*int errornum*/)
-{
-/*  QString str, lstr;
-
-  switch(errornum){
-  case 10:
-    lstr = i18n("Error connecting to server.");
-    break;
-  case 11:
-    lstr = i18n("Not connected.");
-    break;
-  case 15:
-    lstr = i18n("Connection timed out.");
-    break;
-  case 16:
-    lstr = i18n("Timeout waiting for server interaction.");
-    break;
-  default:
-    lstr = i18n("Server said:\n\"%1\"").arg(smtpMailer->getLastLine());
-  }*/
-  QString str = i18n("Error sending message via SMTP.\n\n%2");
-//    .arg(errornum).arg(lstr);
-  KMessageBox::error(this, str, i18n("Record Submission"));
-} // cddbInformationNotSent()
-
-
 /**
  * Initialize the variables only in WorkMan
  * FIXME: What is needed exactly?

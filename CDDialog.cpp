@@ -84,6 +84,11 @@ CDDialog::CDDialog
     catlist.append("reggae");
     catlist.append("misc");
     catlist.append("data");
+
+    cddbClient = new KCDDB::Client();
+    cddbClient->setBlockingMode(false);
+    connect (cddbClient, SIGNAL(finished(CDDB::Result)),
+             this, SLOT(submitFinished(CDDB::Result)));
 } // CDDialog
 
 
@@ -91,6 +96,7 @@ CDDialog::~CDDialog()
 {
     if(cdinfo.cddbtoc)
         delete [] cdinfo.cddbtoc;
+    delete cddbClient;
 } // ~CDDialog
 
 void
@@ -336,6 +342,23 @@ void CDDialog::nextTrack() {
     tracksList->ensureItemVisible(item);
 }
 
+void
+CDDialog::submitFinished(KCDDB::CDDB::Result r)
+{
+  if (r == KCDDB::CDDB::Success)
+  {
+    KMessageBox::information(this, i18n("Record submitted successfully"),
+         i18n("Record Submission"));
+    upload_button->setDisabled(true);
+  }
+  else
+  {
+    QString str = i18n("Error sending message via SMTP.\n\n%2")
+      .arg(KCDDB::CDDB::resultToString(r));
+    KMessageBox::error(this, str, i18n("Record Submission"));
+  }
+} // submitFinished()
+
 QTime
 framestoTime(int _frames)
 {
@@ -411,8 +434,7 @@ CDDialog::upload()
   offsetList.append(cdinfo.cddbtoc[0].absframe);
   offsetList.append(cdinfo.cddbtoc[cdinfo.ntracks].absframe);
 
-  KCDDB::Client c;
-  c.submit(info, offsetList);
+  cddbClient->submit(info, offsetList);
 } // upload
 
 void

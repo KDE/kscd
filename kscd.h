@@ -319,8 +319,6 @@ private:
 
 // cddb support
 public slots:
-    void cddbInformationSent(void);
-    void cddbInformationNotSent(void);
     void cddb_done(CDDB::Result);
     void cddb_failed();
     void cddb_no_info();
