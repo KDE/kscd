@@ -208,6 +208,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   // set up the actions and keyboard accels
   KAccel* accels = new KAccel(this);
+  KActionCollection* actions = new KActionCollection(this);
 
   KAction* action;
   action = new KAction(i18n("Play/Pause"), Key_P, this, SLOT(playClicked()), this, "Play/Pause");
@@ -222,7 +223,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action->plugAccel(accels);
   action = new KAction(i18n("Backward"), Key_Left, this, SLOT(bwdClicked()), this, "Backward");
   action->plugAccel(accels);
-  action = KStdAction::action(KStdAction::Quit, this, SLOT(quitClicked()), this);
+  action = KStdAction::action(KStdAction::Quit, this, SLOT(quitClicked()), actions);
   action->plugAccel(accels);
   action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), this, "Loop");
   action->plugAccel(accels);
@@ -1401,6 +1402,8 @@ KSCD::cdMode()
       }
 
     switch (cur_cdmode) {
+        case WM_CDM_DEVICECHANGED:
+            break;
         case WM_CDM_UNKNOWN:
             cur_track = save_track = 1;
             statuslabel->setText( "" ); // TODO how should I properly handle this
