@@ -405,8 +405,7 @@ CDDB::next_token()
 
 #if defined SEEKCRPOS
   	if( (crpos != -1) && (crpos < newlinepos) )
- 	  newlinepos = crpos;
-	lastline    = tempbuffer.left(newlinepos);
+	  lastline    = tempbuffer.left(crpos);
 #else
 	lastline    = tempbuffer.left(newlinepos).stripWhiteSpace();
 #endif
@@ -627,18 +626,20 @@ CDDB::do_state_machine()
 		  if(lastline.left(3) == QString("211")) // single or multiple inexact
 			{
 			  inexact_list.clear();
+			  kdDebug() << "inexact_list cleared (211)" << endl;
 			  state = INEX_READ;
 			} else {
 			  if(lastline.left(3) == QString("202"))
 				{
 				  state = CDDB_DONE;
-				  
-				  cddb_close(sock);
+      				  cddb_close(sock);
+				  kdDebug() << "emitting cddb_no_info" << endl;
 				  emit cddb_no_info();
 				} else {
 				  if(lastline.left(3) == QString("210")) // multiple exact
 					{
 					  inexact_list.clear();
+					  kdDebug() << "inexact_list cleared (210)" << endl;
 					  state = MULTEX_READ;
 					} else {
 					  state = ERROR_QUERY;
@@ -656,8 +657,10 @@ CDDB::do_state_machine()
 		{
 		  state = CDDB_DONE;
 		  timeouttimer.stop();
+		  kdDebug() << "INEX_READ: end of data reached" << endl;
 		  emit cddb_inexact_read();
 		} else {
+		  kdDebug() << "INEX_READ: appending '" << lastline << "'" << endl;
 		  inexact_list.append(lastline);
 		}
 	  break;
@@ -667,8 +670,10 @@ CDDB::do_state_machine()
 		{
 		  state = CDDB_DONE;
 		  timeouttimer.stop();
+		  kdDebug() << "MULTEX_READ: end of data reached" << endl;
 		  emit cddb_inexact_read();
 		} else {
+		  kdDebug() << "MULTEX_READ: appending '" << lastline << "'" << endl;
 		  inexact_list.append(lastline);
 		}
 	  break;
@@ -782,7 +787,7 @@ CDDB::parse_serverlist_entry()
       }
 } // parse_serverlist_entry
 
-void 
+void
 CDDB::get_inexact_list(QStringList& p_inexact_list)
 {
   p_inexact_list=inexact_list;

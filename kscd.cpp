@@ -2730,22 +2730,6 @@ KSCD::get_pathlist(QStringList& _pathlist)
     }
 } // get_pathlist
 
-
-/*
-void KSCD::doSM()
-{
-  //WABA: Session management has changed
- #if 1
- #warning Session management is broken
- #else
-    if (isVisible())
-	  kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\"");
-    else
-	  kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\" -hide ");
- #endif
-} // doSM
-*/
-
 void
 kcderror(const QString& title, const QString& message)
 {
@@ -3041,6 +3025,17 @@ KSCD::edm_save_cddb_entry(QString& path)
 
 
 /**
+ * Save state on session termination
+ */
+bool
+KSCD::saveState(QSessionManager& sm)
+{
+  writeSettings();
+  return true;
+} // saveState
+
+
+/**
  * main()
  */
 int
@@ -3066,40 +3061,15 @@ main( int argc, char *argv[] )
                                      KStandardDirs::kde_default("data") +
                                      "kscd/cddb/");
 
-    //  if (a.isRestored())
-    //    {
-    //        RESTORE(KSCD);
-    //    } else {
-
     KSCD *k = new KSCD();
     cur_track = 1;
 
-    bool hide = FALSE;
-
-    for(int i = 0; i < argc; i++)
-    {
-        if(strcmp(argv[i],"-hide") == 0)
-        {
-            hide = TRUE;
-        }
-
-        if(strcmp(argv[i],"-h") == 0)
-        {
-            printf("KSCD "KSCDVERSION
-                   "\n Copyright 1997-99 Bernd Johannes Wuebben wuebben@kde.org\n"
-                   " Copyright 1999-2001 Dirk Foersterling milliByte@gmx.de\n");
-            printf(i18n("-h: display commandline options\n").local8Bit());
-            printf(i18n("-d: enable debugging output.\n").local8Bit());
-            exit(0);
-        }
-    }
-
-    a.setTopWidget(k);
+    a.setTopWidget( k );
     a.setMainWidget( k );
+
     k->setCaption(a.caption());
-    if(!hide)
-        k->initialShow();
-    //    }
+    k->initialShow();
+
     return a.exec();
 } // main()
 

@@ -111,7 +111,7 @@ struct mgconfigstruct
   double starSize;
 };
 
-class KSCD : public QWidget, virtual public DCOPObject {
+class KSCD : public QWidget, public KSessionManaged, virtual public DCOPObject {
 
     Q_OBJECT
     K_DCOP
@@ -345,6 +345,7 @@ public:
 
         KSCD( QWidget *parent = 0, const char *name = 0 );
         void initialShow();
+	virtual bool saveState(QSessionManager& sm);
 
 signals:
         void trackChanged(const QString&);

@@ -27,6 +27,7 @@
 #include <stdio.h>
 
 #include <kapp.h>
+#include <kdebug.h>
 #include <klocale.h>
 #include <kmessagebox.h>
 
@@ -62,8 +63,8 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
 
   text->setText(i18n("No exact match or multiple exact matches found.\nPlease select the appropriate"\
                      " CD from the list of choices presented below."));
-
   errorstring = i18n("Please select a Disk Title or press Cancel");
+
 
   statuslabel = new QLabel( this, "statuslabel" );
   lay1->addWidget ( statuslabel );
@@ -80,8 +81,12 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
   cancel_button = new QPushButton(i18n("Cancel"),this,"cancel_button");
   lay2->addWidget ( cancel_button );
   lay2->addStretch ( 1 );
-  edit->setFocus();
 
+  if(listbox)
+    list_box->setFocus();
+  else
+    edit->setFocus();
+  
   connect(ok_button,SIGNAL(clicked()),SLOT(checkit()));
   connect(cancel_button,SIGNAL(clicked()),SLOT(reject()));
 
