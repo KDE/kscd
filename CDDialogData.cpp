@@ -11,7 +11,7 @@
 #include <qpushbutton.h>
 
 #include <klocale.h>
-#include <kapp.h>
+#include <kapplication.h>
 #include <kwin.h>
 
 CDDialogData::CDDialogData ( QWidget* parent, const char* name) : 

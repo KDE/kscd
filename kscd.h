@@ -77,7 +77,7 @@
 #include "smtp.h"
 #include "ledlamp.h"
 
-#include <kapp.h>
+#include <kapplication.h>
 #include <kprocess.h>
 #include <dcopobject.h>
 
