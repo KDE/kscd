@@ -1387,6 +1387,8 @@ void KSCD::cddb_failed()
     tracktitlelist.clear();
     extlist.clear();
     tracktitlelist.append(i18n("Error getting freedb entry."));
+    revision=year=0;
+    category=genre=QString::null;
 
     led_off();
     
