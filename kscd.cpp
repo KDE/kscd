@@ -212,8 +212,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   setDocking(Prefs::docking());
 
-  connectDCOPSignal(0, 0, "KDE_emailSettingsChanged()", "emailSettingsChanged()", false);
-
   setFocusPolicy(QWidget::NoFocus);
 
   songListCB->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
@@ -705,8 +703,10 @@ void KSCD::ejectClicked()
       statuslabel->setText(i18n("Ejecting"));
       kapp->processEvents();
       kapp->flushX();
-      setArtist("");
+      updateArtistAndTitle();
       setTitle(0);
+      artist="";
+      title="";
       tracktitlelist.clear();
       extlist.clear();
       category = "";
@@ -835,8 +835,10 @@ void KSCD::setDevicePaths()
     kdDebug(67000) << "Device changed to " << Prefs::cdDevice() << ". returns status  " << ret << "\n";
 #endif
 
-    setArtist("");
+    updateArtistAndTitle();
     setTitle(0);
+    artist="";
+    title="";
     tracktitlelist.clear();
     extlist.clear();
     clearSongList();
@@ -1118,12 +1120,14 @@ void KSCD::cdModeChanged(int previous, int cdmode)
                 statuslabel->setText(i18n("Ejected"));
             }
 
+            artist="";
+	    title="";
             tracktitlelist.clear();
             extlist.clear();
             clearSongList();
             totaltimelabel->clear();
             totaltimelabel->lower();
-            setArtist("");
+	    updateArtistAndTitle();
 
             updateDisplayedTrack(N_TRACK_UNKNOW);
             break;
@@ -1218,7 +1222,7 @@ void KSCD::CDDialogSelected()
     {
         cddialog = new CDDBDlg(this);
 
-        cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category, genre,
+        cddialog->setData(cd,artist,title,tracktitlelist,extlist,xmcd_data,category, genre,
                         revision,year,playlist,pathlist);
 
         connect(cddialog,SIGNAL(cddbQuery(bool)),SLOT(get_cddb_info(bool)));
@@ -1268,8 +1272,9 @@ void KSCD::get_cddb_info(bool /*_updateDialog*/)
     totaltimelabel->setText(fmt);
 
     KCDDB::TrackOffsetList querylist;
+    artist="";
+    title=i18n("Start freedb lookup.");
     tracktitlelist.clear();
-    tracktitlelist.append(i18n("Start freedb lookup."));
     populateSongList();
 
     for(int i = 0 ; i < wm_cd_getcountoftracks(); i++)
@@ -1332,6 +1337,8 @@ void KSCD::cddb_done(CDDB::Result result)
         }
     }
     
+    artist="";
+    title="";
     tracktitlelist.clear();
     extlist.clear();
 
@@ -1345,16 +1352,17 @@ void KSCD::cddb_done(CDDB::Result result)
     KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
 
     
-    // CDDBTODO: we really should get the artist off the 'tracktitlelist'
 /*    if(codec) {
-        tracktitlelist << codec->toUnicode(cddbInfo.artist.ascii()) + " / " + codec->toUnicode(cddbInfo.title.ascii());
+        artist = codec->toUnicode(cddbInfo.artist.ascii());
+	title = codec->toUnicode(cddbInfo.title.ascii());
     
         for (; it != end; ++it) {
             tracktitlelist << codec->toUnicode((*it).title.ascii());
             extlist << codec->toUnicode((*it).extt.ascii());
         }
     } else {
-        tracktitlelist << QString(cddbInfo.artist.ascii()) + " / " + cddbInfo.title.ascii();
+        artist = QString(cddbInfo.artist.ascii());
+	title = QString(cddbInfo.title.ascii());
     
         for (; it != end; ++it) {
             tracktitlelist << (*it).title.ascii();
@@ -1362,7 +1370,8 @@ void KSCD::cddb_done(CDDB::Result result)
         }
 //    }*/
 
-    tracktitlelist << cddbInfo.artist + " / " + cddbInfo.title;
+    artist = cddbInfo.artist;
+    title = cddbInfo.title;
     
     for (; it != end; ++it) {
         tracktitlelist << (*it).title;
@@ -1378,32 +1387,29 @@ void KSCD::get_cdtext_info(void)
 {
     struct cdtext_info *p_cdtext;
     kdDebug(67000) << "get_cdtext_info() called" << endl;
-    //setArtist("");
-    //setTitle(0);
-    //songListCB->clear();
+    artist="";
+    title="";
     tracktitlelist.clear();
     extlist.clear();
 
     p_cdtext = wm_cd_get_cdtext();
     if(p_cdtext && p_cdtext->valid) {
-        tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(p_cdtext->blocks[0]->name[0]),
-            (const char*)(p_cdtext->blocks[0]->performer[0])));
-        //titlelabel->setText(QString((const char*)(p_cdtext->blocks[0]->name[1])));
-        //artistlabel->setText(tracktitlelist.first());
-
+        artist = reinterpret_cast<char*>(p_cdtext->blocks[0]->name[0]);
+	title = reinterpret_cast<char*>(p_cdtext->blocks[0]->performer[0]);
 
         // if it's a sampler, we'll do artist/title
         bool isSampler = (qstricmp(reinterpret_cast<char*>(p_cdtext->blocks[0]->performer[0]), "various") == 0);
 
         int at = 1;
         for (; at < (p_cdtext->count_of_entries); ++at) {
-            QString title;
+            QString songTitle;
             if (isSampler) {
-                title.sprintf("%s / %s", p_cdtext->blocks[0]->performer[at], p_cdtext->blocks[0]->name[at]);
+                songTitle.sprintf("%s / %s", p_cdtext->blocks[0]->performer[at], p_cdtext->blocks[0]->name[at]);
             } else {
-                title = reinterpret_cast<char*>(p_cdtext->blocks[0]->name[at]);
+                songTitle = reinterpret_cast<char*>(p_cdtext->blocks[0]->name[at]);
             }
-            tracktitlelist.append(title);
+            tracktitlelist.append(songTitle);
+
         }
     } else {
         kdDebug(67000) << "cdtext invalid" << endl;
@@ -1416,9 +1422,10 @@ void KSCD::cddb_no_info()
 {
     kdDebug(67000) << "cddb_no_info() called\n" << endl;
 
+    artist="";
+    title = i18n("No matching freedb entry found.");
     tracktitlelist.clear();
     extlist.clear();
-    tracktitlelist.append(i18n("No matching freedb entry found."));
 
     led_off();
     
@@ -1432,9 +1439,10 @@ void KSCD::cddb_failed()
     //        cddb_ready_bug = 0;
     kdDebug(67000) << "cddb_failed() called\n" << endl;
 
+    artist="";
+    title = i18n("Error getting freedb entry.");
     tracktitlelist.clear();
     extlist.clear();
-    tracktitlelist.append(i18n("Error getting freedb entry."));
     revision=year=0;
     category=genre=QString::null;
 
@@ -1526,12 +1534,17 @@ void KSCD::titlelabeltimeout()
 
 } // titlelabeltimeout
 
-void KSCD::setArtist(const QString& artist)
+void KSCD::updateArtistAndTitle()
 {
-    if (!artist.isEmpty()) {
-        artistlabel->setText(artist);
+    if (artist.isEmpty() && title.isEmpty()) {
+      artistlabel->setText(i18n("<Unknown>"));
     } else {
-        artistlabel->clear();
+        if (artist.isEmpty())
+	  artistlabel->setText(artist);
+	else if (title.isEmpty())
+	  artistlabel->setText(title);
+	else
+	  artistlabel->setText(QString("%1 - %2").arg(artist, title));
     }
 }
 
@@ -1546,7 +1559,7 @@ void KSCD::setTitle(int track)
         if(track > (int)tracktitlelist.count())
             title = i18n("<Unknown>");
         else
-            title = *tracktitlelist.at(track);
+            title = *tracktitlelist.at(track-1);
 
         titlelabel->setText(title);
 	tooltip += " / ";
@@ -1675,31 +1688,13 @@ void KSCD::cycletimeout()
 } // cycletimeout
 
 
-bool KSCD::getArtist(QString& artist)
-{
-    if((int)tracktitlelist.isEmpty()){
-        return false;
-    }
-
-    artist = tracktitlelist.first();
-
-    int pos;
-    pos = artist.find('/', 0, true);
-    if(pos != -1)
-        artist.truncate(pos);
-
-    artist = artist.stripWhiteSpace();
-    return true;
-} // getArtist
-
 void KSCD::information(int i)
 {
     //kdDebug(67000) << "Information " << i << "\n" << endl;
 
-    QString artist;
     QString str;
 
-    if(!getArtist(artist))
+    if(artist.isEmpty())
         return;
 
     artist = KURL::encode_string_no_slash(artist);
@@ -1838,34 +1833,17 @@ int KSCD::currentTrack()
 QString KSCD::currentTrackTitle()
 {
     int track = currentTrack();
-    return (track > -1) ? tracktitlelist[track] : QString::null;
+    return (track > -1) ? tracktitlelist[track-1] : QString::null;
 }
 
 QString KSCD::currentAlbum()
 {
-    QString album = tracktitlelist[0];
-    int slash = album.find('/');
-
-    if (slash < 2)
-    {
-        return album;
-    }
-
-
-    return album.right(album.length() - slash - 2);
+  return title;
 }
 
 QString KSCD::currentArtist()
 {
-    QString artist = tracktitlelist[0];
-    int slash = artist.find('/');
-
-    if (slash < 1)
-    {
         return artist;
-    }
-
-    return artist.left(slash - 1);
 }
 
 QStringList KSCD::trackList()
@@ -1882,16 +1860,11 @@ void KSCD::clearSongList()
 
 void KSCD::populateSongList()
 {
-    // need to start i at 0 for the case when tracktitlelist is empty
-    int i = 0;
-    clearSongList();
-    QStringList::Iterator it = tracktitlelist.begin();
-    if(it != tracktitlelist.end() && !(*it).isEmpty())
-        setArtist((*it));
-    else
-        setArtist(i18n("<Unknown>"));
+    updateArtistAndTitle();
 
-    for (++it; it != tracktitlelist.end(); ++it, ++i )
+    clearSongList();
+    int i=0;
+    for (QStringList::Iterator it = tracktitlelist.begin(); it != tracktitlelist.end(); ++it, ++i )
     {
         int mins = wm_cd_gettracklen(i + 1);
         QString time;

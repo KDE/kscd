@@ -81,6 +81,8 @@ CDDBDlg::~CDDBDlg()
 
 void CDDBDlg::setData(
         struct wm_cdinfo *cd,
+	const QString& _artist,
+	const QString& _title,
         const QStringList& tracktitlelist,
         const QStringList& extlist,
         const QString& _xmcd_data,
@@ -94,6 +96,8 @@ void CDDBDlg::setData(
 {
   int ntr;
 
+  artist = _artist;
+  title = _title;
   ext_list = extlist;
   track_list = tracktitlelist;
   xmcd_data = _xmcd_data.copy();
@@ -104,7 +108,7 @@ void CDDBDlg::setData(
   playlist = _playlist;
   pathlist = _pathlist;
 
-  ntr = track_list.count();
+  ntr = track_list.count()+1;
 
   // Let's make a deep copy of the cd struct info so that the data won't
   // change the cd changes while we are playing with the dialog.
@@ -149,32 +153,32 @@ void CDDBDlg::setData(
 
   // some sanity provisions
 
-  if ((int)track_list.count() < cdinfo.ntracks + 1)
+  if ((int)track_list.count() < cdinfo.ntracks)
   {
     int k = track_list.count();
-    for (int i = 0 ; i < (int)( cdinfo.ntracks + 1 - k) ; i ++)
+    for (int i = 0 ; i < (int)( cdinfo.ntracks - k) ; i ++)
       track_list.append("");
   }
 
-  if ((int)ext_list.count() < cdinfo.ntracks + 1)
+  if ((int)ext_list.count() < cdinfo.ntracks)
   {
     int l = ext_list.count();
-    for (int i = 0 ; i < (int) ( cdinfo.ntracks + 1 - l) ; i ++)
+    for (int i = 0 ; i < (int) ( cdinfo.ntracks - l) ; i ++)
       ext_list.append("");
   }
 
-  while((int)track_list.count() > cdinfo.ntracks + 1)
+  while((int)track_list.count() > cdinfo.ntracks)
   {
     track_list.remove(track_list.at(track_list.count() - 1));
   }
 
-  while((int)ext_list.count() > cdinfo.ntracks + 1)
+  while((int)ext_list.count() > cdinfo.ntracks)
   {
     ext_list.remove(ext_list.at(ext_list.count() - 1));
   }
 
-  m_dlgBase->le_artist->setText((track_list.first().section('/',0,0)).stripWhiteSpace());
-  m_dlgBase->le_title->setText((track_list.first().section('/',1,1)).stripWhiteSpace());
+  m_dlgBase->le_artist->setText(artist.stripWhiteSpace());
+  m_dlgBase->le_title->setText(title.stripWhiteSpace());
 
   QString idstr;
   idstr = category + "  " + cdinfo.magicID;
@@ -207,7 +211,7 @@ void CDDBDlg::setData(
       item->setText( 1, dl.toString("mm:ss"));
 
     if((ntr >=  i) && (ntr > 0))
-      item->setText( 2,  *(track_list.at(i)));
+      item->setText( 2,  *(track_list.at(i-1)));
   }
 
   m_dlgBase->le_playOrder->setText( playlist.join( "," ) );
@@ -215,7 +219,7 @@ void CDDBDlg::setData(
 
 void CDDBDlg::extITB( int trackNumber )
 {
-  QString trackTitle = track_list[ trackNumber ];
+  QString trackTitle = track_list[ trackNumber-1 ];
   QString dialogTitle;
   bool ok;
 
@@ -325,8 +329,8 @@ void CDDBDlg::upload()
 
 void CDDBDlg::setCdInfo(KCDDB::CDInfo &info, const QString& category)
 {
-  info.artist = track_list.first().section('/',0,0).stripWhiteSpace();
-  info.title = track_list.first().section('/',1,1).stripWhiteSpace();
+  info.artist = artist;
+  info.title = title;
   info.category = category;
   info.genre = genre;
   info.id = cdinfo.magicID;
@@ -336,14 +340,13 @@ void CDDBDlg::setCdInfo(KCDDB::CDInfo &info, const QString& category)
   info.revision = revision;
 
   info.trackInfoList.clear();
-  QStringList::Iterator it = track_list.begin();
-  ++it;
+  
   unsigned i=0;
-  for ( ; it != track_list.end(); ++it)
+  for (QStringList::Iterator it = track_list.begin(); it != track_list.end(); ++it)
   {
     TrackInfo t;
     t.title = *it;
-    t.extt = ext_list[i+1];
+    t.extt = ext_list[i];
 
     info.trackInfoList.append(t);
     ++i;
@@ -404,7 +407,7 @@ bool CDDBDlg::checkit()
     return false;
   }
 
-  if(track_list.count() < 2)
+  if(track_list.count() < 1)
   {
     KMessageBox::sorry(this,
         i18n("At least one track title must be entered.\n"\
@@ -414,13 +417,13 @@ bool CDDBDlg::checkit()
   }
 
   bool have_nonempty_title = false;
-  for ( QStringList::Iterator it = track_list.at(1);
+  for ( QStringList::Iterator it = track_list.begin();
         it != track_list.end();
         ++it )
   {
-    title = *it;
-    title = title.stripWhiteSpace();
-    if(!title.isEmpty())
+    QString songTitle = *it;
+    title = songTitle.stripWhiteSpace();
+    if(!songTitle.isEmpty())
     {
       have_nonempty_title = true;
       break;
@@ -436,10 +439,10 @@ bool CDDBDlg::checkit()
     return false;
   }
 
-  if(cdinfo.ntracks +1 != (int)track_list.count() )
+  if(cdinfo.ntracks != (int)track_list.count() )
   {
     KMessageBox::error(this,
-        i18n("cdinfo.ntracks != title_list->count() + 1\n"
+        i18n("cdinfo.ntracks != track_list->count() \n"
              "Please email the author."),
     i18n("Internal Error"));
     return false;
@@ -482,15 +485,12 @@ void CDDBDlg::load_cddb()
 
 void CDDBDlg::updateTrackList()
 {
-  QString title = m_dlgBase->le_title->text().stripWhiteSpace();
-  QString artist = m_dlgBase->le_artist->text().stripWhiteSpace();
-
-  title = QString("%1 / %2").arg(artist).arg(title);
-  *track_list.begin() = title;
+  title = m_dlgBase->le_title->text().stripWhiteSpace();
+  artist = m_dlgBase->le_artist->text().stripWhiteSpace();
 
   m_dlgBase->lv_trackList->setSorting(0, true);
 
-  unsigned int i=1;
+  unsigned int i=0;
   for (QListViewItem* item = m_dlgBase->lv_trackList->firstChild(); item ; item=item->nextSibling())
   {
     if (track_list.count() <= i)

@@ -273,13 +273,15 @@ private:
   /**
    * set the artist and title labels as well as the dock tooltip.
    */
-    void setArtist(const QString& artist);
+    void updateArtistAndTitle();
     void setTitle(int track);
 
     QStringList     pathlist;
     QStringList     tracktitlelist;
     QStringList     playlist;
     QStringList     extlist;
+    QString         artist;
+    QString         title;
     QString         category;
     QString         genre;
 

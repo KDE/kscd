@@ -42,6 +42,8 @@ class CDDBDlg : public KDialogBase
 
     void setData(
       struct wm_cdinfo *cd,
+      const QString& artist,
+      const QString& title,
       const QStringList& tracktitlelist,
       const QStringList& extlist,
       const QString& xmcddata,
@@ -73,6 +75,8 @@ class CDDBDlg : public KDialogBase
     void updateTrackList();
 
     CDDBDlgBase *m_dlgBase;
+    QString artist;
+    QString title;
     QStringList ext_list;
     QStringList track_list;
     QStringList pathlist;
