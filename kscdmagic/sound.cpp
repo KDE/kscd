@@ -39,6 +39,11 @@
 
 #if defined (__linux__)
 #include <linux/soundcard.h>
+#ifndef __GNUC__
+#define __GNUC__ 1
+#endif
+#undef __STRICT_ANSI__
+#include <asm/types.h>
 #include <linux/cdrom.h>
 #endif
 
