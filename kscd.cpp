@@ -755,7 +755,6 @@ KSCD::playClicked()
         songListCB->clear();
         setLEDs( "00:00" );
 
-        songListCB->clear();
         QStringList::Iterator it = tracktitlelist.begin();
         ++it;
         int i = 0;
@@ -1542,6 +1541,7 @@ KSCD::cdMode()
             if(have_new_cd){
 
                 //      timer->stop();
+                cur_track = save_track = 1;
                 have_new_cd = false;
                 // timer must be restarted when we are doen
                 // with getting the cddb info
@@ -3097,7 +3097,7 @@ int KSCD::currentTrack()
 
 QString KSCD::currentTrackTitle() 
 { 
-    return tracktitlelist[cur_track]; 
+    return (cur_track > -1) ? tracktitlelist[cur_track] : QString::null;
 }
 
 QStringList KSCD::trackList() 
