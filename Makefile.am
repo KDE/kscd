@@ -1,8 +1,8 @@
 # $Id$
 
-MIMEDIR = $(kde_mimedir)/text/
-PICSDIR  = $(kde_datadir)/kscd/pics/
-APPSDIR = $(kde_appsdir)/Multimedia
+mimedir = $(kde_mimedir)/text/
+picsdir  = $(kde_datadir)/kscd/pics/
+appsdir = $(kde_appsdir)/Multimedia
 CDDBDIR = $(kde_datadir)/kscd/cddb/
 
 LDFLAGS	= $(all_libraries) $(KDE_RPATH)
@@ -53,7 +53,15 @@ CDDB_DIRS = rock blues classical jazz newage soundtrack \
 
 bin_SCRIPTS = workman2cddb.pl
 
-EXTRA_DIST = kscd.xpm mini-kscd.xpm kscdlogo.xpm xmcd.desktop kscd.desktop kscd-script $(bin_SCRIPTS) config.h.std
+EXTRA_DIST = kscdlogo.xpm xmcd.desktop kscd.desktop kscd-script $(bin_SCRIPTS) config.h.std
+
+KDE_ICON = kscd
+
+apps_DATA = kscd.desktop
+
+mime_DATA = xmcd.desktop
+
+pics_DATA = kscdlogo.xpm cdsmall.xpm
 
 install-data-local:
 	for i in $(CDDB_DIRS); do \
@@ -62,26 +70,6 @@ install-data-local:
 		chmod 0777 $(DESTDIR)$(CDDBDIR)/$$i ;\
 	fi ;\
 	done 
-	$(mkinstalldirs) $(kde_icondir)
-	$(INSTALL_DATA) $(srcdir)/kscd.xpm $(kde_icondir)
-	$(INSTALL_DATA) $(srcdir)/bitmaps/cd.xpm $(kde_icondir)
-	$(mkinstalldirs) $(kde_minidir)
-	$(INSTALL_DATA) $(srcdir)/mini-kscd.xpm $(kde_minidir)/kscd.xpm
-	$(mkinstalldirs) $(PICSDIR)
-	$(INSTALL_DATA) $(srcdir)/kscdlogo.xpm $(PICSDIR)
-	$(INSTALL_DATA) $(srcdir)/bitmaps/cdsmall.xpm $(PICSDIR)
-	$(mkinstalldirs) $(MIMEDIR)
-	$(INSTALL_DATA) $(srcdir)/xmcd.desktop $(MIMEDIR)/xmcd.desktop
-	$(mkinstalldirs) $(APPSDIR)
-	$(INSTALL_DATA) $(srcdir)/kscd.desktop $(APPSDIR)/kscd.desktop
-
-uninstall:
-	rm -f $(APPSDIR)/kscd.desktop
-	rm -f $(PICSDIR)/kscdlogo.xpm
-	rm -f $(kde_icondir)/kscd.xpm
-	rm -f $(kde_minidir)/kscd.xpm
-	rm -f $(kde_icondir)/cd.xpm
-	rm -f $(MIMEDIR)/xmcd.desktop
 
 messages:
 	$(XGETTEXT) -C -ki18n -x $(includedir)/kde.pot *.cpp && mv messages.po ../po/kscd.pot   
