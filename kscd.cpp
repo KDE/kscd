@@ -1179,7 +1179,9 @@ KSCD::aboutClicked()
 	    tracktitlelist.clear();
 	    extlist.clear();
 	    songListCB->clear();
-	    cdMode();
+	    initWorkMan();
+	    initCDROM();
+	    // cdMode();
         }
         cddrive_is_ok = true;
 
@@ -1329,8 +1331,10 @@ KSCD::cdMode()
   QString str;
 
   sss = wm_cd_status();
-  if( sss == 2 )
+
+  if( sss == 2 ) {
       have_new_cd = true;
+  }
 
   if(sss < 0)
   {
@@ -1352,6 +1356,7 @@ KSCD::cdMode()
         currentlyejected = true;
     else
         currentlyejected = false;
+
 
     if( device_change == true )
       {
@@ -1504,10 +1509,10 @@ KSCD::cdMode()
 
         case WM_CDM_EJECTED:
             statuslabel->setText( i18n("Ejected") );
-			setArtistAndTitle("", "");
-			tracktitlelist.clear();
-			extlist.clear();
-			songListCB->clear();
+	    setArtistAndTitle("", "");
+	    tracktitlelist.clear();
+	    extlist.clear();
+	    songListCB->clear();
             setLEDs( "--:--" );
             tracklabel->setText( "--/--" );
             setArtistAndTitle("", "");
@@ -1515,8 +1520,21 @@ KSCD::cdMode()
             totaltimelabel->lower();
             damn = TRUE;
             ejectedBefore = TRUE;
-
             break;
+
+        case WM_CDM_NO_DISC:
+	    statuslabel->setText( i18n("no disc") );
+	    setArtistAndTitle("", "");
+	    tracktitlelist.clear();
+	    extlist.clear();
+	    songListCB->clear();
+            setLEDs( "--:--" );
+            tracklabel->setText( "--/--" );
+            setArtistAndTitle("", "");
+            totaltimelabel->clear();
+            totaltimelabel->lower();
+	    damn = TRUE;
+	    break;
     }
 } /* cdMode */
 
@@ -1901,6 +1919,13 @@ KSCD::get_cddb_info(bool _updateDialog)
 
     QTime dml;
     dml = dml.addSecs(cd->length);
+
+    // Don't crash if no disc is in
+    if( cd->length == 0 ) {
+      kdDebug() << "CD length seems to be zero" << endl;
+      cddb_no_info();
+      return;
+    }
 
     QString fmt;
     if(dml.hour() > 0)
