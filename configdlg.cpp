@@ -260,10 +260,7 @@ void ConfigDlg::autoPlayClicked(){
 
 void ConfigDlg::dockOnMinimizeClicked()
 {
-    if(dockOnMinimizeCB->isChecked())
-        configdata.autodock = TRUE;
-    else
-        configdata.autodock = FALSE;
+    configdata.autodock = dockOnMinimizeCB->isChecked();
 }
 
 void ConfigDlg::stopOnExitClicked()
