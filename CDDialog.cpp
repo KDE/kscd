@@ -24,6 +24,7 @@
 
 #include <klocale.h>
 #include <kdebug.h>
+#include <ktempfile.h>
 
 #include <stdio.h>
 #include <math.h>
@@ -427,8 +428,9 @@ CDDialog::upload()
   dialog->getSelection(submitcat);
   delete dialog;
 
-  QString tempfile;
-  tempfile = tmpnam(0L);
+  KTempFile tmpFile;
+  tmpFile.setAutoDelete(true); // delete file when we are done.
+  QString tempfile = tmpFile.name();
 
   save_cddb_entry(tempfile,true);
 
@@ -515,7 +517,6 @@ CDDialog::upload()
   file.close();
   //  file2.close();   // *****
 
-  unlink(QFile::encodeName(tempfile));
   kdDebug() << "DONE SENDING\n" << endl;
 } // upload
 
