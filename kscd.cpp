@@ -646,13 +646,15 @@ void KSCD::updateDisplayedTrack(int track)
     setLEDs(calculateDisplayedTime(0, track));
     resetTimeSlider(true);
 
-    if ((track < (int)tracktitlelist.count()) && (track >= 0))
+    if ((track < (int)tracktitlelist.count() || tracktitlelist.isEmpty())
+        && (track >= 0))
     {
         setSongListTo(track - 1);
         tracklabel->setText(formatTrack(track, cd->ntracks));
 
         timeSlider->setRange(0, cd->trk[track - 1].length - 1);
-        setArtistAndTitle(tracktitlelist.first(), *tracktitlelist.at(track));
+        if ( !tracktitlelist.isEmpty() )
+            setArtistAndTitle(tracktitlelist.first(), *tracktitlelist.at(track));
     }
     else
     {
