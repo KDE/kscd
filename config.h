@@ -4,7 +4,7 @@
    config.h.std in the source directory of the kscd distribution
    and rename it to config.h .*/
 
-#ifdef __linux 
+#ifdef __linux__
 
 #ifndef DEFAULT_CD_DEVICE
   #define DEFAULT_CD_DEVICE   "/dev/cdrom"
