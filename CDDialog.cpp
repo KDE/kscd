@@ -853,7 +853,7 @@ CDDialog::checkit()
   QStringList strlist;
   str = progseq_edit->text();
 
-  bool ret;
+  bool ret  = true;
 //!!!!  ret = cddb_playlist_decode(strlist, str);
 
   QString teststr;
