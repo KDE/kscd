@@ -9,7 +9,7 @@
 #include <qdir.h>
 #include <qfileinfo.h>
 #include <qlistview.h>
-#include <qlineedit.h>
+#include <klineedit.h>
 
 #include <kapplication.h>
 #include <kdebug.h>
@@ -148,6 +148,7 @@ void CDDBDlg::setData(
   m_dlgBase->le_genre->setText(cddbInfo.genre.stripWhiteSpace());
   m_dlgBase->le_category->setText(cddbInfo.category.stripWhiteSpace());
   m_dlgBase->le_year->setText(QString::number(cddbInfo.year));
+  m_dlgBase->le_revision->setText(QString::number(cddbInfo.revision));
   m_dlgBase->lb_discId->setText(cddbInfo.id.stripWhiteSpace());
 
   QTime   dl;
