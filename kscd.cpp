@@ -1639,7 +1639,7 @@ KSCD::readSettings()
 
 	cddb->setTimeout(config->readNumEntry("CDDBTimeout",60));
 	cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",true);
-	cddbbasedir = config->readEntry("LocalBaseDir");
+	cddbbasedir = config->readPathEntry("LocalBaseDir");
 
 	// Changed global KDE apps dir by local KDE apps dir
 	if (cddbbasedir.isEmpty())
@@ -1762,7 +1762,7 @@ KSCD::writeSettings()
     config->writeEntry("CDDBTimeout", static_cast<int>(cddb->getTimeout()));
     config->writeEntry("CDDBLocalAutoSaveEnabled",cddb_auto_enabled);
 
-    config->writeEntry("LocalBaseDir",cddbbasedir);
+    config->writePathEntry("LocalBaseDir",cddbbasedir);
     config->writeEntry("SeverList",cddbserverlist);
     config->writeEntry("SubmitList", cddbsubmitlist);
     config->writeEntry("CDDBSubmitAddress",submitaddress);
