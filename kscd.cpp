@@ -606,55 +606,6 @@ void KSCD::quitClicked()
     kapp->quit();
 } // quitClicked()
 
-
-void KSCD::closeEvent( QCloseEvent *e )
-{
-    // we need to figure out if we were called by the system tray
-    // to decide whether or not to actually quit or not =/
-    // this behaviour of ksystemtray is, IMHO, very silly
-    const QObject* caller = sender();
-    while (m_dockWidget && caller)
-    {
-        if (caller == m_dockWidget)
-        {
-            if (!m_dockWidget->confirmQuit())
-            {
-                return;
-            }
-            break;
-        }
-        caller = caller->parent();
-    }
-
-    if (Prefs::docking() && !caller && !kapp->sessionSaving())
-    {
-        hide();
-        e->ignore();
-        return;
-    }
-
-    /* Stop playing the CD */
-    int cur_cdmode = wm_cd_status();
-    if ( Prefs::stopExit() && cur_cdmode == WM_CDM_PLAYING )
-        wm_cd_stop();
-
-    writeSettings();
-    //setShuffle(0);
-
-    statuslabel->clear();
-
-    setLEDs( "--:--" );
-
-    kapp->processEvents();
-    kapp->flushX();
-
-    // TODO: is this really necessary given the stopClicked() above?
-    if (Prefs::stopExit())
-        wm_cd_stop();
-
-     e->accept();
-} // closeEvent
-
 bool KSCD::event( QEvent *e )
 {
     return QWidget::event(e);
@@ -876,6 +827,7 @@ void KSCD::setDocking(bool dock)
         if (!m_dockWidget)
         {
             m_dockWidget = new DockWidget(this, "dockw");
+            connect(m_dockWidget, SIGNAL(quitSelected()), this, SLOT(quitClicked()));
         }
 
         m_dockWidget->show();

@@ -205,7 +205,6 @@ protected:
 
     void dragTime(int sec);
 
-    void closeEvent( QCloseEvent *e );
     void keyPressEvent( QKeyEvent* e );
     bool event( QEvent *e );
     //    void focusOutEvent(QFocusEvent *e);
