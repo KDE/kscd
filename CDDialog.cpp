@@ -353,7 +353,7 @@ CDDialog::submitFinished(KCDDB::CDDB::Result r)
   }
   else
   {
-    QString str = i18n("Error sending message via SMTP.\n\n%2")
+    QString str = i18n("Error sending message via SMTP.\n\n%1")
       .arg(KCDDB::CDDB::resultToString(r));
     KMessageBox::error(this, str, i18n("Record Submission"));
   }
@@ -459,7 +459,7 @@ CDDialog::setCdInfo(KCDDB::CDInfo &info, const QString& category)
     TrackInfo t;
     t.title = *it;
     t.extt = ext_list[i];
-  
+
     info.trackInfoList.append(t);
     ++i;
   }
