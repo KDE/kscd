@@ -123,6 +123,7 @@ k_dcop:
     void optionDialog() { aboutClicked(); }
     void setTrack(int t) { trackSelected(t >= 1 ? t - 1 : 0); }
     void setVolume(int v) { volChanged(v); volSB->setValue(v); }
+    int  getVolume() { return volume; }
     int currentTrack();
     QString currentTrackTitle();
     QStringList trackList();
