@@ -175,8 +175,9 @@ public slots:
     void loopOn();
     void loopOff();
     void loopClicked();
+    void setRandomLabel(int mode);
     void cdMode();
-    void cdModeChanged();
+    void cdModeChanged(int previous, int current);
     void trackSelected(int);
     void showConfig();
     void incVolume();

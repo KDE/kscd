@@ -460,7 +460,7 @@ void KSCD::setShuffle(int shuffle)
     }
     /* FIXME this helps us to display "Random" in Status line
        should it maybe to be replaced with symbol "RAND" or something others */
-    cdModeChanged();
+    setRandomLabel(wm_cd_status());
 }
 
 void KSCD::stopClicked()
@@ -1047,15 +1047,21 @@ void KSCD::cdMode()
         }
     } else {
         kdDebug(67000) << "Mode changed from " << prev_cdmode << " to " << cdmode << endl;
+        cdModeChanged(prev_cdmode, cdmode);
         prev_cdmode = cdmode;
-        cdModeChanged();
     }
 } /* cdMode */
 
-void KSCD::cdModeChanged()
+void KSCD::setRandomLabel(int mode)
 {
-    int cdmode = wm_cd_status();
+     if(mode == WM_CDM_PLAYING) {
+            updatePlayPB(true);
+            statuslabel->setText(Prefs::randomPlay()?i18n("Random"):i18n("Playing"));
+     }
+}
 
+void KSCD::cdModeChanged(int previous, int cdmode)
+{
     switch (cdmode)
     {
         case WM_CDM_DEVICECHANGED:
@@ -1071,8 +1077,7 @@ void KSCD::cdModeChanged()
             break;
 
         case WM_CDM_PLAYING:
-            updatePlayPB(true);
-            statuslabel->setText(Prefs::randomPlay()?i18n("Random"):i18n("Playing"));
+            setRandomLabel(cdmode);
             break;
 
         case WM_CDM_FORWARD:
@@ -1087,7 +1092,7 @@ void KSCD::cdModeChanged()
             updatePlayPB(false);
             statuslabel->setText(i18n("Stopped"));
 
-            if (Prefs::ejectOnFinish() && !stoppedByUser)
+            if (Prefs::ejectOnFinish() && !stoppedByUser && WM_CDS_DISC_READY(previous))
             {
                 ejectClicked();
                 break;
@@ -1232,7 +1237,7 @@ void KSCD::CDDialogDone()
 
 void KSCD::get_cddb_info(bool /*_updateDialog*/)
 {
-    kdDebug(67000) << "calls get_cddb_info" << endl;
+    kdDebug(67000) << "get_cddb_info() called" << endl;
     if (!cd ||
         !cddrive_is_ok ||
         wm_cd_status() < 1)
