@@ -33,11 +33,11 @@
 #include <qstring.h>
 #include <qpainter.h>
 #include <qlabel.h>
-#include <qmultilinedit.h>
+#include <qmultilineedit.h>
 #include <qpushbutton.h>
 #include <qlistbox.h>
 #include <qstrlist.h>
-#include <qmultilinedit.h> 
+#include <qmultilineedit.h> 
 
 class InexactDialog : public QDialog {
 
