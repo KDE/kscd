@@ -99,12 +99,6 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
         }
     }
 
-    /*
-     * SMTP page
-     */
-    page = addVBoxPage(QString("SMTP"), i18n("Mail Settings for Uploading CDDB Records"), loadIcon("email"));
-    mSMTPConfig = new SMTPConfig(page, "smtpconfig", mPlayer->smtpData());
-
 #if KSCDMAGIC
     /*
      * Magic page
@@ -131,11 +125,9 @@ void ConfigDlg::updateGlobalSettings()
 void ConfigDlg::slotApply()
 {
     mKCSDConfig->apply();
-    mPlayer->setCDDBOptions(mCDDBConfig);
 #if KSCDMAGIC
     mPlayer->setMagicOptions(*mMagicConfig->getData());
 #endif
-    mSMTPConfig->commitData();
 }
 
 void ConfigDlg::slotOk()

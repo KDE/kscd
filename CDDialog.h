@@ -14,7 +14,6 @@
 #include <qdatetime.h>
 
 #include "CDDialogData.h"
-#include "smtpconfig.h"
 #include "libkcddb/cdinfo.h"
 
 extern "C" {
@@ -62,9 +61,7 @@ class CDDialog : public CDDialogData
 			   QString& _genre,
 			   int& revision,
 			   QStringList& playlist,
-			   QStringList& pathlist,
-			   QString& _submitaddress,
-			   SMTPConfigData *_smtpConfigData
+			   QStringList& pathlist
 			   );
   
   bool checkit();
@@ -94,7 +91,6 @@ signals:
   void play_signal(int i);
   
 private:
-  SMTPConfigData *smtpConfigData;
   QStringList 	ext_list;
   QStringList 	track_list;
   QStringList pathlist;
@@ -102,7 +98,6 @@ private:
   QStringList	playlist;
   QString  	xmcd_data;
   int      	revision;
-  QString     submitaddress;
   QString 	category;
   QString     playorder;
   QString     genre;

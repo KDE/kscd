@@ -38,8 +38,6 @@
 #include "CDDialogData.moc"
 #include "inexact.h"
 #include "version.h"
-#include "smtp.h"
-#include "smtpconfig.h"
 #include "kscd.h"
 
 extern "C" {
@@ -47,13 +45,6 @@ extern "C" {
 }
 
 QTime framestoTime(int frames);
-void  mimetranslate(QString& s);
-/*!!!!extern void cddb_decode(QString& str);
-extern void cddb_encode(QString& str, QStringList &returnlist);
-extern void cddb_playlist_encode(QStringList& list,QString& playstr);
-extern bool cddb_playlist_decode(QStringList& list, QString& str);*/
-
-extern SMTP *smtpMailer;
 
 CDDialog::CDDialog
 (
@@ -138,9 +129,7 @@ CDDialog::setData(
 	QString& _genre,
         int& rev,
         QStringList& _playlist,
-        QStringList& _pathlist,
-        QString& _submitaddress,
-        SMTPConfigData *_smtpConfigData
+        QStringList& _pathlist
         )
 {
     int ntr;
@@ -153,8 +142,6 @@ CDDialog::setData(
     revision    = rev;
     playlist	= _playlist;
     pathlist	= _pathlist;
-    submitaddress = _submitaddress.copy();
-    smtpConfigData = _smtpConfigData;
 
     ntr = track_list.count();
 
@@ -267,7 +254,6 @@ CDDialog::setData(
       }
 
     QString str;
-//!!!!    cddb_playlist_encode(playlist,str);
     progseq_edit->setText(str);
 } // setData
 
@@ -570,7 +556,6 @@ CDDialog::checkit()
   str = progseq_edit->text();
 
   bool ret  = true;
-//!!!!  ret = cddb_playlist_decode(strlist, str);
 
   QString teststr;
   bool ok;
@@ -594,7 +579,6 @@ CDDialog::checkit()
       return false;
     }
 
-//!!!!  cddb_playlist_encode(strlist,playorder);
   return true;
 } // checkit
 
@@ -604,35 +588,3 @@ CDDialog::load_cddb()
   emit cddb_query_signal(true);
 } // load
 
-// simplyfied quoted printable mime encoding that should be good enough
-// for our purposed. The encoding differs from the 'real' encoding in
-// that we don't need to worry about trailing \n, \t or lines exeeding the
-// spec length.
-
-void
-mimetranslate(QString& s)
-{
-  QString q;
-  QString hex;
-
-  s = s.stripWhiteSpace(); // there is no harm in doing this and it
-  // will simplify the quoted printable mime encoding.
-
-  for(uint i = 0 ; i < s.length(); i++)
-    {
-      if (((s[i] >= 32) && (s[i] <= 60)) ||
-	  ((s[i] >= 62) && (s[i] <= 126)))
-	{
-
-	  q += s.at(i);
-	} else {
-
-	  hex = hex.sprintf("=%02X", (unsigned char)s.local8Bit().at(i));
-	  q += hex;
-	}
-    }
-
-  //  printf("%s\n",q.data());
-  s = q.copy();
-
-} // mimetranslate

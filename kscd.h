@@ -78,7 +78,6 @@
 #endif
 
 
-#include "smtp.h"
 #include "ledlamp.h"
 #include "panel.h"
 #include <kapplication.h>
@@ -91,8 +90,6 @@ class ConfigDlg;
 class CDDialog;
 class QGridLayout;
 class KActionCollection;
-class SMTPConfig;
-struct SMTPConfigData;
 class KVolumeControl;
 
 
@@ -140,7 +137,6 @@ k_dcop:
     QString currentAlbum();
     QString currentArtist();
     QStringList trackList();
-    void emailSettingsChanged();
 
 public:
     KSCD( QWidget *parent = 0, const char *name = 0 );
@@ -167,7 +163,6 @@ public:
     QString audioSystem() { return audio_system_str; }
     QString audioDevice() { return audio_device_str; }
     QStringList audioSystems() { return audio_systems_list; }
-    SMTPConfigData* smtpData() { return smtpConfigData; }
 
 signals:
     void trackChanged(const QString&);
@@ -235,7 +230,6 @@ protected:
     void populateSongList();
 
 private:
-    SMTPConfigData  *smtpConfigData;
     ConfigDlg       *configDialog;
     CDDialog        *cddialog;
     QPopupMenu      *mainPopup;
@@ -325,8 +319,8 @@ private:
 
 // cddb support
 public slots:
-    void smtpMessageSent(void);
-    void smtpError(int);
+    void cddbInformationSent(void);
+    void cddbInformationNotSent(void);
     void cddb_done(CDDB::Result);
     void cddb_failed();
     void cddb_no_info();
@@ -334,29 +328,14 @@ public slots:
     void CDDialogSelected();
     void CDDialogDone();
     void get_cddb_info(bool);
-    void getCDDBservers();
-    void getCDDBserversDone();
-    void getCDDBserversFailed();
-    void updateCurrentCDDBServer(const QString&);
-    /*
-     * TODO
-     * not the prettiest things in the world
-     * but getting rid of them will require some more work
-     * with the CDDB
-     */
-    void getCDDBOptions(CDDBSetup* config);
-    void setCDDBOptions(CDDBSetup* config);
 
 private:
     KCDDB::Client*  cddb;
     QString         xmcd_data;
     QStringList     cddbserverlist;
     QString         current_server;
-    QString         mailcmd;
-    QString         submitaddress;
     QStringList     cddbsubmitlist;
     bool            updateDialog;
-    bool            Fetch_remote_cddb;
     int             revision;
     KActionCollection* m_actions;
     KVolumeControl* m_volume;

@@ -77,12 +77,10 @@ extern "C" {
 #include "configdlg.h"
 #include "configWidget.h"
 #include "kvolumecontrol.h"
-#include "smtpconfig.h"
 
 static const char description[] = I18N_NOOP("KDE CD player");
 
 DockWidget*     dock_widget;
-SMTP                *smtpMailer;
 bool stoppedByUser = true;
 bool device_change = true;
 
@@ -107,7 +105,6 @@ static QString formatTrack(int d1, int d2)
 KSCD::KSCD( QWidget *parent, const char *name )
   : DCOPObject("CDPlayer"),
     kscdPanelDlg( parent, name, Qt::WDestructiveClose ),
-    smtpConfigData(new SMTPConfigData),  //!!!!
     configDialog(0L),
     cddialog(0L),  //!!!!
     background_color(black),
@@ -217,9 +214,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
     loopled->on();
   }
 
-  smtpMailer = new SMTP;
-  connect(smtpMailer, SIGNAL(messageSent()), this, SLOT(smtpMessageSent()));
-
   dock_widget = new DockWidget( this, "dockw");
   setDocking(docking);
 
@@ -244,8 +238,6 @@ KSCD::~KSCD()
     }
 
     signal (SIGINT, SIG_DFL);
-    delete smtpConfigData;
-    delete smtpMailer;
     delete cddb;
 } // ~KSCD
 
@@ -271,19 +263,16 @@ KSCD::initialShow()
 }
 
 void
-KSCD::smtpMessageSent(void)
+KSCD::cddbInformationSent(void)
 {
   KMessageBox::information(this, i18n("Record submitted successfully"),
          i18n("Record Submission"));
-} // smtpMessageSent()
+} // cddbInformationSent()
 
-/**
- * Interpret error codes from the SMTP mailer.
- */
 void
-KSCD::smtpError(int errornum)
+KSCD::cddbInformationNotSent(void/*int errornum*/)
 {
-  QString str, lstr;
+/*  QString str, lstr;
 
   switch(errornum){
   case 10:
@@ -300,11 +289,11 @@ KSCD::smtpError(int errornum)
     break;
   default:
     lstr = i18n("Server said:\n\"%1\"").arg(smtpMailer->getLastLine());
-  }
-  str = i18n("Error #%1 sending message via SMTP.\n\n%2")
-    .arg(errornum).arg(lstr);
+  }*/
+  QString str = i18n("Error sending message via SMTP.\n\n%2");
+//    .arg(errornum).arg(lstr);
   KMessageBox::error(this, str, i18n("Record Submission"));
-} // smptError()
+} // cddbInformationNotSent()
 
 
 /**
@@ -969,55 +958,6 @@ KSCD::configureKeys()
 }
 
 void
-KSCD::getCDDBOptions(CDDBSetup* /*config*/)  //!!!!
-{
-/*    if (!config)
-    {
-        return;
-    }
-
-    config->insertData(cddbserverlist,
-                       cddbsubmitlist,
-                       submitaddress,
-                       current_server,
-                       cddb_auto_enabled,
-                       cddb_remote_enabled,
-                       cddb->getTimeout(),
-                       cddb->useHTTPProxy(),
-                       cddb->getHTTPProxyHost(),
-                       cddb->getHTTPProxyPort());*/
-} // getCDDBOptions(CDDBSetup* config)
-
-
-void
-KSCD::setCDDBOptions(CDDBSetup* config)  //!!!!
-{
-    if (!config)
-    {
-        return;
-    }
-
-/*    bool cddb_proxy_enabled;
-    QString cddb_proxy_host;
-    unsigned short int cddb_proxy_port;
-    unsigned short int cddb_timeout;
-
-    config->getData(cddbserverlist,
-                   cddbsubmitlist,
-                   submitaddress,
-                   current_server,
-                   cddb_auto_enabled,
-                   cddb_remote_enabled,
-                   cddb_timeout,
-                   cddb_proxy_enabled,
-                   cddb_proxy_host,
-                   cddb_proxy_port);
-    cddb->setTimeout(cddb_timeout);
-    cddb->setHTTPProxy(cddb_proxy_host,cddb_proxy_port);
-    cddb->useHTTPProxy(cddb_proxy_enabled);*/
-} // setCDDBOptions
-
-void
 KSCD::setDevicePaths(QString cd_device, QString audio_system, QString audio_device)
 {
     static bool first_init = true;
@@ -1073,12 +1013,6 @@ KSCD::setDocking(bool dock)
                    dock_widget, SLOT(setToolTip(const QString&)));
     }
 }
-
-void
-KSCD::updateCurrentCDDBServer(const QString& newCurrentServer)
-{
-    current_server = newCurrentServer;
-} // updateCurrentCDDBServer
 
 void
 KSCD::incVolume()
@@ -1462,103 +1396,6 @@ KSCD::readSettings()
 	QColor defaultled = QColor(226,224,255);
 	background_color = config->readColorEntry("BackColor",&defaultback);
 	led_color = config->readColorEntry("LEDColor",&defaultled);
-
-	config->setGroup("SMTP");
-	smtpConfigData->enabled = config->readBoolEntry("enabled", true);
-	smtpConfigData->useGlobalSettings = config->readBoolEntry("useGlobalSettings", true);
-	smtpConfigData->serverHost = config->readEntry("serverHost");
-	smtpConfigData->serverPort = config->readEntry("serverPort", "25");
-	smtpConfigData->senderAddress = config->readEntry("senderAddress");
-	smtpConfigData->senderReplyTo = config->readEntry("senderReplyTo");
-
-	// serverHost used to be stored via KEMailSettings, so we attempt to read the
-   // value via KEMailSettings to preserve the user's settings when upgrading.
-   if( !config->readEntry("mailProfile").isNull() )
-	{
-		KEMailSettings kes;
-		kes.setProfile( i18n("Default") );
-		smtpConfigData->serverHost = kes.getSetting( KEMailSettings::OutServer );
-	}
-
-	if(smtpConfigData->useGlobalSettings)
-		smtpConfigData->loadGlobalSettings();
-
-	// Don't accept obviously bogus settings.
-	if(!smtpConfigData->isValid())
-		smtpConfigData->enabled = false;
-
-/*	config->setGroup("CDDB");
-
-	cddb->setTimeout(config->readNumEntry("CDDBTimeout",60));
-	cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",true);
-
-	// Set this to false by default. Look at the settings dialog source code
-	// for the reason. - Juraj.
-	cddb_remote_enabled = config->readBoolEntry( "CDDBRemoteEnabled", false );
-#if QT_VERSION == 0x030102 // ### REMOVEME
-    cddb_remote_enabled = false;
-#endif
-	cddb->useHTTPProxy( config->readBoolEntry("CDDBHTTPProxyEnabled", KProtocolManager::useProxy()) );
-	KURL proxyURL;
-	QString proxyHost;
-	int proxyPort;
-	QString proxy = KProtocolManager::proxyFor("http");
-	if( !proxy.isEmpty() )
-	{
-		proxyURL = proxy;
-		proxyHost = proxyURL.host();
-		proxyPort = proxyURL.port();
-	}
-	else
-	{
-		proxyHost = "";
-		proxyPort = 0;
-		cddb->useHTTPProxy(false);
-	}
-	cddb->setHTTPProxy(config->readEntry("HTTPProxyHost",proxyHost),
-			config->readNumEntry("HTTPProxyPort",proxyPort));
-
-	current_server = config->readEntry("CurrentServer",DEFAULT_CDDB_SERVER);
-	//Let's check if it is in old format and if so, convert it to new one:
-	if(CDDB::normalize_server_list_entry(current_server))
-	{
-		kdDebug() << "Default freedb server entry converted to new format and saved.\n" << endl;
-		config->writeEntry("CurrentServer",current_server);
-		config->sync();
-	}
-	submitaddress = config->readEntry("CDDBSubmitAddress","freedb-submit@freedb.org");
-	cddbserverlist = config->readListEntry("SeverList", ',');
-	int num = cddbserverlist.count();
-	if (num == 0)
-		cddbserverlist.append(DEFAULT_CDDB_SERVER);
-	else
-	{
-		//Let's check if it is in old format and if so, convert it to new one:
-      bool needtosave=false;
-		QStringList nlist;
-
-		for ( QStringList::Iterator it = cddbserverlist.begin(); it != cddbserverlist.end(); ++it )
-		{
-			needtosave|=CDDB::normalize_server_list_entry(*it);
-			nlist.append(*it);
-		}
-		if(needtosave)
-		{
-			// I have to recreate list because of sytange behaviour of sync()
-			// function in configuration - it does not notice if QStringList
-         // String contents is changed.
-         cddbserverlist=nlist;
-			kdDebug() << "freedb server list converted to new format and saved.\n" << endl;
-			config->writeEntry("SeverList",cddbserverlist,',',true);
-			config->sync();
-		}
-	}
-	cddbsubmitlist = config->readListEntry("SubmitList", ',');
-	num = cddbsubmitlist.count();
-	if(!num){
-		cddbsubmitlist.append(DEFAULT_SUBMIT_EMAIL);
-		cddbsubmitlist.append(DEFAULT_TEST_EMAIL);
-	}*/
 }
 
 /**
@@ -1587,37 +1424,6 @@ KSCD::writeSettings()
     config->writeEntry("SkipDelta", skipDelta);
     config->writeEntry("TimeDisplay", time_display_mode);
 
-    config->setGroup("SMTP");
-    config->writeEntry("enabled", smtpConfigData->enabled);
-    config->writeEntry("useGlobalSettings", smtpConfigData->useGlobalSettings);
-    config->writeEntry("serverHost", smtpConfigData->serverHost);
-    config->writeEntry("serverPort", smtpConfigData->serverPort);
-    if(smtpConfigData->useGlobalSettings)
-    {
-        config->writeEntry("senderAddress", "");
-        config->writeEntry("senderReplyTo", "");
-    }
-    else
-    {
-        config->writeEntry("senderAddress", smtpConfigData->senderAddress);
-        config->writeEntry("senderReplyTo", smtpConfigData->senderReplyTo);
-    }
-    // delete legacy mailProfile option
-    config->deleteEntry("mailProfile");
-
-/*    config->setGroup("CDDB");
-    config->writeEntry("CDDBRemoteEnabled",cddb_remote_enabled);
-    config->writeEntry("CDDBTimeout", static_cast<int>(cddb->getTimeout()));
-    config->writeEntry("CDDBLocalAutoSaveEnabled",cddb_auto_enabled);
-
-    config->writeEntry("SeverList",cddbserverlist);
-    config->writeEntry("SubmitList", cddbsubmitlist);
-    config->writeEntry("CDDBSubmitAddress",submitaddress);
-    config->writeEntry("CurrentServer",current_server);
-    config->writeEntry("CDDBHTTPProxyEnabled",cddb->useHTTPProxy());
-    config->writeEntry("HTTPProxyHost",cddb->getHTTPProxyHost());
-    config->writeEntry("HTTPProxyPort",(int)cddb->getHTTPProxyPort());*/
-
     config->sync();
 } // writeSettings()
 
@@ -1630,7 +1436,7 @@ KSCD::CDDialogSelected()
     cddialog = new CDDialog();
 
     cddialog->setData(cd,tracktitlelist,extlist,xmcd_data,category, genre,
-                      revision,playlist,pathlist,submitaddress, smtpConfigData);
+                      revision,playlist,pathlist);
 
     connect(cddialog,SIGNAL(cddb_query_signal(bool)),this,SLOT(get_cddb_info(bool)));
     connect(cddialog,SIGNAL(dialog_done()),this,SLOT(CDDialogDone()));
@@ -1644,72 +1450,6 @@ KSCD::CDDialogDone()
 {
   delete cddialog;
   cddialog = 0L;
-}
-
-
-void
-KSCD::getCDDBservers()
-{
-
-    led_on();
-/*
-     *
-     * minorly fugly hack, but i couldn't think of a nice clean way to
-     * remove this last bit of stupidity. i got rid of the rest of the
-     * rediculousness, though =)  - aseigo
-     *
-
-    if (configDialog)
-    {
-        // Get current server and proxy settings from CDDB setup dialog befoe proceed
-        bool    cddb_proxy_enabled;
-        QString cddb_proxy_host;
-        unsigned short int cddb_proxy_port;
-        unsigned short int cddb_timeout;
-
-
-        configDialog->cddb()->getData(cddbserverlist,
-                                      cddbsubmitlist,
-                                      submitaddress,
-                                      current_server,
-                                      cddb_auto_enabled,
-                                      cddb_remote_enabled,
-                                      cddb_timeout,
-                                      cddb_proxy_enabled,
-                                      cddb_proxy_host,
-                                      cddb_proxy_port);
-
-        cddb->setTimeout(cddb_timeout);
-        cddb->setHTTPProxy(cddb_proxy_host,cddb_proxy_port);
-        cddb->useHTTPProxy(cddb_proxy_enabled);
-    }
-
-    connect(&cddb,SIGNAL(get_server_list_done()),this,SLOT(getCDDBserversDone()));
-    connect(&cddb,SIGNAL(get_server_list_failed()),this,SLOT(getCDDBserversFailed()));
-
-    // For now, just don't update if there's no current server.
-    if(!current_server.isEmpty())
-        cddb->cddbgetServerList(current_server);*/
-} // getCDDBservers()
-
-void
-KSCD::getCDDBserversFailed()
-{
-    led_off();
-/*    disconnect(&cddb,SIGNAL(get_server_list_done()),this,SLOT(getCDDBserversDone()));
-    disconnect(&cddb,SIGNAL(get_server_list_failed()),this,SLOT(getCDDBserversFailed()));
-    setArtistAndTitle(i18n("Unable to get freedb server list."), "");
-    titlelabeltimer.start(10000,TRUE); // 10 secs*/
-}
-
-void
-KSCD::getCDDBserversDone()
-{
-    led_off();
-    /*disconnect(&cddb,SIGNAL(get_server_list_done()),this,SLOT(getCDDBserversDone()));
-    disconnect(&cddb,SIGNAL(get_server_list_failed()),this,SLOT(getCDDBserversFailed()));
-    cddb->serverList(cddbserverlist);
-    emit newServerList(cddbserverlist);*/
 }
 
 void
@@ -2353,15 +2093,6 @@ QStringList KSCD::trackList()
     return tracktitlelist;
 }
 
-void KSCD::emailSettingsChanged()
-{
-    if(smtpConfigData->useGlobalSettings)
-        smtpConfigData->loadGlobalSettings();
-
-    if(configDialog)
-        configDialog->updateGlobalSettings();
-}
-
 void KSCD::clearSongList()
 {
     songListCB->clear();
@@ -2432,9 +2163,9 @@ main( int argc, char *argv[] )
 
     kapp->dcopClient()->setDefaultObject("CDPlayer");
 
-    KGlobal::dirs()->addResourceType("cddb",
+/*    KGlobal::dirs()->addResourceType("cddb",
                                      KStandardDirs::kde_default("data") +
-                                     "kscd/cddb/");
+                                     "kscd/cddb/");*/
 
     KSCD *k = new KSCD();
 
