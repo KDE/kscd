@@ -1023,7 +1023,20 @@ KSCD::quitClicked()
 void
 KSCD::closeEvent( QCloseEvent *e )
 {
-    if (docking)
+    // we need to figure out if we were called by the system tray
+    // to decide whether or not to actually quit or not =/
+    // this behaviour of ksystemtray is, IMHO, very silly
+    QObject* caller = sender();
+    while (caller)
+    {
+        if (caller == dock_widget)
+        {
+            break;
+        }
+        caller = caller->parent();
+    }
+
+    if (docking && !caller && !kapp->sessionSaving())
     {
         hide();
         e->ignore();
