@@ -170,6 +170,14 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( &cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
   connect( &timer, SIGNAL(timeout()),  SLOT(cdMode()) );
   connect( &jumpTrackTimer, SIGNAL(timeout()),  SLOT(jumpTracks()) );
+/*
+  these are always connected in base class
+  connect( playPB, SIGNAL(clicked()), SLOT(playClicked()) );
+  connect( nextPB, SIGNAL(clicked()), SLOT(nextClicked()) );
+  connect( prevPB, SIGNAL(clicked()), SLOT(prevClicked()) );
+  connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
+  connect( ejectPB, SIGNAL(clicked()), SLOT(ejectClicked()) );
+*/
   connect( repeatPB, SIGNAL(clicked()), SLOT(loopClicked()) );
   connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
   connect( shufflePB, SIGNAL(clicked()), SLOT(randomSelected()));
