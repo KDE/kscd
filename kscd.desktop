@@ -71,5 +71,4 @@ Type=Application
 Terminal=0
 X-KDE-StartupNotify=true
 X-DCOP-ServiceType=Multi
-NotShowIn=GNOME;
 Categories=Qt;KDE;AudioVideo
