@@ -42,6 +42,7 @@
 #include <qtabdialog.h>
 #include <qtooltip.h>
 #include <qpopupmenu.h>
+#include <qvaluelist.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -79,6 +80,7 @@
 
 #include <kapplication.h>
 #include <kprocess.h>
+#include <krandomsequence.h>
 #include <dcopobject.h>
 
 class CDDBSetup;
@@ -97,6 +99,9 @@ struct mgconfigstruct
   bool pointsAreDiamonds;
   double starSize;
 };
+
+typedef QValueList<int> RandomList;
+typedef QValueListIterator<int> RandomListIt;
 
 class KSCD : public QWidget, public KSessionManaged, virtual public DCOPObject {
 
@@ -284,6 +289,11 @@ private:
     QTimer              jumpTrackTimer;
     QComboBox           *songListCB;
     QSlider             *volSB;
+
+    // random plyalists
+    KRandomSequence     randSequence;
+    RandomList          random_list;
+    RandomListIt        random_current;
 
     KProcess*           magicproc;
     int                 jumpToTrack;

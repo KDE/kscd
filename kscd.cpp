@@ -42,7 +42,6 @@
 #include <kmessagebox.h>
 #include <kprotocolmanager.h>
 #include <krun.h>
-#include <krandomsequence.h>
 #include <kstandarddirs.h>
 #include <kstdaction.h>
 #include <kstringhandler.h>
@@ -108,11 +107,6 @@ extern void cddb_encode(QString& str, QStringList &returnlist);
 extern void cddb_playlist_encode(QStringList& list,QString& playstr);
 extern bool cddb_playlist_decode(QStringList& list, QString& str);
 
-int    random_current;  /* koz: Current track in random list */
-int   *random_list;     /* koz: Used in Random - once through */
-
-KRandomSequence randSequence;
-
 static QString formatTrack(int d1, int d2)
 {
   QString str = QString::fromLatin1("%1/%2")
@@ -122,6 +116,54 @@ static QString formatTrack(int d1, int d2)
 }
 
 int cddb_error = 0;
+
+class KSCDSlider : public QSlider
+{
+    public:
+        KSCDSlider(QWidget* parent = 0, const char* name = 0)
+            : QSlider(0, 100, 5,  50, QSlider::Horizontal, parent, name)
+        {}
+        ~KSCDSlider() {}
+
+    protected:
+        void wheelEvent(QWheelEvent *e)
+        {
+            bool up = e->delta() > 0;
+
+            if (e->state() & ControlButton)
+            {
+                if (up)
+                {
+                    if (value() < (maxValue() / 2))
+                    {
+                        setValue(maxValue() / 2);
+                    }
+                    else
+                    {
+                        setValue(maxValue());
+                    }
+                }
+                else if (value() > (maxValue() / 2))
+                {
+                    setValue(maxValue() / 2);
+                }
+                else
+                {
+                    setValue(minValue());
+                }
+
+                return;
+            }
+            else if (up)
+            {
+                addStep();
+            }
+            else
+            {
+                subtractStep();
+            }
+        }
+};
 
 /****************************************************************************
                   The GUI part
@@ -511,7 +553,7 @@ KSCD::drawPanel()
   ix = WIDTH;
   iy = HEIGHT + HEIGHT + HEIGHT/2;
 
-  volSB = new QSlider( 0, 100, 5,  50, QSlider::Horizontal, this, "Slider" );
+  volSB = new KSCDSlider( this, "Slider" );
   volSB->setGeometry( ix, iy, SBARWIDTH, HEIGHT/2 );
   volSB->setFocusPolicy ( QWidget::NoFocus );
 
@@ -818,6 +860,7 @@ void
 KSCD::stopClicked()
 {
     //    looping = FALSE;
+    // TODO: figure out what it will take to not reset randomplay!
     randomplay = FALSE;
     stoppedByUser = TRUE;
     statuslabel->setText(i18n("Stopped"));
@@ -875,8 +918,8 @@ KSCD::nextClicked()
         int j = randomtrack();
         if ( j < 0 )
             return;
-        tracklabel->setText(formatTrack(j, cd->ntracks));
 
+        tracklabel->setText(formatTrack(j, cd->ntracks));
         if(j < (int)tracktitlelist.count())
         {
             setArtistAndTitle(tracktitlelist.first(),
@@ -886,20 +929,24 @@ KSCD::nextClicked()
         qApp->flushX();
 
         wm_cd_play( j, 0, j + 1 );
-
-    } else if(!playlist.isEmpty()) {
+    }
+    else if(!playlist.isEmpty())
+    {
         if(playlistpointer < (int)playlist.count() - 1)
             playlistpointer++;
         else
             playlistpointer = 0;
 
-        wm_cd_play (atoi((*playlist.at(playlistpointer)).ascii()),
-                    0, atoi((*playlist.at(playlistpointer)).ascii()) + 1);
         cur_track = atoi( (*playlist.at(playlistpointer)).ascii() );
-    } else {
+        wm_cd_play(cur_track, 0, cur_track + 1);
+    }
+    else
+    {
         if (cur_track == cur_ntracks)
             cur_track = 0;
-        wm_cd_play (cur_track + 1, 0, cur_ntracks + 1);
+
+        // TODO: determine if this should indeed be cur_track + 2?
+        wm_cd_play (cur_track + 1, 0, cur_track + 2);
     }
 } // nextClicked()
 
@@ -942,10 +989,6 @@ KSCD::bwdClicked()
 void
 KSCD::quitClicked()
 {
-    // FIXME: if you insert a disc while kscd is starting up
-    // and then repeated hit Ctrl-Q or the quit button it will
-    // segfault every time.
-
     // ensure nothing else starts happening
     queryledtimer.stop();
     titlelabeltimer.stop();
@@ -953,6 +996,7 @@ KSCD::quitClicked()
     timer.stop();
     jumpTrackTimer.stop();
 
+    writeSettings();
     randomplay = FALSE;
     statuslabel->clear();
     setLEDs( "--:--" );
@@ -965,12 +1009,11 @@ KSCD::quitClicked()
         wm_cd_stop();
 
     wm_cd_status();
-    // TODO: figure out why there was TWO of them?
-    //wm_cd_status();
+    // TODO: figure out why there is TWO of them?
+    wm_cd_status();
 
     wm_free_cdtext();
 
-    writeSettings();
     qApp->quit();
 } // quitClicked()
 
@@ -982,6 +1025,7 @@ KSCD::closeEvent( QCloseEvent *e )
     if ( cur_cdmode == WM_CDM_PLAYING )
         stopClicked();
 
+    writeSettings();
     randomplay = FALSE;
 
     statuslabel->clear();
@@ -996,7 +1040,6 @@ KSCD::closeEvent( QCloseEvent *e )
 
     wm_cd_status();
     wm_cd_status();
-    writeSettings();
     e->accept();
 } // closeEvent
 
@@ -1077,33 +1120,19 @@ KSCD::ejectClicked()
 void
 KSCD::randomSelected()
 {
-    if(randomplay == TRUE)
-    {
-        randomplay = FALSE;
-    }
-    else
+    randomplay = !randomplay;
+
+    if (randomplay) 
     {
         if( randomonce )
             statuslabel->setText(i18n("Shuffle"));
         else
             statuslabel->setText(i18n("Random"));
 
-        randomplay = TRUE;
         if(songListCB->count()==0)
             return;
         make_random_list(); /* koz: Build a unique, once, random list */
-        int j = randomtrack();
-        tracklabel->setText(formatTrack(j, cd->ntracks));
-        if(tracktitlelist.count()!=0 && j < (int)tracktitlelist.count())
-        {
-            setArtistAndTitle(tracktitlelist.first(),
-                              *tracktitlelist.at(j));
-        }
-        qApp->processEvents();
-        qApp->flushX();
-
-        wm_cd_play( j, 0, j + 1 );
-        cur_track = j;
+        nextClicked();
     }
 } // randomSelected
 
@@ -1318,44 +1347,29 @@ KSCD::volChanged( int vol )
 int
 KSCD::randomtrack()
 {
-    if(random_list == 0)
-    {
-        return -1;
-    }
     /* koz: 15/01/00. Check to see if we want to do a randomonce. If so */
     /* we execute the first set of statements. Else we execute the second */
     /* set, the original code.  */
-    if( randomonce )
+    if( randomonce  )
     {
-        if( !playlist.isEmpty() )
+        if ( random_current == random_list.end() )
         {
-            /* Check to see if we are at the end of the list */
-            if( (unsigned int)random_current >= playlist.count() )
+            // playing the same random list isn't very random, is it?
+            make_random_list();
+            if( !looping )
             {
-                if( !looping )
-                {
-                    stopClicked();
-                    return -1;
-                } else {
-                    random_current=0;
-                }
-            }
-            int j = random_list[random_current++];
-            playlistpointer = j;
-            return atoi( (*playlist.at(j)).ascii() );
-        } else { // playlist.count > 0
-            if( random_current >= cur_ntracks )
+                stopClicked();
+                return -1;
+            } 
+            else 
             {
-                if( !looping )
-                {
-                    stopClicked();
-                    return -1;
-                } else {
-                    random_current = 0;
-                }
+                random_current = random_list.begin();
             }
-            return( random_list[random_current++] );
-        } // playlist.count > 0
+        }
+
+        int track = *random_current + 1;
+        ++random_current;
+        return track;
     } // randomonce
 
     if( !playlist.isEmpty() )
@@ -1443,7 +1457,8 @@ KSCD::cdMode()
                     playlistpointer++;
                 else
                     playlistpointer = 0;
-                wm_cd_play(atoi( (*playlist.at(playlistpointer)).ascii() ),0,atoi((*playlist.at(playlistpointer)).ascii())+1);
+                int track = atoi( (*playlist.at(playlistpointer)).ascii() );
+                wm_cd_play(track, 0, track + 1);
             }
             else if ( looping )
             {
@@ -1453,7 +1468,9 @@ KSCD::cdMode()
                     wm_cd_play (1, 0, cur_ntracks + 1);
                 }
 
-            } else {
+            }
+            else
+            {
                 cur_track = save_track = 1;
                 statuslabel->clear(); // TODO how should I properly handle this
                 damn = TRUE;
@@ -1640,7 +1657,8 @@ KSCD::readSettings()
 	config->setGroup("GENERAL");
 	volume     	= config->readNumEntry("Volume",40);
 	tooltips   	= config->readBoolEntry("ToolTips", true);
-	randomplay 	= config->readBoolEntry("RandomPlay", false);
+        // TODO: this breaks if randomplay comes up true to begin with!
+//	randomplay 	= config->readBoolEntry("RandomPlay", false);
     docking = config->readBoolEntry("DOCKING", true);
 	autoplay		= config->readBoolEntry("AUTOPLAY", false);
 	stopexit 	= config->readBoolEntry("STOPEXIT", true);
@@ -1822,7 +1840,7 @@ KSCD::writeSettings()
 
     config->setGroup("CDDB");
     config->writeEntry("CDDBRemoteEnabled",cddb_remote_enabled);
-    config->writeEntry("CDDBTimeout",cddb.getTimeout());
+    config->writeEntry("CDDBTimeout", cddb.getTimeout());
     config->writeEntry("CDDBLocalAutoSaveEnabled",cddb_auto_enabled);
 
     config->writeEntry("LocalBaseDir",cddbbasedir);
@@ -2791,38 +2809,20 @@ KSCD::make_random_list()
     /* a list is created in which each track is listed only once. The tracks */
     /* are picked off one by one until the end of the list */
 
-    int selected,size,i,j;
-    bool rejected;
+    int selected = 0;
+    bool rejected = false;
 
-    if ( playlist.isEmpty() )
-        size = cur_ntracks;
-    else
-        size = playlist.count();
-
-    kdDebug() << "Playlist has " << size << " entries\n" << endl;
-    random_list = (int *)malloc((size_t)size*sizeof(int));
-    for( i=0; i < size; i++ )
+    //kdDebug() << "Playlist has " << size << " entries\n" << endl;
+    random_list.clear();
+    for(int i = 0; i < cur_ntracks; i++)
     {
         do {
-            rejected = false;
-            if( playlist.isEmpty() )
-                selected = 1 + (int) randSequence.getLong(size);
-            else
-                selected = (int) randSequence.getLong(size);
-
-            for(j=0;j<i;j++)
-            {
-                if(random_list[j] == selected)
-                {
-                    rejected = true;
-                    break;
-                }
-            }
+            selected = (int) randSequence.getLong(cur_ntracks);
+            rejected = (random_list.find(selected) != random_list.end());
         } while(rejected == true);
-        random_list[i] = selected;
+        random_list.append(selected);
     }
-    random_current = 0; /* Index of array we are on */
-    return;
+    random_current = random_list.begin(); /* Index of array we are on */
 } // make_random_list()
 
 
