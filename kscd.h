@@ -77,7 +77,7 @@
 
 #include "smtp.h"
 #include "ledlamp.h"
-
+#include "panel.h"
 #include <kapplication.h>
 #include <kprocess.h>
 #include <krandomsequence.h>
@@ -110,7 +110,7 @@ struct mgconfigstruct
 
 typedef QValueList<int> RandomList;
 
-class KSCD : public QWidget, public KSessionManaged, virtual public DCOPObject {
+class KSCD : public kscdPanelDlg, public KSessionManaged, virtual public DCOPObject {
 
     Q_OBJECT
     K_DCOP
@@ -220,7 +220,6 @@ protected:
     void initFont();
     void initWorkMan();
     void drawPanel();
-    void loadBitmaps();
     void setupPopups();
     void setLEDs(const QString& symbols);
 
@@ -240,17 +239,11 @@ private:
     SMTPConfigData  *smtpConfigData;
     ConfigDlg       *configDialog;
     CDDialog        *cddialog;
-    QPushButton     *playPB;
-    QPushButton     *stopPB;
-    QPushButton     *prevPB;
-    QPushButton     *nextPB;
     QPushButton     *fwdPB;
     QPushButton     *bwdPB;
     QPushButton     *dockPB;
     QPushButton     *replayPB;
-    QPushButton     *ejectPB;
     QPushButton     *aboutPB;
-    QPushButton     *infoPB;
     QPopupMenu      *mainPopup;
     QPopupMenu      *purchPopup;
     QPopupMenu      *infoPopup;
@@ -276,7 +269,6 @@ private:
     QTimer              queryledtimer;
     QTimer              cycletimer;
     QTimer              jumpTrackTimer;
-    QComboBox           *songListCB;
     QSlider             *volSB;
 
     // random playlists

@@ -57,6 +57,7 @@
 #include "kscd.h"
 #include "mgconfdlg.h"
 #include "version.h"
+
 #include <kwin.h>
 #include <netwm.h>
 
@@ -171,7 +172,7 @@ class KSCDSlider : public QSlider
 
 KSCD::KSCD( QWidget *parent, const char *name )
   : DCOPObject("CDPlayer"),
-    QWidget( parent, name, Qt::WDestructiveClose ),
+    kscdPanelDlg( parent, name, Qt::WDestructiveClose ),
     smtpConfigData(new SMTPConfigData),  //!!!!
     configDialog(0L),
     cddialog(0L),  //!!!!
@@ -226,8 +227,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
   readSettings();
   initFont();
   drawPanel();
-  loadBitmaps();
-  setColors();
+  // What to do here? (sven)
+  // setColors();
   initWorkMan();
   setupPopups();
 
@@ -237,8 +238,9 @@ KSCD::KSCD( QWidget *parent, const char *name )
   setDevicePaths(cd_device_str, audio_system_str, audio_device_str);
 
   // set the volume BEFORE setting up the signals
-  volSB->setValue(volume);
+  //volSB->setValue(volume); // We have to do something here as well with the new volume control (sven)
 
+  // The commented-out connects have to be implemented different I think (sven)
   connect( &queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
   connect( &cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
@@ -248,16 +250,16 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
   connect( prevPB, SIGNAL(clicked()), SLOT(prevClicked()) );
   connect( nextPB, SIGNAL(clicked()), SLOT(nextClicked()) );
-  connect( fwdPB, SIGNAL(clicked()), SLOT(fwdClicked()) );
-  connect( bwdPB, SIGNAL(clicked()), SLOT(bwdClicked()) );
+  //connect( fwdPB, SIGNAL(clicked()), SLOT(fwdClicked()) );
+  //connect( bwdPB, SIGNAL(clicked()), SLOT(bwdClicked()) );
   connect( dockPB, SIGNAL(clicked()), SLOT(quitClicked()) );
 #if KSCDMAGIC
   connect( magicPB, SIGNAL(clicked()), SLOT(magicslot()) );
 #endif
-  connect( replayPB, SIGNAL(clicked()), SLOT(loopClicked()) );
+  //connect( replayPB, SIGNAL(clicked()), SLOT(loopClicked()) );
   connect( ejectPB, SIGNAL(clicked()), SLOT(ejectClicked()) );
   connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
-  connect( volSB, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
+  //connect( volSB, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
   connect( aboutPB, SIGNAL(clicked()), SLOT(cycleplaytimemode()));
   connect( optionsbutton, SIGNAL(clicked()), SLOT(showConfig()));
   connect( shufflebutton, SIGNAL(clicked()), SLOT(randomSelected()));
@@ -476,6 +478,7 @@ void
 KSCD::drawPanel()
 {
   const int SBARWIDTH = 240;
+  /*
   const int HEIGHT = 27;
   const int WIDTH = 92;
 
@@ -506,7 +509,7 @@ KSCD::drawPanel()
   backdrop->setFixedSize(SBARWIDTH - 2, 2 * HEIGHT + HEIGHT / 2 - 1);
   backdrop->setFocusPolicy(QWidget::NoFocus);
   backdrop->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
-
+*/
   const int D = 6;
 
   for (int u = 0; u < 5; u++) {
@@ -562,7 +565,7 @@ KSCD::drawPanel()
   totaltimelabel->setAlignment( AlignLeft );
   totaltimelabel->setGeometry(178, D, 60, 14);
   totaltimelabel->hide();
-
+/*
   volSB = new KSCDSlider(innerVB, "Slider");
   volSB->setFocusPolicy(QWidget::NoFocus);
 
@@ -591,10 +594,10 @@ KSCD::drawPanel()
   prevPB = makeButton(7, 3, 1, 1, "Prev");
 
   nextPB = makeButton(8, 3, 1, 1, "Next");
-
+*/
 } // drawPanel
 
-void
+/*void
 KSCD::loadBitmaps()
 {
     QBitmap playBmp( playpause_width, playpause_height, playpause_bits,TRUE );
@@ -634,7 +637,7 @@ KSCD::loadBitmaps()
     optionsbutton->setPixmap( optionsBmp );
 
 } // loadBitmaps
-
+*/
 
 void
 KSCD::setupPopups()

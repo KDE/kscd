@@ -1,19 +1,19 @@
 <!DOCTYPE UI><UI version="3.2" stdsetdef="1">
-<class>kscdPanel</class>
+<class>kscdPanelDlg</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>kscdPanel</cstring>
+        <cstring>kscdPanelDlg</cstring>
     </property>
     <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
             <width>398</width>
-            <height>179</height>
+            <height>187</height>
         </rect>
     </property>
     <property name="caption">
-        <string>Form1</string>
+        <string>KsCD</string>
     </property>
     <property name="iconText">
         <string></string>
@@ -44,7 +44,7 @@
         </widget>
         <widget class="QPushButton" row="3" column="1">
             <property name="name">
-                <cstring>fwdPB</cstring>
+                <cstring>nextPB</cstring>
             </property>
             <property name="enabled">
                 <bool>true</bool>
@@ -114,7 +114,7 @@
         </widget>
         <widget class="QPushButton" row="5" column="0">
             <property name="name">
-                <cstring>shuflePB</cstring>
+                <cstring>shufflePB</cstring>
             </property>
             <property name="text">
                 <string></string>
@@ -214,7 +214,7 @@
         </widget>
         <widget class="QComboBox" row="0" column="0" rowspan="1" colspan="4">
             <property name="name">
-                <cstring>sonbListCB</cstring>
+                <cstring>songListCB</cstring>
             </property>
         </widget>
         <widget class="QPushButton" row="1" column="0" rowspan="1" colspan="2">
@@ -243,8 +243,8 @@
             </property>
             <property name="sizePolicy">
                 <sizepolicy>
-                    <hsizetype>0</hsizetype>
-                    <vsizetype>0</vsizetype>
+                    <hsizetype>5</hsizetype>
+                    <vsizetype>1</vsizetype>
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                 </sizepolicy>
@@ -299,5 +299,44 @@
         <data format="XPM.GZ" length="653">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232365230345300124a3a5c4aca0ac90aca066000e2ea81b8696000e612005455a3ac8c4546192c0a22a16ab0a8c2a2064315563568aa70a8415145811a6ab899b0df09872101403535b5d65c00b85c718a</data>
     </image>
 </images>
+<connections>
+    <connection>
+        <sender>playPB</sender>
+        <signal>clicked()</signal>
+        <receiver>kscdPanelDlg</receiver>
+        <slot>playClicked()</slot>
+    </connection>
+    <connection>
+        <sender>nextPB</sender>
+        <signal>clicked()</signal>
+        <receiver>kscdPanelDlg</receiver>
+        <slot>nextClicked()</slot>
+    </connection>
+    <connection>
+        <sender>prevPB</sender>
+        <signal>clicked()</signal>
+        <receiver>kscdPanelDlg</receiver>
+        <slot>prevClicked()</slot>
+    </connection>
+    <connection>
+        <sender>stopPB</sender>
+        <signal>clicked()</signal>
+        <receiver>kscdPanelDlg</receiver>
+        <slot>stopClicked()</slot>
+    </connection>
+    <connection>
+        <sender>ejectPB</sender>
+        <signal>clicked()</signal>
+        <receiver>kscdPanelDlg</receiver>
+        <slot>ejectClicked()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>playClicked()</slot>
+    <slot>stopClicked()</slot>
+    <slot>prevClicked()</slot>
+    <slot>ejectClicked()</slot>
+    <slot>nextClicked()</slot>
+</slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>
