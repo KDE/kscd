@@ -43,7 +43,7 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) :
     QLabel *diskID = new QLabel( i18n( "Disc ID:" ),discGroupBox, "diskID" );
     discGroupBoxLayout->addWidget( diskID, 2, 0 );
 
-    QLabel *timeLabel = new QLabel( i18n( "Total Time:" ), discGroupBox, "timeLabel" );
+    QLabel *timeLabel = new QLabel( i18n( "Total time:" ), discGroupBox, "timeLabel" );
     discGroupBoxLayout->addWidget( timeLabel, 3, 0 );
 
     QLabel *titleLabel = new QLabel(titleEdit, i18n( "&Title:" ),discGroupBox, "title" );
