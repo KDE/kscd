@@ -277,7 +277,7 @@ read_toc()
 	thiscd.cddbtoc[thiscd.ntracks].absframe = tempframe;
 
 	thiscd.magicID = cddb_discid();
-//	printf("%x\n",thiscd.magicID);
+	/* printf("%x\n",thiscd.magicID); */
 	return (&thiscd);
 }
 
@@ -322,7 +322,7 @@ cd_status()
 	status = wmcd_open(&drive);
 #endif
 
-//printf("%s %d\n",cd_device, status);
+	/* printf("%s %d\n",cd_device, status); */
 	if (status < 0)
 		return (status);
 	if (status > 0)
@@ -389,7 +389,7 @@ cd_status()
 		cur_magicID = cd->magicID;
 		cur_cdmode = STOPPED;
 		have_new_cd = 1;
-//printf("Setting have_new_cd to 1\n");
+		/* printf("Setting have_new_cd to 1\n"); */
 		ret = 2;
 	}
 
