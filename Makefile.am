@@ -72,7 +72,7 @@ install-data-local:
 	done 
 
 messages:
-	$(XGETTEXT) -C -ki18n -x $(includedir)/kde.pot *.cpp && mv messages.po ../po/kscd.pot   
+	$(XGETTEXT) -C -ki18n -x $(includedir)/kde.pot *.cpp && mv messages.po $(podir)/kscd.pot   
 
 cddaslave.c:config.h
 cdrom.c:config.h
