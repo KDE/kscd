@@ -3,4 +3,4 @@
 * allow to choose email submisson address from server list entries with protocol SMTP
 * Session Management
 * change the GUI
-* optimize freedb support (& rename cddb to freedb)
+* optimize freedb support

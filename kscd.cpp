@@ -81,6 +81,7 @@ SMTP                *smtpMailer;
 bool dockinginprogress = 0;
 bool quitPending = 0;
 bool stoppedByUser = 1;
+bool device_change = false;
 
 char            tmptime[100];
 char            *tottime;
@@ -736,7 +737,6 @@ KSCD::playClicked()
 void
 KSCD::stopClicked()
 {
-
     //    looping = FALSE;
     randomplay = FALSE;
     stoppedByUser = TRUE;
@@ -748,7 +748,6 @@ KSCD::stopClicked()
     save_track = cur_track = 1;
     playlistpointer = 0;
     wm_cd_stop ();
-
 } // stopClicked()
 
 void
@@ -962,27 +961,27 @@ KSCD::ejectClicked()
     if(!currentlyejected)
     {
 	    //      looping = FALSE;
-	    randomplay = FALSE;
-		statuslabel->setText(i18n("Ejecting"));
-		qApp->processEvents();
-		qApp->flushX();
-		setArtistAndTitle("", "");
-		tracktitlelist.clear();
-		extlist.clear();
-		
-		wm_cd_stop();
-		//  timer->stop();
-		/*
-		 * new checkmount goes here
-		 *
-		 */
-		wm_cd_eject();
+            randomplay = FALSE;
+	    statuslabel->setText(i18n("Ejecting"));
+	    qApp->processEvents();
+	    qApp->flushX();
+	    setArtistAndTitle("", "");
+	    tracktitlelist.clear();
+	    extlist.clear();
+	    
+	    wm_cd_stop();
+	    //  timer->stop();
+	    /*
+	     * new checkmount goes here
+	     *
+	     */
+	    wm_cd_eject();
     } else {
 	    statuslabel->setText(i18n("Closing"));
-		qApp->processEvents();
-		qApp->flushX();
-		have_new_cd = true;
-		wm_cd_closetray();
+	    qApp->processEvents();
+	    qApp->flushX();
+	    have_new_cd = true;
+	    wm_cd_closetray();
     }
 } // ejectClicked
 
@@ -1169,12 +1168,14 @@ KSCD::aboutClicked()
         if( (QString)cd_device != dlg->getData()->cd_device)
         {
             cd_device_str = dlg->getData()->cd_device;
-            /*
-            wmcd_close();
-*/
-            // FIXME
             cd_device = (char *)qstrdup(QFile::encodeName(cd_device_str));
-
+	    cur_cdmode = WM_CDM_DEVICECHANGED;
+	    device_change = true;
+	    setArtistAndTitle("", "");
+	    tracktitlelist.clear();
+	    extlist.clear();
+	    songListCB->clear();
+	    cdMode();
         }
         cddrive_is_ok = true;
 
@@ -1324,11 +1325,11 @@ KSCD::cdMode()
   QString str;
 		
   sss = wm_cd_status();
-  if( sss == 2 )
-	have_new_cd = true;
-	  
-	if(sss < 0)
-    {
+  if( sss == 2 ) 
+      have_new_cd = true;
+
+  if(sss < 0)
+  {
         if(cddrive_is_ok && (sss != WM_ERR_SCSI_INQUIRY_FAILED))
         {
             statuslabel->setText( i18n("Error") );
@@ -1343,10 +1344,17 @@ KSCD::cdMode()
     }
     cddrive_is_ok = true; // cd drive ok
 
-    if(cur_cdmode == 5)
+    if(cur_cdmode == WM_CDM_EJECTED)
         currentlyejected = true;
     else
         currentlyejected = false;
+
+    if( device_change == true )
+      {
+	device_change = false;
+	cur_cdmode = WM_CDM_STOPPED;
+	damn = false;
+      }
 
     switch (cur_cdmode) {
         case WM_CDM_UNKNOWN:
@@ -2068,19 +2076,26 @@ KSCD::cddb_no_info()
     else
 #endif /* DEFINE_CDTEXT */
     {
-      for(int i = 0 ; i < cd->ntracks; i++)
-        tracktitlelist.append("");
-
-      extlist.clear();
-      for(int i = 0 ; i <= cd->ntracks; i++)
-        extlist.append("");
-
-      discidlist.clear();
+       discidlist.clear();
     }
     timer->start(1000);
     led_off();
     cddb_inexact_sentinel =false;
-//    cddb_error = 1;
+
+    int i = 0;
+    songListCB->clear();
+    QStringList::Iterator it = tracktitlelist.begin();
+    ++it;
+    for ( ; it != tracktitlelist.end(); ++it )
+      {
+        i++;
+        songListCB->insertItem( QString("").sprintf("%02d: %s", i, (*it).utf8().data()));
+      }
+    for(; i < cur_ntracks; i++)
+      {
+        songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
+      }
+    //    cddb_error = 1;
 } // cddb_no_info
 
 void
@@ -2125,7 +2140,7 @@ KSCD::cddb_timed_out()
 	tracktitlelist.clear();
 	setArtistAndTitle("", "");
 	extlist.clear();
-    tracktitlelist.append(i18n("freedb query timed out."));
+      tracktitlelist.append(i18n("freedb query timed out."));
 #ifdef DEFINE_CDTEXT
     CDTEXT_MACRO
     else
