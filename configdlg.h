@@ -47,7 +47,7 @@
 #include "kscd.h"
 
 
-class ConfigDlg : public QDialog {
+class ConfigDlg : public QWidget {
 
 Q_OBJECT
 
@@ -60,8 +60,6 @@ public:
   struct configstruct * getData();
 
 private slots:
-  void cancelbutton();
-  void okbutton();
   void set_led_color();
   void set_background_color();
   void help();
@@ -85,9 +83,6 @@ private:
 
   struct configstruct configdata;
   QGroupBox *box;
-
-  QPushButton *ok;
-  QPushButton *cancel;
 
   QLabel *label1;
   QFrame *qframe1;

@@ -25,13 +25,17 @@
 #include <qregexp.h>
 #include <qtextstream.h>
 #include <qlayout.h>
+#include <qvbox.h>
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
+#include <kaccel.h>
+#include <kaction.h>
 #include <kcharsets.h>
 #include <kcmdlineargs.h>
 #include <kconfig.h>
 #include <kdebug.h>
+#include <kdialogbase.h>
 #include <kemailsettings.h>
 #include <kglobal.h>
 #include <kiconloader.h>
@@ -41,9 +45,10 @@
 #include <krun.h>
 #include <krandomsequence.h>
 #include <kstandarddirs.h>
+#include <kstdaction.h>
 #include <kstringhandler.h>
 #include <kurl.h>
-
+#include <kwin.h>
 #include "docking.h"
 #include "kscd.h"
 #include "configdlg.h"
@@ -112,7 +117,7 @@ static QString formatTrack(int d1, int d2)
 int cddb_error = 0;
 
 /****************************************************************************
-				          The GUI part
+                  The GUI part
 *****************************************************************************/
 
 KSCD::KSCD( QWidget *parent, const char *name )
@@ -135,7 +140,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
   cddb_remote_enabled = false;
   cddb_auto_enabled   = false;
   setup               = 0L;
-  smtpconfig          = 0L;
   time_display_mode   = TRACK_SEC;
   cddb_inexact_sentinel = false;
   revision            = 0; // The first freedb revision is "0"
@@ -148,9 +152,11 @@ KSCD::KSCD( QWidget *parent, const char *name )
   updateDialog        = false;
   ejectedBefore       = false;
   currentlyejected    = false;
-  cddialog        = 0L;
+  cddialog            = 0L;
+  jumpToTrack = 0L;
 
   have_new_cd = true;
+
 
   drawPanel();
   loadBitmaps();
@@ -162,12 +168,14 @@ KSCD::KSCD( QWidget *parent, const char *name )
   titlelabeltimer = new QTimer( this );
   initimer        = new QTimer( this );
   cycletimer      = new QTimer( this );
+  jumpTrackTimer  = new QTimer( this );
 
   connect( initimer, SIGNAL(timeout()),this,  SLOT(initCDROM()) );
   connect( queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
   connect( cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
   connect( timer, SIGNAL(timeout()),  SLOT(cdMode()) );
+  connect( jumpTrackTimer, SIGNAL(timeout()),  SLOT(jumpTracks()) );
   connect( playPB, SIGNAL(clicked()), SLOT(playClicked()) );
   connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
   connect( prevPB, SIGNAL(clicked()), SLOT(prevClicked()) );
@@ -187,6 +195,41 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( shufflebutton, SIGNAL(clicked()), SLOT(randomSelected()));
   connect( cddbbutton, SIGNAL(clicked()), SLOT(CDDialogSelected()));
   connect(kapp,SIGNAL(kdisplayPaletteChanged()),this,SLOT(setColors()));
+
+  // set up the actions and keyboard accels
+  KAccel* accels = new KAccel(this);
+
+  KAction* action;
+  action = new KAction(i18n("Play/Pause"), Key_P, this, SLOT(playClicked()), this, "Play/Pause");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Stop"), Key_S, this, SLOT(stopClicked()), this, "Stop");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Previous"), Key_B, this, SLOT(prevClicked()), this, "Previous");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Next"), Key_N, this, SLOT(nextClicked()), this, "Next");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Forward"), Key_Right, this, SLOT(fwdClicked()), this, "Forward");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Backward"), Key_Left, this, SLOT(bwdClicked()), this, "Backward");
+  action->plugAccel(accels);
+  action = KStdAction::action(KStdAction::Quit, this, SLOT(quitClicked()), this);
+  action->plugAccel(accels);
+  action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), this, "Loop");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), this, "Eject");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Increase Volume"), Key_Plus, this, SLOT(incVolume()), this, "IncVolume");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Increase Volume"), Key_Equal, this, SLOT(incVolume()), this, "IncVolume Alt");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), this, "DecVolume");
+  action->plugAccel(accels);
+  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(aboutClicked()), this);
+  action->plugAccel(accels);
+  action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), this, "Shuffle");
+  action->plugAccel(accels);
+  action = new KAction(i18n("CDDB"), CTRL + Key_D, this, SLOT(CDDialogSelected()), this, "CDDB");
+  action->plugAccel(accels);
 
   readSettings();
   setColors();
@@ -231,7 +274,7 @@ void
 KSCD::smtpMessageSent(void)
 {
   KMessageBox::information(this, i18n("Record submitted successfully"),
-			   i18n("Record Submission"));
+         i18n("Record Submission"));
 } // smtpMessageSent()
 
 /**
@@ -321,10 +364,10 @@ KSCD::smallPtSize()
       QFontMetrics metrics(fn);
       if(metrics.height() > 13)
         {
-	  --theSmallPtSize;
-	  fn.setPointSize(theSmallPtSize);
+    --theSmallPtSize;
+    fn.setPointSize(theSmallPtSize);
         } else {
-	  fits = true;
+    fits = true;
         }
     }
   return theSmallPtSize;
@@ -838,7 +881,7 @@ KSCD::fwdClicked()
 
     if (cur_cdmode == WM_CDM_PLAYING)
     {
-        tmppos = cur_pos_rel + 30;
+        tmppos = cur_pos_rel + skipDelta;
         if (tmppos < thiscd.trk[cur_track - 1].length)
         {
             if(randomplay || !playlist.isEmpty())
@@ -857,7 +900,7 @@ KSCD::bwdClicked()
 
     if (cur_cdmode == WM_CDM_PLAYING)
     {
-        tmppos = cur_pos_rel - 30;
+        tmppos = cur_pos_rel - skipDelta;
         if(randomplay || !playlist.isEmpty())
             wm_cd_play (cur_track, tmppos > 0 ? tmppos : 0, cur_track + 1);
         else
@@ -966,26 +1009,26 @@ KSCD::ejectClicked()
     if(!currentlyejected)
     {
             randomplay = FALSE;
-	    statuslabel->setText(i18n("Ejecting"));
-	    qApp->processEvents();
-	    qApp->flushX();
-	    setArtistAndTitle("", "");
-	    tracktitlelist.clear();
-	    extlist.clear();
+      statuslabel->setText(i18n("Ejecting"));
+      qApp->processEvents();
+      qApp->flushX();
+      setArtistAndTitle("", "");
+      tracktitlelist.clear();
+      extlist.clear();
 
-	    wm_cd_stop();
-	    //  timer->stop();
-	    /*
-	     * new checkmount goes here
-	     *
-	     */
-	    wm_cd_eject();
+      wm_cd_stop();
+      //  timer->stop();
+      /*
+       * new checkmount goes here
+       *
+       */
+      wm_cd_eject();
     } else {
-	    statuslabel->setText(i18n("Closing"));
-	    qApp->processEvents();
-	    qApp->flushX();
-	    have_new_cd = true;
-	    wm_cd_closetray();
+      statuslabel->setText(i18n("Closing"));
+      qApp->processEvents();
+      qApp->flushX();
+      have_new_cd = true;
+      wm_cd_closetray();
     }
 } // ejectClicked
 
@@ -1053,17 +1096,79 @@ KSCD::aboutClicked()
     QString server_copy;
     server_copy = current_server;
 
-    QTabDialog * tabdialog;
+    KDialogBase* configDialog = new KDialogBase(KDialogBase::Tabbed, i18n("kscd Configuraton"),
+                                                KDialogBase::Ok | KDialogBase::Cancel,
+                                                KDialogBase::Ok,
+                                                0, "configDialog", true);
+    
+    KWin::setIcons(configDialog->winId(), kapp->icon(), kapp->miniIcon());
 
-    tabdialog = new QTabDialog(this,"tabdialog",TRUE);
-    tabdialog->setCaption( i18n("kscd Configuraton") );
-    tabdialog->resize(559, 512);
-    tabdialog->setCancelButton( i18n("Cancel") );
+    /*
+     * freedb page
+     */
+    QVBox* page = configDialog->addVBoxPage(QString("&freedb"));
+    setup = new CDDBSetup(page,"cddbsetupdialog");
+    connect(setup,SIGNAL(updateCDDBServers()),this,SLOT(getCDDBservers()));
+    connect(setup,SIGNAL(updateCurrentServer()),this,SLOT(updateCurrentCDDBServer()));
+    setup->insertData(cddbserverlist,
+                      cddbsubmitlist,
+                      cddbbasedir,
+                      submitaddress,
+                      current_server,
+                      cddb_auto_enabled,
+                      cddb_remote_enabled,
+                      cddb.getTimeout(),
+                      cddb.useHTTPProxy(),
+                      cddb.getHTTPProxyHost(),
+                      cddb.getHTTPProxyPort()
+        );
+    
+    /*
+     * SMTP page
+     */
+    page = configDialog->addVBoxPage(QString("&SMTP"));
+    SMTPConfig* smtpconfig = new SMTPConfig(page, "smtpconfig", &smtpConfigData);
 
-    QWidget *about = new QWidget(tabdialog,"about");
-    QBoxLayout * lay1 = new QVBoxLayout ( about, 10 );
-    QGroupBox *box = new QGroupBox(about,"box");
-    lay1->addWidget ( box );
+    /*
+     * kscd config page
+     */
+    page = configDialog->addVBoxPage(QString("&Kscd"));
+    ConfigDlg* dlg;
+    struct configstruct config;
+    config.background_color = background_color;
+    config.led_color = led_color;
+    config.tooltips = tooltips;
+    config.cd_device = QFile::decodeName(cd_device);
+    config.browsercmd = browsercmd;
+    config.use_kfm    = use_kfm;
+    config.docking    = docking;
+    config.autoplay   = autoplay;
+    config.stopexit = stopexit;
+    config.ejectonfinish = ejectonfinish;
+    config.randomonce = randomonce;
+
+    dlg = new ConfigDlg(page, &config, "configdialg");
+
+#if KSCDMAGIC
+    /*
+     * Magic page
+     */
+    page = configDialog->addVBoxPage(i18n("Kscd &Magic"));
+    MGConfigDlg* mgdlg;
+    struct mgconfigstruct mgconfig;
+    mgconfig.width = magic_width;
+    mgconfig.height = magic_height;
+    mgconfig.brightness = magic_brightness;
+    mgconfig.pointsAreDiamonds = magic_pointsAreDiamonds;
+    mgdlg = new MGConfigDlg(page,&mgconfig,"mgconfigdialg");
+#endif
+    
+
+    /*
+     * About page
+     */
+    page = configDialog->addVBoxPage(i18n("&About"));
+    QGroupBox *box = new QGroupBox(page,"box");
     QBoxLayout * lay2 = new QHBoxLayout ( box, 15 );
 
     QPixmap pm = UserIcon("kscdlogo");
@@ -1103,59 +1208,11 @@ KSCD::aboutClicked()
     label->setText(labelstring);
     lay2->addWidget ( label );
 
-    ConfigDlg* dlg;
-    struct configstruct config;
-    config.background_color = background_color;
-    config.led_color = led_color;
-    config.tooltips = tooltips;
-    config.cd_device = QFile::decodeName(cd_device);
-    config.browsercmd = browsercmd;
-    config.use_kfm    = use_kfm;
-    config.docking    = docking;
-    config.autoplay   = autoplay;
-    config.stopexit = stopexit;
-    config.ejectonfinish = ejectonfinish;
-    config.randomonce = randomonce;
-
-    dlg = new ConfigDlg(tabdialog,&config,"configdialg");
-
-    setup = new CDDBSetup(tabdialog,"cddbsetupdialog");
-    connect(setup,SIGNAL(updateCDDBServers()),this,SLOT(getCDDBservers()));
-    connect(setup,SIGNAL(updateCurrentServer()),this,SLOT(updateCurrentCDDBServer()));
-    setup->insertData(cddbserverlist,
-                      cddbsubmitlist,
-                      cddbbasedir,
-                      submitaddress,
-                      current_server,
-                      cddb_auto_enabled,
-                      cddb_remote_enabled,
-                      cddb.getTimeout(),
-                      cddb.useHTTPProxy(),
-                      cddb.getHTTPProxyHost(),
-                      cddb.getHTTPProxyPort()
-        );
-
-    MGConfigDlg* mgdlg;
-    struct mgconfigstruct mgconfig;
-    mgconfig.width = magic_width;
-    mgconfig.height = magic_height;
-    mgconfig.brightness = magic_brightness;
-    mgconfig.pointsAreDiamonds = magic_pointsAreDiamonds;
-    mgdlg = new MGConfigDlg(tabdialog,&mgconfig,"mgconfigdialg");
-
-    smtpconfig = new SMTPConfig(tabdialog, "smtpconfig", &smtpConfigData);
-
-    tabdialog->addTab(setup,"freedb");
-    tabdialog->addTab(smtpconfig, i18n("SMTP Setup"));
-    tabdialog->addTab(dlg,i18n("Kscd Options"));
-#if KSCDMAGIC
-    tabdialog->addTab(mgdlg,i18n("Kscd Magic"));
-#endif
-    tabdialog->addTab(about,i18n("About"));
-
-
-
-    if(tabdialog->exec() == QDialog::Accepted)
+    /*
+     * TODO: make this an actual class so we don't have to exec it
+     *       this is VERY ugly as it stands
+     */
+    if(configDialog->exec() == QDialog::Accepted)
     {
         smtpconfig->commitData();
         background_color = dlg->getData()->background_color;
@@ -1174,23 +1231,25 @@ KSCD::aboutClicked()
         {
             cd_device_str = dlg->getData()->cd_device;
             cd_device = (char *)qstrdup(QFile::encodeName(cd_device_str));
-   	    kdDebug() << "Device changed to " << cd_device << "\n";
-	    cur_cdmode = WM_CDM_DEVICECHANGED;
-	    device_change = true;
-	    setArtistAndTitle("", "");
-	    tracktitlelist.clear();
-	    extlist.clear();
-	    songListCB->clear();
-	    initWorkMan();
-	    initCDROM();
-	    // cdMode();
+            kdDebug() << "Device changed to " << cd_device << "\n";
+            cur_cdmode = WM_CDM_DEVICECHANGED;
+            device_change = true;
+            setArtistAndTitle("", "");
+            tracktitlelist.clear();
+            extlist.clear();
+            songListCB->clear();
+            initWorkMan();
+            initCDROM();
+            // cdMode();
         }
         cddrive_is_ok = true;
 
+#if KSCDMAGIC
         magic_width = mgdlg->getData()->width;
         magic_height = mgdlg->getData()->height;
         magic_brightness = mgdlg->getData()->brightness;
         magic_pointsAreDiamonds = mgdlg->getData()->pointsAreDiamonds;
+#endif
 
         bool cddb_proxy_enabled;
         QString cddb_proxy_host;
@@ -1221,7 +1280,9 @@ KSCD::aboutClicked()
         else
             dock_widget->hide();
 
-    } else {
+    } 
+    else 
+    {
         // reset the current server in case we played with it ...
         current_server = server_copy;
         kdDebug() << "RESETTING SERVER TO: " << current_server << "\n" << endl;
@@ -1230,15 +1291,8 @@ KSCD::aboutClicked()
     disconnect(setup,SIGNAL(updateCDDBServers()),this,SLOT(getCDDBservers()));
     disconnect(setup,SIGNAL(updateCurrentServer()),this,SLOT(updateCurrentCDDBServer()));
 
-    delete dlg;
-    dlg = 0L;
-    delete setup;
+    delete configDialog;
     setup = 0L;
-    delete smtpconfig;
-    smtpconfig = 0L;
-    delete about;
-    delete tabdialog;
-
 } // aboutClicked()
 
 void
@@ -1252,11 +1306,23 @@ KSCD::updateCurrentCDDBServer()
 } // updateCurrentCDDBServer
 
 void
+KSCD::incVolume()
+{
+    volSB->addStep();
+} // incVolume
+
+void 
+KSCD::decVolume()
+{
+    volSB->subtractStep();
+} // decVolume
+
+void
 KSCD::volChanged( int vol )
 {
-    if(volstartup)
+    if(volstartup || !cddrive_is_ok)
         return;
-
+    
     QString str;
     str = QString::fromUtf8( QCString().sprintf( i18n("Vol: %02d%%").utf8(),vol) );
     volumelabel->setText(str);
@@ -1362,9 +1428,9 @@ KSCD::cdMode()
 
     if( device_change == true )
       {
-	device_change = false;
-	cur_cdmode = WM_CDM_STOPPED;
-	damn = false;
+  device_change = false;
+  cur_cdmode = WM_CDM_STOPPED;
+  damn = false;
       }
 
     switch (cur_cdmode) {
@@ -1511,10 +1577,10 @@ KSCD::cdMode()
 
         case WM_CDM_EJECTED:
             statuslabel->setText( i18n("Ejected") );
-	    setArtistAndTitle("", "");
-	    tracktitlelist.clear();
-	    extlist.clear();
-	    songListCB->clear();
+      setArtistAndTitle("", "");
+      tracktitlelist.clear();
+      extlist.clear();
+      songListCB->clear();
             setLEDs( "--:--" );
             tracklabel->setText( "--/--" );
             setArtistAndTitle("", "");
@@ -1525,18 +1591,18 @@ KSCD::cdMode()
             break;
 
         case WM_CDM_NO_DISC:
-	    statuslabel->setText( i18n("no disc") );
-	    setArtistAndTitle("", "");
-	    tracktitlelist.clear();
-	    extlist.clear();
-	    songListCB->clear();
+      statuslabel->setText( i18n("no disc") );
+      setArtistAndTitle("", "");
+      tracktitlelist.clear();
+      extlist.clear();
+      songListCB->clear();
             setLEDs( "--:--" );
             tracklabel->setText( "--/--" );
             setArtistAndTitle("", "");
             totaltimelabel->clear();
             totaltimelabel->lower();
-	    damn = TRUE;
-	    break;
+      damn = TRUE;
+      break;
     }
 } /* cdMode */
 
@@ -1610,6 +1676,8 @@ KSCD::readSettings()
     looping    = config->readBoolEntry("Looping",false);
     browsercmd = config->readEntry("CustomBrowserCmd","kfmclient openURL %s");
     hidden_controls = config->readBoolEntry("HiddenControls",false);
+    skipDelta = config->readNumEntry("SkipDelta", 30);
+    time_display_mode = config->readNumEntry("TimeDisplay", TRACK_SEC);
 
 #ifdef DEFAULT_CD_DEVICE
 
@@ -1674,13 +1742,13 @@ KSCD::readSettings()
     QString proxy = KProtocolManager::proxyFor("http");
     if( !proxy.isEmpty() )
       {
-	proxyURL = proxy;
-	proxyHost = proxyURL.host();
-	proxyPort = proxyURL.port();
+  proxyURL = proxy;
+  proxyHost = proxyURL.host();
+  proxyPort = proxyURL.port();
       } else {
-	proxyHost = "";
-	proxyPort = 0;
-	cddb.useHTTPProxy(false);
+  proxyHost = "";
+  proxyPort = 0;
+  cddb.useHTTPProxy(false);
       }
     cddb.setHTTPProxy(config->readEntry("HTTPProxyHost",proxyHost),
                       config->readNumEntry("HTTPProxyPort",proxyPort));
@@ -1755,6 +1823,8 @@ KSCD::writeSettings()
     config->writeEntry("LEDColor",led_color);
     config->writeEntry("Looping", looping);
     config->writeEntry("HiddenControls", isHidden());
+    config->writeEntry("SkipDelta", skipDelta);
+    config->writeEntry("TimeDisplay", time_display_mode);
 
     config->setGroup("SMTP");
     config->writeEntry("enabled", smtpConfigData.enabled);
@@ -1790,7 +1860,7 @@ KSCD::CDDialogSelected()
     if(cddialog)
         return;
 
-	kdDebug() << "dialog was empty" << endl;
+    kdDebug() << "dialog was empty" << endl;
 
     cddialog = new CDDialog();
 
@@ -1807,7 +1877,7 @@ KSCD::CDDialogSelected()
 void
 KSCD::CDDialogDone()
 {
-	kdDebug() << "cddialog -> done" << endl;
+  kdDebug() << "cddialog -> done" << endl;
     delete cddialog;
     cddialog = 0L;
 }
@@ -2028,8 +2098,8 @@ KSCD::cddb_ready()
 
     querylist.clear();
     tracktitlelist.clear();
-	setArtistAndTitle("", "");
-	extlist.clear();
+  setArtistAndTitle("", "");
+  extlist.clear();
     discidlist.clear();
 
     QCString num;
@@ -2047,22 +2117,22 @@ KSCD::cddb_ready()
 #define DEFINE_CDTEXT
 #define CDTEXT_MACRO \
     if(wm_cdtext_info.valid){\
-	kdDebug() << "CDTEXT_MACRO called" << endl;\
-	int at;\
+  kdDebug() << "CDTEXT_MACRO called" << endl;\
+  int at;\
     setArtistAndTitle("", ""); \
     tracktitlelist.clear(); \
     extlist.clear(); \
-	tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->name[0]),(const char*)(wm_cdtext_info.blocks[0]->performer[0])));\
-	titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));\
-	artistlabel->setText(tracktitlelist.first());\
-	songListCB->clear();\
-	for (at = 1 ; at < (wm_cdtext_info.count_of_entries); ++at ) {\
-	    songListCB->insertItem( QString().sprintf("%02d: %s", at, wm_cdtext_info.blocks[0]->name[at]));\
-	    tracktitlelist.append((const char*)(wm_cdtext_info.blocks[0]->name[at]));\
-	}\
-	for(; at < cur_ntracks; ++at){\
-	    songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));\
-	}\
+  tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->name[0]),(const char*)(wm_cdtext_info.blocks[0]->performer[0])));\
+  titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));\
+  artistlabel->setText(tracktitlelist.first());\
+  songListCB->clear();\
+  for (at = 1 ; at < (wm_cdtext_info.count_of_entries); ++at ) {\
+      songListCB->insertItem( QString().sprintf("%02d: %s", at, wm_cdtext_info.blocks[0]->name[at]));\
+      tracktitlelist.append((const char*)(wm_cdtext_info.blocks[0]->name[at]));\
+  }\
+  for(; at < cur_ntracks; ++at){\
+      songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));\
+  }\
 }
 
 void
@@ -2134,11 +2204,11 @@ KSCD::cddb_failed()
 void
 KSCD::cddb_timed_out()
 {
-    kdDebug() << "cddb_timed_out() called\n" << endl;
-	tracktitlelist.clear();
-	setArtistAndTitle("", "");
-	extlist.clear();
-      tracktitlelist.append(i18n("freedb query timed out."));
+  kdDebug() << "cddb_timed_out() called\n" << endl;
+  tracktitlelist.clear();
+  setArtistAndTitle("", "");
+  extlist.clear();
+  tracktitlelist.append(i18n("freedb query timed out."));
 #ifdef DEFINE_CDTEXT
     CDTEXT_MACRO
     else
@@ -2330,6 +2400,7 @@ KSCD::setArtistAndTitle(const QString& artist, const QString& title)
 
     emit trackChanged(tooltip);
 }
+
 void
 KSCD::playtime()
 {
@@ -3002,6 +3073,43 @@ KSCD::saveState(QSessionManager& /*sm*/)
   return true;
 } // saveState
 
+
+/**
+ * Allow the user to type in the number of the track
+ */
+void
+KSCD::keyPressEvent(QKeyEvent* e)
+{
+    bool isNum;
+    int value = e->text().toInt(&isNum);
+    
+    if (isNum)
+    {
+        value = (jumpToTrack * 10) + value;
+
+        if (value <= (int)tracktitlelist.count())
+        {
+            jumpToTrack = value;
+            jumpTrackTimer->stop();
+            jumpTrackTimer->start(333);
+        }
+    }
+    else
+    {
+      QWidget::keyPressEvent(e);
+    }
+} //keyPressEvent
+
+void
+KSCD::jumpTracks()
+{
+    if (jumpToTrack > 0 && jumpToTrack <= (int)tracktitlelist.count())
+    {
+        wm_cd_play(jumpToTrack, 0, jumpToTrack + 1);
+    }
+
+    jumpToTrack = 0;
+} // jumpTracks
 
 /**
  * main()

@@ -34,10 +34,11 @@
 #include <qfontmetrics.h>
 
 ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name)
-  : QDialog(parent, name)
+  : QWidget(parent, name)
 {
 
   configdata.background_color = black;
+  configdata.randomonce = true;
   configdata.led_color = green;
   configdata.tooltips = true;
   configdata.cd_device = QString::fromLatin1("/dev/cdrom");
@@ -49,7 +50,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   if(data)
     {
       configdata.background_color = data->background_color;
-      configdata.randomonce = true;
+      configdata.randomonce = data->randomonce;
       configdata.led_color = data->led_color;
       configdata.tooltips = data->tooltips;
       configdata.cd_device = data->cd_device;
@@ -63,10 +64,9 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 
   colors_changed = false;
 
-  configdata.randomonce = data->randomonce;
   setCaption(i18n("Configure kscd"));
 
-  QVBoxLayout * lay1 = new QVBoxLayout ( this, 10 );
+  QVBoxLayout * lay1 = new QVBoxLayout ( this );
   box = new QGroupBox(this, "box");
   lay1->addWidget ( box );
 
@@ -202,11 +202,6 @@ ConfigDlg::kfmbutton_clicked()
 
 
 void
-ConfigDlg::okbutton()
-{
-} // okbutton
-
-void
 ConfigDlg::device_changed(const QString &dev) {
 
   configdata.cd_device = dev;
@@ -263,12 +258,6 @@ ConfigDlg::help()
 {
     kapp->invokeHelp( QString::null,"kscd" );
 } // help
-
-void
-ConfigDlg::cancelbutton()
-{
-  reject();
-} // cancelbutton
 
 void
 ConfigDlg::set_led_color()

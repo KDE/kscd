@@ -34,7 +34,7 @@
 #include <kmessagebox.h>
 
 SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData *_configData)
-    : QDialog(parent, name)
+    : QWidget(parent, name)
 {
     configData = _configData;
     QFontMetrics fm ( font() );
@@ -52,7 +52,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
       }
     
 
-    QBoxLayout * lay1 = new QVBoxLayout ( this, 10 );
+    QBoxLayout * lay1 = new QVBoxLayout ( this );
     mainBox = new QGroupBox(this, "mainBox");
     lay1->addWidget ( mainBox );
 

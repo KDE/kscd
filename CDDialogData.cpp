@@ -4,17 +4,29 @@
 #include <qlabel.h>
 #include <qgroupbox.h>
 #include <qheader.h>
+#include <qlineedit.h>
 #include <qlistview.h>
 #include <qlayout.h>
 #include <qfontmetrics.h>
+#include <qpushbutton.h>
 
 #include <klocale.h>
 #include <kapp.h>
+#include <kwin.h>
 
-CDDialogData::CDDialogData ( QWidget* parent, const char* name) : QDialog( parent, name ) {
-    QVBoxLayout *dialogLayout = new QVBoxLayout( this, 11, 6);
+CDDialogData::CDDialogData ( QWidget* parent, const char* name) : 
+    KDialogBase(KDialogBase::Plain, i18n("CD Database Editor"),
+                KDialogBase::User1 | KDialogBase::User2 | 
+                KDialogBase::Ok | KDialogBase::Cancel,
+                KDialogBase::Ok,
+                parent, name, false, false, 
+                i18n("&Upload"), i18n("&Fetch Info"))
+{
+	KWin::setIcons(winId(), kapp->icon(), kapp->miniIcon());
+    QFrame* page = plainPage();
+    QVBoxLayout *dialogLayout = new QVBoxLayout( page, 11, 6);
 
-    QGroupBox *discGroupBox = new QGroupBox( this, "Disc" );
+    QGroupBox *discGroupBox = new QGroupBox( page, "Disc" );
     discGroupBox->setTitle( i18n( "Disc" ) );
     discGroupBox->setColumnLayout(0, Qt::Vertical );
     discGroupBox->layout()->setSpacing( 6 );
@@ -53,7 +65,7 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) : QDialog( paren
     discGroupBoxLayout->addItem( spacer, 2, 2 );
     dialogLayout->addWidget( discGroupBox );
 
-    QGroupBox *tracksGroup = new QGroupBox( this, "TracksGroup" );
+    QGroupBox *tracksGroup = new QGroupBox( page, "TracksGroup" );
     tracksGroup->setTitle( i18n( "Tracks" ) );
     tracksGroup->setColumnLayout(0, Qt::Vertical );
     tracksGroup->layout()->setSpacing( 6 );
@@ -62,7 +74,7 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) : QDialog( paren
     gbLayout->setAlignment( Qt::AlignTop );
 
     tracksList = new QListView( tracksGroup, "TracksList" );
-    tracksList->addColumn( i18n( "No." ) );
+    tracksList->addColumn( i18n( "Nr" ) );
     tracksList->addColumn( i18n( "Time" ) );
     tracksList->header()->setClickEnabled( FALSE, tracksList->header()->count() - 1 );
     tracksList->addColumn( i18n( "Title" ) );
@@ -73,8 +85,8 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) : QDialog( paren
     QHBoxLayout *layout1 = new QHBoxLayout( 0, 0, 6);
 
     trackEdit = new QLineEdit( tracksGroup, "trackTitleEdit" );
-	trackEdit->setMaxLength( 70 );
-	trackEdit->setEnabled(false);
+    trackEdit->setMaxLength( 70 );
+    trackEdit->setEnabled(false);
     QLabel *trackTitleLabel = new QLabel( trackEdit, i18n( "Title:" ), tracksGroup, "trackTitleLabel" );
     layout1->addWidget( trackTitleLabel );
     layout1->addWidget( trackEdit );
@@ -86,36 +98,23 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) : QDialog( paren
 
     QHBoxLayout *layout2 = new QHBoxLayout( 0, 0, 6);
 
-    progseq_edit = new QLineEdit( this, "playingOrderEdit" );
-    QLabel *playingOrderLabel = new QLabel( progseq_edit, i18n( "Playing order:" ), this, "playingOrder" );
-	progseq_edit->setMaxLength( 70 );
+    progseq_edit = new QLineEdit( page, "playingOrderEdit" );
+    QLabel *playingOrderLabel = new QLabel( progseq_edit, i18n( "Playing order:" ), page, "playingOrder" );
+    progseq_edit->setMaxLength( 70 );
     layout2->addWidget( playingOrderLabel );
     layout2->addWidget( progseq_edit );
     dialogLayout->addLayout( layout2 );
 
-    QHBoxLayout *layout3 = new QHBoxLayout( 0, 0, 6);
-    QSpacerItem* spacer_2 = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
-    layout3->addItem( spacer_2 );
+ 	load_button = actionButton(KDialogBase::User2);
+ 	upload_button = actionButton(KDialogBase::User1);
+	ok_button = actionButton(KDialogBase::Ok);
+	cancel_button = actionButton(KDialogBase::Cancel);
 
-    upload_button = new QPushButton( i18n( "Upload" ), this, "uploadButton" );
-    layout3->addWidget( upload_button );
-
-    ok_button = new QPushButton( i18n( "&OK" ), this, "okButton" );
-    ok_button->setDefault(true);
-    layout3->addWidget( ok_button );
-
-    cancel_button = new QPushButton( i18n( "&Cancel" ), this, "cancelButton" );
-    layout3->addWidget( cancel_button );
-    dialogLayout->addLayout( layout3 );
-
-	resize ( 400, 500 );
+    resize ( 400, 500 );
 }
 
 
 CDDialogData::~CDDialogData()
-{
-}
-void CDDialogData::titleselected(int)
 {
 }
 

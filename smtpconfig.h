@@ -24,8 +24,6 @@
 #ifndef SMTPCONFIG_H
 #define SMTPCONFIG_H
 
-#include <qdialog.h>
-
 #include <qpushbutton.h>
 #include <qgroupbox.h>
 #include <qcheckbox.h>
@@ -35,7 +33,7 @@
 #include <kcombobox.h>
 #include <kemailsettings.h>
 
-class SMTPConfig:public QDialog
+class SMTPConfig:public QWidget
 {
     Q_OBJECT
 public:

@@ -38,7 +38,7 @@ CDDBSetupData::CDDBSetupData
 {
         QFontMetrics fm ( font() );
 
-	QBoxLayout * lay1 = new QVBoxLayout ( this, 10 );
+	QBoxLayout * lay1 = new QVBoxLayout ( this );
 	QGroupBox* group = new QGroupBox( this, "GroupBox_1" );
 	lay1->addWidget ( group );
 	QBoxLayout * lay2 = new QVBoxLayout ( group, 10, 0 );

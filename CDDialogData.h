@@ -13,13 +13,14 @@
 #ifndef CDDialogData_included
 #define CDDialogData_included
 
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qlistview.h>
-#include <qpushbutton.h>
+#include <kdialogbase.h>
 
-class CDDialogData : public QDialog
+class QLabel;
+class QLineEdit;
+class QListView;
+class QPushButton;
+
+class CDDialogData : public KDialogBase
 {
     Q_OBJECT
 
@@ -33,10 +34,6 @@ public:
 
     virtual ~CDDialogData();
 
-public slots:
-
-    virtual void titleselected(int);
-
 protected slots:
 
 
@@ -46,15 +43,14 @@ protected:
     QLineEdit* progseq_edit;// sequence of tracks for this disc edit
     QLineEdit* titleEdit;   // disc title edit
     QLineEdit* artistEdit;  // disc artist name edit
-    QPushButton* load_button;
     QPushButton* ok_button;
+    QPushButton* upload_button;
+    QPushButton* load_button;
     QPushButton* cancel_button;
     QPushButton* ext_info_title_button;
     QPushButton* ext_info_button;
     QLabel* disc_id_label;
     QLabel* total_time_label;
-    QPushButton* upload_button;
-
 };
 
 #endif // CDDialogData_included

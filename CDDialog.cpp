@@ -21,6 +21,7 @@
 #include <qfile.h>
 #include <qdir.h>
 #include <qfileinfo.h> 
+#include <qlistview.h>
 
 #include <klocale.h>
 #include <kdebug.h>
@@ -62,9 +63,7 @@ CDDialog::CDDialog
 	:
 	CDDialogData( parent, name )
 {
-	setCaption( i18n("CD Database Editor") );
-
-	cdinfo.magicID = 0;	/*cddb magic disk id BERND*/
+    cdinfo.magicID = 0;	/*cddb magic disk id BERND*/
 	cdinfo.ntracks = 0;	/* Number of tracks on the disc */
 	cdinfo.length  = 0;	/* Total running time in seconds */
 	cdinfo.cddbtoc = 0L;
@@ -76,16 +75,13 @@ CDDialog::CDDialog
 	connect(ok_button, SIGNAL(clicked())       ,this,SLOT(save()));
 	connect(upload_button, SIGNAL(clicked())       ,this,SLOT(upload()));
 	connect(cancel_button, SIGNAL(clicked())       ,this,SLOT(cancel()));
-	//connect(load_button, SIGNAL(clicked())       ,this,SLOT(load_cddb()));
+	connect(load_button, SIGNAL(clicked())       ,this,SLOT(load_cddb()));
 	connect(ext_info_title_button, SIGNAL(clicked()) ,this,SLOT(extITB()));
 	connect(ext_info_button, SIGNAL(clicked())       ,this,SLOT(extIB()));
 	connect(titleEdit,   SIGNAL(textChanged(const QString &)), this,SLOT(titlechanged()));
 	connect(artistEdit,   SIGNAL(textChanged(const QString &)), this,SLOT(titlechanged()));
 	ext_info_button->setEnabled(false);
 	
-	setFixedSize(width(),height());
-
-
 	catlist.append("rock");
 	catlist.append("classical");
 	catlist.append("jazz");
@@ -104,7 +100,7 @@ CDDialog::CDDialog
 CDDialog::~CDDialog()
 {
     if(cdinfo.cddbtoc)
-      delete [] cdinfo.cddbtoc;
+        delete [] cdinfo.cddbtoc;
 } // ~CDDialog
 
 void 
@@ -873,14 +869,13 @@ CDDialog::checkit()
   if(!ret)
     {
       KMessageBox::sorry(this,
-			 i18n("Invalid Playlist\nPlease use track numbers only, separated by commas."));
+			 i18n("Invalid Playlist\nPlease use track numbers only, seperated by commas."));
       return false;
     }
   
   cddb_playlist_encode(strlist,playorder);
   return true;
 } // checkit
-
 
 void 
 CDDialog::load_cddb()

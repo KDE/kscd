@@ -174,6 +174,8 @@ public slots:
     void ejectClicked();
     void trackSelected( int );
     void aboutClicked();
+    void incVolume();
+    void decVolume();
     void volChanged( int );
     void mycddb_inexact_read();
     void cddb_no_info();
@@ -193,7 +195,7 @@ public slots:
     void purchases(int);
     void information(int);
     void showPopup();
-
+    void jumpTracks();
   //    void doSM();
 
     void make_random_list(); /* koz: 15/01/00 */
@@ -201,7 +203,6 @@ public slots:
 private:
     CDDBSetup       *setup;
 
-    SMTPConfig      *smtpconfig;
     SMTPConfig::SMTPConfigData  smtpConfigData;
 
     CDDialog        *cddialog;
@@ -241,10 +242,13 @@ private:
     QTimer              *queryledtimer;
     QTimer              *initimer;
     QTimer              *cycletimer;
+    QTimer              *jumpTrackTimer;
     QComboBox           *songListCB;
     QSlider             *volSB;
 
     KProcess*           magicproc;
+    int                 jumpToTrack;
+    int									skipDelta;
     int                 volChnl;
     int                 mixerFd;
     int                 volume;
@@ -353,6 +357,7 @@ signals:
 protected:
 
     void closeEvent( QCloseEvent *e );
+    void keyPressEvent( QKeyEvent* e );
     bool event( QEvent *e );
     //    void focusOutEvent(QFocusEvent *e);
     void playtime();

@@ -42,11 +42,7 @@ class CDDialog : public CDDialogData
 	
 	public:
   
-  CDDialog
-    (
-	 QWidget* parent = NULL,
-	 const char* name = NULL
-	 );
+  CDDialog(QWidget* parent = 0, const char* name = 0);
   
   virtual ~CDDialog();
   
