@@ -675,6 +675,16 @@ void KSCD::ejectClicked()
     }
 } // ejectClicked
 
+void KSCD::closeEvent(QCloseEvent *e)
+{
+    if (Prefs::docking() && !kapp->sessionSaving())
+    {
+        hide();
+        e->ignore();
+        return;
+    }
+}
+
 void KSCD::randomSelected()
 {
     setShuffle(Prefs::randomPlay()?0:1);
