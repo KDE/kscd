@@ -189,7 +189,10 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), m_actions, "Loop");
   action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), m_actions, "Eject");
   action = new KAction(i18n("Increase Volume"), Key_Plus, this, SLOT(incVolume()), m_actions, "IncVolume");
-  action = new KAction(i18n("Increase Volume"), Key_Equal, this, SLOT(incVolume()), m_actions, "IncVolume Alt");
+	KShortcut increaseVolume = action->shortcut();
+	increaseVolume.append( KKey( Key_Equal ) );
+	action->setShortcut( increaseVolume );
+  
   action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), m_actions, "DecVolume");
   action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), m_actions, "Options");
   action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
