@@ -124,7 +124,16 @@ MGConfigDlg::brightness_changed(int value)
 void
 MGConfigDlg::help()
 {
+/*
+ * I did this:
+ *   kapp->invokeHelp("kscd/kscd.html","");
+ * while mlaurent did this:
+ */
     kapp->invokeHelp( QString::null,"kscd" );
+ /*
+  * I'm still waiting for some answer concerning the docs, 
+  * so I leave this comment in for now.
+  */
 }
 
 

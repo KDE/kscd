@@ -390,7 +390,7 @@ CDDB::next_token()
     int newlinepos = tempbuffer.find('\n');
     if(newlinepos != -1)
       {
-	lastline    = tempbuffer.left(newlinepos);
+	lastline    = tempbuffer.left(newlinepos - 1);
 	tempbuffer  = tempbuffer.right(tempbuffer.length() - newlinepos -1);
 	return true;
       } else {
@@ -766,7 +766,7 @@ CDDB::parse_serverlist_entry()
 void 
 CDDB::get_inexact_list(QStringList& p_inexact_list)
 {
-    p_inexact_list=inexact_list;
+  p_inexact_list=inexact_list;
 } // get_inexact_list
 
 bool 

@@ -219,6 +219,16 @@ KSCD::KSCD( QWidget *parent, const char *name )
   initimer->start(500,TRUE);
 } // KSCD
 
+
+void
+KSCD::initialShow()
+{
+  if(!(docking && hidden_controls))
+    {
+      show();
+    }
+}
+
 void
 KSCD::smtpMessageSent(void)
 {
@@ -1170,8 +1180,14 @@ KSCD::aboutClicked()
         {
             cd_device_str = dlg->getData()->cd_device;
             cd_device = (char *)qstrdup(QFile::encodeName(cd_device_str));
+   	    kdDebug() << "Device changed to " << cd_device << "\n";
 	    cur_cdmode = WM_CDM_DEVICECHANGED;
 	    device_change = true;
+	    /*
+	    wm_cd_stop();
+	    qApp->processEvents();
+	    qApp->flushX();
+	    */
 	    setArtistAndTitle("", "");
 	    tracktitlelist.clear();
 	    extlist.clear();
@@ -1594,7 +1610,7 @@ KSCD::readSettings()
     randomonce = (bool)config->readBoolEntry("RANDOMONCE",true);
     looping    = config->readBoolEntry("Looping",false);
     browsercmd = config->readEntry("CustomBrowserCmd","kfmclient openURL %s");
-
+    hidden_controls = config->readBoolEntry("HiddenControls",false);
 
 #ifdef DEFAULT_CD_DEVICE
 
@@ -1739,6 +1755,7 @@ KSCD::writeSettings()
     config->writeEntry("BackColor",background_color);
     config->writeEntry("LEDColor",led_color);
     config->writeEntry("Looping", looping);
+    config->writeEntry("HiddenControls", isHidden());
 
     config->setGroup("SMTP");
     config->writeEntry("enabled", smtpConfigData.enabled);
@@ -2175,13 +2192,15 @@ KSCD::mycddb_inexact_read()
 
     cddb_inexact_sentinel = true;
     QStringList inexact_list;
-	cddb.get_inexact_list(inexact_list);
+    cddb.get_inexact_list(inexact_list);
 
     // Whatever happens, we better clear the list beforehand
-	setArtistAndTitle("", "");
-	tracktitlelist.clear();
-	extlist.clear();
+    setArtistAndTitle("", "");
+    tracktitlelist.clear();
+    extlist.clear();
 
+    // inexact_list always seems to be a null pointer
+    // since qt3???
     if( inexact_list.count() == 1)
     {
         pick = inexact_list.first();
@@ -3079,7 +3098,7 @@ main( int argc, char *argv[] )
     a.setMainWidget( k );
     k->setCaption(a.caption());
     if(!hide)
-        k->show();
+        k->initialShow();
     //    }
     return a.exec();
 } // main()

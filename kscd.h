@@ -266,6 +266,7 @@ private:
     bool                have_new_cd;
     int                 time_display_mode;
     QString             cd_device_str;
+    bool                hidden_controls;
 
     QPushButton         *makeButton( int, int, int, int, const QString& );
 
@@ -343,6 +344,7 @@ private:
 public:
 
         KSCD( QWidget *parent = 0, const char *name = 0 );
+        void initialShow();
 
 signals:
         void trackChanged(const QString&);
