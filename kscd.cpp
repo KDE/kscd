@@ -317,7 +317,7 @@ KSCD::smtpError(int errornum)
     lstr = i18n("Connection timed out.");
     break;
   case 16:
-    lstr = i18n("Time out waiting for server interaction.");
+    lstr = i18n("Timeout waiting for server interaction.");
     break;
   default:
     lstr = i18n("Server said:\n\"%1\"").arg(smtpMailer->getLastLine());
