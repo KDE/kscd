@@ -430,7 +430,7 @@ KSCD::setupPopups()
     connect( infoPopup, SIGNAL(activated(int)), SLOT(information(int)) );
 
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
-    mainPopup->insertItem(i18n("Help"), helpMenu->menu());
+    mainPopup->insertItem(SmallIcon("help"),i18n("&Help"), helpMenu->menu());
     mainPopup->insertSeparator();
     m_actions->action(KStdAction::name(KStdAction::Quit))->plug(mainPopup);
 } // setupPopups
