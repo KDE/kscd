@@ -1,5 +1,5 @@
 #warning This is a copy of config.h.std (HACK). Somebody has to fix this.
-#warning [milliByte@DeathsDoor.com]: I'm going to change KSCD.
+#warning [milliByte@DeathsDoor.com]: I am going to change KSCD.
 #warning Sorry if this breaks compilation on some platforms. Please report this to me. Thanks.
 
 /*************************************************************************
