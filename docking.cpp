@@ -30,7 +30,7 @@
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kglobal.h>
-#include <kpopmenu.h>
+#include <kpopupmenu.h>
 
 DockWidget::DockWidget( KSCD* parent, const char *name)
   : KDockWindow( parent, name ) 
