@@ -26,6 +26,7 @@
 #include <qlayout.h>
 #include <qhbox.h>
 #include <qvbox.h>
+#include <qapplication.h>
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
@@ -152,11 +153,11 @@ KSCD::KSCD( QWidget *parent, const char *name )
   drawPanel();
   setColors();
   initWorkMan();
-  
+
   /* debug
     wm_cd_set_verbosity(255);
    */
-  
+
   // the volume slider
   m_volume = new KVolumeControl(volumePB, this);
   m_volume->setValue(volume);
@@ -438,8 +439,8 @@ KSCD::setIcons()
   playPB->setIconSet(SmallIconSet("player_play"));
   stopPB->setIconSet(SmallIconSet("player_stop"));
   ejectPB->setIconSet(SmallIconSet("player_eject"));
-  prevPB->setIconSet(SmallIconSet("player_rew"));
-  nextPB->setIconSet(SmallIconSet("player_fwd"));
+  prevPB->setIconSet(SmallIconSet(QApplication::reverseLayout() ? "player_fwd" : "player_rew"));
+  nextPB->setIconSet(SmallIconSet(QApplication::reverseLayout() ? "player_rew" : "player_fwd"));
   cddbPB->setIconSet(SmallIconSet("view_text"));
   infoPB->setIconSet(SmallIconSet("run"));
 }
@@ -596,7 +597,7 @@ void KSCD::setShuffle(bool shuffle)
     {
         return;
     }
-   
+
     randomplay = shuffle;
     shufflePB->setOn(shuffle);
 
@@ -951,7 +952,7 @@ KSCD::setDevicePaths(QString cd_device, QString audio_system, QString audio_devi
         WM_CDIN, QFile::encodeName(cd_device_str), 0, 0, 0);
     kdDebug() << "Device changed to " << cd_device_str << ". return " << ret << "\n";
 #endif
-    
+
     device_change = true;
     setArtistAndTitle("", "");
     tracktitlelist.clear();
