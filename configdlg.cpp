@@ -70,7 +70,7 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
      * kscd config page
      *
      */
-    QVBox* page = addVBoxPage(i18n("CD Player"), i18n("KSCD Settings & Behavior"), loadIcon("kscd"));
+    QVBox* page = addVBoxPage(i18n("CD Player"), i18n("Settings & Behavior"), loadIcon("kscd"));
     mKCSDConfig = new configWidget(mPlayer, page);
 
     /*

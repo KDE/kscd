@@ -303,7 +303,7 @@ CDDialog::extITB()
 {
   InexactDialog dialog(0,"dialog",false);
   dialog.insertText(ext_list.first());
-  dialog.setTitle(i18n("Use This Editor to Annotate This Album"));
+  dialog.setTitle(i18n("Enter annotation for this album:"));
 
   if(dialog.exec() == QDialog::Accepted)
   {
