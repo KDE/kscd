@@ -408,7 +408,7 @@ KSCD::initCDROM()
   if(cddrive_is_ok)
     volChanged(volume);
 
-  if (autoplay)
+  if (autoplay && cur_cdmode != WM_CDM_PLAYING)
   {
     playClicked();
   }
@@ -1023,8 +1023,15 @@ KSCD::quitClicked()
 void
 KSCD::closeEvent( QCloseEvent *e )
 {
-    // Stop playing the CD
-    if ( cur_cdmode == WM_CDM_PLAYING )
+    if (docking)
+    {
+        hide();
+        e->ignore();
+        return;
+    }
+
+    /* Stop playing the CD */
+    if ( stopexit && cur_cdmode == WM_CDM_PLAYING )
         stopClicked();
 
     writeSettings();
@@ -1037,7 +1044,8 @@ KSCD::closeEvent( QCloseEvent *e )
     qApp->processEvents();
     qApp->flushX();
 
-    if(stopexit)
+    // TODO: is this really necessary given the stopClicked() above?
+    if (stopexit)
         wm_cd_stop ();
 
     wm_cd_status();
@@ -1300,8 +1308,6 @@ KSCD::setDocking(bool dock)
     docking = dock;
     if(docking)
     {
-        //TODO: make it skip the taskbar when minimized something like:
-        //KWin::setState(winId(), KWin::info(winId()).state | NET::SkipTaskbar);
         dock_widget->show();
         connect(this, SIGNAL(trackChanged(const QString&)),
                 dock_widget, SLOT(setToolTip(const QString&)));
