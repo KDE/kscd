@@ -1,4 +1,5 @@
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN">
+
 <book lang="en">
 <bookinfo>
 <title>The Kscd Handbook</title>
@@ -6,14 +7,16 @@
 <author>
 <firstname>Bernd Johannes</firstname>
 <surname>Wuebben</surname>
-<affiliation><address><email><ulink url="mailto:wuebben@kde.org">wuebben@kde.org</ulink></email></address></affiliation>
+<affiliation>
+<address><email>wuebben@kde.org</email></address>
+</affiliation>
 </author>
 </authorgroup>
-<date>Version 0.8, Jan 17, 1997</date>
-<releaseinfo><!-- information about this particular version --></releaseinfo>
+<date>17/01/1997</date>
+<releaseinfo>0.08.00</releaseinfo>
 <abstract>
 <para>This Handbook describes Kdscd Version 0.8</para>
-<para>The KSCD Handbook</para><!-- Merge this with the previous paragraph; it comes from <META NAME="description" CONTENT="..."> --></abstract>
+</abstract>
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>KSCD</keyword>
