@@ -2583,7 +2583,7 @@ kcderror(const QString& title, const QString& message)
    not if our device is mounted.
 2) Mount check only needs to be done before ejecting the disc.
 
-#ifdef __linux
+#ifdef __linux__
 
 // check if drive is mounted (from Mark Buckaway's cdplayer code)
 
