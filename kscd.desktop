@@ -21,7 +21,6 @@ Comment[sv]=Cd-spelare
 Comment[ta]=º¢Ê ­Âì¸¢
 Comment[xx]=xx
 BinaryPattern=kscd;
-Protocols=
 Name=KsCD
 Name[af]=kscd
 Name[sv]=Kscd
