@@ -202,7 +202,7 @@ void DockWidget::toggle_window_state() {
     }
 }
 
-const bool DockWidget::setToggled(int totoggle)
+void DockWidget::setToggled(int totoggle)
 {
     toggled = totoggle;
 }

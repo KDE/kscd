@@ -160,7 +160,7 @@ void CDDialog::setData(
     cdinfo.length  = cd->length;	/* Total running time in seconds */
 
 
-    for( int i = 0; i < cd->ntracks  ; i++){
+    for( int i = 0; i < cd->ntracks + 1; i++){
       cdinfo.cddbtoc[i].min = cd->cddbtoc[i].min;
       cdinfo.cddbtoc[i].sec = cd->cddbtoc[i].sec;
       cdinfo.cddbtoc[i].frame = cd->cddbtoc[i].frame;
@@ -586,8 +586,8 @@ void CDDialog::save(){
   }
 
   dialog->insertList(pathlist);
-  dialog->setErrorString((char *)i18n("Please select a Category or press Cancel"));
-  dialog->setTitle((char *)i18n("Under which category would you like to store this CDDB entry?"));
+  dialog->setErrorString(i18n("Please select a Category or press Cancel"));
+  dialog->setTitle(i18n("Under which category would you like to store this CDDB entry?"));
 
   if(dialog->exec() != QDialog::Accepted){
     delete dialog;

@@ -70,7 +70,7 @@ public slots:
 public:
     const bool isDocked();
     const bool isToggled();
-    const bool setToggled(int);
+    void setToggled(int);
     
 
 private:
