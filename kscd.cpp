@@ -65,6 +65,7 @@ extern "C" {
     // from within our own directory
 #include "libwm/include/wm_cdrom.h"
 #include "libwm/include/wm_cdtext.h"
+#include "libwm/include/wm_config.h"
 }
 
 #include "inexact.h"
