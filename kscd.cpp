@@ -1102,7 +1102,9 @@ void KSCD::lookupCDDB()
     cddb->setBlockingMode(false);
     connect(cddb, SIGNAL(finished(CDDB::Result)), this, SLOT(lookupCDDBDone(CDDB::Result)));
 
-    cddb->lookup(m_cd->cddbSignature());
+    // FIXME Should be enabled again when it doesn't go into an infinite loop
+    // when no disc is found
+    //cddb->lookup(m_cd->cddbSignature());
 } // lookupCDDB
 
 void KSCD::lookupCDDBDone(CDDB::Result result)
