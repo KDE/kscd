@@ -28,6 +28,7 @@
 #include <kconfig.h>
 #include <klocale.h>
 #include <krun.h>
+#include <krandomsequence.h>
 
 #include "docking.h"
 #include "kscd.h"
@@ -89,6 +90,8 @@ extern bool cddb_playlist_decode(QStrList& list, QString& str);
 
 int    random_current;  /* koz: Current track in random list */
 int   *random_list;     /* koz: Used in Random - once through */
+
+KRandomSequence randSequence;
 
 int cddb_error = 0;
 
@@ -188,7 +191,7 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     connect(smtpMailer, SIGNAL(error(int)), this, SLOT(smtpError(int)));
 
     setFocusPolicy ( QWidget::NoFocus );
-    srandom(time(0L));
+
     initimer->start(500,TRUE);
 } // KSCD
 
@@ -1262,12 +1265,12 @@ KSCD::randomtrack()
   if( playlist.count() > 0)
     {
       int j;
-      j=(int) (((double) playlist.count()  ) * rand()/(RAND_MAX+1.0));
+      j = (int) randSequence.getLong(playlist.count());
       playlistpointer = j;
       return atoi(playlist.at(j));
     } else {
       int j;
-      j=1+(int)(((double)cur_ntracks) *rand()/(RAND_MAX+1.0));
+      j = 1 + (int) randSequence.getLong(cur_ntracks);
       return j;
     }
 } // randomtrack
@@ -2647,9 +2650,9 @@ KSCD::make_random_list()
       do {
 	rejected = false;
 	if( playlist.count() <= 0 )
-	  selected = 1+ (int)((double)size*rand()/(RAND_MAX+1.0));
+	  selected = 1 + (int) randSequence.getLong(size);
 	else
-	  selected = (int)((double)size*rand()/(RAND_MAX+1.0));
+	  selected = (int) randSequence.getLong(size);
 	
 	for(j=0;j<i;j++) 
 	  {
