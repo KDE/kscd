@@ -58,15 +58,15 @@
 </authorgroup>
 
 <copyright>
-<year>2000-2001</year>
+<year>2000-2002</year>
 <holder>J Singer</holder>
 </copyright>
 
 <legalnotice>&FDLNotice;</legalnotice>
-  
 
-<date>2001-07-19</date>
-<releaseinfo>1.03.02</releaseinfo>
+
+<date>2002-02-19</date>
+<releaseinfo>1.03.03</releaseinfo>
 
 <abstract>
 <para>&kscd; is a small, fast, <abbrev>CDDB</abbrev> enabled audio
@@ -351,13 +351,102 @@ a track to play. </para>
 major sections. </para>
 
 <itemizedlist>
+<listitem><para><link linkend="kscd-options-tab"><guilabel>CD
+Player</guilabel></link></para></listitem>
 <listitem><para><link linkend="freedb-tab"><guilabel>freedb</guilabel></link></para></listitem>
-<listitem><para><link linkend="smtp-options"><guilabel>SMTP Setup</guilabel>
+<listitem><para><link linkend="smtp-options"><guilabel>SMTP</guilabel>
 </link></para></listitem>
-<listitem><para><link linkend="kscd-options-tab"><guilabel>Kscd
-Options</guilabel></link></para></listitem>
-<listitem><para><link linkend="about"><guilabel>About</guilabel></link></para></listitem>
+<listitem><para><link linkend="about"><guilabel>Credits</guilabel></link></para></listitem>
 </itemizedlist>
+</sect1>
+
+<sect1 id="kscd-options-tab">
+<title>The <guilabel>CD Player</guilabel> tab</title>
+
+<screenshot>
+<screeninfo>The <guilabel>CD Player</guilabel> tab</screeninfo>
+<mediaobject>
+<imageobject><imagedata fileref="kscd12.png" format="PNG"/></imageobject>
+<textobject><phrase>The <guilabel>KSCD Configuration</guilabel> tab</phrase></textobject>
+</mediaobject>
+</screenshot>
+
+<para>The <guilabel>LCD Color</guilabel> and <guilabel>Background
+Color</guilabel> fields show the color selected for the foreground and
+background of the status display. Press the color bars to change
+these colors.</para>
+
+
+<!--
+<para>The <guilabel>Unix mail command</guilabel> field shows the
+command used to send new <acronym>CDDB</acronym> entries to the
+database. The default value is <userinput><command>mail</command>
+<option>-s <replaceable>%s</replaceable></option></userinput>. You
+will need to make sure this command will actually send mail to
+non-local systems if you want to submit <acronym>CDDB</acronym>
+entries, especially if you access the Internet through a dial-up
+connection. Check the documentation for your &Linux; distribution for
+details. Some Linux distributions that use sendmail to deliver e-mail
+require only that you enter your mail host into the
+<option>&quot;Smart&quot; relay host</option> field in
+<filename>/etc/sendmail.cf</filename>. In addition, the
+<acronym>CDDB</acronym> site will want to be able to mail you back; it
+may therefore also be necessary to edit
+<filename>/etc/sendmail.cf</filename> to ensure that the return
+address on the submission is valid. Your mileage is likely to vary. If
+all else fails, use <link linkend="smtp-options">SMTP</link>
+instead.</para>
+
+<para>The <guilabel>WWW-Browser</guilabel> section lets you choose which web
+browser to use to access the web sites in the <link linkend="information-button">information button</link> menus.  You can choose
+either &konqueror; or a custom browser with the radio buttons. By default, the
+<guilabel>Use Custom Browser</guilabel> field contains
+<userinput><command>kfmclient</command>
+<option><replaceable>openURL %s</replaceable></option></userinput>.</para>
+-->
+
+<para>Set the <guilabel>Skip interval</guilabel> box to the desired number of 
+seconds to move ahead or behind when the <guibutton>forward skip</guibutton> 
+or <guibutton>reverse skip</guibutton> buttons in the Control Panel are pressed.</para>
+
+<para>The <guilabel>Show tool tips</guilabel> checkbox turns tooltips (tiny
+windows that pop up when the mouse is <quote>parked</quote> briefly over a
+control) on or off.</para>
+
+<para><guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
+appear in the &kicker; panel.</para>
+
+<para><guilabel>Autoplay when CD inserted</guilabel> causes &CD; play to
+start when the tray is closed, with no need to press the
+<guibutton>Play</guibutton> button.</para>
+
+<para><guilabel>Eject CD when finished playing</guilabel> causes the
+&CD; to be ejected when playback ends.</para>
+
+<para><guilabel>Stop playing on exit</guilabel> causes &CD; playback to stop
+when &kscd; is closed.</para>
+
+<!--<para><guilabel>Random is Shuffle</guilabel> means that when <link
+linkend="randomize-button">random play</link> is used, each track is
+played only once.</para> -->
+
+<para>You can choose how random play operates, from two
+self-explanatory options: <guilabel>Shuffle order and play each song
+only once</guilabel> and <guilabel>Randomly select songs (may
+repeat)</guilabel>.</para>
+
+<para>The <guilabel>CD-ROM Device</guilabel> field contains the name
+of the &CD-ROM; device to be used to play audio &CD;s. The default
+value is <filename>/dev/cdrom</filename>. The permissions on this
+device must be set to allow opening this device read-only. Changing
+the permissions on this device file will in almost all cases require
+superuser privileges and can be done from the command line, or in the
+Super User Mode of &konqueror;.</para>
+
+<para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
+page. <guibutton>OK</guibutton> saves the current settings and exits;
+<guibutton>Apply</guibutton> saves the current settings without exiting;
+<guibutton>Cancel</guibutton> exits without saving. </para>
 </sect1>
 
 <sect1 id="freedb-tab">
@@ -380,9 +469,11 @@ lookup attempt times out can be set. To use an &HTTP; proxy, check the
 <guilabel>Use HTTP proxy to access freedb</guilabel> and
 enter the &URL; in the field below.</para>
 
-<para>The <guilabel>freedb Base Directory:</guilabel> text field lets you choose
-the directory where you want <acronym>CDDB</acronym> entries to be stored
-locally.</para>
+<para>Checking <guilabel>Enable autosave to local database</guilabel> causes 
+<acronym>CDDB</acronym> information to be stored locally, saving you from having 
+to repeatedly perform lookups over the Internet. The <guilabel>freedb Base 
+Directory:</guilabel> text field lets you choose the directory where you want 
+<acronym>CDDB</acronym> entries to be stored locally.</para>
 
 <para>The <guilabel>freedb server:</guilabel> list box shows a list of known
 freedb servers. Select an entry from this list and it will
@@ -392,7 +483,9 @@ box.  Press the <guibutton>Defaults</guibutton> button to enter the default
 value, <userinput>freedb.freedb.org cddbp 888 -</userinput>, which will permit you to
 update the list with a fresh list of freedb servers listed with
 the master freedb site at <systemitem
-class="systemname">freedb.freedb.org</systemitem>. Hit the
+class="systemname">freedb.freedb.org</systemitem>. Servers can also be added 
+manually by entering the address in the upper box and hitting the
+<guiicon>+</guiicon> button. Hit the
 <guiicon>-</guiicon> button to delete the selected entry from the
 list.</para>
 
@@ -400,120 +493,42 @@ list.</para>
 e-mail address to which to submit <abbrev>CDDB</abbrev> entries. The default address
 is <email>freedb-submit@freedb.org</email>. As of version 0.8,
 <acronym>CDDB</acronym> entries from &kscd; are accepted for inclusion in the
-database. Hit the <guiicon>-</guiicon> button to delete the selected entry
+database. Enter servers manually by entering the address in the upper box and hitting the
+<guiicon>+</guiicon> button. Hit the <guiicon>-</guiicon> button to delete the selected entry
 from the list. The <guibutton>Defaults</guibutton> button restores all settings
 to the default values.The <guibutton>Help</guibutton> button opens the &kscd;
 help home page (this document).</para>
 
-<para><guibutton>OK</guibutton> saves the current settings and exits;
+<para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
+page. <guibutton>OK</guibutton> saves the current settings and exits;
+<guibutton>Apply</guibutton> saves the current settings without exiting;
 <guibutton>Cancel</guibutton> exits without saving. </para>
 </sect1>
 
 <sect1 id="smtp-options">
-<title>The <guilabel>SMTP</guilabel> tab</title> 
+<title>The <guilabel>SMTP</guilabel> tab</title>
 
 <screenshot>
-<screeninfo>The SMTP Options tab</screeninfo>
+<screeninfo>The SMTP tab</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd16.png" format="PNG"/></imageobject>
 </mediaobject>
 </screenshot>
 
-<para> The <acronym>SMTP</acronym> options tab sets up connection to a mail
+<para>The <acronym>SMTP</acronym> tab sets up connection to a mail
 server to submit new <acronym>CDDB</acronym> entries. This is useful if you do
 not have your own system configured as a server. Check <guilabel>Enable
-submission via SMTP</guilabel> to use this feature. Enter the address of the
+submission via SMTP</guilabel> to use this feature. Select your preferred email
+profile in the <guilabel>Current Email Profile</guilabel> box. Enter the address of the
 <acronym>SMTP</acronym> server in the upper left text field and the port number
-(typically <userinput>25</userinput>) in the upper right field. Enter your own
-email address in the lower text field. </para>
-</sect1>
-
-<sect1 id="kscd-options-tab">
-<title>The <guilabel>CD Player</guilabel> tab</title> 
-
-<screenshot>
-<screeninfo>The <guilabel>CD Player</guilabel> tab</screeninfo>
-<mediaobject>
-<imageobject><imagedata fileref="kscd12.png" format="PNG"/></imageobject>
-<textobject><phrase>The <guilabel>KSCD Configuration</guilabel> tab</phrase></textobject>
-</mediaobject>
-</screenshot>
-
-<para>The <guilabel>LCD Color</guilabel> and <guilabel>Background
-Color</guilabel> fields show the color selected for the foreground and
-background of the status display. Press the
-<guibutton>Change</guibutton> button next to the color box to change
-these colors.</para>
-
-<para>The <guilabel>CD-ROM Device</guilabel> field contains the name
-of the &CD-ROM; device to be used to play audio &CD;s. The default
-value is <filename>/dev/cdrom</filename>. The permissions on this
-device must be set to allow opening this device read-only. Changing
-the permissions on this device file will in almost all cases require
-superuser privileges and can be done from the command line, or in the
-Super User Mode of &konqueror;.</para>
-
-<!-- 
-<para>The <guilabel>Unix mail command</guilabel> field shows the
-command used to send new <acronym>CDDB</acronym> entries to the
-database. The default value is <userinput><command>mail</command>
-<option>-s <replaceable>%s</replaceable></option></userinput>. You
-will need to make sure this command will actually send mail to
-non-local systems if you want to submit <acronym>CDDB</acronym>
-entries, especially if you access the Internet through a dial-up
-connection. Check the documentation for your &Linux; distribution for
-details. Some Linux distributions that use sendmail to deliver e-mail
-require only that you enter your mail host into the
-<option>&quot;Smart&quot; relay host</option> field in
-<filename>/etc/sendmail.cf</filename>. In addition, the
-<acronym>CDDB</acronym> site will want to be able to mail you back; it
-may therefore also be necessary to edit
-<filename>/etc/sendmail.cf</filename> to ensure that the return
-address on the submission is valid. Your mileage is likely to vary. If
-all else fails, use <link linkend="smtp-options">SMTP</link>
-instead.</para>
- 
-<para>The <guilabel>WWW-Browser</guilabel> section lets you choose which web
-browser to use to access the web sites in the <link linkend="information-button">information button</link> menus.  You can choose
-either &konqueror; or a custom browser with the radio buttons. By default, the
-<guilabel>Use Custom Browser</guilabel> field contains
-<userinput><command>kfmclient</command>
-<option><replaceable>openURL %s</replaceable></option></userinput>.</para>
--->
-
-<para>The <guilabel>Show tool tips</guilabel> checkbox turns tooltips (tiny
-windows that pop up when the mouse is <quote>parked</quote> briefly over a
-control) on or off.</para>
-
-<para><guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
-appear in the &kicker; panel.</para>
-
-<para><guilabel>Autoplay when CD inserted</guilabel> causes &CD; play to
-start when the tray is closed, with no need to press the
-<guibutton>Play</guibutton> button.</para>
-
-<para><guilabel>Stop playing on exit</guilabel> causes &CD; playback to stop
-when &kscd; is closed.</para>
-
-<para><guilabel>Eject CD when finished playing</guilabel> causes the
-&CD; to be ejected when playback ends.</para> 
-
-<!--<para><guilabel>Random is Shuffle</guilabel> means that when <link
-linkend="randomize-button">random play</link> is used, each track is
-played only once.</para> -->
-
-<para>You can choose how random play operates, from two
-self-explanatory options: <guilabel>Shuffle order and play each song
-only once</guilabel> and <guilabel>Randomly select songs (may
-repeat)</guilabel>.</para>
-
+(typically <userinput>25</userinput>) in the upper right field. Enter a different
+email or reply address in the lower text fields. (Not working at this writing.)</para>
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
-page.</para>
-
-<para><guibutton>OK</guibutton> saves the current settings and exits;
-<guibutton>Cancel</guibutton> exits without saving.</para>
-
+page. <guibutton>OK</guibutton> saves the current settings and exits;
+<guibutton>Apply</guibutton> saves the current settings without exiting;
+<guibutton>Cancel</guibutton> exits without saving. </para>
 </sect1>
+
 
 <sect1 id="about">
 <title>The <guilabel>Credits</guilabel> tab </title>
@@ -578,19 +593,10 @@ Configuration window.</para>
 <para>The <guilabel>Total Time:</guilabel> display shows the total play time of
 the &CD;.</para>
 
-<para>The <guilabel>Play List Editor</guilabel> lets you change the play order
-of a disc. Enter a comma-separated list of track numbers to define a new play
-order.</para>
-
-<para>The <guibutton>Save</guibutton> button writes the displayed record to
-disk. You will be prompted to select a category under which to save the
-record. Select a directory and press <guibutton>Ok</guibutton> to finish
-saving.</para>
-
-<para>The <guibutton>Load</guibutton> button will prompt you for a location to
-look for a <acronym>CDDB</acronym> entry other than a remote
-freedb server or the local <abbrev>CDDB</abbrev> entries in the
-file system. The <guibutton>Close</guibutton> button closes the &CD;
+<para>Press the <guibutton>Fetch Info</guibutton> button to download 
+<acronym>CDDB</acronym> data.
+Press the <guibutton>OK</guibutton> button to save your changes locally.
+The <guibutton>Cancel</guibutton> button closes the &CD;
 Database Editor without saving.</para>
 
 </chapter>
