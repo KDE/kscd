@@ -63,7 +63,7 @@ class ConfigDlg : public KDialogBase
         CDDBSetup* mCDDBConfig;
         SMTPConfig* mSMTPConfig;
         KSCD* mPlayer;
-#if KSCDMAGIC
+#ifdef KSCDMAGIC
         MGConfigDlg* mMagicConfig;
 #endif
 

@@ -41,7 +41,7 @@
 #include "kscd.h"
 #include "version.h"
 
-#if KSCDMAGIC
+#ifdef KSCDMAGIC
 #include "mgconfdlg.h"
 #endif
 
@@ -52,7 +52,7 @@ static inline QPixmap loadIcon( const char * name )
     ->loadIcon( QString::fromLatin1(name), KIcon::NoGroup, KIcon::SizeMedium );
 }
 
-ConfigDlg::ConfigDlg(KSCD* player, const char* name, bool modal)
+ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
   :  KDialogBase(KDialogBase::IconList, i18n("CD Player Configuration"),
                  KDialogBase::Help |
                  KDialogBase::Ok |
@@ -111,11 +111,12 @@ ConfigDlg::ConfigDlg(KSCD* player, const char* name, bool modal)
     KAboutWidget* about = new KAboutWidget(page);
     about->setLogo(UserIcon("kscdlogo"));
     about->setVersion(KSCDVERSION);
-    about->setMaintainer(i18n("Dirk Försterling"), "milliByte@gmx.net", QString::null, 
-                         i18n("Workman library, current maintainer"));
-    about->setAuthor("Bernd Johannes Wuebben", "wuebben@kde.org", QString::null, QString::null);
-    about->addContributor("Aaron J. Seigo", "aseigo@olympusproject.org", QString::null, 
-                          i18n("General UI issues"));
+    about->setMaintainer("Aaron J. Seigo", "aseigo@olympusproject.org",
+                         QString::null, i18n("Current maintainer"));
+    about->addContributor(i18n("Dirk Försterling"), "milliByte@gmx.net", QString::null, 
+                     i18n("Workman library, previous maintainer"));
+    about->setAuthor("Bernd Johannes Wuebben", "wuebben@kde.org", 
+                     QString::null, QString::null);
     about->addContributor("Steven Grimm", QString::null, QString::null, i18n("Workman library"));
     about->addContributor("Vadim Zaliva", QString::null, QString::null, i18n("HTTP proxy code"));
     about->addContributor("Paul Harrison", "pfh@yoyo.cc.monash.edu.au", QString::null, 
