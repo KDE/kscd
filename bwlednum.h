@@ -8,6 +8,9 @@
  * $Id$
  * 
  * $Log$
+ * Revision 1.4  1999/03/01 23:37:47  kulow
+ * CVS_SILENT ported to Qt 2.0
+ *
  * Revision 1.3.6.1  1999/02/22 22:28:32  kulow
  * CVS_SILENT replaced old qt header names with new ones
  *
@@ -102,7 +105,7 @@ private:
     char* old_segments;
     char* current_segments;
 
-    char    current_symbol;
+    char   current_symbol;
     char    old_symbol;
     QColor  offcolor;
     QColor  fgcolor;

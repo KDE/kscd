@@ -1392,7 +1392,7 @@ void KSCD::cdMode(){
     }
 }
 
-void KSCD::setLEDs(QString symbols){
+void KSCD::setLEDs(const QString& symbols){
 
     // nLEDs->setText(symbols);
 
@@ -1401,7 +1401,7 @@ void KSCD::setLEDs(QString symbols){
     }
 
     for(int i=0;i<5;i++){
-        trackTimeLED[i]->display(symbols[i]);
+        trackTimeLED[i]->display(symbols[i].latin1());
     }
 
 

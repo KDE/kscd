@@ -238,7 +238,7 @@ private:
     void		drawPanel();
     void		cleanUp();
     void		loadBitmaps();
-    void 	 	setLEDs(QString symbols);
+    void 	 	setLEDs(const QString& symbols);
     int 	        randomtrack();
 
 //TODO get rid of the mixe stuff

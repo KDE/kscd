@@ -35,6 +35,7 @@ struct drivelist {
 {	"TOSHIBA",	"XM-3401",	NULL,	&toshiba_proto		},
 {	"TOSHIBA",	"XM-3301",	NULL,	&toshiba_proto		},
 {	"SONY",		"CDU-8012",	NULL,	&sony_proto		},
+{	"SONY",		"CDU-76S",	NULL,	&sony_proto		},
 {	NULL,		NULL,		NULL,	&generic_proto		}
 };
 

@@ -6,6 +6,9 @@
  * $Id$
  * 
  * $Log$
+ * Revision 1.6  1999/03/01 23:37:46  kulow
+ * CVS_SILENT ported to Qt 2.0
+ *
  * Revision 1.5.6.1  1999/02/22 22:28:30  kulow
  * CVS_SILENT replaced old qt header names with new ones
  *
@@ -82,7 +85,6 @@ BW_LED_Number::BW_LED_Number( QWidget *parent, const char *name )
     showOffColon(FALSE);
     smallLED = false;
     current_symbol = ' ';
-    old_symbol = ' ';
     old_segments = &segs[13][0];      // nothing
     current_segments = &segs[13][0];  // nothing
     setLEDColor(yellow,black);
@@ -179,13 +181,12 @@ void BW_LED_Number::display(int i ){
 }
 
 
-void BW_LED_Number::display(char s ){
+void BW_LED_Number::display(char s){
   
   QPainter p;     
 
   p.begin( this );
   
-  old_symbol = current_symbol;
   old_segments = current_segments;
   current_symbol = s;
   current_segments = getSegments(s);
@@ -206,8 +207,6 @@ void BW_LED_Number::setSmallLED(bool a_boolean){
 void BW_LED_Number::drawSymbol( QPainter *p,char s,bool repaint ){
   
   //  printf("drawSymbol repaint = %d\n",repaint);
-
- s = s;
 
  QPoint  pos;
   
