@@ -376,7 +376,7 @@ KSCD::drawPanel()
      trackTimeLED[u] = new BW_LED_Number(backdrop);
      trackTimeLED[u]->setLEDoffColor(background_color);
      trackTimeLED[u]->setLEDColor(led_color, background_color);
-     trackTimeLED[u]->setGeometry(1 + u * 18, D, 23,  30);
+     trackTimeLED[u]->setGeometry(2 + u * 18, D, 23,  30);
      connect(trackTimeLED[u], SIGNAL(clicked()), this, SLOT(cycleplaytimemode()));
   }
 
@@ -1175,7 +1175,7 @@ KSCD::cdMode()
             else
             {
                 save_track = 1;
-                statuslabel->clear(); // TODO how should I properly handle this
+                statuslabel->clear();
                 damn = true;
             }
             break;
@@ -1221,12 +1221,14 @@ KSCD::cdMode()
             break;
 
         case WM_CDM_STOPPED:
+            updatePlayPB(false);
             if (damn) {
                 if(ejectonfinish && !stoppedByUser){
                     stoppedByUser = true;
                     ejectClicked();
                     break;
                 }
+
                 statuslabel->setText( i18n("Ready") );
                 setLEDs( "--:--" );
                 populateSongList();
