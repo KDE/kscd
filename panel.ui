@@ -201,6 +201,9 @@
                                 <property name="name">
                                     <cstring>unnamed</cstring>
                                 </property>
+                                <property name="margin">
+                                    <number>2</number>
+                                </property>
                                 <widget class="QLayoutWidget">
                                     <property name="name">
                                         <cstring>layout5</cstring>
