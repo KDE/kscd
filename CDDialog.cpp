@@ -46,7 +46,6 @@ extern bool cddb_playlist_decode(QStrList& list, QString& str);
 extern bool debugflag;
 
 extern SMTP *smtpMailer;
-extern KApplication 	*mykapp;
 
 CDDialog::CDDialog
 (
@@ -440,8 +439,8 @@ I would like you ask you to upload as many test submissions as possible.\n"\
 
   save_cddb_entry(tempfile,true);
 
-  mykapp->processEvents();
-  mykapp->flushX();
+  kapp->processEvents();
+  kapp->flushX();
 
 
 /*  QString subject;

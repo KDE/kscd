@@ -16,8 +16,6 @@
 #include <kglobal.h>
 #include <kstddirs.h>
 
-extern KApplication 	*mykapp;
-
 CDDBSetup::CDDBSetup
 (
     QWidget* parent,
@@ -147,8 +145,7 @@ void CDDBSetup::enable_remote_cddb(bool)
 
 void CDDBSetup::help()
 {
-    if(mykapp)
-        mykapp->invokeHTMLHelp("kscd/kscd.html","");
+    kapp->invokeHTMLHelp("kscd/kscd.html","");
 
 }
 

@@ -34,9 +34,6 @@
 //#define XOFF 0
 //#define YOFF 0
 
-extern KApplication *mykapp;
-
-
 ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name)
   : QDialog(parent, name)
 {
@@ -287,8 +284,7 @@ void ConfigDlg::ejectOnFinishClicked()
 
 void ConfigDlg::help(){
 
-  if(mykapp)
-    mykapp->invokeHTMLHelp("kscd/kscd.html","");
+    kapp->invokeHTMLHelp("kscd/kscd.html","");
 }
 
 void ConfigDlg::cancelbutton() {

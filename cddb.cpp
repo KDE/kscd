@@ -766,7 +766,6 @@ bool CDDB::local_query(
 )
 {
     QStringList pathlist = KGlobal::dirs()->getResourceDirs("cddb");
-    debug("pathlist %d", pathlist.count());
 
     if(pathlist.count() == 0)
 	return false;

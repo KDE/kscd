@@ -31,10 +31,6 @@
 #include "mgconfdlg.h"
 #include <klocale.h>
 
-
-extern KApplication *mykapp;
-
-
 MGConfigDlg::MGConfigDlg(QWidget *parent, 
 			 struct mgconfigstruct *data,const char *name)
   : QDialog(parent, name)
@@ -114,9 +110,7 @@ void MGConfigDlg::brightness_changed(int value) {
 
 
 void MGConfigDlg::help(){
-
-  if(mykapp)
-    mykapp->invokeHTMLHelp("kscd/kscd.html","");
+    kapp->invokeHTMLHelp("kscd/kscd.html","");
 }
 
 

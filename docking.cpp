@@ -33,7 +33,6 @@
 #include <kglobal.h>
 
 
-extern KApplication *mykapp;
 extern KSCD *k;
 
 extern bool debugflag;

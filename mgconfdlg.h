@@ -53,7 +53,7 @@ Q_OBJECT
 
 public:
 
-  MGConfigDlg(QWidget *parent=0, struct mgconfigstruct * data=0,const char *name=0);
+  MGConfigDlg(QWidget *parent, struct mgconfigstruct * data,const char *name);
   ~MGConfigDlg() {}
 
 

@@ -62,7 +62,6 @@ extern "C" {
 #include <kiconloader.h>
 #include <kstddirs.h>
 
-KApplication 	*mykapp;
 KSCD 	         *k;
 DockWidget*     dock_widget;
 SMTP                *smtpMailer;
@@ -200,7 +199,7 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     connect( optionsbutton, SIGNAL(clicked()), SLOT(aboutClicked()));
     connect( shufflebutton, SIGNAL(clicked()), SLOT(randomSelected()));
     connect( cddbbutton, SIGNAL(clicked()), SLOT(CDDialogSelected()));
-    connect(mykapp,SIGNAL(kdisplayPaletteChanged()),this,SLOT(setColors()));
+    connect(kapp,SIGNAL(kdisplayPaletteChanged()),this,SLOT(setColors()));
 	
     readSettings();
     setColors();
@@ -277,8 +276,8 @@ void KSCD::initWorkMan() {
 void KSCD::initCDROM(){
 
     initimer->stop();
-    mykapp->processEvents();
-    mykapp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
     cdMode();
     volstartup = FALSE;
@@ -993,7 +992,7 @@ void KSCD::aboutClicked(){
 
     QTabDialog * tabdialog;
 
-    tabdialog = new QTabDialog(0,"tabdialog",TRUE);
+    tabdialog = new QTabDialog(this,"tabdialog",TRUE);
     tabdialog->setCaption( i18n("kscd Configuraton") );
     tabdialog->resize(559, 512);
     tabdialog->setCancelButton( i18n("Cancel") );
@@ -1444,18 +1443,18 @@ void KSCD::setColors(){
 
 void KSCD::readSettings()
 {
-    config = mykapp->getConfig();
+    config = kapp->getConfig();
 
     config->setGroup("GENERAL");
     volume     = config->readNumEntry("Volume",40);
-    tooltips   = (bool) config->readNumEntry("ToolTips",1);
-    randomplay = (bool) config->readNumEntry("RandomPlay", 0);
-    use_kfm    = (bool) config->readNumEntry("USEKFM", 1);
-    docking    = (bool) config->readNumEntry("DOCKING", 1);
-    autoplay = (bool) config->readNumEntry("AUTOPLAY", 0);
-    autodock = (bool) config->readNumEntry("AUTODOCK", 0);
-    stopexit = (bool)config->readNumEntry("STOPEXIT", 1);
-    ejectonfinish = (bool)config->readNumEntry("EJECTONFINISH", 0);
+    tooltips   = config->readBoolEntry("ToolTips", true);
+    randomplay = config->readBoolEntry("RandomPlay", false);
+    use_kfm    = config->readBoolEntry("USEKFM", true);
+    docking    = config->readBoolEntry("DOCKING", true);
+    autoplay = config->readBoolEntry("AUTOPLAY", false);
+    autodock = config->readBoolEntry("AUTODOCK", false);
+    stopexit = config->readBoolEntry("STOPEXIT", true);
+    ejectonfinish = config->readBoolEntry("EJECTONFINISH", false);
     mailcmd    =        config->readEntry("UnixMailCommand","/bin/mail -s \"%s\"");
 
 #ifdef DEFAULT_CD_DEVICE
@@ -1548,24 +1547,17 @@ void KSCD::readSettings()
 
 void KSCD::writeSettings(){
 		
-    config = mykapp->getConfig();
+    config = kapp->getConfig();
 
     config->setGroup("GENERAL");	
-    if(tooltips)
-        config->writeEntry("ToolTips", 1);
-    else
-        config->writeEntry("ToolTips", 0);
-
-    if(randomplay)
-        config->writeEntry("RandomPlay", 1);
-    else
-        config->writeEntry("RandomPlay", 0);
-    config->writeEntry("USEKFM", (int)use_kfm);
-    config->writeEntry("DOCKING", (int)docking);
-    config->writeEntry("AUTOPLAY", (int)autoplay);
-    config->writeEntry("AUTODOCK", (int)autodock);
-    config->writeEntry("STOPEXIT", (int)stopexit);
-    config->writeEntry("EJECTONFINISH", (int)ejectonfinish);
+    config->writeEntry("ToolTips", tooltips);
+    config->writeEntry("RandomPlay", randomplay);
+    config->writeEntry("USEKFM", use_kfm);
+    config->writeEntry("DOCKING", docking);
+    config->writeEntry("AUTOPLAY", autoplay);
+    config->writeEntry("AUTODOCK", autodock);
+    config->writeEntry("STOPEXIT", stopexit);
+    config->writeEntry("EJECTONFINISH", ejectonfinish);
     config->writeEntry("CDDevice",cd_device);
     config->writeEntry("CustomBroserCmd",browsercmd);
     config->writeEntry("Volume", volume);
@@ -1975,8 +1967,8 @@ void KSCD::led_on(){
     queryledtimer->start(800);
     queryled->off();
     queryled->show();
-    mykapp->processEvents();
-    mykapp->flushX();
+    kapp->processEvents();
+    kapp->flushX();
 
 }
 
@@ -2349,16 +2341,16 @@ void KSCD::startBrowser(const QString &querystring){
 void KSCD::doSM()
 {
     if (isVisible())
-	mykapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->getCaption()+"\"");
+	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->getCaption()+"\"");
     else
-	mykapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->getCaption()+"\" -hide ");
+	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->getCaption()+"\" -hide ");
 }
 
 
 int main( int argc, char *argv[] )
 {
     
-    mykapp = new KApplication( argc, argv,"kscd" );
+    KApplication a( argc, argv,"kscd" );
     KGlobal::dirs()->addResourceType("cddb", KStandardDirs::kde_default("data") + "kscd/cddb/");
 
     k = new KSCD();
@@ -2387,14 +2379,14 @@ int main( int argc, char *argv[] )
         }
     }
 
-    mykapp->enableSessionManagement(true);
-    mykapp->setTopWidget(k);
-    mykapp->setMainWidget( k );
-    k->setCaption(mykapp->getCaption());
+    a.enableSessionManagement(true);
+    a.setTopWidget(k);
+    a.setMainWidget( k );
+    k->setCaption(a.getCaption());
     if (!hide)
 	k->show();
 
-    return mykapp->exec();
+    return a.exec();
 }
 
 void kcderror(const QString& title,const QString& message)
