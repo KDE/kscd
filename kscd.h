@@ -113,6 +113,10 @@ class KSCD : public QWidget, public KSessionManaged, virtual public DCOPObject {
 
 
 k_dcop:
+    /**
+     * Check KsCD's current state
+     */
+    bool playing();
     void play() { playClicked(); }
     void stop() { stopClicked(); }
     void previous() { prevClicked(); }

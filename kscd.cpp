@@ -3087,6 +3087,12 @@ KSCD::jumpTracks()
     jumpToTrack = 0;
 } // jumpTracks
 
+bool
+KSCD::playing()
+{
+    return ( cur_cdmode == WM_CDM_PLAYING );
+}
+
 int KSCD::currentTrack()
 {
     return cur_track;
