@@ -629,7 +629,7 @@ wmcd_reopen( struct wm_drive *d )
   int status;
   int tries = 0;
   do {
-    if (d->fd >= 0) /* Device really open? */
+    if (d->fd >= 0) /* Device really open? NOTE: We set fd ourselves. */
       {
 	close(d->fd);  /* ..then close it */
 	d->fd = -1;      /* closed */
