@@ -42,12 +42,19 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
+#include <linux/cdrom.h>
+
 /* this is for glibc 2.x which defines ust structure in ustat.h not stat.h */
+/* Starting from Linux kernel 2.3.30, <linux/cdrom.h> includes <linux/types.h>
+ * which defines struct ustat, and conflits with the glibc include.
+ * Don't include sys/ustat.h if <linux/types.h> has already been included...
+ *      bero@redhat.com */
+#ifndef _LINUX_TYPES_H
 #ifdef __GLIBC__
 #include <sys/ustat.h>
 #endif
+#endif
 
-#include <linux/cdrom.h>
 #include "struct.h"
 
 int susleep(); /* in cdrom.c */
