@@ -137,6 +137,8 @@ public slots:
     void fwdClicked();
     void bwdClicked();
     void quitClicked();
+    void loopOn();
+    void loopOff();
     void loopClicked();
     void cdMode();
     void ejectClicked();
@@ -220,6 +222,7 @@ private:
     int                 magic_brightness;
     QFrame 		*backdrop;
     LedLamp             *queryled;
+    LedLamp             *loopled;
     KConfig 	        *config;
     bool 		tooltips;
     bool 		randomplay ;

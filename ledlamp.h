@@ -31,8 +31,9 @@ class LedLamp : public QFrame
   Q_OBJECT
 public:
 
-  LedLamp(QWidget *parent=0);
+  enum Type { Rect, Loop };
 
+  LedLamp(QWidget *parent=0, Type t=Rect);
 
   enum State { On, Off };
 
@@ -55,11 +56,8 @@ private:
   const int height;
   const int dx;
   State s;
+  int ledtype;
 };
 
 
 #endif
-
-
-
-

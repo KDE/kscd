@@ -1,7 +1,10 @@
 Sun Mar  5 10:54:40 2000  Dirk Försterling  <milliByte@gmx.de>
 
 	* Completed shuffle mode (some patch data was missing) and
-	  added corresponding "shuffle" Display string.
+	added corresponding "shuffle" Display string.
+	* Slightly changed "loop" semantics: "loop" is no longer a single
+	playing mode but a modifier. You can now loop "playing" mode and
+	"shuffle" mode. 
 
 Mon Feb 28 07:27:04 2000  Dirk Försterling  <milliByte@gmx.de>
 

@@ -50,7 +50,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 
   if(data){
     configdata.background_color = data->background_color;
-  configdata.randomonce = true;
+    configdata.randomonce = true;
     configdata.led_color = data->led_color;
     configdata.tooltips = data->tooltips;
     configdata.cd_device = data->cd_device;
@@ -65,7 +65,7 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 
   colors_changed = false;
 
-    configdata.randomonce = data->randomonce;
+  configdata.randomonce = data->randomonce;
   setCaption(i18n("Configure kscd"));
 
   box = new QGroupBox(this, "box");
@@ -202,7 +202,8 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
 }
 
 
-void ConfigDlg::custombutton_clicked()
+void 
+ConfigDlg::custombutton_clicked()
 {
     configdata.use_kfm = false;
     custom_edit->setEnabled(!configdata.use_kfm);

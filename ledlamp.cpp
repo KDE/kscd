@@ -27,52 +27,87 @@
 #include "ledlamp.h"
 #include "ledlamp.moc"
 
-LedLamp::LedLamp(QWidget *parent) : QFrame(parent),
+LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent),
   width( 10 ), height( 7 ), dx( 4 )
 {
   // Make sure we're in a sane state
-  s= Off;
+  s = Off;
 
   // Set the frame style
   //  setFrameStyle(Sunken | Box);
-  setGeometry(0,0,height,width);
-}
+  setGeometry(0,0,height+1,width+1);
+  ledtype = t;
+} // LedLamp
 
-void LedLamp::drawContents(QPainter *painter)
+void 
+LedLamp::drawContents(QPainter *painter)
 {
 
   QBrush lightBrush(this->foregroundColor());
   QBrush darkBrush(this->backgroundColor());
-  QPen pen(this->backgroundColor()
 
-);
+  //  QColor redColor(255,100,100);
+  //  QBrush redBrush(redColor);
 
-  switch(s) {
+  QPen darkPen(this->backgroundColor(),1);
+  QPen lightPen(this->foregroundColor(), 1);
 
-  case On:
-    painter->setBrush(lightBrush);
-    painter->drawRect(1,1,height-2, width-2);
-    break;
+  switch(s) 
+    {
+    case On:
+      painter->setBrush(lightBrush);
+      switch (ledtype)
+	{
+	case Rect:
+	  painter->drawRect(1,1,width-2, height-2);
+	  break;
+	case Loop:
+	  painter->setBrush(lightBrush);
+	  painter->setPen(lightPen);
 
-  case Off:
-    painter->setBrush(darkBrush);
-    painter->drawRect(1,1,height-2, width-2);
-    painter->setPen(pen);
-    //    painter->drawLine(2,2,width-2, 2);
-    //painter->drawLine(2,height-2,width-2,height-2);
-    // Draw verticals
-    //int i;
-    //for (i= 2; i < width-1; i+= dx)
-    //painter->drawLine(i,2,i,height-2);
-    break;
+	  //	  painter->drawRect(0,0,width,height);
 
-  default:
+	  painter->drawLine(0, 2, 0, height-2); //  |
+	  painter->drawLine(1, 1, width-4, 1); // ~
+	  painter->drawLine(width-3, 2, width-3, height-2); // |
+	  painter->drawLine(2, height-2, width-3, height-2); //_
+	  painter->drawLine(width-6,0,width-6,2); // ---+
+	  painter->drawLine(3,height-2,3,height); // +---
+	  break;
+	}
+      break;
+      
+    case Off:
+      painter->setBrush(darkBrush);
+      switch (ledtype)
+	{
+	case Rect:
+	  painter->drawRect(1,1,width-2, height-2);
+	  break;
+	case Loop:
+	  painter->setBrush(darkBrush);
+	  painter->setPen(darkPen);
+
+	  painter->drawLine(0, 2, 0, height-2); //  |
+	  painter->drawLine(1, 1, width-4, 1); // ~
+	  painter->drawLine(width-3, 2, width-3, height-2); // |
+	  painter->drawLine(2, height-2, width-3, height-2); //_
+	  painter->drawLine(width-6,0,width-6,2); // ---+
+	  painter->drawLine(3,height-2,3,height); // +---
+	  break;
+	}
+      //      painter->setPen(pen);
+      //    painter->drawLine(2,2,width-2, 2);
+      //painter->drawLine(2,height-2,width-2,height-2);
+      // Draw verticals
+      //int i;
+      //for (i= 2; i < width-1; i+= dx)
+      //painter->drawLine(i,2,i,height-2);
+      break;
+      
+    default:
     fprintf(stderr, "LedLamp: INVALID State (%d)\n", s);
-
-  }
-}
-
-
-
-
+    
+    }
+} // drawContents
 

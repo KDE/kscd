@@ -387,6 +387,11 @@ KSCD::drawPanel()
     queryled->off();
     queryled->hide();
 
+    loopled = new LedLamp(this, LedLamp::Loop);
+    loopled->move(WIDTH + 200, iy  +D +18 );
+    loopled->off();
+    //    loopled->hide();
+
     volumelabel = new QLabel(this);
     volumelabel->setGeometry(WIDTH + 110, iy + 14 + D, 50, 14);
     volumelabel->setFont( QFont( "Helvetica", 10, QFont::Bold ) );
@@ -575,7 +580,7 @@ KSCD::setToolTips()
       {	
         QToolTip::add( playPB, 		i18n("Play/Pause") );
         QToolTip::add( stopPB, 		i18n("Stop") );
-        QToolTip::add( replayPB, 	i18n("Loop CD") );
+        QToolTip::add( replayPB, 	i18n("Loop") );
         QToolTip::add( songListCB, 	i18n("Track Selection") );
         QToolTip::add( fwdPB, 		i18n("30 Secs Forward") );
         QToolTip::add( bwdPB, 		i18n("30 Secs Backward") );
@@ -585,8 +590,12 @@ KSCD::setToolTips()
         QToolTip::add( aboutPB, 	i18n("Cycle Time Display") );
         QToolTip::add( optionsbutton, 	i18n("Configure Kscd") );
         QToolTip::add( ejectPB, 	i18n("Eject CD") );
-        QToolTip::add( infoPB, 	i18n("The Artist on the Web") );
-        QToolTip::add( shufflebutton, 	i18n("Random Play") );
+        QToolTip::add( infoPB, 	        i18n("The Artist on the Web") );
+	if (!randomonce)
+	  QToolTip::add( shufflebutton, 	i18n("Random Play") );
+	else
+	  QToolTip::add( shufflebutton, 	i18n("Shuffle Play") );
+
         QToolTip::add( cddbbutton, 	i18n("CDDB Dialog") );
         QToolTip::add( volSB, 		i18n("CD Volume Control") );
       } else {
@@ -708,7 +717,7 @@ void
 KSCD::stopClicked()
 {
 
-    looping = FALSE;
+  //    looping = FALSE;
     randomplay = FALSE;
     stoppedByUser = TRUE;
     statuslabel->setText(i18n("Stopped"));
@@ -880,20 +889,37 @@ KSCD::event( QEvent *e )
     return QWidget::event(e);
 } // event
 
+
+void 
+KSCD::loopOn()
+{
+  looping = true;
+  loopled->on();
+  loopled->show();
+  qApp->processEvents();
+  qApp->flushX();
+} // loopOn;
+
+void 
+KSCD::loopOff()
+{
+  looping = false;
+  loopled->off();
+  loopled->show();
+  qApp->processEvents();
+  qApp->flushX();
+} // loopOff;
+
 void 
 KSCD::loopClicked()
 {
-    randomplay = FALSE;
+  //    randomplay = FALSE;
 
     if(looping)
       {
-        looping  = FALSE;
+	loopOff();
       } else {
-        if(cur_cdmode == PLAYING)
-	  {
-            looping = TRUE;
-            statuslabel->setText(i18n("Loop"));
-	  }
+	loopOn();
       }
 } // loopClicked
 
@@ -904,7 +930,7 @@ KSCD::ejectClicked()
     return;
   if(!currentlyejected)
     {
-      looping = FALSE;
+      //      looping = FALSE;
       randomplay = FALSE;
       statuslabel->setText(i18n("Ejecting"));
       qApp->processEvents();
@@ -931,15 +957,16 @@ KSCD::ejectClicked()
 void 
 KSCD::randomSelected()
 {
-    looping = FALSE;
     if(randomplay == TRUE)
       {
         randomplay = FALSE;
       } else {
 	if( randomonce )
-	  statuslabel->setText(i18n("Shuffle"));
-	else
-	  statuslabel->setText(i18n("Random"));
+	  {
+	    statuslabel->setText(i18n("Shuffle"));
+	  } else {
+	    statuslabel->setText(i18n("Random"));
+	  }
 
         randomplay = TRUE;
 	
@@ -1200,22 +1227,31 @@ KSCD::randomtrack()
 	  /* Check to see if we are at the end of the list */
 	  if( (unsigned int)random_current >= playlist.count() ) 
 	    {
-	      /* We need to stop now */
-	      stopClicked();
-	      return 0;
+	      if( !looping )
+		{
+		  stopClicked();
+		  return 0;
+		} else {
+		  random_current=0;
+		}
 	    }
 	  int j = random_list[random_current++];
 	  playlistpointer = j;
 	  return( atoi( playlist.at(j) ) );
-	} else {
+	} else { // playlist.count > 0
 	  if( random_current >= cur_ntracks ) 
 	    {
-	      stopClicked();
-	      return 0;
+	      if( !looping )
+		{
+		  stopClicked();
+		  return 0;
+		} else {
+		  random_current = 0;
+		}
 	    }
 	  return( random_list[random_current++] );
-	}
-    }
+	} // playlist.count > 0
+    } // randomonce
   
   if( playlist.count() > 0)
     {
@@ -1313,13 +1349,14 @@ KSCD::cdMode()
 	    } else {
 	      statuslabel->setText( i18n("Random") );
 	    }
-        else if(looping)
-            statuslabel->setText( i18n("Loop") );
+	//        else if(looping)
+	//            statuslabel->setText( i18n("Loop") );
         else
             statuslabel->setText( i18n("Playing") );
 
         sprintf( p, "%02d  ", cur_track );
-        if(songListCB->count() == 0){
+        if(songListCB->count() == 0)
+	  {
             // we are in here when we start kscd and
             // the cdplayer is already playing.	
             int i = 0;
@@ -1465,6 +1502,7 @@ KSCD::setColors()
 
 
     queryled->setPalette( QPalette(colgrp,colgrp,colgrp) );
+    loopled->setPalette( QPalette(colgrp,colgrp,colgrp) );
 
     for (int u = 0; u< 5;u++){
         trackTimeLED[u]->setLEDoffColor(background_color);
