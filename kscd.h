@@ -175,7 +175,7 @@ public slots:
     void loopOff();
     void loopClicked();
     void cdMode();
-    void cdModeLong();
+    void cdModeChanged();
     void trackSelected(int);
     void showConfig();
     void incVolume();
@@ -222,7 +222,7 @@ protected:
     QString calculateDisplayedTime(int sec);
     QString calculateDisplayedTime(int sec, int track);
 
-    void updateDisplayedTrack(unsigned int track);
+    void updateDisplayedTrack(int);
 
     bool getArtist(QString& artist);
 

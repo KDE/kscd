@@ -82,9 +82,10 @@ extern "C" {
 #include "kvolumecontrol.h"
 
 #define N_TRACK_FIRST   1
-#define N_TRACK_STOP 0
 #define N_TRACK_UNKNOW -1
 #define N_TRACK_LAST   (cd->ntracks)
+#define CBID2TRACK(x) ((x)+1)
+#define TRACK2CBID(x) ((x)-1)
 
 static const char description[] = I18N_NOOP("KDE CD player");
 
@@ -531,7 +532,7 @@ void KSCD::setShuffle(int shuffle)
         if(WM_CDM_PLAYING == wm_cd_status())
             nextClicked();
     }
-    cdModeLong();
+    cdModeChanged();
 }
 
 void KSCD::stopClicked()
@@ -601,15 +602,15 @@ bool KSCD::nextClicked()
     return true;
 } // nextClicked()
 
-void KSCD::updateDisplayedTrack(unsigned int track)
+void KSCD::updateDisplayedTrack(int track)
 {
     setLEDs(calculateDisplayedTime(0, track));
     resetTimeSlider(true);
 
-    setSongListTo(track - 1);
+    setSongListTo(TRACK2CBID(track));
     tracklabel->setText(formatTrack(track, N_TRACK_LAST));
 
-    timeSlider->setRange(0, cd->trk[track - 1].length - 1);
+    timeSlider->setRange(0, cd->trk[track].length - 1);
     setTitle(track);
 } //updateDisplayedTrack(int track)
 
@@ -806,7 +807,7 @@ void KSCD::trackSelected( int cb_index )
     if (cb_index < 0)
         return;
 
-    unsigned int track = cb_index + 1;
+    int track = CBID2TRACK(cb_index);
     setShuffle(0);
 
     updateDisplayedTrack(track);
@@ -1121,11 +1122,11 @@ void KSCD::cdMode()
         }
     } else {
         prev_cdmode = cur_cdmode;
-        cdModeLong();
+        cdModeChanged();
     }
-}
+} /* cdMode */
 
-void KSCD::cdModeLong()
+void KSCD::cdModeChanged()
 {
     int cdmode = wm_cd_status();
     int track = currentTrack();
@@ -1205,7 +1206,7 @@ void KSCD::cdModeLong()
                 setLEDs("--:--");
                 populateSongList();
 
-                tracklabel->setText(formatTrack(N_TRACK_STOP, N_TRACK_LAST));
+                tracklabel->setText(formatTrack(N_TRACK_UNKNOW, N_TRACK_LAST));
 
                 setArtist(tracktitlelist.first());
                 setTitle(0);
@@ -1249,7 +1250,7 @@ void KSCD::cdModeLong()
             damn = true;
             break;
     }
-} /* cdMode */
+} /* cdModeChanged */
 
 void KSCD::setLEDs(const QString& symbols)
 {
