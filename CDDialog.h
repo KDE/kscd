@@ -75,7 +75,7 @@ protected:
     void keyPressEvent(QKeyEvent* e);
 public slots:
     void titleselected(int);
-    void titlechanged(const char*);
+    void titlechanged(const QString &);
     void trackchanged();
     void save();
     void extITB();
