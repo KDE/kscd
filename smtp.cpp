@@ -160,7 +160,7 @@ void SMTP::connectTimerTick(void)
 
     if(debugflag)
         printf("connecting to %s:%u ..... \n", serverHost.data(), hostPort);
-    sock = new KSocket(serverHost, hostPort);
+    sock = new KSocket(serverHost.ascii(), hostPort);
 
     if(sock == 0L || sock->socket() < 0){
         timeOutTimer.stop();

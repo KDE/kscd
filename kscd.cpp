@@ -289,7 +289,7 @@ void KSCD::initCDROM(){
 }
 
 
-QPushButton *KSCD::makeButton( int x, int y, int w, int h, const char *n )
+QPushButton *KSCD::makeButton( int x, int y, int w, int h, const QString& n )
 {
     QPushButton *pb = new QPushButton( n, this );
     pb->setGeometry( x, y, w, h );
@@ -641,7 +641,7 @@ void KSCD::playClicked()
             songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
         }
         for(; i < cur_ntracks; i++){
-            songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
+            songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>").ascii(), i+1));
         }
 
 
@@ -1184,7 +1184,7 @@ void KSCD::volChanged( int vol ){
         return;
 
     QString str;
-    str.sprintf(i18n("Vol: %02d%%"),vol);
+    str.sprintf(i18n("Vol: %02d%%").ascii(),vol);
     volumelabel->setText(str);
     cd_volume(vol, 10, 100); // 10 -> right == left balance
     volume = vol;
@@ -1292,11 +1292,11 @@ void KSCD::cdMode(){
                 songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
             }
             for(; i < cur_ntracks; i++){
-                songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
+                songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>").ascii(), i+1));
             }
 
 //            for (int i = 0; i < cur_ntracks; i++){
-//                songListCB->insertItem( QString( 0 ).sprintf(i18n("Track %02d"),i + 1 ) );
+//                songListCB->insertItem( QString( 0 ).sprintf(i18n("Track %02d").ascii(),i + 1 ) );
 //            }
             songListCB->setCurrentItem( cur_track - 1 );
             have_new_cd = false;
@@ -1345,7 +1345,7 @@ void KSCD::cdMode(){
                 songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
             }
             for(; i < cur_ntracks; i++){
-                songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
+                songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>").ascii(), i+1));
             }
 
 //            for (i = 0; i < cur_ntracks; i++)
@@ -1524,7 +1524,7 @@ void KSCD::readSettings()
             entry=cddbserverlist.next())
         {
             needtosave|=CDDB::normalize_server_list_entry(entry);
-            nlist.append(entry);
+            nlist.append(entry.ascii());
         }
         if(needtosave)
         {
@@ -1741,7 +1741,7 @@ void KSCD::get_cddb_info(bool _updateDialog){
             songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
         }
         for(; i < cur_ntracks; i++){
-            songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
+            songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>").ascii(), i+1).ascii());
         }
 
 
@@ -1777,10 +1777,10 @@ void KSCD::cddb_ready(){
     QString num;
 
     for(int i = 0 ; i < cd->ntracks; i++){
-        querylist.append(num.setNum(cd->cddbtoc[i].absframe));
+        querylist.append(num.setNum(cd->cddbtoc[i].absframe).ascii());
     }
 
-    querylist.append(num.setNum(cd->cddbtoc[cd->ntracks].absframe/75));
+    querylist.append(num.setNum(cd->cddbtoc[cd->ntracks].absframe/75).ascii());
     cddb_inexact_sentinel =false;
     cddb.queryCD(cd->magicID,querylist);
 
@@ -1796,7 +1796,7 @@ void KSCD::cddb_no_info(){
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
     tracktitlelist.clear();
-    tracktitlelist.append(i18n("No matching CDDB entry found."));
+    tracktitlelist.append(i18n("No matching CDDB entry found.").ascii());
     for(int i = 0 ; i < cd->ntracks; i++)
         tracktitlelist.append("");
 
@@ -1820,7 +1820,7 @@ void KSCD::cddb_failed(){
     if(debugflag)
         printf("cddb_failed() called\n");
     tracktitlelist.clear();
-    tracktitlelist.append(i18n("Error getting CDDB entry."));
+    tracktitlelist.append(i18n("Error getting CDDB entry.").ascii());
     for(int i = 0 ; i < cd->ntracks; i++)
         tracktitlelist.append("");
 
@@ -1846,7 +1846,7 @@ void KSCD::cddb_timed_out(){
     if(debugflag)
         printf("cddb_timed_out() called\n");
     tracktitlelist.clear();
-    tracktitlelist.append(i18n("CDDB query timed out."));
+    tracktitlelist.append(i18n("CDDB query timed out.").ascii());
     for(int i = 0 ; i <= cd->ntracks; i++)
         tracktitlelist.append("");
 
@@ -1939,7 +1939,7 @@ void KSCD::cddb_done()
         songListCB->insertItem( QString("").sprintf("%02d: %s", i, ptr));
     }
     for(; i < cur_ntracks; i++){
-        songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>"), i+1));
+        songListCB->insertItem( QString("").sprintf(i18n("%02d: <Unknown>").ascii(), i+1));
     }
 
 //    for (int i = 0; i < cur_ntracks; i++){
@@ -2071,7 +2071,7 @@ void KSCD::cycletimeout(){
 
     cycletimer->stop();
     QString str;
-    str.sprintf(i18n("Vol: %02d%%"),volume);
+    str.sprintf(i18n("Vol: %02d%%").ascii(),volume);
     volumelabel->setText(str);
 
 }
@@ -2371,10 +2371,10 @@ int main( int argc, char *argv[] )
 	}
 	
         if(strcmp(argv[i],"-h") == 0){
-            printf("KSCD "KSCDVERSION\
+            printf("KSCD "KSCDVERSION
                    " Copyright 1997-98 Bernd Johannes Wuebben wuebben@kde.org\n");
-            printf(i18n("-h: display commandline options\n"));
-            printf(i18n("-d: enable debugging output.\n"));
+            printf(i18n("-h: display commandline options\n").ascii());
+            printf(i18n("-d: enable debugging output.\n").ascii());
             exit(0);
         }
     }

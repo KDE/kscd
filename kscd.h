@@ -230,7 +230,7 @@ private:
     int 		time_display_mode;
     QString cd_device_str;
 
-    QPushButton     *makeButton( int, int, int, int, const char * );
+    QPushButton     *makeButton( int, int, int, int, const QString& );
 
     void		initWorkMan();
     //	void		checkMount();

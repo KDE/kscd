@@ -626,18 +626,18 @@ void CDDB::do_state_machine()
 
     case INEX_READ:
 
-	if(lastline.left(1) == QString("."))
+	if(lastline.at(0) == '.')
         {
 	    state = CDDB_DONE;
 	    timeouttimer.stop();
 	    emit cddb_inexact_read();
 	} else {
- 	    inexact_list.append(lastline);
+ 	    inexact_list.append(lastline.ascii());
         }
 	break;
 
     case CDDB_READING:
-	if(lastline.left(1).at(0) == '.')
+	if(lastline.at(0) == '.')
 	{
             close(cddbfh);
             cddbfh = 0;
@@ -671,7 +671,7 @@ void CDDB::do_state_machine()
 
     case CDDB_READ:
 
-	if(lastline.left(1) == "4")
+	if(lastline.at(0) == '4')
 	{
 	    state = ERROR_CDDB_READ;
 	    if(debugflag) fprintf(stderr,"ERROR_CDDB_READ\n");
@@ -696,7 +696,7 @@ void CDDB::do_state_machine()
         break;
 
     case GETTING_SERVER_LIST:
-	if(lastline.left(1) == QString("."))
+	if(lastline.at(0) == '.')
 	{
 	    if(debugflag) 
                 fprintf(stderr,"GOT SERVERLIST\n");
@@ -929,24 +929,24 @@ void CDDB::getData(
     key = "DTITLE=";
 
     getValue(key,value,data);
-    titles.append(value);
+    titles.append(value.ascii());
 
 
     int counter = 0;
     key = key.sprintf("TTITLE%d=",counter);
     while(getValue(key,value,data)){
-	titles.append(value);
+	titles.append(value.ascii());
 	key = key.sprintf("TTITLE%d=",++counter);
     }
 
     key = "EXTD=";
     getValue(key,value,data);
-    extlist.append(value);
+    extlist.append(value.ascii());
 
     counter = 0;
     key = key.sprintf("EXTT%d=",counter);
     while(getValue(key,value,data)){
-	extlist.append(value);
+	extlist.append(value.ascii());
 	key = key.sprintf("EXTT%d=",++counter);
     }
    
@@ -1025,14 +1025,14 @@ bool cddb_playlist_decode(QStrList& list, QString& str){
     while((pos2 = str.find(",",pos1,true)) != -1){
 
 	if(pos2 > pos1){
-	    list.append(str.mid(pos1,pos2 - pos1));
+	    list.append(str.mid(pos1,pos2 - pos1).ascii());
 	}
     
 	pos1 = pos2 + 1;
     }
   
     if(pos1 <(int) str.length())
-	list.append(str.mid(pos1,str.length()));
+	list.append(str.mid(pos1,str.length()).ascii());
 
     QString check;
     bool 	ok1;
@@ -1063,7 +1063,7 @@ bool cddb_playlist_decode(QStrList& list, QString& str){
 	}
     
 	list.remove(i);
-	list.insert(i, check);
+	list.insert(i, check.ascii());
 
     }
 
@@ -1143,11 +1143,11 @@ void cddb_encode(QString& str, QStrList &returnlist){
     }
 
     while(str.length() > 70){
-	returnlist.append(str.left(70));
+	returnlist.append(str.left(70).ascii());
 	str = str.mid(70,str.length());
     }
 
-    returnlist.append(str);
+    returnlist.append(str.ascii());
 
 }
 

@@ -236,10 +236,10 @@ void CDDBSetup::getData(QStrList& _serverlist,
     _serverlist.clear();
     _submitlist.clear();
     for(i = 0; i < server_listbox->count();i++){
-        _serverlist.append(server_listbox->text(i));
+        _serverlist.append(server_listbox->text(i).ascii());
     }
     for(i = 0; i < submission_listbox->count(); i++){
-        _submitlist.append(submission_listbox->text(i));
+        _submitlist.append(submission_listbox->text(i).ascii());
     }
     _basedir = basedirstring.copy();
     _submitaddress = submitaddressstring.copy();
@@ -248,7 +248,7 @@ void CDDBSetup::getData(QStrList& _serverlist,
     remote_enabled      = remote_cddb_cb->isChecked();
     http_proxy_enabled  = cddb_http_cb->isChecked();
     http_proxy_host     = proxy_host_ef->text();
-    http_proxy_port     = atoi(proxy_port_ef->text());
+    http_proxy_port     = atoi(proxy_port_ef->text().ascii());
 }
 
 void CDDBSetup::getCurrentServer(QString& ser)

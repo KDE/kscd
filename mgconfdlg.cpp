@@ -88,26 +88,18 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
 	  this,SLOT(brightness_changed(int)));  
 }
 
-
-
-
 void MGConfigDlg::width_changed(const QString &width) {
-
-  mgconfigdata.width = atoi(width);
+  mgconfigdata.width = width.toInt();
 }
-
 
 void MGConfigDlg::height_changed(const QString &height) {
-
-  mgconfigdata.height = atoi(height);
+  mgconfigdata.height = height.toInt();
 }
-
 
 void MGConfigDlg::brightness_changed(int value) {
 
   mgconfigdata.brightness = value;
 }
-
 
 void MGConfigDlg::help(){
     kapp->invokeHTMLHelp("kscd/kscd.html","");

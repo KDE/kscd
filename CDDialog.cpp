@@ -205,9 +205,9 @@ void CDDialog::setData(
 
     QString temp2;
     if(dl.hour() > 0)
-      temp2.sprintf(i18n("Total Time:\n%02d:%02d:%02d"),dl.hour(),dl.minute(),dl.second());
+      temp2.sprintf(i18n("Total Time:\n%02d:%02d:%02d").ascii(),dl.hour(),dl.minute(),dl.second());
     else
-      temp2.sprintf(i18n("Total Time:\n %02d:%02d"),dl.minute(),dl.second());
+      temp2.sprintf(i18n("Total Time:\n %02d:%02d").ascii(),dl.minute(),dl.second());
     total_time_label->setText(temp2);
 
     QString 	fmt;
@@ -263,7 +263,7 @@ void CDDialog::extIB(){
 
 //  ext_list.insert( item, text );
   ext_list.remove(item + 1);
-  ext_list.insert(item + 1, text);
+  ext_list.insert(item + 1, text.ascii());
 
   delete dialog;
 
@@ -285,7 +285,7 @@ void CDDialog::extITB(){
   QString text;
   dialog->getSelection(text);
 
-  ext_list.insert( 0 , text );
+  ext_list.insert( 0 , text.ascii() );
   ext_list.remove( 1 );
 
   delete dialog;
@@ -315,7 +315,7 @@ void CDDialog::trackchanged(){
 
   fmt.sprintf("%02d   %02d:%02d   %s",i+1,dml.minute(),dml.second(),trackedit->text().ascii());
 
-  track_list.insert(i+1,trackedit->text());
+  track_list.insert(i+1,trackedit->text().ascii());
   track_list.remove(i+2);
 
   listbox->setAutoUpdate(false);
@@ -358,7 +358,7 @@ void CDDialog::titlechanged(const QString &t){
 
 
   track_list.remove((uint)0);
-  track_list.insert(0,t);
+  track_list.insert(0, t.ascii());
 
 
 }
@@ -495,7 +495,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   cmd = "sendmail -tU";
   //  cmd = cmd.sprintf(formatstr.data(),subject.data());
 
-  if (debugflag ) printf(i18n("Submitting cddb entry: %s\n"),cmd.data());
+  if (debugflag ) printf(i18n("Submitting cddb entry: %s\n").ascii(),cmd.ascii());
   
   FILE* mailpipe;
   mailpipe = popen(cmd.data(),"w");
@@ -578,7 +578,7 @@ void CDDialog::save(){
   for(int i = 0; i < (int)pathlist.count();i++){
     QString temp = pathlist.at(i);
     temp = temp.replace( QRegExp("//"), "/" );
-    pathlist.insert(i,temp);
+    pathlist.insert(i,temp.ascii());
     pathlist.remove(i+1);
   }
 
@@ -794,7 +794,7 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
   t << "\n";
 
   file.close();
-  chmod(file.name(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH );
+  chmod(file.name().ascii(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH );
   return;
 
 }
