@@ -96,4 +96,4 @@ TerminalOptions=
 Path=
 Type=Application
 Terminal=0
-KDE-X-StartupNotify=true
+X-KDE-StartupNotify=true
