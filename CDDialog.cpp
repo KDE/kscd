@@ -458,6 +458,7 @@ CDDialog::upload()
       smtpMailer->setPort(smtpConfigData->serverPort.toUInt());
       
       smtpMailer->setSenderAddress(smtpConfigData->senderAddress);
+      smtpMailer->setSenderReplyTo(smtpConfigData->senderReplyTo);
       smtpMailer->setRecipientAddress(submitaddress);
       
       subject.sprintf("cddb %s %08lx", submitcat.utf8().data(), cdinfo.magicID);
@@ -559,7 +560,9 @@ CDDialog::save()
         ++it )
     (*it).replace( QRegExp("//"), "/" );
 
+  // Don't use the paths ?
   dialog->insertList(pathlist);
+
   dialog->setErrorString(i18n("Please select a Category or press Cancel"));
   dialog->setTitle(i18n("Under which category would you like to store this CDDB entry?"));
 
@@ -646,7 +649,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
   // Waste some disk space
   if(!upload) {
     t << "# Copyright (C) 1997-1999 Bernd Johannes Wuebben.\n";
-    t << "# Copyright (C) 2000 Dirk Foersterling.\n";
+    t << "# Copyright (C) 1999-2001 Dirk Foersterling.\n";
   }
   
 
@@ -663,10 +666,12 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
   tmp = QString("# Disc length: %1 seconds\n").arg(cdinfo.length);
   t << tmp;
   t << "#\n";
+  // FIXME: Only increase if the entry was received from freedb
   if(upload)
     tmp = QString("# Revision: %1\n").arg(++revision);
   else
     tmp = QString("# Revision: %1\n").arg(revision);
+
   t << tmp;
   t << "# Submitted via: Kscd "KSCDVERSION"\n";
   t << "#\n";

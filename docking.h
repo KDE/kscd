@@ -7,6 +7,7 @@
  *                      wuebben@math.cornell.edu
  *
  * This file was contributed by Harri Porten <porten@tu-harburg.de>
+ * Latest changes (dynamic tooltips) by Cristian Tibirna <tibirna@kde.org>
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -36,18 +37,24 @@
 #include <qpoint.h>
 #include <kdockwindow.h>
 
-extern int 	ibytes;
-extern int 	obytes;
+extern int      ibytes;
+extern int      obytes;
 
 class KSCD;
 
-class DockWidget : public KDockWindow {
+class DockWidget : public KSystemTray {
 
   Q_OBJECT
 
 public:
   DockWidget( KSCD* parent, const char *name=0);
   ~DockWidget();
+
+public slots:
+  void setToolTip(const QString& text);
+
+private:
+  QString tip;
 
 };
 

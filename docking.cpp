@@ -33,11 +33,11 @@
 #include <kpopupmenu.h>
 
 DockWidget::DockWidget( KSCD* parent, const char *name)
-  : KDockWindow( parent, name ) 
+    : KSystemTray( parent, name )
 {
 
     setPixmap( UserIcon("cdsmall") );
-      
+
       // popup menu for right mouse button
     QPopupMenu* popup = contextMenu();
 
@@ -48,16 +48,26 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     popup->insertItem(i18n("Next"), parent, SLOT(nextClicked()));
     popup->insertItem(i18n("Previous"), parent, SLOT(prevClicked()));
     popup->insertItem(i18n("Eject"), parent, SLOT(ejectClicked()));
+
+    tip = "";
+    setToolTip(tip);
 }
 
 DockWidget::~DockWidget() {
 }
 
+void DockWidget::setToolTip(const QString& text)
+{
+    if (tip == text)
+        return;
+    if (text.isEmpty())
+        tip = "KSCD";
+    else
+        tip = text;
+    QToolTip::remove(this);
+    QToolTip::add(this, tip);
+
+}
+
 
 #include "docking.moc"
-
-
-
-
-
-

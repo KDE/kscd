@@ -32,6 +32,9 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 
+#include <kcombobox.h>
+#include <kemailsettings.h>
+
 class SMTPConfig:public QDialog
 {
     Q_OBJECT
@@ -41,6 +44,8 @@ public:
         QString serverHost;
         QString serverPort;
         QString senderAddress;
+        QString senderReplyTo;
+        QString mailProfile;
     };
 
     SMTPConfig(QWidget *parent = NULL, const char *name = NULL, struct SMTPConfigData *_configData = NULL);
@@ -49,18 +54,24 @@ public:
 public slots:
     void commitData();
     void enableClicked();
-    
+    void mailProfileChanged(const QString &name);
+
 signals:
 
 protected:
     QGroupBox       *mainBox;
     QCheckBox       *enableCB;
+    QLabel          *mailProfileLabel;
+    KComboBox       *mailProfileCombo;
     QLabel          *serverHostLabel;
     QLineEdit       *serverHostEdit;
     QLabel          *serverPortLabel;
     QLineEdit       *serverPortEdit;
     QLabel          *senderAddressLabel;
     QLineEdit       *senderAddressEdit;
+    QLabel          *senderReplyToLabel;
+    QLineEdit       *senderReplyToEdit;
+    KEMailSettings  *kes;
 
 private:
     SMTPConfigData *configData;

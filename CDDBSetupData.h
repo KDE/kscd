@@ -46,6 +46,9 @@ protected:
     QLineEdit* basedir_edit;
     QListBox* server_listbox;
     QPushButton* update_button;
+    /* edm new section */
+    QCheckBox* enable_auto_save_cddb;
+    /* edm new section end */
     
     QCheckBox* remote_cddb_cb;
     QLineEdit* cddb_timeout_ef;

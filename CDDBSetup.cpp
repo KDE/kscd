@@ -169,6 +169,7 @@ CDDBSetup::insertData(const QStringList& _serverlist,
                       const QString& _basedir,
                       const QString& _submitaddress,
                       const QString& _current_server,
+                      const bool&    auto_save_enabled,
                       const bool&    remote_enabled,
                       const unsigned short int& cddb_timeout,
                       const bool&    http_proxy_enabled,
@@ -198,9 +199,9 @@ CDDBSetup::insertData(const QStringList& _serverlist,
 
     basedirstring = _basedir.copy();
     basedir_edit->setText(basedirstring);
-
+    enable_auto_save_cddb->setChecked(auto_save_enabled);
     remote_cddb_cb->setChecked(remote_enabled);
-
+    
     char timeout_str[40];
     sprintf(timeout_str,"%d",cddb_timeout);
     cddb_timeout_ef->setText(timeout_str);
@@ -246,6 +247,7 @@ CDDBSetup::getData(QStringList& _serverlist,
                    QString& _basedir,
                    QString& _submitaddress,
                    QString& _current_server,
+		   bool&    auto_save_enabled,
                    bool&    remote_enabled,
                    unsigned short int &cddb_timeout,
                    bool&    http_proxy_enabled,
@@ -269,6 +271,7 @@ CDDBSetup::getData(QStringList& _serverlist,
 
     _current_server     = current_server_string.copy();
     remote_enabled      = remote_cddb_cb->isChecked();
+    auto_save_enabled   = enable_auto_save_cddb->isChecked();
     cddb_timeout        = atoi(cddb_timeout_ef->text().ascii());
     http_proxy_enabled  = cddb_http_cb->isChecked();
     http_proxy_host     = proxy_host_ef->text();
