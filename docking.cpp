@@ -41,13 +41,11 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
       // popup menu for right mouse button
     QPopupMenu* popup = contextMenu();
 
-    popup->insertItem(i18n("Play/Pause"), parent, SLOT(playClicked()));
-    popup->insertItem(i18n("Stop"), parent, SLOT(stopClicked()));
-    popup->insertItem(i18n("Forward"), parent, SLOT(fwdClicked()));
-    popup->insertItem(i18n("Backward"), parent, SLOT(bwdClicked()));
-    popup->insertItem(i18n("Next"), parent, SLOT(nextClicked()));
-    popup->insertItem(i18n("Previous"), parent, SLOT(prevClicked()));
-    popup->insertItem(i18n("Eject"), parent, SLOT(ejectClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_play", KIcon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_stop", KIcon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_end", KIcon::Small), i18n("Next"), parent, SLOT(nextClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_start", KIcon::Small), i18n("Previous"), parent, SLOT(prevClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_eject", KIcon::Small), i18n("Eject"), parent, SLOT(ejectClicked()));
 
     tip = "";
     setToolTip(tip);
