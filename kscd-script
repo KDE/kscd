@@ -325,7 +325,7 @@ if [ `/usr/bin/uname -s` = "NetBSD" ]; then
 	fi
 else
 	# FreeBSD
-	def_device=/dev/cdrom
+	def_device=/dev/acd0c
 fi
 
 echo $ac_n "Please specify your cdrom device [$def_device]:$ac_c"
