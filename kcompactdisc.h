@@ -240,6 +240,7 @@ private:
     unsigned m_previousTrack;
     void checkDeviceStatus();
     QString discStatus(int status);
+    class KCompactDiscPrivate *d;
 
 private slots:
     void timerExpired();
