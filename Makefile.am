@@ -57,9 +57,9 @@ EXTRA_DIST = kscd.xpm mini-kscd.xpm kscdlogo.xpm xmcd.desktop kscd.desktop kscd-
 
 install-data-local:
 	for i in $(CDDB_DIRS); do \
-	if test ! -d $(CDDBDIR)/$$i; then \
-		$(mkinstalldirs) $(CDDBDIR)/$$i ;\
-		chmod 0777 $(CDDBDIR)/$$i ;\
+	if test ! -d $(DESTDIR)$(CDDBDIR)/$$i; then \
+		$(mkinstalldirs) $(DESTDIR)$(CDDBDIR)/$$i ;\
+		chmod 0777 $(DESTDIR)$(CDDBDIR)/$$i ;\
 	fi ;\
 	done 
 	$(mkinstalldirs) $(kde_icondir)
