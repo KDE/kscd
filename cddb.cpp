@@ -156,18 +156,21 @@ CDDB::setalarm()
 void 
 CDDB::cddbgetServerList(QString& _server)
 {
-    char ser   [CDDB_FIELD_BUFFER_LEN];
-    char por   [CDDB_FIELD_BUFFER_LEN];
-    char proto [CDDB_FIELD_BUFFER_LEN];
-    char extra [CDDB_FIELD_BUFFER_LEN];
+    protocol = UNKNOWN;
   
-    sscanf(_server.ascii(),"%s %s %s %s",ser,proto,por,extra);
-  
-    hostname  = ser;
-    port      = atoi(por);
-    cgi       = extra;
+    QStringList fields = QStringList::split(' ', _server);
 
-    protocol=decodeTransport(proto);
+    if (fields.count() > 0)
+        hostname = fields[0];
+    if (fields.count() > 1) {
+        fields[1].truncate(20);
+        protocol = decodeTransport(fields[1].ascii());
+    }
+    if (fields.count() > 2)
+        port = fields[2].toInt();
+    if (fields.count() > 3)
+        cgi = fields[3];
+
 
     kdDebug() << "GETTING SERVERLIST\n" << endl;
 
@@ -196,18 +199,22 @@ CDDB::cddbgetServerList(QString& _server)
 void 
 CDDB::cddb_connect(QString& _server)
 {
-    char ser[CDDB_FIELD_BUFFER_LEN];
-    char por[CDDB_FIELD_BUFFER_LEN];
-    char proto[CDDB_FIELD_BUFFER_LEN];
-    char extra[CDDB_FIELD_BUFFER_LEN];
-  
-    sscanf(_server.ascii(),"%s %s %s %s",ser,proto,por,extra);
-  
-    hostname  = ser;
-    port      = atoi(por);
-    cgi       = extra;
-    protocol  = decodeTransport(proto);
-  
+     protocol = UNKNOWN;
+
+     QStringList fields = QStringList::split(' ', _server);
+
+     if (fields.count() > 0)
+         hostname = fields[0];
+     if (fields.count() > 1) {
+         fields[1].truncate(20);
+         protocol = decodeTransport(fields[1].ascii());
+     }
+     if (fields.count() > 2)
+         port = fields[2].toInt();
+     if (fields.count() > 3)
+         cgi = fields[3];
+
+
     mode = REGULAR;
     if(protocol==CDDBP)
       {
@@ -532,28 +539,31 @@ CDDB::do_state_machine()
 	  break;
 	  
 	case HTTP_REQUEST:
-	  //Parse responce and check numeric code.
-	char proto [CDDB_FIELD_BUFFER_LEN];
-	char code  [CDDB_FIELD_BUFFER_LEN];
-	sscanf(lastline.ascii(),"%s %s",proto,code);
-	if(strcmp(code,"200")==0)
-	  {
-		if(use_http_proxy)
-	      {
-			state=HTTP_HEADER;
-			kdDebug() << "HTTP request is OK. Reading HTTP header.\n" << endl;
-	      } else {
-			state=saved_state;
-			kdDebug() << "HTTP request is OK. Mooving on.\n" << endl;
-	      }
-	  } else {
-	    kdDebug() << "HTTP error: " << lastline << "\n" << endl;
-	    if(saved_state==SERVER_LIST_WAIT)
-	      {
-			emit get_server_list_failed();
-	      }
-	    state=CDDB_DONE; //TODO: some error state
-	  }
+        {
+		// Parse response and check numeric code.
+		QString code;
+		QStringList fields = QStringList::split(' ', lastline);
+		if (fields.count() > 1)
+			code = fields[1];
+		if(code == "200")
+		{
+			if(use_http_proxy)
+			{
+				state = HTTP_HEADER;
+				kdDebug() << "HTTP request is OK. Reading HTTP header.\n" << endl;
+			} else {
+				state = saved_state;
+				kdDebug() << "HTTP request is OK. Mooving on.\n" << endl;
+			}
+		} else {
+			kdDebug() << "HTTP error: " << lastline << "\n" << endl;
+			if (saved_state == SERVER_LIST_WAIT)
+			{
+				emit get_server_list_failed();
+			}
+			state = CDDB_DONE; //TODO: some error state
+		}
+	}
 	break;
 	
 	case INIT:
@@ -761,24 +771,22 @@ CDDB::serverList(QStringList& list)
 void
 CDDB::parse_serverlist_entry()
 {
-    char serv  [CDDB_FIELD_BUFFER_LEN];
-    char po    [CDDB_FIELD_BUFFER_LEN];
-    char proto [CDDB_FIELD_BUFFER_LEN];
-    char extra [CDDB_FIELD_BUFFER_LEN];
-  
-    QCString tempstr;
+    QString tempstr;
 
+    QStringList sl = QStringList::split(' ', lastline);
     if(protocol_level<3)
       {
-        sscanf(lastline.ascii(),"%s %s",serv,po);
-        tempstr = tempstr.sprintf("%s cddbp %s -",serv,po);
-        serverlist.append(tempstr);
+        if (sl.count() > 1) {
+        	tempstr = sl[0] + " cddbp " + sl[1] + " -";
+		serverlist.append(tempstr);
+	}
       } else {
-        sscanf(lastline.ascii(),"%s %s %s %s",serv,proto,po,extra);
-        tempstr = tempstr.sprintf("%s %s %s %s",serv,proto,po,extra);
-	//         transport tr=decodeTransport(proto);
-	//         if(tr==CDDBP || tr==CDDBHTTP)
-        serverlist.append(tempstr);
+        if (sl.count() > 3) {
+		tempstr = sl[0] + " " + sl[1] + " " + sl[2] + " " + sl[3];
+		//         transport tr=decodeTransport(proto);
+		//         if(tr==CDDBP || tr==CDDBHTTP)
+	        serverlist.append(tempstr);
+	}
       }
 } // parse_serverlist_entry
 
@@ -1206,16 +1214,12 @@ cddb_encode(QString& str, QStringList &returnlist)
 bool 
 CDDB::normalize_server_list_entry(QString &entry)
 {
-    char serv [CDDB_FIELD_BUFFER_LEN];
-    char proto[CDDB_FIELD_BUFFER_LEN];
-    char po   [CDDB_FIELD_BUFFER_LEN];
-    char extra[CDDB_FIELD_BUFFER_LEN];
+    QStringList sl = QStringList::split(' ', entry);
     
-    if(sscanf(entry.ascii(),"%s %s %s %s",serv,proto,po,extra)==2) 
+    if(sl.count() == 2)
       {
 	// old format
-	sprintf(extra,"%s cddbp %s -",serv, proto);
-	entry=extra;
+	entry = sl[0] + " cddbp " + sl[1] + " -";
 	return true;
       } else {
 	// Otherwise let us leave the item unchanged.
