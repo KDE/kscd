@@ -54,6 +54,7 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
       list_box->setColumnMode(QListBox::FitToWidth);
       lay1->addWidget ( list_box );
       connect(list_box,SIGNAL(highlighted(int)),SLOT(setStatusBar(int)));
+      connect(list_box,SIGNAL(selected(int)), SLOT(checkit()));
     } else {
       edit = new QMultiLineEdit(this,"debugwindow");
       lay1->addWidget ( edit );

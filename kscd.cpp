@@ -1044,13 +1044,14 @@ KSCD::ejectClicked()
         return;
     if(!currentlyejected)
     {
-            randomplay = FALSE;
+      randomplay = FALSE;
       statuslabel->setText(i18n("Ejecting"));
       qApp->processEvents();
       qApp->flushX();
       setArtistAndTitle("", "");
       tracktitlelist.clear();
       extlist.clear();
+      category = "";
 
       wm_cd_stop();
       //  timer->stop();
