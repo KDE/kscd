@@ -281,11 +281,11 @@ CDDialog::extIB()
 
   if (!trackTitle.isNull())
   {
-    dialogTitle = i18n("Use this editor to annotate track #%1: %2.").arg(trackNumber).arg(trackTitle);
+    dialogTitle = i18n("Use this editor to annotate track #%1: %2").arg(trackNumber).arg(trackTitle);
   }
   else
   {
-    dialogTitle = i18n("Use this editor to annotate track number %1.").arg(trackNumber);
+    dialogTitle = i18n("Use this editor to annotate track #%1.").arg(trackNumber);
   }
 
   InexactDialog dialog(0,"dialog",false);
@@ -307,7 +307,7 @@ CDDialog::extITB()
 {
   InexactDialog dialog(0,"dialog",false);
   dialog.insertText(ext_list.first());
-  dialog.setTitle(i18n("User this editor to annotate this album."));
+  dialog.setTitle(i18n("Use this editor to annotate this album."));
 
   if(dialog.exec() == QDialog::Accepted)
   {
