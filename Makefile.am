@@ -10,12 +10,12 @@ METASOURCES = AUTO
 
 noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
 	CDDialog.h CDDialogData.h CDDBSetup.h CDDBSetupData.h mgconfdlg.h \
-	configdlg.h version.h docking.h smtpconfig.h \
-	smtp.h configWidget.h kvolumecontrol.h
+	configdlg.h version.h docking.h \
+	configWidget.h kvolumecontrol.h
 
 kscd_SOURCES = kvolumecontrol.cpp panel.ui kscd.cpp kscd.skel configdlg.cpp ledlamp.cpp CDDialog.cpp \
 	       CDDialogData.cpp CDDBSetup.cpp CDDBSetupData.cpp docking.cpp \
-	       smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
+	       inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
 	       configWidget.cpp configWidgetUI.ui
 
 kscd_LDFLAGS = $(all_libraries) -lkutils

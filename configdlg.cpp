@@ -37,7 +37,6 @@
 
 #include "configdlg.h"
 #include "configWidget.h"
-#include "smtpconfig.h"
 #include "kscd.h"
 #include "version.h"
 
@@ -115,11 +114,6 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
 
 ConfigDlg::~ConfigDlg()
 {
-}
-
-void ConfigDlg::updateGlobalSettings()
-{
-    mSMTPConfig->updateGlobalSettings();
 }
 
 void ConfigDlg::slotApply()

@@ -33,7 +33,6 @@
 class KSCD;
 class configWidget;
 class CDDBSetup;
-class SMTPConfig;
 class MGConfigDlg;
 
 class ConfigDlg : public KDialogBase 
@@ -49,8 +48,6 @@ class ConfigDlg : public KDialogBase
          */
         CDDBSetup* cddb() { return mCDDBConfig; }
 
-        void updateGlobalSettings();
-
     protected slots: 
         void slotApply();
         void slotOk();
@@ -59,7 +56,6 @@ class ConfigDlg : public KDialogBase
     private:
         configWidget* mKCSDConfig;
         CDDBSetup* mCDDBConfig;
-        SMTPConfig* mSMTPConfig;
         KSCD* mPlayer;
 #ifdef KSCDMAGIC
         MGConfigDlg* mMagicConfig;
@@ -69,8 +65,7 @@ class ConfigDlg : public KDialogBase
         {
             KSCDPAGE  = 0,
             CDDBPAGE  = 1,
-            SMTPPAGE  = 2,
-            ABOUTPAGE = 3
+            ABOUTPAGE = 2
         };
 };
 #endif
