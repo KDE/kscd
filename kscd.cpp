@@ -207,6 +207,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   setupPopups();
 
+  m_actions->readShortcutSettings("Shortcuts");
+
   if (Prefs::looping())
   {
     loopled->on();
