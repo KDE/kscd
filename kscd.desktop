@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 GenericName=CD Player
-GenericName[af]=cd speler
+GenericName[af]=Cd Speler
 GenericName[ar]=مشغل أقراص موسيقية
 GenericName[be]=Прайгравальнік CD
 GenericName[bg]=CD плеар
@@ -45,7 +45,7 @@ GenericName[zh_TW]=CD 播放器
 GenericName[zu]=Umdlali we CD
 BinaryPattern=kscd;
 Name=KsCD
-Name[af]=kscd
+Name[af]=Kscd
 Name[eo]=Lumdiskludilo
 Name[sv]=Kscd
 Name[xx]=xx
