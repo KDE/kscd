@@ -41,6 +41,7 @@
 DockWidget::DockWidget( KSCD* parent, const char *name)
     : KSystemTray( parent, name )
 {
+    m_popup = 0;
     setPixmap( loadIcon("cdsmall") );
 
     KActionCollection* actionCollection = parent->actionCollection();
@@ -74,7 +75,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
     m_popup = new KPassivePopup(this);
 
     QHBox* box = new QHBox(m_popup);
-
+    
     if (addButtons)
     {
         QPushButton* backButton = new QPushButton(m_backPix, 0, box, "popup_back");

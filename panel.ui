@@ -8,7 +8,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>406</width>
+            <width>412</width>
             <height>175</height>
         </rect>
     </property>
@@ -116,6 +116,9 @@
                 <widget class="QSlider">
                     <property name="name">
                         <cstring>volumeSlider</cstring>
+                    </property>
+                    <property name="maxValue">
+                        <number>100</number>
                     </property>
                     <property name="orientation">
                         <enum>Horizontal</enum>
@@ -412,6 +415,7 @@
 <tabstops>
     <tabstop>songListCB</tabstop>
     <tabstop>timeSlider</tabstop>
+    <tabstop>volumeSlider</tabstop>
     <tabstop>playPB</tabstop>
     <tabstop>stopPB</tabstop>
     <tabstop>ejectPB</tabstop>

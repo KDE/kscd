@@ -152,7 +152,7 @@ public:
     bool digitalPlayback();
     void setDevicePaths(QString cd_device, QString audio_system, QString audio_device);
     QStringList audioSystems() { return audio_systems_list; }
-    
+
     KActionCollection* actionCollection() { return m_actions; }
 
 signals:
@@ -171,7 +171,7 @@ public slots:
     void prevClicked();
     void stopClicked();
     void ejectClicked();
-    void jumpToTime(int seconds);
+    void jumpToTime(int seconds, bool forcePlay = false);
     void quitClicked();
     void loopOn();
     void loopOff();
@@ -197,7 +197,7 @@ protected slots:
     void configDone();
     void configureKeys();
     void setIcons();
-    
+
     void timeSliderPressed();
     void timeSliderReleased();
     void timeSliderMoved(int seconds);
@@ -206,14 +206,13 @@ protected:
     // mostly start up stuff
     void readSettings();
     void initFont();
-    void initWorkMan();
     void drawPanel();
     void setupPopups();
     void setLEDs(const QString& symbols);
     void resetTimeSlider(bool enabled);
 
     void dragTime(int sec);
-    
+
     void closeEvent( QCloseEvent *e );
     void keyPressEvent( QKeyEvent* e );
     bool event( QEvent *e );
@@ -223,9 +222,9 @@ protected:
     QString calculateDisplayedTime();
     QString calculateDisplayedTime(int sec);
     QString calculateDisplayedTime(int sec, int track);
-    
+
     void updateDisplayedTrack(int track);
-    
+
     bool getArtist(QString& artist);
 
     void clearSongList();
@@ -273,9 +272,6 @@ private:
     QStringList         audio_systems_list;
 
     QPushButton         *makeButton( int, int, int, int, const QString& );
-
-
-
     void cdtext(struct cdtext_info* p_cdtext);
 
   /**
@@ -292,13 +288,9 @@ private:
    */
     void setArtistAndTitle(const QString& artist, const QString& title);
 
-    int             tmppos;
-    int             save_track;
-
     QStringList     pathlist;
     QStringList     tracktitlelist;
     QStringList     playlist;
-    int             playlistpointer;
     QStringList     extlist;
     QString         category;
     QString         genre;
