@@ -117,6 +117,7 @@ class KSCD : public kscdPanelDlg, public KSessionManaged, virtual public DCOPObj
 
 
 k_dcop:
+    bool playing();
     void play() { playClicked(); }
     void stop() { stopClicked(); }
     void previous() { prevClicked(); }

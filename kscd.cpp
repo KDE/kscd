@@ -1954,6 +1954,11 @@ void KSCD::jumpTracks()
     jumpToTrack = 0;
 } // jumpTracks
 
+bool KSCD::playing()
+{
+    return ( wm_cd_status() == WM_CDM_PLAYING );
+}
+
 int KSCD::currentTrack()
 {
     return wm_cd_getcurtrack();
