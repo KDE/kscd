@@ -48,3 +48,19 @@ dnl +-------------------------+
 dnl | End KSCD checks         |
 dnl +-------------------------+
 
+dnl Apparently kscd (or at least kscdmagic) doesn't compile
+dnl on *bsd. BSDers, it's up to you now :-)
+dnl On other Unixes than linux or bsd, I don't know, so let's try
+dnl yes for now (David).
+
+AC_MSG_CHECKING(if kscd can be compiled)
+case "$host" in
+  *-*-linux*) kscd_compile=yes;;
+  *-*-*bsd*) kscd_compile=no;;
+  *) kscd_compile=yes;;
+esac
+AC_MSG_RESULT($kscd_compile)
+if test "$kscd_compile" = "no"; then
+  DO_NOT_COMPILE="$DO_NOT_COMPILE kscd"
+fi
+
