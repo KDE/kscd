@@ -2119,6 +2119,13 @@ void KSCD::setSongListTo(int whichTrack)
     QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
 }
 
+static const KCmdLineOptions options[] =
+{
+	{ "show", I18N_NOOP("Show window on startup"), 0 },
+	KCmdLineLastOption
+};
+
+
 /**
  * main()
  */
@@ -2139,6 +2146,7 @@ int main( int argc, char *argv[] )
     aboutData.addCredit("freedb.org", I18N_NOOP("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
     KCmdLineArgs::init( argc, argv, &aboutData );
+    KCmdLineArgs::addCmdLineOptions( options );
 
     KUniqueApplication::addCmdLineOptions();
 
@@ -2158,7 +2166,12 @@ int main( int argc, char *argv[] )
     a.setMainWidget( k );
 
     k->setCaption(a.caption());
-    k->initialShow();
+    
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    if (args->isSet("show"))
+        k->show();
+    else
+    	k->initialShow();
 
     return a.exec();
 } // main()
