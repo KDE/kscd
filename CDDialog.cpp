@@ -395,43 +395,9 @@ CDDialog::upload()
   if(!checkit())
     return;
 
-  /*
-  switch( KMessageBox::information( this,
-i18n(
-"The submission you are about to make will go to the test server\n"\
-"cddb-test@cddb.com. This is because this is the first release of\n"\
-"the cddb addition to Kscd and I need to avoid corruption\n"\
-"of the remote cddb data bases due to possible bugs in Kscd.\n"\
-"Since we need about a 100 error free test submissions\n"\
-"before we will be granted write acces to the 'true' cddb databases, 
-I would like you ask you to upload as many test submissions as possible.\n"\
-"You don't need to try to find a CD that is not in the database \n"\
-"(thought that would be helpful),it suffices to submit existing\n"\
-"entries with Kscd.\n"\
-"After submission you should receive a mail notifying you of success or\n"\
-"or failure of your submission. Should you receive a failure notice\n"\
-"please forward the failure report to me: <wuebben@kde.org>\n"\
-"Check back often for the availablity of a fully enabled version of kscd.\n"\
-"Thank you for your support.\n"),
-				    i18n("OK"),
-				    i18n("Cancel"),
-				    0,
-				    1 ) ){
-
-  case 0: 
-    break;
-  case 1: 
-    return;
-    break;
-  }
-
-  */
-
-
   InexactDialog *dialog;
 
   dialog = new InexactDialog(0,"Dialog",true);
-
 
   QStrList catlist;
 
@@ -468,15 +434,6 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   kapp->flushX();
 
 
-/*  QString subject;
-  subject.sprintf("cddb %s %08x",submitcat.data(),cdinfo.magicID);
-
-  QString formatstr;
-  //  formatstr = mailcmd + " cddb-test@cddb.cddb.com";
-  formatstr = mailcmd;
-  formatstr += " ";
-  formatstr += submitaddress;
-  */
   if(smtpConfigData->enabled)
     {
       debug("Submitting cddb entry via SMTP...\n");
@@ -488,15 +445,10 @@ I would like you ask you to upload as many test submissions as possible.\n"\
       QString s;
       QString subject;
       
-      while (!ti.eof()){
+      while (!ti.eof())
+	{
           s += ti.readLine() + "\r\n";
-//          if(!ti.eof()){
-              //  mimetranslate(s);
-//              to << s. << '\n';
- //         }
-      }
-
-//      smtpMailer = new SMTP;
+	}
 
       smtpMailer->setServerHost(smtpConfigData->serverHost);
       smtpMailer->setPort(smtpConfigData->serverPort.toUInt());
@@ -515,10 +467,8 @@ I would like you ask you to upload as many test submissions as possible.\n"\
 
       
   QString cmd;
-  //  cmd = cmd.sprintf("mail -s \"%s\" cddb-test@cddb.cddb.com",subject.data());
-  //  cmd = cmd.sprintf("sendmail wuebben@math.cornell.edu");
+
   cmd = "sendmail -tU";
-  //  cmd = cmd.sprintf(formatstr.data(),subject.data());
 
   debug("Submitting cddb entry: %s\n",cmd.ascii());
   
@@ -536,12 +486,11 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   }
   
   QFile file(tempfile);
-  //  QFile file2("/home/wuebben/test.txt"); // ******
 
   file.open(IO_ReadOnly);
-  //file2.open(IO_ReadWrite); // ******
+
   QTextStream ti(&file);
-  //QTextStream to(&file2); // ******
+
 
   QTextStream to(mailpipe,IO_WriteOnly );
 

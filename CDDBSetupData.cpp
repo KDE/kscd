@@ -82,8 +82,8 @@ CDDBSetupData::CDDBSetupData
 	server_listbox->setMaximumSize( 32767, 32767 );
 	server_listbox->setFrameStyle( 51 );
 	server_listbox->setLineWidth( 2 );
-	server_listbox->insertItem( "www.cddb.com cddbp 8880 -" );
-	server_listbox->insertItem( "wwcddb.moonsoft.com http 80 /~cddb/cddb.cgi" );
+	server_listbox->insertItem( "freedb.freedb.org cddbp 8880 -" );
+	server_listbox->insertItem( "www.freedb.org http 80 /~cddb/cddb.cgi" );
 	server_listbox->setBottomScrollBar( TRUE );
 	server_listbox->setMultiSelection( FALSE );
 

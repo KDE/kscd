@@ -34,10 +34,10 @@
 
 #include <ksock.h>
 
-#define DEFAULT_SUBMIT_EMAIL "xmcd-cddb@amb.org"
-#define DEFAULT_TEST_EMAIL "cddb-test@xmcd.com"
-#define DEFAULT_CDDB_SERVER "us.cddb.com cddbp 8880 -"
-#define DEFAULT_CDDBHTTP_SERVER "us.cddb.com http 80 /~cddb/cddb.cgi"
+#define DEFAULT_SUBMIT_EMAIL "freedb-submit@freedb.org"
+#define DEFAULT_TEST_EMAIL ""
+#define DEFAULT_CDDB_SERVER "freedb.freedb.org cddbp 888 -"
+#define DEFAULT_CDDBHTTP_SERVER "freedb.freedb.org http 80 /~cddb/cddb.cgi"
 
 #define CDDB_READ_BUFFER_LEN  2024
 #define CDDB_FIELD_BUFFER_LEN 256
