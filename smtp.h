@@ -74,6 +74,7 @@ public:
     QString getLastLine(){return lastLine;};
     
     void setSenderAddress(const QString& sender);
+    void setSenderReplyTo(const QString& replyto);
     void setRecipientAddress(const QString& recipient);
     void setMessageSubject(const QString& subject);
     void setMessageBody(const QString& message);
@@ -141,6 +142,7 @@ private:
     bool finished;
     
     QString senderAddress;
+    QString senderReplyTo;
     QString recipientAddress;
     QString messageSubject;
     QString messageBody;
