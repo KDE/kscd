@@ -112,11 +112,10 @@ KSCD::KSCD( QWidget *parent, const char *name )
     jumpToTrack(0L),
     cddrive_is_ok(true),
     have_new_cd(true),
-    //updateDialog(false), //!!!!
     updateTime(true),
-    cddb(0),
     revision(0), // The first freedb revision is "0" //!!!!
     year(0),
+    cddb(0),
     m_dockWidget(0)
 {
   random_current      = random_list.begin();
@@ -1221,8 +1220,8 @@ void KSCD::CDDialogSelected()
     {
         cddialog = new CDDBDlg(this);
 
-        cddialog->setData(cd,artist,title,tracktitlelist,extlist,xmcd_data,category, genre,
-                        revision,year,playlist,pathlist);
+        cddialog->setData(cd,artist,title,tracktitlelist,extlist,category, genre,
+                        revision,year,playlist);
 
         connect(cddialog,SIGNAL(cddbQuery()),SLOT(get_cddb_info()));
         connect(cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
@@ -1388,8 +1387,8 @@ void KSCD::cddb_done(CDDB::Result result)
 
     // In case the cddb dialog is open, update it
     if (cddialog)
-      cddialog->setData(cd,artist,title,tracktitlelist,extlist,xmcd_data,category, genre,
-                        revision,year,playlist,pathlist);
+      cddialog->setData(cd,artist,title,tracktitlelist,extlist,category, genre,
+                        revision,year,playlist);
 
     led_off();
 } // cddb_done

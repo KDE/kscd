@@ -85,13 +85,11 @@ void CDDBDlg::setData(
 	const QString& _title,
         const QStringList& tracktitlelist,
         const QStringList& extlist,
-        const QString& _xmcd_data,
         const QString& cat,
         const QString& _genre,
         int rev,
         int _year,
-        const QStringList& _playlist,
-        const QStringList& _pathlist
+        const QStringList& _playlist
         )
 {
   int ntr;
@@ -100,13 +98,11 @@ void CDDBDlg::setData(
   title = _title;
   ext_list = extlist;
   track_list = tracktitlelist;
-  xmcd_data = _xmcd_data.copy();
   category = cat.copy();
   genre = _genre.copy();
   revision = rev;
   year = _year;
   playlist = _playlist;
-  pathlist = _pathlist;
 
   ntr = track_list.count()+1;
 

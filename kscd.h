@@ -144,7 +144,6 @@ public:
 
 signals:
     void trackChanged(const QString&);
-    void newServerList(const QStringList&);
 
 public slots:
     void setColors();
@@ -214,8 +213,6 @@ protected:
 
     void updateDisplayedTrack(int track);
 
-    bool getArtist(QString& artist);
-
     void clearSongList();
     void setSongListTo(int whichTrack);
     void populateSongList();
@@ -266,15 +263,16 @@ private:
     void updateArtistAndTitle();
     void setTitle(int track);
 
-    QStringList     pathlist;
+    QString         infoStatus;
     QStringList     tracktitlelist;
     QStringList     playlist;
     QStringList     extlist;
     QString         artist;
     QString         title;
-    QString         infoStatus;
     QString         category;
     QString         genre;
+    int             revision;
+    int             year;
 
 // cddb support
 public slots:
@@ -291,13 +289,6 @@ private:
 
 private:
     KCDDB::Client*  cddb;
-    QString         xmcd_data;
-    QStringList     cddbserverlist;
-    QString         current_server;
-    QStringList     cddbsubmitlist;
-    //bool            updateDialog;
-    int             revision;
-    int             year;
     KActionCollection* m_actions;
     KToggleAction* m_togglePopupsAction;
     KVolumeControl* m_volume;

@@ -46,17 +46,14 @@ class CDDBDlg : public KDialogBase
       const QString& title,
       const QStringList& tracktitlelist,
       const QStringList& extlist,
-      const QString& xmcddata,
       const QString& cat,
       const QString& _genre,
       int revision,
       int _year,
-      const QStringList& playlist,
-      const QStringList& pathlist
+      const QStringList& playlist
     );
 
     bool checkit();
-    void save_cddb_entry(QString& path,bool upload);
     void setCdInfo(KCDDB::CDInfo &info, const QString& category);
 
   public slots:
@@ -78,17 +75,13 @@ class CDDBDlg : public KDialogBase
     QString title;
     QStringList ext_list;
     QStringList track_list;
-    QStringList pathlist;
     QStringList catlist;
     QStringList playlist;
-    QString xmcd_data;
     int revision;
     int year;
     QString category;
-    QString playorder;
     QString genre;
     struct dialogcdinfo cdinfo;
-    bool messageNotSent;
     KCDDB::Client *cddbClient;
 };
 #endif // CDDBDLG_H
