@@ -48,20 +48,21 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   configdata.stopexit = true;
   configdata.ejectonfinish = false;
 
-  if(data){
-    configdata.background_color = data->background_color;
-    configdata.randomonce = true;
-    configdata.led_color = data->led_color;
-    configdata.tooltips = data->tooltips;
-    configdata.cd_device = data->cd_device;
-    configdata.mailcmd = data->mailcmd;
-    configdata.browsercmd = data->browsercmd;
-    configdata.use_kfm = data->use_kfm;
-    configdata.docking = data->docking;
-    configdata.autoplay = data->autoplay;
-    configdata.stopexit = data->stopexit;
-    configdata.ejectonfinish = data->ejectonfinish;
-  }
+  if(data)
+    {
+      configdata.background_color = data->background_color;
+      configdata.randomonce = true;
+      configdata.led_color = data->led_color;
+      configdata.tooltips = data->tooltips;
+      configdata.cd_device = data->cd_device;
+      configdata.mailcmd = data->mailcmd;
+      configdata.browsercmd = data->browsercmd;
+      configdata.use_kfm = data->use_kfm;
+      configdata.docking = data->docking;
+      configdata.autoplay = data->autoplay;
+      configdata.stopexit = data->stopexit;
+      configdata.ejectonfinish = data->ejectonfinish;
+    }
 
   colors_changed = false;
 
@@ -71,9 +72,8 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   box = new QGroupBox(this, "box");
   box->setGeometry(10,10,520,420);
 
-  label1 = new QLabel(this);
+  label1 = new QLabel(i18n("LED Color:"), this);
   label1->setGeometry(20+XOFF,25+YOFF,135,25);
-  label1->setText(i18n("LED Color:"));
   label1->setFixedSize( label1->sizeHint() );
 
   qframe1 = new QFrame(this);
@@ -86,9 +86,8 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   button1->setText(i18n("Change"));
   connect(button1,SIGNAL(clicked()),this,SLOT(set_led_color()));
 
-  label2 = new QLabel(this);
+  label2 = new QLabel(i18n("Background Color:"),this);
   label2->setGeometry(20+XOFF,55+YOFF,135,25);
-  label2->setText(i18n("Background Color:"));
 
   qframe2 = new QFrame(this);
   qframe2->setGeometry(155+XOFF,55+YOFF,30,25);
@@ -100,9 +99,8 @@ ConfigDlg::ConfigDlg(QWidget *parent, struct configstruct *data,const char *name
   button2->setText(i18n("Change"));
   connect(button2,SIGNAL(clicked()),this,SLOT(set_background_color()));
 
-  label5 = new QLabel(this);
+  label5 = new QLabel(i18n("CDROM Device:"), this);
   label5->setGeometry(20+XOFF,85+YOFF,135,25);
-  label5->setText(i18n("CDROM Device:"));
 
   cd_device_edit = new QLineEdit(this);
   cd_device_edit->setGeometry(155+XOFF,85+YOFF,200,25);

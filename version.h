@@ -1,1 +1,2 @@
-#define KSCDVERSION "1.2.7"
+#define KSCDVERSION "1.3.0"
+/*#define OLD_WM_CODE 1*/

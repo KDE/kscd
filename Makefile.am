@@ -6,26 +6,30 @@ appsdir = $(kde_appsdir)/Multimedia
 CDDBDIR = $(kde_datadir)/kscd/cddb/
 
 LDFLAGS	= $(LIB_KIO) $(all_libraries) $(KDE_RPATH)
-kscd_LDADD   = $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KSYCOCA) $(LIB_KDEUI)
+kscd_LDADD   = libwm/libworkman.la $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KSYCOCA) $(LIB_KDEUI)
 INCLUDES= $(all_includes)
 LINK    = $(CXXLINK)
 
 ####### Files
 
-noinst_HEADERS = kscd.h struct.h bwlednum.h ledlamp.h inexact.h \
+noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
 	CDDialog.h CDDialogData.h CDDBSetup.h CDDBSetupData.h mgconfdlg.h \
-	configdlg.h cddb.h version.h docking.h wmcdda.h smtpconfig.h \
+	configdlg.h cddb.h version.h docking.h smtpconfig.h \
 	smtp.h
+
+#	struct.h wmcdda.h
 
 kscd_SOURCES = kscd.cpp configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cpp \
 	CDDialogData.cpp CDDBSetup.cpp CDDBSetupData.cpp docking.cpp \
-	inexact.cpp cdinfo.c mgconfdlg.cpp \
-	plat_scor5.c plat_sun.c plat_hpux.c plat_linux.c plat_news.c \
-	plat_bsd386.c plat_ultrix.c cdrom.c scsi.c drv_toshiba.c drv_sony.c \
-	plat_svr4.c plat_freebsd.c plat_osf1.c plat_irix.c bwlednum.cpp \
-	smtpconfig.cpp smtp.cpp
+	smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp
 
-cddaslave_SOURCES = plat_sun_audio.c plat_sun_cdda.c cddaslave.c
+#	plat_scor5.c plat_sun.c plat_hpux.c plat_linux.c plat_news.c \
+#	plat_bsd386.c plat_ultrix.c cdrom.c scsi.c drv_toshiba.c drv_sony.c \
+#	plat_svr4.c plat_freebsd.c plat_osf1.c plat_irix.c
+	
+
+cddaslave_SOURCES = cddaslave.c
+cddaslave_LDADD = libwm/libworkman.la
 
 SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp \
 	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
@@ -74,7 +78,6 @@ install-data-local:
 messages:
 	$(XGETTEXT) *.cpp -o $(podir)/kscd.pot
 
-cddaslave.c:config.h
 cdrom.c:config.h
 plat_bsd386.c:config.h
 plat_freebsd.c:config.h

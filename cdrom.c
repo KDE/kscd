@@ -104,8 +104,8 @@ find_drive_struct(vendor, model, rev)
 int
 cddb_sum(int n)
 {
-	char	buf[12],
-		*p;
+	char	buf[12];
+	char    *p;
 	int	ret = 0;
 	long unsigned int ntemp = 0;
 	ntemp = (long unsigned int) n;

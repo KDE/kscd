@@ -26,6 +26,9 @@
 #include "version.h"
 #include "smtp.h"
 #include "smtpconfig.h"
+extern "C" {
+#include "libwm/include/workman.h"
+}
 
 #include <unistd.h>
 #include <klocale.h>
@@ -126,7 +129,7 @@ CDDialog::play(int i)
 
 void 
 CDDialog::setData(
-		  struct cdinfo_wm *cd,
+		  struct wm_cdinfo *cd,
 		  QStrList& tracktitlelist,
 		  QStrList& extlist,
 		  QStrList& discidl,
@@ -167,17 +170,17 @@ CDDialog::setData(
     
     cdinfo.cddbtoc =  new struct mytoc [cd->ntracks + 2];
 
-    cdinfo.magicID = cd->magicID;	/* cddb magic disk id            */
+    cdinfo.magicID = cddb_discid();	/* cddb magic disk id            */
     cdinfo.ntracks = cd->ntracks;	/* Number of tracks on the disc  */
     cdinfo.length  = cd->length;	/* Total running time in seconds */
 
 
     for( int i = 0; i < cd->ntracks + 1; i++)
       {
-	cdinfo.cddbtoc[i].min = cd->cddbtoc[i].min;
-	cdinfo.cddbtoc[i].sec = cd->cddbtoc[i].sec;
-	cdinfo.cddbtoc[i].frame = cd->cddbtoc[i].frame;
-	cdinfo.cddbtoc[i].absframe = cd->cddbtoc[i].absframe;
+	cdinfo.cddbtoc[i].min = cd->trk[i].start / 4500;
+	cdinfo.cddbtoc[i].sec = (cd->trk[i].start % 4500) / 75;
+	cdinfo.cddbtoc[i].frame = cd->trk[i].start - ((cd->trk[i].start / 75)*75);
+	cdinfo.cddbtoc[i].absframe = cd->trk[i].start;
       }
     
     // some sanity provisions
@@ -214,7 +217,7 @@ CDDialog::setData(
     titleedit->setText(track_list.at(0));
 
     QString idstr;
-    idstr.sprintf("%08lx",cd->magicID);
+    idstr.sprintf("%08lx",cddb_discid());
     idstr = category + (QString("\n") + idstr);
 
     if(cdinfo.ntracks > 0)

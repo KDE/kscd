@@ -122,6 +122,7 @@ public slots:
     void smtpMessageSent(void);
     void smtpError(int);
     void magicdone(KProcess*);
+    void magicslot();
     void magicslot(int);
     void togglequeryled();
     void cddb_done();
@@ -187,6 +188,7 @@ private:
     QPushButton	    *fwdPB;
     QPushButton	    *bwdPB;
     QPushButton	    *dockPB;
+    QPushButton     *magicPB;
     QPushButton	    *replayPB;
     QPushButton	    *ejectPB;
     QPushButton	    *aboutPB;
@@ -237,6 +239,7 @@ private:
     QString		cycle_str;
     bool 		volstartup;
     bool 		cddrive_is_ok;
+    bool                have_new_cd;
     int 		time_display_mode;
     QString             cd_device_str;
 

@@ -20,8 +20,8 @@
  */
 
 
-#include "config.h"
-#include "wmcdda.h"
+#include "libwm/include/wm_config.h"
+#include "libwm/include/wm_cdda.h"
 
 #ifdef BUILD_CDDA /* { */
 
@@ -77,8 +77,7 @@ long cdda_transform();
  * Send status information upstream.
  */
 void
-send_status(blk)
-	struct cdda_block	*blk;
+send_status(struct cdda_block *blk)
 {
 	write(1, blk, sizeof(*blk));
 }
@@ -103,9 +102,7 @@ send_status(blk)
  *   Ln			Set loudness level (0-255).
  */
 void
-command(cd_fd, blk)
-	int			cd_fd;
-	struct cdda_block	*blk;
+command(int cd_fd, struct cdda_block *blk)
 {
 	unsigned char		inbuf[10];
 	char			*filename;

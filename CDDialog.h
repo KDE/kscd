@@ -15,12 +15,12 @@
 #include <qdatetime.h>
 #include <smtpconfig.h>
 
-
 extern "C" {
-#include "struct.h"
+#include "libwm/include/workman.h"
 }
 
-struct mytoc {
+struct mytoc 
+{
 	int	min;
 	int	sec;
 	int	frame;
@@ -28,8 +28,8 @@ struct mytoc {
 };
 
 
-struct dialogcdinfo {
-
+struct dialogcdinfo 
+{
   unsigned long magicID;	/*cddb magic disk id BERND*/
 	int	ntracks;	/* Number of tracks on the disc */
 	int	length;		/* Total running time in seconds */
@@ -52,7 +52,11 @@ public:
 
 
     void setData(
+#ifdef OLD_WM_CODE
 		 struct cdinfo_wm *cd,
+#else
+		 struct wm_cdinfo *cd,
+#endif
 		 QStrList& tracktitlelist,
 		 QStrList& extlist,
 		 QStrList& discidlist,

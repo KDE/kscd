@@ -6,9 +6,20 @@
 
 #ifdef linux 
 
-#define DEFAULT_CD_DEVICE   "/dev/cdrom"  
-#define LINUX_SCSI_PASSTHROUGH 
-#define MIN_VOLUME 0 
-#define MAX_VOLUME 255 
+#ifndef DEFAULT_CD_DEVICE
+  #define DEFAULT_CD_DEVICE   "/dev/cdrom"
+#endif
+
+#ifndef LINUX_SCSI_PASSTHROUGH
+  #define LINUX_SCSI_PASSTHROUGH 
+#endif
+
+#ifndef MIN_VOLUME
+  #define MIN_VOLUME 0
+#endif
+
+#ifndef MAX_VOLUME
+  #define MAX_VOLUME 255
+#endif
 
 #endif /* linux */
