@@ -6,7 +6,7 @@ appsdir = $(kde_appsdir)/Multimedia
 CDDBDIR = $(kde_datadir)/kscd/cddb/
 
 LDFLAGS	= $(LIB_KIO) $(all_libraries) $(KDE_RPATH)
-kscd_LDADD   = libwm/libworkman.la $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KSYCOCA) $(LIB_KDEUI) -lkfile
+kscd_LDADD   = libwm/libworkman.la $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) $(LIB_KDEUI)
 INCLUDES= $(all_includes)
 LINK    = $(CXXLINK)
 
