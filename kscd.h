@@ -193,7 +193,6 @@ public slots:
 
 protected slots:
     void configDone();
-    void configureKeys();
     void setIcons();
 
     void timeSliderPressed();
