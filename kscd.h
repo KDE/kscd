@@ -29,13 +29,16 @@
 
 #include "bwlednum.h"
 
+// CDDB support via libkcddb
+#include <libkcddb/cddb.h>
+#include <libkcddb/client.h>
+
 
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qdialog.h>
 #include <qapplication.h>
 #include <qtimer.h>
-#include <qbitmap.h>
 #include <qcombobox.h>
 #include <qscrollbar.h>
 #include <qslider.h>
@@ -92,10 +95,6 @@ class SMTPConfig;
 struct SMTPConfigData;
 
 
-// CDDB support via libkcddb
-#include <libkcddb/cddb.h>
-#include <libkcddb/client.h>
-
 using namespace KCDDB;
 
 struct mgconfigstruct
@@ -134,7 +133,7 @@ k_dcop:
     void cddbDialog() { CDDialogSelected(); }
     void optionDialog() { showConfig(); }
     void setTrack(int t) { trackSelected(t >= 1 ? t - 1 : 0); }
-    void setVolume(int v) { volChanged(v); volSB->setValue(v); }
+    void setVolume(int v) { volChanged(v); } /* FIXME volSB->setValue(v); } */
     int  getVolume() { return volume; }
     int currentTrack();
     QString currentTrackTitle();
@@ -169,7 +168,6 @@ public:
     QString audioDevice() { return audio_device_str; }
     QStringList audioSystems() { return audio_systems_list; }
     SMTPConfigData* smtpData() { return smtpConfigData; }
-    void setToolTips();
 
 signals:
     void trackChanged(const QString&);
@@ -239,11 +237,6 @@ private:
     SMTPConfigData  *smtpConfigData;
     ConfigDlg       *configDialog;
     CDDialog        *cddialog;
-    QPushButton     *fwdPB;
-    QPushButton     *bwdPB;
-    QPushButton     *dockPB;
-    QPushButton     *replayPB;
-    QPushButton     *aboutPB;
     QPopupMenu      *mainPopup;
     QPopupMenu      *purchPopup;
     QPopupMenu      *infoPopup;
@@ -261,15 +254,11 @@ private:
     QLabel              *tracklabel;
     QLabel              *totaltimelabel;
     QLabel              *nLEDs;
-    QPushButton         *optionsbutton;
-    QPushButton         *shufflebutton;
-    QPushButton         *cddbbutton;
     QTimer              timer;
     QTimer              titlelabeltimer;
     QTimer              queryledtimer;
     QTimer              cycletimer;
     QTimer              jumpTrackTimer;
-    QSlider             *volSB;
 
     // random playlists
     KRandomSequence     randSequence;
@@ -280,7 +269,6 @@ private:
     int                 jumpToTrack;
     unsigned int        skipDelta;
     int                 volume;
-    QFrame              *backdrop;
     LedLamp             *queryled;
     LedLamp             *loopled;
     bool                randomplay;
@@ -351,7 +339,7 @@ public slots:
      * TODO
      * not the prettiest things in the world
      * but getting rid of them will require some more work
-     * with the CDDB and magic config pages
+     * with the CDDB
      */
     void getCDDBOptions(CDDBSetup* config);
     void setCDDBOptions(CDDBSetup* config);
@@ -368,23 +356,6 @@ private:
     bool            updateDialog;
     bool            Fetch_remote_cddb;
     int             revision;
-
-// kscd magic stuff
-public slots:
-    void getMagicOptions(mgconfigstruct& config);
-    void setMagicOptions(const mgconfigstruct& config);
-    void magicdone(KProcess*);
-    void magicslot();
-    void magicslot(int);
-#if KSCDMAGIC
-private:
-    QPushButton     *magicPB;
-    KProcess*           magicproc;
-    int                 magic_width;
-    int                 magic_height;
-    int                 magic_brightness;
-    bool                magic_pointsAreDiamonds;
-#endif
 };
 
 

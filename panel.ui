@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>398</width>
-            <height>187</height>
+            <height>179</height>
         </rect>
     </property>
     <property name="caption">
@@ -260,6 +260,20 @@
                     <width>240</width>
                     <height>66</height>
                 </size>
+            </property>
+            <property name="paletteForegroundColor">
+                <color>
+                    <red>255</red>
+                    <green>255</green>
+                    <blue>255</blue>
+                </color>
+            </property>
+            <property name="paletteBackgroundColor">
+                <color>
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                </color>
             </property>
             <property name="frameShape">
                 <enum>StyledPanel</enum>

@@ -78,25 +78,6 @@ extern "C" {
 #include "configWidget.h"
 #include "smtpconfig.h"
 
-#include "bitmaps/playpaus.xbm"
-#include "bitmaps/stop.xbm"
-#include "bitmaps/repeat.xbm"
-#include "bitmaps/nexttrk.xbm"
-#include "bitmaps/prevtrk.xbm"
-#include "bitmaps/ff.xbm"
-#include "bitmaps/rew.xbm"
-#include "bitmaps/info.xbm"
-#include "bitmaps/poweroff.xbm"
-#if KSCDMAGIC
-#include "bitmaps/magic.xbm"
-#endif
-#include "bitmaps/eject.xbm"
-#include "bitmaps/db.xbm"
-#include "bitmaps/logo.xbm"
-#include "bitmaps/shuffle.xbm"
-#include "bitmaps/options.xbm"
-
-
 static const char description[] = I18N_NOOP("KDE CD player");
 
 DockWidget*     dock_widget;
@@ -195,14 +176,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
     currentlyejected(false),
     updateDialog(false), //!!!!
     revision(0) // The first freedb revision is "0" //!!!!
-#if KSCDMAGIC
-    ,
-    magicproc(0L),
-    magic_width(330),
-    magic_height(135),
-    magic_brightness(3),
-    magic_pointsAreDiamonds(false)
-#endif
 {
   random_current      = random_list.begin();
 
@@ -232,15 +205,12 @@ KSCD::KSCD( QWidget *parent, const char *name )
   initWorkMan();
   setupPopups();
 
-  setToolTips();
-
   /* FIXME check for return value */
   setDevicePaths(cd_device_str, audio_system_str, audio_device_str);
 
   // set the volume BEFORE setting up the signals
-  //volSB->setValue(volume); // We have to do something here as well with the new volume control (sven)
+  // FIXME volSB->setValue(volume); // We have to do something here as well with the new volume control (sven)
 
-  // The commented-out connects have to be implemented different I think (sven)
   connect( &queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
   connect( &cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
@@ -250,20 +220,15 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
   connect( prevPB, SIGNAL(clicked()), SLOT(prevClicked()) );
   connect( nextPB, SIGNAL(clicked()), SLOT(nextClicked()) );
-  //connect( fwdPB, SIGNAL(clicked()), SLOT(fwdClicked()) );
-  //connect( bwdPB, SIGNAL(clicked()), SLOT(bwdClicked()) );
-  connect( dockPB, SIGNAL(clicked()), SLOT(quitClicked()) );
-#if KSCDMAGIC
-  connect( magicPB, SIGNAL(clicked()), SLOT(magicslot()) );
-#endif
-  //connect( replayPB, SIGNAL(clicked()), SLOT(loopClicked()) );
+  // FIXME connect( dockPB, SIGNAL(clicked()), SLOT(quitClicked()) );
+  connect( repeatPB, SIGNAL(clicked()), SLOT(loopClicked()) );
   connect( ejectPB, SIGNAL(clicked()), SLOT(ejectClicked()) );
   connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
-  //connect( volSB, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
-  connect( aboutPB, SIGNAL(clicked()), SLOT(cycleplaytimemode()));
-  connect( optionsbutton, SIGNAL(clicked()), SLOT(showConfig()));
-  connect( shufflebutton, SIGNAL(clicked()), SLOT(randomSelected()));
-  connect( cddbbutton, SIGNAL(clicked()), SLOT(CDDialogSelected()));
+  // FIXME connect( volSB, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
+  // FIXME connect( aboutPB, SIGNAL(clicked()), SLOT(cycleplaytimemode()));
+  // FIXME connect( optionsbutton, SIGNAL(clicked()), SLOT(showConfig()));
+  connect( shufflePB, SIGNAL(clicked()), SLOT(randomSelected()));
+  connect( cddbPB, SIGNAL(clicked()), SLOT(CDDialogSelected()));
   connect(kapp,SIGNAL(kdisplayPaletteChanged()),this,SLOT(setColors()));
 
   // set up the actions and keyboard accels
@@ -320,10 +285,6 @@ KSCD::~KSCD()
     }
 
     signal (SIGINT, SIG_DFL);
-#if KSCDMAGIC
-    delete magicproc;
-    magicproc = 0L;
-#endif
     delete smtpConfigData;
     delete smtpMailer;
     delete cddb;
@@ -478,38 +439,13 @@ void
 KSCD::drawPanel()
 {
   const int SBARWIDTH = 240;
-  /*
   const int HEIGHT = 27;
   const int WIDTH = 92;
 
-  outerLO = new QGridLayout(this, 5, 9);
-
-  aboutPB = makeButton(0, 0, 2, 2, i18n("About"));
-  aboutPB->setMinimumWidth(WIDTH);
-  aboutPB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-  infoPB = makeButton(0, 2, 1, 1, "");
-  infoPB->setMinimumHeight(HEIGHT);
-
-  optionsbutton = makeButton(1, 2, 1, 1, "");
-
-#if KSCDMAGIC
-  dockPB = makeButton(0, 3, 1, 1, i18n("Quit"));
-
-  magicPB = makeButton(1, 3, 1, 1, "");
-#else
-  dockPB = makeButton(0, 3, 2, 1, i18n("Quit"));
-#endif
-  dockPB->setMinimumHeight(HEIGHT);
-
-  QVBox* innerVB = new QVBox(this);
-  outerLO->addMultiCellWidget(innerVB, 0, 2, 2, 6);
-
-  backdrop = new QFrame(innerVB);
   backdrop->setFixedSize(SBARWIDTH - 2, 2 * HEIGHT + HEIGHT / 2 - 1);
   backdrop->setFocusPolicy(QWidget::NoFocus);
   backdrop->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
-*/
+
   const int D = 6;
 
   for (int u = 0; u < 5; u++) {
@@ -565,79 +501,7 @@ KSCD::drawPanel()
   totaltimelabel->setAlignment( AlignLeft );
   totaltimelabel->setGeometry(178, D, 60, 14);
   totaltimelabel->hide();
-/*
-  volSB = new KSCDSlider(innerVB, "Slider");
-  volSB->setFocusPolicy(QWidget::NoFocus);
-
-  cddbbutton = makeButton(2, 3, 1, 1, "");
-
-  shufflebutton = makeButton(3, 3, 1, 1, "");
-
-  replayPB = makeButton(4, 3, 1, 1, "");
-
-  songListCB = new QComboBox(this);
-  songListCB->setFocusPolicy (QWidget::NoFocus);
-  outerLO->addMultiCellWidget(songListCB, 4 , 4, 0, 8);
-
-  playPB = makeButton(7, 0, 2, 2, "Play/Pause");
-  playPB->setMinimumWidth(WIDTH);
-  playPB->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-  stopPB = makeButton(7, 2, 1, 1, "Stop");
-
-  ejectPB = makeButton(8, 2, 1, 1, "Replay");
-
-  bwdPB = makeButton(5, 3, 1, 1, "Bwd");
-
-  fwdPB = makeButton(6, 3, 1, 1, "Fwd");
-
-  prevPB = makeButton(7, 3, 1, 1, "Prev");
-
-  nextPB = makeButton(8, 3, 1, 1, "Next");
-*/
 } // drawPanel
-
-/*void
-KSCD::loadBitmaps()
-{
-    QBitmap playBmp( playpause_width, playpause_height, playpause_bits,TRUE );
-    QBitmap stopBmp( stop_width, stop_height, stop_bits, TRUE );
-    QBitmap prevBmp( prevtrk_width, prevtrk_height, prevtrk_bits, TRUE );
-    QBitmap nextBmp( nexttrk_width, nexttrk_height, nexttrk_bits, TRUE );
-    QBitmap replayBmp( repeat_width, repeat_height, repeat_bits, TRUE );
-    QBitmap fwdBmp( ff_width, ff_height, ff_bits, TRUE );
-    QBitmap bwdBmp( rew_width, rew_height, rew_bits, TRUE );
-    QBitmap ejectBmp( eject_width, eject_height, eject_bits, TRUE );
-    QBitmap infoBmp( info_width, info_height,info_bits, TRUE );
-    QBitmap dockBmp( poweroff_width, poweroff_height, poweroff_bits, TRUE );
-    QBitmap shuffleBmp( shuffle_width, shuffle_height, shuffle_bits, TRUE );
-    QBitmap databaseBmp( db_width, db_height, db_bits, TRUE );
-    QBitmap aboutBmp( logo_width, logo_height, logo_bits, TRUE );
-    QBitmap optionsBmp( options_width, options_height, options_bits, TRUE );
-
-    playPB->setPixmap( playBmp );
-    stopPB->setPixmap( stopBmp );
-    prevPB->setPixmap( prevBmp );
-    nextPB->setPixmap( nextBmp );
-    replayPB->setPixmap( replayBmp );
-    fwdPB->setPixmap( fwdBmp );
-    bwdPB->setPixmap( bwdBmp );
-    ejectPB->setPixmap( ejectBmp );
-    infoPB->setPixmap( infoBmp );
-    dockPB->setPixmap( dockBmp );
-
-#if KSCDMAGIC
-    QBitmap magicBmp( magicxbm_width, magicxbm_height, magicxbm_bits, TRUE );
-    magicPB->setPixmap( magicBmp );
-#endif
-
-    aboutPB->setPixmap( aboutBmp );
-    shufflebutton->setPixmap( shuffleBmp );
-    cddbbutton->setPixmap( databaseBmp );
-    optionsbutton->setPixmap( optionsBmp );
-
-} // loadBitmaps
-*/
 
 void
 KSCD::setupPopups()
@@ -671,12 +535,6 @@ KSCD::setupPopups()
 
     mainPopup->insertItem (i18n("Information"), infoPopup);
 
-#if KSCDMAGIC
-    mainPopup->insertSeparator(-1);
-    mainPopup->insertItem (i18n("KSCD Magic"));
-    connect( mainPopup, SIGNAL(activated(int)), SLOT(magicslot(int)) );
-#endif
-
     connect( infoPopup, SIGNAL(activated(int)), SLOT(information(int)) );
 
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
@@ -685,36 +543,22 @@ KSCD::setupPopups()
 
 
 void
-KSCD::setToolTips()
-{
-    QToolTip::add(playPB,          i18n("Play/Pause"));
-    QToolTip::add(stopPB,          i18n("Stop"));
-    QToolTip::add(replayPB,        i18n("Loop"));
-    QToolTip::add(songListCB,      i18n("Track selection"));
-
-    // if you change these, change them in Config Done as well!
-    QToolTip::add(fwdPB,           i18n("%1 secs forward").arg(skipDelta));
-    QToolTip::add(bwdPB,           i18n("%1 secs backward").arg(skipDelta));
-    QToolTip::add(nextPB,          i18n("Next track"));
-    QToolTip::add(prevPB,          i18n("Previous track"));
-    QToolTip::add(dockPB,          i18n("Quit CD player"));
-#if KSCDMAGIC
-    QToolTip::add(magicPB,         i18n("Run Kscd Magic"));
-#endif
-    QToolTip::add(aboutPB,         i18n("Cycle time display"));
-    QToolTip::add(optionsbutton,   i18n("Configure CD player"));
-    QToolTip::add(ejectPB,         i18n("Eject CD"));
-    QToolTip::add(infoPB,          i18n("The artist on the Web"));
-    QToolTip::add(cddbbutton,      i18n("freedb dialog"));
-    QToolTip::add(volSB,           i18n("CD volume control"));
-    QToolTip::add(shufflebutton,   i18n("Shuffle play"));
-} // setToolTips
-
-void
 KSCD::playClicked()
 {
     int cur_cdmode;
     int track;
+
+    if (dock_widget)
+    {
+        if (dock_widget->isVisible())
+        {
+            dock_widget->hide();
+        }
+        else
+        {
+            dock_widget->show();
+        }
+    }
 
     cur_cdmode = wm_cd_status();
     if (!cddrive_is_ok || cur_cdmode < 1)
@@ -1133,12 +977,6 @@ KSCD::configDone()
 {
     // dialog deletes itself
     configDialog = 0L;
-
-    // update the tooltips
-    QToolTip::remove(fwdPB);
-    QToolTip::remove(bwdPB);
-    QToolTip::add(fwdPB, i18n("%1 secs forward").arg(skipDelta));
-    QToolTip::add(bwdPB, i18n("%1 secs backward").arg(skipDelta));
 }
 
 void
@@ -1220,7 +1058,6 @@ KSCD::setDevicePaths(QString cd_device, QString audio_system, QString audio_devi
         WM_CDIN, QFile::encodeName(cd_device_str), 0, 0, 0);
     kdDebug() << "Device changed to " << cd_device_str << ". return " << ret << "\n";
 #endif
-    printf("setDevicePatches return %i\n", ret);
 
     device_change = true;
     setArtistAndTitle("", "");
@@ -1259,13 +1096,13 @@ KSCD::updateCurrentCDDBServer(const QString& newCurrentServer)
 void
 KSCD::incVolume()
 {
-    volSB->addStep();
+    // FIXME volSB->addStep();
 } // incVolume
 
 void
 KSCD::decVolume()
 {
-    volSB->subtractStep();
+    // FIXME volSB->subtractStep();
 } // decVolume
 
 void
@@ -1646,14 +1483,6 @@ KSCD::readSettings()
 	background_color = config->readColorEntry("BackColor",&defaultback);
 	led_color = config->readColorEntry("LEDColor",&defaultled);
 
-#if KSCDMAGIC
-	config->setGroup("MAGIC");
-	magic_width      = config->readNumEntry("magicwidth",320);
-	magic_height     = config->readNumEntry("magicheight",200);
-	magic_brightness = config->readNumEntry("magicbrightness", 3);
-	magic_pointsAreDiamonds = config->readBoolEntry("magicPointsAreDiamonds", false);
-#endif
-
 	config->setGroup("SMTP");
 	smtpConfigData->enabled = config->readBoolEntry("enabled", true);
 	smtpConfigData->useGlobalSettings = config->readBoolEntry("useGlobalSettings", true);
@@ -1815,14 +1644,6 @@ KSCD::writeSettings()
     config->writeEntry("CDDBHTTPProxyEnabled",cddb->useHTTPProxy());
     config->writeEntry("HTTPProxyHost",cddb->getHTTPProxyHost());
     config->writeEntry("HTTPProxyPort",(int)cddb->getHTTPProxyPort());*/
-
-#if KSCDMAGIC
-    config->setGroup("MAGIC");
-    config->writeEntry("magicwidth",magic_width);
-    config->writeEntry("magicheight",magic_height);
-    config->writeEntry("magicbrightness",magic_brightness);
-    config->writeEntry("magicPointsAreDiamonds",magic_pointsAreDiamonds);
-#endif
 
     config->sync();
 } // writeSettings()
@@ -2722,82 +2543,5 @@ main( int argc, char *argv[] )
     return a.exec();
 } // main()
 
-
-#if KSCDMAGIC
-void
-KSCD::getMagicOptions(mgconfigstruct& config)
-{
-    config.width = magic_width;
-    config.height = magic_height;
-    config.brightness = magic_brightness;
-    config.pointsAreDiamonds = magic_pointsAreDiamonds;
-} // getMagicOptions(mgconfigstruct& config)
-
-
-void
-KSCD::setMagicOptions(const mgconfigstruct& config)
-{
-    magic_width = config.width;
-    magic_height = config.height;
-    magic_brightness  =config.brightness;
-    magic_pointsAreDiamonds = config.pointsAreDiamonds;
-} // setMagicOptions(mgconfigstruct& config)
-
-void
-KSCD::magicslot()
-{
-    magicslot(0);
-}
-
-void
-KSCD::magicslot( int )
-{
-    if(magicproc && magicproc->isRunning())
-    {
-        return;
-    }
-
-    magicproc = new KProcess;
-
-    QString b;
-    b.setNum(magic_brightness);
-    QString w;
-    w.setNum(magic_width);
-    QString h;
-    h.setNum(magic_height);
-
-    *magicproc << "kscdmagic" << " -b" << b << " -w"<< w << " -h" << h;
-
-    connect(magicproc,
-            SIGNAL(processExited(KProcess *)),this, SLOT(magicdone(KProcess*)));
-
-
-    bool result = magicproc->start(KProcess::NotifyOnExit , KProcess::Stdin);
-
-    if(!result)
-        KMessageBox::error(this, i18n("Cannot start kscdmagic."));
-    return;
-} // magicslot
-
-void
-KSCD::magicdone(KProcess* proc)
-{
-    if(proc->normalExit())
-    {
-        if(proc->exitStatus()!=0)
-            KMessageBox::error(this, i18n("KSCD Magic exited abnormally.\n"
-                                          "Are you sure kscdmagic is installed?"));
-    }
-
-    delete proc;
-    magicproc = 0L;
-} // magicdone
-#else
-void KSCD::getMagicOptions(mgconfigstruct&) {}
-void KSCD::setMagicOptions(const mgconfigstruct&) {}
-void KSCD::magicdone(KProcess*) {}
-void KSCD::magicslot() {}
-void KSCD::magicslot(int) {}
-#endif
 
 #include "kscd.moc"
