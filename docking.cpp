@@ -24,22 +24,32 @@
 #include "docking.h"
 #include "kscd.h"
 
+#include <qhbox.h>
 #include <qtooltip.h>
 
 #include <kaboutdata.h>
+#include <kactioncollection.h>
 #include <kapplication.h>
 #include <klocale.h>
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <kpopupmenu.h>
+#include <kpassivepopup.h>
+
+#include <kdebug.h>
 
 DockWidget::DockWidget( KSCD* parent, const char *name)
     : KSystemTray( parent, name )
 {
-
     setPixmap( loadIcon("cdsmall") );
 
-      // popup menu for right mouse button
+    KActionCollection* actionCollection = parent->actionCollection();
+    m_backAction = actionCollection->action("Previous");
+    m_forwardAction = actionCollection->action("Next");
+    m_backPix = loadIcon("player_start");
+    m_forwardPix = loadIcon("player_end");
+
+    // popup menu for right mouse button
     QPopupMenu* popup = contextMenu();
 
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_play", KIcon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
@@ -51,7 +61,40 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     QToolTip::add(this, kapp->aboutData()->programName());
 }
 
-DockWidget::~DockWidget() {
+DockWidget::~DockWidget()
+{
+}
+
+void DockWidget::createPopup(const QString &songName, bool addButtons)
+{
+    if (!Prefs::trackAnnouncement())
+        return;
+
+    delete m_popup;
+    m_popup = new KPassivePopup(this);
+
+    QHBox* box = new QHBox(m_popup);
+
+    if (addButtons)
+    {
+        QPushButton* backButton = new QPushButton(m_backPix, 0, box, "popup_back");
+        backButton->setFlat(true);
+        connect(backButton, SIGNAL(clicked()), m_backAction, SLOT(activate()));
+    }
+
+    QLabel* l = new QLabel(songName, box);
+    l->setMargin(3);
+
+    if (addButtons)
+    {
+        QPushButton* forwardButton = new QPushButton(m_forwardPix, 0, box, "popup_forward");
+        forwardButton->setFlat(true);
+        connect(forwardButton, SIGNAL(clicked()), m_forwardAction, SLOT(activate()));
+    }
+
+    m_popup->setView(box);
+    m_popup->setAutoDelete(false);
+    m_popup->show();
 }
 
 void DockWidget::setToolTip(const QString& text)
@@ -74,5 +117,41 @@ void DockWidget::setToolTip(const QString& text)
     }
 }
 
+void DockWidget::wheelEvent(QWheelEvent *e)
+{
+    if (e->orientation() == Horizontal)
+        return;
+
+    KSCD* kscd = dynamic_cast<KSCD*>(parent());
+    if (kscd == 0)
+        return;
+
+    switch (e->state())
+    {
+        case ShiftButton:
+        {
+            if (e->delta() > 0)
+            {
+                kscd->incVolume();
+            }
+            else
+            {
+                kscd->decVolume();
+            }
+            break;
+        }
+        default:
+        {
+            if (e->delta() > 0)
+            {
+                kscd->nextClicked();
+            }
+            else
+            {
+                kscd->prevClicked();
+            }
+        }
+    }
+}
 
 #include "docking.moc"

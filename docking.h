@@ -39,19 +39,34 @@
 
 class KSCD;
 
-class DockWidget : public KSystemTray {
+class KAction;
+class KToggleAction;
+class KPassivePopup;
 
-  Q_OBJECT
+class DockWidget : public KSystemTray
+{
+    Q_OBJECT
 
 public:
-  DockWidget( KSCD* parent, const char *name=0);
-  ~DockWidget();
+    DockWidget( KSCD* parent, const char *name=0);
+    ~DockWidget();
 
 public slots:
-  void setToolTip(const QString& text);
+    void setToolTip(const QString& text);
+    void createPopup(const QString& songName, bool addButtons = true);
 
 private:
-  QString tip;
+    virtual void wheelEvent( QWheelEvent *e);
+
+    KPassivePopup* m_popup;
+
+    KAction* m_forwardAction;
+    KAction* m_backAction;
+
+    QPixmap m_backPix;
+    QPixmap m_forwardPix;
+
+    QString tip;
 };
 
 #endif

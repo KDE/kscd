@@ -18,6 +18,9 @@
             <whatsthis>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</whatsthis>
             <default>true</default>
         </entry>
+        <entry name="TrackAnnouncement" type="Bool">
+            <default>false</default>
+        </entry>
         <entry name="Autoplay" type="Bool" key="AUTOPLAY">
             <label>Start playing when a CD is inserted.</label>
             <whatsthis>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</whatsthis>

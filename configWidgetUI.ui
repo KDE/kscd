@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>450</width>
-            <height>517</height>
+            <height>521</height>
         </rect>
     </property>
     <property name="caption">
@@ -30,20 +30,6 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>kcfg_Docking</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Show icon in &amp;system tray</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+S</string>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</string>
-                    </property>
-                </widget>
                 <widget class="QLabel" row="1" column="0">
                     <property name="name">
                         <cstring>textLabel2</cstring>
@@ -105,6 +91,34 @@
                         </size>
                     </property>
                 </spacer>
+                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>kcfg_Docking</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Show icon in &amp;system tray</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+S</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>kcfg_TrackAnnouncement</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Show &amp;track announcement</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+T</string>
+                    </property>
+                </widget>
             </grid>
         </widget>
         <widget class="QButtonGroup">
@@ -635,11 +649,18 @@
         <receiver>configWidgetUI</receiver>
         <slot>kcfg_DigitalPlayback_toggled(bool)</slot>
     </connection>
+    <connection>
+        <sender>kcfg_Docking</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>kcfg_TrackAnnouncement</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>kcfg_ledColor</tabstop>
     <tabstop>kcfg_BackColor</tabstop>
     <tabstop>kcfg_Docking</tabstop>
+    <tabstop>kcfg_TrackAnnouncement</tabstop>
     <tabstop>kcfg_SkipDelta</tabstop>
     <tabstop>kcfg_Autoplay</tabstop>
     <tabstop>kcfg_EjectOnFinish</tabstop>
@@ -647,6 +668,7 @@
     <tabstop>kcfg_cdDevice</tabstop>
     <tabstop>kcfg_DigitalPlayback</tabstop>
     <tabstop>audioSystemComboBox</tabstop>
+    <tabstop>kcfg_AudioDevice</tabstop>
 </tabstops>
 <slots>
     <slot>kcfg_DigitalPlayback_toggled(bool)</slot>

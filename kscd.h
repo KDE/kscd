@@ -92,6 +92,7 @@ class CDDialog;
 class DockWidget;
 class QGridLayout;
 class KActionCollection;
+class KToggleAction;
 class KVolumeControl;
 
 
@@ -131,7 +132,9 @@ k_dcop:
     void toggleTimeDisplay() { cycleplaytimemode(); }
     void cddbDialog() { CDDialogSelected(); }
     void optionDialog() { showConfig(); }
-    void setTrack(int t) { trackSelected(t >= 1 ? t - 1 : 0); }
+    void setTrack(int t) { trackSelected(t > 0 ? t - 1 : 0); }
+    void volumeDown() { decVolume(); }
+    void volumeUp() { incVolume(); }
     void setVolume(int v);
     int  getVolume() { return Prefs::volume(); }
     int currentTrack();
@@ -150,6 +153,8 @@ public:
     bool digitalPlayback();
     void setDevicePaths(QString cd_device, QString audio_system, QString audio_device);
     QStringList audioSystems() { return audio_systems_list; }
+    
+    KActionCollection* actionCollection() { return m_actions; }
 
 signals:
     void trackChanged(const QString&);
@@ -163,7 +168,7 @@ public slots:
     void writeSettings();
     void initCDROM();
     void playClicked();
-    void nextClicked();
+    bool nextClicked();
     void prevClicked();
     void stopClicked();
     void ejectClicked();
@@ -193,6 +198,10 @@ protected slots:
     void configDone();
     void configureKeys();
     void setIcons();
+    
+    void timeSliderPressed();
+    void timeSliderReleased();
+    void timeSliderMoved(int seconds);
 
 protected:
     // mostly start up stuff
@@ -202,12 +211,22 @@ protected:
     void drawPanel();
     void setupPopups();
     void setLEDs(const QString& symbols);
+    void resetTimeSlider(bool enabled);
 
+    void dragTime(int sec);
+    
     void closeEvent( QCloseEvent *e );
     void keyPressEvent( QKeyEvent* e );
     bool event( QEvent *e );
     //    void focusOutEvent(QFocusEvent *e);
     void playtime();
+    void playtime(int seconds);
+    QString calculateDisplayedTime();
+    QString calculateDisplayedTime(int sec);
+    QString calculateDisplayedTime(int sec, int track);
+    
+    void updateDisplayedTrack(int track);
+    
     bool getArtist(QString& artist);
 
     void clearSongList();
@@ -222,7 +241,7 @@ private:
     QPopupMenu      *infoPopup;
 
     // ML XXX
-    QGridLayout		*outerLO;
+    QGridLayout                *outerLO;
 
     BW_LED_Number       *trackTimeLED[6];
     QLabel              *statuslabel;
@@ -251,6 +270,7 @@ private:
     void song_list_complete(void);
     bool                cddrive_is_ok;
     bool                have_new_cd;
+    bool                updateTime;
     QStringList         audio_systems_list;
 
     QPushButton         *makeButton( int, int, int, int, const QString& );
@@ -302,10 +322,11 @@ private:
     QStringList     cddbserverlist;
     QString         current_server;
     QStringList     cddbsubmitlist;
-    bool            updateDialog;
+    //bool            updateDialog;
     int             revision;
     int             year;
     KActionCollection* m_actions;
+    KToggleAction* m_togglePopupsAction;
     KVolumeControl* m_volume;
     DockWidget* m_dockWidget;
 };
