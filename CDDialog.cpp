@@ -449,11 +449,8 @@ CDDialog::upload()
   FILE* mailpipe;
   mailpipe = popen("/usr/sbin/sendmail -t","w");
 
-  if(mailpipe == NULL){
-    QString str;
-    str = i18n("Could not pipe contents into:\n %1").arg(cmd);
-
-    KMessageBox::error(this, str);
+  if(mailpipe == NULL) {
+    KMessageBox::error(this, i18n("Could not pipe contents into /usr/sbin/sendmail."));
     return;
   }
   
