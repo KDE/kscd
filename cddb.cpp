@@ -98,11 +98,8 @@ CDDB::CDDB(char *host, unsigned short int _port, unsigned short int _timeout)
 
 CDDB::~CDDB()
 {
-    if(sock)
-      {
-	delete sock;
-	sock = 0L;
-      }
+    delete sock;
+    sock = 0L;
     timeouttimer.stop();
     starttimer.stop();
 } // ~CDDB

@@ -120,7 +120,7 @@ k_dcop:
     void toggleShuffle() { randomSelected(); }
     void toggleTimeDisplay() { cycleplaytimemode(); }
     void cddbDialog() { CDDialogSelected(); }
-    void optionDialog() { aboutClicked(); }
+    void optionDialog() { showConfig(); }
     void setTrack(int t) { trackSelected(t >= 1 ? t - 1 : 0); }
     void setVolume(int v) { volChanged(v); volSB->setValue(v); }
     int  getVolume() { return volume; }
@@ -190,7 +190,7 @@ public slots:
     void cdMode();
     void ejectClicked();
     void trackSelected( int );
-    void aboutClicked();
+    void showConfig();
     void incVolume();
     void decVolume();
     void volChanged( int );
@@ -276,12 +276,12 @@ private:
     QPushButton         *shufflebutton;
     QPushButton         *cddbbutton;
     QPushButton         *volLA;
-    QTimer              *timer;
-    QTimer              *titlelabeltimer;
-    QTimer              *queryledtimer;
-    QTimer              *initimer;
-    QTimer              *cycletimer;
-    QTimer              *jumpTrackTimer;
+    QTimer              timer;
+    QTimer              titlelabeltimer;
+    QTimer              queryledtimer;
+    QTimer              initimer;
+    QTimer              cycletimer;
+    QTimer              jumpTrackTimer;
     QComboBox           *songListCB;
     QSlider             *volSB;
 
