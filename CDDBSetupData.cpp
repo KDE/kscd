@@ -84,7 +84,7 @@ CDDBSetupData::CDDBSetupData
 	/* edm new section end */
 
 	lay2->addSpacing ( fm.lineSpacing() );
-	QLabel* dlgedit_Label_8 = new QLabel( i18n("freedb base directory:"), group, "Label_8" );
+	QLabel* dlgedit_Label_8 = new QLabel( i18n("freedb base folder:"), group, "Label_8" );
 	lay2->addWidget ( dlgedit_Label_8 );
         basedir_edit = new KURLRequester(group, "LineEdit_4" );
         basedir_edit->setMode(KFile::Directory);
