@@ -894,6 +894,8 @@ KSCD::quitClicked()
     wm_cd_status();
     wm_cd_status();
 
+    wm_free_cdtext();
+
     cleanUp();
     writeSettings();
     qApp->quit();
@@ -2027,6 +2029,25 @@ KSCD::cddb_ready()
     cddb.queryCD(cddb_discid(),querylist);
 } // cddb_ready
 
+#define DEFINE_CDTEXT
+#define CDTEXT_MACRO \
+    if(wm_cdtext_info.valid){\
+	kdDebug() << "CDTEXT_MACRO called" << endl;\
+	int at;\
+	tracktitlelist.clear();\
+	tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->name[0]),(const char*)(wm_cdtext_info.blocks[0]->performer[0])));\
+	titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));\
+	artistlabel->setText(tracktitlelist.first());\
+	songListCB->clear();\
+	for (at = 1 ; at < (wm_cdtext_info.count_of_entries); ++at ) {\
+	    songListCB->insertItem( QString().sprintf("%02d: %s", at, wm_cdtext_info.blocks[0]->name[at]));\
+	    tracktitlelist.append((const char*)(wm_cdtext_info.blocks[0]->name[at]));\
+	}\
+	for(; at < cur_ntracks; ++at){\
+	    songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));\
+	}\
+}
+
 void
 KSCD::cddb_no_info()
 {
@@ -2039,15 +2060,21 @@ KSCD::cddb_no_info()
 
     tracktitlelist.clear();
     tracktitlelist.append(i18n("No matching CDDB entry found."));
-    for(int i = 0 ; i < cd->ntracks; i++)
+#ifdef DEFINE_CDTEXT
+    wm_cd_get_cdtext();
+    CDTEXT_MACRO
+    else
+#endif /* DEFINE_CDTEXT */
+    {
+      for(int i = 0 ; i < cd->ntracks; i++)
         tracktitlelist.append("");
 
-    extlist.clear();
-    for(int i = 0 ; i <= cd->ntracks; i++)
+      extlist.clear();
+      for(int i = 0 ; i <= cd->ntracks; i++)
         extlist.append("");
 
-    discidlist.clear();
-
+      discidlist.clear();
+    }
     timer->start(1000);
     led_off();
     cddb_inexact_sentinel =false;
@@ -2063,18 +2090,23 @@ KSCD::cddb_failed()
     kdDebug() << "cddb_failed() called\n" << endl;
     tracktitlelist.clear();
     tracktitlelist.append(i18n("Error getting CDDB entry."));
-    for(int i = 0 ; i < cd->ntracks; i++)
+#ifdef DEFINE_CDTEXT
+    CDTEXT_MACRO
+    else
+#endif /* DEFINE_CDTEXT */
+    {
+      for(int i = 0 ; i < cd->ntracks; i++)
         tracktitlelist.append("");
 
-    extlist.clear();
-    for(int i = 0 ; i <= cd->ntracks; i++)
+      extlist.clear();
+      for(int i = 0 ; i <= cd->ntracks; i++)
         extlist.append("");
 
-    discidlist.clear();
+      discidlist.clear();
 
-    setArtistAndTitle(i18n("Error getting CDDB entry."), "");
+      setArtistAndTitle(i18n("Error getting CDDB entry."), "");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
-
+    }
     timer->start(1000);
     led_off();
     cddb_inexact_sentinel =false;
@@ -2088,18 +2120,23 @@ KSCD::cddb_timed_out()
     kdDebug() << "cddb_timed_out() called\n" << endl;
     tracktitlelist.clear();
     tracktitlelist.append(i18n("CDDB query timed out."));
-    for(int i = 0 ; i <= cd->ntracks; i++)
+#ifdef DEFINE_CDTEXT
+    CDTEXT_MACRO
+    else
+#endif /* DEFINE_CDTEXT */
+    {
+      for(int i = 0 ; i <= cd->ntracks; i++)
         tracktitlelist.append("");
 
-    extlist.clear();
-    for(int i = 0 ; i <= cd->ntracks; i++)
+      extlist.clear();
+      for(int i = 0 ; i <= cd->ntracks; i++)
         extlist.append("");
 
-    discidlist.clear();
+      discidlist.clear();
 
-    setArtistAndTitle(i18n("CDDB query timed out."),"");
+      setArtistAndTitle(i18n("CDDB query timed out."),"");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
-
+    }
     timer->start(1000);
     led_off();
     cddb_inexact_sentinel =false;
