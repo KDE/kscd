@@ -80,7 +80,7 @@ InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
   cancel_button = new QPushButton(i18n("Cancel"),this,"cancel_button");
   lay2->addWidget ( cancel_button );
   lay2->addStretch ( 1 );
-  cancel_button->setFocus();
+  edit->setFocus();
 
   connect(ok_button,SIGNAL(clicked()),SLOT(checkit()));
   connect(cancel_button,SIGNAL(clicked()),SLOT(reject()));
