@@ -136,7 +136,7 @@ void SMTP::sendMessage(void)
         kdDebug() << "state was == FINISHED\n" << endl;
         finished = false;
         state = IN;
-        writeString = QString::fromLatin1("helo %1\r\n").arg(domainName);
+        writeString = QString::fromLocal8Bit("helo %1\r\n").arg(domainName);
         write(sock->socket(), writeString.ascii(), writeString.length());
     }
     if(connected){
@@ -259,7 +259,7 @@ void SMTP::processLine(QString *line)
     switch(stat){
     case GREET:     //220
         state = IN;
-        writeString = QString::fromLatin1("helo %1\r\n").arg(domainName);
+        writeString = QString::fromLocal8Bit("helo %1\r\n").arg(domainName);
 	write(sock->socket(), writeString.ascii(), writeString.length());
         break;
     case GOODBYE:   //221
@@ -269,17 +269,17 @@ void SMTP::processLine(QString *line)
         switch(state){
         case IN:
             state = READY;
-            writeString = QString::fromLatin1("mail from: %1\r\n").arg(senderAddress);
+            writeString = QString::fromLocal8Bit("mail from: %1\r\n").arg(senderAddress);
             write(sock->socket(), writeString.ascii(), writeString.length());
             break;
         case READY:
             state = SENTFROM;
-            writeString = QString::fromLatin1("rcpt to: %1\r\n").arg(recipientAddress);
+            writeString = QString::fromLocal8Bit("rcpt to: %1\r\n").arg(recipientAddress);
             write(sock->socket(), writeString.ascii(), writeString.length());
             break;
         case SENTFROM:
             state = SENTTO;
-            writeString = QString::fromLatin1("data\r\n");
+            writeString = QString::fromLocal8Bit("data\r\n");
             write(sock->socket(), writeString.ascii(), writeString.length());
             break;
         case DATA:
@@ -298,17 +298,17 @@ void SMTP::processLine(QString *line)
         break;
     case READYDATA: //354
         state = DATA;
-        //        writeString = QString::fromLatin1("Subject: %1\n%2\n.\n").arg(messageSubject).arg(messageBody);
-        writeString = QString::fromLatin1("Subject: %1\r\n").arg(messageSubject);
-	writeString += QString::fromLatin1("From: %1\r\n").arg(senderAddress);
+        //        writeString = QString::fromLocal8Bit("Subject: %1\n%2\n.\n").arg(messageSubject).arg(messageBody);
+        writeString = QString::fromLocal8Bit("Subject: %1\r\n").arg(messageSubject);
+	writeString += QString::fromLocal8Bit("From: %1\r\n").arg(senderAddress);
 	kdDebug() << senderReplyTo << endl;
 	if( (senderReplyTo != NULL) && senderReplyTo.contains("@") )
 	  {
-	    writeString += QString::fromLatin1("Reply-To: %1\r\n").arg(senderReplyTo);
+	    writeString += QString::fromLocal8Bit("Reply-To: %1\r\n").arg(senderReplyTo);
 	  }
-	writeString += QString::fromLatin1("To: %1\r\n\r\n").arg(recipientAddress);
+	writeString += QString::fromLocal8Bit("To: %1\r\n\r\n").arg(recipientAddress);
         writeString += messageBody;
-        writeString += QString::fromLatin1(".\r\n");
+        writeString += QString::fromLocal8Bit(".\r\n");
         write(sock->socket(), writeString.ascii(), writeString.length());
         break;
     case ERROR:     //501

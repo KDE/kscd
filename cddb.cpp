@@ -450,7 +450,7 @@ CDDB::cddb_read()
 	}
 	buffer[sizeBytes+1] = '\0';
     }
-    tempbuffer += buffer;
+    tempbuffer += QString::fromLocal8Bit(buffer);
 
     while(next_token())
         do_state_machine();
@@ -568,7 +568,7 @@ CDDB::query_exact(QString line)
       cddb_connect_internal();
 /*      if(connected)
 	{
-	  readstring = QString::fromLatin1("cddb read %1 %2")
+	  readstring = QString::fromLocal8Bit("cddb read %1 %2")
             .arg(category).arg(magicstr);
 	  send_http_command(readstring);
 	}*/
@@ -577,7 +577,7 @@ CDDB::query_exact(QString line)
       timeouttimer.stop();
       timeouttimer.start(timeout*1000,TRUE);
       //  readstring.sprintf("cddb read %s %lx \n",category.data(),magicID);
-      readstring = QString::fromLatin1("cddb read %1 %2 \n")
+      readstring = QString::fromLocal8Bit("cddb read %1 %2 \n")
         .arg(category)
         .arg(magicstr);
       write(sock->socket(),readstring.ascii(),readstring.length());
@@ -932,6 +932,7 @@ CDDB::checkDir(unsigned long magicID, const QString& dir)
       }
     
     QTextStream t(&file);
+    t.setEncoding(QTextStream::Locale);
     
     while ( !t.eof() ) 
       {
@@ -1352,7 +1353,7 @@ CDDB::cddb_http_xlat(QString &s)
     unsigned int pos=0;
     while(pos < s.length()+1)
       {
-        switch (s[pos].latin1()) 
+        switch (s.local8Bit().at(pos)) 
 	  {
 	  case ' ':
             s[pos]='+';
@@ -1363,7 +1364,7 @@ CDDB::cddb_http_xlat(QString &s)
 	  case '+':
 	  case '&':
 	  case '%':
-            (void) sprintf(q, "%%%02X", (char) s[pos].latin1());
+            (void) sprintf(q, "%%%02X", (char) s.local8Bit().at(pos));
             s.remove(pos,1);
             s.insert(pos+1,q);
             pos += 3;

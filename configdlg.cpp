@@ -49,7 +49,7 @@
 static inline QPixmap loadIcon( const char * name )
 {
   return KGlobal::instance()->iconLoader()
-    ->loadIcon( QString::fromLatin1(name), KIcon::NoGroup, KIcon::SizeMedium );
+    ->loadIcon( QString::fromLocal8Bit(name), KIcon::NoGroup, KIcon::SizeMedium );
 }
 
 ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)

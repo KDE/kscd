@@ -111,7 +111,7 @@ extern bool cddb_playlist_decode(QStringList& list, QString& str);
 
 static QString formatTrack(int d1, int d2)
 {
-  QString str = QString::fromLatin1("%1/%2")
+  QString str = QString::fromLocal8Bit("%1/%2")
     .arg( QString::number(d1).rightJustify(2, '0') )
     .arg( QString::number(d2).rightJustify(2, '0') );
   return str;
@@ -1608,7 +1608,7 @@ KSCD::setLEDs(const QString& symbols)
     }
 
     for(int i=0;i<5;i++){
-        trackTimeLED[i]->display(symbols[i].latin1());
+        trackTimeLED[i]->display((char)symbols.local8Bit().at(i));
     }
 }
 
@@ -2752,7 +2752,7 @@ KSCD::get_pathlist(QStringList& _pathlist)
 
 	 for ( QStringList::ConstIterator it = list.begin(); it != list.end(); ++it )
 	 {
-		 if( *it != QString::fromLatin1(".") && *it != QString::fromLatin1("..") )
+		 if( *it != QString::fromLocal8Bit(".") && *it != QString::fromLocal8Bit("..") )
 		 {
 			 _pathlist.append( cddbbasedir + '/' +  *it);
 		 }
@@ -2891,6 +2891,7 @@ KSCD::edm_save_cddb_entry(QString& path)
 
     QString tmp;
     QTextStream t(&file);
+    t.setEncoding(QTextStream::Locale);
 
     t << "# xmcd CD database file\n";
 
@@ -3142,7 +3143,7 @@ void KSCD::populateSongList()
     QStringList::Iterator it = tracktitlelist.begin();
     for (++it; it != tracktitlelist.end(); ++it, ++i )
     {
-        songListCB->insertItem(QString::fromLatin1("%1: %2")
+        songListCB->insertItem(QString::fromLocal8Bit("%1: %2")
                                .arg(QString::number(i + 1).rightJustify(2, '0'))
                                .arg(*it));
     }

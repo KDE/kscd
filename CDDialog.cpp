@@ -421,6 +421,7 @@ CDDialog::upload()
       
       file.open(IO_ReadOnly);
       QTextStream ti(&file);
+      ti.setEncoding(QTextStream::Locale);  // May be QTextStream::UnicodeUTF8
 
       QString s;
       QString subject;
@@ -459,9 +460,10 @@ CDDialog::upload()
   file.open(IO_ReadOnly);
 
   QTextStream ti(&file);
-
+  ti.setEncoding(QTextStream::Locale);  // May be QTextStream::UnicodeUTF8
 
   QTextStream to(mailpipe,IO_WriteOnly );
+  to.setEncoding(QTextStream::Locale); // May be QTextStream::UnicodeUTF8
 
   QString s;
 
@@ -590,7 +592,7 @@ CDDialog::save_cddb_entry(QString& path,bool upload)
 
   QString tmp;
   QTextStream t(&file);
-
+  t.setEncoding(QTextStream::Locale); //May be QTextStream::UnicodeUTF8
 
   if(upload && !smtpConfigData->enabled)
     {
@@ -898,7 +900,7 @@ mimetranslate(QString& s)
 	  q += s.at(i);
 	} else {
 	  
-	  hex = hex.sprintf("=%02X", (unsigned char)s[i].latin1());
+	  hex = hex.sprintf("=%02X", (unsigned char)s.local8Bit().at(i));
 	  q += hex; 
 	}
     }
