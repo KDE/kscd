@@ -222,7 +222,7 @@ protected:
     QString calculateDisplayedTime(int sec);
     QString calculateDisplayedTime(int sec, int track);
 
-    void updateDisplayedTrack(int);
+    void updateDisplayedTrack(int track);
 
     bool getArtist(QString& artist);
 
@@ -284,7 +284,7 @@ private:
    * set the artist and title labels as well as the dock tooltip.
    */
     void setArtist(const QString& artist);
-    void setTitle(unsigned int track);
+    void setTitle(int track);
 
     QStringList     pathlist;
     QStringList     tracktitlelist;
