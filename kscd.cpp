@@ -2273,7 +2273,7 @@ KSCD::playtime()
 
         case TOTAL_REM:
 
-            tmp = cur_cdlen - cur_pos_abs;
+            tmp = cd->length - cur_pos_abs;
             mysec = tmp % 60;
             mymin = tmp / 60;
 
