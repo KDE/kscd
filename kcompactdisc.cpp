@@ -83,16 +83,21 @@ extern "C"
 #include <qtextcodec.h>
 #include <fixx11h.h>
 
+// Our internal definition of when we have no disc. Used to guard some
+// internal arrays.
+#define NO_DISC ((m_discId == missingDisc) && (m_previousDiscId == 0))
+
 #define FRAMES_TO_MS(frames) \
 ((frames) * 1000 / 75)
 
 const QString KCompactDisc::defaultDevice = DEFAULT_CD_DEVICE;
+const unsigned KCompactDisc::missingDisc = (unsigned)-1;
 
 KCompactDisc::KCompactDisc() :
     m_device(""),
     m_status(0),
     m_previousStatus(123456),
-    m_discId((unsigned)-1),
+    m_discId(missingDisc),
     m_previousDiscId(0),
     m_artist(""),
     m_title(""),
@@ -123,6 +128,8 @@ const QString &KCompactDisc::device() const
 
 unsigned KCompactDisc::discLength() const
 {
+    if (NO_DISC)
+        return 0;
     return FRAMES_TO_MS(m_trackStartFrames[m_tracks - 1] - m_trackStartFrames[0]);
 }
 
@@ -288,6 +295,8 @@ unsigned KCompactDisc::trackLength() const
 
 unsigned KCompactDisc::trackLength(unsigned track) const
 {
+    if (NO_DISC)
+        return 0;
     return cd->trk[track - 1].length * 1000;
 }
 
@@ -316,8 +325,18 @@ void KCompactDisc::timerExpired()
     m_status = wm_cd_status();
     if (WM_CDS_NO_DISC(m_status))
     {
-        m_discId = (unsigned)-1;
-        m_previousDiscId = 0;
+        if (m_previousStatus != m_status)
+        {
+            m_previousStatus = m_status;
+            m_discId = missingDisc;
+            m_previousDiscId = 0;
+            m_trackArtists.clear();
+            m_trackTitles.clear();
+            m_trackStartFrames.clear();
+            m_tracks = 0;
+            m_track = 0;
+            emit discChanged(m_discId);
+        }
     }
     else
     {

@@ -96,7 +96,12 @@ public:
     const QString &device() const;
 
     /**
-     * Current disc, zero if no disc.
+     * The discId for a missing disc.
+     */
+    static const unsigned missingDisc;
+
+    /**
+     * Current disc, missingDisc if no disc.
      */
     unsigned discId() const { return m_discId; }
 
