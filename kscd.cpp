@@ -1839,7 +1839,7 @@ KSCD::writeSettings()
 
     config->setGroup("CDDB");
     config->writeEntry("CDDBRemoteEnabled",cddb_remote_enabled);
-    config->writeEntry("CDDBTimeout", cddb.getTimeout());
+    config->writeEntry("CDDBTimeout", static_cast<int>(cddb.getTimeout()));
     config->writeEntry("CDDBLocalAutoSaveEnabled",cddb_auto_enabled);
 
     config->writeEntry("LocalBaseDir",cddbbasedir);
@@ -2109,18 +2109,34 @@ void KSCD::cdtext()
     setArtistAndTitle("", "");
     tracktitlelist.clear();
     extlist.clear();
-    tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->name[0]),(const char*)(wm_cdtext_info.blocks[0]->performer[0])));
+    tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(wm_cdtext_info.blocks[0]->performer[0]), (const char*)(wm_cdtext_info.blocks[0]->name[0])));
     titlelabel->setText(QString((const char*)(wm_cdtext_info.blocks[0]->name[1])));
     artistlabel->setText(tracktitlelist.first());
     songListCB->clear();
 
+    // if it's a sampler, we'll do artist/title
+    bool isSampler = (qstricmp(reinterpret_cast<char*>(wm_cdtext_info.blocks[0]->performer[0]), "various") == 0);
+    
     int at = 1;
-    for (at = 1; at < (wm_cdtext_info.count_of_entries); ++at ) {
-        songListCB->insertItem( QString().sprintf("%02d: %s", at, wm_cdtext_info.blocks[0]->name[at]));
-        tracktitlelist.append((const char*)(wm_cdtext_info.blocks[0]->name[at]));
+    for (; at < (wm_cdtext_info.count_of_entries); ++at) 
+    {
+        QString title;
+        if (isSampler)
+        {
+            title.sprintf("%s / %s", wm_cdtext_info.blocks[0]->performer[at], wm_cdtext_info.blocks[0]->name[at]);
+        }
+        else
+        {
+            title = reinterpret_cast<char*>(wm_cdtext_info.blocks[0]->name[at]);
+        }
+
+        songListCB->insertItem(QString().sprintf("%02d: ", at) +  title);
+        tracktitlelist.append(title);
     }
-    for(; at < cur_ntracks; ++at){
-        songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));
+
+    for(; at < cur_ntracks; ++at)
+    {
+        songListCB->insertItem(QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), at)));
     }
 }
 
