@@ -342,7 +342,7 @@ KSCD::initialShow()
     KConfig* config = kapp->config();
 
     config->setGroup("GENERAL");
-    if (config->readBoolEntry("HiddenControls", !docking))
+    if (!config->readBoolEntry("HiddenControls", !docking))
     {
         show();
     }
