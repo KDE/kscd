@@ -406,6 +406,7 @@ CDDB::next_token()
 	  lastline    = tempbuffer.left(crpos);
 #else
 	lastline    = tempbuffer.left(newlinepos).stripWhiteSpace();
+	lastline    = lastline.replace(QRegExp("\015"), "");  // get rid of ^M
 #endif
 	tempbuffer  = tempbuffer.right(tempbuffer.length() - newlinepos -1);
 	return true;
