@@ -6,7 +6,7 @@
  * $Id$
  *
  * Copyright (C) 1997 Bernd Johannes Wuebben wuebben@math.cornell.edu
- * Copyright (C) 2000 Dirk Försterling <milliByte@gmx.de>
+ * Copyright (C) 2000 Dirk Fï¿½sterling <milliByte@gmx.de>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -56,7 +56,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
   // Window width
   label1 = new QLabel(this);
   label1->setGeometry(20,25,155,25);
-  label1->setText(i18n("Width of Magic Window:"));
+  label1->setText(i18n("Width of magic window:"));
 
   width_edit = new QLineEdit(this);
   width_edit->setGeometry(200,25,100,25);
@@ -69,7 +69,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
   // Window height
   label2 = new QLabel(this);
   label2->setGeometry(20,65,155,25);
-  label2->setText(i18n("Height of Magic Window:"));
+  label2->setText(i18n("Height of magic window:"));
 
   height_edit = new QLineEdit(this);
   height_edit->setGeometry(200,65,100,25);
@@ -82,7 +82,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent,
   // Brightness adjustment.
   label3 = new QLabel(this);
   label3->setGeometry(20,110,155,25);
-  label3->setText(i18n("MAGIC Brightness:"));
+  label3->setText(i18n("MAGIC brightness:"));
 
   bspin = new QSpinBox(0, 100, 1, this);
   bspin->setGeometry(200,110,50,25);

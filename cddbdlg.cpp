@@ -248,7 +248,7 @@ void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
 {
   if (r == KCDDB::CDDB::Success)
   {
-    KMessageBox::information(this, i18n("Record submitted successfully"),
+    KMessageBox::information(this, i18n("Record submitted successfully."),
          i18n("Record Submission"));
   }
   else
