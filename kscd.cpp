@@ -83,6 +83,8 @@ extern "C" {
 #include "kvolumecontrol.h"
 #include <qtextcodec.h>
 
+#include <fixx11h.h>
+
 #define N_TRACK_FIRST   1
 #define N_TRACK_STOP 0
 #define N_TRACK_UNKNOW -1
@@ -1298,8 +1300,7 @@ void KSCD::get_cddb_info()
 
 void KSCD::cddb_done(CDDB::Result result)
 {
-    // CDDBTODO: figure out why using CDDB::Success doesn't compile?!
-    if ((result != 0 /*KCDDB::CDDB::Success*/) &&
+    if ((result != KCDDB::CDDB::Success) &&
         (result != KCDDB::CDDB::MultipleRecordFound))
     {
         cddb_failed(result);
