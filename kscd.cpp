@@ -784,7 +784,7 @@ void KSCD::showConfig()
             if (m)
             {
                 m->load();
-                configDialog -> addPage(m, QString("freedb"), "cdtrack", i18n("Configure Fetching Items"));
+                configDialog -> addPage(m, QString("freedb"), "cdtrack", i18n("Configure Fetching Items"), false);
                 connect(configDialog, SIGNAL(okClicked()), m, SLOT(save()));
                 connect(configDialog, SIGNAL(applyClicked()), m, SLOT(save()));
                 connect(configDialog, SIGNAL(defaultClicked()), m, SLOT(defaults()));
