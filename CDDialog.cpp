@@ -25,7 +25,6 @@
 #include <qfile.h>
 #include <qdir.h>
 #include <qfileinfo.h> 
-#include <qmessagebox.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -34,6 +33,7 @@
 #include <math.h>
 
 #include <kapp.h>
+#include <kmessagebox.h>
 
 #define Inherited CDDialogData
 
@@ -43,7 +43,6 @@ extern void cddb_decode(QString& str);
 extern void cddb_encode(QString& str, QStrList &returnlist);
 extern void cddb_playlist_encode(QStrList& list,QString& playstr);
 extern bool cddb_playlist_decode(QStrList& list, QString& str);
-extern bool debugflag;
 
 extern SMTP *smtpMailer;
 
@@ -371,8 +370,7 @@ void CDDialog::upload(){
     return;
 
   /*
-  switch( QMessageBox::information( this,i18n("Message"),
-
+  switch( KMessageBox::information( this,
 i18n(
 "The submission you are about to make will go to the test server\n"\
 "cddb-test@cddb.com. This is because this is the first release of\n"\
@@ -453,8 +451,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   formatstr += submitaddress;
   */
   if(smtpConfigData->enabled){
-      if(debugflag)
-          printf("Submitting cddb entry via SMTP...\n");
+      debug("Submitting cddb entry via SMTP...\n");
       QFile file(tempfile);
 
       file.open(IO_ReadOnly);
@@ -495,7 +492,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   cmd = "sendmail -tU";
   //  cmd = cmd.sprintf(formatstr.data(),subject.data());
 
-  if (debugflag ) printf(i18n("Submitting cddb entry: %s\n").ascii(),cmd.ascii());
+  debug("Submitting cddb entry: %s\n",cmd.ascii());
   
   FILE* mailpipe;
   mailpipe = popen(cmd.data(),"w");
@@ -504,7 +501,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
     QString str;
     str = i18n("Could not pipe contents into:\n %1").arg(cmd);
 
-    QMessageBox::critical(this, i18n("Kscd"), str, i18n("OK"));
+    KMessageBox::error(this, str);
     pclose(mailpipe);
     return;
     
@@ -538,7 +535,7 @@ I would like you ask you to upload as many test submissions as possible.\n"\
   //  file2.close();   // *****
 
   unlink(tempfile.data());
-  if ( debugflag ) printf("DONE SENDING\n");
+  debug("DONE SENDING\n");
 }
 
 void CDDialog::getCategoryFromPathName(char* pathname, QString& _category){
@@ -608,7 +605,7 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
   magic.sprintf("%08lx",cdinfo.magicID);
   bool have_magic_already = false;
 
-  if(debugflag) printf("::save_cddb_entry(): path: %s upload = %d\n", path.data(), upload);
+  debug("::save_cddb_entry(): path: %s upload = %d\n", path.data(), upload);
   // Steve and Ti contacted me and said they have changed the cddb upload specs
   // Now, an uploaded entry must only contain one DISCID namely the one corresponding
   // to the CD the user actually owns.
@@ -638,10 +635,7 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
 		"your permissions and make your category directories exist.")
 		.arg(path);
 
-    QMessageBox::warning(this,
-			 i18n("Kscd Error"),
-			 str,
-			 i18n("OK"));
+    KMessageBox::error(this, str);
     return;
   }
 
@@ -807,11 +801,10 @@ bool CDDialog::checkit(){
   title = title.stripWhiteSpace();
   if(title.isEmpty()){
 
-    QMessageBox::warning(this,
-			 i18n("Invalid Database Entry"),
+    KMessageBox::sorry(this,
 			 i18n("The Disc Artist / Title field is not filled in.\n"\
 			 "Please correct the entry and try again."),
-			 i18n("OK"));
+			 i18n("Invalid Database Entry"));
      return false;
   }
 
@@ -822,12 +815,11 @@ bool CDDialog::checkit(){
   pos = title.find("/",0,true);
   if(pos == -1){
 
-    QMessageBox::warning(this,
-			 i18n("Invalid Database Entry"),
+    KMessageBox::sorry(this,
 			 i18n("The Disc Artist / Title field is not filled in correctly.\n"\
 			 "Please separate the artist from the title of the CD with \n"\
 			 "a forward slash, such as in: Peter Gabriel / Greatest Hits\n"),
-			 i18n("OK"));
+			 i18n("Invalid Database Entry"));
      return false;
 
   }
@@ -836,11 +828,10 @@ bool CDDialog::checkit(){
 
   if(track_list.count() < 2){
 
-    QMessageBox::warning(this,
-			 i18n("Invalid Database Entry"),
+    KMessageBox::sorry(this,
 			 i18n("Not all track titles can be empty.\n"\
-			 "Please correct the entry and try again."), 
-			 i18n("OK"));
+			 "Please correct the entry and try again."),
+			 i18n("Invalid Database Entry"));
      return false;
   }
 
@@ -858,22 +849,20 @@ bool CDDialog::checkit(){
 
   if(!have_nonempty_title){
 
-    QMessageBox::warning(this,
-			 i18n("Invalid Database Entry"),
+    KMessageBox::sorry(this,
 			 i18n("Not all track titles can be empty.\n"\
 			 "Please correct the entry and try again."),
-			 i18n("OK"));
+			 i18n("Invalid Database Entry"));
      return false;
 
   }
 
   if(cdinfo.ntracks +1 != (int)track_list.count() ){
 
-    QMessageBox::critical(this,
-			 i18n("Internal Error"),
+    KMessageBox::error(this,
 			 i18n("cdinfo.ntracks != title_list->count() + 1\n"
 			 "Please email the author."),
-			 i18n("OK"));
+			 i18n("Internal Error"));
      return false;
   }
 
@@ -898,10 +887,8 @@ bool CDDialog::checkit(){
   }
 
   if(!ret){
-      QMessageBox::warning(this,
-			 i18n("Error"),
-			 i18n("Invalid Playlist\n"),
-			 i18n("OK"));
+      KMessageBox::sorry(this,
+			 i18n("Invalid Playlist\n"));
       return false;
   }
 

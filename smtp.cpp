@@ -27,8 +27,6 @@
 #include <unistd.h>
 #include <stdio.h>
 
-extern bool debugflag;
-
 SMTP::SMTP(char *serverhost, unsigned short int port, int timeout)
 {
     struct utsname uts;
@@ -56,8 +54,7 @@ SMTP::SMTP(char *serverhost, unsigned short int port, int timeout)
     if(domainName.isEmpty())
         domainName = "somemachine.nowhere.org";
 
-    if(debugflag)
-        printf("SMTP object created\n");
+    debug("SMTP object created\n");
     
     connect(&connectTimer, SIGNAL(timeout()), this, SLOT(connectTimerTick()));
     connect(&timeOutTimer, SIGNAL(timeout()), this, SLOT(connectTimedOut()));
@@ -114,8 +111,7 @@ void SMTP::setMessageBody(const QString& message)
 
 void SMTP::openConnection(void)
 {
-    if(debugflag)
-        printf("started connect timer\n");
+    debug("started connect timer\n");
     connectTimer.start(100, TRUE);
 }
 
@@ -129,16 +125,14 @@ void SMTP::sendMessage(void)
     if(!connected)
         connectTimerTick();
     if(state == FINISHED && connected){
-        if(debugflag)
-            printf("state was == FINISHED\n");
+        debug("state was == FINISHED\n");
         finished = false;
         state = IN;
         writeString.sprintf("helo %s\r\n", domainName.data());
         write(sock->socket(), writeString.data(), writeString.length());
     }
     if(connected){
-        if(debugflag)
-            printf("enabling read on sock...\n");
+        debug("enabling read on sock...\n");
         interactTimer.start(timeOut, TRUE);
         sock->enableRead(true);
     }
@@ -150,22 +144,19 @@ void SMTP::connectTimerTick(void)
     connectTimer.stop();
 //    timeOutTimer.start(timeOut, TRUE);
 
-    if(debugflag)
-        printf("connectTimerTick called...\n");
+    debug("connectTimerTick called...\n");
     
     if(sock){
         delete sock;
         sock = 0L;
     }
 
-    if(debugflag)
-        printf("connecting to %s:%u ..... \n", serverHost.data(), hostPort);
+    debug("connecting to %s:%u ..... \n", serverHost.data(), hostPort);
     sock = new KSocket(serverHost.ascii(), hostPort);
 
     if(sock == 0L || sock->socket() < 0){
         timeOutTimer.stop();
-        if(debugflag)
-            printf("connection failed!\n");
+        debug("connection failed!\n");
         emit error(CONNECTERROR);
         connected = false;
         return;
@@ -179,8 +170,7 @@ void SMTP::connectTimerTick(void)
     connect(sock, SIGNAL(closeEvent(KSocket *)), this, SLOT(socketClose(KSocket *)));
     //    sock->enableRead(true);
     timeOutTimer.stop();
-    if(debugflag)
-        printf("connected\n");
+    debug("connected\n");
 }
 
 void SMTP::connectTimedOut(void)
@@ -189,8 +179,7 @@ void SMTP::connectTimedOut(void)
 
     if(sock) 
 	sock->enableRead(false);
-    if (debugflag)
-        printf("socket connection timed out\n");
+    debug("socket connection timed out\n");
     socketClose(sock);
     emit error(CONNECTTIMEOUT);
 }
@@ -201,8 +190,7 @@ void SMTP::interactTimedOut(void)
 
     if(sock)
         sock->enableRead(false);
-    if(debugflag)
-        printf("time out waiting for server interaction");
+    debug("time out waiting for server interaction");
     socketClose(sock);
     emit error(INTERACTTIMEOUT);
 }
@@ -211,8 +199,7 @@ void SMTP::socketRead(KSocket *socket)
 {
     int n, nl;
 
-    if(debugflag)
-        printf("socketRead() called...\n");
+    debug("socketRead() called...\n");
     interactTimer.stop();
 
     if(socket == 0L || socket->socket() < 0)
@@ -236,8 +223,7 @@ void SMTP::socketClose(KSocket *socket)
     disconnect(sock, SIGNAL(readEvent(KSocket *)), this, SLOT(socketRead(KSocket *)));
     disconnect(sock, SIGNAL(closeEvent(KSocket *)), this, SLOT(socketClose(KSocket *)));
     socket->enableRead(false);
-    if(debugflag)
-        printf("connection terminated\n");
+    debug("connection terminated\n");
     connected = false;
     if(socket){
         delete socket;
@@ -254,17 +240,13 @@ void SMTP::processLine(QString *line)
     
     i = line->find(' ');
     tmpstr = line->left(i);
-    if(debugflag)
-        if(i > 3){
-            
-            printf("warning: SMTP status code longer then 3 digits: %s\n", tmpstr.data());
-        }
+    if(i > 3)
+        debug("warning: SMTP status code longer then 3 digits: %s\n", tmpstr.data());
     stat = tmpstr.toInt();
     serverState = (SMTPServerStatus)stat;
     lastState = state;
 
-    if(debugflag)
-        printf("smtp state: [%d][%s]\n", stat, line->data());
+    debug("smtp state: [%d][%s]\n", stat, line->data());
 
     switch(stat){
     case GREET:     //220
@@ -300,8 +282,7 @@ void SMTP::processLine(QString *line)
             break;
         default:
             state = CERROR;
-            if(debugflag)
-                printf("smtp error (state error): [%d]:[%d][%s]\n", lastState, stat, line->data());
+            debug("smtp error (state error): [%d]:[%d][%s]\n", lastState, stat, line->data());
             socketClose(sock);
             emit error(COMMAND);
             break;
@@ -311,30 +292,28 @@ void SMTP::processLine(QString *line)
         state = DATA;
         //        writeString.sprintf("Subject: %s\n%s\n.\n", messageSubject.data(), messageBody.data());
         writeString.sprintf("Subject: %s\r\n", messageSubject.data());
-        writeString += messageBody.data();
+        writeString += messageBody;
         writeString += ".\r\n";
         write(sock->socket(), writeString.data(), writeString.length());
         break;
     case ERROR:     //501
         state = CERROR;
-        if(debugflag)
-            printf("smtp error (command error): [%d]:[%d][%s]\n", lastState, stat, line->data());
+        debug("smtp error (command error): [%d]:[%d][%s]\n", lastState, stat, line->data());
         socketClose(sock);
         emit error(COMMAND);
         break;
     case UNKNOWN:   //550
         state = CERROR;
-        if(debugflag)
-            printf("smtp error (unknown user): [%d]:[%d][%s]\n", lastState, stat, line->data());
+        debug("smtp error (unknown user): [%d]:[%d][%s]\n", lastState, stat, line->data());
         socketClose(sock);
         emit error(UNKNOWNUSER);
         break;
     default:
         state = CERROR;
-        if(debugflag)
-            printf("unknown response: [%d]:[%d][%s]\n", lastState, stat, line->data());
+        debug("unknown response: [%d]:[%d][%s]\n", lastState, stat, line->data());
         socketClose(sock);
         emit error(UNKNOWNRESPONSE);
     }
 }
+
 #include "smtp.moc"

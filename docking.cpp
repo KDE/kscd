@@ -35,7 +35,6 @@
 
 extern KSCD *k;
 
-extern bool debugflag;
 extern bool dockinginprogress;
 
 DockWidget::DockWidget(const char *name)

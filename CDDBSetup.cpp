@@ -149,8 +149,6 @@ void CDDBSetup::help()
 
 }
 
-extern bool debugflag;
-
 void CDDBSetup::insertData(const QStrList& _serverlist,
                            const QStrList& _submitlist,
 			   const QString& _basedir,
@@ -178,7 +176,7 @@ void CDDBSetup::insertData(const QStrList& _serverlist,
     //server_listbox->find(_current_server.data());
 //    server_listbox->centerCurrentItem();
 
-    if(debugflag) fprintf(stderr, "check point: server_listbox->centerCurrentItem()\n");
+    debug("check point: server_listbox->centerCurrentItem()\n");
     
     basedirstring = _basedir.copy();
     basedir_edit->setText(basedirstring);
@@ -189,7 +187,7 @@ void CDDBSetup::insertData(const QStrList& _serverlist,
     char port_str[40];
     sprintf(port_str,"%d",http_proxy_port);
     proxy_port_ef->setText(port_str);
-    if(debugflag) fprintf(stderr, "check point: ::insertData{...;return;}\n");
+    debug("check point: ::insertData{...;return;}\n");
 }
 
 void CDDBSetup::set_defaults()
@@ -327,7 +325,7 @@ void CDDBSetup::insertServerList(const QStrList& list)
 
     current_server_string = current_server_string_backup.copy();
     //current_server_string = currentServerLE->text();
-    if(debugflag) fprintf(stderr, "current_server_string: %s\n", current_server_string.data());
+    debug("current_server_string: %s\n", current_server_string.data());
     for(i = 0; i < server_listbox->count(); i++){
         if(current_server_string == server_listbox->text(i)){
             server_listbox->setCurrentItem(i);

@@ -61,6 +61,7 @@ extern "C" {
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <kstddirs.h>
+#include <kmessagebox.h>
 
 KSCD 	         *k;
 DockWidget*     dock_widget;
@@ -69,7 +70,6 @@ bool dockinginprogress = 0;
 bool quitPending = 0;
 bool stoppedByUser = 1;
 
-bool            debugflag = false;
 char 		tmptime[100];
 char 		*tottime;
 //static void 	playtime (void);
@@ -226,9 +226,8 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
 
 void KSCD::smtpMessageSent(void)
 {
-    QMessageBox::information(this, i18n("Record Submission"),
-                             i18n("Record submitted successfully"),
-			     i18n("OK"));
+    KMessageBox::information(this, i18n("Record submitted successfully"),
+                                   i18n("Record Submission"));
 }
 
 void KSCD::smtpError(int errornum)
@@ -253,7 +252,7 @@ void KSCD::smtpError(int errornum)
     }
     str = i18n("Error #%1 sending message via SMTP.\n\n%2")
       .arg(errornum).arg(lstr);
-    QMessageBox::critical(this, i18n("Record Submission"), str, i18n("OK"));
+    KMessageBox::error(this, str, i18n("Record Submission"));
 }
 
 	
@@ -433,8 +432,7 @@ void KSCD::drawPanel()
     songListCB->setFont( QFont( "helvetica", 12 ) );
     songListCB->setFocusPolicy ( QWidget::NoFocus );
 
-    if(debugflag)
-        printf("Width %d Height %d\n",WIDTH, HEIGHT);
+    debug("Width %d Height %d\n",WIDTH, HEIGHT);
 
     iy = 0;
     ix = WIDTH + SBARWIDTH;
@@ -1153,7 +1151,7 @@ void KSCD::aboutClicked(){
         // reset the current server in case we played with it ...
 
         current_server = server_copy;
-        if(debugflag) printf("RESETTING SERVER TO: %s\n",current_server.ascii());
+        debug("RESETTING SERVER TO: %s\n",current_server.ascii());
     }
 
     disconnect(setup,SIGNAL(updateCDDBServers()),this,SLOT(getCDDBservers()));
@@ -1174,7 +1172,7 @@ void KSCD::updateCurrentCDDBServer(){
 
     if(setup){
         setup->getCurrentServer(current_server);
-        if(debugflag) printf("SET SERVER TO: %s\n",current_server.ascii());
+        debug("SET SERVER TO: %s\n",current_server.ascii());
     }
 }
 
@@ -1224,7 +1222,7 @@ void KSCD::cdMode(){
               i18n("CDROM read or access error.\n"\
                    "Please make sure you have access permissions to:\n%1")
               .arg(cd_device);
-            QMessageBox::warning(this,i18n("Error"),errstring, i18n("OK"));
+            KMessageBox::error(this, errstring, i18n("Error"));
         }
         return;
     }
@@ -1505,7 +1503,7 @@ void KSCD::readSettings()
     //Let's check if it is in old format and if so, convert it to new one:
     if(CDDB::normalize_server_list_entry(current_server))
     {
-        if(debugflag) fprintf(stderr,"Default CDDB server entry converted to new format and saved.\n");
+        debug("Default CDDB server entry converted to new format and saved.\n");
         config->writeEntry("CurrentServer",current_server);
         config->sync();
     }
@@ -1532,8 +1530,7 @@ void KSCD::readSettings()
             // function in configuration - it does not notice if QStrList
             // String contents is changed.
             cddbserverlist=nlist;
-            if(debugflag)
-                fprintf(stderr,"CDDB server list converted to new format and saved.\n");
+            debug("CDDB server list converted to new format and saved.\n");
             config->writeEntry("SeverList",cddbserverlist,',',true);
             config->sync();
         }
@@ -1711,20 +1708,19 @@ void KSCD::get_cddb_info(bool _updateDialog){
 
     if(!res){
 
-        if (debugflag) printf("STARTING REMOTE QUERY\n");
+        debug("STARTING REMOTE QUERY\n");
         cddb.cddb_connect(current_server);
     }
     else{
-        if (debugflag) printf("FOUND RECORD LOCALLY\n");
+        debug("FOUND RECORD LOCALLY\n");
         if((int)tracktitlelist.count() != (cd->ntracks + 1)){
-            if(debugflag) printf(
-                "WARNING LOCAL QUERY tracktitleslist.count = %d != cd->ntracks +1 = %d\n",
+                debug("WARNING LOCAL QUERY tracktitleslist.count = %d != cd->ntracks +1 = %d\n",
                 tracktitlelist.count(),cd->ntracks + 1
             );
         }
 
         if((int)extlist.count() != (cd->ntracks + 1)){
-            if (debugflag )printf("WARNING LOCAL QUERYextlist.count = %d != cd->ntracks +1 = %d\n",
+            debug("WARNING LOCAL QUERYextlist.count = %d != cd->ntracks +1 = %d\n",
                                   extlist.count(),cd->ntracks + 1);
         }
 
@@ -1760,8 +1756,7 @@ void KSCD::get_cddb_info(bool _updateDialog){
 
 int cddb_ready_bug = 0;
 void KSCD::cddb_ready(){
-    if(debugflag)
-        printf("cddb_ready() called\n");
+    debug("cddb_ready() called\n");
 
     if(!cd)
         return;
@@ -1788,8 +1783,7 @@ void KSCD::cddb_ready(){
 
 void KSCD::cddb_no_info(){
     //        cddb_ready_bug = 0;
-    if(debugflag)
-        printf("cddb_no_info() called\n");
+    debug("cddb_no_info() called\n");
 
     titlelabel->setText(i18n("No matching CDDB entry found."));
 //    artistlabel->setText("");
@@ -1817,8 +1811,7 @@ void KSCD::cddb_failed(){
     // TODO differentiate between those casees where the communcition really
     // failed and those where we just couldn't find anything
     //        cddb_ready_bug = 0;
-    if(debugflag)
-        printf("cddb_failed() called\n");
+    debug("cddb_failed() called\n");
     tracktitlelist.clear();
     tracktitlelist.append(i18n("Error getting CDDB entry.").ascii());
     for(int i = 0 ; i < cd->ntracks; i++)
@@ -1843,8 +1836,7 @@ void KSCD::cddb_failed(){
 void KSCD::cddb_timed_out(){
 
     //    cddb_ready_bug = 0;
-    if(debugflag)
-        printf("cddb_timed_out() called\n");
+    debug("cddb_timed_out() called\n");
     tracktitlelist.clear();
     tracktitlelist.append(i18n("CDDB query timed out.").ascii());
     for(int i = 0 ; i <= cd->ntracks; i++)
@@ -1906,19 +1898,18 @@ void KSCD::cddb_done()
 {
     cddb_inexact_sentinel =false;
 
-    if(debugflag)
-        printf("cddb_done() called\n");
+    debug("cddb_done() called\n");
 //    cddb_ready_bug = 0;
     cddb.getData(xmcd_data,tracktitlelist,extlist,category,discidlist,revision,playlist);
     playlistpointer = 0;
 
     if((int)tracktitlelist.count() != (cd->ntracks + 1)){
-        if(debugflag) printf("WARNING tracktitleslist.count = %d != cd->ntracks +1 = %d\n",
+        debug("WARNING tracktitleslist.count = %d != cd->ntracks +1 = %d\n",
                              tracktitlelist.count(),cd->ntracks + 1);
     }
 
     if((int)extlist.count() != (cd->ntracks + 1)){
-        if (debugflag )printf("WARNING extlist.count = %d != cd->ntracks +1 = %d\n",
+        debug("WARNING extlist.count = %d != cd->ntracks +1 = %d\n",
                               extlist.count(),cd->ntracks + 1);
     }
 
@@ -2097,7 +2088,7 @@ bool  KSCD::getArtist(QString& artist){
 
 void  KSCD::performances(int i){
 
-    if (debugflag )printf("preformances %d\n",i);
+    debug("preformances %d\n",i);
 
     QString artist;
     QString str;
@@ -2124,8 +2115,7 @@ void  KSCD::performances(int i){
 }
 
 void  KSCD::purchases(int i){
-
-    if (debugflag) printf("purchases %d\n",i);
+    debug("purchases %d\n",i);
 
     QString artist;
     QString str;
@@ -2182,27 +2172,19 @@ void KSCD::magicslot(int ){
 
     bool result = magicproc->start(KProcess::NotifyOnExit , KProcess::NoCommunication);
 
-    if(!result){
-        QString str;
-        str = i18n("Cannot start kscdmagic.");
-        QMessageBox::critical(this, i18n("KSCD"), str, i18n("OK"));
-    }
+    if(!result)
+        KMessageBox::error(this, i18n("Cannot start kscdmagic."));
 
     return;
-
-
 }
 
 void KSCD::magicdone(KProcess* proc){
 
     if(proc->normalExit()){
         //    fprintf(stderr,"kscdmagic exit status %d\n",proc->exitStatus());
-        if(proc->exitStatus()!=0){
-            QString str;
-            str = i18n("KSCD Magic exited abnormally.\n"
-                       "Are you sure kscdmagic is installed?");
-            QMessageBox::critical(this, i18n("KSCD"), str, i18n("OK"));
-        }
+        if(proc->exitStatus()!=0)
+            KMessageBox::error(this, i18n("KSCD Magic exited abnormally.\n"
+                                          "Are you sure kscdmagic is installed?"));
     }
 
     //  printf("KSCD Magic Process Exited\n");
@@ -2210,13 +2192,10 @@ void KSCD::magicdone(KProcess* proc){
     if(proc)
         delete proc;
     magicproc = 0L;
-
 }
 
-
 void KSCD::information(int i){
-
-    if (debugflag) printf("Information %d\n",i);
+    debug("Information %d\n",i);
 
     QString artist;
     QString str;
@@ -2310,12 +2289,9 @@ void KSCD::information(int i){
 void KSCD::startBrowser(const QString &querystring){
 
     if(use_kfm){
-
         (void) new KRun ( querystring ); // replacement for KFM::openURL (David)
-
     }
     else{
-
         const char* shell = 0L;
 
         QString bw = browsercmd;
@@ -2360,12 +2336,6 @@ int main( int argc, char *argv[] )
     bool hide = FALSE;
 
     for(int i = 0; i < argc; i++){
-
-        if(strcmp(argv[i],"-d") == 0){
-            debugflag = true;
-            printf("DEBUG MODE ON\n");
-        }
-
         if(strcmp(argv[i],"-hide") == 0){
 	    hide = TRUE;
 	}
@@ -2389,39 +2359,10 @@ int main( int argc, char *argv[] )
     return a.exec();
 }
 
-void kcderror(const QString& title,const QString& message)
+void kcderror(const QString& title, const QString& message)
 {
-    QMessageBox::information(0L,title, message, i18n("OK"));
+    KMessageBox::information(0L, message, title);
 }
-
-
-#include "kscd.moc"
-
-
-/*
-  void parseargs(char* buf, char** args){
-
-  while(*buf != '\0'){
-
-  // Strip whitespace. Use nulls, so that the previous argument is terminated
-  // automatically.
-
-  while ((*buf == ' ' ) || (*buf == '\t' ) || (*buf == '\n' ) )
-  *buf++ ='\0';
-
-  // save the argument
-  if(*buf != '\0')
-  *args++ = buf;
-
-  while ((*buf != '\0') && (*buf != '\n') && (*buf != '\t') && (*buf != ' '))
-  buf++;
-
-  }
-
-  *args ='\0';;
-
-  }
-*/
 
 /* I am dropping this code for now. People seem to be having nothing
    but trouble with this code and it was of dubious value anyways....
@@ -2473,3 +2414,5 @@ void KSCD::checkMount(){
 
 #endif
 */
+
+#include "kscd.moc"

@@ -36,7 +36,6 @@
 #include <qtimer.h>
 #include <qbitmap.h>
 #include <qcombobox.h>
-#include <qmessagebox.h>
 #include <qscrollbar.h>
 #include <qslider.h>
 #include <qtabdialog.h>

@@ -24,11 +24,13 @@
 
  */
 
-#include "inexact.h"
-#include "stdio.h"
-#include <klocale.h>
-#include <kapp.h>
+#include <stdio.h>
 
+#include <kapp.h>
+#include <klocale.h>
+#include <kmessagebox.h>
+
+#include "inexact.h"
 
 InexactDialog::InexactDialog(QWidget *parent, const char *name,bool _listbox)
   : QDialog(parent, name, TRUE)
@@ -106,10 +108,7 @@ void InexactDialog::checkit(){
 
   if(listbox){
     if(list_box->currentItem() == -1){
-      QMessageBox::information(this,
-			       i18n("Kscd"),
-			       errorstring,
-			       i18n("OK"));
+      KMessageBox::information(this, errorstring);
       return;
     }
     returnstring = list_box->text(list_box->currentItem());
@@ -169,6 +168,5 @@ void InexactDialog::resizeEvent(QResizeEvent *){
   cancel_button->setGeometry(w - 72 , h - 28, 70, 25);
   
 }
-
 
 #include "inexact.moc"
