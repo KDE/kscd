@@ -15,9 +15,6 @@
             <height>605</height>
         </rect>
     </property>
-    <property name="caption">
-        <string>configWidgetUI</string>
-    </property>
     <vbox>
         <property name="name">
             <cstring>unnamed</cstring>
@@ -62,9 +59,6 @@
                     <property name="text">
                         <string>Show icon in &amp;system tray</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+S</string>
-                    </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</string>
                     </property>
@@ -78,9 +72,6 @@
                     </property>
                     <property name="text">
                         <string>Show &amp;track announcement</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+T</string>
                     </property>
                 </widget>
                 <spacer row="1" column="2" rowspan="2" colspan="1">
@@ -195,9 +186,6 @@
                     <property name="text">
                         <string>Auto&amp;play when CD inserted</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+P</string>
-                    </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</string>
                     </property>
@@ -209,9 +197,6 @@
                     <property name="text">
                         <string>&amp;Eject CD when finished playing</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+E</string>
-                    </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will automatically eject when it is finished.</string>
                     </property>
@@ -222,9 +207,6 @@
                     </property>
                     <property name="text">
                         <string>Stop playing CD on e&amp;xit</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+X</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected the CD will automatically stop playing when quitting KsCD.</string>
@@ -300,9 +282,6 @@
                     <property name="text">
                         <string>&amp;Use direct digital playback</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+U</string>
-                    </property>
                     <property name="checked">
                         <bool>false</bool>
                     </property>
@@ -348,9 +327,6 @@
                     </property>
                     <property name="text">
                         <string>Allow en&amp;coding selection</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+C</string>
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>When this option is selected, you have the ability to select encoding for the results of a CDDB request. The standard describes CDDB results as being strictly Latin1. This is not true, as non-English speaking users often use other 8-bit encodings.</string>
