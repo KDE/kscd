@@ -335,7 +335,9 @@ private:
    * select a random track from the current disc.
    *
    */
-    int                 randomtrack();
+    int                 next_randomtrack();
+    int                 prev_randomtrack();
+    int                 real_randomtrack();
 
   /**
    * set the artist and title labels as well as the dock tooltip.

@@ -869,8 +869,10 @@ KSCD::prevClicked()
     qApp->processEvents();
     qApp->flushX();
 
-    if(!playlist.isEmpty())
-    {
+    if(randomplay) {
+        if((track = prev_randomtrack()) < 0)
+            return;
+    } else if(!playlist.isEmpty()) {
         playlistpointer--;
         if(playlistpointer < 0 )
         {
@@ -901,33 +903,17 @@ KSCD::nextClicked()
     qApp->processEvents();
     qApp->flushX();
 
-    if(randomplay)
-    {
-        if ( (track = randomtrack()) < 0 )
+    if(randomplay) {
+        if((track = next_randomtrack()) < 0)
             return;
-/*
-        tracklabel->setText(formatTrack(j, cd->ntracks));
-        if(j < (int)tracktitlelist.count())
-        {
-            setArtistAndTitle(tracktitlelist.first(),
-                              *tracktitlelist.at(j));
-        }
-        qApp->processEvents();
-        qApp->flushX();
-
-*/
-    }
-    else if(!playlist.isEmpty())
-    {
+    } else if(!playlist.isEmpty()) {
         if(playlistpointer < (int)playlist.count() - 1)
             playlistpointer++;
         else
             playlistpointer = 0;
 
          track = atoi((*playlist.at(playlistpointer)).ascii() );
-    }
-    else
-    {
+    } else {
         // TODO: determine if this should indeed be cur_track + 2?
         track = wm_cd_getcurtrack() + 1;
     }
@@ -1350,52 +1336,106 @@ KSCD::volChanged( int vol )
         volume = vol;
 } // volChanged
 
+/* Alex Kern:
+   let me explain, i try to avoid problem, that first track in random
+   sequence will bee never played */
+#define INVALID_RANDOM_ITERATOR random_list.end()
+#define NEXT_VALID_ITERATOR(x) ((x)++)
+#define PREV_VALID_ITERATOR(x) ((x)--)
+#define FIRST_VALID_ITERATOR random_list.begin()
+#define LAST_VALID_ITERATOR  random_list.fromLast()
+void
+KSCD::make_random_list()
+{
+    /* koz: 15/01/00. I want a random list that does not repeat tracks. Ie, */
+    /* a list is created in which each track is listed only once. The tracks */
+    /* are picked off one by one until the end of the list */
+
+    int selected = 0;
+    bool rejected = false;
+
+    //kdDebug() << "Playlist has " << size << " entries\n" << endl;
+    random_list.clear();
+    for(int i = 0; i < cd->ntracks; i++)
+    {
+        do {
+            selected = 1 + (int) randSequence.getLong(cd->ntracks);
+            rejected = (random_list.find(selected) != random_list.end());
+        } while(rejected == true);
+        random_list.append(selected);
+    }
+#if 0
+    for(random_current = random_list.begin();
+        random_current != random_list.end();
+        random_current++)
+        fprintf(stderr, "random_list %i\n", *random_current);
+#endif
+    random_current = INVALID_RANDOM_ITERATOR;
+} // make_random_list()
 
 int
-KSCD::randomtrack()
+KSCD::real_randomtrack()
 {
-    /* koz: 15/01/00. Check to see if we want to do a randomonce. If so */
-    /* we execute the first set of statements. Else we execute the second */
-    /* set, the original code.  */
-    if( randomonce )
-    {
-        if ( random_list.isEmpty() )
-        {
-            return -1;
-        }
-
-        if ( random_current == random_list.end() )
-        {
-            // playing the same random list isn't very random, is it?
-            make_random_list();
-            if( !looping )
-            {
-                stopClicked();
-                return -1;
-            }
-            else
-            {
-                random_current = random_list.begin();
-            }
-        }
-
-        int track = *random_current + 1;
-        ++random_current;
-        return track;
-    } // randomonce
-
-    if( !playlist.isEmpty() )
-    {
-        int j;
-        j = (int) randSequence.getLong(playlist.count());
-        playlistpointer = j;
-        return atoi( (*playlist.at(j)).ascii() );
+    int j = 1 + randSequence.getLong(cd->ntracks);
+    if(!playlist.isEmpty()) {
+        playlistpointer = j-1;
+        return atoi((*playlist.at(playlistpointer)).ascii());
     } else {
-        int j;
-        j = (cur_ntracks == 0) ? 0 : (1 + (int) randSequence.getLong(cur_ntracks));
         return j;
     }
-} // randomtrack
+}
+
+int
+KSCD::next_randomtrack()
+{
+    if(randomonce) {
+       /* Check to see if we are at invalid state */
+       if(random_current == INVALID_RANDOM_ITERATOR) {
+           random_current = FIRST_VALID_ITERATOR;
+       } else if(random_current == LAST_VALID_ITERATOR) {
+            if(!looping) {
+                 stopClicked();
+                 return -1;
+            } else {
+                 // playing the same random list isn't very random, is it?
+                 make_random_list();
+                 return next_randomtrack();
+            }
+        } else {
+            NEXT_VALID_ITERATOR(random_current);
+        }    
+        //fprintf(stderr, "next_randomtrack randomonce %i\n", *random_current);
+        return *random_current;
+    } else { // !randomonce
+        return real_randomtrack();
+    }
+} // next_randomtrack
+ 
+int
+KSCD::prev_randomtrack()
+{
+    if(randomonce) {
+        /* Check to see if we are at invalid state */
+        if(random_current == INVALID_RANDOM_ITERATOR) {
+            random_current = LAST_VALID_ITERATOR;
+        } else if(random_current == FIRST_VALID_ITERATOR) {
+            if(!looping) {
+                stopClicked();
+                return -1;
+            } else {
+                // playing the same random list isn't very random, is it?
+                make_random_list();
+                return prev_randomtrack();
+            }
+        } else {
+            PREV_VALID_ITERATOR(random_current);
+        }
+        //fprintf(stderr, "prev_randomtrack randomonce %i\n", *random_current);
+        return *random_current;
+    } else { // !randomonce
+        return real_randomtrack();
+    }
+} // prev_randomtrack
 
 /*
  * cdMode
@@ -1458,7 +1498,7 @@ KSCD::cdMode()
         case WM_CDM_TRACK_DONE: // == WM_CDM_BACK
             if( randomplay ) /*FIXME:  propably nex_clicked ?? */
             {
-                if((track = randomtrack()) < 0)
+                if((track = next_randomtrack()) < 0)
                     return;
                 wm_cd_play( track, 0, track + 1 );
             }
@@ -2841,30 +2881,6 @@ KSCD::checkMount()
 
 #endif
  */
-
-void
-KSCD::make_random_list()
-{
-    /* koz: 15/01/00. I want a random list that does not repeat tracks. Ie, */
-    /* a list is created in which each track is listed only once. The tracks */
-    /* are picked off one by one until the end of the list */
-
-    int selected = 0;
-    bool rejected = false;
-
-    //kdDebug() << "Playlist has " << size << " entries\n" << endl;
-    random_list.clear();
-    for(int i = 0; i < cd->ntracks; i++)
-    {
-        do {
-            selected = 1 + (int) randSequence.getLong(cd->ntracks);
-            rejected = (random_list.find(selected) != random_list.end());
-        } while(rejected == true);
-        random_list.append(selected);
-    }
-    random_current = random_list.begin(); /* Index of array we are on */
-} // make_random_list()
-
 
 void
 KSCD::edm_save_cddb_entry(QString& path)
