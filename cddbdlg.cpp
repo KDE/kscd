@@ -48,7 +48,7 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
 
   connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
   connect( this, SIGNAL( user1Clicked() ), SLOT( upload() ) );
-  connect( this, SIGNAL( user2Clicked() ), SLOT( load_cddb() ) );
+  connect( this, SIGNAL( user2Clicked() ), SIGNAL( cddbQuery() ) );
   connect( m_dlgBase, SIGNAL( play( int ) ), SIGNAL( play( int ) ) );
   connect( m_dlgBase, SIGNAL( discInfoClicked() ), SLOT( extIB() ) );
   connect( m_dlgBase, SIGNAL( trackInfoClicked( int ) ), SLOT( extITB( int ) ) );
@@ -382,7 +382,7 @@ void CDDBDlg::save()
 
   KCDDB::Cache::store(info);
 
-  load_cddb();
+  emit cddbQuery();
 } // save
 
 bool CDDBDlg::checkit()
@@ -477,11 +477,6 @@ bool CDDBDlg::checkit()
 
   return true;
 } // checkit
-
-void CDDBDlg::load_cddb()
-{
-  emit cddbQuery(true);
-} // load
 
 void CDDBDlg::updateTrackList()
 {

@@ -1022,7 +1022,7 @@ void KSCD::cdMode()
         prev_track = -1;
     } else if(have_new_cd) {
         have_new_cd = false;
-        get_cddb_info(false);
+        get_cddb_info();
 
         if(Prefs::autoplay() && cdmode == WM_CDM_STOPPED)
             playClicked();
@@ -1221,7 +1221,7 @@ void KSCD::CDDialogSelected()
         cddialog->setData(cd,artist,title,tracktitlelist,extlist,xmcd_data,category, genre,
                         revision,year,playlist,pathlist);
 
-        connect(cddialog,SIGNAL(cddbQuery(bool)),SLOT(get_cddb_info(bool)));
+        connect(cddialog,SIGNAL(cddbQuery()),SLOT(get_cddb_info()));
         connect(cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
         connect(cddialog,SIGNAL(play(int)),SLOT(trackSelected(int)));
     }
@@ -1236,7 +1236,7 @@ void KSCD::CDDialogDone()
   cddialog = 0L;
 }
 
-void KSCD::get_cddb_info(bool /*_updateDialog*/)
+void KSCD::get_cddb_info()
 {
     kdDebug(67000) << "get_cddb_info() called" << endl;
     if (!cd ||

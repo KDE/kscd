@@ -293,7 +293,7 @@ public slots:
     void mycddb_inexact_read();
     void CDDialogSelected();
     void CDDialogDone();
-    void get_cddb_info(bool);
+    void get_cddb_info();
 
 private:
     void get_cdtext_info();

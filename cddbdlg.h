@@ -63,12 +63,11 @@ class CDDBDlg : public KDialogBase
     void save();
     void extITB( int trackNum );
     void extIB();
-    void load_cddb();
     void upload();
     void submitFinished(CDDB::Result);
 
   signals:
-    void cddbQuery(bool);
+    void cddbQuery();
     void play(int i);
 
   private:
