@@ -64,3 +64,5 @@ plat_sun_cdda.c:config.h
 plat_svr4.c:config.h
 plat_ultrix.c:config.h
 
+KDE_OPTIONS = nofinal
+
