@@ -1,9 +1,9 @@
 
-/*   
+/*
    Kscd - A simple cd player for the KDE Project
 
    $Id$
- 
+
    Copyright (c) 1997 Bernd Johannes Wuebben math.cornell.edu
 
    This program is free software; you can redistribute it and/or modify
@@ -37,7 +37,6 @@
 #include <qpushbutton.h>
 #include <qlistbox.h>
 #include <qstrlist.h>
-#include <qmultilineedit.h> 
 
 class InexactDialog : public QDialog {
 

@@ -1,13 +1,13 @@
 
 /*
  *
- * kscd -- A simple CD player for the KDE project           
+ * kscd -- A simple CD player for the KDE project
  *
  * $Id$
- * 
+ *
  * Copyright (C) 1997 Bernd Johannes Wuebben wuebben@math.cornell.edu
  * Copyright (C) 2000 Dirk Försterling <milliByte@gmx.de>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -28,7 +28,7 @@
 #ifndef _MGCONFIG_DLG_H_
 #define _MGCONFIG_DLG_H_
 
-#include <qgroupbox.h> 
+#include <qgroupbox.h>
 #include <qdialog.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
@@ -36,21 +36,20 @@
 #include <qlabel.h>
 #include <qframe.h>
 #include <qcheckbox.h>
-#include <qlineedit.h>
 #include <qradiobutton.h>
-#include <qbutton.h> 
-#include <qbuttongroup.h> 
+#include <qbutton.h>
+#include <qbuttongroup.h>
 
 #include "kscd.h"
 
 
 class QSpinBox;
 
-class MGConfigDlg : public QDialog 
+class MGConfigDlg : public QDialog
 {
-  
+
 Q_OBJECT
-  
+
 public:
 
   MGConfigDlg(QWidget *parent, struct mgconfigstruct * data,const char *name);
@@ -69,13 +68,13 @@ private slots:
   //  void fadeMode_changed();
   //  void starSize_changed();
 
-  
+
 private:
 
   struct mgconfigstruct mgconfigdata;
 
   QGroupBox *box;
-  
+
   QLabel *label1;
   QSpinBox *bspin;
 
@@ -86,7 +85,7 @@ private:
   QLineEdit *width_edit;
 
   QCheckBox *pointsAreDiamondsCB;
-  
+
 
   QPushButton *helpbutton;
 };
