@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include <kapp.h>
+#include <kapplication.h>
 #include <kmessagebox.h>
 
 #include "CDDialog.h"
@@ -44,8 +44,6 @@
 extern "C" {
 #include "libwm/include/workman.h"
 }
-
-#define Inherited CDDialogData
 
 QTime framestoTime(int frames);
 void  mimetranslate(QString& s);
@@ -62,7 +60,7 @@ CDDialog::CDDialog
 	const char* name
 )
 	:
-	Inherited( parent, name )
+	CDDialogData( parent, name )
 {
 	setCaption( i18n("CD Database Editor") );
 
@@ -922,5 +920,3 @@ mimetranslate(QString& s)
   s = q.copy();
 
 } // mimetranslate
-
-#undef Inherited

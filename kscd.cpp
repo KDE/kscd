@@ -40,7 +40,7 @@
 #include <kprotocolmanager.h>
 #include <krun.h>
 #include <krandomsequence.h>
-#include <kstddirs.h>
+#include <kstandarddirs.h>
 #include <kstringhandler.h>
 #include <kurl.h>
 

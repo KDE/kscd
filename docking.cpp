@@ -24,7 +24,7 @@
 #include "kscd.h"
 
 #include <qtooltip.h>
-#include <kapp.h>
+#include <kapplication.h>
 
 #include "docking.h"
 #include <klocale.h>

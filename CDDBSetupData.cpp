@@ -12,13 +12,11 @@
 
 #include "CDDBSetupData.h"
 
-#define Inherited QWidget
-
 #include <qlabel.h>
 #include <qgroupbox.h>
 
 #include <klocale.h>
-#include <kapp.h>
+#include <kapplication.h>
 #include <qpushbutton.h>
 #include <qcheckbox.h>
 #include <qlistbox.h>
@@ -36,7 +34,7 @@ CDDBSetupData::CDDBSetupData
 	const char* name
 )
 	:
-	Inherited( parent, name, 0 )
+	QWidget( parent, name, 0 )
 {
         QFontMetrics fm ( font() );
 

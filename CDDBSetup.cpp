@@ -10,8 +10,8 @@
 #include <qvalidator.h>
 
 #include <kglobal.h>
-#include <kstddirs.h>
-#include <kapp.h>
+#include <kstandarddirs.h>
+#include <kapplication.h>
 #include <kdebug.h>
 #include <klineedit.h>
 #include <qcheckbox.h>
@@ -19,8 +19,6 @@
 #include <kurlrequester.h>
 
 #include "../config.h"
-
-#define Inherited CDDBSetupData
 
 #include "CDDBSetup.h"
 #include "cddb.h"
@@ -31,7 +29,7 @@ CDDBSetup::CDDBSetup
     const char* name
 )
     :
-    Inherited( parent, name )
+    CDDBSetupData( parent, name )
 {
 
     connect(basedir_edit->lineEdit(),SIGNAL(textChanged(const QString &)),
@@ -404,5 +402,3 @@ CDDBSetup::http_access_toggled(bool state)
 
 #include "CDDBSetup.moc"
 #include "CDDBSetupData.moc"
-
-#undef Inherited

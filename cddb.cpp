@@ -40,7 +40,7 @@
 #include <qfileinfo.h> 
 #include <qregexp.h> 
 
-#include <kapp.h>
+#include <kapplication.h>
 #include <kdebug.h>
 
 #include "cddb.h"
@@ -361,7 +361,7 @@ CDDB::cddb_close(KSocket *socket)
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <kstddirs.h>
+#include <kstandarddirs.h>
 #include <kglobal.h>
 
 void 
