@@ -1,6 +1,6 @@
 <!DOCTYPE book PUBLIC  "-//KDE//DTD DocBook V3.1-Based Variant V1.0//EN" [
-  <!ENTITY kappname "&kscd;" -- this only *seems* redundant -->
-  <!ENTITY % English "INCLUDE">
+  <!ENTITY kappname "&kscd;">
+  <!ENTITY % English "INCLUDE" -- change language only here -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % ents PUBLIC "-//KDE//ENTITIES Documentation V1.0//EN">
   %ents;
@@ -36,6 +36,13 @@
 
 <othercredit role="developer">
 <firstname>Dirk</firstname>
+<surname>Forsterling</surname>
+<affiliation><address><email>milliByte@gmx.net</email></address></affiliation>
+<contrib>Developer</contrib>
+</othercredit>
+
+<othercredit role="developer">
+<firstname>Dirk</firstname>
 <surname>Foersterling</surname>
 <affiliation><address><email>milliByte@gmx.net</email></address></affiliation>
 <contrib>Developer</contrib>
@@ -57,8 +64,9 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
   
+
 <date>08/02/2001</date>
-<releaseinfo>1.3.0</releaseinfo>
+<releaseinfo>1.03.00</releaseinfo>
 
 <abstract>
 <para>&kscd; is a small, fast, <abbrev>CDDB</abbrev> enabled audio
@@ -144,7 +152,7 @@ particular order.</para>
 <screenshot>
 <screeninfo>The Control Panel</screeninfo>
 <mediaobject>
-<imageobject><imagedata fileref="kscd2.png" format="png"></imageobject>
+<imageobject><imagedata fileref="kscd2.png" format="PNG"></imageobject>
 <textobject><phrase>The Control Panel</phrase></textobject>
 </mediaobject>
 </screenshot>
@@ -359,7 +367,7 @@ options</guilabel></link></para></listitem>
 <screenshot>
 <screeninfo>The <guilabel>CDDB</guilabel> tab of the configuration dialog</screeninfo>
 <mediaobject>
-<imageobject> <imagedata fileref="kscd14.png" format="png"> </imageobject>
+<imageobject> <imagedata fileref="kscd14.png" format="PNG"> </imageobject>
 <textobject><phrase>The <guilabel>CDDB</guilabel> tab of the configuration
 dialog</phrase></textobject>
 </mediaobject>
@@ -782,10 +790,11 @@ order to get &kscd; to compile on your platform.</para>
 
 
 
-<![ %addindex; [ &kdedocindex; ]]>
+<![ %addindex; [ &documentation.index; ]]>
 </book>
 <!--
 Local Variables:
+mode: sgml
 sgml-minimize-attributes: nil
 sgml-general-insert-case: lower
 End:
