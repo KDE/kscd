@@ -1118,9 +1118,9 @@ void KSCD::cdModeChanged(int previous, int cdmode)
             }
 
             artist="";
-	    title="";
-	    infoStatus="";
-	    updateArtistAndTitle();
+            title="";
+            infoStatus="";
+            updateArtistAndTitle();
             tracktitlelist.clear();
             extlist.clear();
             clearSongList();
@@ -1359,7 +1359,7 @@ void KSCD::cddb_done(CDDB::Result result)
     
 /*    if(codec) {
         artist = codec->toUnicode(cddbInfo.artist.ascii());
-	title = codec->toUnicode(cddbInfo.title.ascii());
+        title = codec->toUnicode(cddbInfo.title.ascii());
     
         for (; it != end; ++it) {
             tracktitlelist << codec->toUnicode((*it).title.ascii());
@@ -1367,7 +1367,7 @@ void KSCD::cddb_done(CDDB::Result result)
         }
     } else {
         artist = QString(cddbInfo.artist.ascii());
-	title = QString(cddbInfo.title.ascii());
+        title = QString(cddbInfo.title.ascii());
     
         for (; it != end; ++it) {
             tracktitlelist << (*it).title.ascii();
@@ -1405,7 +1405,7 @@ void KSCD::get_cdtext_info(void)
     p_cdtext = wm_cd_get_cdtext();
     if(p_cdtext && p_cdtext->valid) {
         artist = reinterpret_cast<char*>(p_cdtext->blocks[0]->name[0]);
-	title = reinterpret_cast<char*>(p_cdtext->blocks[0]->performer[0]);
+        title = reinterpret_cast<char*>(p_cdtext->blocks[0]->performer[0]);
 
         // if it's a sampler, we'll do artist/title
         bool isSampler = (qstricmp(reinterpret_cast<char*>(p_cdtext->blocks[0]->performer[0]), "various") == 0);
@@ -1552,11 +1552,11 @@ void KSCD::updateArtistAndTitle()
         artistlabel->setText(infoStatus);
     } else {
         if (artist.isEmpty())
-	  artistlabel->setText(artist);
-	else if (title.isEmpty())
-	  artistlabel->setText(title);
-	else
-	  artistlabel->setText(QString("%1 - %2").arg(artist, title));
+          artistlabel->setText(artist);
+        else if (title.isEmpty())
+          artistlabel->setText(title);
+        else
+          artistlabel->setText(QString("%1 - %2").arg(artist, title));
     }
 }
 
@@ -1574,7 +1574,7 @@ void KSCD::setTitle(int track)
             title = *tracktitlelist.at(track-1);
 
         titlelabel->setText(title);
-	tooltip += " / ";
+        tooltip += " / ";
         tooltip += KStringHandler::rsqueeze(title, 30);
     }
 
@@ -1704,72 +1704,72 @@ void KSCD::information(int i)
 {
     //kdDebug(67000) << "Information " << i << "\n" << endl;
 
-    QString str;
-
     if(artist.isEmpty())
         return;
 
-    artist = KURL::encode_string_no_slash(artist);
+    QString encodedArtist = KURL::encode_string_no_slash(artist);
+
+    QString str;
 
     switch(i)
     {
         case 0:
             str = QString("http://musicmoz.org/cgi-bin/ext.cgi?artist=%1")
-                   .arg(artist);
+                   .arg(encodedArtist);
             break;
 
          case 1:
             str = QString("http://ubl.artistdirect.com/cgi-bin/gx.cgi/AppLogic+Search?select=MusicArtist&searchstr=%1&searchtype=NormalSearch")
-                .arg(artist);
+                .arg(encodedArtist);
             break;
 
         case 2:
             str = QString("http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1")
-                  .arg(artist);
+                  .arg(encodedArtist);
 
         case 3:
             str = QString("http://www.alltheweb.com/search?cat=web&q=%1")
-                    .arg(artist);
+                    .arg(encodedArtist);
             break;
 
         case 4:
             str = QString("http://altavista.com/web/results?q=%1&kgs=0&kls=1&avkw=xytx")
-                  .arg(artist);
+                  .arg(encodedArtist);
             break;
 
         case 5:
             str = QString("http://msxml.excite.com/_1_2UDOUB70SVHVHR__info.xcite/dog/results?otmpl=dog/webresults.htm&qkw=%1&qcat=web&qk=20&top=1&start=&ver=14060")
-                  .arg(artist);
+                  .arg(encodedArtist);
             break;
 
         case 6:
             str = QString("http://www.google.com/search?q=%1")
-                  .arg(artist);
+                  .arg(encodedArtist);
             break;
 
         case 7:
             str = QString("http://groups.google.com/groups?oi=djq&as_q=%1&num=20")
-                  .arg(artist);
+                  .arg(encodedArtist);
             break;
 
         case 8:
             str = QString("http://www.hotbot.com/default.asp?prov=Inktomi&query=%1&ps=&loc=searchbox&tab=web")
-                  .arg(artist);
+                  .arg(encodedArtist);
             break;
 
         case 9:
             str = QString("http://search.lycos.com/default.asp?lpv=1&loc=searchhp&tab=web&query=%1")
-                  .arg(artist);
+                  .arg(encodedArtist);
              break;
 
          case 10:
              str = QString("http://search.dmoz.org/cgi-bin/search?search=%1")
-                   .arg(artist);
+                   .arg(encodedArtist);
              break;
 
          case 11:
              str = QString("http://search.yahoo.com/bin/search?p=%1")
-                   .arg(artist);
+                   .arg(encodedArtist);
              break;
 
          default:
