@@ -40,10 +40,6 @@
 #include "kscd.h"
 #include "version.h"
 
-#ifdef KSCDMAGIC
-#include "mgconfdlg.h"
-#endif
-
 // little helper:
 static inline QPixmap loadIcon( const char * name )
 {
@@ -97,19 +93,6 @@ ConfigDlg::ConfigDlg(KSCD* player, const char*, bool modal)
             }
         }
     }
-
-#if KSCDMAGIC
-    /*
-     * Magic page
-     *
-     * TODO: get an icon!
-     */
-    page = addVBoxPage(i18n("Magic"), i18n("KSCD Magic Display Settings"), loadIcon("kscdmagic"));
-    MGConfigDlg* mMagicConfig;
-    struct mgconfigstruct mgconfig;
-    mPlayer->getMagicOptions(mgconfig);
-    mMagicConfig = new MGConfigDlg(page, &mgconfig, "mgconfigdialg");
-#endif
 }
 
 ConfigDlg::~ConfigDlg()
@@ -119,9 +102,6 @@ ConfigDlg::~ConfigDlg()
 void ConfigDlg::slotApply()
 {
     mKCSDConfig->apply();
-#if KSCDMAGIC
-    mPlayer->setMagicOptions(*mMagicConfig->getData());
-#endif
 }
 
 void ConfigDlg::slotOk()
