@@ -81,21 +81,14 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     GroupBox1Layout->addWidget(ledColorBtn, 0, 1);
 
     TextLabel2 = new QLabel(GroupBox1, "TextLabel2");
-    TextLabel2->setText(i18n("&Background Color"));
+    TextLabel2->setText(i18n("&Background color:"));
     TextLabel2->setBuddy(bgColorBtn);
     GroupBox1Layout->addWidget(TextLabel2, 1, 0);
 
     TextLabel1 = new QLabel(GroupBox1, "TextLabel1");
-    TextLabel1->setText(i18n("&LCD Color"));
+    TextLabel1->setText(i18n("&LCD color:"));
     TextLabel1->setBuddy(ledColorBtn);
-    
-    // hack to make buddy accels appear to work on the kcolorbuttons
-    KAccel* accel = new KAccel(this);
-    accel->insertItem("background", "background", ALT + Key_B);
-    accel->connectItem("background", bgColorBtn, SLOT(animateClick()) );
-    accel->insertItem("leds", "leds", ALT + Key_L);
-    accel->connectItem("leds", ledColorBtn, SLOT(animateClick()) );
-
+ 
     GroupBox1Layout->addWidget(TextLabel1, 0, 0);
 
     showToolTips = new QCheckBox(GroupBox1, "showToolTips");
@@ -123,11 +116,11 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     Layout1 = new QHBoxLayout(0, 0, 6, "Layout1"); 
 
     TextLabel1_2 = new QLabel(GroupBox3, "TextLabel1_2");
-    TextLabel1_2->setText(i18n("Skip &interval"));
+    TextLabel1_2->setText(i18n("Skip &interval:"));
     Layout1->addWidget(TextLabel1_2);
 
     skipInterval = new QSpinBox(GroupBox3, "skipInterval");
-    skipInterval->setSuffix(i18n("s"));
+    skipInterval->setSuffix(i18n(" sec"));
     skipInterval->setMaxValue(1000);
     skipInterval->setMinValue(1);
     skipInterval->setValue(mPlayer->skipInterval());
