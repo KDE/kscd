@@ -48,7 +48,7 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
         setName("configWidget");
     }
     
-    digitalPlaybackChckbx_toggled(false); //mPlayer->digitalPlayback());
+    kcfg_DigitalPlayback_toggled(false); //mPlayer->digitalPlayback());
     kcfg_DigitalPlayback->setChecked(false); //mPlayer->digitalPlayback());
 #if defined(BUILD_CDDA)
     // fill ComboBox audioBackend
@@ -66,7 +66,7 @@ configWidget::~configWidget()
 {
 }
 
-void configWidget::digitalPlaybackChckbx_toggled(bool toggle)
+void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 {
         if(toggle) {
                 audioSystemComboBox->show();

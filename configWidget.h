@@ -38,7 +38,7 @@ class configWidget : public configWidgetUI
         KSCD* mPlayer;
 
    public slots:
-       virtual void digitalPlaybackChckbx_toggled(bool);
+       virtual void kcfg_DigitalPlayback_toggled(bool);
        virtual void configDone();
 };
 
