@@ -65,7 +65,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     QGridLayout * glay = new QGridLayout ( lay2, 2, 4, 5 );
     glay->setColStretch ( 1, 1 );
 
-    mailProfileLabel = new QLabel(i18n("Current E-Mail Profile"), mainBox, "mailProfileLabel");
+    mailProfileLabel = new QLabel(i18n("Current Email Profile"), mainBox, "mailProfileLabel");
     glay->addWidget ( mailProfileLabel, 0, 0 );
     mailProfileCombo = new KComboBox( FALSE, mainBox, "mailProfileCombo" );
     glay->addMultiCellWidget( mailProfileCombo, 0,0, 1,3);
@@ -130,8 +130,8 @@ void SMTPConfig::commitData(void)
                                    (!configData->senderAddress.contains("@")) ) )
       {
 	KMessageBox::sorry(this, i18n("freedb submissions via SMTP have been disabled\n"
-				      "because the E-Mail profile you selected is\n"
-				      "incomplete. Please review your E-Mail settings\n"
+				      "because the email profile you selected is\n"
+				      "incomplete. Please review your email settings\n"
 				      "and try again."), i18n("freedb submissions disabled"));
 	configData->enabled = false;
       } 
