@@ -65,6 +65,8 @@ extern "C" {
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 
+static const char *description = I18N_NOOP("KDE CD player");
+
 DockWidget*     dock_widget;
 SMTP                *smtpMailer;
 bool dockinginprogress = 0;
@@ -305,6 +307,31 @@ KSCD::initCDROM()
 } // initCDROM
 
 
+int
+KSCD::smallPtSize()
+{
+
+    if ( theSmallPtSize != 0 )
+      return theSmallPtSize;
+
+    // Find a font that fits the 13 and 14 pixel widgets
+    theSmallPtSize = 10;
+    QFont fn( "Helvetica", theSmallPtSize, QFont::Bold );
+    bool fits = false;
+    while (!fits && theSmallPtSize > 1)
+      {
+	QFontMetrics metrics(fn);
+	if(metrics.height() > 13)
+	  {
+	    --theSmallPtSize;
+            fn.setPointSize(theSmallPtSize);
+	  } else {
+            fits = true;
+	  }
+      }
+    return theSmallPtSize;
+} // smallPtSize()
+
 QPushButton *
 KSCD::makeButton( int x, int y, int w, int h, const QString& n )
 {
@@ -367,13 +394,13 @@ KSCD::drawPanel()
 
     artistlabel = new QLabel(this);
     artistlabel->setGeometry(WIDTH + 5, iy + 38 , SBARWIDTH -15, 13);
-    artistlabel->setFont( QFont( "helvetica", 10, QFont::Bold) );
+    artistlabel->setFont( QFont( "helvetica", smallPtSize(), QFont::Bold) );
     artistlabel->setAlignment( AlignLeft );
     artistlabel->setText("");
 
     titlelabel = new QLabel(this);
     titlelabel->setGeometry(WIDTH + 5, iy + 50 , SBARWIDTH -15, 13);
-    QFont ledfont( "Helvetica", 8, QFont::Bold );
+    QFont ledfont( "Helvetica", smallPtSize()-2, QFont::Bold );
     //    KGlobal::charsets()->setQFont(ledfont);
     titlelabel->setFont( ledfont );
     titlelabel->setAlignment( AlignLeft );
@@ -397,19 +424,19 @@ KSCD::drawPanel()
 
     volumelabel = new QLabel(this);
     volumelabel->setGeometry(WIDTH + 110, iy + 14 + D, 50, 14);
-    volumelabel->setFont( QFont( "Helvetica", 10, QFont::Bold ) );
+    volumelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
     volumelabel->setAlignment( AlignLeft );
     volumelabel->setText(i18n("Vol: --"));
 
     tracklabel = new QLabel(this);
     tracklabel->setGeometry(WIDTH + 168, iy + 14 +D, 30, 14);
-    tracklabel->setFont( QFont( "Helvetica", 10, QFont::Bold ) );
+    tracklabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
     tracklabel->setAlignment( AlignLeft );
     tracklabel->setText("--/--");
 
     totaltimelabel = new QLabel(this);
     totaltimelabel->setGeometry(WIDTH + 168, iy  +D, 50, 14);
-    totaltimelabel->setFont( QFont( "Helvetica", 10, QFont::Bold ) );
+    totaltimelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold ) );
     totaltimelabel->setAlignment( AlignLeft );
     totaltimelabel->hide();
 
@@ -450,7 +477,7 @@ KSCD::drawPanel()
     ix += SBARWIDTH/10*2;
     songListCB = new QComboBox( this );
     songListCB->setGeometry( ix, iy, SBARWIDTH/10*4, HEIGHT );
-    songListCB->setFont( QFont( "helvetica", 12 ) );
+    songListCB->setFont( QFont( "helvetica", smallPtSize() ) );
     songListCB->setFocusPolicy ( QWidget::NoFocus );
 
     debug("Width %d Height %d\n",WIDTH, HEIGHT);
@@ -1518,13 +1545,13 @@ KSCD::setColors()
         trackTimeLED[u]->setLEDColor(led_color,background_color);
     }
 
-    titlelabel ->setFont( QFont( "Helvetica", 10, QFont::Bold) );
-    artistlabel->setFont( QFont( "Helvetica", 10, QFont::Bold) );
-    volumelabel->setFont( QFont( "Helvetica", 10, QFont::Bold) );
-    statuslabel->setFont( QFont( "Helvetica", 10, QFont::Bold) );
-    tracklabel ->setFont( QFont( "Helvetica", 10, QFont::Bold) );
-    totaltimelabel->setFont( QFont( "Helvetica", 10, QFont::Bold) );
-    artistlabel->setFont( QFont( "Helvetica", 10, QFont::Bold) );
+    titlelabel ->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
+    artistlabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
+    volumelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
+    statuslabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
+    tracklabel ->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
+    totaltimelabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
+    artistlabel->setFont( QFont( "Helvetica", smallPtSize(), QFont::Bold) );
 
 }
 
@@ -1637,6 +1664,10 @@ KSCD::readSettings()
     }
 }
 
+/**
+ * Write KSCD's Configuration into the kderc file.
+ *
+ */
 void 
 KSCD::writeSettings()
 {		
@@ -1683,7 +1714,7 @@ KSCD::writeSettings()
     config->writeEntry("magicPointsAreDiamonds",magic_pointsAreDiamonds);
 
     config->sync();
-}
+} // writeSettings()
 
 void 
 KSCD::CDDialogSelected()
@@ -2330,109 +2361,94 @@ KSCD::magicdone(KProcess* proc)
 void 
 KSCD::information(int i)
 {
-    debug("Information %d\n",i);
-
-    QString artist;
-    QString str;
-
-    if(!getArtist(artist))
-        return;
-
-    // primitive incomplete http encoding TODO fix!
-    artist = artist.replace( QRegExp(" "), "+" );
-
-    switch(i){
-        /*  case 0:
-            str = str.sprintf(
-            "http://musiccentral.msn.com/MCGen/ReEntry?theurl=http%%3A//musiccentral.msn.com/Search/DoFullSearch%%3FArtists%3Don%%26Albums%3D%%26Songs%%3D%%26ArticleTitles%3D%%26FullText%3D%%26strInput%%3D%s",
-            artist.data());
-            startBrowser(str.data());
-            printf("%s\n",str.data());
-
-            break;*/
+  debug("Information %d\n",i);
+  
+  QString artist;
+  QString str;
+  
+  if(!getArtist(artist))
+    return;
+  
+  // primitive incomplete http encoding TODO fix!
+  artist = artist.replace( QRegExp(" "), "+" );
+  
+  switch(i)
+    {
     case 0:
-        str =
-            QString("http://www.ubl.com/find/form?SEARCH=%1")
-            .arg(artist);
-        startBrowser(str);
-
-        break;
-
-
+      str =
+	QString("http://www.ubl.com/find/form?SEARCH=%1")
+	.arg(artist);
+      startBrowser(str);
+      break;
+      
     case 2:
-        str =
-            QString("http://x8.dejanews.com/dnquery.xp?QRY=%1&defaultOp=AND&svcclass=dncurrent&maxhits=20&ST=QS&format=terse&DBS=2")
-            .arg(artist);
-        startBrowser(str);
-
-        break;
-
+      str =
+	QString("http://x8.dejanews.com/dnquery.xp?QRY=%1&defaultOp=AND&svcclass=dncurrent&maxhits=20&ST=QS&format=terse&DBS=2")
+	.arg(artist);
+      startBrowser(str);
+      break;
+      
     case 3:
-        str =
-            QString("http://www.excite.com/search.gw?c=web&search=%1&trace=a")
-            .arg(artist);
-        startBrowser(str);
-
-        break;
-
+      str =
+	QString("http://www.excite.com/search.gw?c=web&search=%1&trace=a")
+	.arg(artist);
+      startBrowser(str);
+      break;
+      
     case 4:
-        str =
-            QString("http://www.search.hotbot.com/hResult.html?SW=web&SM=MC&MT=%1&DC=10&DE=2&RG=NA&_v=2")
-            .arg(artist);
-        startBrowser(str);
-
-        break;
-
+      str =
+	QString("http://www.search.hotbot.com/hResult.html?SW=web&SM=MC&MT=%1&DC=10&DE=2&RG=NA&_v=2")
+	.arg(artist);
+      startBrowser(str);
+      break;
+      
     case 5:
-        str =
-            QString("http://www.infoseek.com/Titles?qt=%1&col=WW&sv=IS&lk=ip-noframes&nh=10")
-            .arg(artist);
-        startBrowser(str);
-
-        break;
-
+      str =
+	QString("http://www.infoseek.com/Titles?qt=%1&col=WW&sv=IS&lk=ip-noframes&nh=10")
+	.arg(artist);
+      startBrowser(str);
+      break;
+      
     case 6:
-        str =
-            QString("http://www.lycos.com/cgi-bin/pursuit?cat=lycos&query=%1")
-            .arg(artist);
-        startBrowser(str);
-
-        break;
-
+      str =
+	QString("http://www.lycos.com/cgi-bin/pursuit?cat=lycos&query=%1")
+	.arg(artist);
+      startBrowser(str);
+      break;
+      
     case 7:
-        str =
-            QString("http://www.mckinley.com/search.gw?search=%1&c=web&look=magellan")
-            .arg(artist);
-        startBrowser(str);
-
-        break;
-
+      str =
+	QString("http://www.mckinley.com/search.gw?search=%1&c=web&look=magellan")
+	.arg(artist);
+      startBrowser(str);
+      break;
+      
     case 8:
-        str =
-            QString("http://search.yahoo.com/bin/search?p=%1")
-            .arg(artist);
-        startBrowser(str);
-
-        break;
-
+      str =
+	QString("http://search.yahoo.com/bin/search?p=%1")
+	.arg(artist);
+      startBrowser(str);
+      break;
+      
     default:
-        break;
-    }
-
+      break;
+    } // switch()
 } // information
 
+/**
+ * Open an URL with the user's favourite browser.
+ *
+ */
 void 
 KSCD::startBrowser(const QString &querystring)
 {
-    if(use_kfm){
-        (void) new KRun ( querystring ); // replacement for KFM::openURL (David)
-    }
-    else{
-        if (browsercmd.isEmpty())
-          browsercmd="netscape";
-        KProcess proc;
-        proc << browsercmd << querystring;
-        proc.start(KProcess::DontCare);
+  if(use_kfm || browsercmd.isEmpty()) // default browser is KDE browser, no?
+    {
+      (void) new KRun ( querystring ); // replacement for KFM::openURL (David)
+    } else {
+      KProcess proc;
+      proc << browsercmd << querystring;
+      proc.start(KProcess::DontCare);
     }
 } //startBrowser
 
@@ -2440,39 +2456,44 @@ KSCD::startBrowser(const QString &querystring)
 void 
 KSCD::get_pathlist(QStrList& _pathlist)
 {
-    QDir d;
-    QStrList list;
-    InexactDialog *dialog;
-
-    d.setFilter( QDir::Dirs);
-    d.setSorting( QDir::Size);
-    d.setPath(cddbbasedir.data());
-    if(!d.exists()){
-
-        dialog = new InexactDialog(0, "dialog", false);
-        dialog->insertText(cddbbasedir.data());
-        dialog->setTitle(i18n("Enter the local CDDB base Directory"));
-
-        if(dialog->exec() != QDialog::Accepted){
-            delete dialog;
-            return;
-        }
-        
-        dialog->getSelection(cddbbasedir);
-        d.setPath(cddbbasedir.data());
-        delete dialog;
+  QDir d;
+  QStrList list;
+  InexactDialog *dialog;
+  
+  d.setFilter( QDir::Dirs);
+  d.setSorting( QDir::Size);
+  d.setPath(cddbbasedir.data());
+  if(!d.exists())
+    {
+      dialog = new InexactDialog(0, "dialog", false);
+      dialog->insertText(cddbbasedir.data());
+      dialog->setTitle(i18n("Enter the local CDDB base Directory"));
+      
+      if(dialog->exec() != QDialog::Accepted)
+	{
+	  delete dialog;
+	  return;
+	}
+      
+      dialog->getSelection(cddbbasedir);
+      d.setPath(cddbbasedir.data());
+      delete dialog;
     }
-
-    if(!d.exists()) // Bogus directory, don't try to read it
-      return;
-
-    _pathlist.clear();
-    // FIXME: QStringList
-    list = d.encodedEntryList();
-
-    for(uint i = 0; i < list.count(); i++){
-        if(QString(list.at(i)) != QString (".") && QString(list.at(i)) != QString (".."))
-            _pathlist.append( QString (cddbbasedir + "/" +  list.at(i)));
+  
+  if(!d.exists()) // Bogus directory, don't try to read it
+    return;
+  
+  _pathlist.clear();
+  // FIXME: QStringList
+  list = d.encodedEntryList();
+  
+  for(uint i = 0; i < list.count(); i++)
+    {
+      if( (QString(list.at(i)) != QString (".")) && 
+	  (QString(list.at(i)) != QString ("..")) )
+	{
+	  _pathlist.append( QString (cddbbasedir + "/" +  list.at(i)));
+	}
     }
 } // get_pathlist
 
@@ -2577,7 +2598,7 @@ KSCD::make_random_list()
   
   if( (size = playlist.count()) <= 0 )
     size = cur_ntracks;
-
+  
   debug ( "Playlist has %d entries\n", size );
   random_list = (int *)malloc((size_t)size*sizeof(int));
   for( i=0; i < size; i++ ) 
@@ -2588,7 +2609,7 @@ KSCD::make_random_list()
 	  selected = 1+ (int)((double)size*rand()/(RAND_MAX+1.0));
 	else
 	  selected = (int)((double)size*rand()/(RAND_MAX+1.0));
-
+	
 	for(j=0;j<i;j++) 
 	  {
 	    if(random_list[j] == selected) 
@@ -2602,22 +2623,26 @@ KSCD::make_random_list()
     }
   random_current = 0; /* Index of array we are on */
   return;
-}
+} // make_random_list()
 
 
+/**
+ * main() 
+ */
 int 
 main( int argc, char *argv[] )
 {
 
   KAboutData aboutData( "kscd", I18N_NOOP("kscd"),
-			KSCDVERSION, I18N_NOOP("CD player"), 
+			KSCDVERSION, description,
 			KAboutData::License_GPL,
 			"(c) 2000, Dirk Försterling");
+  aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
   aboutData.addAuthor("Dirk Försterling",0, "milliByte@gmx.net");
 
   KCmdLineArgs::init( argc, argv, &aboutData );
-
-  KApplication a; // ( argc, argv,"kscd" );
+  
+  KApplication a;
 
   KGlobal::dirs()->addResourceType("cddb", 
 				   KStandardDirs::kde_default("data") + 
@@ -2660,12 +2685,6 @@ main( int argc, char *argv[] )
 } // main()
 
 #include "kscd.moc"
-
-
-
-
-
-
 
 
 

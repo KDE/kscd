@@ -1,3 +1,12 @@
+Sat May 27 09:43:58 2000  Dirk Försterling  <milliByte@gmx.de>
+
+	* Updated Kscd Magic from Synaesthesia 1.3 to Synaesthesia 2.0
+	* Fixed missing slot in CDDB configuration
+	* Added (and fixed) loop mode display.
+	* updated and sorted libWorkMan API
+	* addressed the 100dpi font problem (Thanks to John R
+	MacMillan <john@weirdways.com> for sending an idea for a fix).
+
 Sun Mar  5 10:54:40 2000  Dirk Försterling  <milliByte@gmx.de>
 
 	* Completed shuffle mode (some patch data was missing) and
