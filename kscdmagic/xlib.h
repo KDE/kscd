@@ -26,8 +26,8 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
-//#include "config.h"
-//#define MITSHM
+/*#include "config.h"*/
+/*#define MITSHM*/
 
 #ifdef MITSHM
 #include <sys/types.h>
