@@ -28,7 +28,7 @@
 #define __SYNA_H__
 
 
-#if defined(__linux__) || defined(__svr4__)
+#if defined(__linux__) || defined(__svr4__) || defined(__osf__)
 
 void error(const char *str, bool syscall=false); //Display error and exit
 void warning(const char *str, bool syscall=false); //Display error
@@ -64,7 +64,11 @@ typedef short sampleType;
 #endif
 #endif
 
+#ifdef __osf__
+#include <machine/endian.h>
+#else
 #include <endian.h>
+#endif
 #if BYTE_ORDER == BIG_ENDIAN
 #define BIGENDIAN
 #else

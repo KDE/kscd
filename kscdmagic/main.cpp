@@ -37,7 +37,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#if defined(__linux__) || defined(__svr4__)
+#if defined(__linux__) || defined(__svr4__) || defined(__osf__)
 
 #include <signal.h>
 #include <time.h>

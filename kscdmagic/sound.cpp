@@ -224,8 +224,24 @@ int getNextFragment(void) {
   return 0;
 }
 
+#else
 
+// generic dummy implementation
 
+#include "syna.h"
 
+int getNextFragment(void) {
+    return 0;
+}
+
+void openSound(SoundSource source, int inFrequency, const char *dspName,
+               char *mixerName)
+{
+}
+
+void closeSound()
+{
+}
 
 #endif // linux || svr4
+

@@ -21,7 +21,7 @@
     27 Bond St., Mt. Waverley, 3149, Melbourne, Australia
 */
 
-#if defined(__linux__) || defined (__svr4__)
+#if defined(__linux__) || defined (__svr4__) || defined(__osf__)
 
 #include <string.h>
 
