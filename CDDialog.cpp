@@ -630,8 +630,7 @@ void CDDialog::save_cddb_entry(QString& path,bool upload){
 
   if( !file.open( IO_WriteOnly  )) {
     
-    QString str;
-    str =  i18n("Unable to write to file:\n%s\nPlease check "
+    QString str = i18n("Unable to write to file:\n%1\nPlease check "
 		"your permissions and make your category directories exist.")
 		.arg(path);
 
