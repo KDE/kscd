@@ -223,7 +223,7 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
 void KSCD::smtpMessageSent(void)
 {
     QMessageBox::information(this, "Record Submission",
-                             klocale->translate("Record submitted successfully"));
+                             i18n("Record submitted successfully"));
 }
 
 void KSCD::smtpError(int errornum)
@@ -233,21 +233,21 @@ void KSCD::smtpError(int errornum)
 //    if(errornum == 10)
     switch(errornum){
     case 10:
-        lstr.sprintf(klocale->translate("Error connecting to server."));
+        lstr.sprintf(i18n("Error connecting to server."));
         break;
     case 11:
-        lstr.sprintf(klocale->translate("Not connected."));
+        lstr.sprintf(i18n("Not connected."));
         break;
     case 15:
-        lstr.sprintf(klocale->translate("Connection timed out."));
+        lstr.sprintf(i18n("Connection timed out."));
         break;
     case 16:
-        lstr.sprintf(klocale->translate("Time out waiting for server interaction."));
+        lstr.sprintf(i18n("Time out waiting for server interaction."));
         break;
     default:
-        lstr.sprintf(klocale->translate("Server said:\n\"%s\""), smtpMailer->getLastLine());
+        lstr.sprintf(i18n("Server said:\n\"%s\""), smtpMailer->getLastLine());
     }
-    str.sprintf(klocale->translate("Error #%d sending message via SMTP.\n\n%s"), errornum, lstr.data());
+    str.sprintf(i18n("Error #%d sending message via SMTP.\n\n%s"), errornum, lstr.data());
     QMessageBox::critical(this, "Record Submission", str.data());
 }
 
@@ -303,7 +303,7 @@ void KSCD::drawPanel()
     //	const int SBARWIDTH = 180; //140
     const int SBARWIDTH = 220; //140
 
-    aboutPB = makeButton( ix, iy, WIDTH, 2 * HEIGHT, klocale->translate("About") );
+    aboutPB = makeButton( ix, iy, WIDTH, 2 * HEIGHT, i18n("About") );
 
     ix = 0;
     iy += 2 * HEIGHT;
@@ -312,7 +312,7 @@ void KSCD::drawPanel()
     ejectPB = makeButton( ix + WIDTH/2, iy, WIDTH/2, HEIGHT, "" );
 
     iy += HEIGHT;
-    dockPB = makeButton( ix, iy, WIDTH, HEIGHT, klocale->translate("Quit") );
+    dockPB = makeButton( ix, iy, WIDTH, HEIGHT, i18n("Quit") );
 	
 
 
@@ -375,7 +375,7 @@ void KSCD::drawPanel()
     volumelabel->setGeometry(WIDTH + 110, iy + 14 + D, 50, 14);
     volumelabel->setFont( QFont( "Helvetica", 10, QFont::Bold ) );
     volumelabel->setAlignment( AlignLeft );
-    volumelabel->setText(klocale->translate("Vol: --"));
+    volumelabel->setText(i18n("Vol: --"));
 
     tracklabel = new QLabel(this);
     tracklabel->setGeometry(WIDTH + 168, iy + 14 +D, 50, 14);
@@ -525,17 +525,17 @@ void KSCD::setupPopups(){
     infoPopup->insertItem("Yahoo!");
 
 
-    mainPopup->insertItem (klocale->translate("Performances"), perfPopup);
+    mainPopup->insertItem (i18n("Performances"), perfPopup);
     connect( perfPopup, SIGNAL(activated(int)), SLOT(performances(int)) );
 
-    mainPopup->insertItem (klocale->translate("Purchases"), purchPopup);
+    mainPopup->insertItem (i18n("Purchases"), purchPopup);
     connect( purchPopup, SIGNAL(activated(int)), SLOT(purchases(int)) );
 
-    mainPopup->insertItem (klocale->translate("Information"), infoPopup);
+    mainPopup->insertItem (i18n("Information"), infoPopup);
 
 #ifdef KSCDMAGIC
     mainPopup->insertSeparator(-1);
-    mainPopup->insertItem (klocale->translate("KSCD Magic"));
+    mainPopup->insertItem (i18n("KSCD Magic"));
     connect( mainPopup, SIGNAL(activated(int)), SLOT(magicslot(int)) );
 #endif
 
@@ -559,22 +559,22 @@ void KSCD::setToolTips()
 {
     if(tooltips){
 
-        QToolTip::add( playPB, 		klocale->translate("Play/Pause") );
-        QToolTip::add( stopPB, 		klocale->translate("Stop") );
-        QToolTip::add( replayPB, 	klocale->translate("Loop CD") );
-        QToolTip::add( songListCB, 	klocale->translate("Track Selection") );
-        QToolTip::add( fwdPB, 		klocale->translate("30 Secs Forward") );
-        QToolTip::add( bwdPB, 		klocale->translate("30 Secs Backward") );
-        QToolTip::add( nextPB, 		klocale->translate("Next Track") );
-        QToolTip::add( prevPB, 		klocale->translate("Previous Track") );
-        QToolTip::add( dockPB, 		klocale->translate("Quit Kscd") );
-        QToolTip::add( aboutPB, 	klocale->translate("Cycle Time Display") );
-        QToolTip::add( optionsbutton, 	klocale->translate("Configure Kscd") );
-        QToolTip::add( ejectPB, 	klocale->translate("Eject CD") );
-        QToolTip::add( infoPB, 	klocale->translate("The Artist on the Web") );
-        QToolTip::add( shufflebutton, 	klocale->translate("Random Play") );
-        QToolTip::add( cddbbutton, 	klocale->translate("CDDB Dialog") );
-        QToolTip::add( volSB, 		klocale->translate("CD Volume Control") );
+        QToolTip::add( playPB, 		i18n("Play/Pause") );
+        QToolTip::add( stopPB, 		i18n("Stop") );
+        QToolTip::add( replayPB, 	i18n("Loop CD") );
+        QToolTip::add( songListCB, 	i18n("Track Selection") );
+        QToolTip::add( fwdPB, 		i18n("30 Secs Forward") );
+        QToolTip::add( bwdPB, 		i18n("30 Secs Backward") );
+        QToolTip::add( nextPB, 		i18n("Next Track") );
+        QToolTip::add( prevPB, 		i18n("Previous Track") );
+        QToolTip::add( dockPB, 		i18n("Quit Kscd") );
+        QToolTip::add( aboutPB, 	i18n("Cycle Time Display") );
+        QToolTip::add( optionsbutton, 	i18n("Configure Kscd") );
+        QToolTip::add( ejectPB, 	i18n("Eject CD") );
+        QToolTip::add( infoPB, 	i18n("The Artist on the Web") );
+        QToolTip::add( shufflebutton, 	i18n("Random Play") );
+        QToolTip::add( cddbbutton, 	i18n("CDDB Dialog") );
+        QToolTip::add( volSB, 		i18n("CD Volume Control") );
     }	
     else{
 
@@ -625,7 +625,7 @@ void KSCD::playClicked()
 #endif
     ){
 
-        statuslabel->setText( klocale->translate("Playing") );
+        statuslabel->setText( i18n("Playing") );
         songListCB->clear();
         setLEDs( "00:00" );
 
@@ -637,12 +637,12 @@ void KSCD::playClicked()
             songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
         }
         for(; i < cur_ntracks; i++){
-            songListCB->insertItem( QString(0).sprintf(klocale->translate("%02d: <Unknown>"), i+1));
+            songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
         }
 
 
 //        for (int i = 0; i < cur_ntracks; i++){
-//            songListCB->insertItem( QString( 0 ).sprintf( klocale->translate("Track %02d"), i + 1 ) );
+//            songListCB->insertItem( QString( 0 ).sprintf( i18n("Track %02d"), i + 1 ) );
 //        }
 
 
@@ -668,20 +668,20 @@ void KSCD::playClicked()
             switch (cur_cdmode) {
 	
             case PLAYING:
-                statuslabel->setText( klocale->translate("Pause") );
+                statuslabel->setText( i18n("Pause") );
                 break;
 	
             case PAUSED:
                 if(randomplay){
-                    statuslabel->setText( klocale->translate("Random") );
+                    statuslabel->setText( i18n("Random") );
                 }
                 else{
-                    statuslabel->setText( klocale->translate("Playing") );
+                    statuslabel->setText( i18n("Playing") );
                 }
                 break;
 	
             default:
-                statuslabel->setText( klocale->translate("Strange....") );
+                statuslabel->setText( i18n("Strange....") );
                 break;
 	
             }
@@ -699,7 +699,7 @@ void KSCD::stopClicked(){
     looping = FALSE;
     randomplay = FALSE;
     stoppedByUser = TRUE;
-    statuslabel->setText(klocale->translate("Stopped"));
+    statuslabel->setText(i18n("Stopped"));
     setLEDs("--:--");
     qApp->processEvents();
     qApp->flushX();
@@ -901,7 +901,7 @@ void KSCD::loopClicked(){
     else{
         if(cur_cdmode == PLAYING){
             looping = TRUE;
-            statuslabel->setText(klocale->translate("Loop"));
+            statuslabel->setText(i18n("Loop"));
         }
     }
 }
@@ -913,7 +913,7 @@ void KSCD::ejectClicked(){
     if(!currentlyejected){
         looping = FALSE;
         randomplay = FALSE;
-        statuslabel->setText(klocale->translate("Ejecting"));
+        statuslabel->setText(i18n("Ejecting"));
         qApp->processEvents();
         qApp->flushX();
         artistlabel->setText("");
@@ -938,7 +938,7 @@ void KSCD::randomSelected(){
     }
     else{
 
-        statuslabel->setText(klocale->translate("Random"));
+        statuslabel->setText(i18n("Random"));
         randomplay = TRUE;
 
         int j = randomtrack();
@@ -989,9 +989,9 @@ void KSCD::aboutClicked(){
     QTabDialog * tabdialog;
 
     tabdialog = new QTabDialog(0,"tabdialog",TRUE);
-    tabdialog->setCaption( klocale->translate("kscd Configuraton") );
+    tabdialog->setCaption( i18n("kscd Configuraton") );
     tabdialog->resize(559, 512);
-    tabdialog->setCancelButton( klocale->translate("Cancel") );
+    tabdialog->setCancelButton( i18n("Cancel") );
 
     QWidget *about = new QWidget(tabdialog,"about");
 
@@ -1004,7 +1004,7 @@ void KSCD::aboutClicked(){
     label->setAlignment( AlignCenter);
     QString labelstring;
     labelstring = "kscd "KSCDVERSION"\n";
-    labelstring += klocale->translate(
+    labelstring += i18n(
     "Copyright (c) 1997-98 \nBernd Johannes Wuebben <wuebben@kde.org>\n\n"
     "Currently maintained by:\nSam Maloney <thufir@illogic.ml.org>\n\n"
     "Kscd contains code from:\nworkman 1.4 beta 3\n"
@@ -1017,11 +1017,11 @@ void KSCD::aboutClicked(){
                                      );
 
 #ifdef KSCDMAGIC
-     labelstring += klocale->translate(
+     labelstring += i18n(
         "KSCD Magic based on Synaesthesia by "
         "Paul Harrison <pfh@yoyo.cc.monash.edu.au>\n\n");
 #endif
-     labelstring += klocale->translate(
+     labelstring += i18n(
         "Thanks to Vadim Zaliva <lord@crocodile.org>\n"
         "for his work on the http proxy code.\n\n") ;
 
@@ -1077,10 +1077,10 @@ void KSCD::aboutClicked(){
     smtpconfig = new SMTPConfig(tabdialog, "smtpconfig", &smtpConfigData);
 
     tabdialog->addTab(setup,"CDDB");
-    tabdialog->addTab(smtpconfig, klocale->translate("SMTP Setup"));
-    tabdialog->addTab(dlg,klocale->translate("Kscd Options"));
-    tabdialog->addTab(mgdlg,klocale->translate("Kscd Magic"));
-    tabdialog->addTab(about,klocale->translate("About"));
+    tabdialog->addTab(smtpconfig, i18n("SMTP Setup"));
+    tabdialog->addTab(dlg,i18n("Kscd Options"));
+    tabdialog->addTab(mgdlg,i18n("Kscd Magic"));
+    tabdialog->addTab(about,i18n("About"));
 
 
 
@@ -1182,7 +1182,7 @@ void KSCD::volChanged( int vol ){
         return;
 
     QString str;
-    str.sprintf(klocale->translate("Vol: %02d%%"),vol);
+    str.sprintf(i18n("Vol: %02d%%"),vol);
     volumelabel->setText(str.data());
     cd_volume(vol, 10, 100); // 10 -> right == left balance
     volume = vol;
@@ -1216,13 +1216,13 @@ void KSCD::cdMode(){
 
     if(sss < 0){
         if(cddrive_is_ok){
-            statuslabel->setText( klocale->translate("Error") );
+            statuslabel->setText( i18n("Error") );
             cddrive_is_ok = false;
             QString errstring;
-            errstring.sprintf(klocale->translate(
+            errstring.sprintf(i18n(
                               "CDROM read or access error.\n"\
                               "Please make sure you have access permissions to:\n%s"),cd_device);
-            QMessageBox::warning(this,klocale->translate("Error"),errstring.data());
+            QMessageBox::warning(this,i18n("Error"),errstring.data());
         }
         return;
     }
@@ -1272,11 +1272,11 @@ void KSCD::cdMode(){
     case 1:         /* PLAYING */
         playtime ();
         if(randomplay)
-            statuslabel->setText( klocale->translate("Random") );
+            statuslabel->setText( i18n("Random") );
         else if(looping)
-            statuslabel->setText( klocale->translate("Loop") );
+            statuslabel->setText( i18n("Loop") );
         else
-            statuslabel->setText( klocale->translate("Playing") );
+            statuslabel->setText( i18n("Playing") );
 
         sprintf( p, "%02d  ", cur_track );
         if(songListCB->count() == 0){
@@ -1290,11 +1290,11 @@ void KSCD::cdMode(){
                 songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
             }
             for(; i < cur_ntracks; i++){
-                songListCB->insertItem( QString(0).sprintf(klocale->translate("%02d: <Unknown>"), i+1));
+                songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
             }
 
 //            for (int i = 0; i < cur_ntracks; i++){
-//                songListCB->insertItem( QString( 0 ).sprintf(klocale->translate("Track %02d"),i + 1 ) );
+//                songListCB->insertItem( QString( 0 ).sprintf(i18n("Track %02d"),i + 1 ) );
 //            }
             songListCB->setCurrentItem( cur_track - 1 );
             have_new_cd = false;
@@ -1320,7 +1320,7 @@ void KSCD::cdMode(){
         break;
 
     case 3:         /* PAUSED */
-        statuslabel->setText( klocale->translate("Pause") );
+        statuslabel->setText( i18n("Pause") );
         damn = TRUE;
         break;
 
@@ -1331,7 +1331,7 @@ void KSCD::cdMode(){
                 ejectClicked();
                 break;
             }
-            statuslabel->setText( klocale->translate("Ready") );
+            statuslabel->setText( i18n("Ready") );
             setLEDs( "--:--" );
             songListCB->clear();
 
@@ -1343,11 +1343,11 @@ void KSCD::cdMode(){
                 songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
             }
             for(; i < cur_ntracks; i++){
-                songListCB->insertItem( QString(0).sprintf(klocale->translate("%02d: <Unknown>"), i+1));
+                songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
             }
 
 //            for (i = 0; i < cur_ntracks; i++)
-//                songListCB->insertItem( QString( 0 ).sprintf( klocale->translate("Track %02d"), i + 1 ) );
+//                songListCB->insertItem( QString( 0 ).sprintf( i18n("Track %02d"), i + 1 ) );
 
             int w = ((cur_track >= 0) ? cur_track : 1);
 
@@ -1374,7 +1374,7 @@ void KSCD::cdMode(){
         break;
 
     case 5:         /* CDEJECT */
-        statuslabel->setText( klocale->translate("Ejected") );
+        statuslabel->setText( i18n("Ejected") );
         songListCB->clear();
         setLEDs( "--:--" );	
         tracklabel->setText( "--/--" );
@@ -1658,7 +1658,7 @@ void KSCD::getCDDBserversFailed(){
     led_off();
     disconnect(&cddb,SIGNAL(get_server_list_done()),this,SLOT(getCDDBserversDone()));
     disconnect(&cddb,SIGNAL(get_server_list_failed()),this,SLOT(getCDDBserversFailed()));
-    titlelabel->setText(klocale->translate("Unable to get CDDB server list."));
+    titlelabel->setText(i18n("Unable to get CDDB server list."));
     artistlabel->setText("");
     titlelabeltimer->start(10000,TRUE); // 10 secs
 }
@@ -1752,7 +1752,7 @@ void KSCD::get_cddb_info(bool _updateDialog){
             songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
         }
         for(; i < cur_ntracks; i++){
-            songListCB->insertItem( QString(0).sprintf(klocale->translate("%02d: <Unknown>"), i+1));
+            songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
         }
 
 
@@ -1802,12 +1802,12 @@ void KSCD::cddb_no_info(){
     if(debugflag)
         printf("cddb_no_info() called\n");
 
-    titlelabel->setText(klocale->translate("No matching CDDB entry found."));
+    titlelabel->setText(i18n("No matching CDDB entry found."));
 //    artistlabel->setText("");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
     tracktitlelist.clear();
-    tracktitlelist.append(klocale->translate("No matching CDDB entry found."));
+    tracktitlelist.append(i18n("No matching CDDB entry found."));
     for(int i = 0 ; i < cd->ntracks; i++)
         tracktitlelist.append("");
 
@@ -1831,7 +1831,7 @@ void KSCD::cddb_failed(){
     if(debugflag)
         printf("cddb_failed() called\n");
     tracktitlelist.clear();
-    tracktitlelist.append(klocale->translate("Error getting CDDB entry."));
+    tracktitlelist.append(i18n("Error getting CDDB entry."));
     for(int i = 0 ; i < cd->ntracks; i++)
         tracktitlelist.append("");
 
@@ -1841,7 +1841,7 @@ void KSCD::cddb_failed(){
 
     discidlist.clear();
 
-    titlelabel->setText(klocale->translate("Error getting CDDB entry."));
+    titlelabel->setText(i18n("Error getting CDDB entry."));
     artistlabel->setText("");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
@@ -1857,7 +1857,7 @@ void KSCD::cddb_timed_out(){
     if(debugflag)
         printf("cddb_timed_out() called\n");
     tracktitlelist.clear();
-    tracktitlelist.append(klocale->translate("CDDB query timed out."));
+    tracktitlelist.append(i18n("CDDB query timed out."));
     for(int i = 0 ; i <= cd->ntracks; i++)
         tracktitlelist.append("");
 
@@ -1867,7 +1867,7 @@ void KSCD::cddb_timed_out(){
 
     discidlist.clear();
 
-    titlelabel->setText(klocale->translate("CDDB query timed out."));
+    titlelabel->setText(i18n("CDDB query timed out."));
     artistlabel->setText("");
 //    titlelabeltimer->start(10000,TRUE); // 10 secs
 
@@ -1950,11 +1950,11 @@ void KSCD::cddb_done()
         songListCB->insertItem( QString(0).sprintf("%02d: %s", i, ptr));
     }
     for(; i < cur_ntracks; i++){
-        songListCB->insertItem( QString(0).sprintf(klocale->translate("%02d: <Unknown>"), i+1));
+        songListCB->insertItem( QString(0).sprintf(i18n("%02d: <Unknown>"), i+1));
     }
 
 //    for (int i = 0; i < cur_ntracks; i++){
-//        songListCB->insertItem( QString( 0 ).sprintf( klocale->translate("Track %02d"), i + 1 ) );
+//        songListCB->insertItem( QString( 0 ).sprintf( i18n("Track %02d"), i + 1 ) );
     //    }
 
     led_off();
@@ -2057,20 +2057,20 @@ void KSCD::cycleplaytimemode(){
     switch(time_display_mode){
 
     case TRACK_REM:
-        volumelabel->setText(klocale->translate("Tra Rem"));
+        volumelabel->setText(i18n("Tra Rem"));
         break;
 
     case TOTAL_SEC:
-        volumelabel->setText(klocale->translate("Tot Sec"));
+        volumelabel->setText(i18n("Tot Sec"));
         break;
 
     case TOTAL_REM:
-        volumelabel->setText(klocale->translate("Tot Rem"));
+        volumelabel->setText(i18n("Tot Rem"));
         break;
 
     case TRACK_SEC:
     default:
-        volumelabel->setText(klocale->translate("Tra Sec"));
+        volumelabel->setText(i18n("Tra Sec"));
         break;
     }
 
@@ -2082,7 +2082,7 @@ void KSCD::cycletimeout(){
 
     cycletimer->stop();
     QString str;
-    str.sprintf(klocale->translate("Vol: %02d%%"),volume);
+    str.sprintf(i18n("Vol: %02d%%"),volume);
     volumelabel->setText(str.data());
 
 }
@@ -2195,7 +2195,7 @@ void KSCD::magicslot(int ){
 
     if(!result){
         QString str;
-        str.sprintf(klocale->translate("Cannot start kscdmagic."));
+        str.sprintf(i18n("Cannot start kscdmagic."));
         QMessageBox::critical(this,"KSCD", str.data());
     }
 
@@ -2210,7 +2210,7 @@ void KSCD::magicdone(KProcess* proc){
         //    fprintf(stderr,"kscdmagic exit status %d\n",proc->exitStatus());
         if(proc->exitStatus()!=0){
             QString str;
-            str.sprintf(klocale->translate("KSCD Magic exited abnormally.\n"\
+            str.sprintf(i18n("KSCD Magic exited abnormally.\n"\
                                            "Are you sure kscdmagic is installed?"));
             QMessageBox::critical(this,"KSCD", str.data());
         }
@@ -2365,7 +2365,7 @@ void KSCD::get_pathlist(QStrList& _pathlist){
 
         dialog = new InexactDialog(0, "dialog", false);
         dialog->insertText(cddbbasedir.data());
-        dialog->setTitle((char *)klocale->translate("Enter the local CDDB base Directory"));
+        dialog->setTitle((char *)i18n("Enter the local CDDB base Directory"));
 
         if(dialog->exec() != QDialog::Accepted){
             delete dialog;
@@ -2419,8 +2419,8 @@ int main( int argc, char *argv[] )
         if(strcmp(argv[i],"-h") == 0){
             printf("KSCD "KSCDVERSION\
                    " Copyright 1997-98 Bernd Johannes Wuebben wuebben@kde.org\n");
-            printf(klocale->translate("-h: display commandline options\n"));
-            printf(klocale->translate("-d: enable debugging output.\n"));
+            printf(i18n("-h: display commandline options\n"));
+            printf(i18n("-d: enable debugging output.\n"));
             exit(0);
         }
     }
@@ -2477,13 +2477,13 @@ void kcderror(char* title,char* message)
 void KSCD::checkMount()
 {
   	if ((fp = setmntent (MOUNTED, "r")) == NULL) {
-		fprintf (stderr, klocale->translate("Couldn't open %s: %s\n"),
+		fprintf (stderr, i18n("Couldn't open %s: %s\n"),
 			 MOUNTED, strerror (errno));
 		exit (1);
 	}
 	while ((mnt = getmntent (fp)) != NULL) {
 		if (strcmp (mnt->mnt_type, "iso9660") == 0) {
-			fputs (klocale->translate("CDROM already mounted. Operation aborted.\n"),
+			fputs (i18n("CDROM already mounted. Operation aborted.\n"),
 			       stderr);
 			endmntent (fp);
 			exit (1);
@@ -2504,7 +2504,7 @@ void KSCD::checkMount()
       n = getmntinfo(&mnt, MNT_WAIT);
       for (i=0; i<n; i++) {
               if (mnt[i].f_type == MOUNT_CD9660) {
-                      fputs(klocale->translate("CDROM already mounted. Operation aborted.\n"),
+                      fputs(i18n("CDROM already mounted. Operation aborted.\n"),
                             stderr);
                       exit(1);
               }

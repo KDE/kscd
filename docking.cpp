@@ -45,8 +45,8 @@ DockWidget::DockWidget(const char *name)
   QString tmp;
 
 #define PMERROR(pm) \
-  tmp.sprintf(klocale->translate("Could not load %s !"), pm); \
-  QMessageBox::warning(this, klocale->translate("Error"), tmp);
+  tmp.sprintf(i18n("Could not load %s !"), pm); \
+  QMessageBox::warning(this, i18n("Error"), tmp);
 
   //     printf("trying to load %s\n",pixdir.data());
   // load pixmaps
@@ -70,15 +70,15 @@ DockWidget::DockWidget(const char *name)
   // popup menu for right mouse button
   popup_m = new QPopupMenu();
 
-  popup_m->insertItem(klocale->translate("Play/Pause"), this, SLOT(play_pause()));
-  popup_m->insertItem(klocale->translate("Stop"), this, SLOT(stop()));
-  popup_m->insertItem(klocale->translate("Forward"), this, SLOT(forward()));
-  popup_m->insertItem(klocale->translate("Backward"), this, SLOT(backward()));
-  popup_m->insertItem(klocale->translate("Next"), this, SLOT(next()));
-  popup_m->insertItem(klocale->translate("Previous"), this, SLOT(prev()));
-  popup_m->insertItem(klocale->translate("Eject"), this, SLOT(eject()));
+  popup_m->insertItem(i18n("Play/Pause"), this, SLOT(play_pause()));
+  popup_m->insertItem(i18n("Stop"), this, SLOT(stop()));
+  popup_m->insertItem(i18n("Forward"), this, SLOT(forward()));
+  popup_m->insertItem(i18n("Backward"), this, SLOT(backward()));
+  popup_m->insertItem(i18n("Next"), this, SLOT(next()));
+  popup_m->insertItem(i18n("Previous"), this, SLOT(prev()));
+  popup_m->insertItem(i18n("Eject"), this, SLOT(eject()));
   popup_m->insertSeparator();
-  toggleID = popup_m->insertItem(klocale->translate("Restore"),
+  toggleID = popup_m->insertItem(i18n("Restore"),
 				 this, SLOT(toggle_window_state()));
 
 
@@ -171,9 +171,9 @@ void DockWidget::mousePressEvent(QMouseEvent *e) {
 
     QString text;
     if(k->isVisible())
-      text = klocale->translate("Minimize");
+      text = i18n("Minimize");
     else
-      text = klocale->translate("Restore");
+      text = i18n("Restore");
 
     popup_m->changeItem(text, toggleID);
     popup_m->popup(QPoint(x, y));

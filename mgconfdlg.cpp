@@ -49,14 +49,14 @@ MGConfigDlg::MGConfigDlg(QWidget *parent=0,
     mgconfigdata.brightness = data->brightness;
   }
 
-  setCaption(klocale->translate("Magic Kscd"));
+  setCaption(i18n("Magic Kscd"));
 
   box = new QGroupBox(this, "box");
   box->setGeometry(10,10,520,420);
 
   label1 = new QLabel(this);
   label1->setGeometry(20,25,155,25);
-  label1->setText(klocale->translate("Width of Magic Window:"));
+  label1->setText(i18n("Width of Magic Window:"));
 
   width_edit = new QLineEdit(this);
   width_edit->setGeometry(200,25,100,25);
@@ -68,7 +68,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent=0,
 
   label2 = new QLabel(this);
   label2->setGeometry(20,65,155,25);
-  label2->setText(klocale->translate("Height of Magic Window:"));
+  label2->setText(i18n("Height of Magic Window:"));
 
   height_edit = new QLineEdit(this);
   height_edit->setGeometry(200,65,100,25);
@@ -80,7 +80,7 @@ MGConfigDlg::MGConfigDlg(QWidget *parent=0,
 
   label3 = new QLabel(this);
   label3->setGeometry(20,110,155,25);
-  label3->setText(klocale->translate("MAGIC Brightness:"));
+  label3->setText(i18n("MAGIC Brightness:"));
 
   bspin = new KNumericSpinBox(this);
   bspin->setGeometry(200,110,50,25);

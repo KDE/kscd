@@ -68,14 +68,14 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
 
   colors_changed = false;
 
-  setCaption(klocale->translate("Configure kscd"));
+  setCaption(i18n("Configure kscd"));
 
   box = new QGroupBox(this, "box");
   box->setGeometry(10,10,520,420);
 
   label1 = new QLabel(this);
   label1->setGeometry(20+XOFF,25+YOFF,135,25);
-  label1->setText(klocale->translate("LED Color:"));
+  label1->setText(i18n("LED Color:"));
 
   qframe1 = new QFrame(this);
   qframe1->setGeometry(155+XOFF,25+YOFF,30,25);
@@ -84,12 +84,12 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
 
   button1 = new QPushButton(this);
   button1->setGeometry(255+XOFF,25+YOFF,100,25);
-  button1->setText(klocale->translate("Change"));
+  button1->setText(i18n("Change"));
   connect(button1,SIGNAL(clicked()),this,SLOT(set_led_color()));
 
   label2 = new QLabel(this);
   label2->setGeometry(20+XOFF,55+YOFF,135,25);
-  label2->setText(klocale->translate("Background Color:"));
+  label2->setText(i18n("Background Color:"));
 
   qframe2 = new QFrame(this);
   qframe2->setGeometry(155+XOFF,55+YOFF,30,25);
@@ -98,12 +98,12 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
 
   button2 = new QPushButton(this);
   button2->setGeometry(255+XOFF,55+YOFF,100,25);
-  button2->setText(klocale->translate("Change"));
+  button2->setText(i18n("Change"));
   connect(button2,SIGNAL(clicked()),this,SLOT(set_background_color()));
 
   label5 = new QLabel(this);
   label5->setGeometry(20+XOFF,85+YOFF,135,25);
-  label5->setText(klocale->translate("CDROM Device:"));
+  label5->setText(i18n("CDROM Device:"));
 
   cd_device_edit = new QLineEdit(this);
   cd_device_edit->setGeometry(155+XOFF,85+YOFF,200,25);
@@ -120,7 +120,7 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
 
   label6 = new QLabel(this);
   label6->setGeometry(20+XOFF,115+YOFF,135,25);
-  label6->setText(klocale->translate("Unix mail command:"));
+  label6->setText(i18n("Unix mail command:"));
 
   mail_edit = new QLineEdit(this);
   mail_edit->setGeometry(155+XOFF,115+YOFF,200,25);
@@ -128,17 +128,17 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
   connect(mail_edit,SIGNAL(textChanged(const char*)),
 	  this,SLOT(mail_changed(const char*)));  
 
-  browserbox = new  QButtonGroup(klocale->translate("WWW-Browser"),this,"wwwbox");
+  browserbox = new  QButtonGroup(i18n("WWW-Browser"),this,"wwwbox");
 //  browserbox->setGeometry(20+XOFF,145+YOFF,338,130);
   browserbox->setGeometry(20+XOFF,145+YOFF,338, 95);
-  kfmbutton = new QRadioButton(klocale->translate("Use kfm as Browser"),
+  kfmbutton = new QRadioButton(i18n("Use kfm as Browser"),
 			       browserbox,"kfmbutton");
   kfmbutton->move(10,20);
   kfmbutton->adjustSize();
   kfmbutton->setChecked(configdata.use_kfm);
   connect(kfmbutton,SIGNAL(clicked()),this,SLOT(kfmbutton_clicked()));
 
-  custombutton = new QRadioButton(klocale->translate("Use Custom Browser:"),
+  custombutton = new QRadioButton(i18n("Use Custom Browser:"),
 				  browserbox,"custombutton");
   custombutton->move(10,40);
   custombutton->adjustSize();
@@ -150,38 +150,38 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
   custom_edit->setEnabled(!configdata.use_kfm);
   custom_edit->setGeometry(30,60,198+70,25);
 
-  ttcheckbox = new QCheckBox(klocale->translate("Show Tool Tips"), 
+  ttcheckbox = new QCheckBox(i18n("Show Tool Tips"), 
 			     this, "tooltipscheckbox");
   ttcheckbox->setGeometry(30+XOFF,245+YOFF,135, 15);
   ttcheckbox->setChecked(configdata.tooltips);
   connect(ttcheckbox,SIGNAL(clicked()),this,SLOT(ttclicked()));
 
-  dockcheckbox = new QCheckBox(klocale->translate("Enable KPanel Docking"), 
+  dockcheckbox = new QCheckBox(i18n("Enable KPanel Docking"), 
 			       this, "dockcheckbox");
   dockcheckbox->setGeometry(30+XOFF,265+YOFF,200, 15);
   dockcheckbox->setChecked(configdata.docking);
   connect(dockcheckbox,SIGNAL(clicked()),this,SLOT(dockclicked()));
 
-  cdAutoPlayCB = new QCheckBox(klocale->translate("Play on Tray Close"),
+  cdAutoPlayCB = new QCheckBox(i18n("Play on Tray Close"),
                                this, "cdAutoPlayCB");
   cdAutoPlayCB->setGeometry(30+XOFF, 285+YOFF, 200, 15);
   cdAutoPlayCB->setChecked(configdata.autoplay);
   connect(cdAutoPlayCB, SIGNAL(clicked()), this, SLOT(autoPlayClicked()));
 
-  dockOnMinimizeCB = new QCheckBox(klocale->translate("AutoDock on Minimize"),
+  dockOnMinimizeCB = new QCheckBox(i18n("AutoDock on Minimize"),
                                    this, "dockOnMinimizeCB");
   dockOnMinimizeCB->setGeometry(30+XOFF, 305+YOFF, 200, 15);
   dockOnMinimizeCB->setChecked(configdata.autodock);
   connect(dockOnMinimizeCB, SIGNAL(clicked()), this, SLOT(dockOnMinimizeClicked()));
   dockOnMinimizeCB->setEnabled(configdata.docking);
 
-  stopOnExitCB = new QCheckBox(klocale->translate("Stop Playing on Exit"),
+  stopOnExitCB = new QCheckBox(i18n("Stop Playing on Exit"),
                                this, "stopOnExitCB");
   stopOnExitCB->setGeometry(30+XOFF, 325+YOFF, 200, 15);
   stopOnExitCB->setChecked(configdata.stopexit);
   connect(stopOnExitCB, SIGNAL(clicked()), this, SLOT(stopOnExitClicked()));
 
-  ejectOnFinishCB = new QCheckBox(klocale->translate("Eject on Finish"),
+  ejectOnFinishCB = new QCheckBox(i18n("Eject on Finish"),
                                   this, "ejectOnFinishCB");
   ejectOnFinishCB->setGeometry(30+XOFF, 345+YOFF, 200, 15);
   ejectOnFinishCB->setChecked(configdata.ejectonfinish);
@@ -191,7 +191,7 @@ ConfigDlg::ConfigDlg(QWidget *parent=0, struct configstruct *data = 0,const char
   button3 = new QPushButton(this);
   button3->setGeometry( 420, 400, 90, 25 );
   //button3->setGeometry(255+XOFF,340+YOFF,100,25);
-  button3->setText(klocale->translate("Help"));
+  button3->setText(i18n("Help"));
   connect(button3,SIGNAL(clicked()),this,SLOT(help()));
 }
 
