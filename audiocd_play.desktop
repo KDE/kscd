@@ -5,5 +5,17 @@ X-KDE-Priority=TopLevel
 
 [Desktop Action Play]
 Name=Play
+Name[bg]=Старт
+Name[br]=Seniñ
+Name[ca]=Reproducció
+Name[cy]=Chwarae
+Name[da]=Spil
+Name[ga]=Seinn
+Name[hu]=Lejátszás
+Name[pt]=Tocar
+Name[pt_BR]=Tocar
+Name[sv]=Spela
+Name[ta]=தொடங்கு
+Name[uk]=Пуск
 Exec=kscd -s -caption "%c" %i %m %u
 
