@@ -693,7 +693,7 @@ better to do with your spare time.</para>
 </screenshot>
 </question>
 <answer><para>This means that &kscd; couldn't open your &CD-ROM; drive. The name of
-the device in the <guilabel>CDROM Device</guilabel>cdrom field of the
+the device in the <guilabel>&CD-ROM; Device</guilabel>cdrom field of the
 <guilabel>Kscd Configuration</guilabel> must actually refer to the block device
 associated with your &CD-ROM; drive. This will often be a hardlink to the
 appropriate <acronym>IDE</acronym> (<filename>/dev/hdx</filename>) or
