@@ -80,7 +80,9 @@ extern "C" {
 #include "bitmaps/rew.xbm"
 #include "bitmaps/info.xbm"
 #include "bitmaps/poweroff.xbm"
+#ifdef KSCDMAGIC
 #include "bitmaps/magic.xbm"
+#endif
 #include "bitmaps/eject.xbm"
 #include "bitmaps/db.xbm"
 #include "bitmaps/logo.xbm"
@@ -170,7 +172,7 @@ class KSCDSlider : public QSlider
 *****************************************************************************/
 
 KSCD::KSCD( QWidget *parent, const char *name )
-  :   QWidget( parent, name, Qt::WDestructiveClose ), DCOPObject("CDPlayer")
+  :   DCOPObject( "CDPlayer" ), QWidget( parent, name, Qt::WDestructiveClose )
 {
   magicproc           = 0L;
   cd_device_str       = "";
