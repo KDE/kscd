@@ -29,13 +29,8 @@ class CDDBDlg : public KDialogBase
       const QStringList  &_playlist
     );
 
-    bool checkit();
-    void setCdInfo(KCDDB::CDInfo &info, const QString& category);
-
-  public slots:
+  private slots:
     void save();
-    void extITB( int trackNum );
-    void extIB();
     void upload();
     void submitFinished(CDDB::Result);
 
@@ -44,10 +39,13 @@ class CDDBDlg : public KDialogBase
     void play(int i);
 
   private:
-    void updateTrackList();
+    static const int TRACK_NUMBER = 0;
+    static const int TRACK_TIME = 1;
+    static const int TRACK_TITLE = 2;
+    static const int TRACK_COMMENT = 3;
+    bool updateFromDialog();
 
     CDDBDlgBase *m_dlgBase;
-    QStringList catlist;
     KCDDB::CDInfo cddbInfo;
     QStringList playlist;
     unsigned ntracks;   /* Number of tracks on the disc */

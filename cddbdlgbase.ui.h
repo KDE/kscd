@@ -10,45 +10,22 @@
 
 void CDDBDlgBase::slotTrackSelected( QListViewItem *item )
 {
-  pb_trackInfo->setEnabled(true);
-  le_trackTitle->setEnabled(true);
-  lb_trackTitle->setEnabled(true);
-  le_trackTitle->setText(item->text(2));
-  le_trackTitle->setFocus();
-
-  emit play(item->text(0).toInt()-1);
+  emit play(item->text(0).toUInt()-1);
 }
-
-
-void CDDBDlgBase::slotTrackChanged( const QString &text )
-{
-  if (lv_trackList->currentItem())
-    lv_trackList->currentItem()->setText(2, text);
-}
-
 
 void CDDBDlgBase::slotNextTrack()
 {
-  if (lv_trackList->currentItem())
+  if (m_trackList->currentItem())
   {
-    QListViewItem *item = lv_trackList->currentItem()->nextSibling();
-    lv_trackList->setSelected(item, true);
-    lv_trackList->ensureItemVisible(item);
+    QListViewItem *item = m_trackList->currentItem()->nextSibling();
+    m_trackList->setSelected(item, true);
+    m_trackList->ensureItemVisible(item);
   }
 }
 
-
-void CDDBDlgBase::slotDiscInfoClicked()
+void CDDBDlgBase::slotTrackDoubleClicked( QListViewItem *item, const QPoint &, int column)
 {
-  emit discInfoClicked();
+    m_trackList->rename(item, column);
 }
 
 
-void CDDBDlgBase::slotTrackInfoClicked()
-{
-  if (lv_trackList->currentItem())
-  {
-    int trackNum = lv_trackList->currentItem()->text(0).toInt();
-    emit trackInfoClicked(trackNum);
-  }
-}

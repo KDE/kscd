@@ -24,7 +24,7 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLabel" row="4" column="1">
+                <widget class="QLabel" row="3" column="3">
                     <property name="name">
                         <cstring>lb_totalTime</cstring>
                     </property>
@@ -70,7 +70,7 @@
                         <cstring>le_revision</cstring>
                     </property>
                 </widget>
-                <widget class="QLabel" row="4" column="0">
+                <widget class="QLabel" row="3" column="2">
                     <property name="name">
                         <cstring>textLabel4</cstring>
                     </property>
@@ -82,10 +82,16 @@
                     <property name="name">
                         <cstring>le_title</cstring>
                     </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Use the name of the artist if there is no title.</string>
+                    </property>
                 </widget>
                 <widget class="KLineEdit" row="0" column="1" rowspan="1" colspan="3">
                     <property name="name">
                         <cstring>le_artist</cstring>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Omit any leading "the" from the name. Names of people should be written "first name last name" - NOT "last name, first name".</string>
                     </property>
                 </widget>
                 <widget class="QLabel" row="5" column="0">
@@ -96,12 +102,23 @@
                         <string>Disc Id:</string>
                     </property>
                 </widget>
-                <widget class="QPushButton" row="3" column="3">
+                <widget class="QLabel" row="2" column="0">
                     <property name="name">
-                        <cstring>pb_discInfo</cstring>
+                        <cstring>lb_discComment</cstring>
                     </property>
                     <property name="text">
-                        <string>Comment...</string>
+                        <string>Comment:</string>
+                    </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>le_discInfo</cstring>
+                    </property>
+                </widget>
+                <widget class="KLineEdit" row="2" column="1" rowspan="1" colspan="3">
+                    <property name="name">
+                        <cstring>m_discComment</cstring>
+                    </property>
+                    <property name="text">
+                        <string></string>
                     </property>
                 </widget>
                 <widget class="QLabel" row="5" column="1">
@@ -112,7 +129,7 @@
                         <string></string>
                     </property>
                 </widget>
-                <widget class="QLabel" row="2" column="0">
+                <widget class="QLabel" row="4" column="0">
                     <property name="name">
                         <cstring>lb_category</cstring>
                     </property>
@@ -123,7 +140,7 @@
                         <cstring>m_category</cstring>
                     </property>
                 </widget>
-                <widget class="QLabel" row="2" column="2">
+                <widget class="QLabel" row="4" column="2">
                     <property name="name">
                         <cstring>lb_genre</cstring>
                     </property>
@@ -134,7 +151,7 @@
                         <cstring>m_genre</cstring>
                     </property>
                 </widget>
-                <widget class="KComboBox" row="2" column="3">
+                <widget class="KComboBox" row="4" column="3">
                     <property name="name">
                         <cstring>m_genre</cstring>
                     </property>
@@ -158,12 +175,12 @@
                         <string>D999; </string>
                     </property>
                 </widget>
-                <widget class="KComboBox" row="2" column="1">
+                <widget class="KComboBox" row="4" column="1">
                     <property name="name">
                         <cstring>m_category</cstring>
                     </property>
                     <property name="toolTip" stdset="0">
-                        <string>CDDB requires that Disc Id values are unique within a category.</string>
+                        <string>Disc Id values must be unique within a category.</string>
                     </property>
                 </widget>
             </grid>
@@ -175,17 +192,17 @@
             <property name="title">
                 <string>Tracks</string>
             </property>
-            <grid>
+            <vbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QListView" row="0" column="0" rowspan="1" colspan="3">
+                <widget class="KListView">
                     <column>
                         <property name="text">
                             <string>No.</string>
                         </property>
                         <property name="clickable">
-                            <bool>false</bool>
+                            <bool>true</bool>
                         </property>
                         <property name="resizable">
                             <bool>true</bool>
@@ -196,7 +213,7 @@
                             <string>Time</string>
                         </property>
                         <property name="clickable">
-                            <bool>false</bool>
+                            <bool>true</bool>
                         </property>
                         <property name="resizable">
                             <bool>true</bool>
@@ -213,90 +230,59 @@
                             <bool>true</bool>
                         </property>
                     </column>
+                    <column>
+                        <property name="text">
+                            <string>Comment</string>
+                        </property>
+                        <property name="clickable">
+                            <bool>true</bool>
+                        </property>
+                        <property name="resizable">
+                            <bool>true</bool>
+                        </property>
+                    </column>
                     <property name="name">
-                        <cstring>lv_trackList</cstring>
+                        <cstring>m_trackList</cstring>
                     </property>
                     <property name="allColumnsShowFocus">
                         <bool>true</bool>
                     </property>
-                </widget>
-                <widget class="QLabel" row="1" column="0">
-                    <property name="name">
-                        <cstring>lb_trackTitle</cstring>
+                    <property name="defaultRenameAction">
+                        <enum>Accept</enum>
                     </property>
-                    <property name="enabled">
-                        <bool>false</bool>
+                    <property name="toolTip" stdset="0">
+                        <string>For compilations, include the track-artist in the track-title, using the syntax "artist / title" and set the disc-artist to "Various". For a CD-Extra, set track-title to "Data".</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>lb_playingOrder</cstring>
                     </property>
                     <property name="text">
-                        <string>Title:</string>
+                        <string>Playing order:</string>
                     </property>
                 </widget>
-                <widget class="KLineEdit" row="1" column="1">
+                <widget class="KLineEdit">
                     <property name="name">
-                        <cstring>le_trackTitle</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
+                        <cstring>le_playOrder</cstring>
                     </property>
                 </widget>
-                <widget class="QPushButton" row="1" column="2">
-                    <property name="name">
-                        <cstring>pb_trackInfo</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="text">
-                        <string>Comment...</string>
-                    </property>
-                </widget>
-            </grid>
-        </widget>
-        <widget class="QLabel">
-            <property name="name">
-                <cstring>lb_playingOrder</cstring>
-            </property>
-            <property name="text">
-                <string>Playing order:</string>
-            </property>
-        </widget>
-        <widget class="KLineEdit">
-            <property name="name">
-                <cstring>le_playOrder</cstring>
-            </property>
+            </vbox>
         </widget>
     </vbox>
 </widget>
 <connections>
     <connection>
-        <sender>lv_trackList</sender>
+        <sender>m_trackList</sender>
         <signal>selectionChanged(QListViewItem*)</signal>
         <receiver>CDDBDlgBase</receiver>
         <slot>slotTrackSelected(QListViewItem*)</slot>
     </connection>
     <connection>
-        <sender>le_trackTitle</sender>
-        <signal>textChanged(const QString&amp;)</signal>
+        <sender>m_trackList</sender>
+        <signal>doubleClicked(QListViewItem*,const QPoint&amp;,int)</signal>
         <receiver>CDDBDlgBase</receiver>
-        <slot>slotTrackChanged(const QString&amp;)</slot>
-    </connection>
-    <connection>
-        <sender>le_trackTitle</sender>
-        <signal>returnPressed()</signal>
-        <receiver>CDDBDlgBase</receiver>
-        <slot>slotNextTrack()</slot>
-    </connection>
-    <connection>
-        <sender>pb_discInfo</sender>
-        <signal>clicked()</signal>
-        <receiver>CDDBDlgBase</receiver>
-        <slot>slotDiscInfoClicked()</slot>
-    </connection>
-    <connection>
-        <sender>pb_trackInfo</sender>
-        <signal>clicked()</signal>
-        <receiver>CDDBDlgBase</receiver>
-        <slot>slotTrackInfoClicked()</slot>
+        <slot>slotTrackDoubleClicked(QListViewItem*,const QPoint&amp;,int)</slot>
     </connection>
 </connections>
 <tabstops>
@@ -305,10 +291,8 @@
     <tabstop>m_category</tabstop>
     <tabstop>m_genre</tabstop>
     <tabstop>le_year</tabstop>
-    <tabstop>pb_discInfo</tabstop>
-    <tabstop>lv_trackList</tabstop>
-    <tabstop>le_trackTitle</tabstop>
-    <tabstop>pb_trackInfo</tabstop>
+    <tabstop>m_discComment</tabstop>
+    <tabstop>m_trackList</tabstop>
     <tabstop>le_playOrder</tabstop>
     <tabstop>le_revision</tabstop>
 </tabstops>
@@ -319,24 +303,23 @@
 <signals>
     <signal>play(int i)</signal>
     <signal>discInfoClicked()</signal>
-    <signal>trackInfoClicked(int)</signal>
+    <signal>trackInfoClicked(unsigned)</signal>
 </signals>
 <slots>
     <slot access="protected" specifier="non virtual">slotTrackSelected( QListViewItem * item )</slot>
-    <slot access="protected" specifier="non virtual">slotTrackChanged( const QString &amp; text )</slot>
     <slot access="protected" specifier="non virtual">slotNextTrack()</slot>
-    <slot access="protected" specifier="non virtual">slotDiscInfoClicked()</slot>
-    <slot access="protected" specifier="non virtual">slotTrackInfoClicked()</slot>
+    <slot access="protected">slotTrackDoubleClicked( QListViewItem * item, const QPoint &amp;, int column )</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 <layoutfunctions spacing="KDialog::spacingHint" margin="KDialog::marginHint"/>
 <includehints>
     <includehint>klineedit.h</includehint>
     <includehint>klineedit.h</includehint>
-    <includehint>kcombobox.h</includehint>
     <includehint>klineedit.h</includehint>
     <includehint>kcombobox.h</includehint>
     <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klistview.h</includehint>
     <includehint>klineedit.h</includehint>
 </includehints>
 </UI>

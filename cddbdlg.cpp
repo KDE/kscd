@@ -8,7 +8,7 @@
 #include <qfile.h>
 #include <qdir.h>
 #include <qfileinfo.h>
-#include <qlistview.h>
+#include <klistview.h>
 #include <klineedit.h>
 
 #include <kapplication.h>
@@ -219,6 +219,9 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
   m_dlgBase->m_genre->insertItem(i18n("Trip-Hop"));
   m_dlgBase->m_genre->insertItem(i18n("Vocal"));
 
+  m_dlgBase->m_trackList->setRenameable(TRACK_NUMBER, false);
+  m_dlgBase->m_trackList->setRenameable(TRACK_TITLE, true);
+  m_dlgBase->m_trackList->setRenameable(TRACK_COMMENT, true);
   setMainWidget( m_dlgBase );
 
   setButtonText( User1, i18n( "Upload" ) );
@@ -232,20 +235,6 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
   connect( this, SIGNAL( user1Clicked() ), SLOT( upload() ) );
   connect( this, SIGNAL( user2Clicked() ), SIGNAL( cddbQuery() ) );
   connect( m_dlgBase, SIGNAL( play( int ) ), SIGNAL( play( int ) ) );
-  connect( m_dlgBase, SIGNAL( discInfoClicked() ), SLOT( extIB() ) );
-  connect( m_dlgBase, SIGNAL( trackInfoClicked( int ) ), SLOT( extITB( int ) ) );
-
-  catlist << "rock"
-          << "classical"
-          << "jazz"
-          << "soundtrack"
-          << "newage"
-          << "blues"
-          << "folk"
-          << "country"
-          << "reggae"
-          << "misc"
-          << "data";
 
   cddbClient = new KCDDB::Client();
   cddbClient->setBlockingMode(false);
@@ -285,7 +274,7 @@ void CDDBDlg::setData(
     length = 0;
     m_dlgBase->le_title->setText("No Disc");
     m_dlgBase->lb_discId->clear();
-    m_dlgBase->lv_trackList->clear();
+    m_dlgBase->m_trackList->clear();
     return;
   }
 
@@ -338,55 +327,25 @@ void CDDBDlg::setData(
 
   QString fmt;
 
-  m_dlgBase->lv_trackList->clear();
+  m_dlgBase->m_trackList->clear();
 
   for(unsigned i = 1; i <= ntracks; i++)
   {
     dl = framestoTime(cddbtoc[i].absframe-cddbtoc[i-1].absframe);
 
-    QListViewItem * item = new QListViewItem( m_dlgBase->lv_trackList, 0 );
-    item->setText( 0, QString().sprintf("%02d",i) );
+    QListViewItem * item = new QListViewItem( m_dlgBase->m_trackList, 0 );
+    item->setText(TRACK_NUMBER, QString().sprintf("%02d",i) );
     if (dl.hour() > 0)
-      item->setText( 1, dl.toString("hh:mm:ss"));
+      item->setText(TRACK_TIME, dl.toString("hh:mm:ss"));
     else
-      item->setText( 1, dl.toString("mm:ss"));
+      item->setText(TRACK_TIME, dl.toString("mm:ss"));
 
-    item->setText( 2,  cddbInfo.trackInfoList[i-1].title);
+    item->setText(TRACK_TITLE, cddbInfo.trackInfoList[i-1].title);
+    item->setText(TRACK_COMMENT, cddbInfo.trackInfoList[i-1].extt);
   }
 
   m_dlgBase->le_playOrder->setText( playlist.join( "," ) );
 } // setData
-
-void CDDBDlg::extITB( int trackNumber )
-{
-  QString trackTitle = cddbInfo.trackInfoList[trackNumber-1].title;
-  QString dialogTitle;
-  bool ok;
-
-  if (!trackTitle.isEmpty())
-    dialogTitle = "<qt>" + i18n("Annotate track #%1: %2").arg(trackNumber)
-                                                .arg(trackTitle) + "</qt>";
-  else
-    dialogTitle = i18n("Annotate track #%1").arg(trackNumber);
-
-  QString s = KInputDialog::getMultiLineText( i18n( "Annotate Track" ),
-      dialogTitle, cddbInfo.trackInfoList[trackNumber].extt, &ok, this );
-
-  if ( ok )
-    cddbInfo.trackInfoList[trackNumber].extt = s;
-} // extIB
-
-void CDDBDlg::extIB()
-{
-  bool ok;
-
-  QString s = KInputDialog::getMultiLineText( i18n( "Annotate Album" ),
-      i18n( "Enter annotation for this album:" ), cddbInfo.trackInfoList[0].extt,
-      &ok, this );
-
-  if ( ok )
-    cddbInfo.trackInfoList[0].extt = s;
-} // extITB
 
 void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
 {
@@ -428,31 +387,12 @@ QTime framestoTime(int _frames)
 
 void CDDBDlg::upload()
 {
-  updateTrackList();
-
-  if(!checkit())
+  if (!updateFromDialog())
     return;
 
-  QString submitcat;
-
-  if( cddbInfo.category.isEmpty() )
-  {
-    bool ok;
-
-    submitcat = KInputDialog::getItem( i18n( "Select Album Category" ),
-        i18n( "Select a category for this album:" ), catlist, 0,
-        false, &ok, this );
-
-    if ( !ok )
-      return;
-  }
-  else
-    submitcat = cddbInfo.category.copy();
-
-  KCDDB::CDInfo info;
-  setCdInfo(info, submitcat);
-
-  info.revision++;
+  // Create a copy with a bumped revision number.
+  KCDDB::CDInfo copyInfo = cddbInfo;
+  copyInfo.revision++;
 
   KCDDB::TrackOffsetList offsetList;
 
@@ -464,49 +404,19 @@ void CDDBDlg::upload()
   offsetList.append(cddbtoc[0].absframe);
   offsetList.append(cddbtoc[ntracks].absframe);
 
-  cddbClient->submit(info, offsetList);
+  cddbClient->submit(copyInfo, offsetList);
 } // upload
-
-void CDDBDlg::setCdInfo(KCDDB::CDInfo &info, const QString& category)
-{
-  info = cddbInfo;
-  info.category = category;
-  info.extd = cddbInfo.trackInfoList[0].extt;
-} // setCdInfo
 
 void CDDBDlg::save()
 {
-  updateTrackList();
-
-  if(!checkit())
+  if (!updateFromDialog())
     return;
-
-  QString savecat;
-
-  if( cddbInfo.category.isEmpty() )
-  {
-    bool ok;
-
-    savecat = KInputDialog::getItem( i18n( "Select Album Category" ),
-        i18n( "Select a category for this album:" ), catlist, 0,
-        false, &ok, this );
-
-    if ( !ok )
-      return;
-  }
-  else
-    savecat = cddbInfo.category.copy();
-
-  KCDDB::CDInfo info;
-  setCdInfo(info, savecat);
-  // Playorder...
-
-  KCDDB::Cache::store(info);
+  KCDDB::Cache::store(cddbInfo);
 
   emit cddbQuery();
 } // save
 
-bool CDDBDlg::checkit()
+bool CDDBDlg::updateFromDialog()
 {
   QString artist = m_dlgBase->le_artist->text().stripWhiteSpace();
   if(artist.isEmpty())
@@ -528,27 +438,15 @@ bool CDDBDlg::checkit()
     return false;
   }
 
-  if(cddbInfo.trackInfoList.count() < 1)
-  {
-    KMessageBox::sorry(this,
-        i18n("At least one track title must be entered.\n"\
-             "Please correct the entry and try again."),
-        i18n("Invalid Database Entry"));
-    return false;
-  }
-
   bool have_nonempty_title = false;
-  KCDDB::TrackInfoList::ConstIterator it(cddbInfo.trackInfoList.begin());
-  KCDDB::TrackInfoList::ConstIterator end(cddbInfo.trackInfoList.end());
-  for (; it != end; ++it)
+  for (QListViewItem *item = m_dlgBase->m_trackList->firstChild(); item; item=item->nextSibling())
   {
-    QString songTitle = (*it).title;
-    title = songTitle.stripWhiteSpace();
-    if(!songTitle.isEmpty())
-    {
-      have_nonempty_title = true;
-      break;
-    }
+      QString songTitle = item->text(TRACK_TITLE).stripWhiteSpace();
+      if(!songTitle.isEmpty())
+      {
+          have_nonempty_title = true;
+          break;
+      }
   }
 
   if(!have_nonempty_title)
@@ -569,6 +467,7 @@ bool CDDBDlg::checkit()
     return false;
   }
 
+  // Playorder...
   QStringList strlist = QStringList::split( ',', m_dlgBase->le_playOrder->text() );
 
   bool ret = true;
@@ -596,27 +495,19 @@ bool CDDBDlg::checkit()
     return false;
   }
 
-  return true;
-} // checkit
-
-void CDDBDlg::updateTrackList()
-{
-  cddbInfo.title = m_dlgBase->le_title->text().stripWhiteSpace();
-  cddbInfo.artist = m_dlgBase->le_artist->text().stripWhiteSpace();
-
-  m_dlgBase->lv_trackList->setSorting(0, true);
-
-  unsigned int i=0;
-  for (QListViewItem* item = m_dlgBase->lv_trackList->firstChild(); item ; item=item->nextSibling())
+  // The information all passed our checks. Update the stored values from the dialog.
+  cddbInfo.title = title;
+  cddbInfo.artist = artist;
+  cddbInfo.category = m_dlgBase->m_category->currentText();
+  cddbInfo.extd = m_dlgBase->m_discComment->text().stripWhiteSpace();
+  for (QListViewItem *item = m_dlgBase->m_trackList->firstChild(); item; item=item->nextSibling())
   {
-    if (cddbInfo.trackInfoList.count() <= i)
-    {
-      kdWarning() << "track_list.count <= " << i << endl;
-      continue;
-    }
-    cddbInfo.trackInfoList[i].title = item->text(2);
-    i++;
+    unsigned trackNumber = item->text(TRACK_NUMBER).toUInt();
+    cddbInfo.trackInfoList[trackNumber - 1].title = item->text(TRACK_TITLE).stripWhiteSpace();
+    cddbInfo.trackInfoList[trackNumber - 1].extt = item->text(TRACK_COMMENT).stripWhiteSpace();
+    kdWarning() << "track " << trackNumber << "=" << cddbInfo.trackInfoList[trackNumber - 1].title<<endl;
   }
-}
+  return true;
+} // updateFromDialog
 
 #include "cddbdlg.moc"
