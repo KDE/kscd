@@ -709,7 +709,7 @@ KSCD::playClicked()
 	      {
 	      case WM_CDM_PLAYING:
                 statuslabel->setText( i18n("Pause") );
-                wm_cd_pause ();
+                wm_cd_pause();
                 break;
 	      case WM_CDM_PAUSED:
                 if(randomplay)
@@ -721,6 +721,7 @@ KSCD::playClicked()
 		  } else {
                     statuslabel->setText( i18n("Playing") );
 		  }
+                wm_cd_pause();
                 break;
 	
 	      default:
