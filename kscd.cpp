@@ -270,6 +270,14 @@ KSCD::KSCD( QWidget *parent, const char *name )
 KSCD::~KSCD()
 {
   delete smtpConfigData;
+  delete timer;
+  delete queryledtimer;
+  delete titlelabeltimer;
+  delete initimer;
+  delete cycletimer;
+  delete jumpTrackTimer;
+  delete smtpMailer;
+
 } // ~KSCD
 
 
@@ -378,10 +386,10 @@ KSCD::initFont()
           fits = true;
       }
   }
-  
+
   smallfont = QFont(KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold);
-  verysmallfont = QFont(KGlobalSettings::generalFont().family(), 
-                        (theSmallPtSize > 4) ? theSmallPtSize - 2 : 2, 
+  verysmallfont = QFont(KGlobalSettings::generalFont().family(),
+                        (theSmallPtSize > 4) ? theSmallPtSize - 2 : 2,
                         QFont::Bold);
 } // initFont()
 
@@ -641,9 +649,9 @@ KSCD::showPopup()
 } // showPopup
 
 
-void 
+void
 KSCD::setRandomOnce(bool shuffle)
-{ 
+{
     randomonce = shuffle;
     QToolTip::remove(shufflebutton);
     if (!randomonce)
@@ -694,8 +702,8 @@ KSCD::setToolTips(bool on)
         {
             QToolTip::add(shufflebutton,         i18n("Shuffle Play"));
         }
-    } 
-    else 
+    }
+    else
     {
         QToolTip::remove(playPB);
         QToolTip::remove(stopPB);
@@ -1114,7 +1122,7 @@ KSCD::trackSelected( int trk )
     {
         return;
     }
-    
+
     randomplay = false;
     tracklabel->setText( formatTrack( trk + 1, cd->ntracks ) );
 
@@ -1166,14 +1174,14 @@ KSCD::configDone()
     configDialog = 0L;
 }
 
-void 
+void
 KSCD::getCDDBOptions(CDDBSetup* config)
 {
     if (!config)
     {
-        return;    
+        return;
     }
-    
+
     config->insertData(cddbserverlist,
                        cddbsubmitlist,
                        cddbbasedir,
@@ -1188,12 +1196,12 @@ KSCD::getCDDBOptions(CDDBSetup* config)
 } // getCDDBOptions(CDDBSetup* config)
 
 
-void 
+void
 KSCD::setCDDBOptions(CDDBSetup* config)
 {
     if (!config)
     {
-        return;    
+        return;
     }
 
     bool cddb_proxy_enabled;
@@ -1218,7 +1226,7 @@ KSCD::setCDDBOptions(CDDBSetup* config)
 } // setCDDBOptions
 
 
-void 
+void
 KSCD::getMagicOptions(mgconfigstruct& config)
 {
     config.width = magic_width;
@@ -1228,7 +1236,7 @@ KSCD::getMagicOptions(mgconfigstruct& config)
 } // getMagicOptions(mgconfigstruct& config)
 
 
-void 
+void
 KSCD::setMagicOptions(mgconfigstruct& config)
 {
     magic_width = config.width;
@@ -1238,12 +1246,12 @@ KSCD::setMagicOptions(mgconfigstruct& config)
 } // setMagicOptions(mgconfigstruct& config)
 
 
-void 
-KSCD::setDevicePath(QString path) 
+void
+KSCD::setDevicePath(QString path)
 {
     if (cd_device_str == path)
     {
-        return;    
+        return;
     }
 
     cd_device_str = path;
@@ -1260,9 +1268,9 @@ KSCD::setDevicePath(QString path)
     cddrive_is_ok = true;
 } // setDevicePath(QString)
 
-void 
-KSCD::setDocking(bool dock) 
-{ 
+void
+KSCD::setDocking(bool dock)
+{
     docking = dock;
     if(docking)
     {
@@ -1286,7 +1294,7 @@ KSCD::incVolume()
     volSB->addStep();
 } // incVolume
 
-void 
+void
 KSCD::decVolume()
 {
     volSB->subtractStep();
@@ -1297,7 +1305,7 @@ KSCD::volChanged( int vol )
 {
     if(volstartup || !cddrive_is_ok)
         return;
-    
+
     QString str;
     str = QString::fromUtf8( QCString().sprintf( i18n("Vol: %02d%%").utf8(),vol) );
     volumelabel->setText(str);
@@ -1309,7 +1317,7 @@ KSCD::volChanged( int vol )
 int
 KSCD::randomtrack()
 {
-    if(random_list == 0) 
+    if(random_list == 0)
     {
         return -1;
     }
@@ -1378,7 +1386,7 @@ KSCD::cdMode()
 
   sss = wm_cd_status();
 
-  if( sss == WM_CDS_JUST_INSERTED  || sss == WM_CDS_NO_DISC) 
+  if( sss == WM_CDS_JUST_INSERTED  || sss == WM_CDS_NO_DISC)
   {
       have_new_cd = true;
   }
@@ -3066,7 +3074,7 @@ KSCD::keyPressEvent(QKeyEvent* e)
 {
     bool isNum;
     int value = e->text().toInt(&isNum);
-    
+
     if (isNum)
     {
         value = (jumpToTrack * 10) + value;
@@ -3095,19 +3103,19 @@ KSCD::jumpTracks()
     jumpToTrack = 0;
 } // jumpTracks
 
-int KSCD::currentTrack() 
-{ 
-    return cur_track; 
+int KSCD::currentTrack()
+{
+    return cur_track;
 }
 
-QString KSCD::currentTrackTitle() 
-{ 
+QString KSCD::currentTrackTitle()
+{
     return (cur_track > -1) ? tracktitlelist[cur_track] : QString::null;
 }
 
-QStringList KSCD::trackList() 
-{ 
-    return tracktitlelist; 
+QStringList KSCD::trackList()
+{
+    return tracktitlelist;
 }
 
 /**
