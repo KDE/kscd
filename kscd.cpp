@@ -1665,7 +1665,7 @@ void
 KSCD::readSettings()
 {
 	config = kapp->config();
-	
+
 	config->setGroup("GENERAL");
 	volume     	= config->readNumEntry("Volume",40);
 	tooltips   	= config->readBoolEntry("ToolTips", true);
@@ -1679,14 +1679,14 @@ KSCD::readSettings()
 	hidden_controls = config->readBoolEntry("HiddenControls",false);
 	skipDelta = config->readNumEntry("SkipDelta", 30);
 	time_display_mode = config->readNumEntry("TimeDisplay", TRACK_SEC);
-	
+
 #ifdef DEFAULT_CD_DEVICE
-	
+
 	// sun ultrix etc have a canonical cd rom device specified in the
 	// respective plat_xxx.c file. On those platforms you need nnot
 	// specify the cd rom device and DEFAULT_CD_DEVICE is not defined
 	// in config.h
-	
+
 	cd_device_str = config->readEntry("CDDevice",DEFAULT_CD_DEVICE);
    cd_device = (char *)qstrdup(QFile::encodeName(cd_device_str));
 
@@ -1697,13 +1697,13 @@ KSCD::readSettings()
 	QColor defaultled = QColor(226,224,255);
 	background_color = config->readColorEntry("BackColor",&defaultback);
 	led_color = config->readColorEntry("LEDColor",&defaultled);
-	
+
 	config->setGroup("MAGIC");
 	magic_width      = config->readNumEntry("magicwidth",320);
 	magic_height     = config->readNumEntry("magicheight",200);
 	magic_brightness = config->readNumEntry("magicbrightness", 3);
 	magic_pointsAreDiamonds = config->readBoolEntry("magicPointsAreDiamonds", false);
-	
+
 	config->setGroup("SMTP");
 	smtpConfigData->enabled = config->readBoolEntry("enabled", true);
 	smtpConfigData->useGlobalSettings = config->readBoolEntry("useGlobalSettings", true);
@@ -1711,7 +1711,7 @@ KSCD::readSettings()
 	smtpConfigData->serverPort = config->readEntry("serverPort", "25");
 	smtpConfigData->senderAddress = config->readEntry("senderAddress");
 	smtpConfigData->senderReplyTo = config->readEntry("senderReplyTo");
-	
+
 	// serverHost used to be stored via KEMailSettings, so we attempt to read the
    // value via KEMailSettings to preserve the user's settings when upgrading.
    if( !config->readEntry("mailProfile").isNull() )
@@ -1720,25 +1720,25 @@ KSCD::readSettings()
 		kes.setProfile( i18n("Default") );
 		smtpConfigData->serverHost = kes.getSetting( KEMailSettings::OutServer );
 	}
-	
+
 	if(smtpConfigData->useGlobalSettings)
 		smtpConfigData->loadGlobalSettings();
-	
+
 	// Don't accept obviously bogus settings.
 	if(!smtpConfigData->isValid())
 		smtpConfigData->enabled = false;
-	
+
 	config->setGroup("CDDB");
-	
+
 	cddb.setTimeout(config->readNumEntry("CDDBTimeout",60));
 	cddb_auto_enabled = config->readBoolEntry("CDDBLocalAutoSaveEnabled",true);
 	cddbbasedir = config->readEntry("LocalBaseDir");
-	
+
 	// Changed global KDE apps dir by local KDE apps dir
 	if (cddbbasedir.isEmpty())
 		cddbbasedir = KGlobal::dirs()->resourceDirs("cddb").first();
 	KGlobal::dirs()->addResourceDir("cddb", cddbbasedir);
-	
+
 	// Set this to false by default. Look at the settings dialog source code
 	// for the reason. - Juraj.
 	cddb_remote_enabled = config->readBoolEntry( "CDDBRemoteEnabled", false );
@@ -1752,8 +1752,8 @@ KSCD::readSettings()
 		proxyURL = proxy;
 		proxyHost = proxyURL.host();
 		proxyPort = proxyURL.port();
-	} 
-	else 
+	}
+	else
 	{
 		proxyHost = "";
 		proxyPort = 0;
@@ -1761,7 +1761,7 @@ KSCD::readSettings()
 	}
 	cddb.setHTTPProxy(config->readEntry("HTTPProxyHost",proxyHost),
 			config->readNumEntry("HTTPProxyPort",proxyPort));
-	
+
 	current_server = config->readEntry("CurrentServer",DEFAULT_CDDB_SERVER);
 	//Let's check if it is in old format and if so, convert it to new one:
 	if(CDDB::normalize_server_list_entry(current_server))
@@ -1780,7 +1780,7 @@ KSCD::readSettings()
 		//Let's check if it is in old format and if so, convert it to new one:
       bool needtosave=false;
 		QStringList nlist;
-		
+
 		for ( QStringList::Iterator it = cddbserverlist.begin(); it != cddbserverlist.end(); ++it )
 		{
 			needtosave|=CDDB::normalize_server_list_entry(*it);
@@ -2770,17 +2770,17 @@ KSCD::get_pathlist(QStringList& _pathlist)
     {
 		 if ( ! KStandardDirs::makeDir( cddbbasedir ) )
 		 {
-			 QString msg = i18n("Unable to create directory ") + cddbbasedir +
-				 i18n("\nCheck permissions!" );
+			 QString msg = i18n("Unable to create directory %1"
+                                "\nCheck permissions!" ).arg(cddbbasedir);
 			 KMessageBox::error( this, msg );
 			 return;
 		 }
-		 
+
 	 }
-	 
+
 	 _pathlist.clear();
 	 list = d.entryList();
-	 
+
 	 for ( QStringList::ConstIterator it = list.begin(); it != list.end(); ++it )
 	 {
 		 if( *it != QString::fromLatin1(".") && *it != QString::fromLatin1("..") )
@@ -2914,10 +2914,10 @@ KSCD::edm_save_cddb_entry(QString& path)
     QFile file( path ); //open the file
 	 QFileInfo fileinfo( file );
 	 QDir dir( fileinfo.dirPath() ); // Directory manipulation
-	 
+
 	 if( ! dir.exists() )
 	 {
-		 
+
 		 if( ! dir.mkdir( fileinfo.dirPath() ) )
 		 {
 			 kdDebug() << "Output directory: " << fileinfo.dirPath() << endl;
