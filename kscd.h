@@ -74,7 +74,7 @@
 #define KSCDMAGIC 0
 #endif
 
-#include "cddb.h"
+
 #include "smtp.h"
 #include "ledlamp.h"
 
@@ -89,6 +89,13 @@ class CDDialog;
 
 class SMTPConfig;
 struct SMTPConfigData;
+
+
+// CDDB support via libkcddb
+#include <libkcddb/cddb.h>
+#include <libkcddb/client.h>
+
+using namespace KCDDB;
 
 struct mgconfigstruct
 {
@@ -154,32 +161,21 @@ public:
     QColor ledColor() { return led_color; }
     QColor bgColor() { return background_color; }
     void setColors(const QColor& LEDs, const QColor& bground);
-    void setToolTips(bool on);
     bool toolTips() { return tooltips; }
     void setDevicePath(QString path);
     QString devicePath() { return cd_device_str; }
     SMTPConfigData* smtpData() { return smtpConfigData; }
+    void setToolTips(bool on);
 
 signals:
     void trackChanged(const QString&);
     void newServerList(const QStringList&);
 
 public slots:
-    void smtpMessageSent(void);
-    void smtpError(int);
-    void magicdone(KProcess*);
-    void magicslot();
-    void magicslot(int);
-    void togglequeryled();
-    void cddb_done();
-    void cddb_timed_out();
-    void cddb_ready();
-    void edm_save_cddb_entry(QString& path);
-    void cddb_failed();
-    void randomSelected();
-    void readSettings();
-    void writeSettings();
     void setColors();
+    void togglequeryled();
+    void randomSelected();
+    void writeSettings();
     void playClicked();
     void initCDROM();
     void stopClicked();
@@ -198,35 +194,16 @@ public slots:
     void incVolume();
     void decVolume();
     void volChanged( int );
-    void mycddb_inexact_read();
-    void cddb_no_info();
     void led_on();
     void led_off();
     void titlelabeltimeout();
-    void CDDialogSelected();
     void cycleplaytimemode();
     void cycletimeout();
-    void get_cddb_info(bool);
-    void CDDialogDone();
-    void getCDDBservers();
-    void getCDDBserversDone();
-    void getCDDBserversFailed();
-    void updateCurrentCDDBServer(const QString&);
+
     void performances(int);
     void purchases(int);
     void information(int);
     void jumpTracks();
-
-    /*
-     * TODO
-     * not the prettiest things in the world
-     * but getting rid of them will require some more work
-     * with the CDDB and magic config pages
-     */
-    void getCDDBOptions(CDDBSetup* config);
-    void setCDDBOptions(CDDBSetup* config);
-    void getMagicOptions(mgconfigstruct& config);
-    void setMagicOptions(const mgconfigstruct& config);
 
     void make_random_list(); /* koz: 15/01/00 */
 
@@ -234,12 +211,20 @@ protected slots:
     void configDone();
 
 protected:
+    // mostly start up stuff
+    void readSettings();
+    void initFont();
+    void initWorkMan();
+    void drawPanel();
+    void loadBitmaps();
+    void setupPopups();
+    void setLEDs(const QString& symbols);
+
     void closeEvent( QCloseEvent *e );
     void keyPressEvent( QKeyEvent* e );
     bool event( QEvent *e );
     //    void focusOutEvent(QFocusEvent *e);
     void playtime();
-    void setupPopups();
     void startBrowser(const QString& querystring);
     bool getArtist(QString& artist);
     void get_pathlist(QStringList& _patlist);
@@ -247,7 +232,7 @@ protected:
     void clearSongList();
     void setSongListTo(int whichTrack);
     void populateSongList();
- 
+
 private:
     SMTPConfigData  *smtpConfigData;
     ConfigDlg       *configDialog;
@@ -259,7 +244,6 @@ private:
     QPushButton     *fwdPB;
     QPushButton     *bwdPB;
     QPushButton     *dockPB;
-    QPushButton     *magicPB;
     QPushButton     *replayPB;
     QPushButton     *ejectPB;
     QPushButton     *aboutPB;
@@ -289,46 +273,31 @@ private:
     QComboBox           *songListCB;
     QSlider             *volSB;
 
-    // random plyalists
+    // random playlists
     KRandomSequence     randSequence;
     RandomList          random_list;
     RandomList::iterator random_current;
 
-    KProcess*           magicproc;
+
     int                 jumpToTrack;
     unsigned int        skipDelta;
-    int                 volChnl;
-    int                 mixerFd;
     int                 volume;
-    int                 magic_width;
-    int                 magic_height;
-    int                 magic_brightness;
-    bool                magic_pointsAreDiamonds;
     QFrame              *backdrop;
     LedLamp             *queryled;
     LedLamp             *loopled;
     bool                tooltips;
     bool                randomplay ;
     bool                looping;
-    bool                cycle_flag;
-    QString             cycle_str;
-    bool                volstartup;
     bool                cddrive_is_ok;
     bool                have_new_cd;
     int                 time_display_mode;
     QString             cd_device_str;
-    bool                hidden_controls;
+
 
     QPushButton         *makeButton( int, int, int, int, const QString& );
 
 
-    void                initFont();
-    void                initWorkMan();
-    //  void            checkMount();
 
-    void    drawPanel();
-    void    loadBitmaps();
-    void    setLEDs(const QString& symbols);
     void    cdtext(struct cdtext_info* p_cdtext);
 
   /**
@@ -345,56 +314,82 @@ private:
    */
     void setArtistAndTitle(const QString& artist, const QString& title);
 
-//TODO get rid of the mixe stuff
+    int             tmppos;
+    int             save_track;
 
-    void                initMixer( const char *mixer = "/dev/mixer" );
+    QStringList     pathlist;
+    QStringList     discidlist;
+    QStringList     tracktitlelist;
+    QStringList     playlist;
+    int             playlistpointer;
+    QStringList     extlist;
+    QString         category;
+    QFont           smallfont;
+    QFont           verysmallfont;
+    bool            docking;
+    bool            autoplay;
+    bool            stopexit;
+    bool            ejectonfinish;
+    bool            randomonce;
+    bool            currentlyejected;
 
-// These are the variables from workbone
+// cddb support
+public slots:
+    void smtpMessageSent(void);
+    void smtpError(int);
+    void cddb_done(CDDB::Result);
+    void cddb_timed_out();
+    void cddb_failed();
+    void cddb_no_info();
+    void mycddb_inexact_read();
+    void CDDialogSelected();
+    void CDDialogDone();
+    void get_cddb_info(bool);
+    void getCDDBservers();
+    void getCDDBserversDone();
+    void getCDDBserversFailed();
+    void updateCurrentCDDBServer(const QString&);
+    /*
+     * TODO
+     * not the prettiest things in the world
+     * but getting rid of them will require some more work
+     * with the CDDB and magic config pages
+     */
+    void getCDDBOptions(CDDBSetup* config);
+    void setCDDBOptions(CDDBSetup* config);
 
-        int             sss;
-        int             sel_stat;
-        int             dly;
-        int             fastin;
-        int             scmd;
-        int             tmppos;
-        int             save_track;
-        struct timeval  mydelay;
-        struct mntent   *mnt;
-        FILE            *fp;
+private:
+    KCDDB::Client*  cddb;
+    QString         xmcd_data;
+    QStringList     cddbserverlist;
+    QString         cddbbasedir;
+    QString         current_server;
+    QString         mailcmd;
+    QString         submitaddress;
+    QStringList     cddbsubmitlist;
+    bool            cddb_inexact_sentinel;
+    bool            updateDialog;
+    bool            Fetch_remote_cddb;
+    int             revision;
+    bool            cddb_remote_enabled;
+    bool            cddb_auto_enabled;
 
-        CDDB            cddb;
-        QStringList        querylist;
-        QStringList        pathlist;
-        QStringList        discidlist;
-        QStringList     tracktitlelist;
-        QStringList     playlist;
-        int             playlistpointer;
-        QStringList     extlist;
-        int             revision;
-        QString         category;
-        QString         xmcd_data;
-        QStringList     cddbserverlist;
-        QString         cddbbasedir;
-        QString         current_server;
-        QString         mailcmd;
-        QString         submitaddress;
-        QStringList        cddbsubmitlist;
-        QFont           smallfont;
-        QFont           verysmallfont;
-        bool            cddb_remote_enabled;
-        /* edm new section */
-        bool            cddb_auto_enabled;
-        /* edm new section end */
-        bool            docking;
-        bool            autoplay;
-        bool            stopexit;
-        bool            ejectonfinish;
-        bool            randomonce;
-        bool            Fetch_remote_cddb;
-        bool            cddb_inexact_sentinel;
-        bool            updateDialog;
-        bool            ejectedBefore;
-        bool            currentlyejected;
+// kscd magic stuff
+public slots:
+    void getMagicOptions(mgconfigstruct& config);
+    void setMagicOptions(const mgconfigstruct& config);
+    void magicdone(KProcess*);
+    void magicslot();
+    void magicslot(int);
+#if KSCDMAGIC
+private:
+    QPushButton     *magicPB;
+    KProcess*           magicproc;
+    int                 magic_width;
+    int                 magic_height;
+    int                 magic_brightness;
+    bool                magic_pointsAreDiamonds;
+#endif
 };
 
 

@@ -21,7 +21,6 @@
 #include "../config.h"
 
 #include "CDDBSetup.h"
-#include "cddb.h"
 
 CDDBSetup::CDDBSetup
 (
@@ -203,10 +202,10 @@ void
 CDDBSetup::set_defaults()
 {
     server_listbox->clear();
-    server_listbox->insertItem(DEFAULT_CDDB_SERVER, -1);
+//!!!!    server_listbox->insertItem(DEFAULT_CDDB_SERVER, -1);
     // We should provide at least one entry
     // with HTTP protocol so people behind firewals can get servers list
-    server_listbox->insertItem(DEFAULT_CDDBHTTP_SERVER, -1);
+//!!!!    server_listbox->insertItem(DEFAULT_CDDBHTTP_SERVER, -1);
     server_listbox->repaint();
     server_listbox->setCurrentItem(0);
 
@@ -215,8 +214,8 @@ CDDBSetup::set_defaults()
     basedir_edit->lineEdit()->setText(basedirstring);
 
     submission_listbox->clear();
-    submission_listbox->insertItem(DEFAULT_SUBMIT_EMAIL,-1);
-    submission_listbox->insertItem(DEFAULT_TEST_EMAIL, -1);
+//!!!!    submission_listbox->insertItem(DEFAULT_SUBMIT_EMAIL,-1);
+//!!!!    submission_listbox->insertItem(DEFAULT_TEST_EMAIL, -1);
     submission_listbox->repaint();
     submission_listbox->setCurrentItem(0);
 
@@ -290,7 +289,7 @@ CDDBSetup::insertServerList(const QStringList& list)
           ++it )
       {
         QStringList sl = QStringList::split(' ', *it);
-        CDDB::transport t = CDDB::UNKNOWN;
+/*!!!!        CDDB::transport t = CDDB::UNKNOWN;
 	if (sl.count() > 1)
 		t = CDDB::decodeTransport(sl[1].ascii());
         if(t==CDDB::UNKNOWN)
@@ -308,13 +307,13 @@ CDDBSetup::insertServerList(const QStringList& list)
                 have_srv=true;
                 server_listbox->insertItem(*it, -1);
               }
-          }
+          }*/
       }
 
     if(!have_srv)
       {
-        server_listbox->insertItem(DEFAULT_CDDB_SERVER, -1);
-        server_listbox->insertItem(DEFAULT_CDDBHTTP_SERVER, -1);
+//!!!!        server_listbox->insertItem(DEFAULT_CDDB_SERVER, -1);
+//!!!!        server_listbox->insertItem(DEFAULT_CDDBHTTP_SERVER, -1);
       }
 
     if(!have_email)
