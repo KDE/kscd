@@ -2123,7 +2123,7 @@ KSCD::playtime()
             break;
     }
 
-    m_volume->setValue(cur_pos_rel);
+    timeSlider->setValue(cur_pos_rel);
     QString tmptime;
     tmptime.sprintf("%02d:%02d", mymin, mysec);
     setLEDs(tmptime);
