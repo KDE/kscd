@@ -66,7 +66,7 @@ bool KVolumeControl::eventFilter(QObject* watched, QEvent* e)
 
         return true;
     }
-    else if (watched == m_volumeSlider && e->type() == QEvent::KeyPress)
+    else if (watched == m_volumeSlider && e->type() == KeyPress)
     {
         if (static_cast<QKeyEvent*>(e)->key() == Key_Escape)
         {
