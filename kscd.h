@@ -211,7 +211,6 @@ public slots:
     void performances(int);
     void purchases(int);
     void information(int);
-    void showPopup();
     void jumpTracks();
 
     /*
@@ -241,6 +240,10 @@ protected:
     bool getArtist(QString& artist);
     void get_pathlist(QStringList& _patlist);
 
+    void clearSongList();
+    void setSongListTo(int whichTrack);
+    void populateSongList();
+ 
 private:
     SMTPConfigData  *smtpConfigData;
     ConfigDlg       *configDialog;
@@ -258,7 +261,6 @@ private:
     QPushButton     *aboutPB;
     QPushButton     *infoPB;
     QPopupMenu      *mainPopup;
-    QPopupMenu      *perfPopup;
     QPopupMenu      *purchPopup;
     QPopupMenu      *infoPopup;
 
@@ -275,11 +277,9 @@ private:
     QPushButton         *optionsbutton;
     QPushButton         *shufflebutton;
     QPushButton         *cddbbutton;
-    QPushButton         *volLA;
     QTimer              timer;
     QTimer              titlelabeltimer;
     QTimer              queryledtimer;
-    QTimer              initimer;
     QTimer              cycletimer;
     QTimer              jumpTrackTimer;
     QComboBox           *songListCB;
@@ -298,7 +298,6 @@ private:
     QFrame              *backdrop;
     LedLamp             *queryled;
     LedLamp             *loopled;
-    KConfig             *config;
     bool                tooltips;
     bool                randomplay ;
     bool                looping;

@@ -173,11 +173,10 @@ KSCD::KSCD( QWidget *parent, const char *name )
   initWorkMan();
   setupPopups();
 
-  connect( &initimer, SIGNAL(timeout()), SLOT(initCDROM()) );
   connect( &queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
   connect( &cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
-  connect( &timer, SIGNAL(timeout()),  SLOT(cdMode()) );
+  connect( &timer, SIGNAL(timeout()),  SLOT(initCDROM()) );
   connect( &jumpTrackTimer, SIGNAL(timeout()),  SLOT(jumpTracks()) );
   connect( playPB, SIGNAL(clicked()), SLOT(playClicked()) );
   connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
@@ -194,7 +193,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
   connect( volSB, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
   connect( aboutPB, SIGNAL(clicked()), SLOT(cycleplaytimemode()));
-  connect( optionsbutton, SIGNAL(clicked()), SLOT(showConfig));
+  connect( optionsbutton, SIGNAL(clicked()), SLOT(showConfig()));
   connect( shufflebutton, SIGNAL(clicked()), SLOT(randomSelected()));
   connect( cddbbutton, SIGNAL(clicked()), SLOT(CDDialogSelected()));
   connect(kapp,SIGNAL(kdisplayPaletteChanged()),this,SLOT(setColors()));
@@ -266,7 +265,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   setFocusPolicy ( QWidget::NoFocus );
 
-  initimer.start(500,TRUE);
+  timer.start(500, true);
 } // KSCD
 
 
@@ -274,11 +273,6 @@ KSCD::~KSCD()
 {
   delete smtpConfigData;
   delete smtpMailer;
-  delete mainPopup;
-  delete perfPopup;
-  delete purchPopup;
-  delete infoPopup;
-
 } // ~KSCD
 
 
@@ -352,7 +346,7 @@ KSCD::initWorkMan()
 void
 KSCD::initCDROM()
 {
-  initimer.stop();
+  timer.stop();
   kapp->processEvents();
   kapp->flushX();
 
@@ -361,7 +355,19 @@ KSCD::initCDROM()
   if(cddrive_is_ok)
     volChanged(volume);
 
-  timer.start(1000);
+  disconnect( &timer, SIGNAL(timeout()), this, SLOT(initCDROM()) );
+  // in case we get called twice...
+  disconnect( &timer, SIGNAL(timeout()), this,  SLOT(cdMode()) );
+  connect( &timer, SIGNAL(timeout()),  SLOT(cdMode()) );
+  
+  if (autoplay)
+  {
+    playClicked();
+  }
+  else
+  {
+    timer.start(1000);
+  }
 } // initCDROM
 
 /**
@@ -601,10 +607,11 @@ KSCD::loadBitmaps()
 void
 KSCD::setupPopups()
 {
-    mainPopup   = new QPopupMenu ();
-    perfPopup   = new QPopupMenu ();
-    purchPopup   = new QPopupMenu ();
-    infoPopup   = new QPopupMenu ();
+    QPopupMenu* mainPopup   = new QPopupMenu(this);
+    infoPB->setPopup(mainPopup);
+    QPopupMenu* perfPopup = new QPopupMenu (this);
+    purchPopup   = new QPopupMenu (this);
+    infoPopup   = new QPopupMenu (this);
 
     purchPopup->insertItem("CD Now", 0);
     purchPopup->insertItem("CD Universe", 1);
@@ -633,32 +640,24 @@ KSCD::setupPopups()
 #endif
 
     connect( infoPopup, SIGNAL(activated(int)), SLOT(information(int)) );
-    connect( infoPB, SIGNAL(clicked()), SLOT(showPopup()) );
 } // setupPopups
-
-void
-KSCD::showPopup()
-{
-    QPoint point = this->mapToGlobal (QPoint(0,0));
-
-    if(mainPopup)
-        mainPopup->popup(point);
-
-} // showPopup
-
 
 void
 KSCD::setRandomOnce(bool shuffle)
 {
     randomonce = shuffle;
     QToolTip::remove(shufflebutton);
-    if (!randomonce)
+    
+    if (tooltips)
     {
-        QToolTip::add(shufflebutton, i18n("Random Play"));
-    }
-    else
-    {
-        QToolTip::add(shufflebutton, i18n("Shuffle Play"));
+        if (!randomonce)
+        {
+            QToolTip::add(shufflebutton, i18n("Random Play"));
+        }
+        else
+        {
+            QToolTip::add(shufflebutton, i18n("Shuffle Play"));
+        }
     }
 } // setRandomOnce()
 
@@ -730,18 +729,12 @@ KSCD::setToolTips(bool on)
 void
 KSCD::cleanUp()
 {
-    if (thiscd.trk != NULL)
-    {
-        delete thiscd.trk;
-        thiscd.trk = 0L;
-        thiscd.ntracks = 0;
-    }
+    delete thiscd.trk;
+    thiscd.trk = 0L;
+    thiscd.ntracks = 0;
     signal (SIGINT, SIG_DFL);
-    if(magicproc)
-    {
-        delete magicproc;
-        magicproc = 0L;
-    }
+    delete magicproc;
+    magicproc = 0L;
 } // cleanUp()
 
 void
@@ -754,35 +747,19 @@ KSCD::playClicked()
     qApp->flushX();
 
 
-    if(
+    
 #ifdef NEW_BSD_PLAYCLICKED
-        cur_cdmode == WM_CDM_STOPPED || cur_cdmode == WM_CDM_UNKNOWN  || cur_cdmode == WM_CDM_BACK
+    if(cur_cdmode == WM_CDM_STOPPED || 
+       cur_cdmode == WM_CDM_UNKNOWN || 
+       cur_cdmode == WM_CDM_BACK)
 #else
-        cur_cdmode == WM_CDM_STOPPED || cur_cdmode == WM_CDM_UNKNOWN
+    if(cur_cdmode == WM_CDM_STOPPED || 
+       cur_cdmode == WM_CDM_UNKNOWN)
 #endif
-        ){
-
+    {
         statuslabel->setText( i18n("Playing") );
-        songListCB->clear();
         setLEDs( "00:00" );
-
-        QStringList::Iterator it = tracktitlelist.begin();
-        ++it;
-        int i = 0;
-        for ( ; it != tracktitlelist.end(); ++it )
-        {
-            i++;
-            QString str = QString::fromLatin1("%1: %2")
-                          .arg(QString::number(i).rightJustify(2, '0'))
-                          .arg(*it);
-            songListCB->insertItem( str );
-        }
-
-        // We don't know the rest, but we should still have entries
-        for( ; i < cur_ntracks; i++)
-        {
-            songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1) ) );
-        }
+        populateSongList();
 
         qApp->processEvents();
         qApp->flushX();
@@ -971,7 +948,6 @@ void
 KSCD::quitClicked()
 {
     // ensure nothing else starts happening
-    initimer.stop();
     queryledtimer.stop();
     titlelabeltimer.stop();
     cycletimer.stop();
@@ -1186,16 +1162,19 @@ KSCD::configDone()
     configDialog = 0L;
     
     // update the tooltips
-    QToolTip::remove(fwdPB);
-    QToolTip::remove(bwdPB);
-    QToolTip::add(fwdPB, i18n("%1 Secs Forward").arg(skipDelta));
-    QToolTip::add(bwdPB, i18n("%1 Secs Backward").arg(skipDelta));
+    if (tooltips)
+    {
+        QToolTip::remove(fwdPB);
+        QToolTip::remove(bwdPB);
+        QToolTip::add(fwdPB, i18n("%1 Secs Forward").arg(skipDelta));
+        QToolTip::add(bwdPB, i18n("%1 Secs Backward").arg(skipDelta));
+    }
 }
 
 void
 KSCD::getCDDBOptions(CDDBSetup* config)
 {
-    if (!config)
+    if (config)
     {
         return;
     }
@@ -1281,7 +1260,7 @@ KSCD::setDevicePath(QString path)
     setArtistAndTitle("", "");
     tracktitlelist.clear();
     extlist.clear();
-    songListCB->clear();
+    clearSongList();
     initWorkMan();
     initCDROM();
     cddrive_is_ok = true;
@@ -1398,7 +1377,7 @@ KSCD::randomtrack()
 void
 KSCD::cdMode()
 {
-  static char *p = new char[10];
+//  static char *p = new char[10];
   static bool damn = TRUE;
   QString str;
 
@@ -1490,30 +1469,18 @@ KSCD::cdMode()
             else
                 statuslabel->setText( i18n("Playing") );
 
-            sprintf( p, "%02d  ", cur_track );
+            //sprintf( p, "%02d  ", cur_track );
             if (songListCB->count() == 0)
             {
                 // we are in here when we start kscd and
                 // the cdplayer is already playing.
-                int i = 0;
-                songListCB->clear();
-                QStringList::Iterator it = tracktitlelist.begin();
-                ++it;
-                for ( ; it != tracktitlelist.end(); ++it )
-                {
-                    i++;
-                    songListCB->insertItem( QString("").sprintf("%02d: %s", i, (*it).utf8().data()));
-                }
-                for(; i < cur_ntracks; i++)
-                {
-                    songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
-                }
+                populateSongList();
+                setSongListTo( cur_track - 1 );
 
-                songListCB->setCurrentItem( cur_track - 1 );
                 have_new_cd = false;
                 get_cddb_info(false); // false == do not update dialog if open
             } else {
-                songListCB->setCurrentItem( cur_track - 1 );
+                setSongListTo( cur_track - 1 );
             }
             tracklabel->setText( formatTrack(cur_track, cd->ntracks) );
 
@@ -1545,20 +1512,7 @@ KSCD::cdMode()
                 }
                 statuslabel->setText( i18n("Ready") );
                 setLEDs( "--:--" );
-                songListCB->clear();
-
-                int i = 0;
-                songListCB->clear();
-                QStringList::Iterator it = tracktitlelist.begin();
-                ++it;
-                for ( ; it != tracktitlelist.end(); ++it )
-                {
-                    i++;
-                    songListCB->insertItem( QString().sprintf("%02d: %s", i, (*it).utf8().data()));
-                }
-                for(; i < cur_ntracks; i++){
-                    songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
-                }
+                populateSongList();
 
                 int w = ((cur_track >= 0) ? cur_track : 1);
 
@@ -1586,10 +1540,10 @@ KSCD::cdMode()
 
         case WM_CDM_EJECTED:
             statuslabel->setText( i18n("Ejected") );
-      setArtistAndTitle("", "");
-      tracktitlelist.clear();
-      extlist.clear();
-      songListCB->clear();
+            setArtistAndTitle("", "");
+            tracktitlelist.clear();
+            extlist.clear();
+            clearSongList();
             setLEDs( "--:--" );
             tracklabel->setText( "--/--" );
             setArtistAndTitle("", "");
@@ -1600,17 +1554,17 @@ KSCD::cdMode()
             break;
 
         case WM_CDM_NO_DISC:
-      statuslabel->setText( i18n("no disc") );
-      setArtistAndTitle("", "");
-      tracktitlelist.clear();
-      extlist.clear();
-      songListCB->clear();
+            statuslabel->setText( i18n("no disc") );
+            setArtistAndTitle("", "");
+            tracktitlelist.clear();
+            extlist.clear();
+            clearSongList();
             setLEDs( "--:--" );
             tracklabel->setText( "--/--" );
             setArtistAndTitle("", "");
             totaltimelabel->clear();
             totaltimelabel->lower();
-      damn = TRUE;
+            damn = TRUE;
       break;
     }
 } /* cdMode */
@@ -1678,7 +1632,7 @@ KSCD::setColors(const QColor& LEDs, const QColor& bground)
 void
 KSCD::readSettings()
 {
-	config = kapp->config();
+	KConfig* config = kapp->config();
 
 	config->setGroup("GENERAL");
 	volume     	= config->readNumEntry("Volume",40);
@@ -1826,7 +1780,7 @@ KSCD::readSettings()
 void
 KSCD::writeSettings()
 {
-    config = kapp->config();
+    KConfig* config = kapp->config();
 
     config->setGroup("GENERAL");
     config->writeEntry("ToolTips", tooltips);
@@ -2087,19 +2041,7 @@ KSCD::get_cddb_info(bool _updateDialog)
                               *tracktitlelist.at(1));
         }
 
-        int i = 0;
-        songListCB->clear();
-        QStringList::Iterator it = tracktitlelist.begin();
-        ++it;
-        for ( ; it != tracktitlelist.end(); ++it )
-        {
-            i++;
-            songListCB->insertItem( QString("").sprintf("%02d: %s", i, (*it).utf8().data()));
-        }
-        for(; i < cur_ntracks; i++){
-            songListCB->insertItem( QString::fromUtf8(QCString("").sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
-        }
-
+        populateSongList();
 
         led_off();
         timer.start(1000);
@@ -2181,19 +2123,7 @@ KSCD::cddb_no_info()
     led_off();
     cddb_inexact_sentinel =false;
 
-    int i = 0;
-    songListCB->clear();
-    QStringList::Iterator it = tracktitlelist.begin();
-    ++it;
-    for ( ; it != tracktitlelist.end(); ++it )
-      {
-        i++;
-        songListCB->insertItem( QString("").sprintf("%02d: %s", i, (*it).utf8().data()));
-      }
-    for(; i < cur_ntracks; i++)
-      {
-        songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
-      }
+    populateSongList();
 } // cddb_no_info
 
 void
@@ -2334,19 +2264,7 @@ KSCD::cddb_done()
         cddialog->setData(cd,tracktitlelist,extlist,discidlist,xmcd_data,category,
                           revision,playlist,pathlist,cddbbasedir,submitaddress, smtpConfigData);
 
-    int i = 0;
-    songListCB->clear();
-    QStringList::Iterator it = tracktitlelist.begin();
-    ++it;
-    for ( ; it != tracktitlelist.end(); ++it )
-    {
-        i++;
-        songListCB->insertItem( QString("").sprintf("%02d: %s", i, (*it).utf8().data()));
-    }
-    for(; i < cur_ntracks; i++){
-        songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
-    }
-
+    populateSongList();
     led_off();
     if(Fetch_remote_cddb)
     {
@@ -2633,7 +2551,6 @@ KSCD::magicslot( int )
         return;
     }
 
-    magicproc = 0L;
     magicproc = new KProcess;
 
     QString b;
@@ -2666,8 +2583,7 @@ KSCD::magicdone(KProcess* proc)
                                           "Are you sure kscdmagic is installed?"));
     }
 
-    if(proc)
-        delete proc;
+    delete proc;
     magicproc = 0L;
 } // magicdone
 
@@ -3176,6 +3092,45 @@ void KSCD::emailSettingsChanged()
         configDialog->updateGlobalSettings();
 }
 
+void KSCD::clearSongList()
+{
+    songListCB->clear();
+    if (tooltips)
+    {
+        QToolTip::add(songListCB, i18n("Track list"));
+    }
+}
+
+void KSCD::populateSongList()
+{
+    int i = 1;
+    clearSongList();
+    QStringList::Iterator it = tracktitlelist.begin();
+    for (++it; it != tracktitlelist.end(); ++it, ++i )
+    {
+        songListCB->insertItem(QString::fromLatin1("%1: %2")
+                               .arg(QString::number(i).rightJustify(2, '0'))
+                               .arg(*it));
+    }
+    for(; i < cur_ntracks; i++)
+    {
+        songListCB->insertItem( QString::fromUtf8( QCString().sprintf(i18n("%02d: <Unknown>").utf8(), i+1)) );
+    }
+}
+
+void KSCD::setSongListTo(int whichTrack)
+{
+    songListCB->setCurrentItem(whichTrack);
+    if (tooltips)
+    {
+        // drop the number. 
+        // for Mahlah, a picky though otherwise wonderful person - AJS
+        QString justTheName = songListCB->currentText();
+        justTheName = justTheName.right(justTheName.length() - 4);
+
+        QToolTip::add(songListCB, i18n("Current Track: %1").arg(justTheName));
+    }
+}
 /**
  * main()
  */
