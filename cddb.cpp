@@ -765,6 +765,9 @@ CDDB::local_query(
 		  QStringList& playlist
 		  )
 {
+  
+  // pre-set revision to 0
+  revision = 0;
   QStringList pathlist = KGlobal::dirs()->resourceDirs("cddb");
   
   if(pathlist.count() == 0)
@@ -857,8 +860,9 @@ CDDB::getData(
     int revtmp = data.find("Revision:",0,true);
     if(revtmp == -1)
       {
-	revision = 1;
+	revision = 0;  // no Revision -> we are first (ZERO)!
       } else {
+	// Well, I'll see if there's a simpler way for this.
 	QString revstr;
 	int revtmp2;
 	revtmp2 = data.find("\n",revtmp,true);
@@ -867,9 +871,8 @@ CDDB::getData(
 	revstr.stripWhiteSpace();
 	bool ok;
 	revision = revstr.toInt(&ok);
-	if(!ok)
-	  revision = 1;
-	kdDebug() << "REVISION " << revision << "\n" << endl;
+	if(!ok) // Bogus Revision -> we claim to be first (ZERO)!
+	  revision = 0;
       }
     
     // lets get all DISCID's in the data. Remeber there can be many DISCID's on
@@ -877,7 +880,7 @@ CDDB::getData(
     //
     // DISCID= 47842934,4h48393,47839492
     // DISCID= 47fd2934,4h48343,47839492,43879074
-
+    
     while((pos3 = data.find("DISCID=",pos4,true))!= -1)
       {
 	pos1 = pos3;
@@ -892,9 +895,9 @@ CDDB::getData(
 	  } else {
 	    kdDebug() << "ANOMALY 1\n" << endl;
 	  }
-
+	
 	kdDebug() << "DISCDID " << discidtemp << "\n" << endl;
-
+	
 	pos1 = 0;
 	while((pos2 = discidtemp.find(",",pos1,true)) != -1)
 	  {

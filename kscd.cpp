@@ -26,21 +26,23 @@
 #include <qtextstream.h>
 #include <qlayout.h>
 
+#include <dcopclient.h>
+#include <kaboutdata.h>
 #include <kcharsets.h>
+#include <kcmdlineargs.h>
 #include <kconfig.h>
-#include <klocale.h>
-#include <krun.h>
-#include <krandomsequence.h>
 #include <kdebug.h>
+#include <kemailsettings.h>
 #include <kglobal.h>
 #include <kiconloader.h>
-#include <kstddirs.h>
+#include <klocale.h>
 #include <kmessagebox.h>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
-#include <dcopclient.h>
-#include <kemailsettings.h>
+#include <kprotocolmanager.h>
+#include <krun.h>
+#include <krandomsequence.h>
+#include <kstddirs.h>
 #include <kstringhandler.h>
+#include <kurl.h>
 
 #include "docking.h"
 #include "kscd.h"
@@ -137,7 +139,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
     smtpconfig          = 0L;
     time_display_mode   = TRACK_SEC;
     cddb_inexact_sentinel = false;
-    revision            = 1;
+    revision            = 0; // The first freedb revision is "0"
     use_kfm             = true;
     docking             = true;
     autoplay            = false;
@@ -1641,9 +1643,23 @@ KSCD::readSettings()
     cddb_remote_enabled = config->readBoolEntry("CDDBRemoteEnabled",
                                                 false);
     cddb.useHTTPProxy(config->readBoolEntry("CDDBHTTPProxyEnabled",
-                                            false));
-    cddb.setHTTPProxy(config->readEntry("HTTPProxyHost",""),
-                      config->readNumEntry("HTTPProxyPort",0));
+                                            KProtocolManager::useProxy()));
+    KURL proxyURL;
+    QString proxyHost;
+    int proxyPort;
+    QString proxy = KProtocolManager::httpProxy();
+    if( !proxy.isEmpty() )
+      {
+	proxyURL = proxy;
+	proxyHost = proxyURL.host();
+	proxyPort = proxyURL.port();
+      } else {
+	proxyHost = "";
+	proxyPort = 0;
+	cddb.useHTTPProxy(false);
+      }
+    cddb.setHTTPProxy(config->readEntry("HTTPProxyHost",proxyHost),
+                      config->readNumEntry("HTTPProxyPort",proxyPort));
 
     current_server = config->readEntry("CurrentServer",DEFAULT_CDDB_SERVER);
     //Let's check if it is in old format and if so, convert it to new one:
