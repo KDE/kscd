@@ -150,9 +150,6 @@ class CDDB:public QObject
 
  private:
 
-    QString     domainname;
-    QString     username;
-
     QStringList    inexact_list;
     QTimer 	starttimer;
     QTimer 	timeouttimer;
