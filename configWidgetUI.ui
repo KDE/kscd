@@ -364,7 +364,7 @@
                     </item>
                     <item>
                         <property name="text">
-                            <string>utf8</string>
+                            <string>UTF-8</string>
                         </property>
                     </item>
                     <item>
