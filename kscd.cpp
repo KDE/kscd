@@ -3096,7 +3096,7 @@ KSCD::keyPressEvent(QKeyEvent* e)
     bool isNum;
     int value = e->text().toInt(&isNum);
 
-    if (e->key() == Qt::Key_Fq)
+    if (e->key() == Qt::Key_F1)
     {
         kapp->invokeHelp();
     }
