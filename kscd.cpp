@@ -656,6 +656,7 @@ KSCD::playClicked()
     qApp->processEvents();
     qApp->flushX();
 
+
     if(
 #ifdef NEW_BSD_PLAYCLICKED
         cur_cdmode == WM_CDM_STOPPED || cur_cdmode == WM_CDM_UNKNOWN  || cur_cdmode == WM_CDM_BACK
@@ -708,6 +709,7 @@ KSCD::playClicked()
 	      {
 	      case WM_CDM_PLAYING:
                 statuslabel->setText( i18n("Pause") );
+                wm_cd_pause ();
                 break;
 	      case WM_CDM_PAUSED:
                 if(randomplay)
@@ -722,10 +724,10 @@ KSCD::playClicked()
                 break;
 	
 	      default:
+                // next release: force "stop".
                 statuslabel->setText( i18n("Strange....") );
                 break;
 	      } // switch
-            wm_cd_pause ();
             qApp->processEvents();
             qApp->flushX();
         } // if (PLAYING||PAUSED)

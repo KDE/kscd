@@ -28,8 +28,8 @@ kscd_SOURCES = kscd.cpp configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cpp \
 #	plat_svr4.c plat_freebsd.c plat_osf1.c plat_irix.c
 	
 
-cddaslave_SOURCES = cddaslave.c
-cddaslave_LDADD = libwm/libworkman.la
+#cddaslave_SOURCES = cddaslave.c
+#cddaslave_LDADD = libwm/libworkman.la
 
 #SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp \
 #	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
@@ -44,7 +44,9 @@ METASOURCES = kscd.moc bwlednum.moc configdlg.moc cddb.moc ledlamp.moc \
 
 DISTCLEANFILES = config.h
 
-bin_PROGRAMS = kscd cddaslave
+bin_PROGRAMS = kscd
+# Don't Build cddaslave. It doesn't work.
+# cddaslave
 #TARGET3 = kscdmagic
 
 #config.h: kscd-script
