@@ -331,8 +331,8 @@ void KSCD::setIcons()
   playPB->setIconSet(SmallIconSet("player_play"));
   stopPB->setIconSet(SmallIconSet("player_stop"));
   ejectPB->setIconSet(SmallIconSet("player_eject"));
-  prevPB->setIconSet(SmallIconSet(QApplication::reverseLayout() ? "player_fwd" : "player_rew"));
-  nextPB->setIconSet(SmallIconSet(QApplication::reverseLayout() ? "player_rew" : "player_fwd"));
+  prevPB->setIconSet(SmallIconSet("player_start"));
+  nextPB->setIconSet(SmallIconSet("player_end"));
   cddbPB->setIconSet(SmallIconSet("view_text"));
   infoPB->setIconSet(SmallIconSet("run"));
 }
