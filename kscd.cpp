@@ -970,8 +970,7 @@ KSCD::ejectClicked()
         statuslabel->setText(i18n("Ejecting"));
         qApp->processEvents();
         qApp->flushX();
-        artistlabel->clear();
-        titlelabel->clear();
+        setArtistAndTitle("", "");
         tracktitlelist.clear();
         extlist.clear();
 
@@ -2150,8 +2149,8 @@ KSCD::cddb_done()
     }
 
     if(tracktitlelist.count() > 1){
-        titlelabel->setText(*tracktitlelist.at(1));
-        artistlabel->setText(tracktitlelist.first());
+        setArtistAndTitle(tracktitlelist.first(),
+                          *tracktitlelist.at(1));
     }
 
     if(cddialog && updateDialog)
