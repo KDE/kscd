@@ -350,11 +350,11 @@ a track to play. </para>
 major sections. </para>
 
 <itemizedlist>
-<listitem><para><link linkend="freedb-tab"><guilabel>CDDB</guilabel></link></para></listitem>
-<listitem><para><link linkend="smtp-options"><guilabel>SMTP Options</guilabel>
+<listitem><para><link linkend="freedb-tab"><guilabel>freedb</guilabel></link></para></listitem>
+<listitem><para><link linkend="smtp-options"><guilabel>SMTP Setup</guilabel>
 </link></para></listitem>
-<listitem><para><link linkend="kscd-options-tab"><guilabel>KSCD
-options</guilabel></link></para></listitem>
+<listitem><para><link linkend="kscd-options-tab"><guilabel>Kscd
+Options</guilabel></link></para></listitem>
 <listitem><para><link linkend="about"><guilabel>About</guilabel></link></para></listitem>
 </itemizedlist>
 </sect1>
@@ -551,7 +551,7 @@ Title</guilabel> field has been filled out, you can press the
 
 <para>You will be prompted to select a category for the submission. The
 <guilabel>Disc ID</guilabel> section displays the 32 bit <acronym>ID</acronym>
-code used by the <acronym>CDDB</acronym> to identify a compact disc. Above the
+code used by freedb to identify a compact disc. Above the
 <acronym>ID</acronym> code is the category of the <guilabel>CDDB</guilabel>
 entry. These categories correspond to the subdirectories tree of the directory
 chosen in the <guilabel>freedb Base Directory</guilabel> in the <link
@@ -594,7 +594,7 @@ small &kscd; applet is also displayed in the <application>KDE
 panel</application>. Unlike the main &kscd; window, this applet is available on
 any desktop. <mousebutton>Right</mousebutton> click on the applet to pop up a
 menu to control &CD; playback. A <mousebutton>left</mousebutton> click on the
-applet takes you to the main &kscd; window. If the main window is minimized, a
+applet hides the main &kscd; window. If the main window is hidden, a second
 <mousebutton>left</mousebutton> click on the applet restores it. </para>
 
 <note><para>To be precise, the applet is displayed in the <application>system
@@ -609,7 +609,7 @@ on an empty spot on the panel and select <menuchoice><guisubmenu>Add</guisubmenu
 <chapter id="cddb-support">
 <title><acronym>CDDB</acronym> Support</title>
 
-<para>The freedb Data Base is a distributed network database accessible
+<para>freedb is a distributed network database accessible
 over the Internet that contains information about most audio &CD;s in
 circulation. If you have Internet access, you will likely never have to manually
 enter track information for your &CD;s if you have this set up properly. See
