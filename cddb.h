@@ -36,7 +36,7 @@
 
 #define DEFAULT_SUBMIT_EMAIL "freedb-submit@freedb.org"
 #define DEFAULT_TEST_EMAIL ""
-#define DEFAULT_CDDB_SERVER "freedb.freedb.org cddbp 888 -"
+#define DEFAULT_CDDB_SERVER "freedb.freedb.org cddbp 8880 -"
 #define DEFAULT_CDDBHTTP_SERVER "freedb.freedb.org http 80 /~cddb/cddb.cgi"
 
 #define CDDB_READ_BUFFER_LEN  2024
