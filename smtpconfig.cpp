@@ -101,7 +101,7 @@ SMTPConfig::SMTPConfig(QWidget *parent, const char *name, struct SMTPConfigData 
     serverPortEdit->setText(configData->serverPort);
 
     // Global email address settings
-    globalRadio = new QRadioButton(i18n("Use email addresses from control center"),
+    globalRadio = new QRadioButton(i18n("Use email addresses from Control Center"),
         mainBox, "globalRadio");
     lay2->addWidget(globalRadio);
 
