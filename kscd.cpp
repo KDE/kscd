@@ -100,54 +100,6 @@ static QString formatTrack(int d1, int d2)
   return str;
 }
 
-class KSCDSlider : public QSlider
-{
-    public:
-        KSCDSlider(QWidget* parent = 0, const char* name = 0)
-            : QSlider(0, 100, 5,  50, QSlider::Horizontal, parent, name)
-        {}
-        ~KSCDSlider() {}
-
-    protected:
-        void wheelEvent(QWheelEvent *e)
-        {
-            bool up = e->delta() > 0;
-
-            if (e->state() & ControlButton)
-            {
-                if (up)
-                {
-                    if (value() < (maxValue() / 2))
-                    {
-                        setValue(maxValue() / 2);
-                    }
-                    else
-                    {
-                        setValue(maxValue());
-                    }
-                }
-                else if (value() > (maxValue() / 2))
-                {
-                    setValue(maxValue() / 2);
-                }
-                else
-                {
-                    setValue(minValue());
-                }
-
-                return;
-            }
-            else if (up)
-            {
-                addStep();
-            }
-            else
-            {
-                subtractStep();
-            }
-        }
-};
-
 /****************************************************************************
                   The GUI part
 *****************************************************************************/
@@ -218,12 +170,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( &cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
   connect( &timer, SIGNAL(timeout()),  SLOT(cdMode()) );
   connect( &jumpTrackTimer, SIGNAL(timeout()),  SLOT(jumpTracks()) );
-  connect( playPB, SIGNAL(clicked()), SLOT(playClicked()) );
-  connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
-  connect( prevPB, SIGNAL(clicked()), SLOT(prevClicked()) );
-  connect( nextPB, SIGNAL(clicked()), SLOT(nextClicked()) );
   connect( repeatPB, SIGNAL(clicked()), SLOT(loopClicked()) );
-  connect( ejectPB, SIGNAL(clicked()), SLOT(ejectClicked()) );
   connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
   connect( shufflePB, SIGNAL(clicked()), SLOT(randomSelected()));
   connect( cddbPB, SIGNAL(clicked()), SLOT(CDDialogSelected()));
@@ -252,7 +199,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   setupPopups();
 
-  if(looping)
+  if (looping)
   {
     loopled->on();
   }
@@ -270,7 +217,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   adjustSize();
   setFixedSize(this->width(), this->height());
 
-  QTimer::singleShot(500, this, SLOT(initCDROM()));
+  QTimer::singleShot(100, this, SLOT(initCDROM()));
 } // KSCD
 
 
@@ -439,21 +386,26 @@ void
 KSCD::drawPanel()
 {
   const int SBARWIDTH = 240;
-  const int HEIGHT = 27;
-//  const int WIDTH = 92;
+  const int SBARHEIGHT = 27;
+  const int BACKDROPHEIGHT = (2 * SBARHEIGHT) + (SBARHEIGHT / 2) - 1;
 
   setIcons();
 
-  int buttonHeight = repeatPB->height();
-  ledLayout->setRowSpacing(1, infoPB->height() - buttonHeight);
+  backdrop->setFixedSize(SBARWIDTH - 2, BACKDROPHEIGHT);
+  backdrop->setFocusPolicy(QWidget::NoFocus);
+
+  // mildly gross.. but...
+  // take the height of the buttons add the three pixels of space in between.
+  // then subtract that from the height of the LED and the
+  // button height we're after and voila, peace on earth....
+  // well, would you believe a decent looking layout?
+  adjustSize();
+  int buttonHeight = shufflePB->height();
+  int buttonStackHeight = playPB->height() + stopPB->height() + prevPB->height() + buttonHeight + 3;
+  int ledSpacing = buttonStackHeight - (BACKDROPHEIGHT + buttonHeight) - 1;
   infoPB->setFixedHeight(buttonHeight);
   cddbPB->setFixedHeight(buttonHeight);
-
-
-
-  backdrop->setFixedSize(SBARWIDTH - 2, 2 * HEIGHT + HEIGHT / 2 - 1);
-  backdrop->setFocusPolicy(QWidget::NoFocus);
-  backdrop->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+  ledLayout->setRowSpacing(1, ledSpacing);
 
   const int D = 6;
 
@@ -565,12 +517,6 @@ KSCD::setupPopups()
     mainPopup->insertItem(i18n("Help"), helpMenu->menu());
     mainPopup->insertSeparator();
     m_actions->action(KStdAction::name(KStdAction::Quit))->plug(mainPopup);
-
-    /*QPopupMenu* volMenu = new QPopupMenu(this);
-    volumePB->setPopup(volMenu);
-    KSCDSlider* volSlider = new KSCDSlider(this);
-    volSlider->setOrientation(Vertical);
-    volMenu->insertItem(volSlider);*/
 } // setupPopups
 
 
@@ -663,13 +609,34 @@ KSCD::playClicked()
     cdMode();
 } // playClicked()
 
+void KSCD::setShuffle(bool shuffle)
+{
+    if (randomplay == shuffle)
+    {
+        return;
+    }
+
+    randomplay = shuffle;
+    shufflePB->setOn(shuffle);
+
+    if (randomplay)
+    {
+        statuslabel->setText(i18n("Shuffle"));
+
+        if (songListCB->count() == 0)
+            return;
+        make_random_list(); /* koz: Build a unique, once, random list */
+        nextClicked();
+    }
+}
+
 void
 KSCD::stopClicked()
 {
     //    looping = FALSE;
     // TODO: figure out what it will take to not reset randomplay!
-    randomplay = FALSE;
-    stoppedByUser = TRUE;
+    // setShuffle(false);
+    stoppedByUser = true;
     statuslabel->setText(i18n("Stopped"));
     playPB->setText(i18n("Play"));
     setLEDs("--:--");
@@ -772,7 +739,7 @@ KSCD::quitClicked()
     jumpTrackTimer.stop();
 
     writeSettings();
-    randomplay = FALSE;
+    setShuffle(false);
     statuslabel->clear();
     setLEDs( "--:--" );
 
@@ -818,7 +785,7 @@ KSCD::closeEvent( QCloseEvent *e )
         stopClicked();
 
     writeSettings();
-    randomplay = FALSE;
+    setShuffle(false);
 
     statuslabel->clear();
 
@@ -883,7 +850,8 @@ KSCD::ejectClicked()
         return;
     if(!currentlyejected)
     {
-      randomplay = FALSE;
+      // TODO: preserve the shuffle preference between discs
+      setShuffle(false);
       statuslabel->setText(i18n("Ejecting"));
       qApp->processEvents();
       qApp->flushX();
@@ -911,17 +879,7 @@ KSCD::ejectClicked()
 void
 KSCD::randomSelected()
 {
-    randomplay = !randomplay;
-
-    if (randomplay)
-    {
-        statuslabel->setText(i18n("Shuffle"));
-
-        if(songListCB->count()==0)
-            return;
-        make_random_list(); /* koz: Build a unique, once, random list */
-        nextClicked();
-    }
+    setShuffle(!randomplay);
 } // randomSelected
 
 /**
@@ -1124,14 +1082,6 @@ KSCD::volChanged( int vol )
         volume = vol;
 } // volChanged
 
-/* Alex Kern:
-   let me explain, i try to avoid problem, that first track in random
-   sequence will bee never played */
-#define INVALID_RANDOM_ITERATOR random_list.end()
-#define NEXT_VALID_ITERATOR(x) ((x)++)
-#define PREV_VALID_ITERATOR(x) ((x)--)
-#define FIRST_VALID_ITERATOR random_list.begin()
-#define LAST_VALID_ITERATOR  random_list.fromLast()
 void
 KSCD::make_random_list()
 {
@@ -1152,22 +1102,17 @@ KSCD::make_random_list()
         } while(rejected == true);
         random_list.append(selected);
     }
-#if 0
-    for(random_current = random_list.begin();
-        random_current != random_list.end();
-        random_current++)
-        fprintf(stderr, "random_list %i\n", *random_current);
-#endif
-    random_current = INVALID_RANDOM_ITERATOR;
+
+    random_current = random_list.end();
 } // make_random_list()
 
 int
 KSCD::next_randomtrack()
 {
     /* Check to see if we are at invalid state */
-    if(random_current == INVALID_RANDOM_ITERATOR) {
-        random_current = FIRST_VALID_ITERATOR;
-    } else if(random_current == LAST_VALID_ITERATOR) {
+    if(random_current == random_list.end()) {
+        random_current = random_list.begin();
+    } else if(random_current == random_list.fromLast()) {
         if(!looping) {
                 stopClicked();
                 return -1;
@@ -1177,7 +1122,7 @@ KSCD::next_randomtrack()
                 return next_randomtrack();
         }
     } else {
-        NEXT_VALID_ITERATOR(random_current);
+        ++random_current;
     }
 
     return *random_current;
@@ -1187,9 +1132,9 @@ int
 KSCD::prev_randomtrack()
 {
     /* Check to see if we are at invalid state */
-    if(random_current == INVALID_RANDOM_ITERATOR) {
-        random_current = LAST_VALID_ITERATOR;
-    } else if(random_current == FIRST_VALID_ITERATOR) {
+    if(random_current == random_list.end()) {
+        random_current = random_list.fromLast();
+    } else if(random_current == random_list.begin()) {
         if(!looping) {
             stopClicked();
             return -1;
@@ -1199,7 +1144,7 @@ KSCD::prev_randomtrack()
             return prev_randomtrack();
         }
     } else {
-        PREV_VALID_ITERATOR(random_current);
+        --random_current;
     }
 
     return *random_current;
@@ -1463,8 +1408,8 @@ KSCD::readSettings()
 	config->setGroup("GENERAL");
 	volume     	= config->readNumEntry("Volume", volume);
         // TODO: this breaks if randomplay comes up true to begin with!
-//	randomplay 	= config->readBoolEntry("RandomPlay", false);
-        docking = config->readBoolEntry("DOCKING", docking);
+	setShuffle(config->readBoolEntry("RandomPlay", false));
+    docking = config->readBoolEntry("DOCKING", docking);
 	autoplay		= config->readBoolEntry("AUTOPLAY", autoplay);
 	stopexit 	= config->readBoolEntry("STOPEXIT", stopexit);
 	ejectonfinish = config->readBoolEntry("EJECTONFINISH", ejectonfinish);

@@ -4,6 +4,7 @@ mimedir = $(kde_mimedir)/text
 picsdir  = $(kde_datadir)/kscd/pics
 
 INCLUDES= -I$(top_srcdir) $(all_includes)
+METASOURCES = AUTO
 
 ####### Files
 
@@ -11,8 +12,6 @@ noinst_HEADERS = kscd.h bwlednum.h ledlamp.h inexact.h \
 	CDDialog.h CDDialogData.h CDDBSetup.h CDDBSetupData.h mgconfdlg.h \
 	configdlg.h version.h docking.h smtpconfig.h \
 	smtp.h configWidget.h kvolumecontrol.h
-
-#	struct.h wmcdda.h
 
 kscd_SOURCES = panel.ui kscd.cpp kscd.skel configdlg.cpp ledlamp.cpp CDDialog.cpp \
 	       CDDialogData.cpp CDDBSetup.cpp CDDBSetupData.cpp docking.cpp \
@@ -26,23 +25,11 @@ kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
 profiledata_DATA = kscd.profile.xml
 profiledatadir = $(kde_datadir)/profiles
 
-#SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp
-#	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
-
-#OBJECTS3=kscdmagic/bitmap.o  kscdmagic/core.o kscdmagic/main.o
-#	kscdmagic/sound.o kscdmagic/xlibwrap.o kscdmagic/xlib.o
-
-METASOURCES = kscd.moc bwlednum.moc configdlg.moc ledlamp.moc \
-	 inexact.moc CDDialog.moc CDDialogData.moc CDDBSetup.moc \
-	CDDBSetupData.moc docking.moc mgconfdlg.moc smtpconfig.moc \
-	smtp.moc kvolumecontrol.moc
-
 DISTCLEANFILES = config.h
 
 bin_PROGRAMS = kscd
 # Don't Build cddaslave. It doesn't work.
 # cddaslave
-#TARGET3 = kscdmagic
 
 #config.h: kscd-script
 #$(SHELL) $(srcdir)/kscd-script

@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>402</width>
-            <height>162</height>
+            <width>404</width>
+            <height>173</height>
         </rect>
     </property>
     <property name="sizePolicy">
@@ -31,7 +31,7 @@
             <cstring>unnamed</cstring>
         </property>
         <property name="margin">
-            <number>0</number>
+            <number>2</number>
         </property>
         <property name="spacing">
             <number>2</number>

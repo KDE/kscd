@@ -177,6 +177,7 @@ public slots:
     void setColors();
     void togglequeryled();
     void randomSelected();
+    void setShuffle(bool shuffle);
     void writeSettings();
     void playClicked();
     void initCDROM();
