@@ -4,8 +4,6 @@ mimedir = $(kde_mimedir)/text
 picsdir  = $(kde_datadir)/kscd/pics
 CDDBDIR = $(kde_datadir)/kscd/cddb
 
-LDFLAGS	= $(LIB_KIO) $(all_libraries) $(KDE_RPATH)
-kscd_LDADD   = libwm/libworkman.la $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) $(LIB_KDEUI)
 INCLUDES= $(all_includes)
 
 ####### Files
@@ -21,6 +19,9 @@ kscd_SOURCES = kscd.cpp kscd.skel configdlg.cpp cddb.cpp ledlamp.cpp CDDialog.cp
 	CDDialogData.cpp CDDBSetup.cpp CDDBSetupData.cpp docking.cpp \
 	smtpconfig.cpp smtp.cpp inexact.cpp mgconfdlg.cpp  bwlednum.cpp \
         configWidget.cpp
+
+kscd_LDFLAGS = $(all_libraries)
+kscd_LDADD = libwm/libworkman.la $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO)
 
 #SOURCES3=kscdmagic/bitmap.cpp  kscdmagic/core.cpp kscdmagic/main.cpp 
 #	kscdmagic/sound.cpp kscdmagic/xlibwrap.cpp kscdmagic/xlib.c
