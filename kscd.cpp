@@ -737,6 +737,9 @@ KSCD::playClicked()
         } // if (PLAYING||PAUSED)
     } // if (WM_CDM_STOPPED||UNKNOWN) else
     cdMode();
+    /* show something usefull if the user tried to play data. */
+    if( cur_cdmode == WM_CDM_STOPPED )
+      stopClicked();
 } // playClicked()
 
 void
