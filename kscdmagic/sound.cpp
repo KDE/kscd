@@ -49,7 +49,7 @@
 
 // who knows when we'll need that...
 #if defined (FreeBSD)
-#include <machine/soundcard.h>
+#include <sys/soundcard.h>
 #include <sys/cdio.h>
 #define CDROM_LEADOUT 0xAA
 #define CD_FRAMES 75 /* frames per second */
