@@ -302,7 +302,7 @@ echo "#endif /* __bsdi__ */" >> $config_file
 
 }
 
-freebsd_conf(){
+freebsd_netbsd_conf(){
 
 clear
 echo "KSCD configuration for FreeBSD/NetBSD systems"
@@ -316,12 +316,24 @@ echo "" >> $config_file
 echo "#if defined(__FreeBSD__) || defined(__NetBSD__)" >> $config_file
 echo "" >> $config_file
 
-echo $ac_n "Please specify your cdrom device [/dev/rmatcd0c]:$ac_c"
+# get default device
+if [ `/usr/bin/uname -s` = "NetBSD" ]; then
+	if [ `/usr/bin/uname -m` = "i386" ]; then
+		def_device=/dev/rcd0d
+	else
+		def_device=/dev/rcd0c
+	fi
+else
+	# FreeBSD
+	def_device=/dev/rmatcd0c
+fi
+
+echo $ac_n "Please specify your cdrom device [$def_device]:$ac_c"
 
 read device
 if [ "$device" = "" ]
 then
-    device="/dev/rmatcd0c"
+    device="$def_device"
 fi
 
 echo "Your choice was:$device"
@@ -733,7 +745,7 @@ fi
 
 case "$platform" in 
 l|L) linux_conf;;
-f|F) freebsd_conf;;
+f|F) freebsd_netbsd_conf;;
 b|B) bsd386_conf;;
 s|S) sun_conf;;
 h|H) hp_conf;;
