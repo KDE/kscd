@@ -4,7 +4,7 @@
  *
  *************************************************************************/
 
-#ifdef linux
+#ifdef __linux__
 
 
 /* define the correct cdrom device for your machine, /dev/cdrom should be 
