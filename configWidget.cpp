@@ -89,17 +89,10 @@ configWidget::~configWidget()
 
 void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 {
-    if(toggle) {
-        kcfg_AudioSystem->show();
-        textLabel4->show();
-        kcfg_AudioDevice->show();
-        textLabel5->show();
-    } else {
-        kcfg_AudioSystem->hide();
-        textLabel4->hide();
-        kcfg_AudioDevice->hide();
-        textLabel5->hide();
-    }
+    kcfg_AudioSystem->setEnabled(toggle);
+    textLabel4->setEnabled(toggle);
+    kcfg_AudioDevice->setEnabled(toggle);
+    textLabel5->setEnabled(toggle);
 }
 
 void configWidget::getMediaDevices()
@@ -131,11 +124,7 @@ void configWidget::getMediaDevices()
 
 void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
 {
-    if(toggle) {
-        kcfg_SelectedEncoding->show();
-    } else {
-        kcfg_SelectedEncoding->hide();
-    }
+    kcfg_SelectedEncoding->setEnabled(toggle);
 }
 
 void configWidget::configDone()
