@@ -58,7 +58,7 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) :
     total_time_label = new QLabel(i18n( "time" ),  discGroupBox, "timeLabel" );
     discGroupBoxLayout->addWidget( total_time_label, 3, 1 );
 
-    ext_info_title_button = new QPushButton( i18n( "Comment" ), discGroupBox, "discComment" );
+    ext_info_title_button = new QPushButton( i18n( "Comment..." ), discGroupBox, "discComment" );
     discGroupBoxLayout->addMultiCellWidget( ext_info_title_button, 2, 3, 3, 3 );
 
     QSpacerItem* spacer = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
@@ -91,7 +91,7 @@ CDDialogData::CDDialogData ( QWidget* parent, const char* name) :
     layout1->addWidget( trackTitleLabel );
     layout1->addWidget( trackEdit );
 
-    ext_info_button = new QPushButton( i18n( "Comment" ), tracksGroup, "ext_info_button" );
+    ext_info_button = new QPushButton( i18n( "Comment..." ), tracksGroup, "ext_info_button" );
     layout1->addWidget( ext_info_button );
     gbLayout->addLayout( layout1 );
     dialogLayout->addWidget( tracksGroup );
