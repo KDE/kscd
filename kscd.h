@@ -262,8 +262,6 @@ private:
     bool                updateTime;
     QStringList         audio_systems_list;
 
-    void cdtext(struct cdtext_info* p_cdtext);
-
   /**
    * select a random track from the current disc.
    *
@@ -296,6 +294,9 @@ public slots:
     void CDDialogSelected();
     void CDDialogDone();
     void get_cddb_info(bool);
+
+private:
+    void get_cdtext_info();
 
 private:
     KCDDB::Client*  cddb;

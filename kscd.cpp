@@ -141,7 +141,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   setColors();
 
   /* debug
-   wm_cd_set_verbosity(0xff);
+   wm_cd_set_verbosity(0xffff);
   */
 
   // the time slider
@@ -217,7 +217,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
   songListCB->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
   adjustSize();
   setFixedHeight(this->height());
-  QTimer::singleShot(0, this, SLOT(initCDROM()));
 } // KSCD
 
 
@@ -1009,23 +1008,8 @@ void KSCD::cdMode()
     int cdmode = wm_cd_status();
     int track = currentTrack();
 
-    if(WM_CDS_NO_DISC(cdmode))
-    {
-        /* only one place, where we set it */
-        have_new_cd = true;
-        prev_track = -1;
-    } else if(have_new_cd) {
-        have_new_cd = false;
-        get_cddb_info(false);
-
-        if(Prefs::autoplay() && cdmode == WM_CDM_STOPPED)
-            playClicked();
-    }
-
-    if(cdmode < 0)
-    {
-        if(cddrive_is_ok)
-        {
+    if(cdmode < 0) {
+        if(cddrive_is_ok) {
             statuslabel->setText(i18n("Error"));
             cddrive_is_ok = false;
             QString errstring =
@@ -1035,6 +1019,16 @@ void KSCD::cdMode()
             KMessageBox::error(this, errstring, i18n("Error"));
         }
         return;
+    } else if(WM_CDS_NO_DISC(cdmode)) {
+        /* only one place, where we set it */
+        have_new_cd = true;
+        prev_track = -1;
+    } else if(have_new_cd) {
+        have_new_cd = false;
+        get_cddb_info(false);
+
+        if(Prefs::autoplay() && cdmode == WM_CDM_STOPPED)
+            playClicked();
     }
 
     cddrive_is_ok = true; // cd drive ok
@@ -1240,6 +1234,7 @@ void KSCD::CDDialogDone()
 
 void KSCD::get_cddb_info(bool /*_updateDialog*/)
 {
+    kdDebug(67000) << "calls get_cddb_info" << endl;
     if (!cd ||
         !cddrive_is_ok ||
         wm_cd_status() < 1)
@@ -1321,65 +1316,59 @@ void KSCD::cddb_done(CDDB::Result result)
     led_off();
 } // cddb_done
 
-void KSCD::cdtext(struct cdtext_info* p_cdtext)
+void KSCD::get_cdtext_info(void)
 {
-    kdDebug(67000) << "cdtext() called" << endl;
+    struct cdtext_info *p_cdtext;
+    kdDebug(67000) << "get_cdtext_info() called" << endl;
     //setArtist("");
     //setTitle(0);
     //songListCB->clear();
     tracktitlelist.clear();
     extlist.clear();
 
-    tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(p_cdtext->blocks[0]->name[0]),
-        (const char*)(p_cdtext->blocks[0]->performer[0])));
-    //titlelabel->setText(QString((const char*)(p_cdtext->blocks[0]->name[1])));
-    //artistlabel->setText(tracktitlelist.first());
+    p_cdtext = wm_cd_get_cdtext();
+    if(p_cdtext && p_cdtext->valid) {
+        tracktitlelist.append(QString().sprintf("%s / %s", (const char*)(p_cdtext->blocks[0]->name[0]),
+            (const char*)(p_cdtext->blocks[0]->performer[0])));
+        //titlelabel->setText(QString((const char*)(p_cdtext->blocks[0]->name[1])));
+        //artistlabel->setText(tracktitlelist.first());
 
 
-    // if it's a sampler, we'll do artist/title
-    bool isSampler = (qstricmp(reinterpret_cast<char*>(p_cdtext->blocks[0]->performer[0]), "various") == 0);
+        // if it's a sampler, we'll do artist/title
+        bool isSampler = (qstricmp(reinterpret_cast<char*>(p_cdtext->blocks[0]->performer[0]), "various") == 0);
 
-    int at = 1;
-    for (; at < (p_cdtext->count_of_entries); ++at)
-    {
-        QString title;
-        if (isSampler)
-        {
-            title.sprintf("%s / %s", p_cdtext->blocks[0]->performer[at], p_cdtext->blocks[0]->name[at]);
+        int at = 1;
+        for (; at < (p_cdtext->count_of_entries); ++at) {
+            QString title;
+            if (isSampler) {
+                title.sprintf("%s / %s", p_cdtext->blocks[0]->performer[at], p_cdtext->blocks[0]->name[at]);
+            } else {
+                title = reinterpret_cast<char*>(p_cdtext->blocks[0]->name[at]);
+            }
+            tracktitlelist.append(title);
         }
-        else
-        {
-            title = reinterpret_cast<char*>(p_cdtext->blocks[0]->name[at]);
-        }
-
-        tracktitlelist.append(title);
+    } else {
+        kdDebug(67000) << "cdtext invalid" << endl;
     }
-
+      
     populateSongList();
 }
 
 void KSCD::cddb_no_info()
 {
-    struct cdtext_info* cdtext_i;
     kdDebug(67000) << "cddb_no_info() called\n" << endl;
 
     tracktitlelist.clear();
     extlist.clear();
     tracktitlelist.append(i18n("No matching freedb entry found."));
 
-    cdtext_i = wm_cd_get_cdtext();
-    if(cdtext_i && cdtext_i->valid) {
-        cdtext(cdtext_i);
-    } else {
-        populateSongList();
-    }
-
     led_off();
+    
+    get_cdtext_info();
 } // cddb_no_info
 
 void KSCD::cddb_failed()
 {
-    struct cdtext_info* cdtext_i;
     // TODO differentiate between those casees where the communcition really
     // failed and those where we just couldn't find anything
     //        cddb_ready_bug = 0;
@@ -1389,14 +1378,9 @@ void KSCD::cddb_failed()
     extlist.clear();
     tracktitlelist.append(i18n("Error getting freedb entry."));
 
-    cdtext_i = wm_cd_get_cdtext();
-    if(cdtext_i && cdtext_i->valid) {
-        cdtext(cdtext_i);
-    } else {
-        populateSongList();
-    }
-
     led_off();
+    
+    get_cdtext_info();
 } // cddb_failed
 
 void KSCD::mycddb_inexact_read()
