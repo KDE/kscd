@@ -270,6 +270,11 @@ KSCD::KSCD( QWidget *parent, const char *name )
 KSCD::~KSCD()
 {
   delete smtpConfigData;
+  delete mainPopup
+  delete perfPopup;
+  delete purchPopup;
+  delete infoPopup;
+
 } // ~KSCD
 
 
