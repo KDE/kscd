@@ -388,9 +388,28 @@ bool
 CDDB::next_token()
 {
     int newlinepos = tempbuffer.find('\n');
+
+    /*
+     * Two options here:
+     * 1) find CR position (windows format cddb database)
+     * 2) simply process the result with stripWhiteSpace()
+     * I prefer 1) because this is what is in the freedb specs
+     */
+#define SEEKCRPOS
+#if defined SEEKCRPOS
+    int crpos = tempbuffer.find('\r');
+#endif
+
     if(newlinepos != -1)
       {
-	lastline    = tempbuffer.left(newlinepos - 1);
+
+#if defined SEEKCRPOS
+  	if( (crpos != -1) && (crpos < newlinepos) )
+ 	  newlinepos = crpos;
+	lastline    = tempbuffer.left(newlinepos);
+#else
+	lastline    = tempbuffer.left(newlinepos).stripWhiteSpace();
+#endif
 	tempbuffer  = tempbuffer.right(tempbuffer.length() - newlinepos -1);
 	return true;
       } else {
