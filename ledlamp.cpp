@@ -26,8 +26,8 @@
 #include "ledlamp.h"
 #include "ledlamp.moc"
 
-LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent),
-w( 10 ), h( 7 ), dx( 4 )
+LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent), 
+  w( 10 ), h( 7 ), dx( 4 )
 {
   // Make sure we're in a sane state
   s = Off;
@@ -43,18 +43,11 @@ LedLamp::drawContents(QPainter *painter)
 {
 
   
-  
-//  QColor redColor(255,100,100);
-//  QBrush redBrush(redColor);
-//  QPen redPen(redColor);
-
   QBrush lightBrush(this->foregroundColor());
   QBrush darkBrush(this->backgroundColor());
 
   QPen darkPen(this->backgroundColor(),1);
   QPen lightPen(this->foregroundColor(), 1);
-
-  fprintf(stderr, "(%d, %d, %d, %d)\n", x(), y(), width(), height());
 
   switch(s) 
     {
@@ -66,11 +59,9 @@ LedLamp::drawContents(QPainter *painter)
 	  painter->drawRect(1,1,w-3, h-2);
 	  break;
 	case Loop:
-//	  painter->setBrush(lightBrush);
-//	  painter->setPen(lightBrush);
-
-	  //	  painter->drawRect(0,0,w,h);
-
+	  painter->setBrush(lightBrush);
+	  painter->setPen(lightPen);
+	  
 	  painter->drawLine(0, 2, 0, h-2); //  |
 	  painter->drawLine(1, 1, w-4, 1); // ~
 	  painter->drawLine(w-3, 2, w-3, h-2); // |
@@ -92,26 +83,21 @@ LedLamp::drawContents(QPainter *painter)
 	  painter->setBrush(darkBrush);
 	  painter->setPen(darkPen);
 
-	  painter->drawLine(0, 2, 0, h-2); //  |
-	  painter->drawLine(1, 1, w-4, 1); // ~
-	  painter->drawLine(w-3, 2, w-3, h-2); // |
-	  painter->drawLine(2, h-2, w-3, h-2); //_
-	  painter->drawLine(w-6,0,w-6,2); // ---+
-	  painter->drawLine(3,h-2,3,h); // +---
+	  painter->fillRect(0,0,w,h, darkBrush);
+	  /*
+	    painter->drawLine(0, 2, 0, h-2); //  |
+	    painter->drawLine(1, 1, w-4, 1); // ~
+	    painter->drawLine(w-3, 2, w-3, h-2); // |
+	    painter->drawLine(2, h-2, w-3, h-2); //_
+	    painter->drawLine(w-6,0,w-6,2); // ---+
+	    painter->drawLine(3,h-2,3,h); // +---
+	    */
 	  break;
 	}
-      //      painter->setPen(pen);
-      //    painter->drawLine(2,2,w-2, 2);
-      //painter->drawLine(2,h-2,w-2,h-2);
-      // Draw verticals
-      //int i;
-      //for (i= 2; i < w-1; i+= dx)
-      //painter->drawLine(i,2,i,h-2);
       break;
       
     default:
-    fprintf(stderr, "LedLamp: INVALID State (%d)\n", s);
-    
+      fprintf(stderr, "LedLamp: INVALID State (%d)\n", s);
     }
 } // drawContents
 

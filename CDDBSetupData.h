@@ -39,6 +39,7 @@ public slots:
 
 protected slots:
 
+    virtual void enable_remote_cddb(bool);
     virtual void http_access_toggled(bool);
 
 protected:

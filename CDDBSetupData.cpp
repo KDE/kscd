@@ -123,7 +123,7 @@ CDDBSetupData::CDDBSetupData
 	remote_cddb_cb->setGeometry( 20, 15, 270, 30 );
 	remote_cddb_cb->setMinimumSize( 10, 10 );
 	remote_cddb_cb->setMaximumSize( 32767, 32767 );
-	connect( remote_cddb_cb, SIGNAL(toggled(bool)), SLOT(remote_cddb_toggled(bool)) );
+	connect( remote_cddb_cb, SIGNAL(toggled(bool)), SLOT(enable_remote_cddb(bool)) );
 	remote_cddb_cb->setText( i18n("Enable Remote CDDB") );
         remote_cddb_cb->setFixedSize( remote_cddb_cb->sizeHint() );
 	remote_cddb_cb->setAutoRepeat( FALSE );
@@ -257,3 +257,8 @@ void
 CDDBSetupData::http_access_toggled(bool)
 {
 } // http_access_toggled
+
+void 
+CDDBSetupData::enable_remote_cddb(bool)
+{
+} // enable_remote_cddb

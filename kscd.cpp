@@ -62,6 +62,8 @@ extern "C" {
 #include <kiconloader.h>
 #include <kstddirs.h>
 #include <kmessagebox.h>
+#include <kaboutdata.h>
+#include <kcmdlineargs.h>
 
 DockWidget*     dock_widget;
 SMTP                *smtpMailer;
@@ -145,7 +147,7 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     QWidget( parent, name )
 {
 
-    connect(kapp, SIGNAL (saveYourself() ), SLOT (doSM()));
+  //    connect(kapp, SIGNAL (saveYourself() ), SLOT (doSM()));
     magicproc           = 0L;
     cd_device_str       = "";
     background_color 	= black;
@@ -157,6 +159,7 @@ KSCD::KSCD( QWidget *parent, const char *name ) :
     magic_width         = 320;
     magic_height        = 200;
     magic_brightness    = 3;
+    magic_pointsAreDiamonds = false;
 
     cycle_flag		= false;
     cddb_remote_enabled = false;
@@ -399,7 +402,7 @@ KSCD::drawPanel()
     volumelabel->setText(i18n("Vol: --"));
 
     tracklabel = new QLabel(this);
-    tracklabel->setGeometry(WIDTH + 168, iy + 14 +D, 50, 14);
+    tracklabel->setGeometry(WIDTH + 168, iy + 14 +D, 30, 14);
     tracklabel->setFont( QFont( "Helvetica", 10, QFont::Bold ) );
     tracklabel->setAlignment( AlignLeft );
     tracklabel->setText("--/--");
@@ -1104,6 +1107,7 @@ KSCD::aboutClicked()
     mgconfig.width = magic_width;
     mgconfig.height = magic_height;
     mgconfig.brightness = magic_brightness;
+    mgconfig.pointsAreDiamonds = magic_pointsAreDiamonds;
     mgdlg = new MGConfigDlg(tabdialog,&mgconfig,"mgconfigdialg");
 
     smtpconfig = new SMTPConfig(tabdialog, "smtpconfig", &smtpConfigData);
@@ -1144,6 +1148,7 @@ KSCD::aboutClicked()
         magic_width = mgdlg->getData()->width;
         magic_height = mgdlg->getData()->height;
         magic_brightness = mgdlg->getData()->brightness;
+	magic_pointsAreDiamonds = mgdlg->getData()->pointsAreDiamonds;
 
         bool cddb_proxy_enabled;
         QString cddb_proxy_host;
@@ -1564,6 +1569,7 @@ KSCD::readSettings()
     magic_width      = config->readNumEntry("magicwidth",320);
     magic_height     = config->readNumEntry("magicheight",200);
     magic_brightness = config->readNumEntry("magicbrightness", 3);
+    magic_pointsAreDiamonds = config->readBoolEntry("magicPointsAreDiamonds", false);
 
     config->setGroup("SMTP");
     smtpConfigData.enabled = config->readBoolEntry("enabled", true);
@@ -1674,6 +1680,7 @@ KSCD::writeSettings()
     config->writeEntry("magicwidth",magic_width);
     config->writeEntry("magicheight",magic_height);
     config->writeEntry("magicbrightness",magic_brightness);
+    config->writeEntry("magicPointsAreDiamonds",magic_pointsAreDiamonds);
 
     config->sync();
 }
@@ -2470,6 +2477,7 @@ KSCD::get_pathlist(QStrList& _pathlist)
 } // get_pathlist
 
 
+/*
 void KSCD::doSM()
 {
 //WABA: Session management has changed
@@ -2482,61 +2490,19 @@ void KSCD::doSM()
 	kapp->setWmCommand(QString(kapp->argv()[0])+" -caption \""+kapp->caption()+"\" -hide ");
 #endif
 } // doSM
-
-
-int 
-main( int argc, char *argv[] )
-{
-
-    KApplication a( argc, argv,"kscd" );
-    KGlobal::dirs()->addResourceType("cddb", KStandardDirs::kde_default("data") + "kscd/cddb/");
-
-    KSCD* k = new KSCD();
-
-    cur_track = 1;
-
-    bool hide = FALSE;
-
-    for(int i = 0; i < argc; i++){
-        if(strcmp(argv[i],"-hide") == 0){
-	    hide = TRUE;
-	}
-	
-        if(strcmp(argv[i],"-h") == 0){
-            printf("KSCD "KSCDVERSION
-                   " Copyright 1997-98 Bernd Johannes Wuebben wuebben@kde.org\n");
-            printf(i18n("-h: display commandline options\n").ascii());
-            printf(i18n("-d: enable debugging output.\n").ascii());
-            exit(0);
-        }
-    }
-
-//WABA: Session management has changed
-#if 1
-#warning Session management is broken
-#else
-    a.enableSessionManagement(true);
-#endif
-    a.setTopWidget(k);
-    a.setMainWidget( k );
-    k->setCaption(a.caption());
-    if (!hide)
-	k->show();
-
-    return a.exec();
-} // main()
+*/
 
 void 
 kcderror(const QString& title, const QString& message)
 {
-    KMessageBox::information(0L, message, title);
+  KMessageBox::information(0L, message, title);
 }
 
 /* I am dropping this code for now. People seem to be having nothing
    but trouble with this code and it was of dubious value anyways....
-
-dfoerste: NOTES
-
+   
+   dfoerste: NOTES
+   
 1) Mark Buckaway checked only if there was an iso9660 filesystem mounted,
    not if our device is mounted.
 2) Mount check only needs to be done before ejecting the disc.
@@ -2544,48 +2510,56 @@ dfoerste: NOTES
 #ifdef linux
 
 // check if drive is mounted (from Mark Buckaway's cdplayer code)
+
+
 void 
 KSCD::checkMount()
 {
-  	if ((fp = setmntent (MOUNTED, "r")) == NULL) {
-		fprintf (stderr, i18n("Couldn't open %s: %s\n"),
-			 MOUNTED, strerror (errno));
-		exit (1);
+  if ((fp = setmntent (MOUNTED, "r")) == NULL) 
+    {
+      fprintf (stderr, i18n("Couldn't open %s: %s\n"),
+	       MOUNTED, strerror (errno));
+      exit (1);
+    }
+
+  while ((mnt = getmntent (fp)) != NULL) 
+    {
+      if (strcmp (mnt->mnt_type, "iso9660") == 0) 
+	{
+	  fputs (i18n("CDROM already mounted. Operation aborted.\n"),
+		 stderr);
+	  endmntent (fp);
+	  exit (1);
 	}
-	while ((mnt = getmntent (fp)) != NULL) {
-		if (strcmp (mnt->mnt_type, "iso9660") == 0) {
-			fputs (i18n("CDROM already mounted. Operation aborted.\n"),
-			       stderr);
-			endmntent (fp);
-			exit (1);
-		}
-	}
-	endmntent (fp);
-	
-}
+    }
+  endmntent (fp);
+} // checkMount()
 
 #elif defined (__FreeBSD__)
 void 
 KSCD::checkMount()
 {
-      struct statfs *mnt;
-      int i, n;
-
-      n = getmntinfo(&mnt, MNT_WAIT);
-      for (i=0; i<n; i++) {
-              if (mnt[i].f_type == MOUNT_CD9660) {
-                      fputs(i18n("CDROM already mounted. Operation aborted.\n"),
-                            stderr);
-                      exit(1);
-              }
-      }
+  struct statfs *mnt;
+  int i, n;
+  
+  n = getmntinfo(&mnt, MNT_WAIT);
+  for (i=0; i<n; i++) 
+    {
+      if (mnt[i].f_type == MOUNT_CD9660) 
+	{
+	  fputs(i18n("CDROM already mounted. Operation aborted.\n"),
+		stderr);
+	  exit(1);
+	}
+    }
 }
 
 #else
 
 // TODO Can I do this for other platforms?
 void 
-KSCD::checkMount(){
+KSCD::checkMount()
+{
 }
 
 #endif
@@ -2630,7 +2604,71 @@ KSCD::make_random_list()
   return;
 }
 
+
+int 
+main( int argc, char *argv[] )
+{
+
+  KAboutData aboutData( "kscd", I18N_NOOP("kscd"),
+			KSCDVERSION, I18N_NOOP("CD player"), 
+			KAboutData::License_GPL,
+			"(c) 2000, Dirk Försterling");
+  aboutData.addAuthor("Dirk Försterling",0, "milliByte@gmx.net");
+
+  KCmdLineArgs::init( argc, argv, &aboutData );
+
+  KApplication a; // ( argc, argv,"kscd" );
+
+  KGlobal::dirs()->addResourceType("cddb", 
+				   KStandardDirs::kde_default("data") + 
+				   "kscd/cddb/");
+  
+  //  if (a.isRestored())
+  //    {
+  //        RESTORE(KSCD);
+  //    } else {
+  KSCD *k = new KSCD();
+  cur_track = 1;
+  
+  bool hide = FALSE;
+  
+  for(int i = 0; i < argc; i++)
+    {
+      if(strcmp(argv[i],"-hide") == 0)
+	{
+	  hide = TRUE;
+	}
+	  
+	  if(strcmp(argv[i],"-h") == 0)
+	    {
+	    printf("KSCD "KSCDVERSION
+		   "\n Copyright 1997-98 Bernd Johannes Wuebben wuebben@kde.org\n"
+		   " Copyright 2000 Dirk Foersterling milliByte@gmx.de\n");
+	    printf(i18n("-h: display commandline options\n").ascii());
+	    printf(i18n("-d: enable debugging output.\n").ascii());
+	    exit(0);
+	  }
+	}
+      
+      a.setTopWidget(k);
+      a.setMainWidget( k );
+      k->setCaption(a.caption());
+      if(!hide)
+	k->show();
+      //    }
+  return a.exec();
+} // main()
+
 #include "kscd.moc"
+
+
+
+
+
+
+
+
+
 
 
 

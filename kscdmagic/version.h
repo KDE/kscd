@@ -1,0 +1,1 @@
+#define KSCDMAGICVERSION "2.0"

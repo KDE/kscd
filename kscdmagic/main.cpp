@@ -49,9 +49,17 @@
 #include <getopt.h>
 #endif
 
+#include <klocale.h>
+#include <kglobal.h>
+#include <kapp.h>
+#include <kaboutdata.h>
+#include <dcopclient.h>
+#include <kcmdlineargs.h>
+
 #include "logo.h"
 #include "magicconf.h"
 #include "syna.h"
+#include "version.h"
 
 volatile short *data;
 
@@ -178,8 +186,21 @@ main(int argc, char **argv)
   int xx, xy;
   opterr = 0;
 
-  //  openSound(configUseCD);
-  openSound(SourceCD, 22050, "/dev/dsp", NULL);
+  /*
+  KAboutData aboutData( "kscdmagic", I18N_NOOP("kscdmagic"),
+			KSCDMAGICVERSION, I18N_NOOP("sound visualisation"), 
+			KAboutData::License_GPL,
+			"(c) 2000, Dirk Försterling");
+  aboutData.addAuthor("Paul Harrison",0, "pfh@yoyo.cc.monash.edu.au");
+  aboutData.addAuthor("Dirk Försterling",0, "milliByte@gmx.net");
+
+  KCmdLineArgs::init( argc, argv, &aboutData );
+
+  KApplication magicApp;
+  */
+
+
+  openSound(SourceCD, 44100, "/dev/dsp", NULL);
 
   catchSignals();
 

@@ -29,6 +29,7 @@
 
 #include "bwlednum.h"
 
+
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qdialog.h>
@@ -41,6 +42,7 @@
 #include <qtabdialog.h>
 #include <qtooltip.h>
 #include <qpopupmenu.h>
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -102,6 +104,9 @@ struct mgconfigstruct
   int width;
   int height;
   int brightness;
+  int fadeMode;
+  bool pointsAreDiamonds;
+  double starSize;
 };
 
 
@@ -164,7 +169,7 @@ public slots:
     void information(int);
     void showPopup();
 
-    void doSM();
+  //    void doSM();
 
     void make_random_list(); /* koz: 15/01/00 */
 
@@ -220,6 +225,7 @@ private:
     int                 magic_width;
     int                 magic_height;
     int                 magic_brightness;
+    bool                magic_pointsAreDiamonds;
     QFrame 		*backdrop;
     LedLamp             *queryled;
     LedLamp             *loopled;
@@ -255,10 +261,10 @@ private:
 
 // These are the variables from workbone
 
-	int 		sss;
-	int 		sel_stat;
-	int 		dly;
-	int 		fastin;
+        int 		sss;
+        int 		sel_stat;
+        int  		dly;
+        int 		fastin;
 	int 		scmd;
 	int 		tmppos;
 	int 		save_track;

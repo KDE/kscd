@@ -5,9 +5,8 @@
  *
  * $Id$
  * 
- * Copyright (C) 1997 Bernd Johannes Wuebben 
- * wuebben@math.cornell.edu
- *
+ * Copyright (C) 1997 Bernd Johannes Wuebben wuebben@math.cornell.edu
+ * Copyright (C) 2000 Dirk Försterling <milliByte@gmx.de>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -47,10 +46,11 @@
 
 class QSpinBox;
 
-class MGConfigDlg : public QDialog {
-
+class MGConfigDlg : public QDialog 
+{
+  
 Q_OBJECT
-
+  
 public:
 
   MGConfigDlg(QWidget *parent, struct mgconfigstruct * data,const char *name);
@@ -65,6 +65,9 @@ private slots:
   void brightness_changed(int value);
   void width_changed(const QString &);
   void height_changed(const QString &);
+  void pointsAreDiamonds_clicked(bool flag);
+  //  void fadeMode_changed();
+  //  void starSize_changed();
 
   
 private:
@@ -82,6 +85,21 @@ private:
   QLabel *label3;
   QLineEdit *width_edit;
 
+  QCheckBox *pointsAreDiamondsCB;
+  
+
   QPushButton *helpbutton;
 };
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
