@@ -49,7 +49,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     popup->insertItem(i18n("Previous"), parent, SLOT(prevClicked()));
     popup->insertItem(i18n("Eject"), parent, SLOT(ejectClicked()));
 
-    tip = "KSCD";
+    tip = "";
     setToolTip(tip);
 }
 
