@@ -43,8 +43,8 @@ DISTCLEANFILES = config.h
 bin_PROGRAMS = kscd cddaslave 
 TARGET3 = kscdmagic
 
-config.h: kscd-script 
-	$(SHELL) $(srcdir)/kscd-script
+#config.h: kscd-script 
+	#$(SHELL) $(srcdir)/kscd-script
 
 SUBDIRS = kscdmagic bitmaps sbpcdhack
 
