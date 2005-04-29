@@ -59,7 +59,6 @@
 #include <kuniqueapplication.h>
 #include <kglobalsettings.h>
 #include <kcmoduleloader.h>
-
 #include <kconfigdialog.h>
 
 #include "docking.h"
@@ -170,7 +169,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action = new KAction(i18n("Previous"), Key_B, this, SLOT(prevClicked()), m_actions, "Previous");
   action = new KAction(i18n("Next"), Key_N, this, SLOT(nextClicked()), m_actions, "Next");
   action = KStdAction::quit(this, SLOT(quitClicked()), m_actions);
-  action = KStdAction::keyBindings(this, SLOT(configureKeys()), m_actions);
+  action = KStdAction::keyBindings(this, SLOT(configureKeys()), m_actions, "options_configure_shortcuts");
+  action = KStdAction::keyBindings(this, SLOT(configureGlobalKeys()), m_actions, "options_configure_globals");
   action = KStdAction::preferences(this, SLOT(showConfig()), m_actions);
   action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), m_actions, "Loop");
   action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), m_actions, "Eject");
@@ -178,15 +178,18 @@ KSCD::KSCD( QWidget *parent, const char *name )
 	KShortcut increaseVolume = action->shortcut();
 	increaseVolume.append( KKey( Key_Equal ) );
 	action->setShortcut( increaseVolume );
-
   action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), m_actions, "DecVolume");
   action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), m_actions, "Options");
   action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
   action = new KAction(i18n("CDDB"), CTRL + Key_D, this, SLOT(CDDialogSelected()), m_actions, "CDDB");
-
-  setupPopups();
-
+  
   m_actions->readShortcutSettings("Shortcuts");
+  
+  m_actions->action( "options_configure_globals" )->setText( i18n( "Configure &Global Shortcuts..." ) );
+  
+  initGlobalShortcuts();
+  
+  setupPopups();
 
   if (Prefs::looping())
   {
@@ -210,6 +213,31 @@ KSCD::~KSCD()
     delete cddb;
     delete m_cd;
 } // ~KSCD
+
+
+void KSCD::initGlobalShortcuts() {
+
+  m_globalAccel = new KGlobalAccel( this );
+  
+  m_globalAccel->insert("Next", i18n("Next"), 0, KKey("WIN+N"), KKey("WIN+Right"),
+                        this, SLOT(nextClicked()));
+  m_globalAccel->insert("Previous", i18n("Previous"), 0, KKey("WIN+B"), KKey("WIN+Left"),
+                        this, SLOT(prevClicked()));
+  m_globalAccel->insert("Play/Pause", i18n("Play/Pause"), 0, KKey("WIN+P"), 0,
+                        this, SLOT(playClicked()));
+  m_globalAccel->insert("Stop", i18n("Stop"), 0, KKey("WIN+S"), 0,
+                        this, SLOT(stopClicked()));
+  m_globalAccel->insert("IncVolume", i18n("Increase Volume"), 0, KKey("WIN+Plus"), KKey("WIN+Up"),
+                        this, SLOT(incVolume()));
+  m_globalAccel->insert("DecVolume", i18n("Decrease Volume"), 0, KKey("WIN+Minus"), KKey("WIN+Down"),
+                        this, SLOT(decVolume()));
+  m_globalAccel->insert("Shuffle", i18n("Shuffle"), 0, KKey("WIN+R"), 0,
+                        this, SLOT(incVolume()));
+  
+  m_globalAccel->setConfigGroup( "GlobalShortcuts" );
+  m_globalAccel->readSettings( kapp->config() );
+  m_globalAccel->updateConnections();
+}
 
 bool KSCD::digitalPlayback() {
 #if defined(BUILD_CDDA)
@@ -299,8 +327,7 @@ void KSCD::setIcons()
   infoPB->setIconSet(SmallIconSet("run"));
 }
 
-void
-KSCD::setupPopups()
+void KSCD::setupPopups()
 {
     QPopupMenu* mainPopup   = new QPopupMenu(this);
     infoPB->setPopup(mainPopup);
@@ -322,7 +349,9 @@ KSCD::setupPopups()
     infoPopup->insertItem("Yahoo!", 11);
 
     m_actions->action(KStdAction::name(KStdAction::Preferences))->plug(mainPopup);
-    m_actions->action(KStdAction::name(KStdAction::KeyBindings))->plug(mainPopup);
+    //NEW add the shortcut dialogs
+    m_actions->action("options_configure_globals")->plug(mainPopup);
+    m_actions->action("options_configure_shortcuts")->plug(mainPopup);
     mainPopup->insertSeparator();
 
     mainPopup->insertItem(i18n("Artist Information"), infoPopup);
@@ -734,6 +763,11 @@ void KSCD::configDone()
 void KSCD::configureKeys()
 {
     KKeyDialog::configure(m_actions, this);
+}
+
+void KSCD::configureGlobalKeys()
+{
+  KKeyDialog::configure(m_globalAccel, true, this, true);
 }
 
 void KSCD::setDevicePaths()

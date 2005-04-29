@@ -57,6 +57,7 @@ class KCompactDisc;
 #include <kprocess.h>
 #include <krandomsequence.h>
 #include <dcopobject.h>
+#include <kglobalaccel.h>
 
 class CDDBDlg;
 class DockWidget;
@@ -223,10 +224,12 @@ private:
     QStringList     playlist;
     KCDDB::Client*  cddb;
     KActionCollection* m_actions;
+    KGlobalAccel* m_globalAccel;
     KToggleAction* m_togglePopupsAction;
     KVolumeControl* m_volume;
     DockWidget* m_dockWidget;
     void lookupDevice();
+    void initGlobalShortcuts();
 public slots:
     void lookupCDDB();
 
@@ -242,6 +245,7 @@ private slots:
     void trayOpening();
     void configDone();
     void configureKeys();
+    void configureGlobalKeys();
     void setIcons();
 
     void timeSliderPressed();
