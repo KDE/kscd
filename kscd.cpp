@@ -219,8 +219,11 @@ void KSCD::initGlobalShortcuts() {
 
   m_globalAccel = new KGlobalAccel( this );
   
+  //Definition of global shortcuts is based on 'local' shortcuts which follow
+  //the WIN key.
   m_globalAccel->insert("Next", i18n("Next"), 0, KKey("WIN+N"), KKey("WIN+Right"),
                         this, SLOT(nextClicked()));
+  //NOTE: WIN+B collidates with amarok's default global shortcut.
   m_globalAccel->insert("Previous", i18n("Previous"), 0, KKey("WIN+B"), KKey("WIN+Left"),
                         this, SLOT(prevClicked()));
   m_globalAccel->insert("Play/Pause", i18n("Play/Pause"), 0, KKey("WIN+P"), 0,
