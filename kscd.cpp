@@ -1264,22 +1264,34 @@ void KSCD::trayOpening()
     statuslabel->setText(i18n("Ejected"));
     trackChanged(0, 0);
 }
+
 int KSCD::currentTrack()
 {
     return m_cd->track();
 }
+
 int KSCD::currentTrackLength()
 {
     return m_cd->trackLength();
 }
+
 int KSCD::currentPosition()
 {
     return m_cd->trackPosition();
 }
+
 int KSCD::getStatus()
 {
-    return 0;
+    if (m_cd->isPlaying())
+      return 2;
+    else if (m_cd->isPaused())
+      return 4;
+    else if (m_cd->discId() != KCompactDisc::missingDisc)
+      return 5;
+    else
+      return 6;
 }
+
 bool KSCD::playing()
 {
     return m_cd->isPlaying();
