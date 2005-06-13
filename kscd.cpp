@@ -1507,7 +1507,12 @@ QString KSCD::currentArtist()
 
 QStringList KSCD::trackList()
 {
-    return QStringList();//cddbInfo.trackInfoList;
+  QStringList tracks;
+  for (TrackInfoList::const_iterator it = cddbInfo.trackInfoList.begin();
+      it != cddbInfo.trackInfoList.end(); ++it)
+    tracks << (*it).title;
+
+  return tracks;
 }
 
 void KSCD::populateSongList(QString infoStatus)
