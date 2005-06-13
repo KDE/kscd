@@ -29,6 +29,7 @@ class CDDBDlg : public KDialogBase
 
   signals:
     void cddbQuery();
+    void newCDInfoStored(KCDDB::CDInfo);
     void play(int i);
 
   private:

@@ -114,7 +114,7 @@ void CDDBDlg::save()
 
     KCDDB::Cache::store(cddbInfo);
 
-    emit cddbQuery();
+    emit newCDInfoStored(cddbInfo);
 } // save
 
 bool CDDBDlg::validInfo()

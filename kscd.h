@@ -236,6 +236,7 @@ public slots:
 private slots:
     void CDDialogSelected();
     void CDDialogDone();
+    void setCDInfo(KCDDB::CDInfo);
     void lookupCDDBDone(CDDB::Result);
     void discStopped();
     void trackUpdate(unsigned track, unsigned trackPosition);

@@ -156,8 +156,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( cddbPB, SIGNAL(clicked()), SLOT(CDDialogSelected()));
   connect(kapp, SIGNAL(kdisplayPaletteChanged()), this, SLOT(setColors()));
   connect(kapp, SIGNAL(iconChanged(int)), this, SLOT(setIcons()));
-    QToolTip::remove(songListCB);
-    QToolTip::add(songListCB, i18n("Track list"));
+  QToolTip::remove(songListCB);
+  QToolTip::add(songListCB, i18n("Track list"));
 
 
   // set up the actions and keyboard accels
@@ -175,9 +175,9 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), m_actions, "Loop");
   action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), m_actions, "Eject");
   action = new KAction(i18n("Increase Volume"), Key_Plus, this, SLOT(incVolume()), m_actions, "IncVolume");
-	KShortcut increaseVolume = action->shortcut();
-	increaseVolume.append( KKey( Key_Equal ) );
-	action->setShortcut( increaseVolume );
+  KShortcut increaseVolume = action->shortcut();
+  increaseVolume.append( KKey( Key_Equal ) );
+  action->setShortcut( increaseVolume );
   action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), m_actions, "DecVolume");
   action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), m_actions, "Options");
   action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
@@ -1114,6 +1114,8 @@ void KSCD::CDDialogSelected()
 
         cddialog->setData(cddbInfo, m_cd->discSignature(), playlist);
         connect(cddialog,SIGNAL(cddbQuery()),SLOT(lookupCDDB()));
+        connect(cddialog,SIGNAL(newCDInfoStored(KCDDB::CDInfo)),
+            SLOT(setCDInfo(KCDDB::CDInfo)));
         connect(cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
         connect(cddialog,SIGNAL(play(int)),SLOT(trackSelected(int)));
     }
@@ -1200,6 +1202,15 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
       }
     }
 
+    setCDInfo(info);
+
+    // In case the cddb dialog is open, update it
+    if (cddialog)
+      cddialog->setData(cddbInfo, m_cd->discSignature(), playlist);
+} // lookupCDDBDone
+
+void KSCD::setCDInfo(KCDDB::CDInfo info)
+{
     // Some sanity provisions to ensure that the number of records matches what
     // the CD actually contains.
     while (info.trackInfoList.count() < cddbInfo.trackInfoList.count())
@@ -1212,11 +1223,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
     }
     cddbInfo = info;
     populateSongList("");
-
-    // In case the cddb dialog is open, update it
-    if (cddialog)
-      cddialog->setData(cddbInfo, m_cd->discSignature(), playlist);
-} // lookupCDDBDone
+}
 
 void KSCD::led_off()
 {
@@ -1375,7 +1382,7 @@ void KSCD::information(int i)
         case 2:
             str = QString("http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1")
                   .arg(encodedArtist);
-	    break;
+            break;
 
         case 3:
             str = QString("http://www.alltheweb.com/search?cat=web&q=%1")
