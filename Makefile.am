@@ -9,9 +9,9 @@ METASOURCES = AUTO
 ####### Files
 
 noinst_HEADERS = kscd.h bwlednum.h ledlamp.h \
-                 version.h docking.h configWidget.h kvolumecontrol.h
+                 version.h docking.h configWidget.h
 
-kscd_SOURCES = kvolumecontrol.cpp panel.ui kscd.cpp kscd.skel ledlamp.cpp \
+kscd_SOURCES = panel.ui kscd.cpp kscd.skel ledlamp.cpp \
                docking.cpp bwlednum.cpp \
                kcompactdisc.cpp \
                configWidget.cpp configWidgetUI.ui prefs.kcfgc cddbdlg.cpp

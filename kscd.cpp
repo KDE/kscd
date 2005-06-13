@@ -73,7 +73,6 @@
 
 #include "cddbdlg.h"
 #include "configWidget.h"
-#include "kvolumecontrol.h"
 #include <qtextcodec.h>
 #include <kcompactdisc.h>
 #include <fixx11h.h>

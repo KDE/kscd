@@ -64,7 +64,6 @@ class DockWidget;
 class QGridLayout;
 class KActionCollection;
 class KToggleAction;
-class KVolumeControl;
 
 using namespace KCDDB;
 
@@ -226,7 +225,6 @@ private:
     KActionCollection* m_actions;
     KGlobalAccel* m_globalAccel;
     KToggleAction* m_togglePopupsAction;
-    KVolumeControl* m_volume;
     DockWidget* m_dockWidget;
     void lookupDevice();
     void initGlobalShortcuts();
