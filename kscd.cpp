@@ -1227,6 +1227,8 @@ void KSCD::CDDialogSelected()
 
         cddialog->setData(cddbInfo, trackStartFrames, playlist);
         connect(cddialog,SIGNAL(cddbQuery()),SLOT(lookupCDDB()));
+        connect(cddialog,SIGNAL(newCDInfoStored(KCDDB::CDInfo)),
+            SLOT(setCDInfo(KCDDB::CDInfo)));
         connect(cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
         connect(cddialog,SIGNAL(play(int)),SLOT(trackSelected(int)));
     }
@@ -1323,7 +1325,18 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
         // user pressed Cancel
       }
     }
+
+    setCDInfo(info);
   
+    // In case the cddb dialog is open, update it
+    if (cddialog)
+      cddialog->setData(cddbInfo, trackStartFrames, playlist);
+
+    led_off();
+} // lookupCDDBDone
+
+void KSCD::setCDInfo(KCDDB::CDInfo info)
+{
     // Some sanity provisions to ensure that the number of records matches what
     // the CD actually contains.
     while (info.trackInfoList.count() < cddbInfo.trackInfoList.count())
@@ -1336,13 +1349,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
     }
     cddbInfo = info;
     populateSongList("");
-
-    // In case the cddb dialog is open, update it
-    if (cddialog)
-      cddialog->setData(cddbInfo, trackStartFrames, playlist);
-
-    led_off();
-} // lookupCDDBDone
+}
 
 void KSCD::lookupDevice(void)
 {

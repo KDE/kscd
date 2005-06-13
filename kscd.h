@@ -276,6 +276,7 @@ public slots:
     void mycddb_inexact_read();
     void CDDialogSelected();
     void CDDialogDone();
+    void setCDInfo(KCDDB::CDInfo);
     void lookupCDDB();
     void lookupCDDBDone(CDDB::Result);
 
