@@ -774,7 +774,8 @@ void KSCD::configureGlobalKeys()
 
 void KSCD::setDevicePaths()
 {
-    if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback()))
+    if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback(),
+		Prefs::audioSystem(), Prefs::audioDevice()))
     {
         // This device did not seem usable.
         QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
