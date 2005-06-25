@@ -14,6 +14,12 @@
 <authorgroup>
 
 <author>
+<firstname>Mike</firstname>
+<surname>McBride</surname> 
+<affiliation><address>&Mike.McBride.mail;</address></affiliation>
+</author>
+
+<author>
 <firstname>Jonathan</firstname>
 <surname>Singer</surname>
 <affiliation><address><email>jsinger@leeta.net</email></address></affiliation>
@@ -60,13 +66,18 @@
 <copyright>
 <year>2000</year><year>2004</year>
 <holder>J Singer</holder>
-</copyright>
 
+</copyright>
+<copyright>
+
+<year>2005</year>
+<holder>Mike McBride</holder>
+</copyright>
 <legalnotice>&FDLNotice;</legalnotice>
 
 
-<date>2002-10-07</date>
-<releaseinfo>1.4</releaseinfo>
+<date>2005-05-21</date>
+<releaseinfo>1.5</releaseinfo>
 
 <abstract>
 <para>&kscd; is a small, fast, <abbrev>CDDB</abbrev> enabled audio
@@ -245,19 +256,18 @@ using this tool.</para>
 
 
 <sect2>
-<title>The Volume button</title>
+<title>The Volume slider</title>
 
 <screenshot>
-<screeninfo>The Volume button</screeninfo>
+<screeninfo>The Volume slider</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd9.png" format="PNG"/></imageobject>
 <textobject><phrase>The Volume slider</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> This button pops up a slider which controls the volume of the audio output 
-of the &CD;. Right is
-louder, left is quieter. If you are playing your &CD; through your sound card,
+<para> This slider controls the volume of the audio output 
+of the &CD;. Moving it to the right makes the music louder, left makes it quieter. If you are playing your &CD; through your sound card,
 the sound card mixer will affect the playback volume as well.</para>
 </sect2>
 
@@ -273,8 +283,8 @@ the sound card mixer will affect the playback volume as well.</para>
 </mediaobject>
 </screenshot>
 	    
-<para>This combo box shows you the current track and lets you directly select
-a track to play. </para>
+<para>This combo box shows you the current track number, the name of the track and the time (in minutes and seconds).  You can use this drop down box to directly select
+any track on the &CD;.  </para>
 </sect2>
 
 </sect1>
@@ -285,31 +295,35 @@ a track to play. </para>
 <sect1 id="configuration-intro">
 <title>The primary configuration window</title>
 
-<para>The primary configuration window for &kscd; is a tabbed dialog with three
+<para>You configure &kscd; by clicking on the <guibutton>Extras</guibutton> button.  This will bring up a menu, select 
+<guilabel>Configure &kscd;...</guilabel>.  This will open a new window.</para>
+<para>The primary configuration window for &kscd; is divided into two 
 major sections. </para>
 
 <itemizedlist>
 <listitem><para><link linkend="kscd-options-tab"><guilabel>CD
-Player</guilabel></link></para></listitem>
-<listitem><para><link linkend="freedb-tab"><guilabel>Freedb Lookup</guilabel></link></para></listitem>
-<listitem><para><link linkend="smtp-options"><guilabel>Freedb Submit</guilabel>
-</link></para></listitem>
+Player</guilabel></link> to determine the look and behavior of &kscd;.</para></listitem>
+<listitem><para><guilabel>CDDB</guilabel> which is used to configure the CDDB lookup features of &kscd;.</para></listitem>
 </itemizedlist>
+
+<para>You can switch between these two sections using the icons on the left side of the dialog.</para>
 </sect1>
 
 <sect1 id="kscd-options-tab">
-<title>The <guilabel>CD Player</guilabel> tab</title>
+<title>The <guilabel>CD Player</guilabel> dialog</title>
 
 <screenshot>
-<screeninfo>The <guilabel>CD Player</guilabel> tab</screeninfo>
+<screeninfo>The <guilabel>CD Player</guilabel> dialog</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd12.png" format="PNG"/></imageobject>
-<textobject><phrase>The <guilabel>KSCD Configuration</guilabel> tab</phrase></textobject>
+<textobject><phrase>The <guilabel>KSCD Configuration</guilabel> dialog</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para>The <guilabel>LCD Color</guilabel> and <guilabel>Background
-Color</guilabel> fields show the color selected for the foreground and
+<para>The <guilabel>LCD font:</guilabel> text box lists the currently selected font to display all information in the &kscd; status display.  To change the font, click the <guibutton>Choose...</guibutton> button.</para>
+
+<para>The <guilabel>LCD color:</guilabel> and <guilabel>Background
+color:</guilabel> fields show the color selected for the foreground and
 background of the status display. Press the color bars to change
 these colors.</para>
 
@@ -342,24 +356,34 @@ either &konqueror; or a custom browser with the radio buttons. By default, the
 <option><replaceable>openURL %s</replaceable></option></userinput>.</para>
 -->
 
-<para><guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
+<para>Placing a mark in the checkbox labeled <guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
 appear in the &kicker; panel.</para>
+
+<para>Placing a mark in the checkbox labeled <guilabel>Show track announcement</guilabel> causes a small information window to appear on 
+top of the kicker window each time the &CD; track changes.  This window will automatically disappear in 5 seconds.</para>
+
+<screenshot>
+<screeninfo>Sample track announcement</screeninfo>
+<mediaobject>
+<imageobject><imagedata fileref="kscdannounc.png" format="PNG"/></imageobject>
+<textobject><phrase>Sample track announcement</phrase></textobject>
+</mediaobject>
+</screenshot>
+
 
 <para>Set the <guilabel>Skip interval</guilabel> box to the desired number of 
 seconds to move ahead or behind when the <guibutton>forward skip</guibutton> 
 or <guibutton>reverse skip</guibutton> buttons in the Control Panel are pressed.</para>
 
-<para><guilabel>Autoplay when CD inserted</guilabel> causes &CD; play to
-start when the tray is closed, with no need to press the
+<para><guilabel>Autoplay when CD inserted</guilabel> causes &kscd; to start playing the &CD; 
+when the tray is closed, with no need to press the
 <guibutton>Play</guibutton> button.</para>
 
 <para><guilabel>Eject CD when finished playing</guilabel> causes the
-&CD; to be ejected when playback ends.</para>
+&CD; to be automatically ejected when playback ends.</para>
 
 <para><guilabel>Stop playing CD on exit</guilabel> causes &CD; playback to stop
 when &kscd; is closed.</para>
-
-
 
 <para>The <guilabel>CD-ROM Device</guilabel> field contains the name
 of the &CD-ROM; device to be used to play audio &CD;s. The default
@@ -369,8 +393,30 @@ the permissions on this device file will in almost all cases require
 superuser privileges and can be done from the command line, or in the
 Super User Mode of &konqueror;.</para>
 
+<note><para>Before we discuss the options that follow, it is important to understand that there are two 
+ways that personal computers can play a &CD;.</para>
+
+<para>The first method (which &kscd; refers to as direct digital playback), is performed by reading the digital data from the 
+&CD; using Digital Audio Extraction (DAE).  This data is sent to your machines CPU which converts the digital data to sound.  This method requires 
+a &CD; drive that is capable of DAE (most new drives are) and it requires some CPU processing time to generate the sounds you hear.</para>
+
+<para>The second method uses the internal circuitry available on most &CD; drives to read the data and generate the sounds you will hear 
+without using your computers CPU.  This data is transmitted by a dedicated cable directly to the sound card in your computer.  This method requires 
+less CPU proccessing time, but it does require that the dedicated cable be connected inside your computer.  Not all computers have this connection.</para></note>
+
+<para>The checkbox labeled <guilabel>Use direct digital playback</guilabel> determines which method &kscd; uses to read the audio tracts.  If there is a mark in the checkbox, the first method is used.  If there is no mark in the checkbox, the second method is utilized.</para>
+
+<para>If you have selected direct digital playback, a dropdown box labeled <guilabel>Select audio backend:</guilabel> will let you select which 
+sound backend the digital information should be sent to.  The contents of the dropdown box will vary depending on your system. 
+Most users should select <guilabel>arts</guilabel>.  You can also select the device the audio backend uses by entering the device location in 
+the text box labeled <guilabel>Select audio device:</guilabel>.  A full discussion of audio devices and audio backends is beyond the scope of this manual.</para>
+
+<para>If a mark is placed in the checkbox labeled <guilabel>Allow encoding selection</guilabel>, you can select the text encoding for the results of a CDDB request.</para>
+<tip><para>The standard describes CDDB results as being strictly Latin 1.  If you are not having problems with your CDDB information, leave this box unchecked.</para></tip>
+
+
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
-page. <guibutton>OK</guibutton> saves the current settings and exits;
+page. The <guibutton>Defaults</guibutton> button restores the default values of all entries in this dialog; <guibutton>OK</guibutton> saves the current settings and exits;
 <guibutton>Apply</guibutton> saves the current settings without exiting;
 <guibutton>Cancel</guibutton> exits without saving. </para>
 </sect1>
@@ -393,33 +439,27 @@ of &kscd;.</para>
 are performed. Setting <guilabel>Cache only</guilabel> means that only information already 
 on your computer will be used. <guilabel>Cache and remote</guilabel> will look up 
 information you do not already have while <guilabel>Remote only</guilabel> looks up 
-every disc over the Internet.  The time allowed before the
-lookup attempt times out can be set.</para>
+every disc over the Internet.</para>
 
 
-<para>The <guilabel>CDDB Server:</guilabel> list box allows you to specify your 
-freedb server. Enter a server address and port number. Select an entry from this list and it will
-appear in the text field above the selection box. The form of connection (CDDB or HTTP) can also 
-be set. (You are unlikely to want to change any of this from the default.) The <guilabel>Cache 
-Folders:</guilabel> text field lets you choose the folder where you want 
-<acronym>CDDB</acronym> entries to be stored locally.</para>
+<para>The <guilabel>CDDB Server:</guilabel> section determines which CDDB mirror site is used by &kscd; to 
+get album information.  You can enter a server name, port number and protocol using the text boxes and drop 
+down boxes or you can click the <guibutton>Show Mirror List</guibutton> button.  Clicking this button will 
+open a new window with a list of CDDB mirrors and their locations.  Simply select the server you want from 
+the list and click <guibutton>OK</guibutton>.</para>
 
-<!--
-<para>The <guilabel>Send freedb submissions to:</guilabel> field contains the
-e-mail address to which to submit <abbrev>CDDB</abbrev> entries. The default address
-is <email>freedb-submit@freedb.org</email>. As of version 0.8,
-<acronym>CDDB</acronym> entries from &kscd; are accepted for inclusion in the
-database. Enter servers manually by entering the address in the upper box and hitting the
-<guiicon>+</guiicon> button. Hit the <guiicon>-</guiicon> button to delete the selected entry
-from the list. The <guibutton>Defaults</guibutton> button restores all settings
-to the default values.The <guibutton>Help</guibutton> button opens the &kscd;
-help home page (this document).</para>
+<para>The section labeled <guilabel>Cache locations</guilabel> lets you determine where &kscd; saves CDDB information 
+on your computer.  To add a folder, enter the folder location in the text box at the top of the section and click 
+<guibutton>Add</guibutton>.  You can also select a 
+folder by clicking on the blue file folder to the right of the text box. To delete a folder, click on the folder name 
+once with the &LMB; and click <guibutton>Remove</guibutton>. You can change the order that &kscd; searches the folders by 
+clicking on the folder name and clicking on the <guibutton>Move Up</guibutton> and <guibutton>Move Down</guibutton> buttons.</para>
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
-page. <guibutton>OK</guibutton> saves the current settings and exits;
+page. The <guibutton>Defaults</guibutton> button restores the default values of all entries in this dialog; <guibutton>OK</guibutton> saves the current settings and exits;
 <guibutton>Apply</guibutton> saves the current settings without exiting;
 <guibutton>Cancel</guibutton> exits without saving. </para>
--->
+
 </sect1>
 
 <sect1 id="smtp-options">
@@ -433,33 +473,40 @@ page. <guibutton>OK</guibutton> saves the current settings and exits;
 </screenshot>
 
 <para>The freedb Submit tab sets up connection to a mail
-server to submit new <acronym>CDDB</acronym> entries. This is useful
-if you do not have your own system configured as a server. Check
-<guilabel>Enable submission via SMTP</guilabel> to use this
-feature.</para>
+server or a web server to submit new <acronym>CDDB</acronym> entries. This is useful
+if you do not have your own system configured as a server. </para>
 
-<para>You may choose to <guilabel>Use email addresses from control
- center</guilabel> if you wish.  If you would like to open the
- &kcontrol; module to configure this email address, click on the text
- labelled <guilabel>Open the email address control panel</guilabel>.
- Changing the address there will change the default address for all
- &kde; applications that use this setting, not just for &kscd;, so do
- this with caution.</para>
- 
-<para>Otherwise, provide your preferred email profile in the 
-<guilabel>Use the following email addresses</guilabel> box. Enter your 
-email address, a reply to address, if desired, and the address of the
-<acronym>SMTP</acronym> server server in the field labelled
-<guilabel>Host:</guilabel>. You may also need to provide a username for 
-authentication, and the port number (typically
-<userinput>25</userinput>) in the field labelled
-<guilabel>Port:</guilabel>.</para>
+<para>If you plan to submit a CDDB entry, first you must decide between submitting between HTTP 
+and submitting the entry as an email (via SMTP).  </para>
 
+<tip><para>It is simpler to submit new entries using HTTP.  Some firewalls block this traffic.  If your 
+firewall prevents you from sending new entries using HTTP, you can use SMTP.</para></tip>
+
+<para>First select either <guilabel>HTTP</guilabel> or <guilabel>SMTP (Email)</guilabel> to determine which 
+protocol to use.</para>
+
+<sect2 id="http-options">
+<title>Using HTTP to send CDDB information</title>
+<para>You can enter a server name or port number in the text boxes provided.  If 
+you want to send this information to the international servers, you do not need to 
+change anything.</para>
+</sect2>
+
+<sect2 id="smtp2-options">
+<title>Using SMTP (Email) to send CDDB information</title>
+<para>To prepare to submit information using email, enter your email address in the 
+textbox labeled <guilabel>Reply-To:</guilabel>, your email server in the textbox 
+labeled <guilabel>SMTP-server:</guilabel> and select the port number in the dropdown box 
+labeled <guilabel>Port:</guilabel>.</para>
+<para>If you need to use a password to send email using the email server, place a mark in the 
+checkbox labeled <guilabel>Server needs authentication</guilabel> and enter your 
+username in the textbox labeled <guilabel>Username:</guilabel>.</para>
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
-page. <guibutton>OK</guibutton> saves the current settings and exits;
+page. The <guibutton>Defaults</guibutton> button restores the default values of all entries in this dialog; <guibutton>OK</guibutton> saves the current settings and exits;
 <guibutton>Apply</guibutton> saves the current settings without exiting;
 <guibutton>Cancel</guibutton> exits without saving. </para>
+</sect2>
 </sect1>
 
 
@@ -515,7 +562,7 @@ Base Folder:</guilabel> in the <link
 linkend="freedb-tab"><guilabel>freedb</guilabel> tab</link> of the &kscd;
 Configuration window.</para>
 
-<para>The <guilabel>Total Time:</guilabel> display shows the total play time of
+<para>The <guilabel>Length:</guilabel> display shows the total play time of
 the &CD;.</para>
 
 <para>Press the <guibutton>Fetch Info</guibutton> button to download 
@@ -603,6 +650,160 @@ better to do with your spare time.</para>
 
 </chapter>
 
+<chapter id="troubleshooting">
+<title>Troubleshooting the CD player</title>
+
+<para>This section of the manual provides a step by step guide to troubleshooting your CD drive if the CD player will not play an audio &CD;</para>
+
+<sect1 id="ts-begin">
+<title>Begin troubleshooting</title>
+<para>To begin, place an audio CD in your CD drive.  Close the CD drive door and press play on the &kscd; window.  Watch the CD drive on your computer and select the link below that best describes the problem.</para>
+<para>When I pressed <guilabel>Play</guilabel>:</para>
+<itemizedlist>
+<listitem><para><link linkend="ts-errorbox">An error box appeared</link></para></listitem>
+<listitem><para><link linkend="ts-playing">No error box appeared</link></para></listitem>
+</itemizedlist>
+</sect1>
+<sect1 id="ts-playing">
+<title>I did not get an error box, but no sound is coming out of my speakers</title>
+<para>First, we will check to make sure the volume is turned up in &kscd;.</para>
+<para>Near the upper right corner of the &kscd; window, locate the volume slider.  The volume slider looks like this:</para>
+<screenshot>
+<screeninfo>The Volume slider</screeninfo>
+<mediaobject>
+<imageobject><imagedata fileref="kscd9.png" format="PNG"/></imageobject>
+<textobject><phrase>The Volume slider</phrase></textobject>
+</mediaobject>
+</screenshot>
+<para>Click once on the vertical yellow bar and drag the bar all the way to the right end of the slider.</para>
+<para>If you can hear music now, the problem is solved.  If you still can not hear the music, click 
+<link linkend="ts-kmixlevels">here</link> to continue.</para>
+</sect1>
+<sect1 id="ts-kmixlevels">
+<title>Determining if the mixer volume levels are up</title>
+<para>The next step is to determine if &kmix; volume levels are appropriate.</para>
+<note><para>&kmix; is a sound mixer panel that is included in &kde;.  This mixer allows you to adjust the relative volume levels of many sound components.</para></note>
+<para>To start &kmix;, select 
+<menuchoice><guimenu>K-Button</guimenu><guimenuitem>Multimedia</guimenuitem>
+<guimenuitem>&kmix;</guimenuitem></menuchoice>.</para>
+<para>Once &kmix; has started, you will be presented with a new window with a number of volume sliders.  Depending on the configuration, the sliders may have lables, or the labels may be hidden.  If you do not see any labels for the sliders, you should make the labels visible before continuing.  To make the labels visible, select 
+<menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &kmix;...</guimenuitem></menuchoice> from the &kmix; window.  This will open a small window with a few check boxes. To 
+turn the labels on, place a mark in the checkbox labeld <guilabel>Show labels</guilabel> and click <guibutton>OK</guibutton>.</para>
+<para>Each slider controls the volume of a different audio device.  There are two parts to each device that may need to be altered.  If you look at a slider, there is a green 
+light above each slider.  If you click on this light you can toggle between bright green and dark green.  If the light is dark green, that audio device is muted and will not produce any sound.  If the light is light green, the device is not muted.  Once you have verified that the device is not muted, you increase the volume of the device by draging the yellow bar up the slider.  The volume of an audio device is decreased by dragging the yellow bar down the slider.</para>
+<note><para>Some sliders will have a red light as well.  This light is not important for playback of compact discs so you can ignore them for now.</para></note>
+<para>Click on the tab labeled <guilabel>Output</guilabel>.</para>
+<para>Please make sure the sliders are not muted (bright green light) and that the yellow bar is all the way at the top of the slider for the following audio devices:</para>
+<itemizedlist>
+<listitem><para><guilabel>Master</guilabel></para></listitem>
+<listitem><para><guilabel>Master Mono</guilabel></para></listitem>
+<listitem><para><guilabel>PC Speaker</guilabel></para></listitem>
+<listitem><para><guilabel>PCM</guilabel></para></listitem>
+</itemizedlist>
+
+<para>If you still do not hear the &CD;, click on the tab labeled <guilabel>Input</guilabel></para>
+<para>Now make sure the slider labeled <guilabel>CD</guilabel> is not muted (bright green light) and that the yellow bar is all the way at the top of the slider.</para>
+<para>If you can hear the &CD; now, you can stop troubleshooting.  If not, click <link linkend="ts-othersounds">here</link> to continue</para>
+</sect1>
+<sect1 id="ts-othersounds">
+<title>Determine if other sounds are audible on my computer</title>
+<para>In this section, we are going to test to see if other types of sounds are audible on your computer. We will do this by playing a sound over the speakers that is stored on your hard drive.  </para>
+<para>First we must locate an appropriate test file.  This will be done using the command line.</para>
+<para>Select <menuchoice><guimenu>K-Button</guimenu><guimenuitem>System</guimenuitem>
+<guimenuitem>&konsole;</guimenuitem></menuchoice>.  A new window will appear with a command prompt.  At the prompt type:</para>
+<para><screen><prompt>$</prompt> <userinput><command>locate -n1 KDE_Window_Open.wav</command></userinput></screen></para>
+<para>When you press return, there will be a pause, and a single line with a file location will be printed below your typed command.</para>
+<para><screen><prompt>$</prompt> <userinput><command>locate -n1 KDE_Window_Open.wav</command></userinput>
+/usr/local/kde/share/sounds/KDE_Window_Open.wav</screen></para>
+
+<para>Now you are going to ask &kde; to play this short sound file. Type the text <command>noatun</command> followed by a space. Then copy the full location of the file you just located with the previous command.  For example: </para>
+<para><screen><prompt>$</prompt> <userinput><command>noatun /usr/local/kde/share/sounds/KDE_Window_Open.wav</command></userinput></screen></para>
+<para>If you heard a short sound, <link linkend="ts-othersoundsplay">click here</link>.</para>
+<para>If you did not hear a short sound, your sound system is not configured correctly.  Click <link linkend="ts-noothersounds">here</link> to proceed.</para>
+</sect1>
+
+<sect1 id="ts-noothersounds">
+<title>The test sound failed to play</title>
+<para>So far, we have verified that the volume on &kscd; and all the mixer levels in &kmix; are set correctly.  We have also sent a test sound and you could not hear the sound played.  This suggests the trouble is not with &kscd; but rather with your sound configuration.</para>
+<note><para>Please make sure the &CD; is still playing in your CD drive.</para></note>
+<para>First, we need to make sure your speakers are plugged in and that the volume of your speakers is set appropriately.  If you are using external speakers, please check the following:</para>
+<itemizedlist>
+<listitem><para>Please make sure the speakers are connected to your computer appropriatly (see your user manual if necessary).</para></listitem>
+<listitem><para>If your speakers require batteries, please replace the batteries with fresh batteries.</para></listitem>
+<listitem><para>If your external speakers plug into the wall, please make sure they are plugged in to the socket, the power cord is securly plugged into the back of the speakers and the wall outlet is working.</para></listitem>
+<listitem><para>If your speakers have a power button, please make sure the power is turned on.</para></listitem>
+<listitem><para>If your speakers have a volume knob, please make sure the volume is turned half way between off and maximum.</para></listitem>
+</itemizedlist>
+
+<para>If your speakers are part of you computers case, please check to see if your speakers have a volume knob. If they do make sure the volume is turned half way between off and maximum.</para>
+
+<para>If you have checked all of this, you probably need detailed help on getting the sound working on your computer. A full discussion of troubleshooting the sound system is beyond the scope of this manual and the user is referred to other internet sources. Some potential sources of information are:</para>
+
+<itemizedlist>
+<listitem><para><ulink url="http://www.tldp.org/HOWTO/Sound-HOWTO/index.html">Linux Sound HOWTO</ulink>.</para></listitem>
+<listitem><para>The website of your distribution will probably have a user forum for asking questions.</para></listitem>
+<listitem><para>Post a question to a Usenet newsgroup like comp.os.linux</para></listitem>
+<listitem><para>Use a search engine to locate others who have encountered similar problems as you.</para></listitem>
+</itemizedlist>
+</sect1>
+
+<sect1 id="ts-othersoundsplay">
+<title>The test sound played, but I can not hear the &CD;</title>
+<para>So far, we have verified that the volume on &kscd; and all the mixer levels in &kmix; are set correctly.  We have also played a test sound and you were able to  hear the sound played.  This suggests the trouble is limited to &kscd; or the &CD;.</para>
+<para>Check to make sure the &CD; is playable.  If this is a new &CD;, put it in another CD player (preferrably not located in a computer) and make sure the &CD; is playable in that device.  If it is playable in another device, continue <link linkend="ts-ddpback">here</link>.</para>
+</sect1>
+
+<sect1 id="ts-ddpback">
+<title>Try using direct digital playback</title>
+<para>There are two 
+ways that personal computers can play a &CD;.</para>
+
+<para>The first method (which &kscd; refers to as direct digital playback), is performed by reading the digital data from the 
+&CD; using Digital Audio Extraction (DAE).  This data is sent to your machines CPU which converts the digital data to sound.  This method requires 
+a &CD; drive that is capable of DAE (most new drives are) and it requires some CPU processing time to generate the sounds you hear.</para>
+
+<para>The second method uses the internal circuitry available on many &CD; drives to read the data and generate the sounds you will hear 
+without using your computers CPU.  This data is transmitted by a dedicated cable directly to the sound card in your computer.  This method requires 
+less CPU proccessing time, but it does require that the dedicated cable be connected inside your computer.  Not all computers have this connection.</para>
+
+<para>&kscd; defaults to the second method of playback.  The next step in troubleshooting your &CD; problems is to enable direct digital playback. To do this begin by clicking on the button labeled <guibutton>Stop</guibutton> on the &kscd; window. This will stop any attempt to play the &CD; for now.</para>
+
+<para>Now click on the button labeled <guibutton>Extras</guibutton>.  This will open a small menu.  Select <guilabel>Configure &kscd;...</guilabel>.  This will open a new dialog box.</para>
+<para>Click the icon labeled <guilabel>CD Player</guilabel> on the left side of the dialog box.</para>
+<para>Place a mark in the checkbox labeled <guilabel>Use direct digital playback</guilabel>.</para>
+<para>Click <guibutton>OK</guibutton>.  </para>
+<para>Now click <guibutton>Play</guibutton> in the &kscd; window and see if the &CD; begins to play correctly.</para>
+
+<para>If you still can not hear the music on the &CD;, your problem requires specific knowledge of your system and the problems you encounter.  The reader is referred to many good internet resources for this information.  Please consider finding help in one of the following ways:</para>
+
+<itemizedlist>
+<listitem><para>The website of your distribution will probably have a user forum for asking questions.</para></listitem>
+<listitem><para>Post a question to a Usenet newsgroup like comp.os.linux or an IRC channel for users of your operating system</para></listitem>
+<listitem><para>Use a search engine to locate others who have encountered similar problems as you.</para></listitem>
+</itemizedlist>
+
+</sect1>
+
+
+<sect1 id="ts-errorbox">
+<title>An error box appeared</title>
+<para>Probably the most common error boxes seen is this one:</para>
+<screenshot>
+<screeninfo>Error dialog</screeninfo>
+<mediaobject>
+<imageobject><imagedata fileref="kscd19.png" format ="PNG"/></imageobject>
+<textobject><phrase>Error dialog</phrase></textobject>
+</mediaobject>
+</screenshot>
+
+<para>Information about fixing this dialog box is available in the <link linkend="questions-and-answers">Questions and 
+answers</link> section of this manual.</para>
+
+<para>If you recieve another error box, you should post the text from the error box on a forum for your distribution or enter this text in a search engine such 
+as <ulink url="http://www.google.com">Google</ulink>.</para>
+</sect1>
+</chapter>
+
 <chapter id="questions-and-answers">
 <title>Questions and answers</title>
 
@@ -677,6 +878,10 @@ help documention. Great Job David!</para>
 
 <para>Documentation updated for KDE 2.0, and copyright by Jonathan Singer
 <email>jsinger@leeta.net.</email></para>
+
+<para>Documentation updated for KDE 3.4, and copyright by Michael McBride
+&Mike.McBride.mail;</para>
+
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
 
 &underFDL;
@@ -709,8 +914,8 @@ url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ulink>.</para>
 
 &install.compile.documentation;
 	
-<para>Please inform the current maintainer, Dirk Foersterling, at
-<email>milliByte@gmlx.net</email> of any modification you had to undertake in
+<para>Please inform the current maintainer, Aaron Seigo, at
+&Aaron.J.Seigo.mail; of any modification you had to undertake in
 order to get &kscd; to compile on your platform.</para>
 
 </sect1>
