@@ -1356,7 +1356,7 @@ void KSCD::lookupDevice(void)
   // Initialise the album from the CD.
   cddbInfo.clear();
   trackStartFrames.clear();
-  cddbInfo.id = QString::number(cddb_discid(), 16);
+  cddbInfo.id = QString::number(cddb_discid(), 16).rightJustify(8,'0');
   unsigned numberOfTracks = wm_cd_getcountoftracks();
   cddbInfo.length = cd->trk[numberOfTracks].start - cd->trk[0].start;
   struct cdtext_info *info = wm_cd_get_cdtext();
