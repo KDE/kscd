@@ -948,7 +948,7 @@ void KSCD::discChanged(unsigned discId)
     }
     else
     {
-        cddbInfo.id = QString::number(discId, 16);
+        cddbInfo.id = QString::number(discId, 16).rightJustify(8,'0');
         cddbInfo.length = m_cd->discLength() / 1000;
         cddbInfo.artist = m_cd->discArtist();
         cddbInfo.title = m_cd->discTitle();
