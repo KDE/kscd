@@ -144,9 +144,6 @@
                             <property name="text">
                                 <string>E&amp;ject</string>
                             </property>
-                            <property name="accel">
-                                <string>Alt+J</string>
-                            </property>
                             <property name="flat">
                                 <bool>true</bool>
                             </property>
@@ -315,9 +312,6 @@
                             <property name="text">
                                 <string>R&amp;andom</string>
                             </property>
-                            <property name="accel">
-                                <string>Alt+A</string>
-                            </property>
                             <property name="toggleButton">
                                 <bool>true</bool>
                             </property>
@@ -332,9 +326,6 @@
                             <property name="text">
                                 <string>E&amp;xtras</string>
                             </property>
-                            <property name="accel">
-                                <string>Alt+X</string>
-                            </property>
                             <property name="flat">
                                 <bool>true</bool>
                             </property>
@@ -345,9 +336,6 @@
                             </property>
                             <property name="text">
                                 <string>Pla&amp;y</string>
-                            </property>
-                            <property name="accel">
-                                <string>Alt+Y</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
@@ -373,9 +361,6 @@
                             </property>
                             <property name="text">
                                 <string>&amp;CDDB</string>
-                            </property>
-                            <property name="accel">
-                                <string>Alt+C</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
@@ -405,9 +390,6 @@
                             <property name="text">
                                 <string>&amp;Next</string>
                             </property>
-                            <property name="accel">
-                                <string>Alt+N</string>
-                            </property>
                             <property name="flat">
                                 <bool>true</bool>
                             </property>
@@ -418,9 +400,6 @@
                             </property>
                             <property name="text">
                                 <string>Pre&amp;vious</string>
-                            </property>
-                            <property name="accel">
-                                <string>Alt+V</string>
                             </property>
                             <property name="flat">
                                 <bool>true</bool>
