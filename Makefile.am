@@ -13,14 +13,19 @@ noinst_HEADERS = kscd.h bwlednum.h ledlamp.h \
 
 kscd_SOURCES = panel.ui kscd.cpp kscd.skel ledlamp.cpp \
                docking.cpp bwlednum.cpp \
-               kcompactdisc.cpp \
                configWidget.cpp configWidgetUI.ui prefs.kcfgc cddbdlg.cpp
+
+noinst_LTLIBRARIES = libkcompactdisc.la
+libkcompactdisc_la_SOURCES = kcompactdisc.cpp
+
+libkcompactdisc_la_LIBADD = $(top_builddir)/kscd/libwm/libworkman.la
 
 kde_kcfg_DATA = kscd.kcfg
 
 kscd_LDFLAGS = $(all_libraries) $(KDE_RPATH)
-kscd_LDADD = $(top_builddir)/kscd/libwm/libworkman.la \
-             $(LIBCDROM) $(LIBCDAUDIO) $(LIBFPE) $(LIB_KIO) -lkutils $(top_builddir)/libkcddb/libkcddb.la
+kscd_LDADD = $(LIBCDROM) $(LIBCDAUDIO) \
+	     $(LIBFPE) $(LIB_KIO) -lkutils $(top_builddir)/libkcddb/libkcddb.la \
+	     $(top_builddir)/kscd/libkcompactdisc.la
 
 profiledata_DATA = kscd.profile.xml
 profiledatadir = $(kde_datadir)/profiles
