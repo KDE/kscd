@@ -48,7 +48,13 @@ class KCompactDisc :
 {
     Q_OBJECT
 public:
-    KCompactDisc();
+    enum InformationMode
+    {
+        Synchronous, // Return and emit signal when cdrom and cddb information arrives.
+        Asynchronous // Block until cdrom and cddb infromation has been obtained
+    };
+
+    KCompactDisc(InformationMode=Synchronous);
     virtual ~KCompactDisc();
 
     /**
@@ -277,6 +283,7 @@ private:
     void checkDeviceStatus();
     QString discStatus(int status);
     class KCompactDiscPrivate *d;
+    InformationMode m_infoMode;
 
 private slots:
     void timerExpired();
