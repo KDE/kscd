@@ -96,7 +96,7 @@ extern "C"
 const QString KCompactDisc::defaultDevice = DEFAULT_CD_DEVICE;
 const unsigned KCompactDisc::missingDisc = (unsigned)-1;
 
-KCompactDisc::KCompactDisc() :
+KCompactDisc::KCompactDisc(InformationMode infoMode) :
     m_device(QString::null),
     m_status(0),
     m_previousStatus(123456),
@@ -105,7 +105,8 @@ KCompactDisc::KCompactDisc() :
     m_artist(QString::null),
     m_title(QString::null),
     m_track(0),
-    m_previousTrack(99999999)
+    m_previousTrack(99999999),
+    m_infoMode(infoMode)
 {
     // Debug.
     // wm_cd_set_verbosity(0xffff);
@@ -285,7 +286,10 @@ bool KCompactDisc::setDevice(
         // Init CD-ROM and display.
         setVolume(volume);
     }
-    timer.start(1000, true);
+    if (m_infoMode == Asynchronous)
+        timerExpired();
+    else
+	timer.start(1000, true);
     return m_device != QString::null;
 }
 
