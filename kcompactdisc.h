@@ -188,6 +188,11 @@ public:
     unsigned tracks() const;
 
     /**
+     * @return if the track is actually an audio track.
+     */
+    bool isAudio(unsigned track) const;
+
+    /**
      * Length of current track.
      *
      * @return Track length in milliseconds.
