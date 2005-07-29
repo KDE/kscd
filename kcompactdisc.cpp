@@ -350,6 +350,13 @@ const QString &KCompactDisc::trackTitle(unsigned track) const
     return m_trackTitles[track - 1];
 }
 
+bool KCompactDisc::isAudio(unsigned track) const 
+{
+    if (NO_DISC || !TRACK_VALID(track))
+        return 0;
+    return !(cd->trk[track - 1].data);
+}
+
 /*
  * timerExpired
  *
