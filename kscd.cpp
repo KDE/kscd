@@ -125,6 +125,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   random_current      = random_list.begin();
 
   cddb = new KCDDB::Client();
+  connect(cddb, SIGNAL(finished(CDDB::Result)), this, SLOT(lookupCDDBDone(CDDB::Result)));
 
 #if defined(BUILD_CDDA)
   audio_systems_list
@@ -1268,7 +1269,6 @@ void KSCD::lookupCDDB()
 
     cddb->config().reparse();
     cddb->setBlockingMode(false);
-    connect(cddb, SIGNAL(finished(CDDB::Result)), this, SLOT(lookupCDDBDone(CDDB::Result)));
 
     cddb->lookup(trackStartFrames);
 } // lookupCDDB
