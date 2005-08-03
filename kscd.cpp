@@ -664,6 +664,7 @@ void KSCD::closeEvent(QCloseEvent *e)
         e->ignore();
         return;
     }
+    e->accept();
 }
 
 void KSCD::randomSelected()
