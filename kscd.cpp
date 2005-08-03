@@ -68,6 +68,7 @@
 
 #include <kwin.h>
 #include <netwm.h>
+#include <stdlib.h>
 
 #include <config.h>
 
