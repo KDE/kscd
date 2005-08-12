@@ -1525,7 +1525,9 @@ QString KSCD::calculateDisplayedTime(int sec)
 
 QString KSCD::calculateDisplayedTime(int sec, int track)
 {
-    // should check if tracknumber is valid.
+	if( track == 0 )
+			return QString::null;
+	// should check if tracknumber is valid.
     static int mymin;
     static int mysec;
     int tmp;
