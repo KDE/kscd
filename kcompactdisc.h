@@ -23,7 +23,7 @@
 
 #include <qobject.h>
 #include <qtimer.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 
 /**
  *  KCompactDisc - A CD drive interface for the KDE Project.
@@ -118,7 +118,7 @@ public:
     /**
      * CDDB signature of disc.
      */
-    const QValueList<unsigned> &discSignature() const { return m_trackStartFrames; }
+    const Q3ValueList<unsigned> &discSignature() const { return m_trackStartFrames; }
 
     /**
      * Artist for whole disc.
@@ -280,7 +280,7 @@ private:
     QString m_artist;
     QString m_title;
     unsigned m_tracks;
-    QValueList<unsigned> m_trackStartFrames;
+    Q3ValueList<unsigned> m_trackStartFrames;
     QStringList m_trackArtists;
     QStringList m_trackTitles;
     unsigned m_track;

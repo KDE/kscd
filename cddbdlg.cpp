@@ -2,7 +2,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <qkeycode.h>
+#include <qnamespace.h>
 #include <qdatetime.h>
 #include <qtextstream.h>
 #include <qfile.h>

@@ -26,6 +26,11 @@
 #define __KSCD__
 
 #include "bwlednum.h"
+//Added by qt3to4:
+#include <QGridLayout>
+#include <QKeyEvent>
+#include <QEvent>
+#include <QCloseEvent>
 
 // CD support.
 class KCompactDisc;
@@ -43,10 +48,10 @@ class KCompactDisc;
 #include <qcombobox.h>
 #include <qscrollbar.h>
 #include <qslider.h>
-#include <qtabdialog.h>
+#include <q3tabdialog.h>
 #include <qtooltip.h>
-#include <qpopupmenu.h>
-#include <qvaluelist.h>
+#include <q3popupmenu.h>
+#include <q3valuelist.h>
 
 #include "ledlamp.h"
 #include "panel.h"
@@ -67,7 +72,7 @@ class KToggleAction;
 
 using namespace KCDDB;
 
-typedef QValueList<int> RandomList;
+typedef Q3ValueList<int> RandomList;
 
 class KSCD : public kscdPanelDlg, public KSessionManaged, virtual public DCOPObject {
 
@@ -182,8 +187,8 @@ protected:
 private:
     KConfigDialog   *configDialog;
     CDDBDlg         *cddialog;
-    QPopupMenu      *mainPopup;
-    QPopupMenu      *infoPopup;
+    Q3PopupMenu      *mainPopup;
+    Q3PopupMenu      *infoPopup;
 
     BW_LED_Number       *trackTimeLED[6];
 

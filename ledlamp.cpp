@@ -23,10 +23,12 @@
 #include <qbrush.h>
 #include <qpen.h>
 #include <qcolor.h>
+//Added by qt3to4:
+#include <Q3Frame>
 #include "ledlamp.h"
 #include "ledlamp.moc"
 
-LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent), 
+LedLamp::LedLamp(QWidget *parent, Type t) : Q3Frame(parent), 
   w( 10 ), h( 7 ), dx( 4 )
 {
   // Make sure we're in a sane state

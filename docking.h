@@ -33,8 +33,10 @@
 #include <qapplication.h>
 #include <qpixmap.h>
 #include <qtimer.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qpoint.h>
+//Added by qt3to4:
+#include <QWheelEvent>
 #include <kdockwindow.h>
 
 class KSCD;

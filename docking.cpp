@@ -24,8 +24,12 @@
 #include "docking.h"
 #include "kscd.h"
 
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qtooltip.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QWheelEvent>
+#include <Q3PopupMenu>
 
 #include <kaboutdata.h>
 #include <kactioncollection.h>
@@ -51,7 +55,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     m_forwardPix = loadIcon("player_end");
 
     // popup menu for right mouse button
-    QPopupMenu* popup = contextMenu();
+    Q3PopupMenu* popup = contextMenu();
 
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_play", KIcon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_stop", KIcon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
@@ -74,7 +78,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
     delete m_popup;
     m_popup = new KPassivePopup(this);
 
-    QHBox* box = new QHBox(m_popup);
+    Q3HBox* box = new Q3HBox(m_popup);
     
     if (addButtons)
     {
@@ -120,7 +124,7 @@ void DockWidget::setToolTip(const QString& text)
 
 void DockWidget::wheelEvent(QWheelEvent *e)
 {
-    if (e->orientation() == Horizontal)
+    if (e->orientation() == Qt::Horizontal)
         return;
 
     KSCD* kscd = dynamic_cast<KSCD*>(parent());
@@ -129,7 +133,7 @@ void DockWidget::wheelEvent(QWheelEvent *e)
 
     switch (e->state())
     {
-        case ShiftButton:
+	    case QT::ShiftButton:
         {
             if (e->delta() > 0)
             {

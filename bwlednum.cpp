@@ -11,6 +11,11 @@
 #include "bwlednum.h"
 #include "qbitarray.h"
 #include "qpainter.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <Q3PointArray>
+#include <Q3Frame>
+#include <QResizeEvent>
 #include <stdio.h>
 
 #include "bwlednum.moc"
@@ -37,7 +42,7 @@ static char segs[14][8] =
 
 
 BW_LED_Number::BW_LED_Number( QWidget *parent, const char *name )
-  : QFrame( parent, name ){
+  : Q3Frame( parent, name ){
 
 
     offcolor = QColor(100,0,0);
@@ -46,7 +51,7 @@ BW_LED_Number::BW_LED_Number( QWidget *parent, const char *name )
     current_symbol = ' ';
     old_segments = &segs[13][0];      // nothing
     current_segments = &segs[13][0];  // nothing
-    setLEDColor(yellow,black);
+    setLEDColor(Qt::yellow,Qt::black);
 
 }
 
@@ -294,7 +299,7 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
 
 
   QBrush brush(g.light());
-  QPointArray pts;
+  Q3PointArray pts;
 
 
   pt.ry() += (QCOORD)Width/2;

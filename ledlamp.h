@@ -23,10 +23,10 @@
 #ifndef LED_LAMP_H
 #define LED_LAMP_H
 
-#include <qframe.h>
+#include <q3frame.h>
 
 
-class LedLamp : public QFrame
+class LedLamp : public Q3Frame
 {
   Q_OBJECT
 public:

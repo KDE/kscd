@@ -25,10 +25,16 @@
 #include <qregexp.h>
 #include <qtextstream.h>
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qapplication.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
+//Added by qt3to4:
+#include <Q3CString>
+#include <QCloseEvent>
+#include <QKeyEvent>
+#include <QEvent>
+#include <Q3PopupMenu>
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
@@ -163,31 +169,31 @@ KSCD::KSCD( QWidget *parent, const char *name )
   m_actions = new KActionCollection(this);
 
   KAction* action;
-  action = new KAction(i18n("Play/Pause"), Key_P, this, SLOT(playClicked()), m_actions, "Play/Pause");
-  action = new KAction(i18n("Stop"), Key_S, this, SLOT(stopClicked()), m_actions, "Stop");
-  action = new KAction(i18n("Previous"), Key_B, this, SLOT(prevClicked()), m_actions, "Previous");
-  action = new KAction(i18n("Next"), Key_N, this, SLOT(nextClicked()), m_actions, "Next");
+  action = new KAction(i18n("Play/Pause"), Qt::Key_P, this, SLOT(playClicked()), m_actions, "Play/Pause");
+  action = new KAction(i18n("Stop"), Qt::Key_S, this, SLOT(stopClicked()), m_actions, "Stop");
+  action = new KAction(i18n("Previous"), Qt::Key_B, this, SLOT(prevClicked()), m_actions, "Previous");
+  action = new KAction(i18n("Next"), Qt::Key_N, this, SLOT(nextClicked()), m_actions, "Next");
   action = KStdAction::quit(this, SLOT(quitClicked()), m_actions);
   action = KStdAction::keyBindings(this, SLOT(configureKeys()), m_actions, "options_configure_shortcuts");
   action = KStdAction::keyBindings(this, SLOT(configureGlobalKeys()), m_actions, "options_configure_globals");
   action = KStdAction::preferences(this, SLOT(showConfig()), m_actions);
-  action = new KAction(i18n("Loop"), Key_L, this, SLOT(loopClicked()), m_actions, "Loop");
-  action = new KAction(i18n("Eject"), CTRL + Key_E, this, SLOT(ejectClicked()), m_actions, "Eject");
-  action = new KAction(i18n("Increase Volume"), Key_Plus, this, SLOT(incVolume()), m_actions, "IncVolume");
+  action = new KAction(i18n("Loop"), Qt::Key_L, this, SLOT(loopClicked()), m_actions, "Loop");
+  action = new KAction(i18n("Eject"), Qt::CTRL + Qt::Key_E, this, SLOT(ejectClicked()), m_actions, "Eject");
+  action = new KAction(i18n("Increase Volume"), Qt::Key_Plus, this, SLOT(incVolume()), m_actions, "IncVolume");
   KShortcut increaseVolume = action->shortcut();
-  increaseVolume.append( KKey( Key_Equal ) );
+  increaseVolume.append( KKey( Qt::Key_Equal ) );
   action->setShortcut( increaseVolume );
-  action = new KAction(i18n("Decrease Volume"), Key_Minus, this, SLOT(decVolume()), m_actions, "DecVolume");
-  action = new KAction(i18n("Options"), CTRL + Key_T, this, SLOT(showConfig()), m_actions, "Options");
-  action = new KAction(i18n("Shuffle"), Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
-  action = new KAction(i18n("CDDB"), CTRL + Key_D, this, SLOT(CDDialogSelected()), m_actions, "CDDB");
-  
+  action = new KAction(i18n("Decrease Volume"), Qt::Key_Minus, this, SLOT(decVolume()), m_actions, "DecVolume");
+  action = new KAction(i18n("Options"), Qt::CTRL + Qt::Key_T, this, SLOT(showConfig()), m_actions, "Options");
+  action = new KAction(i18n("Shuffle"), Qt::Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
+  action = new KAction(i18n("CDDB"), Qt::CTRL + Qt::Key_D, this, SLOT(CDDialogSelected()), m_actions, "CDDB");
+
   m_actions->readShortcutSettings("Shortcuts");
-  
+
   m_actions->action( "options_configure_globals" )->setText( i18n( "Configure &Global Shortcuts..." ) );
-  
+
   initGlobalShortcuts();
-  
+
   setupPopups();
 
   if (Prefs::looping())
@@ -199,7 +205,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   setDocking(Prefs::docking());
 
-  setFocusPolicy(QWidget::NoFocus);
+  setFocusPolicy(Qt::NoFocus);
 
   songListCB->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
   adjustSize();
@@ -217,7 +223,7 @@ KSCD::~KSCD()
 void KSCD::initGlobalShortcuts() {
 
   m_globalAccel = new KGlobalAccel( this );
-  
+
   //Definition of global shortcuts is based on 'local' shortcuts which follow
   //the WIN key.
   m_globalAccel->insert("Next", i18n("Next"), 0, KKey("WIN+N"), KKey("WIN+Right"),
@@ -235,7 +241,7 @@ void KSCD::initGlobalShortcuts() {
                         this, SLOT(decVolume()));
   m_globalAccel->insert("Shuffle", i18n("Shuffle"), 0, KKey("WIN+R"), 0,
                         this, SLOT(incVolume()));
-  
+
   m_globalAccel->setConfigGroup( "GlobalShortcuts" );
   m_globalAccel->readSettings( kapp->config() );
   m_globalAccel->updateConnections();
@@ -331,9 +337,9 @@ void KSCD::setIcons()
 
 void KSCD::setupPopups()
 {
-    QPopupMenu* mainPopup   = new QPopupMenu(this);
+    Q3PopupMenu* mainPopup   = new Q3PopupMenu(this);
     infoPB->setPopup(mainPopup);
-    infoPopup   = new QPopupMenu (this);
+    infoPopup   = new Q3PopupMenu (this);
 
 
     infoPopup->insertItem("MusicMoz", 0);
@@ -846,7 +852,7 @@ void KSCD::decVolume()
 void KSCD::volChanged( int vol )
 {
     QString str;
-    str = QString::fromUtf8( QCString().sprintf(i18n("Vol: %02d%%").utf8(), Prefs::volume()) );
+    str = QString::fromUtf8( Q3CString().sprintf(i18n("Vol: %02d%%").utf8(), Prefs::volume()) );
     volumelabel->setText(str);
     m_cd->setVolume(vol);
     Prefs::setVolume(vol);
@@ -1053,7 +1059,7 @@ void KSCD::setColors()
     backdrop->setBackgroundColor(background_color);
 
     QColorGroup colgrp( led_color, background_color, led_color,led_color , led_color,
-                        led_color, white );
+                        led_color, Qt::white );
 
     titlelabel ->setPalette( QPalette(colgrp,colgrp,colgrp) );
     artistlabel->setPalette( QPalette(colgrp,colgrp,colgrp) );
@@ -1364,7 +1370,7 @@ void KSCD::cycletimeout()
 {
     cycletimer.stop();
     QString str;
-    str = QString::fromUtf8( QCString().sprintf(i18n("Vol: %02d%%").utf8(), Prefs::volume()) );
+    str = QString::fromUtf8( Q3CString().sprintf(i18n("Vol: %02d%%").utf8(), Prefs::volume()) );
     volumelabel->setText(str);
 } // cycletimeout
 

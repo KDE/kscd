@@ -13,11 +13,14 @@
 #ifndef BW_LED_NUM_H
 #define BW_LED_NUM_H
 
-#include "qframe.h"
+#include "q3frame.h"
 #include "qbitarray.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QResizeEvent>
 
 
-class BW_LED_Number : public QFrame
+class BW_LED_Number : public Q3Frame
 {
     Q_OBJECT
 
