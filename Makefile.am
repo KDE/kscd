@@ -25,7 +25,7 @@ kde_kcfg_DATA = kscd.kcfg
 kscd_LDFLAGS = $(all_libraries) $(KDE_RPATH)
 kscd_LDADD = $(LIBCDROM) $(LIBCDAUDIO) \
 	     $(LIBFPE) $(LIB_KIO) -lkutils $(top_builddir)/libkcddb/libkcddb.la \
-	     $(top_builddir)/kscd/libkcompactdisc.la
+	     libkcompactdisc.la
 
 profiledata_DATA = kscd.profile.xml
 profiledatadir = $(kde_datadir)/profiles
