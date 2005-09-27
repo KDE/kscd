@@ -73,6 +73,12 @@ public:
     void pause();
 
     /**
+     * If the url is a media:/ or system:/ URL returns
+     * the device it represents, otherwise returns device
+     */
+    static QString urlToDevice(const QString& device);
+
+    /**
      * @param device Name of CD device, e.g. /dev/cdrom.
      * @param digitalPlayback Select digial or analogue playback.
      * @param audioSystem For analogue playback, system to use, e.g. "arts".

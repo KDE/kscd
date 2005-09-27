@@ -786,7 +786,8 @@ void KSCD::setDevicePaths()
     {
         // This device did not seem usable.
         QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
-                            "Please make sure you have access permissions to:\n%1").arg(Prefs::cdDevice());
+                            "Please make sure you have access permissions to:\n%1").arg(
+			      KCompactDisc::urlToDevice(Prefs::cdDevice()));
         KMessageBox::error(this, str, i18n("Error"));
     }
     else
