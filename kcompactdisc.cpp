@@ -231,40 +231,47 @@ void KCompactDisc::play(unsigned startTrack, unsigned startTrackPosition, unsign
     wm_cd_play(TRACK_VALID(startTrack) ? startTrack : 1, startTrackPosition / 1000, TRACK_VALID(endTrack) ? endTrack : WM_ENDTRACK );
 }
 
+QString KCompactDisc::urlToDevice(const QString& device)
+{
+    KURL deviceUrl(device);
+    if (deviceUrl.protocol() == "media" || deviceUrl.protocol() == "system")
+    {
+        kdDebug() << "Asking mediamanager for " << deviceUrl.fileName() << endl;
+        DCOPRef mediamanager("kded", "mediamanager");
+        DCOPReply reply = mediamanager.call("properties(QString)", deviceUrl.fileName());
+        QStringList properties = reply;
+        if (!reply.isValid() || properties.count() < 6)
+        {
+            kdError() << "Invalid reply from mediamanager" << endl;
+	    return defaultDevice;
+        }
+        else
+        {
+            kdDebug() << "Reply from mediamanager " << properties[5] << endl;
+	    return properties[5];
+        }
+    }
+
+    return device;
+}
+
 bool KCompactDisc::setDevice(
-    const QString &device,
+    const QString &device_,
     unsigned volume,
     bool digitalPlayback,
     const QString &audioSystem,
     const QString &audioDevice)
 {
     timer.stop();
-    KURL deviceUrl(device);
-    if (deviceUrl.protocol() == "media")
-    {
-        kdDebug() << "Asking mediamanager for " << deviceUrl.path(-1).mid(1) << endl;
-        DCOPRef mediamanager("kded", "mediamanager");
-        // mediamanager does not like paths with leading /
-        DCOPReply reply = mediamanager.call("properties(QString)", deviceUrl.path(-1).mid(1));
-        if (!reply.isValid())
-        {
-            kdError() << "Invalid reply from mediamanager" << endl;
-            deviceUrl.setPath(defaultDevice);
-        }
-        else
-        {
-            QStringList properties = reply;
-            deviceUrl.setPath(properties[5]);
-            kdDebug() << "Reply from mediamanager " << properties[5] << endl;
-        }
-    }
+
+    QString device = urlToDevice(device_);
 
 #if !defined(BUILD_CDDA)
     digitalPlayback = false;
 #endif
     int status = wm_cd_init(
                     digitalPlayback ? WM_CDDA : WM_CDIN,
-                    QFile::encodeName(deviceUrl.path(-1)),
+                    QFile::encodeName(device),
                     digitalPlayback ? audioSystem.ascii() : 0,
                     digitalPlayback ? audioDevice.ascii() : 0,
                     0);
