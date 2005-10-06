@@ -760,6 +760,10 @@ void KSCD::configDone()
     setDocking(Prefs::docking());
 
     setDevicePaths();
+
+    volumeIcon->setEnabled(!Prefs::digitalPlayback());
+    volumeSlider->setEnabled(!Prefs::digitalPlayback());
+
     // dialog deletes itself
     configDialog = 0L;
 }
@@ -1098,6 +1102,9 @@ void KSCD::readSettings()
     {
         Prefs::setCdDevice(DEFAULT_CD_DEVICE);
     }
+
+    volumeIcon->setEnabled(!Prefs::digitalPlayback());
+    volumeSlider->setEnabled(!Prefs::digitalPlayback());
 }
 
 /**
