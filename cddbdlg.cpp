@@ -37,7 +37,7 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
     : KDialogBase( parent, name, false, i18n( "CD Editor" ),
       Ok|Cancel|User1|User2, Ok, true )
 {
-  KGlobal::locale()->insertCatalogue("libkcddb");
+  KGlobal::locale()->insertCatalog("libkcddb");
 
   m_dlgBase = new CDInfoDialogBase( this, "m_dlgBase" );
 

@@ -55,7 +55,7 @@
 #include <klocale.h>
 #include <kmainwindow.h>
 #include <kmessagebox.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kprotocolmanager.h>
 #include <krun.h>
 #include <kstandarddirs.h>
@@ -82,6 +82,7 @@
 #include <qtextcodec.h>
 #include <kcompactdisc.h>
 #include <fixx11h.h>
+#include <ktoolinvocation.h>
 
 static const char description[] = I18N_NOOP("KDE CD player");
 
@@ -1480,7 +1481,7 @@ void KSCD::keyPressEvent(QKeyEvent* e)
 
     if (e->key() == Qt::Key_F1)
     {
-        kapp->invokeHelp();
+        KToolInvocation::invokeHelp();
     }
     else if (isNum)
     {
@@ -1627,7 +1628,7 @@ int main( int argc, char *argv[] )
 
     k->setCaption(a.caption());
 
-    if (kapp->isRestored())
+    if (kapp->isSessionRestored())
     {
         KConfig* config = KApplication::kApplication()->sessionConfig();
         config->setGroup("General");

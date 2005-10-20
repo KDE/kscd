@@ -37,7 +37,7 @@
 #include <klocale.h>
 #include <kglobal.h>
 #include <kiconloader.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kpassivepopup.h>
 
 #include <kdebug.h>
