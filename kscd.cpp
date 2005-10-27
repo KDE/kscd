@@ -163,7 +163,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect(kapp, SIGNAL(kdisplayPaletteChanged()), this, SLOT(setColors()));
   connect(kapp, SIGNAL(iconChanged(int)), this, SLOT(setIcons()));
   QToolTip::remove(songListCB);
-  QToolTip::add(songListCB, i18n("Track list"));
+  songListCB->setToolTip( i18n("Track list"));
 
 
   // set up the actions and keyboard accels
@@ -542,7 +542,7 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
             justTheName = justTheName.right(justTheName.length() - 4);
 
             QToolTip::remove(songListCB);
-            QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
+            songListCB->setToolTip( i18n("Current track: %1").arg(justTheName));
         }
         timeSlider->setRange(0, trackLength ? trackLength - 1 : 0);
         QString str;
