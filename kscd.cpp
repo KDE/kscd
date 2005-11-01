@@ -244,7 +244,7 @@ void KSCD::initGlobalShortcuts() {
                         this, SLOT(incVolume()));
 
   m_globalAccel->setConfigGroup( "GlobalShortcuts" );
-  m_globalAccel->readSettings( kapp->config() );
+  m_globalAccel->readSettings( KGlobal::config() );
   m_globalAccel->updateConnections();
 }
 
