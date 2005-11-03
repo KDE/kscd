@@ -1545,7 +1545,7 @@ void KSCD::populateSongList(QString infoStatus)
         artistlabel->setText(QString("%1 - %2").arg(cddbInfo.artist, cddbInfo.title));
 
     songListCB->clear();
-    for (unsigned i = 0; i < cddbInfo.trackInfoList.count(); i++)
+    for (int  i = 0; i < cddbInfo.trackInfoList.count(); i++)
     {
         unsigned tmp = m_cd->trackLength(i + 1);
         unsigned mymin;
