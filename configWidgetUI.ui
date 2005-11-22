@@ -455,6 +455,18 @@
     <slot>kcfg_SelectEncoding_toggled(bool)</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
+<customwidgets>
+    <customwidget>
+        <class>KIntNumInput</class>
+        <header location="global">knuminput.h</header>
+        <container>0</container>
+    </customwidget>
+    <customwidget>
+        <class>KURLComboRequester</class>
+        <header location="global">kurlrequester.h</header>
+        <container>0</container>
+    </customwidget>
+</customwidgets>
 <includehints>
     <includehint>kfontrequester.h</includehint>
     <includehint>knuminput.h</includehint>
