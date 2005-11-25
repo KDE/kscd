@@ -538,7 +538,9 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
             QToolTip::remove(songListCB);
             QToolTip::add(songListCB, i18n("Current track: %1").arg(justTheName));
         }
+        timeSlider->blockSignals(true);
         timeSlider->setRange(0, trackLength ? trackLength - 1 : 0);
+        timeSlider->blockSignals(false);
         QString str;
         str.sprintf("%02d/%02d", track, m_cd->tracks());
         tracklabel->setText(str);
