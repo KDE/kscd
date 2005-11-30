@@ -70,6 +70,7 @@ extern "C"
 #include "libwm/include/wm_cdtext.h"
 #include "libwm/include/wm_config.h"
 #include "libwm/include/wm_cdinfo.h"
+#include "libwm/include/wm_helpers.h"
 
 // Sun, Ultrix etc. have a canonical CD device specified in the
 // respective plat_xxx.c file. On those platforms you need not
@@ -109,7 +110,7 @@ KCompactDisc::KCompactDisc(InformationMode infoMode) :
     m_infoMode(infoMode)
 {
     // Debug.
-    // wm_cd_set_verbosity(0xffff);
+    // wm_cd_set_verbosity(WM_MSG_LEVEL_DEBUG | WM_MSG_CLASS_ALL );
     m_trackArtists.clear();
     m_trackTitles.clear();
     m_trackStartFrames.clear();
@@ -217,7 +218,7 @@ bool KCompactDisc::isPaused() const
 
 bool KCompactDisc::isPlaying() const
 {
-    return WM_CDS_DISC_PLAYING(m_status) && (m_status != WM_CDM_PAUSED);
+    return WM_CDS_DISC_PLAYING(m_status) && (m_status != WM_CDM_PAUSED) && (m_status != WM_CDM_TRACK_DONE);
 }
 
 void KCompactDisc::pause()
@@ -293,6 +294,9 @@ bool KCompactDisc::setDevice(
         // Init CD-ROM and display.
         setVolume(volume);
     }
+
+    m_previousStatus = m_status = wm_cd_status();
+    
     if (m_infoMode == Asynchronous)
         timerExpired();
     else
@@ -373,6 +377,7 @@ bool KCompactDisc::isAudio(unsigned track) const
 void KCompactDisc::timerExpired()
 {
     m_status = wm_cd_status();
+
     if (WM_CDS_NO_DISC(m_status) || (m_device == QString::null))
     {
         if (m_previousStatus != m_status)
@@ -445,14 +450,13 @@ void KCompactDisc::timerExpired()
         }
         if (isPlaying())
         {
+            m_previousStatus = m_status;
             // Update the current playing position.
             emit trackPlaying(m_track, trackPosition());
         }
         else
         if (m_previousStatus != m_status)
         {
-            m_previousStatus = m_status;
-
             // If we are not playing, then we are either paused, or stopped.
             switch (m_status)
             {
@@ -463,9 +467,15 @@ void KCompactDisc::timerExpired()
                 emit trayOpening();
                 break;
             default:
+                if (m_previousStatus == WM_CDM_PLAYING || m_previousStatus == WM_CDM_PAUSED
+                      && m_status == WM_CDM_STOPPED)
+                {
                 emit discStopped();
+                }
                 break;
             }
+
+            m_previousStatus = m_status;
         }
     }
 

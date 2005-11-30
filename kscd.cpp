@@ -136,6 +136,9 @@ KSCD::KSCD( QWidget *parent, const char *name )
   // the volume slider
   volumeIcon->setPixmap(SmallIcon("player_volume"));
   volumeSlider->setValue(Prefs::volume());
+  QString str;
+  str = QString::fromUtf8( Q3CString().sprintf(i18n("Vol: %02d%%").utf8(), Prefs::volume()) );
+  volumelabel->setText(str);
   connect(volumeSlider, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
 
   /* FIXME check for return value */
@@ -143,6 +146,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect(m_cd, SIGNAL(trackPlaying(unsigned, unsigned)), this, SLOT(trackUpdate(unsigned, unsigned)));
   connect(m_cd, SIGNAL(trackPaused(unsigned, unsigned)), this, SLOT(trackUpdate(unsigned, unsigned)));
   connect(m_cd, SIGNAL(trackChanged(unsigned, unsigned)), this, SLOT(trackChanged(unsigned, unsigned)));
+  connect(m_cd, SIGNAL(discStopped()), this, SLOT(discStopped()));
   connect(m_cd, SIGNAL(discChanged(unsigned)), this, SLOT(discChanged(unsigned)));
   connect( &queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
@@ -383,8 +387,6 @@ void KSCD::playClicked()
 
     if (!m_cd->isPlaying())
     {
-        setLEDs(0);
-        resetTimeSlider(true);
         kapp->processEvents();
         kapp->flushX();
 
@@ -395,6 +397,9 @@ void KSCD::playClicked()
         }
         else
         {
+            setLEDs(0);
+            resetTimeSlider(true);
+
             if(Prefs::randomPlay())
             {
                 make_random_list();
@@ -430,6 +435,9 @@ void KSCD::setShuffle(int shuffle)
 {
     if (shuffle == 2) {
         if(Prefs::randomPlay() && m_cd->tracks() > 0) {
+            shufflePB->blockSignals(true);
+            shufflePB->setOn(true);
+            shufflePB->blockSignals(false);
             make_random_list(); /* koz: Build a unique, once, random list */
             if(m_cd->isPlaying())
                 nextClicked();
@@ -465,7 +473,7 @@ void KSCD::prevClicked()
 
     if (Prefs::randomPlay()) {
         track = prev_randomtrack();
-        if (track == 0) {
+        if (track == -1) {
             return;
         }
     } else {
@@ -482,7 +490,7 @@ void KSCD::prevClicked()
 
     kapp->processEvents();
     kapp->flushX();
-    m_cd->play(track, playlist.isEmpty() ? 0 : track);
+    m_cd->play(track, 0, playlist.isEmpty() ? 0 : track);
 } // prevClicked()
 
 bool KSCD::nextClicked()
@@ -510,7 +518,7 @@ bool KSCD::nextClicked()
 
     kapp->processEvents();
     kapp->flushX();
-    m_cd->play(track, playlist.isEmpty() ? 0 : track + 1);
+    m_cd->play(track, 0, Prefs::randomPlay() || !playlist.isEmpty() ? track + 1 : 0);
     return true;
 } // nextClicked()
 
@@ -560,25 +568,25 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
 } //trackChanged(int track)
 
 
-void KSCD::jumpToTime(int seconds, bool forcePlay)
+void KSCD::jumpToTime(int ms, bool forcePlay)
 {
     kapp->processEvents();
     kapp->flushX();
 
     int track = m_cd->track();
     if ((m_cd->isPlaying() || forcePlay) &&
-        seconds < (int)m_cd->trackLength())
+        ms < (int)m_cd->trackLength())
     {
         if(Prefs::randomPlay() || !playlist.isEmpty())
         {
-            m_cd->play(track, seconds, track + 1);
+            m_cd->play(track, ms, track + 1);
         }
         else
         {
-            m_cd->play(track, seconds);
+            m_cd->play(track, ms);
         }
     }
-} // jumpToTime(int seconds)
+} // jumpToTime(int ms)
 
 void KSCD::timeSliderPressed()
 {
@@ -793,13 +801,6 @@ void KSCD::setDevicePaths()
 			      KCompactDisc::urlToDevice(Prefs::cdDevice()));
         KMessageBox::error(this, str, i18n("Error"));
     }
-    else
-    {
-        if (Prefs::autoplay() && !m_cd->isPlaying())
-        {
-            playClicked();
-        }
-    }
 } // setDevicePath()
 
 void KSCD::setDocking(bool dock)
@@ -856,7 +857,7 @@ void KSCD::decVolume()
 void KSCD::volChanged( int vol )
 {
     QString str;
-    str = QString::fromUtf8( Q3CString().sprintf(i18n("Vol: %02d%%").utf8(), Prefs::volume()) );
+    str = QString::fromUtf8( Q3CString().sprintf(i18n("Vol: %02d%%").utf8(), vol) );
     volumelabel->setText(str);
     m_cd->setVolume(vol);
     Prefs::setVolume(vol);
@@ -932,7 +933,6 @@ int KSCD::prev_randomtrack()
     {
         if(!Prefs::looping())
         {
-            m_cd->stop();
             return -1;
         }
         else
@@ -1002,6 +1002,11 @@ void KSCD::discChanged(unsigned discId)
     //totaltimelabel->clear();
     totaltimelabel->lower();
 
+    if (Prefs::autoplay() && !m_cd->isPlaying())
+    {
+        playClicked();
+    }
+
     // We just populated the GUI with what we got from the CD. Now look for
     // more from the Internet...
     lookupCDDB();
@@ -1009,11 +1014,30 @@ void KSCD::discChanged(unsigned discId)
 
 void KSCD::discStopped()
 {
-    statuslabel->setText(i18n("Stopped"));
     if (Prefs::ejectOnFinish() && !stoppedByUser && (m_cd->discId() != KCompactDisc::missingDisc))
     {
         ejectClicked();
     }
+
+    if (!stoppedByUser)
+    {
+      if (Prefs::randomPlay())
+      {
+        // If nextClicked returns false, it was the last
+        // random track, and the player should be stopped
+        if (nextClicked())
+          return;
+      }
+      else if (Prefs::looping())
+      {
+        playClicked();
+        return;
+      }
+    }
+    
+    statuslabel->setText(i18n("Stopped"));
+    playPB->setText(i18n("Play"));
+    playPB->setIconSet(SmallIconSet("player_play"));
 
     /* reset to initial value, only stopclicked() sets this to true */
     stoppedByUser = false;
@@ -1331,10 +1355,13 @@ void KSCD::trackUpdate(unsigned /*track*/, unsigned trackPosition)
         tmp = trackPosition;
         break;
     }
+    if (updateTime)
+    {
     setLEDs(tmp);
     timeSlider->blockSignals(true);
     timeSlider->setValue(trackPosition);
     timeSlider->blockSignals(false);
+    }
 }
 
 void KSCD::cycleplaytimemode()
