@@ -33,7 +33,6 @@ Name[sl]=Predvajaj
 Name[sv]=Spela
 Name[ta]=தொடங்கு
 Name[uk]=Пуск
-Name[xx]=xxPlayxx
 Name[zh_CN]=播放
 Exec=kscd -s -caption "%c" %i %m %u
 Icon=kscd
