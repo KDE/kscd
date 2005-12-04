@@ -29,6 +29,7 @@
 #include <qvbox.h>
 #include <qapplication.h>
 #include <qgroupbox.h>
+#include <qsqlpropertymap.h>
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
@@ -190,6 +191,10 @@ KSCD::KSCD( QWidget *parent, const char *name )
   m_actions->readShortcutSettings("Shortcuts");
   
   m_actions->action( "options_configure_globals" )->setText( i18n( "Configure &Global Shortcuts..." ) );
+
+  kapp->installKDEPropertyMap();
+  QSqlPropertyMap *map = QSqlPropertyMap::defaultMap();
+  map->insert("KComboBox", "currentText");
   
   initGlobalShortcuts();
   
