@@ -135,12 +135,12 @@ unsigned KCompactDisc::discLength() const
 {
     if (NO_DISC || !m_tracks)
         return 0;
-    return FRAMES_TO_MS(m_trackStartFrames[m_tracks - 1] - m_trackStartFrames[0]);
+    return FRAMES_TO_MS(m_trackStartFrames[m_tracks+1] - m_trackStartFrames[0]);
 }
 
 unsigned KCompactDisc::discPosition() const
 {
-    return cur_pos_abs * 1000;
+    return cur_pos_abs * 1000 - FRAMES_TO_MS(m_trackStartFrames[0]);
 }
 
 QString KCompactDisc::discStatus(int status)
