@@ -33,6 +33,7 @@
 
 #include <kaboutdata.h>
 #include <kactioncollection.h>
+#include <kaction.h>
 #include <kapplication.h>
 #include <klocale.h>
 #include <kglobal.h>
@@ -55,7 +56,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     m_forwardPix = loadIcon("player_end");
 
     // popup menu for right mouse button
-    Q3PopupMenu* popup = contextMenu();
+    KMenu* popup = contextMenu();
 
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_play", KIcon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_stop", KIcon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
@@ -133,7 +134,7 @@ void DockWidget::wheelEvent(QWheelEvent *e)
 
     switch (e->state())
     {
-	    case QT::ShiftButton:
+	    case Qt::ShiftButton:
         {
             if (e->delta() > 0)
             {

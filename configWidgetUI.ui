@@ -250,7 +250,7 @@
                         <string>The CD-ROM device to use when playing CDs. This will typically look something like "/dev/cdrom". To have KsCD autodetect your CD-ROM, leave this field empty.</string>
                     </property>
                 </widget>
-                <widget class="QComboBox" row="2" column="2">
+                <widget class="KComboBox" row="2" column="2">
                     <property name="name">
                         <cstring>kcfg_AudioSystem</cstring>
                     </property>

@@ -7,7 +7,10 @@
 #include "libkcddb/cddb.h"
 #include "libkcddb/client.h"
 
-class CDInfoDialogBase;
+namespace KCDDB
+{
+class CDInfoDialog;
+}
 
 class CDDBDlg : public KDialogBase
 {
@@ -37,7 +40,7 @@ class CDDBDlg : public KDialogBase
     void updateFromDialog();
     QString framesTime(unsigned frames);
 
-    CDInfoDialogBase *m_dlgBase;
+    KCDDB::CDInfoDialog *m_dlgBase;
     KCDDB::CDInfo cddbInfo;
     KCDDB::TrackOffsetList trackStartFrames;
     QStringList playlist;

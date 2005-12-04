@@ -35,6 +35,8 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <Q3PopupMenu>
+#include <Q3SqlPropertyMap>
+#include <stdlib.h>
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
@@ -197,6 +199,10 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   m_actions->action( "options_configure_globals" )->setText( i18n( "Configure &Global Shortcuts..." ) );
 
+  kapp->installKDEPropertyMap();
+  Q3SqlPropertyMap *map = Q3SqlPropertyMap::defaultMap();
+  map->insert("KComboBox", "currentText");
+
   initGlobalShortcuts();
 
   setupPopups();
@@ -231,20 +237,21 @@ void KSCD::initGlobalShortcuts() {
 
   //Definition of global shortcuts is based on 'local' shortcuts which follow
   //the WIN key.
-  m_globalAccel->insert("Next", i18n("Next"), 0, KKey("WIN+N"), KKey("WIN+Right"),
+  // FIXME What about the alternatice keyboard shortcuts?
+  m_globalAccel->insert("Next", i18n("Next"), 0, KKey("WIN+N"), /*KKey("WIN+Right"),*/
                         this, SLOT(nextClicked()));
   //NOTE: WIN+B collidates with amarok's default global shortcut.
-  m_globalAccel->insert("Previous", i18n("Previous"), 0, KKey("WIN+B"), KKey("WIN+Left"),
+  m_globalAccel->insert("Previous", i18n("Previous"), 0, KKey("WIN+B"), /*KKey("WIN+Left"),*/
                         this, SLOT(prevClicked()));
-  m_globalAccel->insert("Play/Pause", i18n("Play/Pause"), 0, KKey("WIN+P"), 0,
+  m_globalAccel->insert("Play/Pause", i18n("Play/Pause"), 0, KKey("WIN+P"), /*0,*/
                         this, SLOT(playClicked()));
-  m_globalAccel->insert("Stop", i18n("Stop"), 0, KKey("WIN+S"), 0,
+  m_globalAccel->insert("Stop", i18n("Stop"), 0, KKey("WIN+S"), /*0,*/
                         this, SLOT(stopClicked()));
-  m_globalAccel->insert("IncVolume", i18n("Increase Volume"), 0, KKey("WIN+Plus"), KKey("WIN+Up"),
+  m_globalAccel->insert("IncVolume", i18n("Increase Volume"), 0, KKey("WIN+Plus"), /*KKey("WIN+Up"),*/
                         this, SLOT(incVolume()));
-  m_globalAccel->insert("DecVolume", i18n("Decrease Volume"), 0, KKey("WIN+Minus"), KKey("WIN+Down"),
+  m_globalAccel->insert("DecVolume", i18n("Decrease Volume"), 0, KKey("WIN+Minus"), /*KKey("WIN+Down"),*/
                         this, SLOT(decVolume()));
-  m_globalAccel->insert("Shuffle", i18n("Shuffle"), 0, KKey("WIN+R"), 0,
+  m_globalAccel->insert("Shuffle", i18n("Shuffle"), 0, KKey("WIN+R"), /*0,*/
                         this, SLOT(incVolume()));
 
   m_globalAccel->setConfigGroup( "GlobalShortcuts" );
@@ -559,7 +566,7 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
         str.sprintf("%02d/%02d", track, m_cd->tracks());
         tracklabel->setText(str);
 
-        QString title = cddbInfo.trackInfoList[track-1].title;
+        QString title = cddbInfo.trackInfoList[track-1].get("title").toString();
         titlelabel->setText(title);
         tooltip += "/";
         tooltip += KStringHandler::rsqueeze(title, 30);
@@ -959,25 +966,26 @@ void KSCD::discChanged(unsigned discId)
     }
     else
     {
-        cddbInfo.id = QString::number(discId, 16).rightJustify(8,'0');
-        cddbInfo.length = m_cd->discLength() / 1000;
-        cddbInfo.artist = m_cd->discArtist();
-        cddbInfo.title = m_cd->discTitle();
+        cddbInfo.set("discid", QString::number(discId, 16).rightJustify(8,'0'));
+        cddbInfo.set("length", m_cd->discLength() / 1000);
+        cddbInfo.set("artist", m_cd->discArtist());
+        cddbInfo.set("title", m_cd->discTitle());
 
         // If it's a sampler, we'll do artist/title.
-        bool isSampler = (cddbInfo.title.compare("Various") == 0);
+        bool isSampler = (cddbInfo.get("title").toString().compare("Various") == 0);
         KCDDB::TrackInfo track;
         for (unsigned i = 1; i <= m_cd->tracks(); i++)
         {
             if (isSampler)
             {
-                track.title = m_cd->trackArtist(i);
-                track.title.append("/");
-                track.title.append(m_cd->trackTitle(i));
+	        QString title = m_cd->trackArtist(i);
+		title.append("/");
+		title.append(m_cd->trackTitle(i));
+                track.set("title", title);
             }
             else
             {
-                track.title = m_cd->trackTitle(i);
+                track.set("title", m_cd->trackTitle(i));
             }
 
             // FIXME: KDE4
@@ -1207,8 +1215,8 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
       uint maxrev = 0;
       uint c = 0;
       for ( it = cddb_info.begin(); it != cddb_info.end(); ++it  ) {
-        list.append( QString("%1, %2, %3").arg((*it).artist).arg((*it).title)
-            .arg((*it).genre));
+        list.append( QString("%1, %2, %3").arg((*it).get("artist").toString())
+	    .arg((*it).get("title").toString()).arg((*it).get("genre").toString()));
         KCDDB::CDInfo cinfo = *it;
         if ( ( *it ).revision >= maxrev ) {
           maxrev = info.revision;
@@ -1410,10 +1418,10 @@ void KSCD::information(int i)
 {
     //kdDebug(67000) << "Information " << i << "\n" << endl;
 
-    if(cddbInfo.artist.isEmpty())
+    if(cddbInfo.get("artist").toString().isEmpty())
         return;
 
-    QString encodedArtist = KURL::encode_string_no_slash(cddbInfo.artist);
+    QString encodedArtist = KURL::encode_string_no_slash(cddbInfo.get("artist").toString());
 
     QString str;
 
@@ -1542,17 +1550,17 @@ void KSCD::jumpTracks()
 QString KSCD::currentTrackTitle()
 {
     int track = m_cd->track();
-    return (track > -1) ? cddbInfo.trackInfoList[track-1].title : QString::null;
+    return (track > -1) ? cddbInfo.trackInfoList[track-1].get("title").toString() : QString::null;
 }
 
 QString KSCD::currentAlbum()
 {
-  return cddbInfo.title;
+  return cddbInfo.get("title").toString();
 }
 
 QString KSCD::currentArtist()
 {
-        return cddbInfo.artist;
+        return cddbInfo.get("artist").toString();
 }
 
 QStringList KSCD::trackList()
@@ -1560,7 +1568,7 @@ QStringList KSCD::trackList()
   QStringList tracks;
   for (TrackInfoList::const_iterator it = cddbInfo.trackInfoList.begin();
       it != cddbInfo.trackInfoList.end(); ++it)
-    tracks << (*it).title;
+    tracks << (*it).get("title").toString();
 
   return tracks;
 }
@@ -1571,7 +1579,8 @@ void KSCD::populateSongList(QString infoStatus)
     if (!infoStatus.isEmpty())
         artistlabel->setText(infoStatus);
     else
-        artistlabel->setText(QString("%1 - %2").arg(cddbInfo.artist, cddbInfo.title));
+        artistlabel->setText(QString("%1 - %2").arg(cddbInfo.get("artist").toString(),
+	                               cddbInfo.get("title").toString()));
 
     songListCB->clear();
     for (int  i = 0; i < cddbInfo.trackInfoList.count(); i++)
@@ -1585,7 +1594,7 @@ void KSCD::populateSongList(QString infoStatus)
         str1.sprintf("%02d: ", i + 1);
         QString str2;
         str2.sprintf(" (%02d:%02d) ", mymin,  mysec);
-        str1.append(cddbInfo.trackInfoList[i].title);
+        str1.append(cddbInfo.trackInfoList[i].get("title").toString());
         str1.append(str2);
         songListCB->insertItem(str1);
     }

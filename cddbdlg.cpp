@@ -26,7 +26,7 @@
 #include "version.h"
 #include "kscd.h"
 #include "cddbdlg.h"
-#include "libkcddb/cdinfodialogbase.h"
+#include "libkcddb/cdinfodialog.h"
 
 struct mytoc
 {
@@ -39,7 +39,7 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
 {
   KGlobal::locale()->insertCatalog("libkcddb");
 
-  m_dlgBase = new CDInfoDialogBase( this, "m_dlgBase" );
+  m_dlgBase = new KCDDB::CDInfoDialog( this );
 
   setMainWidget( m_dlgBase );
 
@@ -121,7 +121,7 @@ bool CDDBDlg::validInfo()
 {
   KCDDB::CDInfo copy = m_dlgBase->info();
 
-  if (copy.artist.isEmpty())
+  if (copy.get("artist").toString().isEmpty())
   {
     KMessageBox::sorry(this,
         i18n("The artist name of the disc has to be entered.\n"
@@ -130,7 +130,7 @@ bool CDDBDlg::validInfo()
     return false;
   }
 
-  if (copy.title.isEmpty())
+  if (copy.get("title").toString().isEmpty())
   {
     KMessageBox::sorry(this,
         i18n("The title of the disc has to be entered.\n"
@@ -142,7 +142,7 @@ bool CDDBDlg::validInfo()
   bool have_nonempty_title = false;
   for (unsigned i = 0; i < copy.trackInfoList.count(); i++)
   {
-      if (!copy.trackInfoList[i].title.isEmpty())
+      if (!copy.trackInfoList[i].get("title").toString().isEmpty())
       {
           have_nonempty_title = true;
           break;
