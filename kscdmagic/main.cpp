@@ -2,7 +2,7 @@
 
   $Id$
 
-  kscdmagic 2.0   Dirk Försterling <milliByte@gmx.de>
+  kscdmagic 2.0   Dirk FÃ¶rsterling <milliByte@gmx.de>
 
   based on:
 
@@ -191,9 +191,9 @@ main(int argc, char **argv)
   KAboutData aboutData( "kscdmagic", I18N_NOOP("kscdmagic"),
 			KSCDMAGICVERSION, I18N_NOOP("sound visualisation"), 
 			KAboutData::License_GPL,
-			"(c) 2000, Dirk Försterling");
+			"(c) 2000, Dirk FÃ¶rsterling");
   aboutData.addAuthor("Paul Harrison",0, "pfh@yoyo.cc.monash.edu.au");
-  aboutData.addAuthor("Dirk Försterling",0, "milliByte@gmx.net");
+  aboutData.addAuthor("Dirk FÃ¶rsterling",0, "milliByte@gmx.net");
 
   KCmdLineArgs::init( argc, argv, &aboutData );
 

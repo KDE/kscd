@@ -1,11 +1,11 @@
-Wed May 31 06:18:21 2000  Dirk Försterling  <milliByte@gmx.de>
+Wed May 31 06:18:21 2000  Dirk FÃ¶rsterling  <milliByte@gmx.de>
 	
 	* Switched from stand alone WorkMan code to libworkman.
 	* Fixed Bugs 296, 298, 299, 301, 371, 815, 1186, 2278, 2354, 
 	* 2429, 2559 and 2586 or verified that they were already fixed.
 	* updated ChangeLog.
 
-Sat May 27 09:43:58 2000  Dirk Försterling  <milliByte@gmx.de>
+Sat May 27 09:43:58 2000  Dirk FÃ¶rsterling  <milliByte@gmx.de>
 
 	* Updated Kscd Magic from Synaesthesia 1.3 to Synaesthesia 2.0
 	* Fixed missing slot in CDDB configuration
@@ -14,7 +14,7 @@ Sat May 27 09:43:58 2000  Dirk Försterling  <milliByte@gmx.de>
 	* addressed the 100dpi font problem (Thanks to John R
 	MacMillan <john@weirdways.com> for sending an idea for a fix).
 
-Sun Mar  5 10:54:40 2000  Dirk Försterling  <milliByte@gmx.de>
+Sun Mar  5 10:54:40 2000  Dirk FÃ¶rsterling  <milliByte@gmx.de>
 
 	* Completed shuffle mode (some patch data was missing) and
 	added corresponding "shuffle" Display string.
@@ -22,7 +22,7 @@ Sun Mar  5 10:54:40 2000  Dirk Försterling  <milliByte@gmx.de>
 	playing mode but a modifier. You can now loop "playing" mode and
 	"shuffle" mode. 
 
-Mon Feb 28 07:27:04 2000  Dirk Försterling  <milliByte@gmx.de>
+Mon Feb 28 07:27:04 2000  Dirk FÃ¶rsterling  <milliByte@gmx.de>
 
 	* Added "random is shuffle" patch from 
 	Bernard Kozioziemski <koz@tdl.com>
@@ -31,7 +31,7 @@ Mon Feb 28 07:27:04 2000  Dirk Försterling  <milliByte@gmx.de>
 	to understand the code. (And I _love_ source documentation
 	(comments) ...)
 
-Tue Jan 18 17:27:26 2000  Dirk Försterling  <milliByte@DeathsDoor.com>
+Tue Jan 18 17:27:26 2000  Dirk FÃ¶rsterling  <milliByte@DeathsDoor.com>
 
 	* Added the libWorkMan directory and inserted it into the make
 	process. Please note, that libWorkMan will be built and installed,
