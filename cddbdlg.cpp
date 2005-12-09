@@ -140,7 +140,7 @@ bool CDDBDlg::validInfo()
   }
 
   bool have_nonempty_title = false;
-  for (unsigned i = 0; i < copy.trackInfoList.count(); i++)
+  for (int i = 0; i < copy.trackInfoList.count(); i++)
   {
       if (!copy.trackInfoList[i].get("title").toString().isEmpty())
       {
@@ -172,7 +172,7 @@ void CDDBDlg::updateFromDialog()
 
   QString teststr;
   bool ok;
-  unsigned num;
+  int num;
 
   for ( QStringList::Iterator it = strlist.begin();
         it != strlist.end();

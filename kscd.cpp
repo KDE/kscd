@@ -1232,7 +1232,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
               this );
       if ( ok ) {
         // The user selected and item and pressed OK
-        uint c = 0;
+        int c = 0;
         for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
           if( *it == res)  break;
           c++;
