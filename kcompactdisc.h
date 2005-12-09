@@ -124,7 +124,7 @@ public:
     /**
      * CDDB signature of disc.
      */
-    const Q3ValueList<unsigned> &discSignature() const { return m_trackStartFrames; }
+    const QList<unsigned> &discSignature() const { return m_trackStartFrames; }
 
     /**
      * Artist for whole disc.
@@ -286,7 +286,7 @@ private:
     QString m_artist;
     QString m_title;
     unsigned m_tracks;
-    Q3ValueList<unsigned> m_trackStartFrames;
+    QList<unsigned> m_trackStartFrames;
     QStringList m_trackArtists;
     QStringList m_trackTitles;
     unsigned m_track;

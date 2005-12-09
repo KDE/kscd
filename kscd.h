@@ -51,7 +51,6 @@ class KCompactDisc;
 #include <q3tabdialog.h>
 #include <qtooltip.h>
 #include <q3popupmenu.h>
-#include <q3valuelist.h>
 
 #include "ledlamp.h"
 #include "panel.h"
@@ -72,7 +71,7 @@ class KToggleAction;
 
 using namespace KCDDB;
 
-typedef Q3ValueList<int> RandomList;
+typedef QList<int> RandomList;
 
 class KSCD : public kscdPanelDlg, public KSessionManaged, virtual public DCOPObject {
 
