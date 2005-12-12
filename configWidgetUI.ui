@@ -119,7 +119,6 @@
                     </property>
                     <property name="font">
                         <font>
-                            <pointsize>10</pointsize>
                             <bold>1</bold>
                         </font>
                     </property>
@@ -250,17 +249,6 @@
                         <string>The CD-ROM device to use when playing CDs. This will typically look something like "/dev/cdrom". To have KsCD autodetect your CD-ROM, leave this field empty.</string>
                     </property>
                 </widget>
-                <widget class="KComboBox" row="2" column="2">
-                    <property name="name">
-                        <cstring>kcfg_AudioSystem</cstring>
-                    </property>
-                    <property name="insertionPolicy">
-                        <enum>NoInsertion</enum>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
                 <widget class="QLabel" row="3" column="0">
                     <property name="name">
                         <cstring>textLabel5</cstring>
@@ -299,13 +287,21 @@
                     <property name="indent">
                         <number>0</number>
                     </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>kcfg_AudioSystem</cstring>
-                    </property>
                 </widget>
                 <widget class="KURLRequester" row="3" column="1" rowspan="1" colspan="2">
                     <property name="name">
                         <cstring>kcfg_AudioDevice</cstring>
+                    </property>
+                </widget>
+                <widget class="QFrame" row="2" column="2">
+                    <property name="name">
+                        <cstring>audioSystemFrame</cstring>
+                    </property>
+                    <property name="frameShape">
+                        <enum>NoFrame</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Plain</enum>
                     </property>
                 </widget>
             </grid>
@@ -447,7 +443,6 @@
     <tabstop>kcfg_StopExit</tabstop>
     <tabstop>kcfg_cdDevice</tabstop>
     <tabstop>kcfg_DigitalPlayback</tabstop>
-    <tabstop>kcfg_AudioSystem</tabstop>
     <tabstop>kcfg_AudioDevice</tabstop>
 </tabstops>
 <slots>
@@ -456,11 +451,12 @@
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 <includehints>
+    <includehint>kcolorbutton.h</includehint>
     <includehint>kfontrequester.h</includehint>
     <includehint>knuminput.h</includehint>
-    <includehint>klineedit.h</includehint>
+    <includehint>kurlrequester.h</includehint>
+    <includehint>kcombobox.h</includehint>
     <includehint>kpushbutton.h</includehint>
     <includehint>klineedit.h</includehint>
-    <includehint>kpushbutton.h</includehint>
 </includehints>
 </UI>

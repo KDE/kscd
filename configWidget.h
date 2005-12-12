@@ -26,6 +26,7 @@
 #include "configWidgetUI.h"
 
 class KSCD;
+class SpecialComboBox;
 
 class configWidget : public configWidgetUI
 {
@@ -37,11 +38,11 @@ class configWidget : public configWidgetUI
 
    protected:
         KSCD* mPlayer;
+        SpecialComboBox* kcfg_AudioSystem;
 
    public slots:
        virtual void kcfg_DigitalPlayback_toggled(bool);
        virtual void kcfg_SelectEncoding_toggled(bool);
-       virtual void configDone();
    private:
        void getMediaDevices();
 };

@@ -764,7 +764,6 @@ void KSCD::showConfig()
 
     updateConfigDialog(confWidget);
 
-    connect(configDialog, SIGNAL(settingsChanged()), confWidget, SLOT(configDone()));
     connect(configDialog, SIGNAL(settingsChanged()), this, SLOT(configDone()));
     configDialog -> show();
 } // showConfig()
