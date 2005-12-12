@@ -65,7 +65,6 @@
         </entry>
         <entry name="AudioDevice" type="String">
             <label>The audio device KsCD uses.</label>
-            <default>/dev/audio</default>
         </entry>
         <entry name="DigitalPlayback" type="Bool">
             <label>Use direct digital playback.</label>

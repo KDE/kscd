@@ -772,7 +772,6 @@ void KSCD::showConfig()
 
     updateConfigDialog(confWidget);
 
-    connect(configDialog, SIGNAL(settingsChanged()), confWidget, SLOT(configDone()));
     connect(configDialog, SIGNAL(settingsChanged()), this, SLOT(configDone()));
     configDialog -> show();
 } // showConfig()
@@ -907,7 +906,7 @@ int KSCD::next_randomtrack()
     {
         random_current = random_list.begin();
     }
-    else if(random_current == random_list.fromLast())
+    else if(!random_list.empty() && random_current == --random_list.end())
     {
         if(!Prefs::looping())
         {
@@ -934,7 +933,7 @@ int KSCD::prev_randomtrack()
     /* Check to see if we are at invalid state */
     if(random_current == random_list.end())
     {
-        random_current = random_list.fromLast();
+        random_current = --random_list.end();
     }
     else if(random_current == random_list.begin())
     {

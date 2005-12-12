@@ -28,6 +28,7 @@
 #include <kurlrequester.h>
 #include <qcheckbox.h>
 #include <kcombobox.h>
+#include <qlayout.h>
 
 #include <config.h>
 extern "C" {
@@ -40,6 +41,24 @@ extern "C" {
 #include "configWidget.h"
 #include "kscd.h"
 #include "prefs.h"
+
+class SpecialComboBox : public KComboBox
+{
+public:
+  SpecialComboBox(QWidget* parent, const char* name)
+   : KComboBox(parent)
+   {
+     setName(name);
+   }
+
+  // QComboBox::setCurrentText replaces the current text if
+  // the list doesn't contain text, while
+  // KComboBox::setCurrentItem doesn't
+  void setCurrentText(const QString& text)
+  {
+    setCurrentItem(text);
+  }
+} ;
 
 /*
  *  Constructs a configWidget which is a child of 'parent', with the
@@ -61,19 +80,15 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     kcfg_cdDevice->comboBox()->insertItem(DEFAULT_CD_DEVICE);
     getMediaDevices();
     
+    (new QVBoxLayout(audioSystemFrame))->setAutoAdd(true);
+    kcfg_AudioSystem = new SpecialComboBox(audioSystemFrame, "kcfg_AudioSystem");
+    textLabel4->setBuddy(kcfg_AudioSystem);
+    
 #if defined(BUILD_CDDA)
     kcfg_DigitalPlayback_toggled(Prefs::digitalPlayback());
     
     // fill ComboBox audioBackend
     kcfg_AudioSystem->insertStringList(mPlayer->audioSystems());
-
-    int t = kcfg_AudioSystem->listBox()->index(kcfg_AudioSystem->listBox()->findItem(Prefs::audioSystem()));
-    if(t != -1)
-        kcfg_AudioSystem->setCurrentItem(t);
-
-    kcfg_AudioDevice->lineEdit()->setText(Prefs::audioDevice());
-    
-    kcfg_DigitalPlayback->setChecked(Prefs::digitalPlayback());
 #else
     kcfg_DigitalPlayback_toggled(false);
     
@@ -126,11 +141,5 @@ void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
 {
     kcfg_SelectedEncoding->setEnabled(toggle);
 }
-
-void configWidget::configDone()
-{
-    Prefs::setAudioSystem(kcfg_AudioSystem->currentText());
-}
-
 
 #include "configWidget.moc"
