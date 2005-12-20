@@ -13,7 +13,7 @@
 #include "qpainter.h"
 //Added by qt3to4:
 #include <QMouseEvent>
-#include <Q3PointArray>
+#include <QPolygon>
 #include <Q3Frame>
 #include <QResizeEvent>
 #include <stdio.h>
@@ -299,7 +299,7 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
 
 
   QBrush brush(g.light());
-  Q3PointArray pts;
+  QPolygon pts;
 
 
   pt.ry() += (QCOORD)Width/2;
