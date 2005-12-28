@@ -158,28 +158,28 @@ public:
      *
      * @return Track artist or null string.
      */
-    const QString &trackArtist() const;
+    QString trackArtist() const;
 
     /**
      * Artist of given track.
      *
      * @return Track artist or null string.
      */
-    const QString &trackArtist(unsigned track) const;
+    QString trackArtist(unsigned track) const;
 
     /**
      * Title of current track.
      *
      * @return Track title or null string.
      */
-    const QString &trackTitle() const;
+    QString trackTitle() const;
 
     /**
      * Title of given track.
      *
      * @return Track title or null string.
      */
-    const QString &trackTitle(unsigned track) const;
+    QString trackTitle(unsigned track) const;
 
     /**
      * Current track.

@@ -315,12 +315,12 @@ void KCompactDisc::stop()
     wm_cd_stop();
 }
 
-const QString &KCompactDisc::trackArtist() const
+QString KCompactDisc::trackArtist() const
 {
     return trackArtist(m_track);
 }
 
-const QString &KCompactDisc::trackArtist(unsigned track) const
+QString KCompactDisc::trackArtist(unsigned track) const
 {
     if (NO_DISC || !TRACK_VALID(track))
         return QString::null;
@@ -349,12 +349,12 @@ unsigned KCompactDisc::tracks() const
     return m_tracks;
 }
 
-const QString &KCompactDisc::trackTitle() const
+QString KCompactDisc::trackTitle() const
 {
     return trackTitle(m_track);
 }
 
-const QString &KCompactDisc::trackTitle(unsigned track) const
+QString KCompactDisc::trackTitle(unsigned track) const
 {
     if (NO_DISC || !TRACK_VALID(track))
         return QString::null;
