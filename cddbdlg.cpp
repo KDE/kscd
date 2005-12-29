@@ -28,11 +28,6 @@
 #include "cddbdlg.h"
 #include "libkcddb/cdinfodialog.h"
 
-struct mytoc
-{
-  unsigned absframe;
-};
-
 CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
     : KDialogBase( parent, name, false, i18n( "CD Editor" ),
       Ok|Cancel|User1|User2, Ok, true )
@@ -112,7 +107,7 @@ void CDDBDlg::save()
 {
     updateFromDialog();
 
-    KCDDB::Cache::store(cddbInfo);
+    cddbClient->store(cddbInfo);
 
     emit newCDInfoStored(cddbInfo);
 } // save
