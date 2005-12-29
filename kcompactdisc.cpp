@@ -135,7 +135,7 @@ unsigned KCompactDisc::discLength() const
 {
     if (NO_DISC || !m_tracks)
         return 0;
-    return FRAMES_TO_MS(m_trackStartFrames[m_tracks+1] - m_trackStartFrames[0]);
+    return FRAMES_TO_MS(m_trackStartFrames[m_tracks] - m_trackStartFrames[0]);
 }
 
 unsigned KCompactDisc::discPosition() const
@@ -434,7 +434,6 @@ void KCompactDisc::timerExpired()
                 // track.length = cd->trk[i - 1].length;
                 m_trackStartFrames.append(cd->trk[i - 1].start);
             }
-            m_trackStartFrames.append(cd->trk[0].start);
             m_trackStartFrames.append(cd->trk[m_tracks].start);
             emit discChanged(m_discId);
         }
