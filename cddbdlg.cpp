@@ -99,7 +99,7 @@ void CDDBDlg::upload()
 
     // Create a copy with a bumped revision number.
     KCDDB::CDInfo copyInfo = cddbInfo;
-    copyInfo.revision++;
+    copyInfo.set("revision",copyInfo.get("revision").toInt()+1);
     cddbClient->submit(copyInfo, trackStartFrames);
 } // upload
 
@@ -116,7 +116,7 @@ bool CDDBDlg::validInfo()
 {
   KCDDB::CDInfo copy = m_dlgBase->info();
 
-  if (copy.get("artist").toString().isEmpty())
+  if (copy.get(Artist).toString().isEmpty())
   {
     KMessageBox::sorry(this,
         i18n("The artist name of the disc has to be entered.\n"
@@ -125,7 +125,7 @@ bool CDDBDlg::validInfo()
     return false;
   }
 
-  if (copy.get("title").toString().isEmpty())
+  if (copy.get(Title).toString().isEmpty())
   {
     KMessageBox::sorry(this,
         i18n("The title of the disc has to be entered.\n"
@@ -135,9 +135,9 @@ bool CDDBDlg::validInfo()
   }
 
   bool have_nonempty_title = false;
-  for (int i = 0; i < copy.trackInfoList.count(); i++)
+  for (int i = 0; i < copy.numberOfTracks(); i++)
   {
-      if (!copy.trackInfoList[i].get("title").toString().isEmpty())
+      if (!copy.track(i).get(Title).toString().isEmpty())
       {
           have_nonempty_title = true;
           break;
@@ -176,7 +176,7 @@ void CDDBDlg::updateFromDialog()
     teststr = *it;
     num = teststr.toInt(&ok);
 
-    if( !ok || num > cddbInfo.trackInfoList.count() )
+    if( !ok || num > cddbInfo.numberOfTracks() )
       ret = false;
   }
 
