@@ -44,8 +44,9 @@
 #include <kdebug.h>
 
 DockWidget::DockWidget( KSCD* parent, const char *name)
-    : KSystemTray( parent, name )
+    : KSystemTray( parent )
 {
+	setObjectName(name);
     m_popup = 0;
     setPixmap( loadIcon("cdsmall") );
 
