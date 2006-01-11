@@ -1004,7 +1004,8 @@ void KSCD::discChanged(unsigned discId)
     //totaltimelabel->clear();
     totaltimelabel->lower();
 
-    if (Prefs::autoplay() && !m_cd->isPlaying())
+    if ((Prefs::autoplay() || KCmdLineArgs::parsedArgs()->isSet("start"))
+        && !m_cd->isPlaying())
     {
         playClicked();
     }
@@ -1675,7 +1676,6 @@ int main( int argc, char *argv[] )
     }
 
     if (args->count()>0) Prefs::self()->setCdDevice(args->arg(0));
-    if (args->isSet("start")) Prefs::self()->setAutoplay(true);
 
     return a.exec();
 }
