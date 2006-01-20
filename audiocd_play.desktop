@@ -35,5 +35,6 @@ Name[sv]=Spela
 Name[ta]=தொடங்கு
 Name[uk]=Пуск
 Name[zh_CN]=播放
+Name[zh_HK]=播放
 Exec=kscd -s -caption "%c" %i %m %u
 Icon=kscd
