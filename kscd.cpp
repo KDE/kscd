@@ -566,7 +566,10 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
         str.sprintf("%02d/%02d", track, m_cd->tracks());
         tracklabel->setText(str);
 
-        QString title = cddbInfo.track(track-1).get(Title).toString();
+	QString title;
+	if (cddbInfo.track(track-1).get(Artist) != cddbInfo.get(Artist))
+	  title.append(cddbInfo.track(track-1).get(Artist).toString()).append(" - ");
+        title.append(cddbInfo.track(track-1).get(Title).toString());
         titlelabel->setText(title);
         tooltip += "/";
         tooltip += KStringHandler::rsqueeze(title, 30);
@@ -1576,6 +1579,8 @@ void KSCD::populateSongList(QString infoStatus)
         str1.sprintf("%02d: ", i + 1);
         QString str2;
         str2.sprintf(" (%02d:%02d) ", mymin,  mysec);
+	if (cddbInfo.get(Artist) != cddbInfo.track(i).get(Artist))
+	  str1.append(cddbInfo.track(i).get(Artist).toString()).append(" - ");
         str1.append(cddbInfo.track(i).get(Title).toString());
         str1.append(str2);
         songListCB->insertItem(str1);
