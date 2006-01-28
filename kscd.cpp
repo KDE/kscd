@@ -1407,7 +1407,7 @@ void KSCD::information(int i)
     if(cddbInfo.get(Artist).toString().isEmpty())
         return;
 
-    QString encodedArtist = KURL::encode_string_no_slash(cddbInfo.get(Artist).toString());
+    QString encodedArtist = KUrl::encode_string_no_slash(cddbInfo.get(Artist).toString());
 
     QString str;
 
@@ -1478,7 +1478,7 @@ void KSCD::information(int i)
             break;
     } // switch()
 
-    KRun::runURL(KURL( str ), "text/html");
+    KRun::runURL(KUrl( str ), "text/html");
 } // information
 
 /**
