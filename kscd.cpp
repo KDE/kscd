@@ -4,6 +4,7 @@
  * Copyright (c) 1997 Bernd Johannes wuebben@math.cornell.edu
  * Copyright (c) 2002-2003 Aaron J. Seigo <aseigo@kde.org>
  * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
+ * Copyright (c) 2003-2006 Richard Lärkäng <nouseforaname@home.se>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1209,24 +1210,15 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
       CDInfoList cddb_info = cddb->lookupResponse();
       CDInfoList::iterator it;
       QStringList list;
-      uint defaultChoice = 0;
-      uint maxrev = 0;
-      uint c = 0;
       for ( it = cddb_info.begin(); it != cddb_info.end(); ++it  ) {
         list.append( QString("%1, %2, %3").arg((*it).artist).arg((*it).title)
             .arg((*it).genre));
-        KCDDB::CDInfo cinfo = *it;
-        if ( ( *it ).revision >= maxrev ) {
-          maxrev = info.revision;
-          defaultChoice = c;
-        }
-        c++;
       }
 
       bool ok(false);
       QString res = KInputDialog::getItem(
               i18n("Select CDDB Entry"),
-              i18n("Select a CDDB entry:"), list, defaultChoice, false, &ok,
+              i18n("Select a CDDB entry:"), list, 0, false, &ok,
               this );
       if ( ok ) {
         // The user selected and item and pressed OK
@@ -1595,6 +1587,8 @@ void KSCD::populateSongList(QString infoStatus)
         str1.append(str2);
         songListCB->insertItem(str1);
     }
+
+    emit trackChanged(m_cd->track(), m_cd->trackLength());
 }
 
 static const KCmdLineOptions options[] =
