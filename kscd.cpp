@@ -1660,7 +1660,7 @@ int main( int argc, char *argv[] )
     {
         KConfig* config = KApplication::kApplication()->sessionConfig();
         config->setGroup("General");
-        if (config->readBoolEntry("Show"))
+        if (config->readEntry("Show",false))
             k->show();
     }
     else
