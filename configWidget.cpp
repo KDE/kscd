@@ -125,9 +125,9 @@ void configWidget::getMediaDevices()
         it++;
         if (it == itEnd) break;
         QString url="media:/"+(*it); // is it always right? ervin?
-        kdDebug() << "checking " << url << endl;
+        kDebug() << "checking " << url << endl;
         for (int i=0;i<9;i++) ++it;  // go to mimetype (MIME_TYPE-NAME from medium.h)
-        kdDebug() << "Mime: " << *it << endl;
+        kDebug() << "Mime: " << *it << endl;
         if (it!=itEnd && (*it)=="media/audiocd") {
             kcfg_cdDevice->comboBox()->insertItem(url);
         }

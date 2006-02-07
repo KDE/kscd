@@ -882,7 +882,7 @@ void KSCD::make_random_list()
     int selected = 0;
     bool rejected = false;
 
-    //kdDebug(67000) << "Playlist has " << size << " entries\n" << endl;
+    //kDebug(67000) << "Playlist has " << size << " entries\n" << endl;
     random_list.clear();
     for(unsigned i = 0; i < m_cd->tracks(); i++)
     {
@@ -1180,7 +1180,7 @@ void KSCD::lookupCDDB()
 {
     if (m_cd->discId() == KCompactDisc::missingDisc)
         return;
-    kdDebug(67000) << "lookupCDDB() called" << endl;
+    kDebug(67000) << "lookupCDDB() called" << endl;
 
     populateSongList(i18n("Start freedb lookup."));
 
@@ -1403,7 +1403,7 @@ void KSCD::cycletimeout()
 
 void KSCD::information(int i)
 {
-    //kdDebug(67000) << "Information " << i << "\n" << endl;
+    //kDebug(67000) << "Information " << i << "\n" << endl;
 
     if(cddbInfo.get(Artist).toString().isEmpty())
         return;

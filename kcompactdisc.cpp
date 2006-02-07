@@ -237,18 +237,18 @@ QString KCompactDisc::urlToDevice(const QString& device)
     KUrl deviceUrl(device);
     if (deviceUrl.protocol() == "media" || deviceUrl.protocol() == "system")
     {
-        kdDebug() << "Asking mediamanager for " << deviceUrl.fileName() << endl;
+        kDebug() << "Asking mediamanager for " << deviceUrl.fileName() << endl;
         DCOPRef mediamanager("kded", "mediamanager");
         DCOPReply reply = mediamanager.call("properties(QString)", deviceUrl.fileName());
         QStringList properties = reply;
         if (!reply.isValid() || properties.count() < 6)
         {
-            kdError() << "Invalid reply from mediamanager" << endl;
+            kError() << "Invalid reply from mediamanager" << endl;
 	    return defaultDevice;
         }
         else
         {
-            kdDebug() << "Reply from mediamanager " << properties[5] << endl;
+            kDebug() << "Reply from mediamanager " << properties[5] << endl;
 	    return properties[5];
         }
     }
@@ -277,7 +277,7 @@ bool KCompactDisc::setDevice(
                     digitalPlayback ? audioDevice.ascii() : 0,
                     0);
     m_device = wm_drive_device();
-    kdDebug() << "Device change: "
+    kDebug() << "Device change: "
         << (digitalPlayback ? "WM_CDDA, " : "WM_CDIN, ")
         << m_device << ", "
         << (digitalPlayback ? audioSystem : QString::null) << ", "
@@ -307,7 +307,7 @@ bool KCompactDisc::setDevice(
 void KCompactDisc::setVolume(unsigned volume)
 {
     int status = wm_cd_volume(volume, WM_BALANCE_SYMMETRED);
-    kdDebug() << "Volume change: " << volume << ", status: " << discStatus(status) << endl;
+    kDebug() << "Volume change: " << volume << ", status: " << discStatus(status) << endl;
 }
 
 void KCompactDisc::stop()
@@ -399,7 +399,7 @@ void KCompactDisc::timerExpired()
         if (m_previousDiscId != m_discId)
         {
             m_previousDiscId = m_discId;
-            kdDebug() << "New discId=" << m_discId << endl;
+            kDebug() << "New discId=" << m_discId << endl;
             // Initialise the album and its signature from the CD.
             struct cdtext_info *info = wm_cd_get_cdtext();
             if (info && info->valid)
