@@ -8,7 +8,7 @@
 #include <qfile.h>
 #include <qdir.h>
 #include <qfileinfo.h>
-#include <klistview.h>
+#include <k3listview.h>
 #include <klineedit.h>
 #include <knuminput.h>
 
