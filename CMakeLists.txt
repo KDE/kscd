@@ -11,17 +11,13 @@ include_directories( ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_D
 
 ########### next target ###############
 
-set(kscd_SRCS kscd.cpp ledlamp.cpp docking.cpp bwlednum.cpp  configWidget.cpp cddbdlg.cpp )
+set(kscd_SRCS kscd.cpp ledlamp.cpp docking.cpp bwlednum.cpp  configWidget.cpp cddbdlg.cpp ${libkcompactdisc_SRCS})
 
 kde4_add_ui3_files(kscd_SRCS configWidgetUI.ui panel.ui )
 
 kde4_add_dcop_skels(kscd_SRCS kscd.h )
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc )
-
-#kscd_SOURCES = panel.ui kscd.cpp kscd.skel ledlamp.cpp \
-#               docking.cpp bwlednum.cpp \
-#               configWidget.cpp configWidgetUI.ui prefs.kcfgc cddbdlg.cpp 
 
 kde4_automoc(${kscd_SRCS})
 
