@@ -1,4 +1,5 @@
 kde4_header()
+project(kscd)
 
 add_subdirectory( bitmaps ) 
 add_subdirectory( libwm ) 
