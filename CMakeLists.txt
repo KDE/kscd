@@ -1,6 +1,42 @@
 kde4_header()
 project(kscd)
 
+set(libworkmanaudio_SRCS 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/audio/audio.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/audio/audio_alsa.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/audio/audio_arts.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/audio/audio_sun.c
+	)
+
+set(libworkman_SRCS 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/cddb.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/cdinfo.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/cdrom.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/wm_helpers.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/cdtext.c
+	${CMAKE_SOURCE_DIR}/kscd/libwm/database.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/index.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/scsi.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/cdda.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_linux_cdda.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_sun_cdda.c
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_aix.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_bsd386.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_freebsd.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_hpux.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_irix.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_linux.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_svr4.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_ultrix.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_news.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_openbsd.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_osf1.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_sun.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/plat_scor5.c
+	${CMAKE_SOURCE_DIR}/kscd/libwm/drv_sony.c 
+	${CMAKE_SOURCE_DIR}/kscd/libwm/drv_toshiba.c
+)
+
 add_subdirectory( bitmaps ) 
 add_subdirectory( libwm ) 
 
@@ -12,7 +48,7 @@ include_directories( ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_D
 
 ########### next target ###############
 
-set(kscd_SRCS kscd.cpp ledlamp.cpp docking.cpp bwlednum.cpp  configWidget.cpp cddbdlg.cpp ${libkcompactdisc_SRCS})
+set(kscd_SRCS kscd.cpp ledlamp.cpp docking.cpp bwlednum.cpp  configWidget.cpp cddbdlg.cpp ${libkcompactdisc_SRCS} ${libworkmanaudio_SRCS} ${libworkman_SRCS})
 
 kde4_add_ui3_files(kscd_SRCS configWidgetUI.ui panel.ui )
 
