@@ -59,11 +59,11 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     // popup menu for right mouse button
     KMenu* popup = contextMenu();
 
-    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_play", KIcon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
-    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_stop", KIcon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
-    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_end", KIcon::Small), i18n("Next"), parent, SLOT(nextClicked()));
-    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_start", KIcon::Small), i18n("Previous"), parent, SLOT(prevClicked()));
-    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_eject", KIcon::Small), i18n("Eject"), parent, SLOT(ejectClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_play", K3Icon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_stop", K3Icon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_end", K3Icon::Small), i18n("Next"), parent, SLOT(nextClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_start", K3Icon::Small), i18n("Previous"), parent, SLOT(prevClicked()));
+    popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_eject", K3Icon::Small), i18n("Eject"), parent, SLOT(ejectClicked()));
 
     this->setToolTip( kapp->aboutData()->programName());
 }
