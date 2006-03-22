@@ -60,7 +60,7 @@ kde4_automoc(${kscd_SRCS})
 
 kde4_add_executable(kscd ${kscd_SRCS})
 
-target_link_libraries(kscd  ${KDE4_KIO_LIBRARIES} kcddb )
+target_link_libraries(kscd  ${KDE4_KIO_LIBS} kcddb )
 
 install_targets(/bin kscd )
 
