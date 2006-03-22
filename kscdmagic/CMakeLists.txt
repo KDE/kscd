@@ -16,7 +16,7 @@ kde4_automoc(${kscdmagic_SRCS})
 
 kde4_add_executable(kscdmagic ${kscdmagic_SRCS})
 
-target_link_libraries(kscdmagic  ${QT_AND_KDECORE_LIBS} m kdeui )
+target_link_libraries(kscdmagic  ${KDE4_KDECORE_LIBS} m kdeui )
 
 install_targets(/bin kscdmagic )
 
