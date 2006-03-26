@@ -196,7 +196,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action = new KAction(i18n("Shuffle"), Qt::Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
   action = new KAction(i18n("CDDB"), Qt::CTRL + Qt::Key_D, this, SLOT(CDDialogSelected()), m_actions, "CDDB");
 
-  m_actions->readShortcutSettings("Shortcuts");
+  m_actions->readSettings("Shortcuts");
 
   m_actions->action( "options_configure_globals" )->setText( i18n( "Configure &Global Shortcuts..." ) );
 
