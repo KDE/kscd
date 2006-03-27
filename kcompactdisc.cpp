@@ -234,7 +234,7 @@ void KCompactDisc::play(unsigned startTrack, unsigned startTrackPosition, unsign
 
 QString KCompactDisc::urlToDevice(const QString& device)
 {
-    KUrl deviceUrl(device);
+    KUrl deviceUrl = KUrl::fromPathOrURL(device);
     if (deviceUrl.protocol() == "media" || deviceUrl.protocol() == "system")
     {
         kDebug() << "Asking mediamanager for " << deviceUrl.fileName() << endl;
