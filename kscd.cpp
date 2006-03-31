@@ -175,6 +175,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   // set up the actions and keyboard accels
   m_actions = new KActionCollection(this);
+  m_actions->setConfigGroup("Shortcuts");
 
   KAction* action;
   action = new KAction(i18n("Play/Pause"), Qt::Key_P, this, SLOT(playClicked()), m_actions, "Play/Pause");
@@ -195,8 +196,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action = new KAction(i18n("Options"), Qt::CTRL + Qt::Key_T, this, SLOT(showConfig()), m_actions, "Options");
   action = new KAction(i18n("Shuffle"), Qt::Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
   action = new KAction(i18n("CDDB"), Qt::CTRL + Qt::Key_D, this, SLOT(CDDialogSelected()), m_actions, "CDDB");
-#warning "kde4: port it m_actions->readSettings(Shortcuts);"
-  //m_actions->readSettings("Shortcuts");
+  m_actions->readSettings();
 
   m_actions->action( "options_configure_globals" )->setText( i18n( "Configure &Global Shortcuts..." ) );
 
@@ -1047,7 +1047,7 @@ void KSCD::discStopped()
         return;
       }
     }
-    
+
     statuslabel->setText(i18n("Stopped"));
     playPB->setText(i18n("Play"));
     playPB->setIconSet(SmallIconSet("player_play"));
