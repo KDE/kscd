@@ -84,8 +84,8 @@ void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
   }
   else
   {
-    QString str = i18n("Error sending record.\n\n%1")
-      .arg(KCDDB::CDDB::resultToString(r));
+    QString str = i18n("Error sending record.\n\n%1",
+       KCDDB::CDDB::resultToString(r));
     KMessageBox::error(this, str, i18n("Record Submission"));
   }
 } // submitFinished()

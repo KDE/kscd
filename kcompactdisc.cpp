@@ -428,7 +428,7 @@ void KCompactDisc::timerExpired()
                 else
                 {
                     m_trackArtists.append(i18n("Unknown Artist"));
-                    m_trackTitles.append(i18n("Track %1").arg(QString::number(i).rightJustify(2, '0')));
+                    m_trackTitles.append(ki18n("Track %1").subs(i, 2).toString());
                 }
                 // FIXME: KDE4
                 // track.length = cd->trk[i - 1].length;

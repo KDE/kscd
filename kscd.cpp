@@ -140,7 +140,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   volumeIcon->setPixmap(SmallIcon("player_volume"));
   volumeSlider->setValue(Prefs::volume());
   QString str;
-  str = QString::fromUtf8( Q3CString().sprintf(i18n("Vol: %02d%%").utf8(), Prefs::volume()) );
+  str = ki18n("Vol: %1%").subs(Prefs::volume(), 2).toString();
   volumelabel->setText(str);
   connect(volumeSlider, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
 
@@ -560,7 +560,7 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
             justTheName = justTheName.right(justTheName.length() - 4);
 
             QToolTip::remove(songListCB);
-            songListCB->setToolTip( i18n("Current track: %1").arg(justTheName));
+            songListCB->setToolTip( i18n("Current track: %1", justTheName));
         }
         timeSlider->blockSignals(true);
         timeSlider->setRange(0, trackLength ? trackLength - 1 : 0);
@@ -809,7 +809,7 @@ void KSCD::setDevicePaths()
     {
         // This device did not seem usable.
         QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
-                            "Please make sure you have access permissions to:\n%1").arg(
+                            "Please make sure you have access permissions to:\n%1", 
 			      KCompactDisc::urlToDevice(Prefs::cdDevice()));
         KMessageBox::error(this, str, i18n("Error"));
     }
@@ -869,7 +869,7 @@ void KSCD::decVolume()
 void KSCD::volChanged( int vol )
 {
     QString str;
-    str = QString::fromUtf8( Q3CString().sprintf(i18n("Vol: %02d%%").utf8(), vol) );
+    str = ki18n("Vol: %1%").subs(vol, 2).toString();
     volumelabel->setText(str);
     m_cd->setVolume(vol);
     Prefs::setVolume(vol);
@@ -1398,7 +1398,7 @@ void KSCD::cycletimeout()
 {
     cycletimer.stop();
     QString str;
-    str = QString::fromUtf8( Q3CString().sprintf(i18n("Vol: %02d%%").utf8(), Prefs::volume()) );
+    str = ki18n("Vol: %1%").subs(Prefs::volume(), 2).toString();
     volumelabel->setText(str);
 } // cycletimeout
 
