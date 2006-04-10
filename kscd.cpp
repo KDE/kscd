@@ -41,7 +41,7 @@
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
-#include <kaccel.h>
+
 #include <kaction.h>
 #include <dcopref.h>
 #include <kcharsets.h>
