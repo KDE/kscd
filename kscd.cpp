@@ -794,12 +794,13 @@ void KSCD::configDone()
 
 void KSCD::configureKeys()
 {
-    KKeyDialog::configure(m_actions, this);
+    KKeyDialog::configure(m_actions,  KKeyChooser::LetterShortcutsAllowed, this);
 }
 
 void KSCD::configureGlobalKeys()
 {
-  KKeyDialog::configure(m_globalAccel, true, this, true);
+#warning "kde4: port it"		
+  //KKeyDialog::configure(m_globalAccel, KKeyChooser::LetterShortcutsAllowed, this, true);
 }
 
 void KSCD::setDevicePaths()
