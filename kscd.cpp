@@ -179,9 +179,18 @@ KSCD::KSCD( QWidget *parent, const char *name )
 
   KAction* action;
   action = new KAction(i18n("Play/Pause"), Qt::Key_P, this, SLOT(playClicked()), m_actions, "Play/Pause");
+  action->setCustomGlobalShortcut(KShortcut(Qt::META + Qt::Key_P));
+
   action = new KAction(i18n("Stop"), Qt::Key_S, this, SLOT(stopClicked()), m_actions, "Stop");
+  action->setCustomGlobalShortcut(KShortcut(Qt::META + Qt::Key_S));
+
   action = new KAction(i18n("Previous"), Qt::Key_B, this, SLOT(prevClicked()), m_actions, "Previous");
+  //NOTE: WIN+B collidates with amarok's default global shortcut.
+  action->setCustomGlobalShortcut(KShortcut(Qt::META + Qt::Key_B));
+
   action = new KAction(i18n("Next"), Qt::Key_N, this, SLOT(nextClicked()), m_actions, "Next");
+  action->setCustomGlobalShortcut(KShortcut(Qt::META + Qt::Key_N));
+
   action = KStdAction::quit(this, SLOT(quitClicked()), m_actions);
   action = KStdAction::keyBindings(this, SLOT(configureKeys()), m_actions, "options_configure_shortcuts");
   action = KStdAction::keyBindings(this, SLOT(configureGlobalKeys()), m_actions, "options_configure_globals");
@@ -190,11 +199,17 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action = new KAction(i18n("Eject"), Qt::CTRL + Qt::Key_E, this, SLOT(ejectClicked()), m_actions, "Eject");
   action = new KAction(i18n("Increase Volume"), Qt::Key_Plus, this, SLOT(incVolume()), m_actions, "IncVolume");
   KShortcut increaseVolume = action->shortcut();
-  increaseVolume.append( KKey( Qt::Key_Equal ) );
+  increaseVolume.append( Qt::Key_Equal );
   action->setShortcut( increaseVolume );
+  action->setCustomGlobalShortcut(KShortcut(Qt::META + Qt::Key_Plus));
+
   action = new KAction(i18n("Decrease Volume"), Qt::Key_Minus, this, SLOT(decVolume()), m_actions, "DecVolume");
+  action->setCustomGlobalShortcut(KShortcut(Qt::META + Qt::Key_Minus));
+
   action = new KAction(i18n("Options"), Qt::CTRL + Qt::Key_T, this, SLOT(showConfig()), m_actions, "Options");
   action = new KAction(i18n("Shuffle"), Qt::Key_R, this, SLOT(randomSelected()), m_actions, "Shuffle");
+  action->setCustomGlobalShortcut(KShortcut(Qt::META + Qt::Key_R));
+
   action = new KAction(i18n("CDDB"), Qt::CTRL + Qt::Key_D, this, SLOT(CDDialogSelected()), m_actions, "CDDB");
   m_actions->readSettings();
 
@@ -235,31 +250,12 @@ KSCD::~KSCD()
 
 
 void KSCD::initGlobalShortcuts() {
-
-  m_globalAccel = new KGlobalAccel( this );
-
-  //Definition of global shortcuts is based on 'local' shortcuts which follow
-  //the WIN key.
-  // FIXME What about the alternatice keyboard shortcuts?
-  m_globalAccel->insert("Next", i18n("Next"), 0, KKey("WIN+N"), /*KKey("WIN+Right"),*/
-                        this, SLOT(nextClicked()));
-  //NOTE: WIN+B collidates with amarok's default global shortcut.
-  m_globalAccel->insert("Previous", i18n("Previous"), 0, KKey("WIN+B"), /*KKey("WIN+Left"),*/
-                        this, SLOT(prevClicked()));
-  m_globalAccel->insert("Play/Pause", i18n("Play/Pause"), 0, KKey("WIN+P"), /*0,*/
-                        this, SLOT(playClicked()));
-  m_globalAccel->insert("Stop", i18n("Stop"), 0, KKey("WIN+S"), /*0,*/
-                        this, SLOT(stopClicked()));
-  m_globalAccel->insert("IncVolume", i18n("Increase Volume"), 0, KKey("WIN+Plus"), /*KKey("WIN+Up"),*/
-                        this, SLOT(incVolume()));
-  m_globalAccel->insert("DecVolume", i18n("Decrease Volume"), 0, KKey("WIN+Minus"), /*KKey("WIN+Down"),*/
-                        this, SLOT(decVolume()));
-  m_globalAccel->insert("Shuffle", i18n("Shuffle"), 0, KKey("WIN+R"), /*0,*/
-                        this, SLOT(incVolume()));
-
+/*
+  TODO make it configurable
   m_globalAccel->setConfigGroup( "GlobalShortcuts" );
   m_globalAccel->readSettings( KGlobal::config() );
   m_globalAccel->updateConnections();
+*/
 }
 
 bool KSCD::digitalPlayback() {
@@ -799,19 +795,18 @@ void KSCD::configureKeys()
 
 void KSCD::configureGlobalKeys()
 {
-#warning "kde4: port it"		
-  //KKeyDialog::configure(m_globalAccel, KKeyChooser::LetterShortcutsAllowed, this, true);
+    KKeyDialog::configure(m_actions, KKeyChooser::LetterShortcutsAllowed, this, true);
 }
 
 void KSCD::setDevicePaths()
 {
     if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback(),
-		Prefs::audioSystem(), Prefs::audioDevice()))
+         Prefs::audioSystem(), Prefs::audioDevice()))
     {
         // This device did not seem usable.
         QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
-                            "Please make sure you have access permissions to:\n%1", 
-			      KCompactDisc::urlToDevice(Prefs::cdDevice()));
+                            "Please make sure you have access permissions to:\n%1",
+                            KCompactDisc::urlToDevice(Prefs::cdDevice()));
         KMessageBox::error(this, str, i18n("Error"));
     }
 } // setDevicePath()
