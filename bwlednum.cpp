@@ -134,7 +134,9 @@ static char *getSegments( char s)
     return segs[j];
 }
 
-void BW_LED_Number::drawContents( QPainter *p ){
+void BW_LED_Number::paintEvent( QPaintEvent * ){
+
+  QPainter p(this);
 
   drawSymbol( p, current_symbol,TRUE );
 
@@ -152,18 +154,11 @@ void BW_LED_Number::display(int i ){
 
 void BW_LED_Number::display(char s){
 
-  QPainter p;
-
-  p.begin( this );
-
   old_segments = current_segments;
   current_symbol = s;
   current_segments = getSegments(s);
 
-  drawSymbol(&p,s,FALSE);
-
-  p.end();
-
+  repaint();
 }
 
 void BW_LED_Number::setSmallLED(bool a_boolean){
@@ -173,7 +168,7 @@ void BW_LED_Number::setSmallLED(bool a_boolean){
 }
 
 
-void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
+void BW_LED_Number::drawSymbol( QPainter& p,char ,bool repaint ){
 
   //  printf("drawSymbol repaint = %d\n",repaint);
 
@@ -207,12 +202,12 @@ void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
                       // by default not shown.
 
      for(int l = 0; l <= NUM_OF_SEGMENTS +1; l++){
-       drawSegment(pos,(char) l,*p,Segment_Length,TRUE);      //erase segment
+       drawSegment(pos,(char) l,p,Segment_Length,TRUE);      //erase segment
      }
    }
    else{
      for(int l = 0; l <= NUM_OF_SEGMENTS -1; l++){
-       drawSegment(pos,(char) l,*p,Segment_Length,TRUE);      //erase segment
+       drawSegment(pos,(char) l,p,Segment_Length,TRUE);      //erase segment
      }
    }
 
@@ -220,7 +215,7 @@ void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
 
    for(int l = 0; l <= NUM_OF_SEGMENTS -1; l++){
      if(current_segments[l] != STOP_CHAR){
-     	 drawSegment(pos,current_segments[l],*p,Segment_Length,FALSE);   // draw segment
+     	 drawSegment(pos,current_segments[l],p,Segment_Length,FALSE);   // draw segment
      }
      else{
        break;
@@ -234,7 +229,7 @@ void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
 
      if(current_segments[l] != STOP_CHAR){
        if(!seg_contained_in(current_segments[l],old_segments))
-	 drawSegment(pos,current_segments[l],*p,Segment_Length,FALSE);   // draw segment
+	 drawSegment(pos,current_segments[l],p,Segment_Length,FALSE);   // draw segment
      }
      else{
        break;
@@ -246,7 +241,7 @@ void BW_LED_Number::drawSymbol( QPainter *p,char ,bool repaint ){
 
      if(old_segments[k] != STOP_CHAR){
        if(!seg_contained_in(old_segments[k],current_segments))
-	 drawSegment(pos,old_segments[k],*p,Segment_Length,TRUE);      //erase segment
+	 drawSegment(pos,old_segments[k],p,Segment_Length,TRUE);      //erase segment
      }
      else{
        break;

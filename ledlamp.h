@@ -41,10 +41,10 @@ public:
   State state() const { return s; }
   
 
-  void setState(State state) { s= state; repaint(false); }
+  void setState(State state) { s= state; repaint(); }
 
 
-  void toggleState() { if (s == On) s= Off; else if (s == Off) s= On; repaint(false); }
+  void toggleState() { if (s == On) s= Off; else if (s == Off) s= On; repaint(); }
 public slots:
   void toggle() { toggleState(); };
   void on() { setState(On); };

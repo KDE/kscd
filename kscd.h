@@ -26,7 +26,6 @@
 #define __KSCD__
 
 #include "bwlednum.h"
-//Added by qt3to4:
 #include <QGridLayout>
 #include <QKeyEvent>
 #include <QEvent>
@@ -53,7 +52,7 @@ class KCompactDisc;
 #include <q3popupmenu.h>
 
 #include "ledlamp.h"
-#include "panel.h"
+#include "ui_panel.h"
 #include "prefs.h"
 #include "configWidget.h"
 #include <kapplication.h>
@@ -73,7 +72,7 @@ using namespace KCDDB;
 
 typedef QList<int> RandomList;
 
-class KSCD : public kscdPanelDlg, public KSessionManaged, virtual public DCOPObject {
+class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManaged, virtual public DCOPObject {
 
     Q_OBJECT
     K_DCOP

@@ -64,13 +64,13 @@ protected:
 
     void    resizeEvent( QResizeEvent * );
     void	mouseReleaseEvent ( QMouseEvent * e );
-    void    drawContents( QPainter * );
+    void    paintEvent( QPaintEvent * );
 
 private:
 
     bool    seg_contained_in( char c, char* seg);
     void    drawSegment( const QPoint &, char, QPainter &, int, bool = FALSE );
-    void    drawSymbol( QPainter *p,char s ,bool repaint);
+    void    drawSymbol( QPainter & p,char s ,bool repaint);
 
     char* old_segments;
     char* current_segments;

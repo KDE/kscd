@@ -30,7 +30,8 @@ include_directories( ${CMAKE_SOURCE_DIR}/libkcddb ${CMAKE_BINARY_DIR}/libkcddb $
 
 set(kscd_SRCS kscd.cpp ledlamp.cpp docking.cpp bwlednum.cpp  configWidget.cpp cddbdlg.cpp kcompactdisc.cpp ${libworkmanaudio_SRCS} ${libworkman_SRCS})
 
-kde4_add_ui3_files(kscd_SRCS configWidgetUI.ui panel.ui )
+kde4_add_ui3_files(kscd_SRCS configWidgetUI.ui )
+kde4_add_ui_files(kscd_SRCS panel.ui )
 
 kde4_add_dcop_skels(kscd_SRCS kscd.h )
 

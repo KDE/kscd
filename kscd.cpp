@@ -98,13 +98,15 @@ bool stoppedByUser = false;
 
 KSCD::KSCD( QWidget *parent, const char *name )
   : DCOPObject("CDPlayer"),
-    kscdPanelDlg( parent, name, Qt::WDestructiveClose ),
+    QWidget( parent ),
+    kscdPanelDlg( ),
     configDialog(0L),
     cddialog(0L),  //!!!!
     jumpToTrack(0L),
     updateTime(true),
     m_dockWidget(0)
 {
+  setupUi(this);
   m_cd = new KCompactDisc();
   cddbInfo.clear(); // The first freedb revision is "0" //!!!!
   random_current      = random_list.begin();
@@ -155,14 +157,11 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( &titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
   connect( &cycletimer, SIGNAL(timeout()),  SLOT(cycletimeout()) );
   connect( &jumpTrackTimer, SIGNAL(timeout()),  SLOT(jumpTracks()) );
-/*
-  these are always connected in base class
   connect( playPB, SIGNAL(clicked()), SLOT(playClicked()) );
   connect( nextPB, SIGNAL(clicked()), SLOT(nextClicked()) );
   connect( prevPB, SIGNAL(clicked()), SLOT(prevClicked()) );
   connect( stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
   connect( ejectPB, SIGNAL(clicked()), SLOT(ejectClicked()) );
-*/
   connect( repeatPB, SIGNAL(clicked()), SLOT(loopClicked()) );
   connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
   connect( shufflePB, SIGNAL(clicked()), SLOT(randomSelected()));
@@ -1095,18 +1094,18 @@ void KSCD::setColors()
 
     backdrop->setBackgroundColor(background_color);
 
-    QColorGroup colgrp( led_color, background_color, led_color,led_color , led_color,
+    QPalette pal( led_color, background_color, led_color,led_color , led_color,
                         led_color, Qt::white );
 
-    titlelabel ->setPalette( QPalette(colgrp,colgrp,colgrp) );
-    artistlabel->setPalette( QPalette(colgrp,colgrp,colgrp) );
-    volumelabel->setPalette( QPalette(colgrp,colgrp,colgrp) );
-    statuslabel->setPalette( QPalette(colgrp,colgrp,colgrp) );
-    tracklabel ->setPalette( QPalette(colgrp,colgrp,colgrp) );
-    totaltimelabel->setPalette( QPalette(colgrp,colgrp,colgrp) );
+    titlelabel ->setPalette( pal );
+    artistlabel->setPalette( pal );
+    volumelabel->setPalette( pal );
+    statuslabel->setPalette( pal );
+    tracklabel ->setPalette( pal );
+    totaltimelabel->setPalette( pal );
 
-    queryled->setPalette( QPalette(colgrp,colgrp,colgrp) );
-    loopled->setPalette( QPalette(colgrp,colgrp,colgrp) );
+    queryled->setPalette( pal );
+    loopled->setPalette( pal );
 
     for (int u = 0; u< 5;u++){
         trackTimeLED[u]->setLEDoffColor(background_color);

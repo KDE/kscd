@@ -1,468 +1,657 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>kscdPanelDlg</class>
-<widget class="QWidget">
-    <property name="name">
-        <cstring>kscdPanelDlg</cstring>
-    </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>516</width>
-            <height>198</height>
-        </rect>
-    </property>
-    <property name="caption">
-        <string>KsCD</string>
-    </property>
-    <vbox>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <property name="margin">
-            <number>0</number>
-        </property>
-        <property name="spacing">
-            <number>0</number>
-        </property>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout8</cstring>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>songListCB</cstring>
-                    </property>
-                </widget>
-                <widget class="QLayoutWidget">
-                    <property name="name">
-                        <cstring>layout6</cstring>
-                    </property>
-                    <hbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>timeIcon</cstring>
-                            </property>
-                            <property name="text">
-                                <string></string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Track progress</string>
-                            </property>
-                        </widget>
-                        <widget class="QSlider">
-                            <property name="name">
-                                <cstring>timeSlider</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>7</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>100</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="tracking">
-                                <bool>false</bool>
-                            </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Track progress</string>
-                            </property>
-                        </widget>
-                        <spacer>
-                            <property name="name">
-                                <cstring>spacer7</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Fixed</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>16</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>volumeIcon</cstring>
-                            </property>
-                            <property name="text">
-                                <string></string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Volume control</string>
-                            </property>
-                        </widget>
-                        <widget class="QSlider">
-                            <property name="name">
-                                <cstring>volumeSlider</cstring>
-                            </property>
-                            <property name="maxValue">
-                                <number>100</number>
-                            </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Volume control</string>
-                            </property>
-                        </widget>
-                    </hbox>
-                </widget>
-                <widget class="QLayoutWidget">
-                    <property name="name">
-                        <cstring>layout7</cstring>
-                    </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="spacing">
-                            <number>1</number>
-                        </property>
-                        <widget class="QPushButton" row="1" column="1">
-                            <property name="name">
-                                <cstring>ejectPB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>E&amp;ject</string>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QFrame" row="0" column="2" rowspan="3" colspan="2">
-                            <property name="name">
-                                <cstring>backdrop</cstring>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>3</hsizetype>
-                                    <vsizetype>3</vsizetype>
-                                    <horstretch>1</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                                <size>
-                                    <width>270</width>
-                                    <height>80</height>
-                                </size>
-                            </property>
-                            <property name="paletteForegroundColor">
-                                <color>
-                                    <red>255</red>
-                                    <green>255</green>
-                                    <blue>255</blue>
-                                </color>
-                            </property>
-                            <property name="paletteBackgroundColor">
-                                <color>
-                                    <red>0</red>
-                                    <green>0</green>
-                                    <blue>0</blue>
-                                </color>
-                            </property>
-                            <property name="font">
-                                <font>
-                                    <pointsize>9</pointsize>
-                                </font>
-                            </property>
-                            <property name="frameShape">
-                                <enum>NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                                <enum>Sunken</enum>
-                            </property>
-                            <property name="lineWidth">
-                                <number>0</number>
-                            </property>
-                            <vbox>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <property name="margin">
-                                    <number>2</number>
-                                </property>
-                                <widget class="QLayoutWidget">
-                                    <property name="name">
-                                        <cstring>layout5</cstring>
-                                    </property>
-                                    <grid>
-                                        <property name="name">
-                                            <cstring>unnamed</cstring>
-                                        </property>
-                                        <widget class="QFrame" row="0" column="0" rowspan="2" colspan="2">
-                                            <property name="name">
-                                                <cstring>frameleds</cstring>
-                                            </property>
-                                            <property name="sizePolicy">
-                                                <sizepolicy>
-                                                    <hsizetype>0</hsizetype>
-                                                    <vsizetype>0</vsizetype>
-                                                    <horstretch>0</horstretch>
-                                                    <verstretch>0</verstretch>
-                                                </sizepolicy>
-                                            </property>
-                                            <property name="minimumSize">
-                                                <size>
-                                                    <width>100</width>
-                                                    <height>35</height>
-                                                </size>
-                                            </property>
-                                            <property name="frameShape">
-                                                <enum>NoFrame</enum>
-                                            </property>
-                                            <property name="frameShadow">
-                                                <enum>Raised</enum>
-                                            </property>
-                                        </widget>
-                                        <widget class="QLabel" row="0" column="2">
-                                            <property name="name">
-                                                <cstring>statuslabel</cstring>
-                                            </property>
-                                            <property name="text">
-                                                <string>Status</string>
-                                            </property>
-                                        </widget>
-                                        <widget class="QLabel" row="1" column="2">
-                                            <property name="name">
-                                                <cstring>volumelabel</cstring>
-                                            </property>
-                                            <property name="text">
-                                                <string>Vol: --</string>
-                                            </property>
-                                        </widget>
-                                        <widget class="QLabel" row="0" column="3">
-                                            <property name="name">
-                                                <cstring>totaltimelabel</cstring>
-                                            </property>
-                                        </widget>
-                                        <widget class="QLabel" row="1" column="3">
-                                            <property name="name">
-                                                <cstring>tracklabel</cstring>
-                                            </property>
-                                            <property name="text">
-                                                <string>--/--</string>
-                                            </property>
-                                        </widget>
-                                        <widget class="QWidget" row="0" column="4" rowspan="2" colspan="1">
-                                            <property name="name">
-                                                <cstring>symbols</cstring>
-                                            </property>
-                                            <property name="sizePolicy">
-                                                <sizepolicy>
-                                                    <hsizetype>0</hsizetype>
-                                                    <vsizetype>5</vsizetype>
-                                                    <horstretch>0</horstretch>
-                                                    <verstretch>0</verstretch>
-                                                </sizepolicy>
-                                            </property>
-                                            <property name="minimumSize">
-                                                <size>
-                                                    <width>30</width>
-                                                    <height>0</height>
-                                                </size>
-                                            </property>
-                                            <property name="text" stdset="0">
-                                                <string>Vol: --</string>
-                                            </property>
-                                        </widget>
-                                        <widget class="QLabel" row="2" column="0" rowspan="1" colspan="5">
-                                            <property name="name">
-                                                <cstring>artistlabel</cstring>
-                                            </property>
-                                            <property name="text">
-                                                <string>Artist</string>
-                                            </property>
-                                        </widget>
-                                        <widget class="QLabel" row="3" column="0" rowspan="1" colspan="5">
-                                            <property name="name">
-                                                <cstring>titlelabel</cstring>
-                                            </property>
-                                            <property name="text">
-                                                <string>Title</string>
-                                            </property>
-                                        </widget>
-                                    </grid>
-                                </widget>
-                            </vbox>
-                        </widget>
-                        <widget class="QPushButton" row="3" column="0">
-                            <property name="name">
-                                <cstring>shufflePB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>R&amp;andom</string>
-                            </property>
-                            <property name="toggleButton">
-                                <bool>true</bool>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="3" column="3">
-                            <property name="name">
-                                <cstring>infoPB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>E&amp;xtras</string>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>playPB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Pla&amp;y</string>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="1" column="0">
-                            <property name="name">
-                                <cstring>stopPB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Stop</string>
-                            </property>
-                            <property name="accel">
-                                <string></string>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="3" column="2">
-                            <property name="name">
-                                <cstring>cddbPB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>&amp;CDDB</string>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="3" column="1">
-                            <property name="name">
-                                <cstring>repeatPB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Loop</string>
-                            </property>
-                            <property name="accel">
-                                <string></string>
-                            </property>
-                            <property name="toggleButton">
-                                <bool>true</bool>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="2" column="1">
-                            <property name="name">
-                                <cstring>nextPB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>&amp;Next</string>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="2" column="0">
-                            <property name="name">
-                                <cstring>prevPB</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Pre&amp;vious</string>
-                            </property>
-                            <property name="flat">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                    </grid>
-                </widget>
-            </vbox>
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>kscdPanelDlg</class>
+ <widget class="QWidget" name="kscdPanelDlg" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>516</width>
+    <height>198</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>KsCD</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>0</number>
+   </property>
+   <property name="spacing" >
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QComboBox" name="songListCB" />
+     </item>
+     <item>
+      <layout class="QHBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="timeIcon" >
+         <property name="toolTip" >
+          <string>Track progress</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
         </widget>
-    </vbox>
-</widget>
-<connections>
-    <connection>
-        <sender>playPB</sender>
-        <signal>clicked()</signal>
-        <receiver>kscdPanelDlg</receiver>
-        <slot>playClicked()</slot>
-    </connection>
-    <connection>
-        <sender>nextPB</sender>
-        <signal>clicked()</signal>
-        <receiver>kscdPanelDlg</receiver>
-        <slot>nextClicked()</slot>
-    </connection>
-    <connection>
-        <sender>prevPB</sender>
-        <signal>clicked()</signal>
-        <receiver>kscdPanelDlg</receiver>
-        <slot>prevClicked()</slot>
-    </connection>
-    <connection>
-        <sender>stopPB</sender>
-        <signal>clicked()</signal>
-        <receiver>kscdPanelDlg</receiver>
-        <slot>stopClicked()</slot>
-    </connection>
-    <connection>
-        <sender>ejectPB</sender>
-        <signal>clicked()</signal>
-        <receiver>kscdPanelDlg</receiver>
-        <slot>ejectClicked()</slot>
-    </connection>
-</connections>
-<tabstops>
-    <tabstop>songListCB</tabstop>
-    <tabstop>timeSlider</tabstop>
-    <tabstop>volumeSlider</tabstop>
-    <tabstop>playPB</tabstop>
-    <tabstop>stopPB</tabstop>
-    <tabstop>ejectPB</tabstop>
-    <tabstop>prevPB</tabstop>
-    <tabstop>nextPB</tabstop>
-    <tabstop>shufflePB</tabstop>
-    <tabstop>repeatPB</tabstop>
-    <tabstop>cddbPB</tabstop>
-    <tabstop>infoPB</tabstop>
-</tabstops>
-<slots>
-    <slot>playClicked()</slot>
-    <slot>stopClicked()</slot>
-    <slot>prevClicked()</slot>
-    <slot>ejectClicked()</slot>
-    <slot returnType="bool">nextClicked()</slot>
-</slots>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+       </item>
+       <item>
+        <widget class="QSlider" name="timeSlider" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy" >
+          <sizepolicy>
+           <hsizetype>7</hsizetype>
+           <vsizetype>0</vsizetype>
+           <horstretch>100</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip" >
+          <string>Track progress</string>
+         </property>
+         <property name="tracking" >
+          <bool>false</bool>
+         </property>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>16</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="volumeIcon" >
+         <property name="toolTip" >
+          <string>Volume control</string>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="volumeSlider" >
+         <property name="toolTip" >
+          <string>Volume control</string>
+         </property>
+         <property name="maximum" >
+          <number>100</number>
+         </property>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>1</number>
+       </property>
+       <item row="1" column="1" >
+        <widget class="QPushButton" name="ejectPB" >
+         <property name="text" >
+          <string>E&amp;ject</string>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item rowspan="3" row="0" column="2" colspan="2" >
+        <widget class="QFrame" name="backdrop" >
+         <property name="sizePolicy" >
+          <sizepolicy>
+           <hsizetype>3</hsizetype>
+           <vsizetype>3</vsizetype>
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>270</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="palette" >
+          <palette>
+           <active>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>221</red>
+             <green>223</green>
+             <blue>228</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>85</red>
+             <green>85</green>
+             <blue>85</blue>
+            </color>
+            <color>
+             <red>199</red>
+             <green>199</green>
+             <blue>199</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>103</red>
+             <green>141</green>
+             <blue>178</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>238</blue>
+            </color>
+            <color>
+             <red>82</red>
+             <green>24</green>
+             <blue>139</blue>
+            </color>
+            <color>
+             <red>232</red>
+             <green>232</green>
+             <blue>232</blue>
+            </color>
+           </active>
+           <inactive>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>221</red>
+             <green>223</green>
+             <blue>228</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>85</red>
+             <green>85</green>
+             <blue>85</blue>
+            </color>
+            <color>
+             <red>199</red>
+             <green>199</green>
+             <blue>199</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>103</red>
+             <green>141</green>
+             <blue>178</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>238</blue>
+            </color>
+            <color>
+             <red>82</red>
+             <green>24</green>
+             <blue>139</blue>
+            </color>
+            <color>
+             <red>232</red>
+             <green>232</green>
+             <blue>232</blue>
+            </color>
+           </inactive>
+           <disabled>
+            <color>
+             <red>128</red>
+             <green>128</green>
+             <blue>128</blue>
+            </color>
+            <color>
+             <red>221</red>
+             <green>223</green>
+             <blue>228</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>85</red>
+             <green>85</green>
+             <blue>85</blue>
+            </color>
+            <color>
+             <red>199</red>
+             <green>199</green>
+             <blue>199</blue>
+            </color>
+            <color>
+             <red>199</red>
+             <green>199</green>
+             <blue>199</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>128</red>
+             <green>128</green>
+             <blue>128</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+            <color>
+             <red>86</red>
+             <green>117</green>
+             <blue>148</blue>
+            </color>
+            <color>
+             <red>255</red>
+             <green>255</green>
+             <blue>255</blue>
+            </color>
+            <color>
+             <red>0</red>
+             <green>0</green>
+             <blue>238</blue>
+            </color>
+            <color>
+             <red>82</red>
+             <green>24</green>
+             <blue>139</blue>
+            </color>
+            <color>
+             <red>232</red>
+             <green>232</green>
+             <blue>232</blue>
+            </color>
+           </disabled>
+          </palette>
+         </property>
+         <property name="font" >
+          <font>
+           <family>Sans Serif</family>
+           <pointsize>9</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="autoFillBackground" >
+          <bool>true</bool>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="lineWidth" >
+          <number>0</number>
+         </property>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>2</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <layout class="QGridLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item rowspan="2" row="0" column="0" colspan="2" >
+             <widget class="QFrame" name="frameleds" >
+              <property name="sizePolicy" >
+               <sizepolicy>
+                <hsizetype>0</hsizetype>
+                <vsizetype>0</vsizetype>
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>100</width>
+                <height>35</height>
+               </size>
+              </property>
+              <property name="frameShape" >
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow" >
+               <enum>QFrame::Raised</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2" >
+             <widget class="QLabel" name="statuslabel" >
+              <property name="text" >
+               <string>Status</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2" >
+             <widget class="QLabel" name="volumelabel" >
+              <property name="text" >
+               <string>Vol: --</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3" >
+             <widget class="QLabel" name="totaltimelabel" />
+            </item>
+            <item row="1" column="3" >
+             <widget class="QLabel" name="tracklabel" >
+              <property name="text" >
+               <string>--/--</string>
+              </property>
+             </widget>
+            </item>
+            <item rowspan="2" row="0" column="4" >
+             <widget class="QWidget" name="symbols" >
+              <property name="sizePolicy" >
+               <sizepolicy>
+                <hsizetype>0</hsizetype>
+                <vsizetype>5</vsizetype>
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+               <size>
+                <width>30</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="5" >
+             <widget class="QLabel" name="artistlabel" >
+              <property name="text" >
+               <string>Artist</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="5" >
+             <widget class="QLabel" name="titlelabel" >
+              <property name="text" >
+               <string>Title</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QPushButton" name="shufflePB" >
+         <property name="text" >
+          <string>R&amp;andom</string>
+         </property>
+         <property name="checkable" >
+          <bool>true</bool>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3" >
+        <widget class="QPushButton" name="infoPB" >
+         <property name="text" >
+          <string>E&amp;xtras</string>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2" >
+        <widget class="QPushButton" name="playPB" >
+         <property name="text" >
+          <string>Pla&amp;y</string>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QPushButton" name="stopPB" >
+         <property name="text" >
+          <string>Stop</string>
+         </property>
+         <property name="shortcut" >
+          <string/>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" >
+        <widget class="QPushButton" name="cddbPB" >
+         <property name="text" >
+          <string>&amp;CDDB</string>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QPushButton" name="repeatPB" >
+         <property name="text" >
+          <string>Loop</string>
+         </property>
+         <property name="shortcut" >
+          <string/>
+         </property>
+         <property name="checkable" >
+          <bool>true</bool>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QPushButton" name="nextPB" >
+         <property name="text" >
+          <string>&amp;Next</string>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QPushButton" name="prevPB" >
+         <property name="text" >
+          <string>Pre&amp;vious</string>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <tabstops>
+  <tabstop>songListCB</tabstop>
+  <tabstop>timeSlider</tabstop>
+  <tabstop>volumeSlider</tabstop>
+  <tabstop>playPB</tabstop>
+  <tabstop>stopPB</tabstop>
+  <tabstop>ejectPB</tabstop>
+  <tabstop>prevPB</tabstop>
+  <tabstop>nextPB</tabstop>
+  <tabstop>shufflePB</tabstop>
+  <tabstop>repeatPB</tabstop>
+  <tabstop>cddbPB</tabstop>
+  <tabstop>infoPB</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
