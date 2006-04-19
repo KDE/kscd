@@ -273,8 +273,8 @@ bool KCompactDisc::setDevice(
     int status = wm_cd_init(
                     digitalPlayback ? WM_CDDA : WM_CDIN,
                     QFile::encodeName(device),
-                    digitalPlayback ? audioSystem.ascii() : 0,
-                    digitalPlayback ? audioDevice.ascii() : 0,
+                    digitalPlayback ? audioSystem.toAscii().data() : 0,
+                    digitalPlayback ? audioDevice.toAscii().data() : 0,
                     0);
     m_device = wm_drive_device();
     kDebug() << "Device change: "
@@ -287,7 +287,7 @@ bool KCompactDisc::setDevice(
     if (status < 0)
     {
         // Severe (OS-level) error.
-        m_device = QString::null;
+        m_device.clear();
     }
     else
     {
@@ -300,8 +300,11 @@ bool KCompactDisc::setDevice(
     if (m_infoMode == Asynchronous)
         timerExpired();
     else
-	timer.start(1000, true);
-    return m_device != QString::null;
+    {
+	timer.setSingleShot(true);
+	timer.start(1000);
+    }
+    return !m_device.isNull();
 }
 
 void KCompactDisc::setVolume(unsigned volume)
@@ -378,7 +381,7 @@ void KCompactDisc::timerExpired()
 {
     m_status = wm_cd_status();
 
-    if (WM_CDS_NO_DISC(m_status) || (m_device == QString::null))
+    if (WM_CDS_NO_DISC(m_status) || m_device.isNull())
     {
         if (m_previousStatus != m_status)
         {
@@ -479,7 +482,8 @@ void KCompactDisc::timerExpired()
     }
 
     // Now that we have incurred any delays caused by the signals, we'll start the timer.
-    timer.start(1000, true);
+    timer.setSingleShot(true);
+    timer.start(1000);
 }
 
 #include "kcompactdisc.moc"

@@ -42,7 +42,7 @@ bin_PROGRAMS = kscd
 #config.h: kscd-script
 #$(SHELL) $(srcdir)/kscd-script
 
-SUBDIRS = bitmaps libwm
+SUBDIRS = libwm
 
 bin_SCRIPTS = workman2cddb.pl
 
