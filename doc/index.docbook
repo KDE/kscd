@@ -71,7 +71,7 @@
 <copyright>
 
 <year>2005-2006</year>
-<holder>Mike McBride</holder>
+<holder>&Mike.McBride;</holder>
 </copyright>
 <legalnotice>&FDLNotice;</legalnotice>
 
@@ -356,10 +356,10 @@ either &konqueror; or a custom browser with the radio buttons. By default, the
 <option><replaceable>openURL %s</replaceable></option></userinput>.</para>
 -->
 
-<para>Placing a mark in the checkbox labeled <guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
+<para>Placing a mark in the check box labeled <guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
 appear in the &kicker; panel.</para>
 
-<para>Placing a mark in the checkbox labeled <guilabel>Show track announcement</guilabel> causes a small information window to appear on 
+<para>Placing a mark in the check box labeled <guilabel>Show track announcement</guilabel> causes a small information window to appear on 
 top of the kicker window each time the &CD; track changes.  This window will automatically disappear in 5 seconds.</para>
 
 <screenshot>
@@ -404,14 +404,14 @@ a &CD; drive that is capable of DAE (most new drives are) and it requires some C
 without using your computers CPU.  This data is transmitted by a dedicated cable directly to the sound card in your computer.  This method requires 
 less CPU proccessing time, but it does require that the dedicated cable be connected inside your computer.  Not all computers have this connection.</para></note>
 
-<para>The checkbox labeled <guilabel>Use direct digital playback</guilabel> determines which method &kscd; uses to read the audio tracts.  If there is a mark in the checkbox, the first method is used.  If there is no mark in the checkbox, the second method is utilized.</para>
+<para>The check box labeled <guilabel>Use direct digital playback</guilabel> determines which method &kscd; uses to read the audio tracts.  If there is a mark in the check box, the first method is used.  If there is no mark in the check box, the second method is utilized.</para>
 
-<para>If you have selected direct digital playback, a dropdown box labeled <guilabel>Select audio backend:</guilabel> will let you select which 
-sound backend the digital information should be sent to.  The contents of the dropdown box will vary depending on your system. 
+<para>If you have selected direct digital playback, a drop down box labeled <guilabel>Select audio backend:</guilabel> will let you select which 
+sound backend the digital information should be sent to.  The contents of the drop down box will vary depending on your system. 
 Most users should select <guilabel>arts</guilabel>.  You can also select the device the audio backend uses by entering the device location in 
 the text box labeled <guilabel>Select audio device:</guilabel>.  A full discussion of audio devices and audio backends is beyond the scope of this manual.</para>
 
-<para>If a mark is placed in the checkbox labeled <guilabel>Allow encoding selection</guilabel>, you can select the text encoding for the results of a CDDB request.</para>
+<para>If a mark is placed in the check box labeled <guilabel>Allow encoding selection</guilabel>, you can select the text encoding for the results of a CDDB request.</para>
 <tip><para>The standard describes CDDB results as being strictly Latin 1.  If you are not having problems with your CDDB information, leave this box unchecked.</para></tip>
 
 
@@ -476,11 +476,11 @@ page. The <guibutton>Defaults</guibutton> button restores the default values of 
 server or a web server to submit new <acronym>CDDB</acronym> entries. This is useful
 if you do not have your own system configured as a server. </para>
 
-<para>If you plan to submit a CDDB entry, first you must decide between submitting between HTTP 
-and submitting the entry as an email (via SMTP).  </para>
+<para>If you plan to submit a CDDB entry, first you must decide between submitting between &HTTP;
+and submitting the entry as an email (via &SMTP;).  </para>
 
 <tip><para>It is simpler to submit new entries using &HTTP;.  Some firewalls block this traffic.  If your 
-firewall prevents you from sending new entries using &HTTP;, you can use SMTP.</para></tip>
+firewall prevents you from sending new entries using &HTTP;, you can use &SMTP;.</para></tip>
 
 <para>First select either <guilabel>&HTTP;</guilabel> or <guilabel>SMTP (Email)</guilabel> to determine which 
 protocol to use.</para>
@@ -493,13 +493,14 @@ change anything.</para>
 </sect2>
 
 <sect2 id="smtp2-options">
-<title>Using SMTP (Email) to send CDDB information</title>
+<title>Using &SMTP; (Email) to send CDDB information</title>
+
 <para>To prepare to submit information using email, enter your email address in the 
 textbox labeled <guilabel>Reply-To:</guilabel>, your email server in the textbox 
-labeled <guilabel>SMTP-server:</guilabel> and select the port number in the dropdown box 
+labeled <guilabel>SMTP-server:</guilabel> and select the port number in the drop down box 
 labeled <guilabel>Port:</guilabel>.</para>
 <para>If you need to use a password to send email using the email server, place a mark in the 
-checkbox labeled <guilabel>Server needs authentication</guilabel> and enter your 
+check box labeled <guilabel>Server needs authentication</guilabel> and enter your 
 username in the textbox labeled <guilabel>Username:</guilabel>.</para>
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
@@ -550,7 +551,7 @@ text will appear in the proper line in the selection box.</para>
 <para>Once all tracks have been given titles and the
 <guilabel>Artist:</guilabel> and <guilabel>Title</guilabel> fields have
 been filled out, you can press the <guibutton>Upload</guibutton>
-button to send your submission by e-mail to freedb.</para>
+button to send your submission by email to freedb.</para>
 
 <para>You will be prompted to select a category for the
 submission. The <guilabel>Disc ID</guilabel> section displays the 32
@@ -609,7 +610,7 @@ circulation. If you have Internet access, you will likely never have to manually
 enter track information for your &CD;s if you have this set up properly. See
 <link linkend="freedb-tab">The freedb Tab</link> subsection in the configuring
 &kscd; chapter for detailed instructions on how to configure this service, and
-the <link linkend="cddb-editor">The CD Database Editor</link> section for
+the <link linkend="cddb-editor">The &CD; Database Editor</link> section for
 instructions on how to edit <acronym>CDDB</acronym> entries.</para>
 
 <para>Use of the <acronym>CDDB</acronym> is free. Submissions from users are
@@ -650,13 +651,13 @@ better to do with your spare time.</para>
 </chapter>
 
 <chapter id="troubleshooting">
-<title>Troubleshooting the CD player</title>
+<title>Troubleshooting the &CD; player</title>
 
-<para>This section of the manual provides a step by step guide to troubleshooting your CD drive if the CD player will not play an audio &CD;</para>
+<para>This section of the manual provides a step by step guide to troubleshooting your &CD; drive if the &CD; player will not play an audio &CD;</para>
 
 <sect1 id="ts-begin">
 <title>Begin troubleshooting</title>
-<para>To begin, place an audio CD in your CD drive.  Close the CD drive door and press play on the &kscd; window.  Watch the CD drive on your computer and select the link below that best describes the problem.</para>
+<para>To begin, place an audio &CD; in your &CD; drive.  Close the &CD; drive door and press play on the &kscd; window.  Watch the &CD; drive on your computer and select the link below that best describes the problem.</para>
 <para>When I pressed <guilabel>Play</guilabel>:</para>
 <itemizedlist>
 <listitem><para><link linkend="ts-errorbox">An error box appeared</link></para></listitem>
@@ -675,7 +676,7 @@ better to do with your spare time.</para>
 </mediaobject>
 </screenshot>
 <para>Click once on the vertical yellow bar and drag the bar all the way to the right end of the slider.</para>
-<para>If you can hear music now, the problem is solved.  If you still can not hear the music, click 
+<para>If you can hear music now, the problem is solved.  If you still cannot hear the music, click 
 <link linkend="ts-kmixlevels">here</link> to continue.</para>
 </sect1>
 <sect1 id="ts-kmixlevels">
@@ -687,7 +688,7 @@ better to do with your spare time.</para>
 <guimenuitem>&kmix;</guimenuitem></menuchoice>.</para>
 <para>Once &kmix; has started, you will be presented with a new window with a number of volume sliders.  Depending on the configuration, the sliders may have lables, or the labels may be hidden.  If you do not see any labels for the sliders, you should make the labels visible before continuing.  To make the labels visible, select 
 <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &kmix;...</guimenuitem></menuchoice> from the &kmix; window.  This will open a small window with a few check boxes. To 
-turn the labels on, place a mark in the checkbox labeld <guilabel>Show labels</guilabel> and click <guibutton>OK</guibutton>.</para>
+turn the labels on, place a mark in the check box labeld <guilabel>Show labels</guilabel> and click <guibutton>OK</guibutton>.</para>
 <para>Each slider controls the volume of a different audio device.  There are two parts to each device that may need to be altered.  If you look at a slider, there is a green 
 light above each slider.  If you click on this light you can toggle between bright green and dark green.  If the light is dark green, that audio device is muted and will not produce any sound.  If the light is light green, the device is not muted.  Once you have verified that the device is not muted, you increase the volume of the device by draging the yellow bar up the slider.  The volume of an audio device is decreased by dragging the yellow bar down the slider.</para>
 <note><para>Some sliders will have a red light as well.  This light is not important for playback of compact discs so you can ignore them for now.</para></note>
@@ -724,7 +725,7 @@ light above each slider.  If you click on this light you can toggle between brig
 <sect1 id="ts-noothersounds">
 <title>The test sound failed to play</title>
 <para>So far, we have verified that the volume on &kscd; and all the mixer levels in &kmix; are set correctly.  We have also sent a test sound and you could not hear the sound played.  This suggests the trouble is not with &kscd; but rather with your sound configuration.</para>
-<note><para>Please make sure the &CD; is still playing in your CD drive.</para></note>
+<note><para>Please make sure the &CD; is still playing in your &CD; drive.</para></note>
 <para>First, we need to make sure your speakers are plugged in and that the volume of your speakers is set appropriately.  If you are using external speakers, please check the following:</para>
 <itemizedlist>
 <listitem><para>Please make sure the speakers are connected to your computer appropriatly (see your user manual if necessary).</para></listitem>
@@ -736,10 +737,10 @@ light above each slider.  If you click on this light you can toggle between brig
 
 <para>If your speakers are part of you computers case, please check to see if your speakers have a volume knob. If they do make sure the volume is turned half way between off and maximum.</para>
 
-<para>If you have checked all of this, you probably need detailed help on getting the sound working on your computer. A full discussion of troubleshooting the sound system is beyond the scope of this manual and the user is referred to other internet sources. Some potential sources of information are:</para>
+<para>If you have checked all of this, you probably need detailed help on getting the sound working on your computer. A full discussion of troubleshooting the sound system is beyond the scope of this manual and the user is referred to other Internet sources. Some potential sources of information are:</para>
 
 <itemizedlist>
-<listitem><para><ulink url="http://www.tldp.org/HOWTO/Sound-HOWTO/index.html">Linux Sound HOWTO</ulink>.</para></listitem>
+<listitem><para><ulink url="http://www.tldp.org/HOWTO/Sound-HOWTO/index.html">&Linux; Sound HOWTO</ulink>.</para></listitem>
 <listitem><para>The website of your distribution will probably have a user forum for asking questions.</para></listitem>
 <listitem><para>Post a question to a Usenet newsgroup like comp.os.linux</para></listitem>
 <listitem><para>Use a search engine to locate others who have encountered similar problems as you.</para></listitem>
@@ -747,9 +748,9 @@ light above each slider.  If you click on this light you can toggle between brig
 </sect1>
 
 <sect1 id="ts-othersoundsplay">
-<title>The test sound played, but I can not hear the &CD;</title>
+<title>The test sound played, but I cannot hear the &CD;</title>
 <para>So far, we have verified that the volume on &kscd; and all the mixer levels in &kmix; are set correctly.  We have also played a test sound and you were able to  hear the sound played.  This suggests the trouble is limited to &kscd; or the &CD;.</para>
-<para>Check to make sure the &CD; is playable.  If this is a new &CD;, put it in another CD player (preferrably not located in a computer) and make sure the &CD; is playable in that device.  If it is playable in another device, continue <link linkend="ts-ddpback">here</link>.</para>
+<para>Check to make sure the &CD; is playable.  If this is a new &CD;, put it in another &CD; player (preferrably not located in a computer) and make sure the &CD; is playable in that device.  If it is playable in another device, continue <link linkend="ts-ddpback">here</link>.</para>
 </sect1>
 
 <sect1 id="ts-ddpback">
@@ -769,11 +770,11 @@ less CPU proccessing time, but it does require that the dedicated cable be conne
 
 <para>Now click on the button labeled <guibutton>Extras</guibutton>.  This will open a small menu.  Select <guilabel>Configure &kscd;...</guilabel>.  This will open a new dialog box.</para>
 <para>Click the icon labeled <guilabel>CD Player</guilabel> on the left side of the dialog box.</para>
-<para>Place a mark in the checkbox labeled <guilabel>Use direct digital playback</guilabel>.</para>
+<para>Place a mark in the check box labeled <guilabel>Use direct digital playback</guilabel>.</para>
 <para>Click <guibutton>OK</guibutton>.  </para>
 <para>Now click <guibutton>Play</guibutton> in the &kscd; window and see if the &CD; begins to play correctly.</para>
 
-<para>If you still can not hear the music on the &CD;, your problem requires specific knowledge of your system and the problems you encounter.  The reader is referred to many good internet resources for this information.  Please consider finding help in one of the following ways:</para>
+<para>If you still cannot hear the music on the &CD;, your problem requires specific knowledge of your system and the problems you encounter.  The reader is referred to many good Internet resources for this information.  Please consider finding help in one of the following ways:</para>
 
 <itemizedlist>
 <listitem><para>The website of your distribution will probably have a user forum for asking questions.</para></listitem>
@@ -846,7 +847,7 @@ administrator nicely to give you read permission for the &CD-ROM; device.</para>
 </qandaentry>
 
 <qandaentry> 
-<question><para>I can not get the <acronym>CDDB</acronym> to work. Can I get any
+<question><para>I cannot get the <acronym>CDDB</acronym> to work. Can I get any
 detailed information about what may be going wrong?</para></question> 
 <answer><para>If you experience trouble with the <acronym>CDDB</acronym>
 functionality try to starting &kscd; from the command line with the
@@ -876,10 +877,10 @@ url="http://www.cddb.com/">http://ww.cddb.com</ulink> for more information on
 <para>A very special thank you also to David White who wrote the original &kscd;
 help documention. Great Job David!</para>
 
-<para>Documentation updated for KDE 2.0, and copyright by &Jonathan.Singer; 
+<para>Documentation updated for &kde; 2.0, and copyright by &Jonathan.Singer;
 &Jonathan.Singer.mail;</para>
 
-<para>Documentation updated for KDE 3.4, and copyright by &Mike.McBride; 
+<para>Documentation updated for &kde; 3.4, and copyright by &Mike.McBride; 
 &Mike.McBride.mail;</para>
 
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
@@ -903,7 +904,7 @@ help documention. Great Job David!</para>
 <title>Requirements</title>
 
 <para>In order to successfully compile &kscd;, you need the latest versions of
-the KDE libraries as well as the &Qt; C++ library.  All required libraries as
+the &kde; libraries as well as the &Qt; C++ library.  All required libraries as
 well as &kscd; itself can be found at the &kde; &FTP; site, &kde-ftp;.</para>
 
 </sect1> 
