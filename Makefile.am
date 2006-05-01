@@ -54,8 +54,6 @@ xdg_apps_DATA = kscd.desktop
 
 mime_DATA = xmcd.desktop
 
-messages: rc.cpp
-	$(XGETTEXT) *.cpp -o $(podir)/kscd.pot
 
 cdrom.c:config.h
 plat_bsd386.c:config.h
