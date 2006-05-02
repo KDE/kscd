@@ -226,7 +226,6 @@ private:
     QStringList     playlist;
     KCDDB::Client*  cddb;
     KActionCollection* m_actions;
-    KGlobalAccel* m_globalAccel;
     KToggleAction* m_togglePopupsAction;
     DockWidget* m_dockWidget;
     void lookupDevice();
@@ -247,7 +246,6 @@ private slots:
     void trayOpening();
     void configDone();
     void configureKeys();
-    void configureGlobalKeys();
     void setIcons();
 
     void timeSliderPressed();
