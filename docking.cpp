@@ -135,7 +135,7 @@ void DockWidget::wheelEvent(QWheelEvent *e)
 
     switch (e->state())
     {
-	    case Qt::ShiftButton:
+	    case Qt::ShiftModifier:
         {
             if (e->delta() > 0)
             {

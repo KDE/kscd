@@ -403,12 +403,12 @@ void KSCD::playClicked()
         return;
 
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
 
     if (!m_cd->isPlaying())
     {
         kapp->processEvents();
-        kapp->flushX();
+        kapp->flush();
 
         if (m_cd->isPaused())
         {
@@ -448,7 +448,7 @@ void KSCD::playClicked()
     }
 
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
 } // playClicked()
 
 void KSCD::setShuffle(int shuffle)
@@ -483,7 +483,7 @@ void KSCD::stopClicked()
     stoppedByUser = true;
 
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
     m_cd->stop();
 } // stopClicked()
 
@@ -509,7 +509,7 @@ void KSCD::prevClicked()
     }
 
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
     m_cd->play(track, 0, playlist.isEmpty() ? 0 : track);
 } // prevClicked()
 
@@ -537,7 +537,7 @@ bool KSCD::nextClicked()
     }
 
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
     m_cd->play(track, 0, Prefs::randomPlay() || !playlist.isEmpty() ? track + 1 : 0);
     return true;
 } // nextClicked()
@@ -594,7 +594,7 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
 void KSCD::jumpToTime(int ms, bool forcePlay)
 {
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
 
     int track = m_cd->track();
     if ((m_cd->isPlaying() || forcePlay) &&
@@ -641,7 +641,7 @@ void KSCD::quitClicked()
 
     // Good GOD this is evil
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
 
     if(Prefs::stopExit())
         m_cd->stop();
@@ -663,7 +663,7 @@ void KSCD::loopOn()
     loopled->on();
     loopled->show();
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
 } // loopOn;
 
 void KSCD::loopOff()
@@ -672,7 +672,7 @@ void KSCD::loopOff()
     loopled->off();
     loopled->show();
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
 } // loopOff;
 
 void KSCD::loopClicked()
@@ -976,7 +976,7 @@ void KSCD::discChanged(unsigned discId)
     }
     else
     {
-        cddbInfo.set("discid", QString::number(discId, 16).rightJustify(8,'0'));
+        cddbInfo.set("discid", QString::number(discId, 16).rightJustified(8,'0'));
         cddbInfo.set(Length, m_cd->discLength() / 1000);
         cddbInfo.set(Artist, m_cd->discArtist());
         cddbInfo.set(Title, m_cd->discTitle());
@@ -1279,7 +1279,7 @@ void KSCD::led_on()
     queryled->off();
     queryled->show();
     kapp->processEvents();
-    kapp->flushX();
+    kapp->flush();
 } // led_on
 
 void KSCD::togglequeryled()
