@@ -381,10 +381,10 @@ void KSCD::setupPopups()
     infoPopup->insertItem("Open Directory", 10);
     infoPopup->insertItem("Yahoo!", 11);
 
-    m_actions->action(KStdAction::name(KStdAction::Preferences))->plug(mainPopup);
+    mainPopup->addAction( m_actions->action(KStdAction::name(KStdAction::Preferences)) );
     //NEW add the shortcut dialogs
-    m_actions->action("options_configure_globals")->plug(mainPopup);
-    m_actions->action("options_configure_shortcuts")->plug(mainPopup);
+    mainPopup->addAction( m_actions->action("options_configure_globals") );
+    mainPopup->addAction( m_actions->action("options_configure_shortcuts") );
     mainPopup->insertSeparator();
 
     mainPopup->insertItem(i18n("Artist Information"), infoPopup);
@@ -394,7 +394,7 @@ void KSCD::setupPopups()
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     mainPopup->insertItem(SmallIcon("help"),i18n("&Help"), helpMenu->menu());
     mainPopup->insertSeparator();
-    m_actions->action(KStdAction::name(KStdAction::Quit))->plug(mainPopup);
+    mainPopup->addAction( m_actions->action(KStdAction::name(KStdAction::Quit)) );
 } // setupPopups
 
 void KSCD::playClicked()
