@@ -1,6 +1,8 @@
 kde4_header()
 project(kscd)
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-kscd.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kscd.h )
+
 set(libworkmanaudio_SRCS 
 	libwm/audio/audio.c 
 	libwm/audio/audio_alsa.c 
