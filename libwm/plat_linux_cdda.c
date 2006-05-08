@@ -3,7 +3,7 @@
  *
  * This file is part of WorkMan, the civilized CD player library
  * (c) 1991-1997 by Steven Grimm (original author)
- * (c) by Dirk Försterling (current 'author' = maintainer)
+ * (c) by Dirk Fï¿½sterling (current 'author' = maintainer)
  * The maintainer can be contacted by his e-mail address:
  * milliByte@DeathsDoor.com 
  *
@@ -29,28 +29,19 @@
  
 #if defined(__linux__) && defined(BUILD_CDDA)
 
-#include "include/wm_struct.h"
-#include "include/wm_cdda.h"
 #ifndef __GNUC__
 #define __GNUC__ 1
 #endif
-
-/* don't undef ansi for the other includes */
-#ifdef __STRICT_ANSI__
+/* needed for vanilla kernel headers, which do provide __u64 only
+   for ansi */
 #undef __STRICT_ANSI__
-#include <asm/types.h>
-#define __STRICT_ANSI__
-#else
-#include <asm/types.h>
-#endif
-
-/* ugly workaround for broken glibc shipped in SuSE 9.0 */
-#define inline __inline__
+/* needed for non-ansi kernel headers */
 #define asm __asm__
+#define inline __inline__
+#include <asm/types.h>
 #include <linux/cdrom.h>
-#undef inline
 #undef asm
-/* types.h and cdio.h are included by wm_cdda.h */
+#undef inline
 
 #include <stdio.h>
 #include <math.h>
@@ -60,6 +51,9 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+
+#include "include/wm_struct.h"
+#include "include/wm_cdda.h"
 
 #define WM_MSG_CLASS WM_MSG_CLASS_PLATFORM
 

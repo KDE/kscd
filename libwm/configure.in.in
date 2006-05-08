@@ -18,9 +18,19 @@ case $host in
   AC_CHECK_HEADERS(pthread.h)
   AC_TRY_COMPILE(
   [
+#ifndef __GNUC__
+#define __GNUC__ 1
+#endif
+/* needed for vanilla kernel headers, which do provide __u64 only
+   for ansi */
+#undef __STRICT_ANSI__
+/* needed for non-ansi kernel headers */
 #define asm __asm__
+#define inline __inline__
 #include <linux/types.h>
 #include <linux/cdrom.h>
+#undef asm
+#undef inline
   ],[
 #if defined(__linux__)
 ioctl(1, CDROMREADAUDIO, 0);
