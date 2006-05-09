@@ -5,8 +5,8 @@
 #include <qnamespace.h>
 #include <qdatetime.h>
 #include <qtextstream.h>
-#include <qfile.h>
-#include <qdir.h>
+#include <QFile>
+#include <QDir>
 #include <qfileinfo.h>
 #include <k3listview.h>
 #include <klineedit.h>

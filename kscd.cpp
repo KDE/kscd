@@ -22,10 +22,10 @@
  *
  */
 
-#include <qdir.h>
-#include <qregexp.h>
+#include <QDir>
+#include <QRegExp>
 #include <qtextstream.h>
-#include <qlayout.h>
+#include <QLayout>
 #include <q3hbox.h>
 #include <q3vbox.h>
 #include <qapplication.h>

@@ -22,7 +22,7 @@
 #include <qpainter.h>
 #include <qbrush.h>
 #include <qpen.h>
-#include <qcolor.h>
+#include <QColor>
 //Added by qt3to4:
 #include <Q3Frame>
 #include "ledlamp.h"

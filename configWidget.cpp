@@ -26,9 +26,9 @@
 #include <klineedit.h>
 #include <dcopref.h>
 #include <kurlrequester.h>
-#include <qcheckbox.h>
+#include <QCheckBox>
 #include <kcombobox.h>
-#include <qlayout.h>
+#include <QLayout>
 
 #include <config.h>
 extern "C" {

@@ -20,7 +20,7 @@
 
 #include <dcopclient.h>
 #include <dcopref.h>
-#include <qfile.h>
+#include <QFile>
 #include <kdebug.h>
 #include <klocale.h>
 #include <kprotocolmanager.h>

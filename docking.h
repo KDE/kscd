@@ -34,7 +34,7 @@
 #include <qpixmap.h>
 #include <qtimer.h>
 #include <q3popupmenu.h>
-#include <qpoint.h>
+#include <QPoint>
 //Added by qt3to4:
 #include <QWheelEvent>
 #include <ksystemtray.h>
