@@ -41,6 +41,7 @@
 
 #include <dcopclient.h>
 #include <kaboutdata.h>
+#include <kactioncollection.h>
 
 #include <kaction.h>
 #include <dcopref.h>
