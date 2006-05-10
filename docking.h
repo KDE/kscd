@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include <qapplication.h>
 #include <qpixmap.h>
-#include <qtimer.h>
+#include <QTimer>
 #include <q3popupmenu.h>
 #include <QPoint>
 //Added by qt3to4:

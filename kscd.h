@@ -43,7 +43,7 @@ class KCompactDisc;
 #include <QLabel>
 #include <qdialog.h>
 #include <qapplication.h>
-#include <qtimer.h>
+#include <QTimer>
 #include <QComboBox>
 #include <qscrollbar.h>
 #include <qslider.h>

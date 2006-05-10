@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 
 #include <qnamespace.h>
-#include <qdatetime.h>
+#include <QDateTime>
 #include <qtextstream.h>
 #include <QFile>
 #include <QDir>

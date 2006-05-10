@@ -21,8 +21,8 @@
 #ifndef KCOMPACTDISC_H
 #define KCOMPACTDISC_H
 
-#include <qobject.h>
-#include <qtimer.h>
+#include <QObject>
+#include <QTimer>
 #include <q3valuelist.h>
 
 /**
