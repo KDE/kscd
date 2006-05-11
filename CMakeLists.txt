@@ -12,7 +12,7 @@ set(libworkmanaudio_SRCS
 
 add_subdirectory( libwm ) 
 
-include_directories( ${CMAKE_SOURCE_DIR}/libkcddb ${CMAKE_BINARY_DIR}/libkcddb ${KDE4_INCLUDES} )
+include_directories( ${CMAKE_SOURCE_DIR}/libkcddb ${CMAKE_BINARY_DIR}/libkcddb  )
 
 
 ########### next target ###############
