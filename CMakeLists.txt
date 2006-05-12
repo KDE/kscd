@@ -1,4 +1,3 @@
-kde4_header()
 project(kscd)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-kscd.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kscd.h )
@@ -54,7 +53,6 @@ install_files( /bin FILES workman2cddb.pl)
 
 kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
 
-kde4_footer()
 
 
 
