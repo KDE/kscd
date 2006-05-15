@@ -49,7 +49,7 @@ install_files( ${DATA_INSTALL_DIR}/konqueror/servicemenus FILES audiocd_play.des
 install_files( ${DATA_INSTALL_DIR}/kscd/pics FILES  )
 install_files( ${DATA_INSTALL_DIR}/kscd/icons FILES  )
 install_files( ${MIME_INSTALL_DIR}/text FILES xmcd.desktop )
-install_files( /bin FILES workman2cddb.pl)
+install(PROGRAMS workman2cddb.pl DESTINATION bin)
 
 kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
 
