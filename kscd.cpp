@@ -789,7 +789,7 @@ void KSCD::showConfig()
 
     updateConfigDialog(confWidget);
 
-    connect(configDialog, SIGNAL(settingsChanged()), this, SLOT(configDone()));
+    connect(configDialog, SIGNAL(settingsChanged(const QString &)), this, SLOT(configDone()));
     configDialog -> show();
 } // showConfig()
 
