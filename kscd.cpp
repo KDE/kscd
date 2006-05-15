@@ -84,7 +84,7 @@
 #include "cddbdlg.h"
 #include "configWidget.h"
 #include <qtextcodec.h>
-#include <kcompactdisc.h>
+#include "kcompactdisc.h"
 #include <fixx11h.h>
 #include <ktoolinvocation.h>
 
