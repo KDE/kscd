@@ -1487,7 +1487,7 @@ void KSCD::information(int i)
             break;
     } // switch()
 
-    KRun::runURL( url, "text/html");
+    KRun::runUrl( url, "text/html", 0L);
 } // information
 
 /**
