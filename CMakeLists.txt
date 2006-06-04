@@ -9,10 +9,16 @@ set(libworkmanaudio_SRCS
 	libwm/audio/audio_sun.c
 	)
 
-add_subdirectory( libwm ) 
 
-include_directories( ${CMAKE_SOURCE_DIR}/libkcddb ${CMAKE_BINARY_DIR}/libkcddb  )
 
+include_directories( 
+		${CMAKE_SOURCE_DIR}/libkcddb 
+		${CMAKE_BINARY_DIR}/libkcddb  
+		${CMAKE_BINARY_DIR}/kscd
+		)
+MESSAGE(STATUS "sdd<${CMAKE_BINARY_DIR}>")
+
+add_subdirectory( libwm )
 
 ########### next target ###############
 
