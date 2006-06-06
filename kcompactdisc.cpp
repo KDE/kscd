@@ -18,8 +18,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <dcopclient.h>
-#include <dcopref.h>
 #include <QFile>
 #include <kdebug.h>
 #include <klocale.h>
@@ -27,6 +25,7 @@
 #include <krun.h>
 #include "kcompactdisc.h"
 #include <netwm.h>
+#include <dbus/qdbus.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -238,10 +237,12 @@ QString KCompactDisc::urlToDevice(const QString& device)
     if (deviceUrl.protocol() == "media" || deviceUrl.protocol() == "system")
     {
         kDebug() << "Asking mediamanager for " << deviceUrl.fileName() << endl;
-        DCOPRef mediamanager("kded", "mediamanager");
-        DCOPReply reply = mediamanager.call("properties(QString)", deviceUrl.fileName());
+        
+		QDBusInterfacePtr mediamanager( "org.kde.kded", "/modules/mediamanager", "org.kde.MediaManager" );
+		QDBusReply<QStringList> reply = mediamanager->call("properties",deviceUrl.fileName());
+
         QStringList properties = reply;
-        if (!reply.isValid() || properties.count() < 6)
+        if (!reply.isSuccess() || properties.count() < 6)
         {
             kError() << "Invalid reply from mediamanager" << endl;
 	    return defaultDevice;

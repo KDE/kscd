@@ -39,12 +39,10 @@
 //#include <Q3SqlPropertyMap>
 #include <stdlib.h>
 
-#include <dcopclient.h>
 #include <kaboutdata.h>
 #include <kactioncollection.h>
 
 #include <kaction.h>
-#include <dcopref.h>
 #include <kcharsets.h>
 #include <kcmdlineargs.h>
 #include <kconfig.h>
