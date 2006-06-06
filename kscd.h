@@ -59,7 +59,6 @@ class KCompactDisc;
 #include <kconfigdialog.h>
 #include <kprocess.h>
 #include <krandomsequence.h>
-#include <dcopobject.h>
 #include <kglobalaccel.h>
 
 class CDDBDlg;
