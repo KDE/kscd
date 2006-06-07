@@ -16,7 +16,6 @@ include_directories(
 		${CMAKE_BINARY_DIR}/libkcddb  
 		${CMAKE_BINARY_DIR}/kscd
 		)
-MESSAGE(STATUS "sdd<${CMAKE_BINARY_DIR}>")
 
 add_subdirectory( libwm )
 
@@ -29,8 +28,6 @@ set(kscd_SRCS kscd.cpp ledlamp.cpp docking.cpp bwlednum.cpp  configWidget.cpp cd
 
 kde4_add_ui3_files(kscd_SRCS configWidgetUI.ui )
 kde4_add_ui_files(kscd_SRCS panel.ui )
-
-kde4_add_dcop_skels(kscd_SRCS kscd.h )
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc )
 

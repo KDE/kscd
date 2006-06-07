@@ -24,12 +24,11 @@
 
 #include <kdebug.h>
 #include <klineedit.h>
-#include <dcopref.h>
 #include <kurlrequester.h>
 #include <QCheckBox>
 #include <kcombobox.h>
 #include <QLayout>
-
+#include <dbus/qdbus.h>
 #include <config.h>
 extern "C" {
     // We don't have libWorkMan installed already, so get everything
@@ -79,19 +78,19 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     kcfg_cdDevice->comboBox()->setEditable(true);
     kcfg_cdDevice->comboBox()->insertItem(DEFAULT_CD_DEVICE);
     getMediaDevices();
-    
+
     (new QVBoxLayout(audioSystemFrame))->setAutoAdd(true);
     kcfg_AudioSystem = new SpecialComboBox(audioSystemFrame, "kcfg_AudioSystem");
     textLabel4->setBuddy(kcfg_AudioSystem);
-    
+
 #if defined(BUILD_CDDA)
     kcfg_DigitalPlayback_toggled(Prefs::digitalPlayback());
-    
+
     // fill ComboBox audioBackend
     kcfg_AudioSystem->insertStringList(mPlayer->audioSystems());
 #else
     kcfg_DigitalPlayback_toggled(false);
-    
+
     kcfg_DigitalPlayback->setChecked(false);
     kcfg_DigitalPlayback->hide();
 #endif
@@ -112,12 +111,12 @@ void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 
 void configWidget::getMediaDevices()
 {
-    DCOPRef ref("kded","mediamanager");
-    DCOPReply rep = ref.call("fullList()");
-    if (!rep.isValid()) {
-        return;
-    }
-    QStringList list = rep;
+     QDBusInterfacePtr mediamanager( "org.kde.kded", "/modules/mediamanager", "org.kde.MediaManager" );
+     QDBusReply<QStringList> reply = mediamanager->call( "fullList" );
+     if (!reply.isSuccess()) {
+         return;
+     }
+    QStringList list = reply;
     QStringList::const_iterator it = list.begin();
     QStringList::const_iterator itEnd = list.end();
     // it would be much better if libmediacommon was in kdelibs
@@ -135,7 +134,7 @@ void configWidget::getMediaDevices()
         ++it;
     }
 }
- 
+
 
 void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
 {

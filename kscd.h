@@ -71,43 +71,41 @@ using namespace KCDDB;
 
 typedef QList<int> RandomList;
 
-class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManaged, virtual public DCOPObject {
+class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManaged {
 
     Q_OBJECT
-    K_DCOP
-
+	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
     // time display modes
     enum time_display { TRACK_SEC = 0, TRACK_REM = 1, TOTAL_SEC = 2, TOTAL_REM = 3 };
 
-
-k_dcop:
-    bool playing();
-    void play() { playClicked(); }
-    void stop() { stopClicked(); }
-    void previous() { prevClicked(); }
-    void next() { nextClicked(); }
-    void jumpTo(int seconds) { jumpToTime(seconds); }
-    void eject() { ejectClicked(); }
-    void quit() { quitClicked(); }
-    void toggleLoop() { loopClicked(); }
-    void toggleShuffle() { randomSelected(); }
-    void toggleTimeDisplay() { cycleplaytimemode(); }
-    void cddbDialog() { CDDialogSelected(); }
-    void optionDialog() { showConfig(); }
-    void setTrack(int t) { trackSelected(t > 0 ? t - 1 : 0); }
-    void volumeDown() { decVolume(); }
-    void volumeUp() { incVolume(); }
-    void setVolume(int v);
-    void setDevice(const QString& dev);
-    int  getVolume() { return Prefs::volume(); }
-    int currentTrack();
-    int currentTrackLength();
-    int currentPosition();
-    int getStatus();
-    QString currentTrackTitle();
-    QString currentAlbum();
-    QString currentArtist();
-    QStringList trackList();
+public Q_SLOTS:
+    Q_SCRIPTABLE bool playing();
+    Q_SCRIPTABLE void play() { playClicked(); }
+    Q_SCRIPTABLE void stop() { stopClicked(); }
+    Q_SCRIPTABLE void previous() { prevClicked(); }
+    Q_SCRIPTABLE void next() { nextClicked(); }
+    Q_SCRIPTABLE void jumpTo(int seconds) { jumpToTime(seconds); }
+    Q_SCRIPTABLE void eject() { ejectClicked(); }
+    Q_SCRIPTABLE void quit() { quitClicked(); }
+    Q_SCRIPTABLE void toggleLoop() { loopClicked(); }
+    Q_SCRIPTABLE void toggleShuffle() { randomSelected(); }
+    Q_SCRIPTABLE void toggleTimeDisplay() { cycleplaytimemode(); }
+    Q_SCRIPTABLE void cddbDialog() { CDDialogSelected(); }
+    Q_SCRIPTABLE void optionDialog() { showConfig(); }
+    Q_SCRIPTABLE void setTrack(int t) { trackSelected(t > 0 ? t - 1 : 0); }
+    Q_SCRIPTABLE void volumeDown() { decVolume(); }
+    Q_SCRIPTABLE void volumeUp() { incVolume(); }
+    Q_SCRIPTABLE void setVolume(int v);
+    Q_SCRIPTABLE void setDevice(const QString& dev);
+    Q_SCRIPTABLE int  getVolume() { return Prefs::volume(); }
+    Q_SCRIPTABLE int currentTrack();
+    Q_SCRIPTABLE int currentTrackLength();
+    Q_SCRIPTABLE int currentPosition();
+    Q_SCRIPTABLE int getStatus();
+    Q_SCRIPTABLE QString currentTrackTitle();
+    Q_SCRIPTABLE QString currentAlbum();
+    Q_SCRIPTABLE QString currentArtist();
+    Q_SCRIPTABLE QStringList trackList();
 
 public:
     KSCD( QWidget *parent = 0, const char *name = 0 );

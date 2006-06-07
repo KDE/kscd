@@ -68,7 +68,7 @@
 #include <kglobalsettings.h>
 #include <kcmoduleloader.h>
 #include <kconfigdialog.h>
-
+#include <dbus/qdbus.h>
 #include "docking.h"
 #include "kscd.h"
 #include "version.h"
@@ -96,8 +96,7 @@ bool stoppedByUser = false;
 *****************************************************************************/
 
 KSCD::KSCD( QWidget *parent, const char *name )
-  : DCOPObject("CDPlayer"),
-    QWidget( parent ),
+  : QWidget( parent ),
     kscdPanelDlg( ),
     configDialog(0L),
     cddialog(0L),  //!!!!
@@ -105,7 +104,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
     updateTime(true),
     m_dockWidget(0)
 {
-  setupUi(this);
+    QDBus::sessionBus().registerObject("/CDPlayer", this);
+    setupUi(this);
   m_cd = new KCompactDisc();
   cddbInfo.clear(); // The first freedb revision is "0" //!!!!
   random_current      = random_list.begin();
@@ -1633,29 +1633,23 @@ int main( int argc, char *argv[] )
         fprintf(stderr, "kscd is already running\n");
         if (args->count()>0 || args->isSet("start"))
         {
-            DCOPClient client;
-            if (client.attach())
+            QDBusInterfacePtr kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
+            // Forward the command line args to the running instance.
+            if (args->count() > 0)
             {
-                // Forward the command line args to the running instance.
-                DCOPRef ref("kscd", "CDPlayer");
-                if (args->count() > 0)
-                {
-                    ref.send("setDevice(QString)", QString(args->arg(0)));
-                }
-                if (args->isSet("start"))
-                {
-                    ref.send("play()");
-                }
+                kscd->call( "setDevice",  QString(args->arg(0)));
+            }
+            if (args->isSet("start"))
+            {
+                kscd->call( "play" );
             }
         }
         exit(0);
     }
-
     KUniqueApplication a;
 
-    kapp->dcopClient()->setDefaultObject("CDPlayer");
-
     KSCD *k = new KSCD();
+    QDBus::sessionBus().registerObject("/CDPlayer", k);
 
     a.setTopWidget( k );
     a.setMainWidget( k );
