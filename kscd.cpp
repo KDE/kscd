@@ -47,7 +47,7 @@
 #include <kcmdlineargs.h>
 #include <kconfig.h>
 #include <kdebug.h>
-#include <kdialogbase.h>
+#include <kdialog.h>
 #include <kemailsettings.h>
 #include <kglobal.h>
 #include <khelpmenu.h>

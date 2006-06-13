@@ -29,9 +29,12 @@
 #include "libkcddb/cdinfodialog.h"
 
 CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
-    : KDialogBase( parent, name, false, i18n( "CD Editor" ),
-      Ok|Cancel|User1|User2, Ok, true )
+    : KDialog( parent)
 {
+    setCaption( i18n( "CD Editor" ) );
+    setButtons( KDialog::Ok|KDialog::Cancel|KDialog::User1|KDialog::User2 );
+    setDefaultButton( KDialog::Ok );
+    setModal( true );
   KGlobal::locale()->insertCatalog("libkcddb");
 
   m_dlgBase = new KCDDB::CDInfoDialog( this );

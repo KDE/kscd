@@ -1,7 +1,7 @@
 #ifndef CDDBDLG_H
 #define CDDBDLG_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 
 #include "libkcddb/cdinfo.h"
 #include "libkcddb/cddb.h"
@@ -12,7 +12,7 @@ namespace KCDDB
 class CDInfoDialog;
 }
 
-class CDDBDlg : public KDialogBase
+class CDDBDlg : public KDialog
 {
   Q_OBJECT
 
