@@ -1633,15 +1633,15 @@ int main( int argc, char *argv[] )
         fprintf(stderr, "kscd is already running\n");
         if (args->count()>0 || args->isSet("start"))
         {
-            QDBusInterfacePtr kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
+            QDBusInterface kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
             // Forward the command line args to the running instance.
             if (args->count() > 0)
             {
-                kscd->call( "setDevice",  QString(args->arg(0)));
+                kscd.call( "setDevice",  QString(args->arg(0)));
             }
             if (args->isSet("start"))
             {
-                kscd->call( "play" );
+                kscd.call( "play" );
             }
         }
         exit(0);

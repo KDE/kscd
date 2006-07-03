@@ -111,9 +111,9 @@ void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 
 void configWidget::getMediaDevices()
 {
-     QDBusInterfacePtr mediamanager( "org.kde.kded", "/modules/mediamanager", "org.kde.MediaManager" );
-     QDBusReply<QStringList> reply = mediamanager->call( "fullList" );
-     if (!reply.isSuccess()) {
+     QDBusInterface mediamanager( "org.kde.kded", "/modules/mediamanager", "org.kde.MediaManager" );
+     QDBusReply<QStringList> reply = mediamanager.call( "fullList" );
+     if (!reply.isValid()) {
          return;
      }
     QStringList list = reply;

@@ -238,11 +238,11 @@ QString KCompactDisc::urlToDevice(const QString& device)
     {
         kDebug() << "Asking mediamanager for " << deviceUrl.fileName() << endl;
         
-		QDBusInterfacePtr mediamanager( "org.kde.kded", "/modules/mediamanager", "org.kde.MediaManager" );
-		QDBusReply<QStringList> reply = mediamanager->call("properties",deviceUrl.fileName());
+		QDBusInterface mediamanager( "org.kde.kded", "/modules/mediamanager", "org.kde.MediaManager" );
+		QDBusReply<QStringList> reply = mediamanager.call("properties",deviceUrl.fileName());
 
         QStringList properties = reply;
-        if (!reply.isSuccess() || properties.count() < 6)
+        if (!reply.isValid() || properties.count() < 6)
         {
             kError() << "Invalid reply from mediamanager" << endl;
 	    return defaultDevice;
