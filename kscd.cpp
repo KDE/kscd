@@ -68,7 +68,7 @@
 #include <kglobalsettings.h>
 #include <kcmoduleloader.h>
 #include <kconfigdialog.h>
-#include <dbus/qdbus.h>
+#include <QtDBus>
 #include "docking.h"
 #include "kscd.h"
 #include "version.h"

@@ -25,7 +25,7 @@
 #include <krun.h>
 #include "kcompactdisc.h"
 #include <netwm.h>
-#include <dbus/qdbus.h>
+#include <QtDBus>
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -28,7 +28,7 @@
 #include <QCheckBox>
 #include <kcombobox.h>
 #include <QLayout>
-#include <dbus/qdbus.h>
+#include <QtDBus>
 #include <config.h>
 extern "C" {
     // We don't have libWorkMan installed already, so get everything
