@@ -40,18 +40,18 @@ if (HAVE_LIBASOUND2)
     target_link_libraries(kscd ${ASOUND_LIBRARY})
 endif (HAVE_LIBASOUND2)
 
-install_targets(/bin kscd )
+install(TARGETS kscd  DESTINATION ${BIN_INSTALL_DIR} )
 
 
 ########### install files ###############
 
-install_files( ${XDG_APPS_DIR} FILES kscd.desktop )
-install_files( ${DATA_INSTALL_DIR}/profiles FILES kscd.profile.xml )
-install_files( ${KCFG_INSTALL_DIR} FILES kscd.kcfg )
-install_files( ${DATA_INSTALL_DIR}/konqueror/servicemenus FILES audiocd_play.desktop )
-install_files( ${DATA_INSTALL_DIR}/kscd/pics FILES  )
-install_files( ${DATA_INSTALL_DIR}/kscd/icons FILES  )
-install_files( ${MIME_INSTALL_DIR}/text FILES xmcd.desktop )
+install( FILES kscd.desktop  DESTINATION  ${XDG_APPS_DIR} )
+install( FILES kscd.profile.xml  DESTINATION  ${DATA_INSTALL_DIR}/profiles )
+install( FILES kscd.kcfg  DESTINATION  ${KCFG_INSTALL_DIR} )
+install( FILES audiocd_play.desktop  DESTINATION  ${DATA_INSTALL_DIR}/konqueror/servicemenus )
+install( FILES   DESTINATION  ${DATA_INSTALL_DIR}/kscd/pics )
+install( FILES   DESTINATION  ${DATA_INSTALL_DIR}/kscd/icons )
+install( FILES xmcd.desktop  DESTINATION  ${MIME_INSTALL_DIR}/text )
 install(PROGRAMS workman2cddb.pl DESTINATION bin)
 
 kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
