@@ -57,7 +57,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     m_forwardPix = loadIcon("player_end");
 
     // popup menu for right mouse button
-    QMenu* popup = contextMenu();
+    KMenu* popup = contextMenu();
 
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_play", K3Icon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
     popup->insertItem(KGlobal::iconLoader()->loadIconSet("player_stop", K3Icon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
@@ -81,7 +81,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
     m_popup = new KPassivePopup(this);
 
     Q3HBox* box = new Q3HBox(m_popup);
-
+    
     if (addButtons)
     {
         QPushButton* backButton = new QPushButton(m_backPix, 0, box, "popup_back");
