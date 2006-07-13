@@ -31,7 +31,6 @@
 #include <qapplication.h>
 #include <q3groupbox.h>
 //Added by qt3to4:
-#include <Q3CString>
 #include <QCloseEvent>
 #include <QKeyEvent>
 #include <QEvent>
