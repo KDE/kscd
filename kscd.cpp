@@ -1589,7 +1589,7 @@ void KSCD::populateSongList(QString infoStatus)
 	  str1.append(cddbInfo.track(i).get(Artist).toString()).append(" - ");
         str1.append(cddbInfo.track(i).get(Title).toString());
         str1.append(str2);
-        songListCB->insertItem(str1);
+        songListCB->addItem(str1);
     }
 
     emit trackChanged(m_cd->track(), m_cd->trackLength());
