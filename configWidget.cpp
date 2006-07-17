@@ -76,7 +76,7 @@ configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
     }
 
     kcfg_cdDevice->comboBox()->setEditable(true);
-    kcfg_cdDevice->comboBox()->insertItem(DEFAULT_CD_DEVICE);
+    kcfg_cdDevice->comboBox()->addItem(DEFAULT_CD_DEVICE);
     getMediaDevices();
 
     (new QVBoxLayout(audioSystemFrame))->setAutoAdd(true);
@@ -128,7 +128,7 @@ void configWidget::getMediaDevices()
         for (int i=0;i<9;i++) ++it;  // go to mimetype (MIME_TYPE-NAME from medium.h)
         kDebug() << "Mime: " << *it << endl;
         if (it!=itEnd && (*it)=="media/audiocd") {
-            kcfg_cdDevice->comboBox()->insertItem(url);
+            kcfg_cdDevice->comboBox()->addItem(url);
         }
         while (it !=itEnd && (*it)!="---") ++it;  // go to end of current device's properties
         ++it;
