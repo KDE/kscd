@@ -561,7 +561,7 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
 
         if (songListCB->count())
         {
-            songListCB->setCurrentItem(track - 1);
+            songListCB->setCurrentIndex(track - 1);
             // drop the number.
             // for Mahlah, a picky though otherwise wonderful person - AJS
             QString justTheName = songListCB->currentText();
