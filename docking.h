@@ -31,7 +31,7 @@
 
 #include <stdio.h>
 #include <qapplication.h>
-#include <qpixmap.h>
+#include <QIcon>
 #include <QTimer>
 #include <q3popupmenu.h>
 #include <QPoint>
@@ -65,8 +65,8 @@ private:
     KAction* m_forwardAction;
     KAction* m_backAction;
 
-    QPixmap m_backPix;
-    QPixmap m_forwardPix;
+    QIcon m_backPix;
+    QIcon m_forwardPix;
 
     QString tip;
 };

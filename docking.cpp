@@ -48,7 +48,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
 {
 	setObjectName(name);
     m_popup = 0;
-    setPixmap( loadIcon("cdsmall") );
+    setIcon( loadIcon("cdsmall") );
 
     KActionCollection* actionCollection = parent->actionCollection();
     m_backAction = actionCollection->action("Previous");
@@ -78,7 +78,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
         return;
 
     delete m_popup;
-    m_popup = new KPassivePopup(this);
+    m_popup = new KPassivePopup(parentWidget());
 
     Q3HBox* box = new Q3HBox(m_popup);
 
@@ -112,7 +112,6 @@ void DockWidget::setToolTip(const QString& text)
     }
 
     tip = text;
-    QToolTip::remove(this);
 
     if (text.isEmpty())
     {
