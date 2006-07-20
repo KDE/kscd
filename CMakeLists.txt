@@ -52,7 +52,7 @@ install( FILES audiocd_play.desktop  DESTINATION  ${DATA_INSTALL_DIR}/konqueror/
 install( FILES   DESTINATION  ${DATA_INSTALL_DIR}/kscd/pics )
 install( FILES   DESTINATION  ${DATA_INSTALL_DIR}/kscd/icons )
 install( FILES xmcd.desktop  DESTINATION  ${MIME_INSTALL_DIR}/text )
-install(PROGRAMS workman2cddb.pl DESTINATION bin)
+install(PROGRAMS workman2cddb.pl DESTINATION ${BIN_INSTALL_DIR})
 
 kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
 
