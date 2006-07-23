@@ -37,7 +37,7 @@
 #include <QPoint>
 //Added by qt3to4:
 #include <QWheelEvent>
-#include <ksystemtray.h>
+#include <ksystemtrayicon.h>
 
 class KSCD;
 
@@ -45,7 +45,7 @@ class KAction;
 class KToggleAction;
 class KPassivePopup;
 
-class DockWidget : public KSystemTray
+class DockWidget : public KSystemTrayIcon
 {
     Q_OBJECT
 

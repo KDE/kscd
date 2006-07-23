@@ -44,7 +44,7 @@
 #include <kdebug.h>
 
 DockWidget::DockWidget( KSCD* parent, const char *name)
-    : KSystemTray( parent )
+    : KSystemTrayIcon( parent )
 {
 	setObjectName(name);
     m_popup = 0;
