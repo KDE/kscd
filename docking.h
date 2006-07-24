@@ -31,13 +31,13 @@
 
 #include <stdio.h>
 #include <qapplication.h>
-#include <qpixmap.h>
+#include <QIcon>
 #include <QTimer>
 #include <q3popupmenu.h>
 #include <QPoint>
 //Added by qt3to4:
 #include <QWheelEvent>
-#include <ksystemtray.h>
+#include <ksystemtrayicon.h>
 
 class KSCD;
 
@@ -45,7 +45,7 @@ class KAction;
 class KToggleAction;
 class KPassivePopup;
 
-class DockWidget : public KSystemTray
+class DockWidget : public KSystemTrayIcon
 {
     Q_OBJECT
 
@@ -65,8 +65,8 @@ private:
     KAction* m_forwardAction;
     KAction* m_backAction;
 
-    QPixmap m_backPix;
-    QPixmap m_forwardPix;
+    QIcon m_backPix;
+    QIcon m_forwardPix;
 
     QString tip;
 };
