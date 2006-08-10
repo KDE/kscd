@@ -368,7 +368,7 @@ void KSCD::setupPopups()
     infoPopup->insertItem("MusicMoz", 0);
     infoPopup->insertItem("Ultimate Bandlist", 1);
     infoPopup->insertItem("CD Universe", 2);
-    infoPopup->insertSeparator();
+    infoPopup->addSeparator();
     infoPopup->insertItem("AlltheWeb", 3);
     infoPopup->insertItem("Altavista", 4);
     infoPopup->insertItem("Excite", 5);
@@ -383,7 +383,7 @@ void KSCD::setupPopups()
     //NEW add the shortcut dialogs
     mainPopup->addAction( m_actions->action("options_configure_globals") );
     mainPopup->addAction( m_actions->action("options_configure_shortcuts") );
-    mainPopup->insertSeparator();
+    mainPopup->addSeparator();
 
     mainPopup->insertItem(i18n("Artist Information"), infoPopup);
 
@@ -391,7 +391,7 @@ void KSCD::setupPopups()
 
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     mainPopup->insertItem(SmallIcon("help"),i18n("&Help"), helpMenu->menu());
-    mainPopup->insertSeparator();
+    mainPopup->addSeparator();
     mainPopup->addAction( m_actions->action(KStdAction::name(KStdAction::Quit)) );
 } // setupPopups
 
@@ -567,7 +567,6 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
             QString justTheName = songListCB->currentText();
             justTheName = justTheName.right(justTheName.length() - 4);
 
-            QToolTip::remove(songListCB);
             songListCB->setToolTip( i18n("Current track: %1", justTheName));
         }
         timeSlider->blockSignals(true);
