@@ -67,6 +67,7 @@ Name[hi]=के-एससीडी
 Name[sv]=Kscd
 Name[ta]=Ksகுறுந்தகடு
 Name[tg]=KsДиски Фишурда
+Name[zh_TW]=KsCD 播放器
 Exec=kscd -caption "%c" %i %m
 DocPath=kscd/index.html
 Icon=kscd
