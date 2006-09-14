@@ -164,8 +164,8 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
   connect( shufflePB, SIGNAL(clicked()), SLOT(randomSelected()));
   connect( cddbPB, SIGNAL(clicked()), SLOT(CDDialogSelected()));
-  connect(kapp, SIGNAL(kdisplayPaletteChanged()), this, SLOT(setColors()));
-  connect(kapp, SIGNAL(iconChanged(int)), this, SLOT(setIcons()));
+  connect(KGlobalSettings::self(), SIGNAL(kdisplayPaletteChanged()), this, SLOT(setColors()));
+  connect(KGlobalSettings::self(), SIGNAL(iconChanged(int)), this, SLOT(setIcons()));
   QToolTip::remove(songListCB);
   songListCB->setToolTip( i18n("Track list"));
 
