@@ -7,5 +7,5 @@ X-KDE-Priority=TopLevel
 Name=Play
 Name[fr]=Lecture
 Name[x-test]=xxPlayxx
-Exec=kscd -s -caption "%c" %i %m %u
+Exec=kscd -s -caption "%c" %i %u
 Icon=kscd
