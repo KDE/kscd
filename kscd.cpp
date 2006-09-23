@@ -581,8 +581,7 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
 	  title.append(cddbInfo.track(track-1).get(Artist).toString()).append(" - ");
         title.append(cddbInfo.track(track-1).get(Title).toString());
         titlelabel->setText(title);
-        tooltip += "/";
-        tooltip += KStringHandler::rsqueeze(title, 30);
+        tooltip += '/' + KStringHandler::rsqueeze(title, 30);
     }
     emit trackChanged(tooltip);
 } //trackChanged(int track)
