@@ -327,7 +327,7 @@ QString KCompactDisc::trackArtist() const
 QString KCompactDisc::trackArtist(unsigned track) const
 {
     if (NO_DISC || !TRACK_VALID(track))
-        return QString::null;
+        return QString();
     return m_trackArtists[track - 1];
 }
 
@@ -361,7 +361,7 @@ QString KCompactDisc::trackTitle() const
 QString KCompactDisc::trackTitle(unsigned track) const
 {
     if (NO_DISC || !TRACK_VALID(track))
-        return QString::null;
+        return QString();
     return m_trackTitles[track - 1];
 }
 

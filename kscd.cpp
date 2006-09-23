@@ -1540,7 +1540,7 @@ void KSCD::jumpTracks()
 QString KSCD::currentTrackTitle()
 {
     int track = m_cd->track();
-    return (track > -1) ? cddbInfo.track(track-1).get(Title).toString() : QString::null;
+    return (track > -1) ? cddbInfo.track(track-1).get(Title).toString() : QString();
 }
 
 QString KSCD::currentAlbum()
