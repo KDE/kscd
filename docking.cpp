@@ -24,12 +24,12 @@
 #include "docking.h"
 #include "kscd.h"
 
-#include <q3hbox.h>
+#include <khbox.h>
 #include <QToolTip>
 //Added by qt3to4:
 #include <QLabel>
 #include <QWheelEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 
 #include <kaboutdata.h>
 #include <kactioncollection.h>
@@ -80,7 +80,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
     delete m_popup;
     m_popup = new KPassivePopup(parentWidget());
 
-    Q3HBox* box = new Q3HBox(m_popup);
+    KHBox* box = new KHBox(m_popup);
 
     if (addButtons)
     {

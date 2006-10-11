@@ -34,7 +34,7 @@
 #include <QCloseEvent>
 #include <QKeyEvent>
 #include <QEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 //#include <Q3SqlPropertyMap>
 #include <stdlib.h>
 
@@ -360,9 +360,9 @@ void KSCD::setIcons()
 
 void KSCD::setupPopups()
 {
-    Q3PopupMenu* mainPopup   = new Q3PopupMenu(this);
+    QMenu* mainPopup   = new QMenu(this);
     infoPB->setMenu(mainPopup);
-    infoPopup   = new Q3PopupMenu (this);
+    infoPopup   = new QMenu (this);
 
 
     infoPopup->insertItem("MusicMoz", 0);

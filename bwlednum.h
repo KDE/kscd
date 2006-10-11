@@ -13,20 +13,20 @@
 #ifndef BW_LED_NUM_H
 #define BW_LED_NUM_H
 
-#include "q3frame.h"
+#include <QFrame>
 #include "qbitarray.h"
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QResizeEvent>
 
 
-class BW_LED_Number : public Q3Frame
+class BW_LED_Number : public QFrame
 {
     Q_OBJECT
 
 public:
 
-    BW_LED_Number( QWidget *parent=0, const char *name=0 );
+    BW_LED_Number( QWidget *parent=0 );
    ~BW_LED_Number();
 
     void    setSmallLED(bool ); // if you LED is small it might look better

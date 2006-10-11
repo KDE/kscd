@@ -49,7 +49,7 @@ class KCompactDisc;
 #include <qslider.h>
 #include <q3tabdialog.h>
 #include <QToolTip>
-#include <q3popupmenu.h>
+#include <QMenu>
 
 #include "ledlamp.h"
 #include "ui_panel.h"
@@ -182,8 +182,8 @@ protected:
 private:
     KConfigDialog   *configDialog;
     CDDBDlg         *cddialog;
-    Q3PopupMenu      *mainPopup;
-    Q3PopupMenu      *infoPopup;
+    QMenu      *mainPopup;
+    QMenu      *infoPopup;
 
     BW_LED_Number       *trackTimeLED[6];
 

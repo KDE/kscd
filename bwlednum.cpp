@@ -14,7 +14,7 @@
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QPolygon>
-#include <Q3Frame>
+#include <QFrame>
 #include <QResizeEvent>
 #include <stdio.h>
 
@@ -41,8 +41,8 @@ static char segs[14][8] =
   {25, 0, 0, 0, 0, 0, 0, 0} };		// blank
 
 
-BW_LED_Number::BW_LED_Number( QWidget *parent, const char *name )
-  : Q3Frame( parent, name ){
+BW_LED_Number::BW_LED_Number( QWidget *parent )
+  : QFrame( parent ){
 
 
     offcolor = QColor(100,0,0);
