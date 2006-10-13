@@ -31,7 +31,7 @@ kde4_add_ui_files(kscd_SRCS panel.ui )
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc )
 
-kde4_automoc(${kscd_SRCS})
+kde4_automoc(kscd ${kscd_SRCS})
 
 kde4_add_executable(kscd ${kscd_SRCS})
 
