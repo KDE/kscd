@@ -29,7 +29,7 @@ set(kscd_SRCS kscd.cpp ledlamp.cpp docking.cpp bwlednum.cpp  configWidget.cpp cd
 kde4_add_ui3_files(kscd_SRCS configWidgetUI.ui )
 kde4_add_ui_files(kscd_SRCS panel.ui )
 
-kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc )
+kde4_add_kcfg_files(kscd kscd_SRCS prefs.kcfgc )
 
 kde4_automoc(kscd ${kscd_SRCS})
 
