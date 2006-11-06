@@ -66,14 +66,14 @@ public:
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-configWidget::configWidget(KSCD* player, QWidget* parent, const char* name)
-    : configWidgetUI(parent, name),
+configWidget::configWidget(KSCD* player, QWidget* parent)
+    : configWidgetUI(parent),
       mPlayer(player)
 {
-    if (!name)
-    {
-        setName("configWidget");
-    }
+    setName("configWidget");
+
+    connect(kcfg_DigitalPlayback, SIGNAL(toggled(bool)), this,SLOT(kcfg_DigitalPlayback_toggled(bool)));
+    connect(kcfg_SelectEncoding, SIGNAL(toggled(bool)), this, SLOT(kcfg_SelectEncoding_toggled(bool)));
 
     kcfg_cdDevice->comboBox()->setEditable(true);
     kcfg_cdDevice->comboBox()->addItem(DEFAULT_CD_DEVICE);

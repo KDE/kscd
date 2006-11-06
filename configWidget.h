@@ -23,17 +23,26 @@
 #ifndef CONFIGWIDGET_H
 #define CONFIGWIDGET_H
 
-#include "configWidgetUI.h"
+#include "ui_configWidgetUI.h"
 
 class KSCD;
 class SpecialComboBox;
+
+class configWidgetUI : public QWidget, public Ui::configWidgetUI
+{
+public:
+  configWidgetUI( QWidget *parent ) : QWidget( parent ) {
+    setupUi( this );
+  }
+};
+
 
 class configWidget : public configWidgetUI
 {
    Q_OBJECT
 
    public:
-        configWidget(KSCD* player, QWidget* parent = 0, const char* name = 0);
+        configWidget(KSCD* player, QWidget* parent = 0);
         ~configWidget();
 
    protected:

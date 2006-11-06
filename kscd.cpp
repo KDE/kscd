@@ -755,7 +755,7 @@ void KSCD::showConfig()
 
     configDialog->setHelp(QString::null);
 
-    confWidget = new configWidget(this, 0, "Kscd");
+    confWidget = new configWidget(this, 0);
 
     // kscd config page
     configDialog->addPage(confWidget, i18n("CD Player"), "kscd", i18n("Settings & Behavior"));
