@@ -56,12 +56,9 @@
             </choices>
             <default>TRACK_SEC</default>
         </entry>
-        <entry name="cdDevice" type="String" key="CDDevice">
-            <label>Name of the CD-ROM device.</label>
-            <whatsthis>The CD-ROM device to use when playing CDs. This will typically look something like "/dev/cdrom". To have KsCD autodetect your CD-ROM, leave this field empty.</whatsthis>
+        <entry name="CdDevice" type="String" key="CdDevice">
         </entry>
-        <entry name="AudioSystem" type="String">
-            <label>The audio backend KsCD uses.</label>
+        <entry name="AudioSystem" type="String" key="AudioSystem">
         </entry>
         <entry name="AudioDevice" type="String">
             <label>The audio device KsCD uses.</label>

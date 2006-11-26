@@ -30,34 +30,11 @@
 #include <QLayout>
 #include <QtDBus>
 #include <config.h>
-extern "C" {
-    // We don't have libWorkMan installed already, so get everything
-    // from within our own directory
-#include "libwm/include/wm_config.h"
-}
-
 
 #include "configWidget.h"
 #include "kscd.h"
 #include "prefs.h"
-
-class SpecialComboBox : public KComboBox
-{
-public:
-  SpecialComboBox(QWidget* parent, const char* name)
-   : KComboBox(parent)
-   {
-     setName(name);
-   }
-
-  // QComboBox::setCurrentText replaces the current text if
-  // the list doesn't contain text, while
-  // KComboBox::setCurrentItem doesn't
-  void setCurrentText(const QString& text)
-  {
-    setCurrentItem(text);
-  }
-} ;
+#include "kcompactdisc.h"
 
 /*
  *  Constructs a configWidget which is a child of 'parent', with the
@@ -72,29 +49,12 @@ configWidget::configWidget(KSCD* player, QWidget* parent)
 {
     setName("configWidget");
 
+    CdDeviceList->comboBox()->setEditable(true);
+
+    load();
+
     connect(kcfg_DigitalPlayback, SIGNAL(toggled(bool)), this,SLOT(kcfg_DigitalPlayback_toggled(bool)));
     connect(kcfg_SelectEncoding, SIGNAL(toggled(bool)), this, SLOT(kcfg_SelectEncoding_toggled(bool)));
-
-    kcfg_cdDevice->comboBox()->setEditable(true);
-    kcfg_cdDevice->comboBox()->addItem(DEFAULT_CD_DEVICE);
-    getMediaDevices();
-
-    (new QVBoxLayout(audioSystemFrame))->setAutoAdd(true);
-    kcfg_AudioSystem = new SpecialComboBox(audioSystemFrame, "kcfg_AudioSystem");
-    textLabel4->setBuddy(kcfg_AudioSystem);
-
-#if defined(BUILD_CDDA)
-    kcfg_DigitalPlayback_toggled(Prefs::digitalPlayback());
-
-    // fill ComboBox audioBackend
-    kcfg_AudioSystem->insertStringList(mPlayer->audioSystems());
-#else
-    kcfg_DigitalPlayback_toggled(false);
-
-    kcfg_DigitalPlayback->setChecked(false);
-    kcfg_DigitalPlayback->hide();
-#endif
-    kcfg_SelectEncoding_toggled(Prefs::selectEncoding());
 }
 
 configWidget::~configWidget()
@@ -103,13 +63,18 @@ configWidget::~configWidget()
 
 void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 {
-    kcfg_AudioSystem->setEnabled(toggle);
+    AudioSystemList->setEnabled(toggle);
     textLabel4->setEnabled(toggle);
-    kcfg_AudioDevice->setEnabled(toggle);
+    AudioDevice->setEnabled(toggle);
     textLabel5->setEnabled(toggle);
 }
 
-void configWidget::getMediaDevices()
+void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
+{
+    kcfg_SelectedEncoding->setEnabled(toggle);
+}
+
+void configWidget::getMediaDevices(void)
 {
      QDBusInterface mediamanager( "org.kde.kded", "/modules/mediamanager", "org.kde.MediaManager" );
      QDBusReply<QStringList> reply = mediamanager.call( "fullList" );
@@ -128,17 +93,60 @@ void configWidget::getMediaDevices()
         for (int i=0;i<9;i++) ++it;  // go to mimetype (MIME_TYPE-NAME from medium.h)
         kDebug() << "Mime: " << *it << endl;
         if (it!=itEnd && (*it)=="media/audiocd") {
-            kcfg_cdDevice->comboBox()->addItem(url);
+            CdDeviceList->comboBox()->addItem(url);
         }
         while (it !=itEnd && (*it)!="---") ++it;  // go to end of current device's properties
         ++it;
     }
 }
 
-
-void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
+void configWidget::load(void)
 {
-    kcfg_SelectedEncoding->setEnabled(toggle);
+    QStringList::Iterator it;
+    int i;
+
+    getMediaDevices();
+
+    CdDeviceList->comboBox()->setCurrentText(Prefs::cdDevice());
+
+    if(mPlayer->audioSystems().empty()) {
+        kcfg_DigitalPlayback_toggled(false);
+
+        kcfg_DigitalPlayback->setChecked(false);
+        kcfg_DigitalPlayback->hide();
+    } else {
+        kcfg_DigitalPlayback_toggled(Prefs::digitalPlayback());
+
+        // fill ComboBox audioBackend
+        AudioSystemList->insertStringList(mPlayer->audioSystems());
+        i = AudioSystemList->findText(Prefs::audioSystem());
+        if(i >= -1)
+            AudioSystemList->setCurrentIndex(1);
+
+        AudioDevice->setText(Prefs::audioDevice());
+    }
+    kcfg_SelectEncoding_toggled(Prefs::selectEncoding());
+}
+
+void configWidget::defaults(void)
+{
+    getMediaDevices();
+    CdDeviceList->comboBox()->setCurrentText(KCompactDisc::defaultDevice);
+
+    kcfg_DigitalPlayback_toggled(false);
+
+    // fill ComboBox audioBackend
+    AudioSystemList->insertStringList(mPlayer->audioSystems());
+    AudioSystemList->setCompletedText("phonon");
+    AudioDevice->setText("");
+}
+
+void configWidget::save(void)
+{
+    Prefs::setCdDevice(CdDeviceList->comboBox()->currentText());
+    Prefs::setAudioSystem(AudioSystemList->currentText());
+    Prefs::setAudioDevice(AudioDevice->text());
+    Prefs::writeConfig();
 }
 
 #include "configWidget.moc"

@@ -26,7 +26,6 @@
 #include "ui_configWidgetUI.h"
 
 class KSCD;
-class SpecialComboBox;
 
 class configWidgetUI : public QWidget, public Ui::configWidgetUI
 {
@@ -47,13 +46,15 @@ class configWidget : public configWidgetUI
 
    protected:
         KSCD* mPlayer;
-        SpecialComboBox* kcfg_AudioSystem;
 
    public slots:
        virtual void kcfg_DigitalPlayback_toggled(bool);
        virtual void kcfg_SelectEncoding_toggled(bool);
+       virtual void defaults(void);
+       virtual void save(void);
    private:
-       void getMediaDevices();
+       void getMediaDevices(void);
+       void load(void);
 };
 
 #endif // CONFIGWIDGET_H

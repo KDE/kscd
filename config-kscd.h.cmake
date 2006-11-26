@@ -2,6 +2,6 @@
 #cmakedefine HAVE_MACHINE_ENDIAN_H 1
 
 /* Define if you will CDDA support in kscd */
-/* #undef BUILD_CDDA */
+#define BUILD_CDDA
 
 
