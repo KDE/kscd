@@ -41,7 +41,7 @@
 
 class KSCD;
 
-class KAction;
+class QAction;
 class KToggleAction;
 class KPassivePopup;
 
@@ -62,8 +62,8 @@ private:
 
     KPassivePopup* m_popup;
 
-    KAction* m_forwardAction;
-    KAction* m_backAction;
+    QAction* m_forwardAction;
+    QAction* m_backAction;
 
     QIcon m_backPix;
     QIcon m_forwardPix;
