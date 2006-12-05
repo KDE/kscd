@@ -384,6 +384,14 @@ void KSCD::setupPopups()
     mainPopup->addAction( m_actions->action(KStdAction::name(KStdAction::Quit)) );
 } // setupPopups
 
+void KSCD::setPlayStatus(void)
+{
+    // Update UI to allow a subsequent pause.
+    statuslabel->setText(i18n("Play"));
+    playPB->setIcon(SmallIconSet("player_pause"));
+    playPB->setText(i18n("Pause"));
+}
+
 void KSCD::playClicked()
 {
     if (m_cd->discId() == KCompactDisc::missingDisc)
@@ -419,10 +427,7 @@ void KSCD::playClicked()
             }
         }
 
-        // Update UI to allow a subsequent pause.
-        statuslabel->setText(i18n("Play"));
-        playPB->setIcon(SmallIconSet("player_pause"));
-        playPB->setText(i18n("Pause"));
+        setPlayStatus();
     }
     else
     {
@@ -498,6 +503,9 @@ void KSCD::prevClicked()
     kapp->processEvents();
     kapp->flush();
     m_cd->play(track, 0, playlist.isEmpty() ? 0 : track);
+
+    setPlayStatus();
+
 } // prevClicked()
 
 bool KSCD::nextClicked()
@@ -526,6 +534,9 @@ bool KSCD::nextClicked()
     kapp->processEvents();
     kapp->flush();
     m_cd->play(track, 0, Prefs::randomPlay() || !playlist.isEmpty() ? track + 1 : 0);
+
+    setPlayStatus();
+
     return true;
 } // nextClicked()
 
@@ -593,6 +604,8 @@ void KSCD::jumpToTime(int ms, bool forcePlay)
         {
             m_cd->play(track, ms);
         }
+
+        setPlayStatus();
     }
 } // jumpToTime(int ms)
 
@@ -714,6 +727,8 @@ void KSCD::trackSelected( int cb_index )
     setShuffle(0);
 
     m_cd->play(track, 0);
+
+    setPlayStatus();
 } // trackSelected
 
 void KSCD::updateConfigDialog(configWidget* widget)
@@ -1516,6 +1531,8 @@ void KSCD::jumpTracks()
     if (jumpToTrack > 0 && jumpToTrack <= cddbInfo.numberOfTracks())
     {
         m_cd->play(jumpToTrack, 0, jumpToTrack + 1);
+
+        setPlayStatus();
     }
 
     jumpToTrack = 0;
