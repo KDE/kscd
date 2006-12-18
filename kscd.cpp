@@ -60,7 +60,7 @@
 #include <kprotocolmanager.h>
 #include <krun.h>
 #include <kstandarddirs.h>
-#include <kstdaction.h>
+#include <kstandardaction.h>
 #include <kstringhandler.h>
 #include <kurl.h>
 #include <kuniqueapplication.h>
@@ -194,9 +194,9 @@ KSCD::KSCD( QWidget *parent, const char *name )
   action->setShortcut(Qt::Key_N);
   action->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_N));
 
-  action = KStdAction::quit(this, SLOT(quitClicked()), m_actions);
-  action = KStdAction::keyBindings(this, SLOT(configureKeys()), m_actions, "options_configure_shortcuts");
-  action = KStdAction::preferences(this, SLOT(showConfig()), m_actions);
+  action = KStandardAction::quit(this, SLOT(quitClicked()), m_actions);
+  action = KStandardAction::keyBindings(this, SLOT(configureKeys()), m_actions, "options_configure_shortcuts");
+  action = KStandardAction::preferences(this, SLOT(showConfig()), m_actions);
   action = new KAction(i18n("Loop"), m_actions, "Loop");
   connect(action, SIGNAL(triggered(bool) ), SLOT(loopClicked()));
   action->setShortcut(Qt::Key_L);
@@ -368,7 +368,7 @@ void KSCD::setupPopups()
     infoPopup->insertItem("Open Directory", 10);
     infoPopup->insertItem("Yahoo!", 11);
 
-    mainPopup->addAction( m_actions->action(KStdAction::name(KStdAction::Preferences)) );
+    mainPopup->addAction( m_actions->action(KStandardAction::name(KStandardAction::Preferences)) );
     //NEW add the shortcut dialogs
     mainPopup->addAction( m_actions->action("options_configure_globals") );
     mainPopup->addAction( m_actions->action("options_configure_shortcuts") );
@@ -381,7 +381,7 @@ void KSCD::setupPopups()
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
     mainPopup->insertItem(SmallIcon("help"),i18n("&Help"), helpMenu->menu());
     mainPopup->addSeparator();
-    mainPopup->addAction( m_actions->action(KStdAction::name(KStdAction::Quit)) );
+    mainPopup->addAction( m_actions->action(KStandardAction::name(KStandardAction::Quit)) );
 } // setupPopups
 
 void KSCD::setPlayStatus(void)
