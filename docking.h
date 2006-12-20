@@ -50,7 +50,7 @@ class DockWidget : public KSystemTrayIcon
     Q_OBJECT
 
 public:
-    DockWidget( KSCD* parent, const char *name=0);
+    explicit DockWidget( KSCD* parent, const char *name=0);
     ~DockWidget();
 
 public slots:

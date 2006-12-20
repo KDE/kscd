@@ -988,12 +988,12 @@ void KSCD::discChanged(unsigned discId)
         bool isSampler = (cddbInfo.get(Title).toString().compare("Various") == 0);
         for (unsigned i = 1; i <= m_cd->tracks(); i++)
         {
-	    KCDDB::TrackInfo track = cddbInfo.track(i-1);
+            KCDDB::TrackInfo track = cddbInfo.track(i-1);
             if (isSampler)
             {
-	        QString title = m_cd->trackArtist(i);
-		title.append("/");
-		title.append(m_cd->trackTitle(i));
+                QString title = m_cd->trackArtist(i);
+                title.append("/");
+                title.append(m_cd->trackTitle(i));
                 track.set(Title, title);
             }
             else
@@ -1018,7 +1018,7 @@ void KSCD::discChanged(unsigned discId)
     totaltimelabel->setText(fmt);
 
     trackChanged(0, 0);
-    populateSongList("");
+    populateSongList(QString());
     //totaltimelabel->clear();
     totaltimelabel->lower();
 
@@ -1064,7 +1064,7 @@ void KSCD::discStopped()
     stoppedByUser = false;
 
     trackChanged(0, 0);
-    populateSongList("");
+    populateSongList(QString());
     totaltimelabel->clear();
     totaltimelabel->lower();
 }
@@ -1218,7 +1218,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
       QStringList list;
       for ( it = cddb_info.begin(); it != cddb_info.end(); ++it  ) {
         list.append( QString("%1, %2, %3").arg((*it).get(Artist).toString())
-	    .arg((*it).get(Title).toString()).arg((*it).get(Genre).toString()));
+            .arg((*it).get(Title).toString()).arg((*it).get(Genre).toString()));
       }
 
       bool ok(false);
@@ -1254,7 +1254,7 @@ void KSCD::setCDInfo(KCDDB::CDInfo info)
     // the CD actually contains.
     Q_ASSERT(info.numberOfTracks() == cddbInfo.numberOfTracks());
     cddbInfo = info;
-    populateSongList("");
+    populateSongList(QString());
 }
 
 void KSCD::led_off()
@@ -1563,14 +1563,13 @@ QStringList KSCD::trackList()
   return tracks;
 }
 
-void KSCD::populateSongList(QString infoStatus)
+void KSCD::populateSongList(const QString &infoStatus)
 {
     // set the artist and title labels as well as the dock tooltip.
     if (!infoStatus.isEmpty())
         artistlabel->setText(infoStatus);
     else
-        artistlabel->setText(QString("%1 - %2").arg(cddbInfo.get(Artist).toString(),
-	                               cddbInfo.get(Title).toString()));
+        artistlabel->setText(QString("%1 - %2").arg(cddbInfo.get(Artist).toString(), cddbInfo.get(Title).toString()));
 
     songListCB->clear();
     for (int  i = 0; i < cddbInfo.numberOfTracks(); i++)
@@ -1584,8 +1583,8 @@ void KSCD::populateSongList(QString infoStatus)
         str1.sprintf("%02d: ", i + 1);
         QString str2;
         str2.sprintf(" (%02d:%02d) ", mymin,  mysec);
-	if (cddbInfo.get(Artist) != cddbInfo.track(i).get(Artist))
-	  str1.append(cddbInfo.track(i).get(Artist).toString()).append(" - ");
+        if (cddbInfo.get(Artist) != cddbInfo.track(i).get(Artist))
+            str1.append(cddbInfo.track(i).get(Artist).toString()).append(" - ");
         str1.append(cddbInfo.track(i).get(Title).toString());
         str1.append(str2);
         songListCB->addItem(str1);

@@ -3,7 +3,7 @@
 
    $Id$
 
-   Copyright (c) 1997 Bernd Johannes Wuebben math.cornell.edu
+   Copyright (c) 1997 Bernd Johannes Wuebben <wuebben@math.cornell.edu>
    Copyright (c) 2002 Aaron J. Seigo <aseigo@kde.org>
    Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
 
@@ -174,7 +174,7 @@ protected:
     void calculateDisplayedTime();
     void calculateDisplayedTime(int sec);
     void setSongListTo(int whichTrack);
-    void populateSongList(QString infoStatus);
+    void populateSongList(const QString &infoStatus);
     void updatePlayPB(bool playing);
 
     void updateConfigDialog(configWidget* widget);

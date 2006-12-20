@@ -1,12 +1,24 @@
 /*
- *             BW_LED_Number a very very primitive LED
- *
- * Copyright: Bernd Johannes Wuebben, wuebben@math.cornell.edu
- *
- * $Id$
- *
- */
+   BW_LED_Number a very very primitive LED
 
+   $Id$
+
+   Copyright (c) Bernd Johannes Wuebben <wuebben@math.cornell.edu>
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #include "bwlednum.h"
 #include "qbitarray.h"
@@ -46,7 +58,7 @@ BW_LED_Number::BW_LED_Number( QWidget *parent )
 
 
     offcolor = QColor(100,0,0);
-    showOffColon(FALSE);
+    showOffColon(false);
     smallLED = false;
     current_symbol = ' ';
     old_segments = &segs[13][0];      // nothing
@@ -134,7 +146,7 @@ void BW_LED_Number::paintEvent( QPaintEvent * ){
 
   QPainter p(this);
 
-  drawSymbol( p, current_symbol,TRUE );
+  drawSymbol( p, current_symbol, true );
 
 }
 
@@ -198,12 +210,12 @@ void BW_LED_Number::drawSymbol( QPainter& p,char ,bool repaint ){
                       // by default not shown.
 
      for(int l = 0; l <= NUM_OF_SEGMENTS +1; l++){
-       drawSegment(pos,(char) l,p,Segment_Length,TRUE);      //erase segment
+       drawSegment(pos,(char) l,p,Segment_Length,true);      //erase segment
      }
    }
    else{
      for(int l = 0; l <= NUM_OF_SEGMENTS -1; l++){
-       drawSegment(pos,(char) l,p,Segment_Length,TRUE);      //erase segment
+       drawSegment(pos,(char) l,p,Segment_Length,true);      //erase segment
      }
    }
 
@@ -211,7 +223,7 @@ void BW_LED_Number::drawSymbol( QPainter& p,char ,bool repaint ){
 
    for(int l = 0; l <= NUM_OF_SEGMENTS -1; l++){
      if(current_segments[l] != STOP_CHAR){
-     	 drawSegment(pos,current_segments[l],p,Segment_Length,FALSE);   // draw segment
+     	 drawSegment(pos,current_segments[l],p,Segment_Length,false);   // draw segment
      }
      else{
        break;
@@ -225,7 +237,7 @@ void BW_LED_Number::drawSymbol( QPainter& p,char ,bool repaint ){
 
      if(current_segments[l] != STOP_CHAR){
        if(!seg_contained_in(current_segments[l],old_segments))
-	 drawSegment(pos,current_segments[l],p,Segment_Length,FALSE);   // draw segment
+	 drawSegment(pos,current_segments[l],p,Segment_Length,false);   // draw segment
      }
      else{
        break;
@@ -237,7 +249,7 @@ void BW_LED_Number::drawSymbol( QPainter& p,char ,bool repaint ){
 
      if(old_segments[k] != STOP_CHAR){
        if(!seg_contained_in(old_segments[k],current_segments))
-	 drawSegment(pos,old_segments[k],p,Segment_Length,TRUE);      //erase segment
+	 drawSegment(pos,old_segments[k],p,Segment_Length,true);      //erase segment
      }
      else{
        break;
@@ -250,12 +262,12 @@ void BW_LED_Number::drawSymbol( QPainter& p,char ,bool repaint ){
 
 bool BW_LED_Number::seg_contained_in( char c, char* seg){
 
-  bool result = FALSE;
+  bool result = false;
 
   while ( *seg != STOP_CHAR){
     //       printf("Comparing %d with %d\n",c,*seg);
     if ( c == *seg )
-      result = TRUE;
+      result = true;
     seg++;
   }
 

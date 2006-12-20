@@ -30,7 +30,7 @@ class KSCD;
 class configWidgetUI : public QWidget, public Ui::configWidgetUI
 {
 public:
-  configWidgetUI( QWidget *parent ) : QWidget( parent ) {
+  explicit configWidgetUI( QWidget *parent ) : QWidget( parent ) {
     setupUi( this );
   }
 };
