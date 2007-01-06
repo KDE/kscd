@@ -60,6 +60,7 @@ class KCompactDisc;
 #include <kprocess.h>
 #include <krandomsequence.h>
 #include <kglobalaccel.h>
+#include <ksessionmanager.h>
 
 class CDDBDlg;
 class DockWidget;
@@ -71,7 +72,7 @@ using namespace KCDDB;
 
 typedef QList<int> RandomList;
 
-class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManaged {
+class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManager {
 
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
