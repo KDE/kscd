@@ -172,57 +172,69 @@ KSCD::KSCD( QWidget *parent, const char *name )
   m_actions = new KActionCollection(this);
   m_actions->setConfigGroup("Shortcuts");
 
-  KAction* action;
-  action = new KAction(i18n("Play/Pause"), m_actions, "Play/Pause");
+  QAction* action;
+  action = m_actions->addAction("Play/Pause");
+  action->setText(i18n("Play/Pause"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(playClicked()));
   action->setShortcut(Qt::Key_P);
-  action->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_P));
+  qobject_cast<KAction*>( action )->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_P));
 
-  action = new KAction(i18n("Stop"), m_actions, "Stop");
+  action = m_actions->addAction("Stop");
+  action->setText(i18n("Stop"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(stopClicked()));
   action->setShortcut(Qt::Key_S);
-  action->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_S));
+  qobject_cast<KAction*>( action )->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_S));
 
-  action = new KAction(i18n("Previous"), m_actions, "Previous");
+  action = m_actions->addAction("Previous");
+  action->setText(i18n("Previous"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(prevClicked()));
   action->setShortcut(Qt::Key_B);
   //NOTE: WIN+B collidates with amarok's default global shortcut.
-  action->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_B));
+  qobject_cast<KAction*>( action )->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_B));
 
-  action = new KAction(i18n("Next"), m_actions, "Next");
+  action = m_actions->addAction("Next");
+  action->setText(i18n("Next"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(nextClicked()));
   action->setShortcut(Qt::Key_N);
-  action->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_N));
+  qobject_cast<KAction*>( action )->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_N));
 
   action = KStandardAction::quit(this, SLOT(quitClicked()), m_actions);
-  action = KStandardAction::keyBindings(this, SLOT(configureKeys()), m_actions, "options_configure_shortcuts");
+  action = m_actions->addAction(KStandardAction::KeyBindings, "options_configure_shortcuts",
+                                this, SLOT(configureKeys()));
   action = KStandardAction::preferences(this, SLOT(showConfig()), m_actions);
-  action = new KAction(i18n("Loop"), m_actions, "Loop");
+  action = m_actions->addAction("Loop");
+  action->setText(i18n("Loop"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(loopClicked()));
   action->setShortcut(Qt::Key_L);
-  action = new KAction(i18n("Eject"), m_actions, "Eject");
+  action = m_actions->addAction("Eject");
+  action->setText(i18n("Eject"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(ejectClicked()));
   action->setShortcut(Qt::CTRL + Qt::Key_E);
-  action = new KAction(i18n("Increase Volume"), m_actions, "IncVolume");
+  action = m_actions->addAction("IncVolume");
+  action->setText(i18n("Increase Volume"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(incVolume()));
   KShortcut increaseVolume(QKeySequence(Qt::Key_Plus), QKeySequence(Qt::Key_Equal));
-  action->setShortcut( increaseVolume );
-  action->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Plus));
+  action->setShortcuts( increaseVolume );
+  qobject_cast<KAction*>( action )->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Plus));
 
-  action = new KAction(i18n("Decrease Volume"), m_actions, "DecVolume");
+  action = m_actions->addAction("DecVolume");
+  action->setText(i18n("Decrease Volume"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(decVolume()));
   action->setShortcut(Qt::Key_Minus);
-  action->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Minus));
+  qobject_cast<KAction*>( action )->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Minus));
 
-  action = new KAction(i18n("Options"), m_actions, "Options");
+  action = m_actions->addAction("Options");
+  action->setText(i18n("Options"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(showConfig()));
   action->setShortcut(Qt::CTRL + Qt::Key_T);
-  action = new KAction(i18n("Shuffle"), m_actions, "Shuffle");
+  action = m_actions->addAction("Shuffle");
+  action->setText(i18n("Shuffle"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(randomSelected()));
   action->setShortcut(Qt::Key_R);
-  action->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_R));
+  qobject_cast<KAction*>( action )->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_R));
 
-  action = new KAction(i18n("CDDB"), m_actions, "CDDB");
+  action = m_actions->addAction("CDDB");
+  action->setText(i18n("CDDB"));
   connect(action, SIGNAL(triggered(bool) ), SLOT(CDDialogSelected()));
   action->setShortcut(Qt::CTRL + Qt::Key_D);
   m_actions->readSettings();
