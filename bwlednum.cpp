@@ -493,7 +493,9 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
       }
 
       p.fillRect(pt.x()  ,pt.y() - Width  , Width , Width  ,brush);
+#ifdef __GNUC__
 #warning "kde4: why move it ?"
+#endif
 	  //p.moveTo(pt);
 
       if (!show_off_colon && erase) {
@@ -570,7 +572,9 @@ void BW_LED_Number::drawSegment( const QPoint &pos, char seg_number, QPainter &p
       }
 
       p.fillRect(pt.x()  ,pt.y() - Width  , Width , Width  ,brush);
+#ifdef __GNUC__
 #warning "kde4: why move it ?"
+#endif
 	  //p.moveTo(pt);
       if (!show_off_colon && erase) {
 	p.setBrush(fgcolor);
