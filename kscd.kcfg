@@ -43,11 +43,6 @@
             <label>Loop tracks.</label>
             <default>false</default>
         </entry>
-        <entry name="SkipDelta" type="UInt">
-            <label>Skip interval.</label>
-            <whatsthis>This option controls the number of seconds KsCD will skip when the skip forwards or backwards buttons are pressed.</whatsthis>
-            <default>30</default>
-        </entry>
         <entry name="TimeDisplayMode" type="Enum" key="TimeDisplay">
             <choices>
                 <choice name="TRACK_SEC"/>
