@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 GenericName=CD Player
+GenericName[el]=Αναπαραγωγέας CD
 GenericName[fr]=Lecteur de CD audio
 GenericName[x-test]=xxCD Playerxx
 Name=KsCD

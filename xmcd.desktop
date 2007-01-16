@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Comment=CD Database File
+Comment[el]=Αρχείο βάσης δεδομένων CD
 Comment[fr]=Banque de données pour CD
 Comment[x-test]=xxCD Database Filexx
 DefaultApp=kedit
