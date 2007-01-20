@@ -44,28 +44,22 @@
 #include "version.h"
 #include "kscd.h"
 #include "cddbdlg.h"
-#include "libkcddb/cdinfodialog.h"
 
 CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
-    : KDialog( parent)
+    : CDInfoDialog( parent)
 {
-    setCaption( i18n( "CD Editor" ) );
-    setButtons( KDialog::Ok|KDialog::Cancel|KDialog::User1|KDialog::User2 );
-    setDefaultButton( KDialog::Ok );
-    setModal( true );
-  KGlobal::locale()->insertCatalog("libkcddb");
+  setCaption( i18n( "CD Editor" ) );
+  setModal( true );
 
-  m_dlgBase = new KCDDB::CDInfoDialog( this );
-
-  setMainWidget( m_dlgBase );
-
+  setButtons( KDialog::Ok|KDialog::Cancel|KDialog::User1|KDialog::User2 );
+  setDefaultButton( KDialog::Ok );
   setButtonText( User1, i18n( "Upload" ) );
   setButtonText( User2, i18n( "Fetch Info" ) );
 
   connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
   connect( this, SIGNAL( user1Clicked() ), SLOT( upload() ) );
   connect( this, SIGNAL( user2Clicked() ), SIGNAL( cddbQuery() ) );
-  connect( m_dlgBase, SIGNAL( play( int ) ), SIGNAL( play( int ) ) );
+  connect( this, SIGNAL( play( int ) ), SIGNAL( play( int ) ) );
 
   cddbClient = new KCDDB::Client();
   cddbClient->setBlockingMode(false);
@@ -91,9 +85,9 @@ void CDDBDlg::setData(
     playlist = _playlist;
 
     // Write the complete record to the dialog.
-    m_dlgBase->setInfo(cddbInfo, trackStartFrames);
-    // FIXME: KDE4, move this logic into m_dlgBase->setInfo() once KCDDB:CDInfo is updated.
-    m_dlgBase->m_playOrder->setText( playlist.join( "," ) );
+    setInfo(cddbInfo, trackStartFrames);
+    // FIXME: KDE4, move this logic into setInfo() once KCDDB:CDInfo is updated.
+    m_playOrder->setText( playlist.join( "," ) );
 } // setData
 
 void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
@@ -135,7 +129,7 @@ void CDDBDlg::save()
 
 bool CDDBDlg::validInfo()
 {
-  KCDDB::CDInfo copy = m_dlgBase->info();
+  KCDDB::CDInfo copy = info();
 
   if (copy.get(Artist).toString().isEmpty())
   {
@@ -179,10 +173,10 @@ bool CDDBDlg::validInfo()
 
 void CDDBDlg::updateFromDialog()
 {
-  KCDDB::CDInfo copy = m_dlgBase->info();
+  KCDDB::CDInfo copy = info();
 
   // Playorder...
-  QStringList strlist = QStringList::split( ',', m_dlgBase->m_playOrder->text() );
+  QStringList strlist = QStringList::split( ',', m_playOrder->text() );
 
   bool ret = true;
 
