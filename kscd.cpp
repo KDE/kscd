@@ -1663,7 +1663,7 @@ int main( int argc, char *argv[] )
     a.setTopWidget( k );
     a.setMainWidget( k );
 
-    k->setWindowTitle(a.caption());
+    k->setWindowTitle(KGlobal::caption());
 
     if (kapp->isSessionRestored())
     {
