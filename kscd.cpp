@@ -390,7 +390,7 @@ void KSCD::setupPopups()
 
     connect( infoPopup, SIGNAL(activated(int)), SLOT(information(int)) );
 
-    KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::instance()->aboutData(), false);
+    KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), false);
     mainPopup->insertItem(SmallIcon("help"),i18n("&Help"), helpMenu->menu());
     mainPopup->addSeparator();
     mainPopup->addAction( m_actions->action(KStandardAction::name(KStandardAction::Quit)) );
@@ -1663,7 +1663,7 @@ int main( int argc, char *argv[] )
     a.setTopWidget( k );
     a.setMainWidget( k );
 
-    k->setWindowTitle(a.caption());
+    k->setWindowTitle(KGlobal::caption());
 
     if (kapp->isSessionRestored())
     {

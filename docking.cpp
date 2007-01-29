@@ -65,7 +65,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     popup->insertItem(KIconLoader::global()->loadIconSet("player_start", K3Icon::Small), i18n("Previous"), parent, SLOT(prevClicked()));
     popup->insertItem(KIconLoader::global()->loadIconSet("player_eject", K3Icon::Small), i18n("Eject"), parent, SLOT(ejectClicked()));
 
-    this->setToolTip( kapp->aboutData()->programName());
+    this->setToolTip( KGlobal::mainComponent().aboutData()->programName());
 }
 
 DockWidget::~DockWidget()
@@ -115,7 +115,7 @@ void DockWidget::setToolTip(const QString& text)
 
     if (text.isEmpty())
     {
-        this->setToolTip( kapp->aboutData()->programName());
+        this->setToolTip( KGlobal::mainComponent().aboutData()->programName());
     }
     else
     {
