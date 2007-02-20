@@ -1502,9 +1502,8 @@ void KSCD::information(int i)
 bool KSCD::saveState(QSessionManager& /*sm*/)
 {
   writeSettings();
-  KConfig* config = KApplication::kApplication()->sessionConfig();
-  config->setGroup("General");
-  config->writeEntry("Show", isVisible());
+  KConfigGroup config(KApplication::kApplication()->sessionConfig(), "General");
+  config.writeEntry("Show", isVisible());
   return true;
 } // saveState
 
