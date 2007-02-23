@@ -1666,9 +1666,8 @@ int main( int argc, char *argv[] )
 
     if (kapp->isSessionRestored())
     {
-        KConfig* config = KApplication::kApplication()->sessionConfig();
-        config->setGroup("General");
-        if (config->readEntry("Show",false))
+        KConfigGroup group(KApplication::kApplication()->sessionConfig(), "General");
+        if (group.readEntry("Show", false))
             k->show();
     }
     else
