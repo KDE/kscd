@@ -53,17 +53,17 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     KActionCollection* actionCollection = parent->actionCollection();
     m_backAction = actionCollection->action("Previous");
     m_forwardAction = actionCollection->action("Next");
-    m_backPix = loadIcon("player_start");
-    m_forwardPix = loadIcon("player_end");
+    m_backPix = loadIcon("media-skip-backward");
+    m_forwardPix = loadIcon("media-skip-forward");
 
     // popup menu for right mouse button
     QMenu* popup = contextMenu();
 
-    popup->insertItem(KIconLoader::global()->loadIconSet("player_play", K3Icon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
-    popup->insertItem(KIconLoader::global()->loadIconSet("player_stop", K3Icon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
-    popup->insertItem(KIconLoader::global()->loadIconSet("player_end", K3Icon::Small), i18n("Next"), parent, SLOT(nextClicked()));
-    popup->insertItem(KIconLoader::global()->loadIconSet("player_start", K3Icon::Small), i18n("Previous"), parent, SLOT(prevClicked()));
-    popup->insertItem(KIconLoader::global()->loadIconSet("player_eject", K3Icon::Small), i18n("Eject"), parent, SLOT(ejectClicked()));
+    popup->insertItem(KIconLoader::global()->loadIconSet("media-playback-start", K3Icon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
+    popup->insertItem(KIconLoader::global()->loadIconSet("media-playback-stop", K3Icon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
+    popup->insertItem(KIconLoader::global()->loadIconSet("media-skip-forward", K3Icon::Small), i18n("Next"), parent, SLOT(nextClicked()));
+    popup->insertItem(KIconLoader::global()->loadIconSet("media-skip-backward", K3Icon::Small), i18n("Previous"), parent, SLOT(prevClicked()));
+    popup->insertItem(KIconLoader::global()->loadIconSet("media-eject", K3Icon::Small), i18n("Eject"), parent, SLOT(ejectClicked()));
 
     this->setToolTip( KGlobal::mainComponent().aboutData()->programName());
 }

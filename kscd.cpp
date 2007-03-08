@@ -350,13 +350,13 @@ void KSCD::drawPanel()
 
 void KSCD::setIcons()
 {
-  playPB->setIcon(SmallIconSet("player_play"));
-  stopPB->setIcon(SmallIconSet("player_stop"));
-  ejectPB->setIcon(SmallIconSet("player_eject"));
-  prevPB->setIcon(SmallIconSet("player_start"));
-  nextPB->setIcon(SmallIconSet("player_end"));
-  cddbPB->setIcon(SmallIconSet("view_text"));
-  infoPB->setIcon(SmallIconSet("run"));
+  playPB->setIcon(SmallIconSet("media-playback-start"));
+  stopPB->setIcon(SmallIconSet("media-playback-stop"));
+  ejectPB->setIcon(SmallIconSet("media-eject"));
+  prevPB->setIcon(SmallIconSet("media-skip-backward"));
+  nextPB->setIcon(SmallIconSet("media-skip-forward"));
+  cddbPB->setIcon(SmallIconSet("fileview-text"));
+  infoPB->setIcon(SmallIconSet("system-run"));
 }
 
 void KSCD::setupPopups()
@@ -391,7 +391,7 @@ void KSCD::setupPopups()
     connect( infoPopup, SIGNAL(activated(int)), SLOT(information(int)) );
 
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), false);
-    mainPopup->insertItem(SmallIcon("help"),i18n("&Help"), helpMenu->menu());
+    mainPopup->insertItem(SmallIcon("help-contents"),i18n("&Help"), helpMenu->menu());
     mainPopup->addSeparator();
     mainPopup->addAction( m_actions->action(KStandardAction::name(KStandardAction::Quit)) );
 } // setupPopups
@@ -400,7 +400,7 @@ void KSCD::setPlayStatus(void)
 {
     // Update UI to allow a subsequent pause.
     statuslabel->setText(i18n("Play"));
-    playPB->setIcon(SmallIconSet("player_pause"));
+    playPB->setIcon(SmallIconSet("media-playback-pause"));
     playPB->setText(i18n("Pause"));
 }
 
@@ -447,7 +447,7 @@ void KSCD::playClicked()
 
         // Update UI to allow a subsequent play.
         statuslabel->setText(i18n("Pause"));
-        playPB->setIcon(SmallIconSet("player_play"));
+        playPB->setIcon(SmallIconSet("media-playback-start"));
         playPB->setText(i18n("Play"));
     }
 
@@ -1070,7 +1070,7 @@ void KSCD::discStopped()
 
     statuslabel->setText(i18n("Stopped"));
     playPB->setText(i18n("Play"));
-    playPB->setIcon(SmallIconSet("player_play"));
+    playPB->setIcon(SmallIconSet("media-playback-start"));
 
     /* reset to initial value, only stopclicked() sets this to true */
     stoppedByUser = false;
