@@ -109,7 +109,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE QStringList trackList();
 
 public:
-    KSCD( QWidget *parent = 0, const char *name = 0 );
+    explicit KSCD( QWidget *parent = 0, const char *name = 0 );
     ~KSCD();
     virtual bool saveState(QSessionManager& sm);
 

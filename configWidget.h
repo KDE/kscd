@@ -29,10 +29,10 @@ class KSCD;
 
 class configWidgetUI : public QWidget, public Ui::configWidgetUI
 {
-public:
-  explicit configWidgetUI( QWidget *parent ) : QWidget( parent ) {
-    setupUi( this );
-  }
+   public:
+      explicit configWidgetUI( QWidget *parent ) : QWidget( parent ) {
+         setupUi( this );
+      }
 };
 
 
@@ -41,7 +41,7 @@ class configWidget : public configWidgetUI
    Q_OBJECT
 
    public:
-        configWidget(KSCD* player, QWidget* parent = 0);
+        explicit configWidget(KSCD* player, QWidget* parent = 0);
         ~configWidget();
 
    protected:

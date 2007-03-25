@@ -769,7 +769,7 @@ void KSCD::showConfig()
 
     configDialog = new KConfigDialog(this, "settings", Prefs::self());
 
-    configDialog->setHelp(QString::null);
+    configDialog->setHelp(QString());
 
     confWidget = new configWidget(this, 0);
 

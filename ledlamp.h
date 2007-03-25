@@ -1,5 +1,5 @@
 
-/*  
+/*
     This file is part of the KDE libraries
     Copyright (C) 1997 Richard Moore (moorer@cs.man.ac.uk)
 
@@ -33,13 +33,13 @@ public:
 
   enum Type { Rect, Loop };
 
-  LedLamp(QWidget *parent=0, Type t=Rect);
+  explicit LedLamp(QWidget *parent=0, Type t=Rect);
 
   enum State { On, Off };
 
 
   State state() const { return s; }
-  
+
 
   void setState(State state) { s= state; repaint(); }
 
