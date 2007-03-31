@@ -50,7 +50,7 @@
 #include <kemailsettings.h>
 #include <kglobal.h>
 #include <khelpmenu.h>
-#include <kkeydialog.h>
+#include <kshortcutsdialog.h>
 #include <kiconloader.h>
 #include <kinputdialog.h>
 #include <klocale.h>
@@ -819,7 +819,7 @@ void KSCD::configDone()
 
 void KSCD::configureKeys()
 {
-    KKeyDialog::configure(m_actions, KKeyChooser::LetterShortcutsAllowed, this);
+    KShortcutsDialog::configure(m_actions, KShortcutsEditor::LetterShortcutsAllowed, this);
 }
 
 void KSCD::setDevicePaths()
