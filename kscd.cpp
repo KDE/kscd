@@ -73,7 +73,7 @@
 #include "version.h"
 #include "prefs.h"
 
-#include <kwin.h>
+#include <kwm.h>
 #include <netwm.h>
 
 #include <config.h>
