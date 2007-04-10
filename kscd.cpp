@@ -164,7 +164,6 @@ KSCD::KSCD( QWidget *parent, const char *name )
   connect( cddbPB, SIGNAL(clicked()), SLOT(CDDialogSelected()));
   connect(KGlobalSettings::self(), SIGNAL(kdisplayPaletteChanged()), this, SLOT(setColors()));
   connect(KGlobalSettings::self(), SIGNAL(iconChanged(int)), this, SLOT(setIcons()));
-  QToolTip::remove(songListCB);
   songListCB->setToolTip( i18n("Track list"));
 
 
@@ -247,7 +246,7 @@ KSCD::KSCD( QWidget *parent, const char *name )
   {
     loopled->on();
     loopled->show();
-    repeatPB->setOn(true);
+    repeatPB->setChecked(true);
   }
 
   setDocking(Prefs::docking());
@@ -460,7 +459,7 @@ void KSCD::setShuffle(int shuffle)
     if (shuffle == 2) {
         if(Prefs::randomPlay() && m_cd->tracks() > 0) {
             shufflePB->blockSignals(true);
-            shufflePB->setOn(true);
+            shufflePB->setChecked(true);
             shufflePB->blockSignals(false);
             make_random_list(); /* koz: Build a unique, once, random list */
             if(m_cd->isPlaying())
@@ -472,7 +471,7 @@ void KSCD::setShuffle(int shuffle)
 
     Prefs::setRandomPlay(shuffle);
     shufflePB->blockSignals(true);
-    shufflePB->setOn(shuffle);
+    shufflePB->setChecked(shuffle);
     shufflePB->blockSignals(false);
 
     if (Prefs::randomPlay() && m_cd->tracks() > 0) {
@@ -1100,7 +1099,7 @@ void KSCD::setLEDs(int milliseconds)
 
     for (int i = 0; i < 5; i++)
     {
-        trackTimeLED[i]->display((char)symbols.local8Bit().at(i));
+        trackTimeLED[i]->display((char)symbols.toLocal8Bit().at(i));
     }
 }
 
