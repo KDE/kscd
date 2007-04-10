@@ -33,7 +33,6 @@
 #include <qapplication.h>
 #include <QIcon>
 #include <QTimer>
-#include <q3popupmenu.h>
 #include <QPoint>
 //Added by qt3to4:
 #include <QWheelEvent>
