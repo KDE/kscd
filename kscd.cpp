@@ -27,8 +27,6 @@
 #include <QRegExp>
 #include <qtextstream.h>
 #include <QLayout>
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qapplication.h>
 #include <q3groupbox.h>
 //Added by qt3to4:
