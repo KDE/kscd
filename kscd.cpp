@@ -92,7 +92,7 @@ bool stoppedByUser = false;
                   The GUI part
 *****************************************************************************/
 
-KSCD::KSCD( QWidget *parent, const char *name )
+KSCD::KSCD( QWidget *parent )
   : QWidget( parent ),
     kscdPanelDlg( ),
     configDialog(0L),
@@ -347,57 +347,56 @@ void KSCD::drawPanel()
 
 void KSCD::setIcons()
 {
-  playPB->setIcon(SmallIconSet("media-playback-start"));
-  stopPB->setIcon(SmallIconSet("media-playback-stop"));
-  ejectPB->setIcon(SmallIconSet("media-eject"));
-  prevPB->setIcon(SmallIconSet("media-skip-backward"));
-  nextPB->setIcon(SmallIconSet("media-skip-forward"));
-  cddbPB->setIcon(SmallIconSet("fileview-text"));
-  infoPB->setIcon(SmallIconSet("system-run"));
+    playPB->setIcon(KIcon(SmallIcon("media-playback-start")));
+    stopPB->setIcon(KIcon(SmallIcon("media-playback-stop")));
+    ejectPB->setIcon(KIcon(SmallIcon("media-eject")));
+    prevPB->setIcon(KIcon(SmallIcon("media-skip-backward")));
+    nextPB->setIcon(KIcon(SmallIcon("media-skip-forward")));
+    cddbPB->setIcon(KIcon(SmallIcon("fileview-text")));
+    infoPB->setIcon(KIcon(SmallIcon("system-run")));
 }
 
 void KSCD::setupPopups()
 {
     QMenu* mainPopup   = new QMenu(this);
     infoPB->setMenu(mainPopup);
-    infoPopup   = new QMenu (this);
+    infoPopup   = mainPopup->addMenu(i18n("Artist Information"));
 
+    connect( infoPopup, SIGNAL(triggered(QAction *)), SLOT(information(QAction *)) );
 
-    infoPopup->insertItem("MusicMoz", 0);
-    infoPopup->insertItem("Ultimate Bandlist", 1);
-    infoPopup->insertItem("CD Universe", 2);
+    infoPopup->addAction("MusicMoz");
+    infoPopup->addAction("Ultimate Bandlist");
+    infoPopup->addAction("CD Universe");
     infoPopup->addSeparator();
-    infoPopup->insertItem("AlltheWeb", 3);
-    infoPopup->insertItem("Altavista", 4);
-    infoPopup->insertItem("Excite", 5);
-    infoPopup->insertItem("Google", 6);
-    infoPopup->insertItem("Google Groups", 7);
-    infoPopup->insertItem("HotBot", 8);
-    infoPopup->insertItem("Lycos", 9);
-    infoPopup->insertItem("Open Directory", 10);
-    infoPopup->insertItem("Yahoo!", 11);
+    infoPopup->addAction("AlltheWeb");
+    infoPopup->addAction("Altavista");
+    infoPopup->addAction("Excite");
+    infoPopup->addAction("Google");
+    infoPopup->addAction("Google Groups");
+    infoPopup->addAction("HotBot");
+    infoPopup->addAction("Lycos");
+    infoPopup->addAction("Open Directory");
+    infoPopup->addAction("Yahoo!");
 
     mainPopup->addAction( m_actions->action(KStandardAction::name(KStandardAction::Preferences)) );
+
     //NEW add the shortcut dialogs
-    mainPopup->addAction( m_actions->action("options_configure_globals") );
-    mainPopup->addAction( m_actions->action("options_configure_shortcuts") );
+    mainPopup->addAction(m_actions->action("options_configure_globals"));
+    mainPopup->addAction(m_actions->action("options_configure_shortcuts"));
     mainPopup->addSeparator();
-
-    mainPopup->insertItem(i18n("Artist Information"), infoPopup);
-
-    connect( infoPopup, SIGNAL(activated(int)), SLOT(information(int)) );
 
     KHelpMenu* helpMenu = new KHelpMenu(this, KGlobal::mainComponent().aboutData(), false);
-    mainPopup->insertItem(SmallIcon("help-contents"),i18n("&Help"), helpMenu->menu());
+    mainPopup->addMenu(helpMenu->menu());
     mainPopup->addSeparator();
-    mainPopup->addAction( m_actions->action(KStandardAction::name(KStandardAction::Quit)) );
+    mainPopup->addAction(m_actions->action(KStandardAction::name(KStandardAction::Quit)) );
+
 } // setupPopups
 
 void KSCD::setPlayStatus(void)
 {
     // Update UI to allow a subsequent pause.
     statuslabel->setText(i18n("Play"));
-    playPB->setIcon(SmallIconSet("media-playback-pause"));
+    playPB->setIcon(KIcon(SmallIcon("media-playback-pause")));
     playPB->setText(i18n("Pause"));
 }
 
@@ -444,7 +443,7 @@ void KSCD::playClicked()
 
         // Update UI to allow a subsequent play.
         statuslabel->setText(i18n("Pause"));
-        playPB->setIcon(SmallIconSet("media-playback-start"));
+        playPB->setIcon(KIcon(SmallIcon("media-playback-start")));
         playPB->setText(i18n("Play"));
     }
 
@@ -585,9 +584,9 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
         str.sprintf("%02d/%02d", track, m_cd->tracks());
         tracklabel->setText(str);
 
-	QString title;
-	if (cddbInfo.track(track-1).get(Artist) != cddbInfo.get(Artist))
-	  title.append(cddbInfo.track(track-1).get(Artist).toString()).append(" - ");
+        QString title;
+        if (cddbInfo.track(track-1).get(Artist) != cddbInfo.get(Artist))
+            title.append(cddbInfo.track(track-1).get(Artist).toString()).append(" - ");
         title.append(cddbInfo.track(track-1).get(Title).toString());
         titlelabel->setText(title);
         tooltip += '/' + KStringHandler::rsqueeze(title, 30);
@@ -1067,7 +1066,7 @@ void KSCD::discStopped()
 
     statuslabel->setText(i18n("Stopped"));
     playPB->setText(i18n("Play"));
-    playPB->setIcon(SmallIconSet("media-playback-start"));
+    playPB->setIcon(KIcon(SmallIcon("media-playback-start")));
 
     /* reset to initial value, only stopclicked() sets this to true */
     stoppedByUser = false;
@@ -1113,12 +1112,12 @@ void KSCD::setColors()
 {
     QColor led_color = Prefs::ledColor();
     QColor background_color = Prefs::backColor();
+    QPalette pal( led_color, background_color,
+                  led_color, led_color,
+                  led_color, led_color, Qt::white );
 
-    backdrop->setBackgroundColor(background_color);
-
-    QPalette pal( led_color, background_color, led_color,led_color , led_color,
-                        led_color, Qt::white );
-
+    backdrop->setPalette(pal);
+/* FIXME all others inerhit palette from backdrop ?
     titlelabel ->setPalette( pal );
     artistlabel->setPalette( pal );
     volumelabel->setPalette( pal );
@@ -1128,7 +1127,7 @@ void KSCD::setColors()
 
     queryled->setPalette( pal );
     loopled->setPalette( pal );
-
+*/
     for (int u = 0; u< 5;u++){
         trackTimeLED[u]->setLEDoffColor(background_color);
         trackTimeLED[u]->setLEDColor(led_color,background_color);
@@ -1363,10 +1362,10 @@ void KSCD::trackUpdate(unsigned /*track*/, unsigned trackPosition)
     }
     if (updateTime)
     {
-    setLEDs(tmp);
-    timeSlider->blockSignals(true);
-    timeSlider->setValue(trackPosition);
-    timeSlider->blockSignals(false);
+        setLEDs(tmp);
+        timeSlider->blockSignals(true);
+        timeSlider->setValue(trackPosition);
+        timeSlider->blockSignals(false);
     }
 }
 
@@ -1400,7 +1399,8 @@ void KSCD::cycleplaytimemode()
             break;
     }
 
-    cycletimer.start(3000, true);
+    QTimer::singleShot( 3000, &cycletimer, SLOT( start() ) );
+    //QTimer::cycletimer.start(3000, true);
 } // cycleplaymode
 
 void KSCD::cycletimeout()
@@ -1412,7 +1412,7 @@ void KSCD::cycletimeout()
 } // cycletimeout
 
 
-void KSCD::information(int i)
+void KSCD::information(QAction *action)
 {
     //kDebug(67000) << "Information " << i << "\n" << endl;
 
@@ -1423,72 +1423,46 @@ void KSCD::information(int i)
     //QString encodedArtist = KUrl::encode_string_no_slash(cddbInfo.get(Artist).toString());
 
     KUrl url;
+    QString server = action->text();
 
-    switch(i)
-    {
-        case 0:
-            url = KUrl("http://musicmoz.org/cgi-bin/ext.cgi");
-            url.addQueryItem( "artist", artist );
-            break;
-
-         case 1:
-            url = KUrl("http://ubl.artistdirect.com/cgi-bin/gx.cgi/AppLogic+Search?select=MusicArtist&searchtype=NormalSearch");
-            url.addQueryItem( "searchstr", artist );
-            break;
-
-        case 2:
-            url = KUrl( QString( "http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1" ).arg( QString::fromLatin1(QUrl::toPercentEncoding(artist)) ) );
-            break;
-
-        case 3:
-            url = KUrl("http://www.alltheweb.com/search?cat=web");
-            url.addQueryItem( "q", artist );
-            break;
-
-        case 4:
-            url = KUrl("http://altavista.com/web/results?kgs=0&kls=1&avkw=xytx");
-            url.addQueryItem( "q", artist );
-            break;
-
-        case 5:
-            url = KUrl("http://msxml.excite.com/_1_2UDOUB70SVHVHR__info.xcite/dog/results?otmpl=dog/webresults.htm&qcat=web&qk=20&top=1&start=&ver=14060");
-            url.addQueryItem( "qkw", artist );
-            break;
-
-        case 6:
-            url = KUrl("http://www.google.com/search");
-            url.addQueryItem( "q", artist );
-            break;
-
-        case 7:
-            url = KUrl("http://groups.google.com/groups?oi=djq&num=20");
-            url.addQueryItem( "as_q", artist );
-            break;
-
-        case 8:
-            url = KUrl("http://www.hotbot.com/default.asp?prov=Inktomi&ps=&loc=searchbox&tab=web");
-            url.addQueryItem( "query", artist );
-            break;
-
-        case 9:
-            url = KUrl("http://search.lycos.com/default.asp?lpv=1&loc=searchhp&tab=web");
-            url.addQueryItem( "query", artist );
-            break;
-
-         case 10:
-            url = KUrl("http://search.dmoz.org/cgi-bin/search");
-            url.addQueryItem( "search", artist );
-            break;
-
-         case 11:
-            url = KUrl("http://search.yahoo.com/bin/search");
-            url.addQueryItem( "p", artist );
-            break;
-
-         default:
-            return;
-            break;
-    } // switch()
+    if(server == "MusicMoz") {
+        url = KUrl("http://musicmoz.org/cgi-bin/ext.cgi");
+        url.addQueryItem( "artist", artist );
+    } else if (server == "Ultimate Bandlist") {
+        url = KUrl("http://ubl.artistdirect.com/cgi-bin/gx.cgi/AppLogic+Search?select=MusicArtist&searchtype=NormalSearch");
+        url.addQueryItem( "searchstr", artist );
+    } else if (server == "CD Universe") {
+        url = KUrl( QString( "http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1" ).arg( QString::fromLatin1(QUrl::toPercentEncoding(artist)) ) );
+    } else if (server == "AlltheWeb") {
+        url = KUrl("http://www.alltheweb.com/search?cat=web");
+        url.addQueryItem( "q", artist );
+    } else if (server == "Altavista") {
+        url = KUrl("http://altavista.com/web/results?kgs=0&kls=1&avkw=xytx");
+        url.addQueryItem( "q", artist );
+    } else if (server == "Excite") {
+        url = KUrl("http://msxml.excite.com/_1_2UDOUB70SVHVHR__info.xcite/dog/results?otmpl=dog/webresults.htm&qcat=web&qk=20&top=1&start=&ver=14060");
+        url.addQueryItem( "qkw", artist );
+    } else if (server == "Google") {
+        url = KUrl("http://www.google.com/search");
+        url.addQueryItem( "q", artist );
+    } else if (server == "Google Groups") {
+        url = KUrl("http://groups.google.com/groups?oi=djq&num=20");
+        url.addQueryItem( "as_q", artist );
+    } else if (server == "HotBot") {
+        url = KUrl("http://www.hotbot.com/default.asp?prov=Inktomi&ps=&loc=searchbox&tab=web");
+        url.addQueryItem( "query", artist );
+    } else if (server == "Lycos") {
+        url = KUrl("http://search.lycos.com/default.asp?lpv=1&loc=searchhp&tab=web");
+        url.addQueryItem( "query", artist );
+    } else if (server == "Open Directory") {
+        url = KUrl("http://search.dmoz.org/cgi-bin/search");
+        url.addQueryItem( "search", artist );
+    } else if (server == "Yahoo!") {
+        url = KUrl("http://search.yahoo.com/bin/search");
+        url.addQueryItem( "p", artist );
+    } else {
+        return;
+    }
 
     KRun::runUrl( url, "text/html", 0L);
 } // information

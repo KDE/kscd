@@ -46,7 +46,7 @@
 DockWidget::DockWidget( KSCD* parent, const char *name)
     : KSystemTrayIcon( parent )
 {
-	setObjectName(name);
+    setObjectName(name);
     m_popup = 0;
     setIcon( loadIcon("cdsmall") );
 
@@ -59,11 +59,11 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     // popup menu for right mouse button
     QMenu* popup = contextMenu();
 
-    popup->insertItem(KIconLoader::global()->loadIconSet("media-playback-start", K3Icon::Small), i18n("Play/Pause"), parent, SLOT(playClicked()));
-    popup->insertItem(KIconLoader::global()->loadIconSet("media-playback-stop", K3Icon::Small), i18n("Stop"), parent, SLOT(stopClicked()));
-    popup->insertItem(KIconLoader::global()->loadIconSet("media-skip-forward", K3Icon::Small), i18n("Next"), parent, SLOT(nextClicked()));
-    popup->insertItem(KIconLoader::global()->loadIconSet("media-skip-backward", K3Icon::Small), i18n("Previous"), parent, SLOT(prevClicked()));
-    popup->insertItem(KIconLoader::global()->loadIconSet("media-eject", K3Icon::Small), i18n("Eject"), parent, SLOT(ejectClicked()));
+    popup->addAction(SmallIcon("media-playback-start"), i18n("Play/Pause"), parent, SLOT(playClicked()));
+    popup->addAction(SmallIcon("media-playback-stop"), i18n("Stop"), parent, SLOT(stopClicked()));
+    popup->addAction(SmallIcon("media-skip-forward"), i18n("Next"), parent, SLOT(nextClicked()));
+    popup->addAction(SmallIcon("media-skip-backward"), i18n("Previous"), parent, SLOT(prevClicked()));
+    popup->addAction(SmallIcon("media-eject"), i18n("Eject"), parent, SLOT(ejectClicked()));
 
     this->setToolTip( KGlobal::mainComponent().aboutData()->programName());
 }
@@ -84,7 +84,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
 
     if (addButtons)
     {
-        QPushButton* backButton = new QPushButton(m_backPix, 0, box, "popup_back");
+        QPushButton* backButton = new QPushButton(m_backPix, 0, box);
         backButton->setFlat(true);
         connect(backButton, SIGNAL(clicked()), m_backAction, SLOT(activate()));
     }
@@ -94,7 +94,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
 
     if (addButtons)
     {
-        QPushButton* forwardButton = new QPushButton(m_forwardPix, 0, box, "popup_forward");
+        QPushButton* forwardButton = new QPushButton(m_forwardPix, 0, box);
         forwardButton->setFlat(true);
         connect(forwardButton, SIGNAL(clicked()), m_forwardAction, SLOT(activate()));
     }
@@ -132,31 +132,28 @@ void DockWidget::wheelEvent(QWheelEvent *e)
     if (kscd == 0)
         return;
 
-    switch (e->state())
+    switch (e->modifiers())
     {
-	    case Qt::ShiftModifier:
+    case Qt::ShiftModifier:
+        if (e->delta() > 0)
         {
-            if (e->delta() > 0)
-            {
-                kscd->incVolume();
-            }
-            else
-            {
-                kscd->decVolume();
-            }
-            break;
+            kscd->incVolume();
         }
-        default:
+        else
         {
-            if (e->delta() > 0)
-            {
-                kscd->nextClicked();
-            }
-            else
-            {
-                kscd->prevClicked();
-            }
+            kscd->decVolume();
         }
+        break;
+    default:
+        if (e->delta() > 0)
+        {
+            kscd->nextClicked();
+        }
+        else
+        {
+            kscd->prevClicked();
+        }
+        break;
     }
 }
 

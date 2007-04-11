@@ -47,8 +47,6 @@ configWidget::configWidget(KSCD* player, QWidget* parent)
     : configWidgetUI(parent),
       mPlayer(player)
 {
-    setName("configWidget");
-
     CdDeviceList->comboBox()->setEditable(true);
 
     load();

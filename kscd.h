@@ -109,7 +109,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE QStringList trackList();
 
 public:
-    explicit KSCD( QWidget *parent = 0, const char *name = 0 );
+    explicit KSCD( QWidget *parent = 0 );
     ~KSCD();
     virtual bool saveState(QSessionManager& sm);
 
@@ -150,7 +150,7 @@ public slots:
     void cycleplaytimemode();
     void cycletimeout();
 
-    void information(int);
+    void information(QAction *action);
     void jumpTracks();
 
     void make_random_list(); /* koz: 15/01/00 */

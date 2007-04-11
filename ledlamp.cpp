@@ -42,63 +42,56 @@ LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent),
 void 
 LedLamp::drawContents(QPainter *painter)
 {
+  QBrush lightBrush(palette().color(foregroundRole()));
+  QBrush darkBrush(palette().color(backgroundRole()));
 
-  
-  QBrush lightBrush(this->foregroundColor());
-  QBrush darkBrush(this->backgroundColor());
+  QPen darkPen(palette().color(backgroundRole()), 1);
+  QPen lightPen(palette().color(foregroundRole()), 1);
 
-  QPen darkPen(this->backgroundColor(),1);
-  QPen lightPen(this->foregroundColor(), 1);
-
-  switch(s) 
-    {
+    switch(s) {
     case On:
-      painter->setBrush(lightBrush);
-      switch (ledtype)
-	{
-	case Rect:
-	  painter->drawRect(1,1,w-3, h-2);
-	  break;
-	case Loop:
-	  painter->setBrush(lightBrush);
-	  painter->setPen(lightPen);
-	  
-	  painter->drawLine(0, 2, 0, h-2); //  |
-	  painter->drawLine(1, 1, w-4, 1); // ~
-	  painter->drawLine(w-3, 2, w-3, h-2); // |
-	  painter->drawLine(2, h-2, w-3, h-2); //_
-	  painter->drawLine(w-6,0,w-6,2); // ---+
-	  painter->drawLine(3,h-2,3,h); // +---
-	  break;
-	}
-      break;
-      
-    case Off:
-      painter->setBrush(darkBrush);
-      switch (ledtype)
-	{
-	case Rect:
-	  painter->drawRect(1,1,w-3, h-2);
-	  break;
-	case Loop:
-	  painter->setBrush(darkBrush);
-	  painter->setPen(darkPen);
+        painter->setBrush(lightBrush);
+        switch (ledtype) {
+        case Rect:
+            painter->drawRect(1,1,w-3, h-2);
+            break;
+        case Loop:
+            painter->setBrush(lightBrush);
+            painter->setPen(lightPen);
 
-	  painter->fillRect(0,0,w,h, darkBrush);
-	  /*
-	    painter->drawLine(0, 2, 0, h-2); //  |
-	    painter->drawLine(1, 1, w-4, 1); // ~
-	    painter->drawLine(w-3, 2, w-3, h-2); // |
-	    painter->drawLine(2, h-2, w-3, h-2); //_
-	    painter->drawLine(w-6,0,w-6,2); // ---+
-	    painter->drawLine(3,h-2,3,h); // +---
-	    */
-	  break;
-	}
-      break;
-      
+            painter->drawLine(0, 2, 0, h-2); //  |
+            painter->drawLine(1, 1, w-4, 1); // ~
+            painter->drawLine(w-3, 2, w-3, h-2); // |
+            painter->drawLine(2, h-2, w-3, h-2); //_
+            painter->drawLine(w-6,0,w-6,2); // ---+
+            painter->drawLine(3,h-2,3,h); // +---
+            break;
+        }
+        break;
+    case Off:
+        painter->setBrush(darkBrush);
+        switch (ledtype) {
+        case Rect:
+            painter->drawRect(1,1,w-3, h-2);
+            break;
+        case Loop:
+            painter->setBrush(darkBrush);
+            painter->setPen(darkPen);
+
+            painter->fillRect(0,0,w,h, darkBrush);
+            /*
+            painter->drawLine(0, 2, 0, h-2); //  |
+            painter->drawLine(1, 1, w-4, 1); // ~
+            painter->drawLine(w-3, 2, w-3, h-2); // |
+            painter->drawLine(2, h-2, w-3, h-2); //_
+            painter->drawLine(w-6,0,w-6,2); // ---+
+            painter->drawLine(3,h-2,3,h); // +---
+            */
+            break;
+        }
+        break;
     default:
-      fprintf(stderr, "LedLamp: INVALID State (%d)\n", s);
+        fprintf(stderr, "LedLamp: INVALID State (%d)\n", s);
     }
 } // drawContents
 
