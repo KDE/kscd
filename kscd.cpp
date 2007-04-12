@@ -29,7 +29,6 @@
 #include <QLayout>
 #include <qapplication.h>
 #include <q3groupbox.h>
-//Added by qt3to4:
 #include <QCloseEvent>
 #include <QKeyEvent>
 #include <QEvent>
@@ -83,6 +82,8 @@
 #include <fixx11h.h>
 #include <ktoolinvocation.h>
 
+using namespace KCDDB;
+
 static const char description[] = I18N_NOOP("KDE CD player");
 
 bool stoppedByUser = false;
@@ -108,7 +109,7 @@ KSCD::KSCD( QWidget *parent )
   random_current      = random_list.begin();
 
   cddb = new KCDDB::Client();
-  connect(cddb, SIGNAL(finished(CDDB::Result)), this, SLOT(lookupCDDBDone(CDDB::Result)));
+  connect(cddb, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
 
   audio_systems_list
                     << "phonon"
@@ -1203,13 +1204,13 @@ void KSCD::lookupCDDB()
     cddb->lookup(m_cd->discSignature());
 } // lookupCDDB
 
-void KSCD::lookupCDDBDone(CDDB::Result result)
+void KSCD::lookupCDDBDone(Result result)
 {
     led_off();
-    if ((result != KCDDB::CDDB::Success) &&
-        (result != KCDDB::CDDB::MultipleRecordFound))
+    if ((result != KCDDB::Success) &&
+        (result != KCDDB::MultipleRecordFound))
     {
-        populateSongList(result == CDDB::NoRecordFound ? i18n("No matching freedb entry found.") : i18n("Error getting freedb entry."));
+        populateSongList(result == NoRecordFound ? i18n("No matching freedb entry found.") : i18n("Error getting freedb entry."));
         return;
     }
 
@@ -1219,7 +1220,7 @@ void KSCD::lookupCDDBDone(CDDB::Result result)
     // seems to be irrelevant these days.
     KCDDB::CDInfo info = cddb->lookupResponse().first();
     // TODO Why doesn't libcddb not return MultipleRecordFound?
-    //if( result == KCDDB::CDDB::MultipleRecordFound ) {
+    //if( result == KCDDB::MultipleRecordFound ) {
     if( cddb->lookupResponse().count() > 1 ) {
       CDInfoList cddb_info = cddb->lookupResponse();
       CDInfoList::iterator it;

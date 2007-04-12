@@ -63,8 +63,8 @@ CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
 
   cddbClient = new KCDDB::Client();
   cddbClient->setBlockingMode(false);
-  connect (cddbClient, SIGNAL(finished(CDDB::Result)),
-                       SLOT(submitFinished(CDDB::Result)));
+  connect (cddbClient, SIGNAL(finished(KCDDB::Result)),
+                       SLOT(submitFinished(KCDDB::Result)));
 }
 
 
@@ -90,9 +90,9 @@ void CDDBDlg::setData(
     m_playOrder->setText( playlist.join( "," ) );
 } // setData
 
-void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
+void CDDBDlg::submitFinished(KCDDB::Result r)
 {
-  if (r == KCDDB::CDDB::Success)
+  if (r == KCDDB::Success)
   {
     KMessageBox::information(this, i18n("Record submitted successfully."),
          i18n("Record Submission"));
@@ -100,7 +100,7 @@ void CDDBDlg::submitFinished(KCDDB::CDDB::Result r)
   else
   {
     QString str = i18n("Error sending record.\n\n%1",
-       KCDDB::CDDB::resultToString(r));
+       KCDDB::resultToString(r));
     KMessageBox::error(this, str, i18n("Record Submission"));
   }
 } // submitFinished()
@@ -131,7 +131,7 @@ bool CDDBDlg::validInfo()
 {
   KCDDB::CDInfo copy = info();
 
-  if (copy.get(Artist).toString().isEmpty())
+  if (copy.get(KCDDB::Artist).toString().isEmpty())
   {
     KMessageBox::sorry(this,
         i18n("The artist name of the disc has to be entered.\n"
@@ -140,7 +140,7 @@ bool CDDBDlg::validInfo()
     return false;
   }
 
-  if (copy.get(Title).toString().isEmpty())
+  if (copy.get(KCDDB::Title).toString().isEmpty())
   {
     KMessageBox::sorry(this,
         i18n("The title of the disc has to be entered.\n"
@@ -152,7 +152,7 @@ bool CDDBDlg::validInfo()
   bool have_nonempty_title = false;
   for (int i = 0; i < copy.numberOfTracks(); i++)
   {
-      if (!copy.track(i).get(Title).toString().isEmpty())
+      if (!copy.track(i).get(KCDDB::Title).toString().isEmpty())
       {
           have_nonempty_title = true;
           break;

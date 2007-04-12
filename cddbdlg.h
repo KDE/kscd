@@ -22,7 +22,7 @@
 #include <kdialog.h>
 
 #include "libkcddb/cdinfo.h"
-#include "libkcddb/cddb.h"
+#include "libkcddb/kcddb.h"
 #include "libkcddb/client.h"
 #include "libkcddb/cdinfodialog.h"
 
@@ -42,7 +42,7 @@ class CDDBDlg : public KCDDB::CDInfoDialog
   private slots:
     void save();
     void upload();
-    void submitFinished(CDDB::Result);
+    void submitFinished(KCDDB::Result);
 
   signals:
     void cddbQuery();

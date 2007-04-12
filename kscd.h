@@ -35,7 +35,7 @@
 class KCompactDisc;
 
 // CDDB support via libkcddb
-#include <libkcddb/cddb.h>
+#include <libkcddb/kcddb.h>
 #include <libkcddb/client.h>
 
 
@@ -67,8 +67,6 @@ class DockWidget;
 class QGridLayout;
 class KActionCollection;
 class KToggleAction;
-
-using namespace KCDDB;
 
 typedef QList<int> RandomList;
 
@@ -236,7 +234,7 @@ private slots:
     void CDDialogSelected();
     void CDDialogDone();
     void setCDInfo(KCDDB::CDInfo);
-    void lookupCDDBDone(CDDB::Result);
+    void lookupCDDBDone(KCDDB::Result);
     void discStopped();
     void trackUpdate(unsigned track, unsigned trackPosition);
     void trackChanged(unsigned track, unsigned trackLength);
