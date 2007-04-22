@@ -27,8 +27,6 @@
 #include <kurlrequester.h>
 #include <QCheckBox>
 #include <kcombobox.h>
-#include <QLayout>
-#include <QtDBus>
 #include <config.h>
 
 #include "configWidget.h"
@@ -47,12 +45,17 @@ configWidget::configWidget(KSCD* player, QWidget* parent)
     : configWidgetUI(parent),
       mPlayer(player)
 {
-    CdDeviceList->comboBox()->setEditable(true);
-
-    load();
+    kcfg_CdDevice->setMode(KFile::File|KFile::ExistingOnly|KFile::LocalOnly);
+    kcfg_CdDevice->comboBox()->insertItems(0, KCompactDisc::devices());
+    kcfg_AudioSystem->insertItems(0, KCompactDisc::audioSystems());
 
     connect(kcfg_DigitalPlayback, SIGNAL(toggled(bool)), this,SLOT(kcfg_DigitalPlayback_toggled(bool)));
     connect(kcfg_SelectEncoding, SIGNAL(toggled(bool)), this, SLOT(kcfg_SelectEncoding_toggled(bool)));
+
+    kcfg_DigitalPlayback_toggled(false);
+    kcfg_SelectEncoding_toggled(false);
+
+    load();
 }
 
 configWidget::~configWidget()
@@ -61,9 +64,9 @@ configWidget::~configWidget()
 
 void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 {
-    AudioSystemList->setEnabled(toggle);
+    kcfg_AudioSystem->setEnabled(toggle);
     textLabel4->setEnabled(toggle);
-    AudioDevice->setEnabled(toggle);
+    kcfg_AudioDevice->setEnabled(toggle);
     textLabel5->setEnabled(toggle);
 }
 
@@ -72,78 +75,45 @@ void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
     kcfg_SelectedEncoding->setEnabled(toggle);
 }
 
-void configWidget::getMediaDevices(void)
-{
-     QDBusInterface mediamanager( "org.kde.kded", "/modules/mediamanager", "org.kde.MediaManager" );
-     QDBusReply<QStringList> reply = mediamanager.call( "fullList" );
-     if (!reply.isValid()) {
-         return;
-     }
-    QStringList list = reply;
-    QStringList::const_iterator it = list.begin();
-    QStringList::const_iterator itEnd = list.end();
-    // it would be much better if libmediacommon was in kdelibs
-    while (it != itEnd) {
-        it++;
-        if (it == itEnd) break;
-        QString url="media:/"+(*it); // is it always right? ervin?
-        kDebug() << "checking " << url << endl;
-        for (int i=0;i<9;i++) ++it;  // go to mimetype (MIME_TYPE-NAME from medium.h)
-        kDebug() << "Mime: " << *it << endl;
-        if (it!=itEnd && (*it)=="media/audiocd") {
-            CdDeviceList->comboBox()->addItem(url);
-        }
-        while (it !=itEnd && (*it)!="---") ++it;  // go to end of current device's properties
-        ++it;
-    }
-}
-
 void configWidget::load(void)
 {
-    QStringList::Iterator it;
     int i;
 
-    getMediaDevices();
-
-    CdDeviceList->comboBox()->setCurrentText(Prefs::cdDevice());
-
-    if(mPlayer->audioSystems().empty()) {
-        kcfg_DigitalPlayback_toggled(false);
-
-        kcfg_DigitalPlayback->setChecked(false);
-        kcfg_DigitalPlayback->hide();
-    } else {
-        kcfg_DigitalPlayback_toggled(Prefs::digitalPlayback());
-
-        // fill ComboBox audioBackend
-        AudioSystemList->insertStringList(mPlayer->audioSystems());
-        i = AudioSystemList->findText(Prefs::audioSystem());
-        if(i >= -1)
-            AudioSystemList->setCurrentIndex(1);
-
-        AudioDevice->setText(Prefs::audioDevice());
-    }
-    kcfg_SelectEncoding_toggled(Prefs::selectEncoding());
+    i = kcfg_CdDevice->comboBox()->findText(Prefs::cdDevice());
+    if(i == -1)
+        kcfg_CdDevice->setPath(Prefs::cdDevice());
+    else
+        kcfg_CdDevice->comboBox()->setCurrentIndex(i);
+    kcfg_DigitalPlayback->setChecked(Prefs::digitalPlayback());
+    kcfg_AudioSystem->setCurrentIndex(Prefs::audioSystem());
+    kcfg_AudioDevice->setText(Prefs::audioDevice());
+    kcfg_SelectEncoding->setChecked(Prefs::selectEncoding());
 }
 
 void configWidget::defaults(void)
 {
-    getMediaDevices();
-    CdDeviceList->comboBox()->setCurrentText(KCompactDisc::defaultDevice);
+    int i;
 
-    kcfg_DigitalPlayback_toggled(false);
-
-    // fill ComboBox audioBackend
-    AudioSystemList->insertStringList(mPlayer->audioSystems());
-    AudioSystemList->setCompletedText("phonon");
-    AudioDevice->setText("");
+    i = kcfg_CdDevice->comboBox()->findText(KCompactDisc::defaultDevice);
+    if(i == -1)
+        kcfg_CdDevice->setPath(KCompactDisc::defaultDevice);
+    else
+        kcfg_CdDevice->comboBox()->setCurrentIndex(i);
+    kcfg_DigitalPlayback->setChecked(true);
+    kcfg_AudioSystem->setCurrentIndex(Prefs::EnumAudioSystem::phonon);
+    kcfg_AudioDevice->setText(QString());
+    kcfg_SelectEncoding->setChecked(false);
 }
 
 void configWidget::save(void)
 {
-    Prefs::setCdDevice(CdDeviceList->comboBox()->currentText());
-    Prefs::setAudioSystem(AudioSystemList->currentText());
-    Prefs::setAudioDevice(AudioDevice->text());
+kDebug() << "kcfg_CdDevice->url().path()" << kcfg_CdDevice->url().path() << endl;
+    Prefs::setCdDevice(kcfg_CdDevice->url().path());
+    Prefs::setDigitalPlayback(kcfg_DigitalPlayback->isChecked());
+    Prefs::setAudioSystem(kcfg_AudioSystem->currentIndex());
+    Prefs::setAudioDevice(kcfg_AudioDevice->text());
+    Prefs::setSelectEncoding(kcfg_SelectEncoding->isChecked());
+
     Prefs::writeConfig();
 }
 

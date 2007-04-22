@@ -13,27 +13,27 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
    <property name="spacing" >
     <number>6</number>
    </property>
+   <property name="leftMargin" >
+    <number>9</number>
+   </property>
+   <property name="topMargin" >
+    <number>9</number>
+   </property>
+   <property name="rightMargin" >
+    <number>9</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>9</number>
+   </property>
    <item>
-    <widget class="Q3GroupBox" name="groupBox1" >
+    <widget class="QGroupBox" name="groupBox1" >
      <property name="title" >
       <string>Interface</string>
      </property>
-     <property name="orientation" >
-      <enum>Qt::Vertical</enum>
-     </property>
      <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>0</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
       <item row="0" column="0" >
        <widget class="QLabel" name="textLabel1_2" >
         <property name="text" >
@@ -48,7 +48,7 @@
        </widget>
       </item>
       <item row="0" column="1" colspan="2" >
-       <widget class="KFontRequester" name="kcfg_ledFont" >
+       <widget class="KFontRequester" native="1" name="kcfg_ledFont" >
         <property name="font" >
          <font>
           <weight>75</weight>
@@ -137,21 +137,12 @@
     </widget>
    </item>
    <item>
-    <widget class="Q3ButtonGroup" name="buttonGroup1" >
+    <widget class="QGroupBox" name="buttonGroup1" >
      <property name="title" >
       <string>Play Options</string>
      </property>
-     <property name="orientation" >
-      <enum>Qt::Vertical</enum>
-     </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>0</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
-      <item row="0" column="0" >
+     <layout class="QVBoxLayout" >
+      <item>
        <widget class="QCheckBox" name="kcfg_Autoplay" >
         <property name="whatsThis" >
          <string>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</string>
@@ -161,7 +152,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
+      <item>
        <widget class="QCheckBox" name="kcfg_EjectOnFinish" >
         <property name="whatsThis" >
          <string>When this option is selected the CD will automatically eject when it is finished.</string>
@@ -171,7 +162,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
+      <item>
        <widget class="QCheckBox" name="kcfg_StopExit" >
         <property name="whatsThis" >
          <string>When this option is selected the CD will automatically stop playing when quitting KsCD.</string>
@@ -185,26 +176,15 @@
     </widget>
    </item>
    <item>
-    <widget class="Q3GroupBox" name="groupBox3" >
+    <widget class="QGroupBox" name="groupBox3" >
      <property name="title" >
       <string>CD-ROM &amp;Device</string>
      </property>
-     <property name="orientation" >
-      <enum>Qt::Vertical</enum>
-     </property>
      <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>0</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
       <item row="0" column="0" colspan="2" >
-       <widget class="KUrlComboRequester" name="CdDeviceList" >
+       <widget class="KUrlComboRequester" native="1" name="kcfg_CdDevice" >
         <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>5</hsizetype>
-          <vsizetype>5</vsizetype>
+         <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -247,11 +227,9 @@
        </widget>
       </item>
       <item row="2" column="1" >
-       <widget class="KComboBox" name="AudioSystemList" >
+       <widget class="QComboBox" name="kcfg_AudioSystem" >
         <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>5</hsizetype>
-          <vsizetype>5</vsizetype>
+         <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -272,11 +250,9 @@
        </widget>
       </item>
       <item row="3" column="1" >
-       <widget class="QLineEdit" name="AudioDevice" >
+       <widget class="QLineEdit" name="kcfg_AudioDevice" >
         <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>5</hsizetype>
-          <vsizetype>5</vsizetype>
+         <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -287,20 +263,11 @@
     </widget>
    </item>
    <item>
-    <widget class="Q3GroupBox" name="groupBox9" >
+    <widget class="QGroupBox" name="groupBox9" >
      <property name="title" >
       <string> Music Information Services </string>
      </property>
-     <property name="orientation" >
-      <enum>Qt::Vertical</enum>
-     </property>
      <layout class="QHBoxLayout" >
-      <property name="margin" >
-       <number>0</number>
-      </property>
-      <property name="spacing" >
-       <number>0</number>
-      </property>
       <item>
        <widget class="QCheckBox" name="kcfg_SelectEncoding" >
         <property name="whatsThis" >
@@ -393,12 +360,6 @@
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>Q3ButtonGroup</class>
-   <extends>Q3GroupBox</extends>
-   <header>Qt3Support/Q3ButtonGroup</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>KColorButton</class>
    <extends>QPushButton</extends>
    <header>kcolorbutton.h</header>
@@ -409,20 +370,14 @@
    <header>kfontrequester.h</header>
   </customwidget>
   <customwidget>
-   <class>KUrlComboRequester</class>
-   <extends>KUrlRequester</extends>
-   <header>kurlrequester.h</header>
-  </customwidget>
-  <customwidget>
    <class>KComboBox</class>
    <extends>QComboBox</extends>
    <header>kcombobox.h</header>
   </customwidget>
   <customwidget>
-   <class>Q3GroupBox</class>
-   <extends>QGroupBox</extends>
-   <header>Qt3Support/Q3GroupBox</header>
-   <container>1</container>
+   <class>KUrlComboRequester</class>
+   <extends>QWidget</extends>
+   <header>kurlrequester.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

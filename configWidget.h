@@ -53,7 +53,6 @@ class configWidget : public configWidgetUI
        virtual void defaults(void);
        virtual void save(void);
    private:
-       void getMediaDevices(void);
        void load(void);
 };
 

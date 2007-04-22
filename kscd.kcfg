@@ -4,6 +4,7 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
     <include>KGlobalSettings</include>
+    <include>kcompactdisc.h</include>
     <kcfgfile name="kscdrc"/>
     <group name="GENERAL">
         <entry name="Volume" type="UInt">
@@ -16,7 +17,7 @@
             of the CD tracks is chosen at random.</whatsthis>
             <default>false</default>
         </entry>
-        <entry name="Docking" type="Bool" key="DOCKING">
+        <entry name="Docking" type="Bool">
             <label>Show an icon in the system tray.</label>
             <whatsthis>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</whatsthis>
             <default>true</default>
@@ -24,17 +25,17 @@
         <entry name="TrackAnnouncement" type="Bool">
             <default>false</default>
         </entry>
-        <entry name="Autoplay" type="Bool" key="AUTOPLAY">
+        <entry name="Autoplay" type="Bool">
             <label>Start playing when a CD is inserted.</label>
             <whatsthis>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</whatsthis>
             <default>false</default>
         </entry>
-        <entry name="StopExit" type="Bool" key="STOPEXIT">
+        <entry name="StopExit" type="Bool">
             <label>Stop playing the CD on program exit.</label>
             <whatsthis>When this option is selected the CD will automatically stop playing when quitting KsCD.</whatsthis>
             <default>true</default>
         </entry>
-        <entry name="EjectOnFinish" type="Bool" key="EJECTONFINISH">
+        <entry name="EjectOnFinish" type="Bool">
             <label>Eject CD when playing is finished.</label>
             <whatsthis>When this option is selected the CD will automatically eject when it is finished.</whatsthis>
             <default>false</default>
@@ -43,7 +44,7 @@
             <label>Loop tracks.</label>
             <default>false</default>
         </entry>
-        <entry name="TimeDisplayMode" type="Enum" key="TimeDisplay">
+        <entry name="TimeDisplayMode" type="Enum">
             <choices>
                 <choice name="TRACK_SEC"/>
                 <choice name="TRACK_REM"/>
@@ -52,9 +53,17 @@
             </choices>
             <default>TRACK_SEC</default>
         </entry>
-        <entry name="CdDevice" type="String" key="CdDevice">
+        <entry name="CdDevice" type="Path">
+            <default code="true">KCompactDisc::defaultDevice</default>
         </entry>
-        <entry name="AudioSystem" type="String" key="AudioSystem">
+        <entry name="AudioSystem" type="Enum">
+            <choices>
+                <choice name="phonon"/>
+                <choice name="arts"/>
+                <choice name="alsa"/>
+                <choice name="sun"/>
+            </choices>
+            <default>phonon</default>
         </entry>
         <entry name="AudioDevice" type="String">
             <label>The audio device KsCD uses.</label>

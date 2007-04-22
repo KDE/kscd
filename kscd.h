@@ -74,8 +74,6 @@ class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManager {
 
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
-    // time display modes
-    enum time_display { TRACK_SEC = 0, TRACK_REM = 1, TOTAL_SEC = 2, TOTAL_REM = 3 };
 
 public Q_SLOTS:
     Q_SCRIPTABLE bool playing();
@@ -112,9 +110,7 @@ public:
     virtual bool saveState(QSessionManager& sm);
 
     void setDocking(bool dock);
-    bool digitalPlayback();
     void setDevicePaths();
-    QStringList audioSystems() { return audio_systems_list; }
 
     KActionCollection* actionCollection() { return m_actions; }
 
@@ -181,12 +177,12 @@ protected:
 private:
     KConfigDialog   *configDialog;
     CDDBDlg         *cddialog;
-    QMenu      *mainPopup;
-    QMenu      *infoPopup;
+    QMenu           *mainPopup;
+    QMenu           *infoPopup;
 
     BW_LED_Number       *trackTimeLED[6];
 
-    KCompactDisc *m_cd;
+    KCompactDisc       *m_cd;
     QTimer              titlelabeltimer;
     QTimer              queryledtimer;
     QTimer              cycletimer;
@@ -227,6 +223,22 @@ private:
     DockWidget* m_dockWidget;
     void lookupDevice();
     void initGlobalShortcuts();
+    const QString getAudioSystemAsString(void) {
+        switch(Prefs::audioSystem())
+        {
+        case Prefs::EnumAudioSystem::phonon:
+            return QString("phonon");
+        case Prefs::EnumAudioSystem::arts:
+            return QString("arts");
+        case Prefs::EnumAudioSystem::alsa:
+            return QString("alsa");
+        case Prefs::EnumAudioSystem::sun:
+            return QString("sun");
+        default:
+            return QString();
+        }
+    };
+
 public slots:
     void lookupCDDB();
 
@@ -250,7 +262,4 @@ private slots:
     void timeSliderMoved(int milliseconds);
 };
 
-
-
 #endif
-

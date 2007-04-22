@@ -31,7 +31,7 @@ class CDDBDlg : public KCDDB::CDInfoDialog
   Q_OBJECT
 
   public:
-    explicit CDDBDlg(QWidget* parent, const char* name = 0);
+    explicit CDDBDlg(QWidget* parent);
     ~CDDBDlg();
 
     void setData(

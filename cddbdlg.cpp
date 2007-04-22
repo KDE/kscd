@@ -45,7 +45,7 @@
 #include "kscd.h"
 #include "cddbdlg.h"
 
-CDDBDlg::CDDBDlg( QWidget* parent, const char* name )
+CDDBDlg::CDDBDlg( QWidget* parent )
     : CDInfoDialog( parent)
 {
   setCaption( i18n( "CD Editor" ) );
@@ -176,7 +176,7 @@ void CDDBDlg::updateFromDialog()
   KCDDB::CDInfo copy = info();
 
   // Playorder...
-  QStringList strlist = QStringList::split( ',', m_playOrder->text() );
+  QStringList strlist = m_playOrder->text().split(',');
 
   bool ret = true;
 

@@ -273,10 +273,6 @@ void KSCD::initGlobalShortcuts() {
   KGlobalAccel::self()->readSettings();
 }
 
-bool KSCD::digitalPlayback() {
-        return !(Prefs::audioSystem().isEmpty());
-}
-
 void KSCD::setVolume(int v)
 {
     volChanged(v);
@@ -800,12 +796,14 @@ void KSCD::showConfig()
 
     updateConfigDialog(confWidget);
 
-    connect(configDialog, SIGNAL(settingsChanged(const QString &)), this, SLOT(configDone()));
+    connect(configDialog, SIGNAL(settingsChanged(const QString&)), this, SLOT(configDone()));
     configDialog -> show();
 } // showConfig()
 
 void KSCD::configDone()
 {
+    Prefs::writeConfig();
+
     setColors();
     setDocking(Prefs::docking());
 
@@ -822,7 +820,7 @@ void KSCD::configureKeys()
 void KSCD::setDevicePaths()
 {
     if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback(),
-         Prefs::audioSystem(), Prefs::audioDevice()))
+         getAudioSystemAsString(), Prefs::audioDevice()))
     {
         // This device did not seem usable.
         QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
@@ -907,7 +905,7 @@ void KSCD::make_random_list()
     {
         do {
             selected = 1 + (int) randSequence.getLong(m_cd->tracks());
-            rejected = (random_list.find(selected) != random_list.end());
+            rejected = (random_list.indexOf(selected) != -1);
         } while(rejected == true);
         random_list.append(selected);
     }
@@ -1144,10 +1142,6 @@ void KSCD::setColors()
 
 void KSCD::readSettings()
 {
-/*
-        time_display_mode = config->readNumEntry("TimeDisplay", TRACK_SEC);
-*/
-
     if (Prefs::cdDevice().isEmpty())
     {
         Prefs::setCdDevice(KCompactDisc::defaultDevice);
@@ -1344,19 +1338,19 @@ void KSCD::trackUpdate(unsigned /*track*/, unsigned trackPosition)
 
     switch (Prefs::timeDisplayMode())
     {
-    case TRACK_REM:
+    case Prefs::EnumTimeDisplayMode::TRACK_REM:
         tmp = m_cd->trackLength() - trackPosition;
         break;
 
-    case TOTAL_SEC:
+    case Prefs::EnumTimeDisplayMode::TOTAL_SEC:
         tmp = m_cd->discPosition();
         break;
 
-    case TOTAL_REM:
+    case Prefs::EnumTimeDisplayMode::TOTAL_REM:
         tmp = m_cd->discLength() - m_cd->discPosition();
         break;
 
-    case TRACK_SEC:
+    case Prefs::EnumTimeDisplayMode::TRACK_SEC:
     default:
         tmp = trackPosition;
         break;
@@ -1374,30 +1368,46 @@ void KSCD::cycleplaytimemode()
 {
     cycletimer.stop();
 
-    if (Prefs::timeDisplayMode() > 2) {
-        Prefs::setTimeDisplayMode(TRACK_SEC);
-    } else {
-        Prefs::setTimeDisplayMode(Prefs::timeDisplayMode() + 1);
+    /* switch to the next mode */
+    switch (Prefs::timeDisplayMode())
+    {
+    case Prefs::EnumTimeDisplayMode::TRACK_SEC:
+        Prefs::setTimeDisplayMode(Prefs::EnumTimeDisplayMode::TRACK_REM);
+        break;
+
+    case Prefs::EnumTimeDisplayMode::TRACK_REM:
+        Prefs::setTimeDisplayMode(Prefs::EnumTimeDisplayMode::TOTAL_SEC);
+        break;
+
+    case Prefs::EnumTimeDisplayMode::TOTAL_SEC:
+        Prefs::setTimeDisplayMode(Prefs::EnumTimeDisplayMode::TOTAL_REM);
+        break;
+
+    case Prefs::EnumTimeDisplayMode::TOTAL_REM:
+    default:
+        Prefs::setTimeDisplayMode(Prefs::EnumTimeDisplayMode::TRACK_SEC);
+        break;
     }
 
-    switch(Prefs::timeDisplayMode()) {
+    /* and display it */
+    switch(Prefs::timeDisplayMode())
+    {
+    case Prefs::EnumTimeDisplayMode::TRACK_REM:
+        volumelabel->setText(i18n("Tra Rem"));
+        break;
 
-        case TRACK_REM:
-            volumelabel->setText(i18n("Tra Rem"));
-            break;
+    case Prefs::EnumTimeDisplayMode::TOTAL_SEC:
+        volumelabel->setText(i18n("Tot Sec"));
+        break;
 
-        case TOTAL_SEC:
-            volumelabel->setText(i18n("Tot Sec"));
-            break;
+    case Prefs::EnumTimeDisplayMode::TOTAL_REM:
+        volumelabel->setText(i18n("Tot Rem"));
+        break;
 
-        case TOTAL_REM:
-            volumelabel->setText(i18n("Tot Rem"));
-            break;
-
-        case TRACK_SEC:
-        default:
-            volumelabel->setText(i18n("Tra Sec"));
-            break;
+    case Prefs::EnumTimeDisplayMode::TRACK_SEC:
+    default:
+        volumelabel->setText(i18n("Tra Sec"));
+        break;
     }
 
     QTimer::singleShot( 3000, &cycletimer, SLOT( start() ) );
