@@ -55,7 +55,7 @@ configWidget::configWidget(KSCD* player, QWidget* parent)
     kcfg_DigitalPlayback_toggled(false);
     kcfg_SelectEncoding_toggled(false);
 
-    load();
+    //load();
 }
 
 configWidget::~configWidget()
@@ -73,48 +73,6 @@ void configWidget::kcfg_DigitalPlayback_toggled(bool toggle)
 void configWidget::kcfg_SelectEncoding_toggled(bool toggle)
 {
     kcfg_SelectedEncoding->setEnabled(toggle);
-}
-
-void configWidget::load(void)
-{
-    int i;
-
-    i = kcfg_CdDevice->comboBox()->findText(Prefs::cdDevice());
-    if(i == -1)
-        kcfg_CdDevice->setPath(Prefs::cdDevice());
-    else
-        kcfg_CdDevice->comboBox()->setCurrentIndex(i);
-    kcfg_DigitalPlayback->setChecked(Prefs::digitalPlayback());
-    kcfg_AudioSystem->setCurrentIndex(Prefs::audioSystem());
-    kcfg_AudioDevice->setText(Prefs::audioDevice());
-    kcfg_SelectEncoding->setChecked(Prefs::selectEncoding());
-}
-
-void configWidget::defaults(void)
-{
-    int i;
-
-    i = kcfg_CdDevice->comboBox()->findText(KCompactDisc::defaultDevice);
-    if(i == -1)
-        kcfg_CdDevice->setPath(KCompactDisc::defaultDevice);
-    else
-        kcfg_CdDevice->comboBox()->setCurrentIndex(i);
-    kcfg_DigitalPlayback->setChecked(true);
-    kcfg_AudioSystem->setCurrentIndex(Prefs::EnumAudioSystem::phonon);
-    kcfg_AudioDevice->setText(QString());
-    kcfg_SelectEncoding->setChecked(false);
-}
-
-void configWidget::save(void)
-{
-kDebug() << "kcfg_CdDevice->url().path()" << kcfg_CdDevice->url().path() << endl;
-    Prefs::setCdDevice(kcfg_CdDevice->url().path());
-    Prefs::setDigitalPlayback(kcfg_DigitalPlayback->isChecked());
-    Prefs::setAudioSystem(kcfg_AudioSystem->currentIndex());
-    Prefs::setAudioDevice(kcfg_AudioDevice->text());
-    Prefs::setSelectEncoding(kcfg_SelectEncoding->isChecked());
-
-    Prefs::writeConfig();
 }
 
 #include "configWidget.moc"

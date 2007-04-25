@@ -50,10 +50,6 @@ class configWidget : public configWidgetUI
    public slots:
        virtual void kcfg_DigitalPlayback_toggled(bool);
        virtual void kcfg_SelectEncoding_toggled(bool);
-       virtual void defaults(void);
-       virtual void save(void);
-   private:
-       void load(void);
 };
 
 #endif // CONFIGWIDGET_H

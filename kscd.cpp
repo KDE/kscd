@@ -768,9 +768,6 @@ void KSCD::showConfig()
 
     // kscd config page
     configDialog->addPage(confWidget, i18n("CD Player"), "kscd", i18n("Settings & Behavior"));
-    connect(configDialog, SIGNAL(okClicked()), confWidget, SLOT(save()));
-    connect(configDialog, SIGNAL(applyClicked()), confWidget, SLOT(save()));
-    connect(configDialog, SIGNAL(defaultClicked()), confWidget, SLOT(defaults()));
 
     // libkcddb page
     KService::Ptr libkcddb = KService::serviceByDesktopName("libkcddb");
@@ -819,13 +816,13 @@ void KSCD::configureKeys()
 
 void KSCD::setDevicePaths()
 {
-    if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback(),
+    if (!m_cd->setDevice(Prefs::cdDevice().path(), Prefs::volume(), Prefs::digitalPlayback(),
          getAudioSystemAsString(), Prefs::audioDevice()))
     {
         // This device did not seem usable.
         QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
                             "Please make sure you have access permissions to:\n%1",
-                            KCompactDisc::urlToDevice(Prefs::cdDevice()));
+                            KCompactDisc::urlToDevice(Prefs::cdDevice().path()));
         KMessageBox::error(this, str, i18n("Error"));
     }
 } // setDevicePath()
@@ -1657,7 +1654,7 @@ int main( int argc, char *argv[] )
         k->show();
     }
 
-    if (args->count()>0) Prefs::self()->setCdDevice(args->arg(0));
+    if (args->count()>0) Prefs::self()->setCdDevice(KUrl::fromPath(args->arg(0)));
 
     return a.exec();
 }
