@@ -46,7 +46,7 @@ configWidget::configWidget(KSCD* player, QWidget* parent)
       mPlayer(player)
 {
     kcfg_CdDevice->setMode(KFile::File|KFile::ExistingOnly|KFile::LocalOnly);
-    kcfg_CdDevice->comboBox()->insertItems(0, KCompactDisc::devices());
+    kcfg_CdDevice->comboBox()->insertItems(0, KCompactDisc::deviceUrls());
     kcfg_AudioSystem->insertItems(0, KCompactDisc::audioSystems());
 
     connect(kcfg_DigitalPlayback, SIGNAL(toggled(bool)), this,SLOT(kcfg_DigitalPlayback_toggled(bool)));
@@ -54,8 +54,6 @@ configWidget::configWidget(KSCD* player, QWidget* parent)
 
     kcfg_DigitalPlayback_toggled(false);
     kcfg_SelectEncoding_toggled(false);
-
-    //load();
 }
 
 configWidget::~configWidget()

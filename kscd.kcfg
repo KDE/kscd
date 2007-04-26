@@ -54,7 +54,7 @@
             <default>TRACK_SEC</default>
         </entry>
         <entry name="CdDevice" type="Url">
-            <default code="true">KCompactDisc::defaultDevice</default>
+            <default code="true">KCompactDisc::defaultDeviceUrl</default>
         </entry>
         <entry name="AudioSystem" type="Enum">
             <choices>

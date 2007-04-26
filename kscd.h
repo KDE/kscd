@@ -199,7 +199,6 @@ private:
     LedLamp             *loopled;
     bool                randomplay_pending;
     bool                updateTime;
-    QStringList         audio_systems_list;
 
   /**
    * select a random track from the current disc.

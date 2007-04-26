@@ -111,19 +111,6 @@ KSCD::KSCD( QWidget *parent )
   cddb = new KCDDB::Client();
   connect(cddb, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
 
-  audio_systems_list
-                    << "phonon"
-#ifdef USE_ARTS
-                     << "arts"
-#endif
-#if defined(HAVE_LIBASOUND2)
-                     << "alsa"
-#endif
-#if defined(sun) || defined(__sun__)
-                     << "sun"
-#endif
-  ;
-
   readSettings();
   initFont();
   drawPanel();
@@ -258,14 +245,14 @@ KSCD::KSCD( QWidget *parent )
 
 /* FIXME check for return value */
   setDevicePaths();
-} // KSCD
+}
 
 
 KSCD::~KSCD()
 {
     delete cddb;
     delete m_cd;
-} // ~KSCD
+}
 
 
 void KSCD::initGlobalShortcuts() {
@@ -281,7 +268,7 @@ void KSCD::setVolume(int v)
 
 void KSCD::setDevice(const QString& dev)
 {
-    Prefs::setCdDevice(dev);
+    Prefs::setCdDevice(KUrl::fromPath(dev));
     setDevicePaths();
 }
 
@@ -308,7 +295,7 @@ void KSCD::initFont()
   }
   smallfont = QFont(KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold);
 */
-} // initFont()
+}
 
 /**
  * drawPanel() constructs KSCD's little black LED area
@@ -340,7 +327,7 @@ void KSCD::drawPanel()
   loopled->off();
 
   totaltimelabel->hide();
-} // drawPanel
+}
 
 void KSCD::setIcons()
 {
@@ -387,7 +374,7 @@ void KSCD::setupPopups()
     mainPopup->addSeparator();
     mainPopup->addAction(m_actions->action(KStandardAction::name(KStandardAction::Quit)) );
 
-} // setupPopups
+}
 
 void KSCD::setPlayStatus(void)
 {
@@ -446,7 +433,7 @@ void KSCD::playClicked()
 
     kapp->processEvents();
     kapp->flush();
-} // playClicked()
+}
 
 void KSCD::setShuffle(int shuffle)
 {
@@ -482,7 +469,7 @@ void KSCD::stopClicked()
     kapp->processEvents();
     kapp->flush();
     m_cd->stop();
-} // stopClicked()
+}
 
 void KSCD::prevClicked()
 {
@@ -511,7 +498,7 @@ void KSCD::prevClicked()
 
     setPlayStatus();
 
-} // prevClicked()
+}
 
 bool KSCD::nextClicked()
 {
@@ -543,7 +530,7 @@ bool KSCD::nextClicked()
     setPlayStatus();
 
     return true;
-} // nextClicked()
+}
 
 void KSCD::trackChanged(unsigned track, unsigned trackLength)
 {
@@ -589,7 +576,7 @@ void KSCD::trackChanged(unsigned track, unsigned trackLength)
         tooltip += '/' + KStringHandler::rsqueeze(title, 30);
     }
     emit trackChanged(tooltip);
-} //trackChanged(int track)
+}
 
 
 void KSCD::jumpToTime(int ms, bool forcePlay)
@@ -612,22 +599,22 @@ void KSCD::jumpToTime(int ms, bool forcePlay)
 
         setPlayStatus();
     }
-} // jumpToTime(int ms)
+}
 
 void KSCD::timeSliderPressed()
 {
     updateTime = false;
-} // timeSliderPressed()
+}
 
 void KSCD::timeSliderMoved(int milliseconds)
 {
     setLEDs(milliseconds);
-} // timeSliderMoved(int seconds)
+}
 
 void KSCD::timeSliderReleased()
 {
     updateTime = true;
-} // timeSliderReleased()
+}
 
 void KSCD::quitClicked()
 {
@@ -652,12 +639,12 @@ void KSCD::quitClicked()
     delete m_cd;
 
     kapp->quit();
-} // quitClicked()
+}
 
 bool KSCD::event( QEvent *e )
 {
     return QWidget::event(e);
-} // event
+}
 
 
 void KSCD::loopOn()
@@ -667,7 +654,7 @@ void KSCD::loopOn()
     loopled->show();
     kapp->processEvents();
     kapp->flush();
-} // loopOn;
+}
 
 void KSCD::loopOff()
 {
@@ -676,7 +663,7 @@ void KSCD::loopOff()
     loopled->show();
     kapp->processEvents();
     kapp->flush();
-} // loopOff;
+}
 
 void KSCD::loopClicked()
 {
@@ -688,7 +675,7 @@ void KSCD::loopClicked()
     {
         loopOn();
     }
-} // loopClicked
+}
 
 /**
  * Do everything needed if the user requested to eject the disc.
@@ -697,7 +684,7 @@ void KSCD::loopClicked()
 void KSCD::ejectClicked()
 {
     m_cd->eject();
-} // ejectClicked
+}
 
 void KSCD::closeEvent(QCloseEvent *e)
 {
@@ -717,7 +704,7 @@ void KSCD::randomSelected()
     /* FIXME this helps us to display "Random" in Status line
        should it maybe to be replaced with symbol "RAND" or something others */
     statuslabel->setText(Prefs::randomPlay()?i18n("Random"):i18n("Play"));
-} // randomSelected
+}
 
 /**
  * A Track was selected for playback from the drop down box.
@@ -734,7 +721,7 @@ void KSCD::trackSelected( int cb_index )
     m_cd->play(track, 0);
 
     setPlayStatus();
-} // trackSelected
+}
 
 void KSCD::updateConfigDialog(configWidget* widget)
 {
@@ -795,7 +782,7 @@ void KSCD::showConfig()
 
     connect(configDialog, SIGNAL(settingsChanged(const QString&)), this, SLOT(configDone()));
     configDialog -> show();
-} // showConfig()
+}
 
 void KSCD::configDone()
 {
@@ -816,16 +803,16 @@ void KSCD::configureKeys()
 
 void KSCD::setDevicePaths()
 {
-    if (!m_cd->setDevice(Prefs::cdDevice().path(), Prefs::volume(), Prefs::digitalPlayback(),
+    if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback(),
          getAudioSystemAsString(), Prefs::audioDevice()))
     {
         // This device did not seem usable.
         QString str = i18n("CD-ROM read or access error (or no audio disc in drive).\n"\
                             "Please make sure you have access permissions to:\n%1",
-                            KCompactDisc::urlToDevice(Prefs::cdDevice().path()));
+                            KCompactDisc::urlToDevice(Prefs::cdDevice()));
         KMessageBox::error(this, str, i18n("Error"));
     }
-} // setDevicePath()
+}
 
 void KSCD::setDocking(bool dock)
 {
@@ -863,7 +850,7 @@ void KSCD::incVolume()
 
    volChanged(v);
    volumeSlider->setValue(v);
-} // incVolume
+}
 
 void KSCD::decVolume()
 {
@@ -876,7 +863,7 @@ void KSCD::decVolume()
 
    volChanged(v);
    volumeSlider->setValue(v);
-} // decVolume
+}
 
 void KSCD::volChanged( int vol )
 {
@@ -885,7 +872,7 @@ void KSCD::volChanged( int vol )
     volumelabel->setText(str);
     m_cd->setVolume(vol);
     Prefs::setVolume(vol);
-} // volChanged
+}
 
 void KSCD::make_random_list()
 {
@@ -915,7 +902,7 @@ void KSCD::make_random_list()
     printf("\n");
 */
     random_current = random_list.end();
-} // make_random_list()
+}
 
 int KSCD::next_randomtrack()
 {
@@ -944,7 +931,7 @@ int KSCD::next_randomtrack()
     }
 
     return *random_current;
-} // next_randomtrack
+}
 
 int KSCD::prev_randomtrack()
 {
@@ -972,7 +959,7 @@ int KSCD::prev_randomtrack()
     }
 
     return *random_current;
-} // prev_randomtrack
+}
 
 void KSCD::discChanged(unsigned discId)
 {
@@ -1102,7 +1089,7 @@ void KSCD::resetTimeSlider(bool enabled)
     timeSlider->blockSignals(true);
     timeSlider->setValue(0);
     timeSlider->blockSignals(false);
-} // resetTimeSlider(bool enabled);
+}
 
 void KSCD::setColors()
 {
@@ -1141,7 +1128,7 @@ void KSCD::readSettings()
 {
     if (Prefs::cdDevice().isEmpty())
     {
-        Prefs::setCdDevice(KCompactDisc::defaultDevice);
+        Prefs::setCdDevice(KCompactDisc::defaultDeviceUrl);
     }
 }
 
@@ -1152,7 +1139,7 @@ void KSCD::readSettings()
 void KSCD::writeSettings()
 {
     Prefs::writeConfig();
-} // writeSettings()
+}
 
 void KSCD::CDDialogSelected()
 {
@@ -1246,7 +1233,7 @@ void KSCD::lookupCDDBDone(Result result)
     // In case the cddb dialog is open, update it
     if (cddialog)
       cddialog->setData(cddbInfo, m_cd->discSignature(), playlist);
-} // lookupCDDBDone
+}
 
 void KSCD::setCDInfo(KCDDB::CDInfo info)
 {
@@ -1264,7 +1251,7 @@ void KSCD::led_off()
     queryled->hide();
     totaltimelabel->raise();
     totaltimelabel->show();
-} // led_off
+}
 
 void KSCD::led_on()
 {
@@ -1275,13 +1262,13 @@ void KSCD::led_on()
     queryled->show();
     kapp->processEvents();
     kapp->flush();
-} // led_on
+}
 
 void KSCD::togglequeryled()
 {
     queryled->show();
     queryled->toggle();
-} // togglequeryled
+}
 
 void KSCD::titlelabeltimeout()
 {
@@ -1289,7 +1276,7 @@ void KSCD::titlelabeltimeout()
     titlelabeltimer.stop();
     titlelabel->clear();
 
-} // titlelabeltimeout
+}
 
 void KSCD::trayOpening()
 {
@@ -1409,7 +1396,7 @@ void KSCD::cycleplaytimemode()
 
     QTimer::singleShot( 3000, &cycletimer, SLOT( start() ) );
     //QTimer::cycletimer.start(3000, true);
-} // cycleplaymode
+}
 
 void KSCD::cycletimeout()
 {
@@ -1417,7 +1404,7 @@ void KSCD::cycletimeout()
     QString str;
     str = ki18n("Vol: %1%").subs(Prefs::volume(), 2).toString();
     volumelabel->setText(str);
-} // cycletimeout
+}
 
 
 void KSCD::information(QAction *action)
@@ -1473,7 +1460,7 @@ void KSCD::information(QAction *action)
     }
 
     KRun::runUrl( url, "text/html", 0L);
-} // information
+}
 
 /**
  * Save state on session termination
@@ -1484,7 +1471,7 @@ bool KSCD::saveState(QSessionManager& /*sm*/)
   KConfigGroup config(KApplication::kApplication()->sessionConfig(), "General");
   config.writeEntry("Show", isVisible());
   return true;
-} // saveState
+}
 
 
 /**
@@ -1514,7 +1501,7 @@ void KSCD::keyPressEvent(QKeyEvent* e)
     {
       QWidget::keyPressEvent(e);
     }
-} //keyPressEvent
+}
 
 void KSCD::jumpTracks()
 {
@@ -1526,7 +1513,7 @@ void KSCD::jumpTracks()
     }
 
     jumpToTrack = 0;
-} // jumpTracks
+}
 
 QString KSCD::currentTrackTitle()
 {
