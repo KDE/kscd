@@ -70,7 +70,7 @@
 #include "version.h"
 #include "prefs.h"
 
-#include <kwm.h>
+#include <kwindowsystem.h>
 #include <netwm.h>
 
 #include <config.h>
