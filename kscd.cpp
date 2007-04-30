@@ -256,7 +256,6 @@ KSCD::~KSCD()
 
 
 void KSCD::initGlobalShortcuts() {
-  KGlobalAccel::self()->setConfigGroup( "GlobalShortcuts" );
   KGlobalAccel::self()->readSettings();
 }
 
