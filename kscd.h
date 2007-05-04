@@ -236,7 +236,7 @@ private:
         default:
             return QString();
         }
-    };
+    }
 
 public slots:
     void lookupCDDB();

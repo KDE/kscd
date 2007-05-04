@@ -46,9 +46,9 @@ public:
 
   void toggleState() { if (s == On) s= Off; else if (s == Off) s= On; repaint(); }
 public slots:
-  void toggle() { toggleState(); };
-  void on() { setState(On); };
-  void off() { setState(Off); };
+  void toggle() { toggleState(); }
+  void on() { setState(On); }
+  void off() { setState(Off); }
 protected:
   void drawContents(QPainter *);
 private:
