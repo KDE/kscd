@@ -222,12 +222,15 @@
          <number>0</number>
         </property>
         <property name="buddy" >
-         <cstring>AudioSystemList</cstring>
+         <cstring>kcfg_AudioSystem</cstring>
         </property>
        </widget>
       </item>
       <item row="2" column="1" >
        <widget class="QComboBox" name="kcfg_AudioSystem" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
           <horstretch>0</horstretch>
@@ -245,12 +248,15 @@
          <bool>false</bool>
         </property>
         <property name="buddy" >
-         <cstring>AudioDevice</cstring>
+         <cstring>kcfg_AudioDevice</cstring>
         </property>
        </widget>
       </item>
       <item row="3" column="1" >
        <widget class="QLineEdit" name="kcfg_AudioDevice" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
           <horstretch>0</horstretch>
@@ -281,7 +287,7 @@
       <item>
        <widget class="QComboBox" name="kcfg_SelectedEncoding" >
         <property name="enabled" >
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="duplicatesEnabled" >
          <bool>false</bool>
@@ -368,11 +374,6 @@
    <class>KFontRequester</class>
    <extends>QWidget</extends>
    <header>kfontrequester.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KComboBox</class>
-   <extends>QComboBox</extends>
-   <header>kcombobox.h</header>
   </customwidget>
   <customwidget>
    <class>KUrlComboRequester</class>

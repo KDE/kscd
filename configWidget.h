@@ -35,7 +35,6 @@ class configWidgetUI : public QWidget, public Ui::configWidgetUI
       }
 };
 
-
 class configWidget : public configWidgetUI
 {
    Q_OBJECT

@@ -810,6 +810,10 @@ void KSCD::setDevicePaths()
                             "Please make sure you have access permissions to:\n%1",
                             KCompactDisc::urlToDevice(Prefs::cdDevice()));
         KMessageBox::error(this, str, i18n("Error"));
+    } else {
+        kDebug() << "Vendor: " << m_cd->deviceVendor() << endl;
+        kDebug() << "Model: " << m_cd->deviceModel() << endl;
+        kDebug() << "Revision: " << m_cd->deviceRevision() << endl;
     }
 }
 
@@ -1127,7 +1131,7 @@ void KSCD::readSettings()
 {
     if (Prefs::cdDevice().isEmpty())
     {
-        Prefs::setCdDevice(KCompactDisc::defaultDeviceUrl);
+        Prefs::setCdDevice(KCompactDisc::defaultDeviceUrl());
     }
 }
 
