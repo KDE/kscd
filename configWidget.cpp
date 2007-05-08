@@ -45,8 +45,7 @@ configWidget::configWidget(KSCD* player, QWidget* parent)
     : configWidgetUI(parent),
       mPlayer(player)
 {
-    kcfg_CdDevice->setMode(KFile::File|KFile::ExistingOnly|KFile::LocalOnly);
-    kcfg_CdDevice->comboBox()->insertItems(0, KCompactDisc::deviceNames());
+    kcfg_CdDevice->insertItems(0, KCompactDisc::deviceNames());
     kcfg_AudioSystem->insertItems(0, KCompactDisc::audioSystems());
 
     connect(kcfg_DigitalPlayback, SIGNAL(toggled(bool)), this,SLOT(kcfg_DigitalPlayback_toggled(bool)));

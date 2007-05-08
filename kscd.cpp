@@ -267,7 +267,7 @@ void KSCD::setVolume(int v)
 
 void KSCD::setDevice(const QString& dev)
 {
-    Prefs::setCdDevice(KUrl::fromPath(dev));
+    Prefs::setCdDevice(dev);
     setDevicePaths();
 }
 
@@ -1131,7 +1131,7 @@ void KSCD::readSettings()
 {
     if (Prefs::cdDevice().isEmpty())
     {
-        Prefs::setCdDevice(KCompactDisc::defaultDeviceUrl());
+        Prefs::setCdDevice(KCompactDisc::defaultDevice());
     }
 }
 
@@ -1644,7 +1644,7 @@ int main( int argc, char *argv[] )
         k->show();
     }
 
-    if (args->count()>0) Prefs::self()->setCdDevice(KUrl::fromPath(args->arg(0)));
+    if (args->count()>0) Prefs::self()->setCdDevice(args->arg(0));
 
     return a.exec();
 }
