@@ -785,7 +785,7 @@ void KSCD::showConfig()
 
 void KSCD::configDone()
 {
-    Prefs::writeConfig();
+    Prefs::self()->writeConfig();
 
     setColors();
     setDocking(Prefs::docking());
@@ -1141,7 +1141,7 @@ void KSCD::readSettings()
  */
 void KSCD::writeSettings()
 {
-    Prefs::writeConfig();
+    Prefs::self()->writeConfig();
 }
 
 void KSCD::CDDialogSelected()
