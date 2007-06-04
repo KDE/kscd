@@ -41,7 +41,6 @@
 class KSCD;
 
 class QAction;
-class KToggleAction;
 class KPassivePopup;
 
 class DockWidget : public KSystemTrayIcon
