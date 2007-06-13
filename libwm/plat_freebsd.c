@@ -30,7 +30,7 @@
  *
  */
 
-#if defined(__FreeBSD__) || defined(__FreeBSD) || defined(__NetBSD__) || defined (__NetBSD)
+#if defined(__FreeBSD__) || defined(__FreeBSD) || defined(__NetBSD__) || defined (__NetBSD) || defined(__DragonFly__)
 
 #include <errno.h>
 #include <stdio.h>
@@ -61,7 +61,7 @@
 #else
 # define LEFT_PORT 0
 # define RIGHT_PORT 1
-# if __FreeBSD_version < 300000
+# if defined(__FreeBSD_version) && __FreeBSD_version < 300000
 #  include <scsi.h>
 # endif
 #endif
