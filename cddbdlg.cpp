@@ -75,19 +75,15 @@ CDDBDlg::~CDDBDlg()
 
 void CDDBDlg::setData(
   const KCDDB::CDInfo &_cddbInfo,
-  const KCDDB::TrackOffsetList &_trackStartFrames,
-  const QStringList &_playlist)
+  const KCDDB::TrackOffsetList &_trackStartFrames)
 {
     // Let's make a deep copy of the cd struct info so that the data won't
     // change the cd changes while we are playing with the dialog.
     cddbInfo = _cddbInfo;
     trackStartFrames = _trackStartFrames;
-    playlist = _playlist;
 
     // Write the complete record to the dialog.
     setInfo(cddbInfo, trackStartFrames);
-    // FIXME: KDE4, move this logic into setInfo() once KCDDB:CDInfo is updated.
-    m_playOrder->setText( playlist.join( "," ) );
 } // setData
 
 void CDDBDlg::submitFinished(KCDDB::Result r)

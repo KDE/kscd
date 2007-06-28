@@ -30,11 +30,6 @@
             <whatsthis>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</whatsthis>
             <default>false</default>
         </entry>
-        <entry name="StopExit" type="Bool">
-            <label>Stop playing the CD on program exit.</label>
-            <whatsthis>When this option is selected the CD will automatically stop playing when quitting KsCD.</whatsthis>
-            <default>true</default>
-        </entry>
         <entry name="EjectOnFinish" type="Bool">
             <label>Eject CD when playing is finished.</label>
             <whatsthis>When this option is selected the CD will automatically eject when it is finished.</whatsthis>
@@ -54,7 +49,7 @@
             <default>TRACK_SEC</default>
         </entry>
         <entry name="CdDevice" type="String">
-            <default code="true">KCompactDisc::defaultDevice()</default>
+            <default code="true">KCompactDisc::defaultCdromDeviceName()</default>
         </entry>
         <entry name="AudioSystem" type="Enum">
             <choices>

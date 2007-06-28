@@ -17,7 +17,7 @@ add_definitions (-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 ########### next target ###############
 
-set(kscd_SRCS kscd.cpp ledlamp.cpp docking.cpp bwlednum.cpp  configWidget.cpp cddbdlg.cpp)
+set(kscd_SRCS kscd.cpp docking.cpp bwlednum.cpp configWidget.cpp cddbdlg.cpp)
 
 kde4_add_ui_files(kscd_SRCS panel.ui configWidgetUI.ui )
 

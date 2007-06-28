@@ -162,16 +162,6 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QCheckBox" name="kcfg_StopExit" >
-        <property name="whatsThis" >
-         <string>When this option is selected the CD will automatically stop playing when quitting KsCD.</string>
-        </property>
-        <property name="text" >
-         <string>Stop playing CD on e&amp;xit</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

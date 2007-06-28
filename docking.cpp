@@ -21,51 +21,40 @@
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "docking.h"
-#include "kscd.h"
-
-#include <khbox.h>
 #include <QToolTip>
-//Added by qt3to4:
 #include <QLabel>
+#include <QPushButton>
 #include <QWheelEvent>
 #include <QMenu>
 
 #include <kaboutdata.h>
-#include <kactioncollection.h>
-#include <kaction.h>
-#include <kapplication.h>
+#include <khbox.h>
 #include <klocale.h>
-#include <kglobal.h>
 #include <kiconloader.h>
-#include <kmenu.h>
 #include <kpassivepopup.h>
-
 #include <kdebug.h>
+
+#include "docking.h"
+#include "kscd.h"
+
 
 DockWidget::DockWidget( KSCD* parent, const char *name)
     : KSystemTrayIcon( parent )
 {
     setObjectName(name);
     m_popup = 0;
-    setIcon( loadIcon("cdsmall") );
-
-    KActionCollection* actionCollection = parent->actionCollection();
-    m_backAction = actionCollection->action("Previous");
-    m_forwardAction = actionCollection->action("Next");
-    m_backPix = loadIcon("media-skip-backward");
-    m_forwardPix = loadIcon("media-skip-forward");
+    setIcon(loadIcon("cdsmall"));
 
     // popup menu for right mouse button
     QMenu* popup = contextMenu();
 
     popup->addAction(SmallIcon("media-playback-start"), i18n("Play/Pause"), parent, SLOT(playClicked()));
     popup->addAction(SmallIcon("media-playback-stop"), i18n("Stop"), parent, SLOT(stopClicked()));
-    popup->addAction(SmallIcon("media-skip-forward"), i18n("Next"), parent, SLOT(nextClicked()));
-    popup->addAction(SmallIcon("media-skip-backward"), i18n("Previous"), parent, SLOT(prevClicked()));
+    m_forwardAction = popup->addAction(SmallIcon("media-skip-forward"), i18n("Next"), parent, SLOT(nextClicked()));
+    m_backAction = popup->addAction(SmallIcon("media-skip-backward"), i18n("Previous"), parent, SLOT(prevClicked()));
     popup->addAction(SmallIcon("media-eject"), i18n("Eject"), parent, SLOT(ejectClicked()));
 
-    this->setToolTip( KGlobal::mainComponent().aboutData()->programName());
+    this->setToolTip(KGlobal::mainComponent().aboutData()->programName());
 }
 
 DockWidget::~DockWidget()
@@ -84,7 +73,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
 
     if (addButtons)
     {
-        QPushButton* backButton = new QPushButton(m_backPix, 0, box);
+        QPushButton* backButton = new QPushButton(loadIcon("media-skip-backward"), 0, box);
         backButton->setFlat(true);
         connect(backButton, SIGNAL(clicked()), m_backAction, SLOT(activate()));
     }
@@ -94,7 +83,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
 
     if (addButtons)
     {
-        QPushButton* forwardButton = new QPushButton(m_forwardPix, 0, box);
+        QPushButton* forwardButton = new QPushButton(loadIcon("media-skip-forward"), 0, box);
         forwardButton->setFlat(true);
         connect(forwardButton, SIGNAL(clicked()), m_forwardAction, SLOT(activate()));
     }
@@ -115,11 +104,11 @@ void DockWidget::setToolTip(const QString& text)
 
     if (text.isEmpty())
     {
-        this->setToolTip( KGlobal::mainComponent().aboutData()->programName());
+        setToolTip(KGlobal::mainComponent().aboutData()->programName());
     }
     else
     {
-        this->setToolTip( text);
+        setToolTip(text);
     }
 }
 

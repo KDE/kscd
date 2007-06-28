@@ -29,18 +29,12 @@
 #ifndef _DOCKING_H_
 #define _DOCKING_H_
 
-#include <stdio.h>
-#include <qapplication.h>
-#include <QIcon>
-#include <QTimer>
-#include <QPoint>
-//Added by qt3to4:
-#include <QWheelEvent>
 #include <ksystemtrayicon.h>
 
-class KSCD;
-
+class QWheelEvent;
 class QAction;
+
+class KSCD;
 class KPassivePopup;
 
 class DockWidget : public KSystemTrayIcon
@@ -48,7 +42,7 @@ class DockWidget : public KSystemTrayIcon
     Q_OBJECT
 
 public:
-    explicit DockWidget( KSCD* parent, const char *name=0);
+    explicit DockWidget(KSCD* parent, const char *name = 0);
     ~DockWidget();
 
 public slots:
@@ -56,15 +50,12 @@ public slots:
     void createPopup(const QString& songName, bool addButtons = true);
 
 private:
-    virtual void wheelEvent( QWheelEvent *e);
+    virtual void wheelEvent(QWheelEvent *e);
 
     KPassivePopup* m_popup;
 
     QAction* m_forwardAction;
     QAction* m_backAction;
-
-    QIcon m_backPix;
-    QIcon m_forwardPix;
 
     QString tip;
 };

@@ -1,45 +1,60 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>kscdPanelDlg</class>
  <widget class="QWidget" name="kscdPanelDlg" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>198</height>
+    <width>637</width>
+    <height>202</height>
    </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle" >
    <string>KsCD</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>0</number>
-   </property>
-   <property name="spacing" >
-    <number>0</number>
-   </property>
-   <item>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
     <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="QComboBox" name="songListCB" />
      </item>
      <item>
       <layout class="QHBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="leftMargin" >
+        <number>0</number>
+       </property>
+       <property name="topMargin" >
+        <number>0</number>
+       </property>
+       <property name="rightMargin" >
+        <number>0</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="timeIcon" >
@@ -57,9 +72,7 @@
           <bool>false</bool>
          </property>
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>0</vsizetype>
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
            <horstretch>100</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -118,14 +131,32 @@
      </item>
      <item>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>0</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>0</number>
+       </property>
+       <property name="rightMargin" >
+        <number>0</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>0</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>1</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>1</number>
        </property>
        <item row="1" column="1" >
         <widget class="QPushButton" name="ejectPB" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text" >
           <string>E&amp;ject</string>
          </property>
@@ -137,282 +168,22 @@
        <item rowspan="3" row="0" column="2" colspan="2" >
         <widget class="QFrame" name="backdrop" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>3</hsizetype>
-           <vsizetype>3</vsizetype>
-           <horstretch>1</horstretch>
+          <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+           <horstretch>4</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize" >
           <size>
-           <width>270</width>
-           <height>80</height>
+           <width>450</width>
+           <height>93</height>
           </size>
          </property>
          <property name="palette" >
           <palette>
-           <active>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>221</red>
-             <green>223</green>
-             <blue>228</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>85</red>
-             <green>85</green>
-             <blue>85</blue>
-            </color>
-            <color>
-             <red>199</red>
-             <green>199</green>
-             <blue>199</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>103</red>
-             <green>141</green>
-             <blue>178</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>238</blue>
-            </color>
-            <color>
-             <red>82</red>
-             <green>24</green>
-             <blue>139</blue>
-            </color>
-            <color>
-             <red>232</red>
-             <green>232</green>
-             <blue>232</blue>
-            </color>
-           </active>
-           <inactive>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>221</red>
-             <green>223</green>
-             <blue>228</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>85</red>
-             <green>85</green>
-             <blue>85</blue>
-            </color>
-            <color>
-             <red>199</red>
-             <green>199</green>
-             <blue>199</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>103</red>
-             <green>141</green>
-             <blue>178</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>238</blue>
-            </color>
-            <color>
-             <red>82</red>
-             <green>24</green>
-             <blue>139</blue>
-            </color>
-            <color>
-             <red>232</red>
-             <green>232</green>
-             <blue>232</blue>
-            </color>
-           </inactive>
-           <disabled>
-            <color>
-             <red>128</red>
-             <green>128</green>
-             <blue>128</blue>
-            </color>
-            <color>
-             <red>221</red>
-             <green>223</green>
-             <blue>228</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>85</red>
-             <green>85</green>
-             <blue>85</blue>
-            </color>
-            <color>
-             <red>199</red>
-             <green>199</green>
-             <blue>199</blue>
-            </color>
-            <color>
-             <red>199</red>
-             <green>199</green>
-             <blue>199</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>128</red>
-             <green>128</green>
-             <blue>128</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-            <color>
-             <red>86</red>
-             <green>117</green>
-             <blue>148</blue>
-            </color>
-            <color>
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-            <color>
-             <red>0</red>
-             <green>0</green>
-             <blue>238</blue>
-            </color>
-            <color>
-             <red>82</red>
-             <green>24</green>
-             <blue>139</blue>
-            </color>
-            <color>
-             <red>232</red>
-             <green>232</green>
-             <blue>232</blue>
-            </color>
-           </disabled>
+           <active/>
+           <inactive/>
+           <disabled/>
           </palette>
          </property>
          <property name="font" >
@@ -433,113 +204,209 @@
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow" >
-          <enum>QFrame::Sunken</enum>
+          <enum>QFrame::Raised</enum>
          </property>
-         <property name="lineWidth" >
-          <number>0</number>
-         </property>
-         <layout class="QVBoxLayout" >
-          <property name="margin" >
-           <number>2</number>
+         <widget class="QWidget" name="layoutWidget" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>461</width>
+            <height>101</height>
+           </rect>
           </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item>
-           <layout class="QGridLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
-            <property name="spacing" >
-             <number>6</number>
-            </property>
-            <item rowspan="2" row="0" column="0" colspan="2" >
-             <widget class="QFrame" name="frameleds" >
-              <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>0</hsizetype>
-                <vsizetype>0</vsizetype>
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+          <layout class="QGridLayout" >
+           <property name="leftMargin" >
+            <number>1</number>
+           </property>
+           <property name="topMargin" >
+            <number>1</number>
+           </property>
+           <property name="rightMargin" >
+            <number>1</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>1</number>
+           </property>
+           <property name="horizontalSpacing" >
+            <number>1</number>
+           </property>
+           <property name="verticalSpacing" >
+            <number>1</number>
+           </property>
+           <item rowspan="2" row="0" column="0" >
+            <widget class="QFrame" name="frametracktime" >
+             <property name="minimumSize" >
+              <size>
+               <width>160</width>
+               <height>46</height>
+              </size>
+             </property>
+             <property name="frameShape" >
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Plain</enum>
+             </property>
+             <widget class="BW_LED_Number" name="lcdNumber" >
+              <property name="geometry" >
+               <rect>
+                <x>50</x>
+                <y>1</y>
+                <width>111</width>
+                <height>41</height>
+               </rect>
               </property>
               <property name="minimumSize" >
                <size>
                 <width>100</width>
-                <height>35</height>
+                <height>28</height>
                </size>
               </property>
               <property name="frameShape" >
                <enum>QFrame::NoFrame</enum>
               </property>
-              <property name="frameShadow" >
-               <enum>QFrame::Raised</enum>
+              <property name="segmentStyle" >
+               <enum>QLCDNumber::Flat</enum>
               </property>
              </widget>
-            </item>
-            <item row="0" column="2" >
-             <widget class="QLabel" name="statuslabel" >
-              <property name="text" >
-               <string>Status</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2" >
-             <widget class="QLabel" name="volumelabel" >
-              <property name="text" >
-               <string>Vol: --</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3" >
-             <widget class="QLabel" name="totaltimelabel" />
-            </item>
-            <item row="1" column="3" >
-             <widget class="QLabel" name="tracklabel" >
-              <property name="text" >
-               <string>--/--</string>
-              </property>
-             </widget>
-            </item>
-            <item rowspan="2" row="0" column="4" >
-             <widget class="QWidget" name="symbols" >
-              <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>0</hsizetype>
-                <vsizetype>5</vsizetype>
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+             <widget class="QWidget" native="1" name="symbols" >
+              <property name="geometry" >
+               <rect>
+                <x>1</x>
+                <y>1</y>
+                <width>46</width>
+                <height>43</height>
+               </rect>
               </property>
               <property name="minimumSize" >
                <size>
-                <width>30</width>
-                <height>0</height>
+                <width>46</width>
+                <height>43</height>
                </size>
               </property>
+              <widget class="QLabel" name="randomled" >
+               <property name="geometry" >
+                <rect>
+                 <x>20</x>
+                 <y>20</y>
+                 <width>16</width>
+                 <height>18</height>
+                </rect>
+               </property>
+               <property name="text" >
+                <string>?</string>
+               </property>
+               <property name="alignment" >
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+              <widget class="QLabel" name="loopled" >
+               <property name="geometry" >
+                <rect>
+                 <x>0</x>
+                 <y>20</y>
+                 <width>21</width>
+                 <height>18</height>
+                </rect>
+               </property>
+               <property name="text" >
+                <string>@</string>
+               </property>
+               <property name="alignment" >
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+              <widget class="QLabel" name="queryled" >
+               <property name="geometry" >
+                <rect>
+                 <x>1</x>
+                 <y>1</y>
+                 <width>41</width>
+                 <height>18</height>
+                </rect>
+               </property>
+               <property name="font" >
+                <font>
+                 <pointsize>9</pointsize>
+                </font>
+               </property>
+               <property name="text" >
+                <string>cddb</string>
+               </property>
+               <property name="alignment" >
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
              </widget>
-            </item>
-            <item row="2" column="0" colspan="5" >
-             <widget class="QLabel" name="artistlabel" >
-              <property name="text" >
-               <string>Artist</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0" colspan="5" >
-             <widget class="QLabel" name="titlelabel" >
-              <property name="text" >
-               <string>Title</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QLabel" name="statuslabel" >
+             <property name="text" >
+              <string>status</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <widget class="QLabel" name="totaltimelabel" >
+             <property name="text" >
+              <string>total time</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QLabel" name="volumelabel" >
+             <property name="text" >
+              <string>volume</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" >
+            <widget class="QLabel" name="tracklabel" >
+             <property name="text" >
+              <string>track label</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="3" >
+            <widget class="QLabel" name="artistlabel" >
+             <property name="text" >
+              <string>Artist</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="3" >
+            <widget class="QLabel" name="titlelabel" >
+             <property name="text" >
+              <string>Title</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
        <item row="3" column="0" >
         <widget class="QPushButton" name="shufflePB" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text" >
           <string>R&amp;andom</string>
          </property>
@@ -563,6 +430,12 @@
        </item>
        <item row="0" column="0" colspan="2" >
         <widget class="QPushButton" name="playPB" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text" >
           <string>Pla&amp;y</string>
          </property>
@@ -573,6 +446,12 @@
        </item>
        <item row="1" column="0" >
         <widget class="QPushButton" name="stopPB" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text" >
           <string>Stop</string>
          </property>
@@ -596,6 +475,12 @@
        </item>
        <item row="3" column="1" >
         <widget class="QPushButton" name="repeatPB" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text" >
           <string>Loop</string>
          </property>
@@ -612,6 +497,12 @@
        </item>
        <item row="2" column="1" >
         <widget class="QPushButton" name="nextPB" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text" >
           <string>&amp;Next</string>
          </property>
@@ -622,6 +513,12 @@
        </item>
        <item row="2" column="0" >
         <widget class="QPushButton" name="prevPB" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text" >
           <string>Pre&amp;vious</string>
          </property>
@@ -638,6 +535,13 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>BW_LED_Number</class>
+   <extends>QLCDNumber</extends>
+   <header>bwlednum.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>songListCB</tabstop>
   <tabstop>timeSlider</tabstop>

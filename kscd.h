@@ -25,7 +25,6 @@
 #ifndef __KSCD__
 #define __KSCD__
 
-#include "bwlednum.h"
 #include <QGridLayout>
 #include <QKeyEvent>
 #include <QEvent>
@@ -68,8 +67,6 @@ class QGridLayout;
 class KActionCollection;
 class KToggleAction;
 
-typedef QList<int> RandomList;
-
 class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManager {
 
     Q_OBJECT
@@ -85,7 +82,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE void eject() { ejectClicked(); }
     Q_SCRIPTABLE void quit() { quitClicked(); }
     Q_SCRIPTABLE void toggleLoop() { loopClicked(); }
-    Q_SCRIPTABLE void toggleShuffle() { randomSelected(); }
+    Q_SCRIPTABLE void toggleShuffle() { randomClicked(); }
     Q_SCRIPTABLE void toggleTimeDisplay() { cycleplaytimemode(); }
     Q_SCRIPTABLE void cddbDialog() { CDDialogSelected(); }
     Q_SCRIPTABLE void optionDialog() { showConfig(); }
@@ -94,7 +91,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE void volumeUp() { incVolume(); }
     Q_SCRIPTABLE void setVolume(int v);
     Q_SCRIPTABLE void setDevice(const QString& dev);
-    Q_SCRIPTABLE int  getVolume() { return Prefs::volume(); }
+    Q_SCRIPTABLE int getVolume() { return Prefs::volume(); }
     Q_SCRIPTABLE int currentTrack();
     Q_SCRIPTABLE int currentTrackLength();
     Q_SCRIPTABLE int currentPosition();
@@ -105,34 +102,26 @@ public Q_SLOTS:
     Q_SCRIPTABLE QStringList trackList();
 
 public:
-    explicit KSCD( QWidget *parent = 0 );
+    explicit KSCD(QWidget *parent = 0);
     ~KSCD();
     virtual bool saveState(QSessionManager& sm);
 
     void setDocking(bool dock);
     void setDevicePaths();
 
-    KActionCollection* actionCollection() { return m_actions; }
-
 signals:
-    void trackChanged(const QString&);
+    void tooltipCurrentTrackChanged(const QString &);
 
 public slots:
     void setColors();
-    void togglequeryled();
-    void randomSelected();
-    void setShuffle(int shuffle); /* 0 -off, 1 - on, 2 - remake random list */
     void writeSettings();
     void playClicked();
-    bool nextClicked();
+    void nextClicked();
     void prevClicked();
     void stopClicked();
     void ejectClicked();
-    void jumpToTime(int seconds, bool forcePlay = false);
+    void jumpToTime(int);
     void quitClicked();
-    void loopOn();
-    void loopOff();
-    void loopClicked();
     void trackSelected(int);
     void showConfig();
     void incVolume();
@@ -141,13 +130,16 @@ public slots:
     void led_on();
     void led_off();
     void titlelabeltimeout();
+    void togglequeryled();
     void cycleplaytimemode();
-    void cycletimeout();
+    void showVolumeInLabel();
+
+	void randomClicked();	
+	void randomChanged(bool);
+	void loopClicked();
+	void loopChanged(bool);
 
     void information(QAction *action);
-    void jumpTracks();
-
-    void make_random_list(); /* koz: 15/01/00 */
 
 protected:
     // mostly start up stuff
@@ -155,88 +147,32 @@ protected:
     void initFont();
     void drawPanel();
     void setupPopups();
-    void setLEDs(int milliseconds);
+    void setLEDs(int seconds);
     void resetTimeSlider(bool enabled);
 
-    void dragTime(int sec);
-
     void closeEvent(QCloseEvent *e);
-    void keyPressEvent( QKeyEvent* e );
-    bool event( QEvent *e );
-    //    void focusOutEvent(QFocusEvent *e);
-    void playtime();
-    void playtime(int seconds);
-    void calculateDisplayedTime();
-    void calculateDisplayedTime(int sec);
-    void setSongListTo(int whichTrack);
-    void populateSongList(const QString &infoStatus);
-    void updatePlayPB(bool playing);
+    void keyPressEvent(QKeyEvent *e);
+    bool event(QEvent *e);
 
-    void updateConfigDialog(configWidget* widget);
+    void populateSongList(const QString &infoStatus);
+    void updateConfigDialog(configWidget *widget);
 
 private:
     KConfigDialog   *configDialog;
     CDDBDlg         *cddialog;
-    QMenu           *mainPopup;
-    QMenu           *infoPopup;
-
-    BW_LED_Number       *trackTimeLED[6];
-
-    KCompactDisc       *m_cd;
-    QTimer              titlelabeltimer;
-    QTimer              queryledtimer;
-    QTimer              cycletimer;
-    QTimer              jumpTrackTimer;
-
-    // random playlists
-    KRandomSequence     randSequence;
-    RandomList          random_list;
-    RandomList::iterator random_current;
-
-
-    int                 jumpToTrack;
-    LedLamp             *queryled;
-    LedLamp             *loopled;
-    bool                randomplay_pending;
-    bool                updateTime;
-
-  /**
-   * select a random track from the current disc.
-   *
-   */
-    int                 next_randomtrack();
-    int                 prev_randomtrack();
-    int                 real_randomtrack();
-
-    void setTitle(int track);
-    void setPlayStatus(void);
+    KCompactDisc    *m_cd;
+    QTimer           titlelabeltimer;
+    QTimer           queryledtimer;
+    bool             updateTime;
 
     /**
      * Info from CDDB, and exploded versions thereof.
      */
     KCDDB::CDInfo cddbInfo;
-    QStringList     playlist;
-    KCDDB::Client*  cddb;
-    KActionCollection* m_actions;
-    KToggleAction* m_togglePopupsAction;
-    DockWidget* m_dockWidget;
-    void lookupDevice();
-    void initGlobalShortcuts();
-    const QString getAudioSystemAsString(void) {
-        switch(Prefs::audioSystem())
-        {
-        case Prefs::EnumAudioSystem::phonon:
-            return QString("phonon");
-        case Prefs::EnumAudioSystem::arts:
-            return QString("arts");
-        case Prefs::EnumAudioSystem::alsa:
-            return QString("alsa");
-        case Prefs::EnumAudioSystem::sun:
-            return QString("sun");
-        default:
-            return QString();
-        }
-    }
+    KCDDB::Client *cddb;
+    KActionCollection *m_actions;
+    KToggleAction *m_togglePopupsAction;
+    DockWidget *m_dockWidget;
 
 public slots:
     void lookupCDDB();
@@ -246,19 +182,17 @@ private slots:
     void CDDialogDone();
     void setCDInfo(KCDDB::CDInfo);
     void lookupCDDBDone(KCDDB::Result);
-    void discStopped();
-    void trackUpdate(unsigned track, unsigned trackPosition);
-    void trackChanged(unsigned track, unsigned trackLength);
-    void discChanged(unsigned discId);
-//    void trayClosing();
-    void trayOpening();
+    void trackChanged(unsigned);
+    void trackPosition(unsigned);
+    void discChanged(unsigned);
+    void discStatusChanged(KCompactDisc::DiscStatus, QString statusText);
     void configDone();
     void configureKeys();
     void setIcons();
 
     void timeSliderPressed();
     void timeSliderReleased();
-    void timeSliderMoved(int milliseconds);
+    void timeSliderMoved(int seconds);
 };
 
 #endif

@@ -35,18 +35,24 @@ LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent),
 
   // Set the frame style
   //  setFrameStyle(Sunken | Box);
-  setGeometry(0,0,h+1,w+1);
+  //setGeometry(0,0,h+1,w+1);
   ledtype = t;
 } // LedLamp
 
 void 
 LedLamp::drawContents(QPainter *painter)
 {
-  QBrush lightBrush(palette().color(foregroundRole()));
-  QBrush darkBrush(palette().color(backgroundRole()));
+  //QBrush lightBrush(palette().color(foregroundRole()));
+  //QBrush darkBrush(palette().color(backgroundRole()));
 
-  QPen darkPen(palette().color(backgroundRole()), 1);
-  QPen lightPen(palette().color(foregroundRole()), 1);
+  //QPen darkPen(palette().color(backgroundRole()), 1);
+  //QPen lightPen(palette().color(foregroundRole()), 1);
+
+  QBrush lightBrush(palette().color(backgroundRole()));
+  QBrush darkBrush(palette().color(foregroundRole()));
+
+  QPen darkPen(palette().color(foregroundRole()), 1);
+  QPen lightPen(palette().color(backgroundRole()), 1);
 
     switch(s) {
     case On:

@@ -36,8 +36,7 @@ class CDDBDlg : public KCDDB::CDInfoDialog
 
     void setData(
       const KCDDB::CDInfo &_cddbInfo,
-      const KCDDB::TrackOffsetList &_trackStartFrames,
-      const QStringList  &_playlist);
+      const KCDDB::TrackOffsetList &_trackStartFrames);
 
   private slots:
     void save();
@@ -56,7 +55,6 @@ class CDDBDlg : public KCDDB::CDInfoDialog
 
     KCDDB::CDInfo cddbInfo;
     KCDDB::TrackOffsetList trackStartFrames;
-    QStringList playlist;
     KCDDB::Client *cddbClient;
 };
 #endif // CDDBDLG_H
