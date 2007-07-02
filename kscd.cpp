@@ -1211,34 +1211,31 @@ void KSCD::populateSongList(const QString &infoStatus)
     }
 }
 
-static const KCmdLineOptions options[] =
-{
-    {"s",0,0},
-    {"start",I18N_NOOP("Start playing"),0},
-    {"+[device]",I18N_NOOP("CD device, can be a path or a media:/ URL"),0},
-    KCmdLineLastOption
-};
-
 
 /**
  * main()
  */
 int main( int argc, char *argv[] )
 {
-    KAboutData aboutData("kscd", I18N_NOOP("KsCD"),
-                            KSCDVERSION, description,
+    KAboutData aboutData("kscd", 0, ki18n("KsCD"),
+                            KSCDVERSION, ki18n(description),
                             KAboutData::License_GPL,
-                            "(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo");
-    aboutData.addAuthor("Aaron J. Seigo", I18N_NOOP("Current maintainer"), "aseigo@kde.org");
-    aboutData.addAuthor("Alexander Kern",I18N_NOOP("Workman library update, CDTEXT, CDDA"), "kernalex@kde.org");
-    aboutData.addAuthor("Bernd Johannes Wuebben",0, "wuebben@kde.org");
-    aboutData.addAuthor("Dirk Försterling", I18N_NOOP("Workman library, previous maintainer"), "milliByte@gmx.net");
-    aboutData.addCredit("Wilfried Huss", I18N_NOOP("Patches galore"));
-    aboutData.addCredit("Steven Grimm", I18N_NOOP("Workman library"));
-    aboutData.addCredit("Sven Lueppken", I18N_NOOP("UI Work"));
-    aboutData.addCredit("freedb.org", I18N_NOOP("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
+                            ki18n("(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo"));
+    aboutData.addAuthor(ki18n("Aaron J. Seigo"), ki18n("Current maintainer"), "aseigo@kde.org");
+    aboutData.addAuthor(ki18n("Alexander Kern"),ki18n("Workman library update, CDTEXT, CDDA"), "kernalex@kde.org");
+    aboutData.addAuthor(ki18n("Bernd Johannes Wuebben"),KLocalizedString(), "wuebben@kde.org");
+    aboutData.addAuthor(ki18n("Dirk Försterling"), ki18n("Workman library, previous maintainer"), "milliByte@gmx.net");
+    aboutData.addCredit(ki18n("Wilfried Huss"), ki18n("Patches galore"));
+    aboutData.addCredit(ki18n("Steven Grimm"), ki18n("Workman library"));
+    aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
+    aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
     KCmdLineArgs::init( argc, argv, &aboutData );
+
+    KCmdLineOptions options;
+    options.add("s");
+    options.add("start", ki18n("Start playing"));
+    options.add("+[device]", ki18n("CD device, can be a path or a media:/ URL"));
     KCmdLineArgs::addCmdLineOptions(options);
     KUniqueApplication::addCmdLineOptions();
 
