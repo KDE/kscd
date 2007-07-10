@@ -127,6 +127,7 @@ KSCD::KSCD( QWidget *parent )
 	connect(volumeSlider, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
 
     connect(m_cd, SIGNAL(discChanged(unsigned)), this, SLOT(discChanged(unsigned)));
+	connect(m_cd, SIGNAL(discInformation(KCompactDisc::DiscInfo)), this, SLOT(discInformation(KCompactDisc::DiscInfo)));
 	connect(m_cd, SIGNAL(discStatusChanged(KCompactDisc::DiscStatus, QString)), this,
 		SLOT(discStatusChanged(KCompactDisc::DiscStatus, QString)));
 
@@ -689,7 +690,6 @@ void KSCD::CDDialogSelected()
     {
         cddialog = new CDDBDlg(this);
 
-        cddialog->setData(cddbInfo, m_cd->discSignature());
         connect(cddialog,SIGNAL(cddbQuery()),SLOT(lookupCDDB()));
         connect(cddialog,SIGNAL(newCDInfoStored(KCDDB::CDInfo)),
             SLOT(setCDInfo(KCDDB::CDInfo)));
@@ -771,10 +771,6 @@ void KSCD::lookupCDDBDone(Result result)
     }
 
     setCDInfo(info);
-
-    // In case the cddb dialog is open, update it
-    if (cddialog)
-      cddialog->setData(cddbInfo, m_cd->discSignature());
 }
 
 void KSCD::setCDInfo(KCDDB::CDInfo info)
@@ -879,6 +875,49 @@ void KSCD::trackPosition(unsigned trackPosition)
     }
 }
 
+void KSCD::discChanged(unsigned tracks)
+{
+    kDebug(67000) << "discChanged(" << tracks << ")" << endl;   
+    if (tracks > 0)
+    {
+		populateSongList(QString());
+
+		// Set the total time.
+		QTime dml;
+		dml = dml.addSecs(m_cd->discLength());
+	
+		QString fmt;
+		if(dml.hour() > 0)
+			fmt.sprintf("%02d:%02d:%02d", dml.hour(), dml.minute(), dml.second());
+		else
+			fmt.sprintf("%02d:%02d", dml.minute(), dml.second());
+		totaltimelabel->setText(fmt);
+	
+		if ((Prefs::autoplay() || KCmdLineArgs::parsedArgs()->isSet("start"))
+			&& !m_cd->isPlaying())
+			playClicked();
+	
+		// We just populated the GUI with what we got from the CD. Now look for
+		// more from the Internet...
+	    populateSongList(i18n("Start freedb lookup."));
+
+		led_on();
+	
+		cddb->config().reparse();
+		cddb->setBlockingMode(false);
+		cddb->lookup(m_cd->discSignature());
+    } else {
+		trackChanged(0);
+		populateSongList(QString());
+		totaltimelabel->hide();
+	}
+}
+
+void KSCD::discInformation(KCompactDisc::DiscInfo info)
+{
+	populateSongList(QString());
+}
+
 void KSCD::discStatusChanged(KCompactDisc::DiscStatus status, QString statusText)
 {
 	kDebug(67000) << "discStatusChanged(" << statusText << ")" << endl;
@@ -950,69 +989,13 @@ void KSCD::trackChanged(unsigned track)
         tracklabel->setText(str);
 
         QString title;
-        if (cddbInfo.track(track-1).get(Artist) != cddbInfo.get(Artist))
-            title.append(cddbInfo.track(track-1).get(Artist).toString()).append(" - ");
-        title.append(cddbInfo.track(track-1).get(Title).toString());
+        if (m_cd->trackArtist() != m_cd->discArtist())
+            title.append(m_cd->trackArtist()).append(" - ");
+        title.append(m_cd->trackTitle());
         titlelabel->setText(title);
         tooltip += '/' + KStringHandler::rsqueeze(title, 30);
     }
     emit tooltipCurrentTrackChanged(tooltip);
-}
-
-void KSCD::discChanged(unsigned tracks)
-{
-    kDebug(67000) << "discChanged(" << tracks << ")" << endl;   
-    cddbInfo.clear();
-    if (tracks > 0)
-    {
-        cddbInfo.set("discid", QString::number(m_cd->discId(), 16).rightJustified(8,'0'));
-        cddbInfo.set(Length, m_cd->discLength());
-        cddbInfo.set(Artist, m_cd->discArtist());
-        cddbInfo.set(Title, m_cd->discTitle());
-
-        // If it's a sampler, we'll do artist/title.
-        bool isSampler = (cddbInfo.get(Title).toString().compare("Various") == 0);
-        for (unsigned i = 1; i <= tracks; i++)
-        {
-            KCDDB::TrackInfo track = cddbInfo.track(i-1);
-            if (isSampler)
-            {
-                QString title = m_cd->trackArtist(i);
-                title.append("/");
-                title.append(m_cd->trackTitle(i));
-                track.set(Title, title);
-            }
-            else
-            {
-                track.set(Title, m_cd->trackTitle(i));
-            }
-        }
-
-		// Set the total time.
-		QTime dml;
-		dml = dml.addSecs(m_cd->discLength());
-	
-		QString fmt;
-		if(dml.hour() > 0)
-			fmt.sprintf("%02d:%02d:%02d", dml.hour(), dml.minute(), dml.second());
-		else
-			fmt.sprintf("%02d:%02d", dml.minute(), dml.second());
-		totaltimelabel->setText(fmt);
-	
-		populateSongList(QString());
-	
-		if ((Prefs::autoplay() || KCmdLineArgs::parsedArgs()->isSet("start"))
-			&& !m_cd->isPlaying())
-			playClicked();
-	
-		// We just populated the GUI with what we got from the CD. Now look for
-		// more from the Internet...
-		lookupCDDB();
-    } else {
-		trackChanged(0);
-		populateSongList(QString());
-		totaltimelabel->hide();
-	}
 }
 
 void KSCD::cycleplaytimemode()
@@ -1071,9 +1054,7 @@ void KSCD::showVolumeInLabel()
 
 void KSCD::information(QAction *action)
 {
-    //kDebug(67000) << "Information " << i << "\n" << endl;
-
-    const QString artist = cddbInfo.get( Artist ).toString();
+    const QString artist = m_cd->trackArtist();
     if(artist.isEmpty())
         return;
 
@@ -1141,7 +1122,7 @@ bool KSCD::saveState(QSessionManager& /*sm*/)
 void KSCD::keyPressEvent(QKeyEvent* e)
 {
     bool isNum;
-    int value = e->text().toInt(&isNum);
+    uint value = e->text().toUInt(&isNum);
 
     if (e->key() == Qt::Key_F1)
     {
@@ -1149,7 +1130,7 @@ void KSCD::keyPressEvent(QKeyEvent* e)
     }
     else if (isNum)
     {
-        if (0 < value && value <= cddbInfo.numberOfTracks())
+        if (0 < value && value <= m_cd->tracks())
 			songListCB->setCurrentIndex(value - 1);
     }
     else
@@ -1160,25 +1141,24 @@ void KSCD::keyPressEvent(QKeyEvent* e)
 
 QString KSCD::currentTrackTitle()
 {
-    int track = m_cd->track();
-    return (track > -1) ? cddbInfo.track(track-1).get(Title).toString() : QString();
+    return m_cd->trackTitle();
 }
 
 QString KSCD::currentAlbum()
 {
-    return cddbInfo.get(Title).toString();
+    return m_cd->discTitle();
 }
 
 QString KSCD::currentArtist()
 {
-    return cddbInfo.get(Artist).toString();
+    return m_cd->trackArtist();
 }
 
 QStringList KSCD::trackList()
 {
   QStringList tracks;
-  for (int i=0; i < cddbInfo.numberOfTracks(); i++)
-    tracks << cddbInfo.track(i).get(Title).toString();
+  for (uint i = 0; i < m_cd->tracks(); ++i)
+    tracks << m_cd->trackTitle(i);
 
   return tracks;
 }
@@ -1189,10 +1169,10 @@ void KSCD::populateSongList(const QString &infoStatus)
     if (!infoStatus.isEmpty())
         artistlabel->setText(infoStatus);
     else
-        artistlabel->setText(QString("%1 - %2").arg(cddbInfo.get(Artist).toString(), cddbInfo.get(Title).toString()));
+        artistlabel->setText(QString("%1 - %2").arg(m_cd->discArtist(), m_cd->discTitle()));
 
     songListCB->clear();
-    for (int  i = 0; i < cddbInfo.numberOfTracks(); i++)
+    for (uint i = 0; i < m_cd->tracks(); ++i)
     {
         unsigned tmp = m_cd->trackLength(i + 1);
         unsigned mymin;
@@ -1200,12 +1180,12 @@ void KSCD::populateSongList(const QString &infoStatus)
         mymin = tmp / 60;
         mysec = (tmp % 60);
         QString str1;
-        str1.sprintf("%02d: ", i + 1);
+        str1.sprintf("%02u: ", i + 1);
         QString str2;
-        str2.sprintf(" (%02d:%02d) ", mymin,  mysec);
-        if (cddbInfo.get(Artist) != cddbInfo.track(i).get(Artist))
-            str1.append(cddbInfo.track(i).get(Artist).toString()).append(" - ");
-        str1.append(cddbInfo.track(i).get(Title).toString());
+        str2.sprintf(" (%02u:%02u) ", mymin,  mysec);
+        if (m_cd->discArtist() != m_cd->trackArtist(i))
+            str1.append(m_cd->trackArtist(i)).append(" - ");
+        str1.append(m_cd->trackTitle(i));
         str1.append(str2);
         songListCB->addItem(str1);
     }

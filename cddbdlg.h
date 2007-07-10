@@ -50,7 +50,6 @@ class CDDBDlg : public KCDDB::CDInfoDialog
 
   private:
     bool validInfo();
-    void updateFromDialog();
     QString framesTime(unsigned frames);
 
     KCDDB::CDInfo cddbInfo;
