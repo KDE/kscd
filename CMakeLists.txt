@@ -26,7 +26,7 @@ kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc )
 
 kde4_add_executable(kscd ${kscd_SRCS})
 
-target_link_libraries(kscd  ${KDE4_KIO_LIBS} ${KDE4_KUTILS_LIBS} kcddb kcompactdisc)
+target_link_libraries(kscd  ${KDE4_KUTILS_LIBS} kcddb kcompactdisc)
 
 install(TARGETS kscd  DESTINATION ${BIN_INSTALL_DIR} )
 
