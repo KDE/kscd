@@ -206,7 +206,6 @@ KSCD::KSCD( QWidget *parent )
 
 	m_actions->readSettings();
 
-	KGlobalAccel::self()->readSettings();
 	setupPopups();
 
 	m_cd->setLoopPlaylist(Prefs::looping());	
