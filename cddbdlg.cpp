@@ -16,34 +16,9 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-#include <qnamespace.h>
-#include <QDateTime>
-#include <qtextstream.h>
-#include <QFile>
-#include <QDir>
-#include <qfileinfo.h>
-#include <k3listview.h>
-#include <klineedit.h>
-#include <knuminput.h>
-
-#include <kglobal.h>
-#include <kapplication.h>
-#include <kdebug.h>
-#include <kinputdialog.h>
-#include <klocale.h>
-#include <kcombobox.h>
-#include <kmessagebox.h>
-
-#include <stdio.h>
-#include <math.h>
-
-#include "version.h"
-#include "kscd.h"
 #include "cddbdlg.h"
+
+#include <kmessagebox.h>
 
 CDDBDlg::CDDBDlg( QWidget* parent )
     : CDInfoDialog( parent)
@@ -66,7 +41,6 @@ CDDBDlg::CDDBDlg( QWidget* parent )
   connect (cddbClient, SIGNAL(finished(KCDDB::Result)),
                        SLOT(submitFinished(KCDDB::Result)));
 }
-
 
 CDDBDlg::~CDDBDlg()
 {

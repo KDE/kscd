@@ -186,7 +186,7 @@ private slots:
     void trackPosition(unsigned);
     void discChanged(unsigned);
 	void discInformation(KCompactDisc::DiscInfo);
-    void discStatusChanged(KCompactDisc::DiscStatus, QString statusText);
+    void discStatusChanged(KCompactDisc::DiscStatus);
     void configDone();
     void configureKeys();
     void setIcons();

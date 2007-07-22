@@ -21,6 +21,9 @@
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "docking.h"
+#include "kscd.h"
+
 #include <QToolTip>
 #include <QLabel>
 #include <QPushButton>
@@ -29,14 +32,8 @@
 
 #include <kaboutdata.h>
 #include <khbox.h>
-#include <klocale.h>
 #include <kiconloader.h>
 #include <kpassivepopup.h>
-#include <kdebug.h>
-
-#include "docking.h"
-#include "kscd.h"
-
 
 DockWidget::DockWidget( KSCD* parent, const char *name)
     : KSystemTrayIcon( parent )

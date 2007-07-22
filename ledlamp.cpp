@@ -17,15 +17,12 @@
     Boston, MA 02110-1301, USA.
 */
 
+#include "ledlamp.h"
 
-#include <stdio.h>
 #include <qpainter.h>
 #include <qbrush.h>
 #include <qpen.h>
 #include <QColor>
-//Added by qt3to4:
-#include "ledlamp.h"
-#include "ledlamp.moc"
 
 LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent), 
   w( 10 ), h( 7 ), dx( 4 )
@@ -101,3 +98,4 @@ LedLamp::drawContents(QPainter *painter)
     }
 } // drawContents
 
+#include "ledlamp.moc"

@@ -22,17 +22,18 @@
  *
  */
 
-#include <kdebug.h>
-#include <klineedit.h>
-#include <kurlrequester.h>
-#include <QCheckBox>
-#include <kcombobox.h>
-#include <config.h>
-
 #include "configWidget.h"
 #include "kscd.h"
 #include "prefs.h"
 #include "kcompactdisc.h"
+
+#include <QCheckBox>
+
+#include <kdebug.h>
+#include <klineedit.h>
+#include <kurlrequester.h>
+#include <kcombobox.h>
+
 
 /*
  *  Constructs a configWidget which is a child of 'parent', with the

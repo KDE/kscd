@@ -21,65 +21,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#include <config.h>
+#include "docking.h"
+#include "kscd.h"
+#include "prefs.h"
+#include "cddbdlg.h"
+#include "configWidget.h"
+#include "kcompactdisc.h"
+
 #include <config-alsa.h>
-#include <QDir>
-#include <QRegExp>
-#include <qtextstream.h>
-#include <QLayout>
-#include <qapplication.h>
-#include <q3groupbox.h>
+
 #include <QCloseEvent>
 #include <QKeyEvent>
 #include <QEvent>
 #include <QMenu>
 #include <QtDBus>
-#include <stdlib.h>
 
 #include <kaboutdata.h>
 #include <kactioncollection.h>
-
-#include <kaction.h>
-#include <kcharsets.h>
 #include <kcmdlineargs.h>
-#include <kconfig.h>
-#include <kdebug.h>
-#include <kdialog.h>
-#include <kemailsettings.h>
-#include <kglobal.h>
 #include <khelpmenu.h>
 #include <kshortcutsdialog.h>
 #include <kiconloader.h>
 #include <kinputdialog.h>
-#include <klocale.h>
-#include <kxmlguiwindow.h>
 #include <kmessagebox.h>
 #include <kmenu.h>
-#include <kprotocolmanager.h>
 #include <krun.h>
-#include <kstandarddirs.h>
 #include <kstandardaction.h>
 #include <kstringhandler.h>
-#include <kurl.h>
 #include <kuniqueapplication.h>
-#include <kglobalsettings.h>
 #include <kcmoduleloader.h>
-#include <kconfigdialog.h>
-#include "docking.h"
-#include "kscd.h"
-#include "version.h"
-#include "prefs.h"
-
-#include <kwindowsystem.h>
-#include <netwm.h>
-
-#include <config.h>
-
-#include "cddbdlg.h"
-#include "configWidget.h"
-#include <qtextcodec.h>
-#include "kcompactdisc.h"
-#include <fixx11h.h>
 #include <ktoolinvocation.h>
 
 using namespace KCDDB;
@@ -128,8 +98,8 @@ KSCD::KSCD( QWidget *parent )
 
     connect(m_cd, SIGNAL(discChanged(unsigned)), this, SLOT(discChanged(unsigned)));
 	connect(m_cd, SIGNAL(discInformation(KCompactDisc::DiscInfo)), this, SLOT(discInformation(KCompactDisc::DiscInfo)));
-	connect(m_cd, SIGNAL(discStatusChanged(KCompactDisc::DiscStatus, QString)), this,
-		SLOT(discStatusChanged(KCompactDisc::DiscStatus, QString)));
+	connect(m_cd, SIGNAL(discStatusChanged(KCompactDisc::DiscStatus)), this,
+		SLOT(discStatusChanged(KCompactDisc::DiscStatus)));
 
     connect(m_cd, SIGNAL(playoutTrackChanged(unsigned)), this, SLOT(trackChanged(unsigned)));
 	connect(m_cd, SIGNAL(playoutPositionChanged(unsigned)), this, SLOT(trackPosition(unsigned)));
@@ -917,10 +887,10 @@ void KSCD::discInformation(KCompactDisc::DiscInfo info)
 	populateSongList(QString());
 }
 
-void KSCD::discStatusChanged(KCompactDisc::DiscStatus status, QString statusText)
+void KSCD::discStatusChanged(KCompactDisc::DiscStatus status)
 {
-	kDebug(67000) << "discStatusChanged(" << statusText << ")" << endl;
-    statuslabel->setText(statusText);
+	kDebug(67000) << "discStatusChanged(" << m_cd->discStatusString(status) << ")" << endl;
+    statuslabel->setText(m_cd->discStatusString(status));
 
 	switch(status)
 	{
@@ -1069,7 +1039,7 @@ void KSCD::information(QAction *action)
         url = KUrl("http://ubl.artistdirect.com/cgi-bin/gx.cgi/AppLogic+Search?select=MusicArtist&searchtype=NormalSearch");
         url.addQueryItem( "searchstr", artist );
     } else if (server == "CD Universe") {
-        url = KUrl( QString( "http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1" ).arg( QString::fromLatin1(QUrl::toPercentEncoding(artist)) ) );
+        url = KUrl( QString( "http://www.cduniverse.com/cgi-bin/cdubin.exe/rlinka/ean=%1" ).arg( QString::fromLatin1(KUrl::toPercentEncoding(artist)) ) );
     } else if (server == "AlltheWeb") {
         url = KUrl("http://www.alltheweb.com/search?cat=web");
         url.addQueryItem( "q", artist );
@@ -1197,7 +1167,7 @@ void KSCD::populateSongList(const QString &infoStatus)
 int main( int argc, char *argv[] )
 {
     KAboutData aboutData("kscd", 0, ki18n("KsCD"),
-                            KSCDVERSION, ki18n(description),
+                            "1.5", ki18n(description),
                             KAboutData::License_GPL,
                             ki18n("(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo"));
     aboutData.addAuthor(ki18n("Aaron J. Seigo"), ki18n("Current maintainer"), "aseigo@kde.org");
