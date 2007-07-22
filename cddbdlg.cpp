@@ -114,7 +114,7 @@ void CDDBDlg::upload()
 
 void CDDBDlg::save()
 {
-    cddbClient->store(cddbInfo);
+    cddbClient->store(cddbInfo, trackStartFrames);
 
     emit newCDInfoStored(cddbInfo);
 } // save
