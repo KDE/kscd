@@ -31,7 +31,7 @@ install(TARGETS kscd  DESTINATION ${BIN_INSTALL_DIR} )
 
 ########### install files ###############
 
-install( FILES kscd.desktop  DESTINATION  ${XDG_APPS_DIR} )
+install( FILES kscd.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR} )
 install( FILES kscd.profile.xml  DESTINATION  ${DATA_INSTALL_DIR}/profiles )
 install( FILES kscd.kcfg  DESTINATION  ${KCFG_INSTALL_DIR} )
 install( FILES audiocd_play.desktop  DESTINATION  ${DATA_INSTALL_DIR}/konqueror/servicemenus )
