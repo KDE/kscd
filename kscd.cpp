@@ -529,9 +529,9 @@ void KSCD::setDevicePaths()
 			Prefs::cdDevice(), KCompactDisc::urlToDevice(Prefs::cdDevice()), audioSystem);
         KMessageBox::error(this, str, i18n("Error"));
     } else {
-        kDebug(67000) << "Vendor: " << m_cd->deviceVendor() << endl;
-        kDebug(67000) << "Model: " << m_cd->deviceModel() << endl;
-        kDebug(67000) << "Revision: " << m_cd->deviceRevision() << endl;
+        kDebug(67000) << "Vendor: " << m_cd->deviceVendor();
+        kDebug(67000) << "Model: " << m_cd->deviceModel();
+        kDebug(67000) << "Revision: " << m_cd->deviceRevision();
     }
 
 	m_cd->setRandomPlaylist(Prefs::randomPlay());
@@ -681,7 +681,7 @@ void KSCD::lookupCDDB()
     if (m_cd->isNoDisc() || m_cd->discId() == 0)
         return;
 
-    kDebug(67000) << "lookupCDDB() called" << endl;
+    kDebug(67000) << "lookupCDDB() called";
 
     populateSongList(i18n("Start freedb lookup."));
 
@@ -815,7 +815,7 @@ void KSCD::trackPosition(unsigned trackPosition)
 {
     unsigned tmp;
 
-    kDebug(67000) << "trackPosition(" << trackPosition << ")" << endl;
+    kDebug(67000) << "trackPosition(" << trackPosition << ")";
     switch (Prefs::timeDisplayMode())
     {
     case Prefs::EnumTimeDisplayMode::TRACK_REM:
@@ -846,7 +846,7 @@ void KSCD::trackPosition(unsigned trackPosition)
 
 void KSCD::discChanged(unsigned tracks)
 {
-    kDebug(67000) << "discChanged(" << tracks << ")" << endl;   
+    kDebug(67000) << "discChanged(" << tracks << ")";   
     if (tracks > 0)
     {
 		populateSongList(QString());
@@ -889,7 +889,7 @@ void KSCD::discInformation(KCompactDisc::DiscInfo info)
 
 void KSCD::discStatusChanged(KCompactDisc::DiscStatus status)
 {
-	kDebug(67000) << "discStatusChanged(" << m_cd->discStatusString(status) << ")" << endl;
+	kDebug(67000) << "discStatusChanged(" << m_cd->discStatusString(status) << ")";
     statuslabel->setText(m_cd->discStatusString(status));
 
 	switch(status)
@@ -924,7 +924,7 @@ void KSCD::discStatusChanged(KCompactDisc::DiscStatus status)
 
 void KSCD::trackChanged(unsigned track)
 {
-	kDebug(67000) << "trackChanged(" << track << ")" << endl;    
+	kDebug(67000) << "trackChanged(" << track << ")";    
 	QString tooltip = artistlabel->text();
 
     if (track < 1)
