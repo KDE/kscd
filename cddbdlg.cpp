@@ -18,6 +18,7 @@
 
 #include "cddbdlg.h"
 
+#include <klocale.h>
 #include <kmessagebox.h>
 
 CDDBDlg::CDDBDlg( QWidget* parent )
