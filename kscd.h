@@ -133,11 +133,13 @@ public slots:
     void togglequeryled();
     void cycleplaytimemode();
     void showVolumeInLabel();
+    void showArtistLabel(QString);
+    void restoreArtistLabel();
 
-	void randomClicked();	
-	void randomChanged(bool);
-	void loopClicked();
-	void loopChanged(bool);
+    void randomClicked();	
+    void randomChanged(bool);
+    void loopClicked();
+    void loopChanged(bool);
 
     void information(QAction *action);
 
@@ -154,7 +156,7 @@ protected:
     void keyPressEvent(QKeyEvent *e);
     bool event(QEvent *e);
 
-    void populateSongList(const QString &infoStatus);
+    void populateSongList();
     void updateConfigDialog(configWidget *widget);
 
 private:
