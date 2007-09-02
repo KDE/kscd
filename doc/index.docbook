@@ -686,7 +686,7 @@ better to do with your spare time.</para>
 <para>To start &kmix;, select 
 <menuchoice><guimenu>K-Button</guimenu><guimenuitem>Multimedia</guimenuitem>
 <guimenuitem>&kmix;</guimenuitem></menuchoice>.</para>
-<para>Once &kmix; has started, you will be presented with a new window with a number of volume sliders.  Depending on the configuration, the sliders may have lables, or the labels may be hidden.  If you do not see any labels for the sliders, you should make the labels visible before continuing.  To make the labels visible, select 
+<para>Once &kmix; has started, you will be presented with a new window with a number of volume sliders.  Depending on the configuration, the sliders may have labels, or the labels may be hidden.  If you do not see any labels for the sliders, you should make the labels visible before continuing.  To make the labels visible, select 
 <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &kmix;...</guimenuitem></menuchoice> from the &kmix; window.  This will open a small window with a few check boxes. To 
 turn the labels on, place a mark in the check box labeld <guilabel>Show labels</guilabel> and click <guibutton>OK</guibutton>.</para>
 <para>Each slider controls the volume of a different audio device.  There are two parts to each device that may need to be altered.  If you look at a slider, there is a green 
