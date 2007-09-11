@@ -453,7 +453,7 @@ void KSCD::showConfig()
     KService::Ptr libkcddb = KService::serviceByDesktopName("libkcddb");
     if (libkcddb && libkcddb->isValid())
     {
-        KCModuleInfo info(libkcddb->desktopEntryPath());
+        KCModuleInfo info(libkcddb->entryPath());
         if (info.service()->isValid())
         {
             KCModule *m = KCModuleLoader::loadModule(info, KCModuleLoader::Inline);
