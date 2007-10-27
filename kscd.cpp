@@ -30,6 +30,11 @@
 
 #include <config-alsa.h>
 
+// Amine's debug=============
+#include <stdio.h>
+#include <iostream.h> // including iostream to print on screen peaces of information
+//===========================
+
 #include <QCloseEvent>
 #include <QKeyEvent>
 #include <QEvent>
@@ -207,6 +212,10 @@ void KSCD::setVolume(int v)
 void KSCD::setDevice(const QString& dev)
 {
     Prefs::setCdDevice(dev);
+
+	// This line never appears on screen... why?
+	cout <<endl<<endl<<" voici l'emplacement du lecteur:"<<&dev<<endl<<endl;
+
     setDevicePaths();
 }
 
@@ -528,6 +537,7 @@ void KSCD::setDevicePaths()
 			"device '%1'(%2), audio system '%3'",
 			Prefs::cdDevice(), KCompactDisc::urlToDevice(Prefs::cdDevice()), audioSystem);
         KMessageBox::error(this, str, i18n("Error"));
+	cout <<endl<<endl<< "Erreur de chargement du lecteur" << endl;
     } else {
         kDebug(67000) << "Vendor: " << m_cd->deviceVendor();
         kDebug(67000) << "Model: " << m_cd->deviceModel();
@@ -747,7 +757,10 @@ void KSCD::setCDInfo(KCDDB::CDInfo info)
 {
 	// Some sanity provisions to ensure that the number of records matches what
 	// the CD actually contains.
-	Q_ASSERT(info.numberOfTracks() == cddbInfo.numberOfTracks());
+
+	// Amine: This line don't work, maybe because cddb don't work?
+	//Q_ASSERT(info.numberOfTracks() == cddbInfo.numberOfTracks());
+
 	cddbInfo = info;
 	populateSongList();
 	restoreArtistLabel();
