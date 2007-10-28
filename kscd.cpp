@@ -72,7 +72,7 @@ KSCD::KSCD( QWidget *parent )
     updateTime(true),
     m_dockWidget(0)
 {
-	QDBusConnection::sessionBus().registerObject("/CDPlayer", this);
+	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 	setupUi(this);
 	m_cd = new KCompactDisc();
 	cddbInfo.clear(); // The first freedb revision is "0" //!!!!
@@ -1224,7 +1224,6 @@ int main( int argc, char *argv[] )
     KUniqueApplication a;
 
     KSCD *k = new KSCD();
-    QDBusConnection::sessionBus().registerObject("/CDPlayer", k);
 
     a.setTopWidget( k );
     a.setMainWidget( k );
