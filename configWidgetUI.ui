@@ -172,7 +172,7 @@
      </property>
      <layout class="QGridLayout" >
       <item row="0" column="0" colspan="2" >
-       <widget class="KUrlComboRequester" native="1" name="kcfg_CdDevice" >
+       <widget class="CDComboBox" native="1" name="kcfg_CdDevice" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
           <horstretch>0</horstretch>
@@ -357,18 +357,14 @@
  <customwidgets>
   <customwidget>
    <class>KColorButton</class>
-   <extends>QPushButton</extends>
-   <header>kcolorbutton.h</header>
   </customwidget>
   <customwidget>
    <class>KFontRequester</class>
-   <extends>QWidget</extends>
-   <header>kfontrequester.h</header>
   </customwidget>
   <customwidget>
-   <class>KUrlComboRequester</class>
+   <class>CDComboBox</class>
    <extends>QWidget</extends>
-   <header>kurlrequester.h</header>
+   <header>cdcombobox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -378,17 +374,11 @@
   <tabstop>kcfg_TrackAnnouncement</tabstop>
   <tabstop>kcfg_Autoplay</tabstop>
   <tabstop>kcfg_EjectOnFinish</tabstop>
-  <tabstop>kcfg_StopExit</tabstop>
   <tabstop>kcfg_DigitalPlayback</tabstop>
  </tabstops>
  <includes>
   <include location="local" >kcolorbutton.h</include>
   <include location="local" >kfontrequester.h</include>
-  <include location="local" >knuminput.h</include>
-  <include location="local" >kurlrequester.h</include>
-  <include location="local" >kcombobox.h</include>
-  <include location="local" >kpushbutton.h</include>
-  <include location="local" >klineedit.h</include>
  </includes>
  <resources/>
  <connections>

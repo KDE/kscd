@@ -26,14 +26,12 @@
 #include "kscd.h"
 #include "prefs.h"
 #include "kcompactdisc.h"
+#include "cdcombobox.h"
 
 #include <QCheckBox>
 
 #include <kdebug.h>
-#include <klineedit.h>
-#include <kurlrequester.h>
-#include <kcombobox.h>
-
+#include <kconfigdialogmanager.h>
 
 /*
  *  Constructs a configWidget which is a child of 'parent', with the
@@ -46,10 +44,13 @@ configWidget::configWidget(KSCD* player, QWidget* parent)
     : configWidgetUI(parent),
       mPlayer(player)
 {
-    kcfg_CdDevice->comboBox()->insertItems(0, KCompactDisc::cdromDeviceNames());
+    KConfigDialogManager::propertyMap()->insert("CDComboBox", "currentDevice");
+    KConfigDialogManager::changedMap()->insert("CDComboBox", SIGNAL(currentDeviceChanged(const QString &)));
+
+    kcfg_CdDevice->addDevices(KCompactDisc::cdromDeviceNames());
     kcfg_AudioSystem->insertItems(0, KCompactDisc::audioSystems());
 
-    connect(kcfg_DigitalPlayback, SIGNAL(toggled(bool)), this,SLOT(kcfg_DigitalPlayback_toggled(bool)));
+    connect(kcfg_DigitalPlayback, SIGNAL(toggled(bool)), this, SLOT(kcfg_DigitalPlayback_toggled(bool)));
     connect(kcfg_SelectEncoding, SIGNAL(toggled(bool)), this, SLOT(kcfg_SelectEncoding_toggled(bool)));
 }
 
