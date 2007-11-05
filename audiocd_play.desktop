@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-ServiceTypes=media/audiocd
+ServiceTypes=KonqPopupMenu/Plugin,media/audiocd
 Type=Service
 Actions=Play;
 X-KDE-Priority=TopLevel
