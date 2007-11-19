@@ -189,6 +189,8 @@ KSCD::KSCD( QWidget *parent )
 	adjustSize();
 	setFixedHeight(this->height());
 
+	devices = new HWcontroler();
+
 /* FIXME check for return value */
 	setDevicePaths();
 }

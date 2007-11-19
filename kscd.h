@@ -37,6 +37,7 @@ class KCompactDisc;
 #include <libkcddb/kcddb.h>
 #include <libkcddb/client.h>
 
+// Solid implementation
 
 #include <QPushButton>
 #include <QLabel>
@@ -49,9 +50,9 @@ class KCompactDisc;
 #include <q3tabdialog.h>
 #include <QToolTip>
 #include <QMenu>
-
 #include "ledlamp.h"
 #include "ui_panel.h"
+#include "HWcontroler.h"
 #include "prefs.h"
 #include "configWidget.h"
 #include <kapplication.h>
@@ -61,11 +62,15 @@ class KCompactDisc;
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
 
+
 class CDDBDlg;
 class DockWidget;
 class QGridLayout;
 class KActionCollection;
 class KToggleAction;
+
+
+
 
 class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManager {
 
@@ -166,6 +171,8 @@ private:
     QTimer           titlelabeltimer;
     QTimer           queryledtimer;
     bool             updateTime;
+
+	HWcontroler *devices;
 
     /**
      * Info from CDDB, and exploded versions thereof.
