@@ -372,7 +372,8 @@ bool KSCD::event( QEvent *e )
  */
 void KSCD::ejectClicked()
 {
-    m_cd->eject();
+	devices->ejectSelectedOpticalDrive();
+    //m_cd->eject();
 }
 
 void KSCD::closeEvent(QCloseEvent *e)

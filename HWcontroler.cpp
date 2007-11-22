@@ -29,31 +29,79 @@
  *
  */
 #include "HWcontroler.h"
-#include <solid/opticaldisc.h>
+#include <solid/opticaldrive.h>
 #include <solid/device.h>
 #include <solid/deviceinterface.h>
 #include <kdebug.h>
 
+#include <phonon/mediasource.h>
+#include <phonon/mediaobject.h>
+#include <phonon/phononnamespace.h>
+using namespace Phonon;
+
 HWcontroler :: HWcontroler ()
 {
-	CDList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDisc, QString());
-
-	if (CDList.size()<1)
-	{
-		kDebug() << "No Audio CD inserted";
-	}
-	else
-	{
-		for (int i = 0; i < CDList.size();i++)
-		{
-			kDebug() << CDList[i].udi();
-		}
-	}
-//	Solid::OpticalDisc *disc = device.as<Solid::Processor>();
-//	Solid::OpticalDisc * disc = new Solid::OpticalDisc::OpticalDisc();
-//	kDebug() << disc->availableContent();
+	ODactual = 0;
+	loadCDDevices();
+	loadReading();
 }
 HWcontroler :: ~HWcontroler ()
 {
 
+}
+Solid::OpticalDrive* HWcontroler ::getSelectedOpticalDrive()
+{
+	return CDDrive[ODactual];
+}
+void HWcontroler ::setSelectedOpticalDrive(int num)
+{
+	if (num >= CDDrive.size())
+	{
+		kDebug() << "Invalid Parameter!";
+	}
+	else
+	{
+		ODactual=num;
+	}
+}
+void HWcontroler ::loadCDDevices()
+{
+//	----	Loading Optical Drives	----	//
+
+	kDebug() << "Loading Optical Drives";
+
+	// list all Optical Drives of the system
+	CDDriveList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDrive, QString());
+
+	
+	if (CDDriveList.size()<1)
+	{
+		kDebug() << "No Optical detected!";
+	}
+	else
+	{
+		for (int i = 0; i < CDDriveList.size();i++)
+		{
+			kDebug() << "Optical Disc detected: " << CDDriveList[i].udi();
+			// Devices to OpticalDrive
+			CDDrive.append(CDDriveList[i].as<Solid::OpticalDrive>());
+		}
+	}
+	kDebug() << "bus: "<< CDDrive[ODactual]->bus();
+}
+void HWcontroler ::loadReading() /*Not finished*/
+{
+	MS = new Phonon::MediaSource(Cd,CDDriveList[ODactual].udi());
+	media = new Phonon::MediaObject();
+	connect(media, SIGNAL(finished()), SLOT(slotFinished()));
+	media->setCurrentSource(MS->fileName());
+}
+void HWcontroler ::playSelectedOpticalDrive() /* Not finished */
+{
+	media->play();
+}
+void HWcontroler::ejectSelectedOpticalDrive()
+{
+	CDDrive[ODactual]->eject();
+	kDebug() << CDDriveList[ODactual].udi() << " ejected!";
 }

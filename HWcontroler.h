@@ -31,18 +31,56 @@
 #ifndef __HWCONTROLER__
 #define __HWCONTROLER__
 
+#include <QObject>
 #include <solid/device.h>
+#include <solid/opticaldrive.h>
 
-class HWcontroler
+#include <phonon/mediasource.h>
+#include <phonon/mediaobject.h>
+
+
+class HWcontroler : public QObject
 {
 
 	private:
 
-	QList<Solid::Device> CDList;
+// Contains all Optical Drive of the system, but in a Solid::Device list
+	QList<Solid::Device> CDDriveList;
+
+// Contains all Optical Drive of the system, but in a Solid::OpticalDrive list
+	QList<Solid::OpticalDrive*> CDDrive;
+
+// Number of the main Optical Drive (as default)
+	int ODactual;
+
+// Actual Media source
+	Phonon::MediaSource *MS;
+
+// Selected Optical Drive is manipulated with media
+	Phonon::MediaObject *media;
+	
 
 	public:
 		HWcontroler ();
 		~HWcontroler ();
+
+	// return the Solid::OpticalDrive of the selected Optical Drive
+		Solid::OpticalDrive* getSelectedOpticalDrive();
+
+	// num selected an optical drive in the CDDrive list and put it as the main
+		void setSelectedOpticalDrive(int num);
+
+	// load all Optical discs of the system
+		void loadCDDevices();
+
+	// Load the Optical Drive controler
+		void loadReading();
+
+	// eject the main Optical Drive
+		void ejectSelectedOpticalDrive();
+
+	// play the main Optical Drive --- WARNING: Not finished!
+		void playSelectedOpticalDrive();
 };
 
 #endif
