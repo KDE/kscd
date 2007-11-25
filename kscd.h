@@ -52,7 +52,7 @@ class KCompactDisc;
 #include <QMenu>
 #include "ledlamp.h"
 #include "ui_panel.h"
-#include "HWcontroler.h"
+#include "hwcontroler.h"
 #include "prefs.h"
 #include "configWidget.h"
 #include <kapplication.h>
@@ -172,7 +172,7 @@ private:
     QTimer           queryledtimer;
     bool             updateTime;
 
-	HWcontroler *devices;
+	HWControler *devices;
 
     /**
      * Info from CDDB, and exploded versions thereof.

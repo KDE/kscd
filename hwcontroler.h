@@ -33,54 +33,51 @@
 
 #include <QObject>
 #include <solid/device.h>
-#include <solid/opticaldrive.h>
+#include <solid/opticaldisc.h>
 
 #include <phonon/mediasource.h>
 #include <phonon/mediaobject.h>
 
+#include "audiocd.h"
+#include "songs.h"
 
-class HWcontroler : public QObject
+class HWControler : public QObject
 {
 
 	private:
 
 // Contains all Optical Drive of the system, but in a Solid::Device list
-	QList<Solid::Device> CDDriveList;
+	QList<Solid::Device> detectedDevices;
 
-// Contains all Optical Drive of the system, but in a Solid::OpticalDrive list
-	QList<Solid::OpticalDrive*> CDDrive;
+// Contains all audio discs detected
+	QList<AudioCD*> cds;
 
-// Number of the main Optical Drive (as default)
-	int ODactual;
+// Number of the main audio cd (as default)
+	int mac;
 
 // Actual Media source
-	Phonon::MediaSource *MS;
-
-// Selected Optical Drive is manipulated with media
-	Phonon::MediaObject *media;
+	Songs *ms;
 	
 
 	public:
-		HWcontroler ();
-		~HWcontroler ();
+		HWControler ();
+		~HWControler ();
 
-	// return the Solid::OpticalDrive of the selected Optical Drive
-		Solid::OpticalDrive* getSelectedOpticalDrive();
+	// return the Solid::OpticalDrive of the selected Audio Disc
+		AudioCD* getAudioCD();
 
-	// num selected an optical drive in the CDDrive list and put it as the main
-		void setSelectedOpticalDrive(int num);
+	// set the Audio disc to listen in ce detected audio cds list
+		void setAudioDisc(int num);
 
 	// load all Optical discs of the system
-		void loadCDDevices();
+		void loadAudioDiscs();
 
-	// Load the Optical Drive controler
-		void loadReading();
 
 	// eject the main Optical Drive
-		void ejectSelectedOpticalDrive();
+		void ejectAudioDisc();
 
 	// play the main Optical Drive --- WARNING: Not finished!
-		void playSelectedOpticalDrive();
+		void playAudioCD();
 };
 
 #endif

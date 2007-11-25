@@ -189,7 +189,7 @@ KSCD::KSCD( QWidget *parent )
 	adjustSize();
 	setFixedHeight(this->height());
 
-	devices = new HWcontroler();
+	devices = new HWControler();
 
 /* FIXME check for return value */
 	setDevicePaths();
@@ -372,8 +372,7 @@ bool KSCD::event( QEvent *e )
  */
 void KSCD::ejectClicked()
 {
-	devices->ejectSelectedOpticalDrive();
-    //m_cd->eject();
+    m_cd->eject();
 }
 
 void KSCD::closeEvent(QCloseEvent *e)
