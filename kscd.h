@@ -141,7 +141,7 @@ public slots:
     void showArtistLabel(QString);
     void restoreArtistLabel();
 
-    void randomClicked();	
+    void randomClicked();
     void randomChanged(bool);
     void loopClicked();
     void loopChanged(bool);

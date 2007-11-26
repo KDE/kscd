@@ -51,6 +51,9 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
     m_backAction = popup->addAction(SmallIcon("media-skip-backward"), i18n("Previous"), parent, SLOT(prevClicked()));
     popup->addAction(SmallIcon("media-eject"), i18n("Eject"), parent, SLOT(ejectClicked()));
 
+    popup->addSeparator () ;
+    popup->addAction(SmallIcon("system-run"), i18n("Configure KsCD..."), parent, SLOT(showConfig()));
+
     this->setToolTip(KGlobal::mainComponent().aboutData()->programName());
 }
 
@@ -72,7 +75,7 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
     {
         QPushButton* backButton = new QPushButton(loadIcon("media-skip-backward"), 0, box);
         backButton->setFlat(true);
-        connect(backButton, SIGNAL(clicked()), m_backAction, SLOT(activate()));
+        connect(backButton, SIGNAL(clicked()), m_backAction, SLOT(activate(QAction::triggered(true))));
     }
 
     QLabel* l = new QLabel(songName, box);
@@ -82,12 +85,12 @@ void DockWidget::createPopup(const QString &songName, bool addButtons)
     {
         QPushButton* forwardButton = new QPushButton(loadIcon("media-skip-forward"), 0, box);
         forwardButton->setFlat(true);
-        connect(forwardButton, SIGNAL(clicked()), m_forwardAction, SLOT(activate()));
+        connect(forwardButton, SIGNAL(clicked()), m_forwardAction, SLOT(activate(QAction::triggered(true))));
     }
 
     m_popup->setView(box);
     m_popup->setAutoDelete(false);
-    m_popup->show();
+    m_popup->show(QPoint (200,200));
 }
 
 void DockWidget::setToolTip(const QString& text)
@@ -107,6 +110,9 @@ void DockWidget::setToolTip(const QString& text)
     {
         setToolTip(text);
     }
+
+//    setToolTip("KsCD") ;
+
 }
 
 void DockWidget::wheelEvent(QWheelEvent *e)

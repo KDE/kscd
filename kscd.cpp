@@ -383,7 +383,9 @@ void KSCD::closeEvent(QCloseEvent *e)
         e->ignore();
         return;
     }
-    e->accept();
+    quitClicked() ;
+
+//    e->accept();
 }
 
 void KSCD::randomClicked()

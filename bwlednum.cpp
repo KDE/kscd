@@ -32,7 +32,7 @@ BW_LED_Number::~BW_LED_Number()
 {
 }
 
-void BW_LED_Number::mouseReleaseEvent(QMouseEvent * /* e */)
+void BW_LED_Number::mouseReleaseEvent(QMouseEvent * e)
 {
 	emit(clicked());
 }
