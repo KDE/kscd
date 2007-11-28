@@ -190,6 +190,7 @@ KSCD::KSCD( QWidget *parent )
 	setFixedHeight(this->height());
 
 	devices = new HWControler();
+	isPlaying = false;
 
 /* FIXME check for return value */
 	setDevicePaths();
@@ -302,27 +303,42 @@ void KSCD::setupPopups()
 
 void KSCD::playClicked()
 {
-    if (m_cd->isPlaying() || m_cd->isPaused())
-        m_cd->pause();
-    else
-        m_cd->play();
+    //if (m_cd->isPlaying() || m_cd->isPaused())
+        //m_cd->pause();
+	
+    //else
+        //m_cd->play();
+	if (isPlaying)
+	{
+		devices->pause();
+		isPlaying = false;
+	}
+	else
+	{
+		devices->play();
+		isPlaying = true;
+	}
 }
 
 void KSCD::stopClicked()
 {
-    stoppedByUser = true;
+    //stoppedByUser = true;
 
-    m_cd->stop();
+    //m_cd->stop();
+	isPlaying = false;
+	devices->stop();
 }
 
 void KSCD::prevClicked()
 {
-    m_cd->prev();
+    //m_cd->prev();
+	devices->mute(false);
 }
 
 void KSCD::nextClicked()
 {
-	m_cd->next();
+	//m_cd->next();
+	devices->mute(true);
 }
 
 void KSCD::jumpToTime(int seconds)
@@ -372,7 +388,8 @@ bool KSCD::event( QEvent *e )
  */
 void KSCD::ejectClicked()
 {
-    m_cd->eject();
+    //m_cd->eject();
+	devices->eject();
 }
 
 void KSCD::closeEvent(QCloseEvent *e)

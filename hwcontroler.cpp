@@ -40,66 +40,102 @@
 #include <phonon/mediasource.h>
 #include <phonon/mediaobject.h>
 #include <phonon/phononnamespace.h>
+#include <phonon/path.h>
+
 
 using namespace Phonon;
 
 HWControler :: HWControler ()
 {
-	mac = 0;
-	loadAudioDiscs();
-}
-HWControler :: ~HWControler ()
-{
+	selectedCd=-1;
+	selectedS=-1;
 
-}
+	QList<Solid::Device> devList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDisc, QString());
 
-// return the Solid::OpticalDrive of the selected Audio Disc
-AudioCD* HWControler ::getAudioCD()
-{
-
-}
-
-// set the Audio disc to listen in ce detected audio cds list
-void HWControler ::setAudioDisc(int num)
-{
-	mac = num;
-}
-
-// load all Optical discs of the system
-void HWControler ::loadAudioDiscs()
-{
-	kDebug() << "Loading Optical Drives";
-
-	// list all Optical Drives of the system
-	detectedDevices = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDrive, QString());
-
-	
-	if (detectedDevices.size()<1)
+	if (devList.isEmpty())
 	{
-		kDebug() << "No Optical detected!";
+		kDebug() << "No Optical Disc detected!";
+
 	}
 	else
 	{
-		for (int i = 0; i < detectedDevices.size();i++)
+		for (int i = 0; i < devList.size();i++)
 		{
-			kDebug() << "Optical Disc detected: " << detectedDevices[i].udi();
-			kDebug() << "Optical Disc detected: " << detectedDevices[i].parentUdi();
-			// Devices to OpticalDrive
-			cds.append((AudioCD*)detectedDevices[i].as<Solid::OpticalDisc>());
+			cdIn.append(AudioCD(devList[i]));
+			selectedCd = 0;
+			kDebug() << "CD Loaded!";
 		}
+
+	}
+	
+	speakers = new Phonon::AudioOutput ( MusicCategory, this );
+	kDebug()<<speakers->volume();
+	if(!(selectedCd==-1))
+	{
+		media = new Phonon::MediaObject(this);
+		media->setCurrentSource(*cdIn[selectedCd].getMediaSource());
+		Path path = Phonon::createPath(media, speakers);
+		kDebug()<< "Phonon Loaded";
+	}
+/*
+     * media = new MediaObject(this);
+     * connect(media, SIGNAL(finished()), SLOT(slotFinished());
+     * media->setCurrentSource("/home/username/music/filename.ogg");
+     * media->play();
+*/
+}
+
+void HWControler :: selectCd(int cdNum)
+{
+
+}
+void HWControler :: selectSpeaker(int sNum)
+{
+
+}
+void HWControler :: eject()
+{
+	if(!(selectedCd==-1))
+	{
+		cdIn[selectedCd].getCdDrive()->eject();
 	}
 }
-
-// eject the main Optical Drive
-void HWControler ::ejectAudioDisc()
+void HWControler :: play()
+{
+	if(!(selectedCd==-1))
+	{
+		media->play();
+	}
+}
+void HWControler :: nextTrack()
 {
 
 }
-
-// play the main Optical Drive --- WARNING: Not finished!
-void HWControler ::playAudioCD()
+void HWControler :: prevTrack()
 {
 
+}
+void HWControler :: stop()
+{
+	if(!(selectedCd==-1))
+	{
+		media->stop();
+	}
+}
+void HWControler :: pause()
+{
+	if(!(selectedCd==-1))
+	{
+		media->pause();
+	}
+}
+void HWControler :: mute(bool mute)
+{
+	speakers->setMuted(mute);
+}
+bool HWControler :: isCdInserted()
+{
+	return(selectedCd!=-1);
 }
 
 

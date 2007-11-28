@@ -16,7 +16,7 @@ add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 ########### next target ###############
 
-set(kscd_SRCS kscd.cpp docking.cpp hwcontroler.cpp audiocd.cpp cdreader.cpp songs.cpp bwlednum.cpp configWidget.cpp cddbdlg.cpp cdcombobox.cpp)
+set(kscd_SRCS kscd.cpp docking.cpp hwcontroler.cpp audiocd.cpp bwlednum.cpp configWidget.cpp cddbdlg.cpp cdcombobox.cpp)
 
 kde4_add_ui_files(kscd_SRCS panel.ui configWidgetUI.ui)
 

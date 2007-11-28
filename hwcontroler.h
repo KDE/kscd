@@ -37,47 +37,41 @@
 
 #include <phonon/mediasource.h>
 #include <phonon/mediaobject.h>
+#include <phonon/audiooutput.h>
+
 
 #include "audiocd.h"
-#include "songs.h"
 
 class HWControler : public QObject
 {
 
 	private:
 
-// Contains all Optical Drive of the system, but in a Solid::Device list
-	QList<Solid::Device> detectedDevices;
-
-// Contains all audio discs detected
-	QList<AudioCD*> cds;
-
-// Number of the main audio cd (as default)
-	int mac;
-
-// Actual Media source
-	Songs *ms;
-	
-
+	// List of Cds inserted
+		QList<AudioCD> cdIn;
+	// Selected Cd to read
+		int selectedCd;
+	// List of Audio Out Put detected on the system
+		//QList<Phonon::AudioOutput> speakers;
+		Phonon::AudioOutput * speakers;
+	// Selected Out Put to use
+		int selectedS;
+	// Control play activity
+		Phonon::MediaObject *media;
+		
 	public:
-		HWControler ();
-		~HWControler ();
+		HWControler();
+		void selectCd(int cdNum);
+		void selectSpeaker(int sNum);
+		void eject();
+		void play();
+		void nextTrack();
+		void prevTrack();
+		void stop();
+		void pause();
+		void mute(bool mute);
+		bool isCdInserted();
 
-	// return the Solid::OpticalDrive of the selected Audio Disc
-		AudioCD* getAudioCD();
-
-	// set the Audio disc to listen in ce detected audio cds list
-		void setAudioDisc(int num);
-
-	// load all Optical discs of the system
-		void loadAudioDiscs();
-
-
-	// eject the main Optical Drive
-		void ejectAudioDisc();
-
-	// play the main Optical Drive --- WARNING: Not finished!
-		void playAudioCD();
 };
 
 #endif

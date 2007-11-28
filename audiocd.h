@@ -33,12 +33,28 @@
 
 #include <solid/opticaldisc.h>
 #include <solid/device.h>
+#include <solid/opticaldrive.h>
+#include <solid/block.h>
 
-class AudioCD : public Solid::OpticalDisc
+#include <phonon/mediasource.h>
+
+#include <QString>
+
+
+class AudioCD
 {
+	private:
+		Solid::OpticalDrive *cdDrive;
+		Solid::OpticalDisc *cd;
+		Solid::Block *block;
+		Phonon::MediaSource *src;
+
 	public:
-		AudioCD();
-		~AudioCD();
+		AudioCD(Solid::Device aCd);
+		Solid::OpticalDrive * getCdDrive();
+		Solid::OpticalDisc * getCd();
+		Phonon::MediaSource * getMediaSource();
+		QString getCdPath();
 };
 
 #endif

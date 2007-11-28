@@ -173,6 +173,7 @@ private:
     bool             updateTime;
 
 	HWControler *devices;
+	bool isPlaying;
 
     /**
      * Info from CDDB, and exploded versions thereof.

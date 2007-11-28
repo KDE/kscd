@@ -31,8 +31,40 @@
 
 #include "audiocd.h"
 
+#include <solid/opticaldisc.h>
+#include <solid/device.h>
+#include <solid/opticaldrive.h>
+#include <solid/block.h>
 
-AudioCD::~AudioCD()
+#include <kdebug.h>
+
+#include <phonon/mediasource.h>
+
+#include <QString>
+
+using namespace Phonon;
+
+AudioCD::AudioCD(Solid::Device aCd)
 {
-
+	cd=aCd.as<Solid::OpticalDisc>();
+	cdDrive = Solid::Device(aCd.parentUdi()).as<Solid::OpticalDrive>();
+	block = Solid::Device(aCd.parentUdi()).as<Solid::Block>();
+	src = new MediaSource(Cd,block->device());
 }
+Solid::OpticalDrive * AudioCD::getCdDrive()
+{
+	return cdDrive;
+}
+Solid::OpticalDisc * AudioCD::getCd()
+{
+	return cd;
+}
+Phonon::MediaSource * AudioCD::getMediaSource()
+{
+	return src;
+}
+QString AudioCD::getCdPath()
+{
+	return block->device();
+}
+
