@@ -85,14 +85,14 @@ KSCD::KSCD( QWidget *parent )
 	setColors();
 
 	// the time slider
-	timeIcon->setPixmap(SmallIcon("player_time"));
+	timeIcon->setPixmap(SmallIcon("player-time"));
 	connect(timeSlider, SIGNAL(sliderPressed()), SLOT(timeSliderPressed()));
 	connect(timeSlider, SIGNAL(sliderReleased()), SLOT(timeSliderReleased()));
 	connect(timeSlider, SIGNAL(sliderMoved(int)), SLOT(timeSliderMoved(int)));
 	connect(timeSlider, SIGNAL(valueChanged(int)), SLOT(jumpToTime(int)));
 
 	// the volume slider
-	volumeIcon->setPixmap(SmallIcon("player_volume"));
+	volumeIcon->setPixmap(SmallIcon("player-volume"));
 	volumeSlider->setValue(Prefs::volume());
 	showVolumeInLabel();
 	connect(volumeSlider, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
@@ -463,7 +463,7 @@ void KSCD::showConfig()
                 m->load();
                 KCDDB::Config* cfg = new KCDDB::Config();
                 cfg->readConfig();
-                configDialog -> addPage(m, cfg, QString("CDDB"), "cdtrack", i18n("Configure Fetching Items"));
+                configDialog -> addPage(m, cfg, QString("CDDB"), "text-xmcd", i18n("Configure Fetching Items"));
 
                 connect(configDialog, SIGNAL(okClicked()), m, SLOT(save()));
                 connect(configDialog, SIGNAL(applyClicked()), m, SLOT(save()));
