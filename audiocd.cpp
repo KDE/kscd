@@ -46,10 +46,37 @@ using namespace Phonon;
 
 AudioCD::AudioCD(Solid::Device aCd)
 {
-	cd=aCd.as<Solid::OpticalDisc>();
+	// get the opticaldrive
+	cdDrive=aCd.as<Solid::OpticalDrive>();
+	cd = NULL;
+	block = NULL;
+	src = NULL;
+
+	// look for an opticaldisc inserted in this drive
+	QList<Solid::Device> devList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDisc, QString());
+
+	if (devList.isEmpty())
+	{
+		kDebug() << "No Optical Disc detected in the computer!";
+
+	}
+	else
+	{
+		for (int i = 0; i < devList.size();i++)
+		{
+			if (devList[i].parentUdi()==aCd.udi())
+			{
+				cd = devList[i].as<Solid::OpticalDisc>();
+				block = aCd.as<Solid::Block>();
+				src = new MediaSource(Cd,block->device());
+			}
+		}
+	}
+/*
 	cdDrive = Solid::Device(aCd.parentUdi()).as<Solid::OpticalDrive>();
 	block = Solid::Device(aCd.parentUdi()).as<Solid::Block>();
 	src = new MediaSource(Cd,block->device());
+*/
 }
 Solid::OpticalDrive * AudioCD::getCdDrive()
 {
@@ -66,5 +93,9 @@ Phonon::MediaSource * AudioCD::getMediaSource()
 QString AudioCD::getCdPath()
 {
 	return block->device();
+}
+bool AudioCD::isCdInserted()
+{
+	return (cd!=NULL);
 }
 

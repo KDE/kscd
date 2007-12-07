@@ -167,13 +167,12 @@ protected:
 private:
     KConfigDialog   *configDialog;
     CDDBDlg         *cddialog;
-    KCompactDisc    *m_cd;
+    //KCompactDisc    *m_cd;
     QTimer           titlelabeltimer;
     QTimer           queryledtimer;
     bool             updateTime;
 
 	HWControler *devices;
-	bool isPlaying;
 
     /**
      * Info from CDDB, and exploded versions thereof.

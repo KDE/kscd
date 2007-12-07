@@ -53,7 +53,10 @@
 #include <kcmoduleloader.h>
 #include <ktoolinvocation.h>
 
+#include <phonon/phononnamespace.h>
+
 using namespace KCDDB;
+using namespace Phonon;
 
 static const char description[] = I18N_NOOP("KDE CD player");
 
@@ -74,7 +77,7 @@ KSCD::KSCD( QWidget *parent )
 {
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 	setupUi(this);
-	m_cd = new KCompactDisc();
+	//m_cd = new KCompactDisc();
 	cddbInfo.clear(); // The first freedb revision is "0" //!!!!
 	cddb = new KCDDB::Client();
 	connect(cddb, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
@@ -86,10 +89,10 @@ KSCD::KSCD( QWidget *parent )
 
 	// the time slider
 	timeIcon->setPixmap(SmallIcon("player_time"));
-	connect(timeSlider, SIGNAL(sliderPressed()), SLOT(timeSliderPressed()));
+	/*connect(timeSlider, SIGNAL(sliderPressed()), SLOT(timeSliderPressed()));
 	connect(timeSlider, SIGNAL(sliderReleased()), SLOT(timeSliderReleased()));
 	connect(timeSlider, SIGNAL(sliderMoved(int)), SLOT(timeSliderMoved(int)));
-	connect(timeSlider, SIGNAL(valueChanged(int)), SLOT(jumpToTime(int)));
+	connect(timeSlider, SIGNAL(valueChanged(int)), SLOT(jumpToTime(int)));*/
 
 	// the volume slider
 	volumeIcon->setPixmap(SmallIcon("player_volume"));
@@ -97,13 +100,13 @@ KSCD::KSCD( QWidget *parent )
 	showVolumeInLabel();
 	connect(volumeSlider, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
 
-	connect(m_cd, SIGNAL(discChanged(unsigned)), this, SLOT(discChanged(unsigned)));
-	connect(m_cd, SIGNAL(discInformation(KCompactDisc::DiscInfo)), this, SLOT(discInformation(KCompactDisc::DiscInfo)));
-	connect(m_cd, SIGNAL(discStatusChanged(KCompactDisc::DiscStatus)), this,
-		SLOT(discStatusChanged(KCompactDisc::DiscStatus)));
+	//connect(m_cd, SIGNAL(discChanged(unsigned)), this, SLOT(discChanged(unsigned)));
+	//connect(m_cd, SIGNAL(discInformation(KCompactDisc::DiscInfo)), this, SLOT(discInformation(KCompactDisc::DiscInfo)));
+	//connect(m_cd, SIGNAL(discStatusChanged(KCompactDisc::DiscStatus)), this,
+	//	SLOT(discStatusChanged(KCompactDisc::DiscStatus)));
 
-	connect(m_cd, SIGNAL(playoutTrackChanged(unsigned)), this, SLOT(trackChanged(unsigned)));
-	connect(m_cd, SIGNAL(playoutPositionChanged(unsigned)), this, SLOT(trackPosition(unsigned)));
+	//connect(m_cd, SIGNAL(playoutTrackChanged(unsigned)), this, SLOT(trackChanged(unsigned)));
+	//connect(m_cd, SIGNAL(playoutPositionChanged(unsigned)), this, SLOT(trackPosition(unsigned)));
 
 	connect(&queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
 	connect(&titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
@@ -117,8 +120,8 @@ KSCD::KSCD( QWidget *parent )
 
 	connect(shufflePB, SIGNAL(clicked()), SLOT(randomClicked()));
 	connect(repeatPB, SIGNAL(clicked()), SLOT(loopClicked()) );
-	connect(m_cd, SIGNAL(randomPlaylistChanged(bool)), this, SLOT(randomChanged(bool)));
-	connect(m_cd, SIGNAL(loopPlaylistChanged(bool)), this, SLOT(loopChanged(bool)));
+	//connect(m_cd, SIGNAL(randomPlaylistChanged(bool)), this, SLOT(randomChanged(bool)));
+	//connect(m_cd, SIGNAL(loopPlaylistChanged(bool)), this, SLOT(loopChanged(bool)));
 
 	connect(cddbPB, SIGNAL(clicked()), SLOT(CDDialogSelected()));
 	connect(KGlobalSettings::self(), SIGNAL(kdisplayPaletteChanged()), this, SLOT(setColors()));
@@ -179,8 +182,8 @@ KSCD::KSCD( QWidget *parent )
 
 	setupPopups();
 
-	m_cd->setLoopPlaylist(Prefs::looping());
-	m_cd->setRandomPlaylist(Prefs::randomPlay());
+	//m_cd->setLoopPlaylist(Prefs::looping());
+	//m_cd->setRandomPlaylist(Prefs::randomPlay());
 
 	setDocking(Prefs::docking());
 	setFocusPolicy(Qt::NoFocus);
@@ -190,7 +193,6 @@ KSCD::KSCD( QWidget *parent )
 	setFixedHeight(this->height());
 
 	devices = new HWControler();
-	isPlaying = false;
 
 /* FIXME check for return value */
 	setDevicePaths();
@@ -199,7 +201,7 @@ KSCD::KSCD( QWidget *parent )
 KSCD::~KSCD()
 {
 	delete cddb;
-	delete m_cd;
+	//delete m_cd;
 }
 
 void KSCD::setVolume(int v)
@@ -308,15 +310,18 @@ void KSCD::playClicked()
 	
     //else
         //m_cd->play();
-	if (isPlaying)
+	switch(devices->getState())
 	{
-		devices->pause();
-		isPlaying = false;
-	}
-	else
-	{
-		devices->play();
-		isPlaying = true;
+		case StoppedState:
+			devices->play();
+			break;
+		case PausedState:
+			devices->play();
+			break;
+		case PlayingState:
+			devices->pause();
+			break;
+		default:break;
 	}
 }
 
@@ -325,8 +330,10 @@ void KSCD::stopClicked()
     //stoppedByUser = true;
 
     //m_cd->stop();
-	isPlaying = false;
-	devices->stop();
+	if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
+	{
+		devices->stop();
+	}
 }
 
 void KSCD::prevClicked()
@@ -343,7 +350,7 @@ void KSCD::nextClicked()
 
 void KSCD::jumpToTime(int seconds)
 {
-	m_cd->playPosition(seconds);
+	//m_cd->playPosition(seconds);
 }
 
 void KSCD::timeSliderPressed()
@@ -370,9 +377,9 @@ void KSCD::quitClicked()
 
     writeSettings();
 
-    m_cd->stop();
+    //m_cd->stop();
 
-    delete m_cd;
+    //delete m_cd;
 
     kapp->quit();
 }
@@ -408,7 +415,7 @@ void KSCD::closeEvent(QCloseEvent *e)
 void KSCD::randomClicked()
 {
     Prefs::setRandomPlay(!Prefs::randomPlay());
-    m_cd->setRandomPlaylist(Prefs::randomPlay());
+    //m_cd->setRandomPlaylist(Prefs::randomPlay());
 }
 
 void KSCD::randomChanged(bool on)
@@ -420,7 +427,7 @@ void KSCD::randomChanged(bool on)
 void KSCD::loopClicked()
 {
     Prefs::setLooping(!Prefs::looping()) ;
-    m_cd->setLoopPlaylist(Prefs::looping());
+    //m_cd->setLoopPlaylist(Prefs::looping());
 }
 
 void KSCD::loopChanged(bool on)
@@ -435,7 +442,7 @@ void KSCD::loopChanged(bool on)
  */
 void KSCD::trackSelected(int cb_index)
 {
-    m_cd->playTrack(cb_index + 1);
+    //m_cd->playTrack(cb_index + 1);
 }
 
 void KSCD::updateConfigDialog(configWidget* widget)
@@ -444,13 +451,13 @@ void KSCD::updateConfigDialog(configWidget* widget)
         return;
 
     static QString originalTitleOfGroupBox = widget->groupBox3->title();
-    if(m_cd->isPlaying()) {
+    /*if(m_cd->isPlaying()) {
         widget->groupBox3->setEnabled(false);
         widget->groupBox3->setTitle( i18n( "CD Drive (you must stop playing to change this)" ) );
     } else {
         widget->groupBox3->setEnabled(true);
         widget->groupBox3->setTitle(originalTitleOfGroupBox);
-    }
+    }*/
 }
 
 void KSCD::showConfig()
@@ -541,7 +548,7 @@ void KSCD::setDevicePaths()
 		}
 	}
 
-    if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback(),
+/*    if (!m_cd->setDevice(Prefs::cdDevice(), Prefs::volume(), Prefs::digitalPlayback(),
          audioSystem, Prefs::audioDevice()))
     {
         // This device did not seem usable.
@@ -558,7 +565,7 @@ void KSCD::setDevicePaths()
     }
 
 	m_cd->setRandomPlaylist(Prefs::randomPlay());
-    m_cd->setLoopPlaylist(Prefs::looping());
+    m_cd->setLoopPlaylist(Prefs::looping());*/
 }
 
 void KSCD::setDocking(bool dock)
@@ -614,7 +621,7 @@ void KSCD::decVolume()
 
 void KSCD::volChanged(int vol)
 {
-    m_cd->setVolume(vol);
+/*    m_cd->setVolume(vol);*/
     Prefs::setVolume(vol);
     showVolumeInLabel();
 }
@@ -701,7 +708,7 @@ void KSCD::CDDialogDone()
 
 void KSCD::lookupCDDB()
 {
-    if (m_cd->isNoDisc() || m_cd->discId() == 0)
+    /*if (m_cd->isNoDisc() || m_cd->discId() == 0)
         return;
 
     kDebug(67000) << "lookupCDDB() called";
@@ -712,7 +719,7 @@ void KSCD::lookupCDDB()
 
     cddb->config().reparse();
     cddb->setBlockingMode(false);
-    cddb->lookup(m_cd->discSignature());
+    cddb->lookup(m_cd->discSignature());*/
 }
 
 void KSCD::lookupCDDBDone(Result result)
@@ -808,34 +815,34 @@ void KSCD::titlelabeltimeout()
 
 int KSCD::currentTrack()
 {
-    return m_cd->track();
+    return 1;//m_cd->track();
 }
 
 int KSCD::currentTrackLength()
 {
-    return m_cd->trackLength();
+    return devices->getTotalTime();//m_cd->trackLength();
 }
 
 int KSCD::currentPosition()
 {
-    return m_cd->trackPosition();
+    return devices->getCurrentTime();;//m_cd->trackPosition();
 }
 
 int KSCD::getStatus()
 {
-    if (m_cd->isPlaying())
+    /*if (m_cd->isPlaying())
       return 2;
     else if (m_cd->isPaused())
       return 4;
     else if (!m_cd->isNoDisc())
       return 5;
-    else
+    else*/
       return 6;
 }
 
 bool KSCD::playing()
 {
-    return m_cd->isPlaying();
+    return true;//m_cd->isPlaying();
 }
 
 void KSCD::trackPosition(unsigned trackPosition)
@@ -846,15 +853,15 @@ void KSCD::trackPosition(unsigned trackPosition)
     switch (Prefs::timeDisplayMode())
     {
     case Prefs::EnumTimeDisplayMode::TRACK_REM:
-        tmp = m_cd->trackLength() - trackPosition;
+        //tmp = m_cd->trackLength() - trackPosition;
         break;
 
     case Prefs::EnumTimeDisplayMode::TOTAL_SEC:
-        tmp = m_cd->discPosition();
+        //tmp = m_cd->discPosition();
         break;
 
     case Prefs::EnumTimeDisplayMode::TOTAL_REM:
-        tmp = m_cd->discLength() - m_cd->discPosition();
+        //tmp = m_cd->discLength() - m_cd->discPosition();
         break;
 
     case Prefs::EnumTimeDisplayMode::TRACK_SEC:
@@ -874,7 +881,7 @@ void KSCD::trackPosition(unsigned trackPosition)
 void KSCD::discChanged(unsigned tracks)
 {
 	kDebug(67000) << "discChanged(" << tracks << ")";
-	if (tracks > 0) {
+	/*if (tracks > 0) {
 		populateSongList();
 
 		// Set the total time.
@@ -906,7 +913,7 @@ void KSCD::discChanged(unsigned tracks)
 		populateSongList();
 		restoreArtistLabel();
 		totaltimelabel->hide();
-	}
+	}*/
 }
 
 void KSCD::discInformation(KCompactDisc::DiscInfo info)
@@ -917,7 +924,7 @@ void KSCD::discInformation(KCompactDisc::DiscInfo info)
 
 void KSCD::discStatusChanged(KCompactDisc::DiscStatus status)
 {
-	kDebug(67000) << "discStatusChanged(" << m_cd->discStatusString(status) << ")";
+	/*kDebug(67000) << "discStatusChanged(" << m_cd->discStatusString(status) << ")";
 	statuslabel->setText(m_cd->discStatusString(status));
 
 	switch(status)
@@ -929,10 +936,10 @@ void KSCD::discStatusChanged(KCompactDisc::DiscStatus status)
 				ejectClicked();
 
 			playPB->setText(i18n("Play"));
-			playPB->setIcon(KIcon(SmallIcon("media-playback-start")));
+			playPB->setIcon(KIcon(SmallIcon("media-playback-start")));*/
 
 			/* reset to initial value, only stopclicked() sets this to true */
-			stoppedByUser = false;
+			/*stoppedByUser = false;
 			break;
 
 		case KCompactDisc::Playing:
@@ -947,11 +954,11 @@ void KSCD::discStatusChanged(KCompactDisc::DiscStatus status)
 
 		default:
 			break;
-	}
+	}*/
 }
 
 void KSCD::trackChanged(unsigned track)
-{
+{/*
 	kDebug(67000) << "trackChanged(" << track << ")";
 	QString tooltip = artistlabel->text();
 
@@ -992,7 +999,7 @@ void KSCD::trackChanged(unsigned track)
         titlelabel->setText(title);
         tooltip += '/' + KStringHandler::rsqueeze(title, 30);
     }
-    emit tooltipCurrentTrackChanged(tooltip);
+    emit tooltipCurrentTrackChanged(tooltip);*/
 }
 
 void KSCD::cycleplaytimemode()
@@ -1056,15 +1063,15 @@ void KSCD::showArtistLabel(QString infoStatus)
 
 void KSCD::restoreArtistLabel()
 {
-    if(m_cd->tracks())
+ /*   if(m_cd->tracks())
         showArtistLabel(QString("%1 - %2").arg(m_cd->discArtist(), m_cd->discTitle()));
     else
-        showArtistLabel(i18n("NO DISC"));
+        showArtistLabel(i18n("NO DISC"));*/
 }
 
 void KSCD::information(QAction *action)
 {
-    const QString artist = m_cd->trackArtist();
+/*    const QString artist = m_cd->trackArtist();
     if(artist.isEmpty())
         return;
 
@@ -1112,7 +1119,7 @@ void KSCD::information(QAction *action)
         return;
     }
 
-    KRun::runUrl( url, "text/html", 0L);
+    KRun::runUrl( url, "text/html", 0L);*/
 }
 
 /**
@@ -1130,7 +1137,7 @@ bool KSCD::saveState(QSessionManager& /*sm*/)
  * Allow the user to type in the number of the track
  */
 void KSCD::keyPressEvent(QKeyEvent* e)
-{
+{/*
     bool isNum;
     uint value = e->text().toUInt(&isNum);
 
@@ -1146,35 +1153,35 @@ void KSCD::keyPressEvent(QKeyEvent* e)
     else
     {
       QWidget::keyPressEvent(e);
-    }
+    }*/
 }
 
 QString KSCD::currentTrackTitle()
-{
-    return m_cd->trackTitle();
+{/*
+    return m_cd->trackTitle();*/
 }
 
 QString KSCD::currentAlbum()
 {
-    return m_cd->discTitle();
+    //return m_cd->discTitle();
 }
 
 QString KSCD::currentArtist()
 {
-    return m_cd->trackArtist();
+   // return m_cd->trackArtist();
 }
 
 QStringList KSCD::trackList()
 {
-  QStringList tracks;
+/*  QStringList tracks;
   for (uint i = 0; i < m_cd->tracks(); ++i)
     tracks << m_cd->trackTitle(i);
 
-  return tracks;
+  return tracks;*/
 }
 
 void KSCD::populateSongList()
-{
+{/*
     songListCB->clear();
     for (uint i = 1; i <= m_cd->tracks(); ++i)
     {
@@ -1192,7 +1199,7 @@ void KSCD::populateSongList()
         str1.append(m_cd->trackTitle(i));
         str1.append(str2);
         songListCB->addItem(str1);
-    }
+    }*/
 }
 
 

@@ -50,11 +50,12 @@ HWControler :: HWControler ()
 	selectedCd=-1;
 	selectedS=-1;
 
-	QList<Solid::Device> devList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDisc, QString());
+	QList<Solid::Device> devList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDrive, QString());
 
 	if (devList.isEmpty())
 	{
-		kDebug() << "No Optical Disc detected!";
+		kDebug() << "No Optical Drive detected!";
+		selectedCd = -1;
 
 	}
 	else
@@ -63,26 +64,16 @@ HWControler :: HWControler ()
 		{
 			cdIn.append(AudioCD(devList[i]));
 			selectedCd = 0;
-			kDebug() << "CD Loaded!";
 		}
-
+		/*connect(cdIn[selectedCd].getCdDrive(), SIGNAL(ejectDone(Solid::ErrorType,
+					QVariant, const QString)), this, SLOT(reloadSystem()));
+			kDebug()<<"connecting ejectdone with reloadSystem!";*/
 	}
-	
+	//TODO: Load ALL audio output
 	speakers = new Phonon::AudioOutput ( MusicCategory, this );
-	kDebug()<<speakers->volume();
-	if(!(selectedCd==-1))
-	{
-		media = new Phonon::MediaObject(this);
-		media->setCurrentSource(*cdIn[selectedCd].getMediaSource());
-		Path path = Phonon::createPath(media, speakers);
-		kDebug()<< "Phonon Loaded";
-	}
-/*
-     * media = new MediaObject(this);
-     * connect(media, SIGNAL(finished()), SLOT(slotFinished());
-     * media->setCurrentSource("/home/username/music/filename.ogg");
-     * media->play();
-*/
+	selectedS=0;
+	media = new Phonon::MediaObject(this);
+	configMedia();
 }
 
 void HWControler :: selectCd(int cdNum)
@@ -102,9 +93,22 @@ void HWControler :: eject()
 }
 void HWControler :: play()
 {
-	if(!(selectedCd==-1))
+kDebug() << selectedCd;
+	if((selectedCd!=-1))
 	{
-		media->play();
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			media->play();
+			kDebug() << cdIn[selectedCd].getMediaSource()->fileName();
+		}
+		else
+		{
+			kDebug() << "No CD detected";
+		}
+	}
+	else
+	{
+		kDebug() << "No Drive detected!!!";
 	}
 }
 void HWControler :: nextTrack()
@@ -119,26 +123,126 @@ void HWControler :: stop()
 {
 	if(!(selectedCd==-1))
 	{
-		media->stop();
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			media->stop();
+		}
 	}
 }
 void HWControler :: pause()
 {
 	if(!(selectedCd==-1))
 	{
-		media->pause();
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			media->pause();
+		}
 	}
 }
 void HWControler :: mute(bool mute)
 {
-	speakers->setMuted(mute);
+	if((selectedS!=-1))
+	{
+		speakers->setMuted(mute);
+	}
 }
-bool HWControler :: isCdInserted()
+
+qint64 HWControler :: getCurrentTime ()
 {
-	return(selectedCd!=-1);
+	if(!(selectedCd==-1))
+	{
+		return -1;
+	}
+	else
+	{
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			return media->currentTime();
+		}
+		else
+		{
+			return -1;
+		}
+	}
 }
+qint64 HWControler :: getTotalTime ()
+{
+	if(!(selectedCd==-1))
+	{
+		return -1;
+	}
+	else
+	{
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			return media->totalTime();
+		}
+		else
+		{
+			return -1;
+		}
+	}
+}
+qint64 HWControler :: getRemainingTime ()
+{
+	if(!(selectedCd==-1))
+	{
+		return -1;
+	}
+	else
+	{
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			return media->remainingTime();
+		}
+		else
+		{
+			return -1;
+		}
+	}
+}
+qreal HWControler :: getVolume()
+{
+	if (selectedS == -1)
+	{
+		return -1;
+	}
+	else
+	{
+		return speakers->volume();
+	}
+}
+Phonon::State HWControler ::getState()
+{
+	if(selectedCd==-1)
+	{
+		return ErrorState;
+	}
+	else
+	{
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			return media->state();
+		}
+		else
+		{
+			return ErrorState;
+		}
+	}
+};
 
-
+void HWControler ::configMedia()
+{
+	if(selectedCd!=-1)
+	{
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			media->setCurrentSource(*cdIn[selectedCd].getMediaSource());
+			path = Phonon::createPath(media, speakers);
+			kDebug()<< "Phonon Loaded";
+		}
+	}
+}
 
 
 /*

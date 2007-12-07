@@ -504,7 +504,7 @@
           </sizepolicy>
          </property>
          <property name="text" >
-          <string>&amp;Next</string>
+          <string>&amp;Mute</string>
          </property>
          <property name="flat" >
           <bool>false</bool>
@@ -520,7 +520,7 @@
           </sizepolicy>
          </property>
          <property name="text" >
-          <string>Pre&amp;vious</string>
+          <string>Unmute</string>
          </property>
          <property name="flat" >
           <bool>false</bool>

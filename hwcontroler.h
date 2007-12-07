@@ -45,6 +45,8 @@
 class HWControler : public QObject
 {
 
+	Q_OBJECT
+
 	private:
 
 	// List of Cds inserted
@@ -58,6 +60,8 @@ class HWControler : public QObject
 		int selectedS;
 	// Control play activity
 		Phonon::MediaObject *media;
+
+		Phonon::Path path;
 		
 	public:
 		HWControler();
@@ -70,7 +74,13 @@ class HWControler : public QObject
 		void stop();
 		void pause();
 		void mute(bool mute);
-		bool isCdInserted();
+		qint64 getCurrentTime ();
+		qint64 getTotalTime ();
+		qint64 getRemainingTime ();
+		qreal getVolume();
+		Phonon::State getState();
+		void configMedia();
+
 
 };
 

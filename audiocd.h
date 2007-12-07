@@ -55,6 +55,7 @@ class AudioCD
 		Solid::OpticalDisc * getCd();
 		Phonon::MediaSource * getMediaSource();
 		QString getCdPath();
+		bool isCdInserted();
 };
 
 #endif
