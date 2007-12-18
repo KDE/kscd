@@ -54,6 +54,7 @@
 #include <ktoolinvocation.h>
 
 #include <phonon/phononnamespace.h>
+#include "ihm/kscdwindow.h"
 
 using namespace KCDDB;
 using namespace Phonon;
@@ -75,6 +76,8 @@ KSCD::KSCD( QWidget *parent )
     updateTime(true),
     m_dockWidget(0)
 {
+	KscdWindow *window = new KscdWindow;
+	window->show();
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 	setupUi(this);
 	//m_cd = new KCompactDisc();

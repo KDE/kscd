@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="85"
+   height="42"
+   id="svg17571"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   version="1.0"
+   sodipodi:docbase="/home/kde-devel/Archive/build/skin/default"
+   sodipodi:docname="eject_p.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs17573">
+    <linearGradient
+       id="linearGradientEjectP">
+      <stop
+         style="stop-color:#008dc8;stop-opacity:1;"
+         offset="0"
+         id="stop6132" />
+      <stop
+         id="stop6134"
+         offset="0.85869563"
+         style="stop-color:#008dc8;stop-opacity:0.96862745;" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="1"
+         id="stop6136" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradientEjectIcoN">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop3140" />
+      <stop
+         id="stop3146"
+         offset="0.75"
+         style="stop-color:#001c78;stop-opacity:1;" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop3142" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradientEjectIcoN"
+       id="radialGradientEjectIcoN"
+       cx="893.25201"
+       cy="182.10988"
+       fx="893.25201"
+       fy="182.10988"
+       r="13.007748"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(5.1109299,-3.6250906e-2,3.0905675e-2,6.1293536,-3677.7247,-879.34066)" />
+    <linearGradient
+       id="linearGradientEjectN">
+      <stop
+         id="stop28386"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         style="stop-color:#abcfdf;stop-opacity:0.96862745;"
+         offset="0.82499999"
+         id="stop28388" />
+      <stop
+         id="stop28390"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:1;" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradientEjectP"
+       id="radialGradientEjectP"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-4.6177927e-4,-2.9702492,2.9816784,-4.635574e-4,-84.548208,2.2864193)"
+       cx="-19.908512"
+       cy="42.602921"
+       fx="-19.908512"
+       fy="42.602921"
+       r="20.058737" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradientEjectIcoN"
+       id="radialGradient2180"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(5.1109299,-3.6250906e-2,3.0905675e-2,6.1293536,-3677.7247,-879.34066)"
+       cx="893.25201"
+       cy="182.10988"
+       fx="893.25201"
+       fy="182.10988"
+       r="13.007748" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradientEjectIcoN"
+       id="radialGradient2182"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(5.1109299,-3.6250906e-2,3.0905675e-2,6.1293536,-3677.7247,-879.34066)"
+       cx="893.25201"
+       cy="182.10988"
+       fx="893.25201"
+       fy="182.10988"
+       r="13.007748" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.2"
+     inkscape:cx="28.470439"
+     inkscape:cy="26.679207"
+     inkscape:document-units="px"
+     inkscape:current-layer="gEjectButton"
+     height="42px"
+     width="85px"
+     showgrid="true"
+     inkscape:window-width="1220"
+     inkscape:window-height="950"
+     inkscape:window-x="60"
+     inkscape:window-y="0" />
+  <metadata
+     id="metadata17576">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="gEjectButton">
+      <path
+         sodipodi:nodetypes="cccscc"
+         id="EjectBase"
+         d="M 20.896243,40.883305 C 42.720924,21.863011 63.576132,41.287652 63.576132,41.287652 C 63.576132,41.287652 84.5,20.783913 84.5,20.783913 C 84.5,20.783913 67.589151,2.4258825 42.644038,2.5002252 C 15.099508,2.5822322 0.47838008,19.832099 0.47838008,19.832099 L 20.896243,40.883305 z "
+         style="fill:url(#radialGradientEjectP);fill-opacity:1;fill-rule:evenodd;stroke:#000e3c;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         id="gEjectIco"
+         transform="matrix(0.8983014,0,0,0.7573984,-759.54984,-92.380073)"
+         style="fill:url(#radialGradientEjectIcoN);fill-opacity:1;stroke:#000e3c;stroke-width:1.21234655;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+        <path
+           id="EjectIcoUp"
+           d="M 880.85039,158.18897 L 905.65354,158.18897 L 905.65354,151.10236 L 880.85039,151.10236 L 880.85039,158.18897 z "
+           style="fill:url(#radialGradient2180);fill-opacity:1;fill-rule:evenodd;stroke:#000e3c;stroke-width:1.21234655;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           id="EjectIcoDown"
+           d="M 880.85039,147.55905 L 905.65354,147.55905 L 893.125,133.38582 L 880.85039,147.55905 z "
+           style="fill:url(#radialGradient2182);fill-opacity:1;fill-rule:evenodd;stroke:#000e3c;stroke-width:1.21234655;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      </g>
+    </g>
+  </g>
+</svg>
