@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
    version="1.0"
-   sodipodi:docbase="Z:\"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/build-kdemultimedia/kscd/skin/default"
    sodipodi:docname="unmute_p.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
@@ -133,16 +133,16 @@
      inkscape:pageshadow="2"
      inkscape:zoom="15.839192"
      inkscape:cx="21.0499"
-     inkscape:cy="9.6389947"
+     inkscape:cy="17.215139"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g2205"
      showgrid="true"
      width="30px"
      height="31px"
-     inkscape:window-width="1280"
+     inkscape:window-width="1234"
      inkscape:window-height="949"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4" />
+     inkscape:window-x="0"
+     inkscape:window-y="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -172,15 +172,15 @@
          d="M 29.5 15 A 14.5 14.5 0 1 1  0.5,15 A 14.5 14.5 0 1 1  29.5 15 z"
          transform="translate(0,1)" />
       <g
-         style="fill:url(#radialGradientMuteIcoN);fill-opacity:1"
+         style="fill:url(#radialGradientMuteIcoN);fill-opacity:1;stroke:#001c3c;stroke-opacity:1;stroke-width:0.66666918;stroke-miterlimit:4;stroke-dasharray:none"
          id="gMuteIco"
          transform="matrix(1.5,0,0,1.4999887,0,1.0001673)">
         <path
-           style="fill:url(#radialGradient2211);fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           style="fill:url(#radialGradient2211);fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:0.66666918;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
            d="M 5,7 L 5,13 L 7,13 L 7,7 L 5,7 z "
            id="MuteIcoLeft" />
         <path
-           style="fill:url(#radialGradient2213);fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           style="fill:url(#radialGradient2213);fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:0.66666918;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
            d="M 9,7 L 9,13 L 13,16 L 13,4 L 9,7 z "
            id="MuteIcoRight" />
       </g>

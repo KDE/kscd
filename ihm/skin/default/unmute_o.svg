@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
    version="1.0"
-   sodipodi:docbase="Z:\"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/build-kdemultimedia/kscd/skin/default"
    sodipodi:docname="unmute_o.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
@@ -73,12 +73,12 @@
          style="stop-color:#ffffff;stop-opacity:1;" />
       <stop
          style="stop-color:#a5e5fa;stop-opacity:1;"
-         offset="0.72500002"
+         offset="0.5"
          id="stop3145" />
       <stop
          id="stop3147"
          offset="1"
-         style="stop-color:#00501c;stop-opacity:1;" />
+         style="stop-color:#00782a;stop-opacity:1;" />
     </linearGradient>
     <radialGradient
        inkscape:collect="always"
@@ -89,7 +89,8 @@
        fx="15"
        fy="15"
        r="15"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9642857,1.3333334e-8,-1.3333334e-8,0.9642857,0.5357145,0.5357141)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -106,10 +107,10 @@
      showgrid="true"
      width="30px"
      height="31px"
-     inkscape:window-width="1280"
+     inkscape:window-width="1234"
      inkscape:window-height="949"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4" />
+     inkscape:window-x="0"
+     inkscape:window-y="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -138,15 +139,15 @@
          sodipodi:ry="14.5"
          d="M 29.5 15 A 14.5 14.5 0 1 1  0.5,15 A 14.5 14.5 0 1 1  29.5 15 z" />
       <g
-         style="fill:#006423;fill-opacity:1"
+         style="fill:#00782a;fill-opacity:1;stroke:#001c3c;stroke-opacity:1;stroke-width:0.66666918;stroke-miterlimit:4;stroke-dasharray:none"
          id="gMuteIco"
          transform="matrix(1.5,0,0,1.4999887,0,1.673e-4)">
         <path
-           style="fill:#006423;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           style="fill:#00782a;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:0.66666918;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
            d="M 5,7 L 5,13 L 7,13 L 7,7 L 5,7 z "
            id="MuteIcoLeft" />
         <path
-           style="fill:#006423;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           style="fill:#00782a;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:0.66666918;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
            d="M 9,7 L 9,13 L 13,16 L 13,4 L 9,7 z "
            id="MuteIcoRight" />
       </g>

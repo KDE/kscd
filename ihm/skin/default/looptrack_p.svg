@@ -15,26 +15,11 @@
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
    version="1.0"
-   sodipodi:docbase="Z:\"
-   sodipodi:docname="loopNo_p.svg"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/build-kdemultimedia/kscd/skin/default"
+   sodipodi:docname="loopTrack_p.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
      id="defs4">
-    <linearGradient
-       id="linearGradient23892">
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="0"
-         id="stop23894" />
-      <stop
-         id="stop23896"
-         offset="0.43181819"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="1"
-         id="stop23898" />
-    </linearGradient>
     <marker
        inkscape:stockid="Arrow1Send"
        orient="auto"
@@ -138,12 +123,12 @@
          style="stop-color:#ffffff;stop-opacity:1;" />
       <stop
          style="stop-color:#a5e5fa;stop-opacity:1;"
-         offset="0.72500002"
+         offset="0.5"
          id="stop3145" />
       <stop
          id="stop3147"
          offset="1"
-         style="stop-color:#00501c;stop-opacity:1;" />
+         style="stop-color:#00782a;stop-opacity:1;" />
     </linearGradient>
     <radialGradient
        inkscape:collect="always"
@@ -154,7 +139,8 @@
        fx="15"
        fy="15"
        r="15"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9672619,0,0,0.9672619,0.4910715,0.4910713)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -164,17 +150,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="15.839192"
-     inkscape:cx="4.3767536"
-     inkscape:cy="15.023774"
+     inkscape:cx="13.268433"
+     inkscape:cy="15.745598"
      inkscape:document-units="px"
      inkscape:current-layer="g2205"
      showgrid="true"
      width="30px"
      height="31px"
-     inkscape:window-width="1280"
+     inkscape:window-width="1234"
      inkscape:window-height="949"
      inkscape:window-x="0"
-     inkscape:window-y="47" />
+     inkscape:window-y="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -192,8 +178,7 @@
      id="layer1">
     <g
        id="g2205"
-       inkscape:label="Calque 1"
-       transform="translate(0,-1)">
+       inkscape:label="Calque 1">
       <path
          sodipodi:type="arc"
          style="fill:url(#radialGradient4228);fill-opacity:1.0;stroke:#001c3c;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -202,16 +187,18 @@
          sodipodi:cy="15"
          sodipodi:rx="14.5"
          sodipodi:ry="14.5"
-         d="M 29.5 15 A 14.5 14.5 0 1 1  0.5,15 A 14.5 14.5 0 1 1  29.5 15 z"
-         transform="translate(0,2)" />
+         d="M 29.5 15 A 14.5 14.5 0 1 1  0.5,15 A 14.5 14.5 0 1 1  29.5 15 z" />
     </g>
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#Arrow2Send);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 8.4563308,8.9563308 L 22.061858,8.9563308 L 22.061858,15.813143"
-       id="path6416" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.96233821;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#Arrow2Send);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 16.642776,23.035633 L 7.1156762,23.035633 L 7.1156762,14.138886"
-       id="path6418" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#001c3c;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Utopia"
+       x="9.6776142"
+       y="21.6"
+       id="text2188"
+       sodipodi:linespacing="100%"><tspan
+         sodipodi:role="line"
+         id="tspan2190"
+         x="9.6776142"
+         y="21.6">1</tspan></text>
   </g>
 </svg>

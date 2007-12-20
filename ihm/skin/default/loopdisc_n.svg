@@ -15,11 +15,26 @@
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
    version="1.0"
-   sodipodi:docbase="Z:\"
-   sodipodi:docname="loopTrack_o.svg"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/build-kdemultimedia/kscd/skin/default"
+   sodipodi:docname="loopDisc_n.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
      id="defs4">
+    <linearGradient
+       id="linearGradient23892">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop23894" />
+      <stop
+         id="stop23896"
+         offset="0.40000001"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop23898" />
+    </linearGradient>
     <marker
        inkscape:stockid="Arrow1Send"
        orient="auto"
@@ -132,14 +147,35 @@
     </linearGradient>
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradientBaseO"
+       xlink:href="#linearGradientBase"
        id="radialGradient4228"
        cx="15"
        cy="15"
        fx="15"
        fy="15"
        r="15"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9663282,-2e-8,1.9912888e-8,0.9621193,0.505076,0.5682111)" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient23892"
+       id="radialGradient23890"
+       cx="22"
+       cy="20"
+       fx="22"
+       fy="20"
+       r="2.75"
        gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient23892"
+       id="radialGradient2196"
+       gradientUnits="userSpaceOnUse"
+       cx="22"
+       cy="20"
+       fx="22"
+       fy="20"
+       r="2.75" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -148,18 +184,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="23.881877"
-     inkscape:cy="21.669787"
+     inkscape:zoom="15.839192"
+     inkscape:cx="12.76912"
+     inkscape:cy="12.498393"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g2192"
      showgrid="true"
      width="30px"
      height="31px"
-     inkscape:window-width="1280"
+     inkscape:window-width="1234"
      inkscape:window-height="949"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4" />
+     inkscape:window-x="0"
+     inkscape:window-y="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -177,44 +213,42 @@
      id="layer1">
     <g
        id="g2205"
-       inkscape:label="Calque 1">
+       inkscape:label="Calque 1"
+       transform="translate(0,-1)">
       <path
          sodipodi:type="arc"
-         style="fill:url(#radialGradient4228);fill-opacity:1.0;stroke:#001c3c;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:url(#radialGradient4228);fill-opacity:1;stroke:#001c3c;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path3251"
          sodipodi:cx="15"
          sodipodi:cy="15"
          sodipodi:rx="14.5"
          sodipodi:ry="14.5"
-         d="M 29.5 15 A 14.5 14.5 0 1 1  0.5,15 A 14.5 14.5 0 1 1  29.5 15 z" />
+         d="M 29.5 15 A 14.5 14.5 0 1 1  0.5,15 A 14.5 14.5 0 1 1  29.5 15 z"
+         transform="translate(0,1)" />
     </g>
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#Arrow2Send);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 8.4563308,7.9563308 L 22.061858,7.9563308 L 22.061858,14.813143"
-       id="path6416" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.96233821;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#Arrow2Send);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 16.642776,22.035633 L 7.1156762,22.035633 L 7.1156762,13.138886"
-       id="path6418" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#006423;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path8366"
-       sodipodi:cx="22"
-       sodipodi:cy="20"
-       sodipodi:rx="2.5"
-       sodipodi:ry="2.5"
-       d="M 24.5 20 A 2.5 2.5 0 1 1  19.5,20 A 2.5 2.5 0 1 1  24.5 20 z" />
-    <text
-       xml:space="preserve"
-       style="font-size:4px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black"
-       x="20.673828"
-       y="21.464285"
-       id="text7393"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan7395"
-         x="20.673828"
-         y="21.464285">1</tspan></text>
+    <g
+       id="g2192"
+       transform="matrix(3.2728432,0,0,3.2806817,-57.025289,-50.613634)"
+       style="stroke:#001c3c;stroke-opacity:1;stroke-width:0.3051795;stroke-miterlimit:4;stroke-dasharray:none">
+      <path
+         d="M 24.5 20 A 2.5 2.5 0 1 1  19.5,20 A 2.5 2.5 0 1 1  24.5 20 z"
+         sodipodi:ry="2.5"
+         sodipodi:rx="2.5"
+         sodipodi:cy="20"
+         sodipodi:cx="22"
+         id="path8366"
+         style="fill:url(#radialGradient2196);fill-opacity:1;stroke:#001c3c;stroke-width:0.3051795;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(0.7151101,0,0,1.0618301,6.2133074,-2.3695378)"
+         d="M 23.169643 21.066965 A 1.09375 0.73660713 0 1 1  20.982143,21.066965 A 1.09375 0.73660713 0 1 1  23.169643 21.066965 z"
+         sodipodi:ry="0.73660713"
+         sodipodi:rx="1.09375"
+         sodipodi:cy="21.066965"
+         sodipodi:cx="22.075893"
+         id="path20975"
+         style="fill:#ffffff;fill-opacity:1;stroke:#001c3c;stroke-width:0.35022035;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         sodipodi:type="arc" />
+    </g>
   </g>
 </svg>

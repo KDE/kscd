@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
    version="1.0"
-   sodipodi:docbase="/media/disk"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/build-kdemultimedia/kscd/skin/default"
    sodipodi:docname="pause_o.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
@@ -28,10 +28,10 @@
          id="stop3143" />
       <stop
          id="stop3145"
-         offset="0.72500002"
+         offset="0.5"
          style="stop-color:#a5e5fa;stop-opacity:1;" />
       <stop
-         style="stop-color:#00501c;stop-opacity:1;"
+         style="stop-color:#00782a;stop-opacity:1;"
          offset="1"
          id="stop3147" />
     </linearGradient>
@@ -110,9 +110,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="33.552858"
-     inkscape:cy="50.294608"
+     inkscape:zoom="5.6"
+     inkscape:cx="8.4595841"
+     inkscape:cy="45.877813"
      inkscape:document-units="px"
      inkscape:current-layer="gPauseButton"
      width="85px"
@@ -120,8 +120,8 @@
      showgrid="true"
      inkscape:window-width="1220"
      inkscape:window-height="950"
-     inkscape:window-x="60"
-     inkscape:window-y="0" />
+     inkscape:window-x="0"
+     inkscape:window-y="32" />
   <metadata
      id="metadata6983">
     <rdf:RDF>
@@ -150,16 +150,16 @@
          sodipodi:type="arc" />
       <g
          id="gPauseIco"
-         style="fill:#006423;fill-opacity:1"
+         style="fill:#00782a;fill-opacity:1"
          transform="matrix(1.4166667,0,0,1.4166667,0,-1.9582627e-6)">
         <path
            id="pauseIcoLeft"
            d="M 20,15 L 20,45 L 28,45 L 28,15 L 20,15 z "
-           style="fill:#006423;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+           style="fill:#00782a;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
         <path
            id="pauseIcoRight"
            d="M 32,15 L 40,15 L 40,45 L 32,45 L 32,15 z "
-           style="fill:#006423;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+           style="fill:#00782a;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
       </g>
     </g>
   </g>

@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
    version="1.0"
-   sodipodi:docbase="/home/kde-devel/Archive/build/skin/default"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/build-kdemultimedia/kscd/skin/default"
    sodipodi:docname="next_o.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
@@ -28,10 +28,10 @@
          id="stop18559" />
       <stop
          id="stop19536"
-         offset="0.82499999"
-         style="stop-color:#abcfdf;stop-opacity:0.96862745;" />
+         offset="0.60227275"
+         style="stop-color:#91dfff;stop-opacity:0.96862745;" />
       <stop
-         style="stop-color:#0a5a14;stop-opacity:1;"
+         style="stop-color:#00782a;stop-opacity:1;"
          offset="1"
          id="stop18561" />
     </linearGradient>
@@ -62,10 +62,10 @@
      height="87px"
      width="40px"
      showgrid="true"
-     inkscape:window-width="1280"
+     inkscape:window-width="1234"
      inkscape:window-height="950"
      inkscape:window-x="0"
-     inkscape:window-y="25" />
+     inkscape:window-y="0" />
   <metadata
      id="metadata17576">
     <rdf:RDF>

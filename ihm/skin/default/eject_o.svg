@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
    version="1.0"
-   sodipodi:docbase="/home/kde-devel/Archive/build/skin/default"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/build-kdemultimedia/kscd/skin/default"
    sodipodi:docname="eject_o.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
@@ -28,10 +28,10 @@
          id="stop28394" />
       <stop
          id="stop28396"
-         offset="0.82499999"
-         style="stop-color:#abcfdf;stop-opacity:0.96862745;" />
+         offset="0.60000002"
+         style="stop-color:#91dfff;stop-opacity:0.96862745;" />
       <stop
-         style="stop-color:#205d1c;stop-opacity:1;"
+         style="stop-color:#00792a;stop-opacity:1;"
          offset="1"
          id="stop28398" />
     </linearGradient>
@@ -85,17 +85,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="32.226233"
-     inkscape:cy="16.006218"
+     inkscape:cx="32.302609"
+     inkscape:cy="16.00205"
      inkscape:document-units="px"
-     inkscape:current-layer="g9609"
+     inkscape:current-layer="g23487"
      height="42px"
      width="85px"
      showgrid="true"
-     inkscape:window-width="1280"
+     inkscape:window-width="1234"
      inkscape:window-height="950"
      inkscape:window-x="0"
-     inkscape:window-y="44" />
+     inkscape:window-y="0" />
   <metadata
      id="metadata17576">
     <rdf:RDF>
@@ -120,15 +120,16 @@
          style="fill:url(#radialGradient26444);fill-opacity:1;fill-rule:evenodd;stroke:#000e3c;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <g
          id="g9609"
-         transform="matrix(0.8983014,0,0,0.7573984,-759.54984,-94.38031)">
+         transform="matrix(0.8983014,0,0,0.7573984,-759.54984,-94.38031)"
+         style="fill:#00782a;fill-opacity:1">
         <path
            id="path22919"
            d="M 880.85039,158.18897 L 905.65354,158.18897 L 905.65354,151.10236 L 880.85039,151.10236 L 880.85039,158.18897 z "
-           style="fill:#00782a;fill-opacity:1;fill-rule:evenodd;stroke:#000e3c;stroke-width:1.21234655;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+           style="fill-opacity:1;fill-rule:evenodd;stroke:#000e3c;stroke-width:1.21234655;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         <path
            id="path22921"
            d="M 880.85039,147.55905 L 905.65354,147.55905 L 893.125,133.38582 L 880.85039,147.55905 z "
-           style="fill:#00782a;fill-opacity:1;fill-rule:evenodd;stroke:#000e3c;stroke-width:1.21234655;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+           style="fill-opacity:1;fill-rule:evenodd;stroke:#000e3c;stroke-width:1.21234655;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       </g>
     </g>
   </g>
