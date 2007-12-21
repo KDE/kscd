@@ -55,9 +55,11 @@ protected:
 public:
 	KscdWidget(QString sName,QWidget * parent=0);
 	virtual ~KscdWidget();
-
+	void loadPicture(QString,StateButton);
 signals:
 	void changePicture(QString);
+	void buttonClicked(QString);
+	void setName(QString);
 };
 
 #endif /*KSCDWIDGET_H_*/

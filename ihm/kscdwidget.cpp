@@ -41,7 +41,7 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QSvgWidget(parent)
 	
 	connect(this,SIGNAL(changePicture(QString)),this,SLOT(load(QString)));
 	setMouseTracking ( true );
-	emit(changePicture(m_path+ sName+"_n.svg"));
+	emit(changePicture(m_path + sName+"_n.svg"));
 	show();
 }
 
@@ -49,50 +49,28 @@ KscdWidget::~KscdWidget()
 {
 }
 
-QString nameToString(NameButton sName)
+void KscdWidget :: loadPicture(QString name,StateButton state)
 {
-	QString name;
-	switch(sName)
+	switch(state)
 	{
-		case Play: 
-				name = "play";
+		case Default: emit(changePicture(m_path + name + "_n.svg"));
 				break;
-		case Pause:
-				name = "pause";
+		case Pressed: emit(changePicture(m_path + name + "_p.svg"));
 				break;
-		case Stop:
-				name =  "stop";
+		case Released: emit(changePicture(m_path + name + "_o.svg"));
 				break;
-		case Previous: 
-				name =  "previous";
+		case Focused: emit(changePicture(m_path + name + "_o.svg"));
 				break;
-		case Next: 
-				name =  "next";
+		case Embedded: emit(changePicture(m_path + name + "_p.svg"));
 				break;
-		case Eject: 
-				name =  "eject";
-				break;
-		case Mute: 
-				name =  "mute";
-				break;
-		case Unmute: 
-				name =  "unmute";
-				break;
-		case Loop: 
-				name =  "loop";
-				break;
-		case LoopTrack: 
-				name =  "loopTrack";
-				break;
-		case LoopDisc: 
-				name =  "loopDisc";
-				break;
-		case Random: 
-				name =  "random";
-				break;
-		case TrackList: 
-				name =  "trackList";
-				break;
+		default:break;
 	}
-	return name;
 }
+
+void KscdWidget :: setName(QString sName)
+{
+	m_name = sName;
+}
+
+
+

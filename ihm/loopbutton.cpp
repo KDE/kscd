@@ -65,16 +65,19 @@ void LoopButton :: mouseReleaseEvent(QMouseEvent *event)
 		if(m_name == "loop")
 		{
 			m_name = "looptrack";
+			emit(buttonClicked(m_name));
 			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 		else if(m_name == "looptrack")
 		{
 			m_name = "loopdisc";
+			emit(buttonClicked(m_name));
 			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 		else
 		{
 			m_name = "loop";
+			emit(buttonClicked(m_name));
 			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 	}

@@ -62,6 +62,9 @@ class KCompactDisc;
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
 
+#include "ihm/ihmnamespace.h"
+
+using namespace IHM;
 
 class CDDBDlg;
 class DockWidget;
@@ -79,15 +82,17 @@ class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManager {
 
 public /*Q_SLOTS*/slots:
     Q_SCRIPTABLE bool playing();
-    Q_SCRIPTABLE void play() { playClicked(); }
+//     Q_SCRIPTABLE void play() { playClicked(); }
+/*
     Q_SCRIPTABLE void stop() { stopClicked(); }
     Q_SCRIPTABLE void previous() { prevClicked(); }
-    Q_SCRIPTABLE void next() { nextClicked(); }
+    Q_SCRIPTABLE void next() { nextClicked(); }*/
     Q_SCRIPTABLE void jumpTo(int seconds) { jumpToTime(seconds); }
-    Q_SCRIPTABLE void eject() { ejectClicked(); }
+/*
+    Q_SCRIPTABLE void eject() { ejectClicked(); }*/
     Q_SCRIPTABLE void quit() { quitClicked(); }
-    Q_SCRIPTABLE void toggleLoop() { loopClicked(); }
-    Q_SCRIPTABLE void toggleShuffle() { randomClicked(); }
+//     Q_SCRIPTABLE void toggleLoop() { loopClicked(); }
+//     Q_SCRIPTABLE void toggleShuffle() { randomClicked(); }
     Q_SCRIPTABLE void toggleTimeDisplay() { cycleplaytimemode(); }
     Q_SCRIPTABLE void cddbDialog() { CDDialogSelected(); }
     Q_SCRIPTABLE void optionDialog() { showConfig(); }
@@ -116,15 +121,12 @@ public:
 
 signals:
     void tooltipCurrentTrackChanged(const QString &);
+	void picture(QString,StateButton);
 
 public slots:
     void setColors();
     void writeSettings();
-    void playClicked();
-    void nextClicked();
-    void prevClicked();
-    void stopClicked();
-    void ejectClicked();
+    void actionButton(QString);
     void jumpToTime(int);
     void quitClicked();
     void trackSelected(int);
@@ -141,9 +143,9 @@ public slots:
     void showArtistLabel(QString);
     void restoreArtistLabel();
 
-    void randomClicked();
+//     void randomClicked();
     void randomChanged(bool);
-    void loopClicked();
+//     void loopClicked();
     void loopChanged(bool);
 
     void information(QAction *action);
@@ -167,7 +169,7 @@ protected:
 private:
     KConfigDialog   *configDialog;
     CDDBDlg         *cddialog;
-    //KCompactDisc    *m_cd;
+//     KCompactDisc    *m_cd;
     QTimer           titlelabeltimer;
     QTimer           queryledtimer;
     bool             updateTime;

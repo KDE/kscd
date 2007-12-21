@@ -55,7 +55,7 @@ public:
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
 signals:
-	void clicked(QString);
+	void buttonClicked(QString);
 
 };
 

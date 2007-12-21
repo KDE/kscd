@@ -116,7 +116,7 @@ void DockWidget::setToolTip(const QString& text)
 }
 
 void DockWidget::wheelEvent(QWheelEvent *e)
-{
+{/*
     if (e->orientation() == Qt::Horizontal)
         return;
 
@@ -146,7 +146,7 @@ void DockWidget::wheelEvent(QWheelEvent *e)
             kscd->prevClicked();
         }
         break;
-    }
+    }*/
 }
 
 #include "docking.moc"

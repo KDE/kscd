@@ -50,12 +50,11 @@ void MuteButton :: mousePressEvent(QMouseEvent *event)
 		m_state = Pressed;
 		if(m_name== "mute")
 		{
-			emit(clicked("mute"));
-			emit(changePicture(m_path + m_name + "_p.svg"));
+			loadPicture(m_name,m_state);
 		}
 		else
 		{
-			emit(changePicture(m_path + m_name + "_p.svg"));
+			loadPicture(m_name,m_state);
 		}
 	}
 	else
@@ -73,12 +72,12 @@ void MuteButton :: mouseReleaseEvent(QMouseEvent *event)
 		if(m_name=="mute")
 		{
 			m_name = "unmute";
-			emit(changePicture(m_path + m_name + "_o.svg"));
+			emit(buttonClicked(m_name));
 		}
 		else
 		{
 			m_name = "mute";
-			emit(changePicture(m_path + m_name + "_o.svg"));
+			emit(buttonClicked(m_name));
 		}
 	}
 }
@@ -87,7 +86,7 @@ void MuteButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	emit(changePicture(m_path + m_name + "_o.svg"));
+	loadPicture(m_name,m_state);
 	setToolTip(m_name);
 }
 
@@ -95,6 +94,5 @@ void MuteButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	emit(changePicture(m_path + m_name + "_n.svg"));
+	loadPicture(m_name,m_state);
 }
-

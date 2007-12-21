@@ -67,7 +67,7 @@ void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
 		else if(m_state == Embedded)
 		{
 			m_state = Default;
-			emit(changePicture(m_path + m_name + "_o.svg"));
+ 			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 	}
 	else

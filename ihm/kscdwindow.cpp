@@ -34,9 +34,9 @@
 
 KscdWindow::KscdWindow(QString skinPath):QWidget()
 {
- 	//setMaximumSize ( 650,200 );
+ 	setMaximumSize ( 650,200 );
  	m_layout = new QGridLayout;
-	m_layout->setSizeConstraint(QLayout::SetFixedSize);
+	m_layout->setSizeConstraint(QLayout::SetMaximumSize);
 
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
@@ -60,6 +60,16 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
  	setLayout(m_layout);
 
 	show();
+
+	connect(m_stopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_playB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_prevB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_nextB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_ejectB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_muteB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_randB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_trackB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 }
 
 KscdWindow::~KscdWindow()
@@ -70,6 +80,7 @@ KscdWindow::~KscdWindow()
 	delete m_prevB;
 	delete m_ejectB;
 	delete m_muteB;
+	delete m_trackB;
 	delete m_layout;
 }
 
@@ -77,7 +88,72 @@ QString KscdWindow::getSkinPath()
 {
 	return m_skinPath;
 }
+
 void KscdWindow::setSkinPath(QString sPath)
 {
 	m_skinPath = sPath;
+}
+
+void KscdWindow::catchButton(QString name)
+{
+	kDebug()<<"Catch :" << name;
+	emit(actionClicked(name));
+}
+
+void KscdWindow :: changePicture(QString name,StateButton state)
+{
+	if(name == "play")
+	{
+		m_playB->loadPicture("pause",state);
+	}
+	if(name == "pause")
+	{
+		m_playB->loadPicture("play",state);
+	}
+	if(name == "stop")
+	{
+		m_stopB->loadPicture(name,state);
+		m_playB->loadPicture("play",Default);
+		m_playB->setName("play");
+	}
+	if(name == "eject")
+	{
+		m_ejectB->loadPicture(name,state);
+	}
+	if(name == "next")
+	{
+		m_nextB->loadPicture(name,state);
+	}
+	if(name == "previous")
+	{
+		m_prevB->loadPicture(name,state);
+	}
+	if(name == "mute")
+	{
+		m_muteB->loadPicture(name,state);
+	}
+	if(name == "unmute")
+	{
+		m_muteB->loadPicture(name,state);
+	}
+	if(name == "random")
+	{
+		m_randB->loadPicture(name,state);
+	}
+	if(name == "loop")
+	{
+		m_loopB->loadPicture(name,state);
+	}
+	if(name == "looptrack")
+	{
+		m_loopB->loadPicture(name,state);
+	}
+	if(name == "loopdisc")
+	{
+		m_loopB->loadPicture(name,state);
+	}
+	if(name == "tracklist")
+	{
+		m_trackB->loadPicture(name,state);
+	}
 }

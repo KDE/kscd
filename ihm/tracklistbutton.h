@@ -57,7 +57,7 @@ public:
 	void leaveEvent (QEvent * event);
 
 signals:
-	void clicked(QString);
+	void buttonClicked(QString);
 
 };
 

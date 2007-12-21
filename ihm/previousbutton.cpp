@@ -47,7 +47,7 @@ void PreviousButton :: mousePressEvent(QMouseEvent *event)
 		{
 			event->accept();
 			m_state = Pressed;
-			emit(changePicture(m_path + m_name + "_p.svg"));
+			loadPicture(m_name,m_state);
 		}
 		else
 		{
@@ -58,27 +58,28 @@ void PreviousButton :: mousePressEvent(QMouseEvent *event)
 void PreviousButton :: mouseReleaseEvent(QMouseEvent *event)
 {
 	if(m_region->contains(event->pos()))
-		{
-			event->accept();
-			m_state = Released;
-			emit(changePicture(m_path + m_name + "_o.svg"));
-		}
-		else
-		{
-			event->ignore();
-		}
+	{
+		event->accept();
+		m_state = Released;
+		emit(buttonClicked(m_name));
+		loadPicture(m_name,m_state);
+	}
+	else
+	{
+		event->ignore();
+	}
 }
 
 void PreviousButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	emit(changePicture(m_path + m_name + "_o.svg"));
+	loadPicture(m_name,m_state);
 	setToolTip(m_name);
 }
 void PreviousButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	emit(changePicture(m_path + m_name + "_n.svg"));
+	loadPicture(m_name,m_state);
 }

@@ -49,6 +49,9 @@
 #include "randombutton.h"
 #include "loopbutton.h"
 #include "tracklistbutton.h"
+#include "ihmnamespace.h"
+
+using namespace IHM;
 
 class KscdWindow:public QWidget
 {
@@ -72,6 +75,12 @@ public:
 	virtual ~KscdWindow();
 	QString getSkinPath();
 	void setSkinPath(QString sPath);
+
+public slots:
+	void catchButton(QString);
+	void changePicture(QString,StateButton);
+signals:
+	void actionClicked(QString);
 
 };
 

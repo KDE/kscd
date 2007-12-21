@@ -51,12 +51,11 @@ void PlayButton :: mousePressEvent(QMouseEvent *event)
 		m_state = Pressed;
 		if(m_name== "play")
 		{
-			emit(clicked("play"));
-			emit(changePicture(m_path + m_name + "_p.svg"));
+			loadPicture(m_name,m_state);
 		}
 		else
 		{
-			emit(changePicture(m_path + m_name + "_p.svg"));
+			loadPicture(m_name,m_state);
 		}
 	}
 	else
@@ -73,13 +72,14 @@ void PlayButton :: mouseReleaseEvent(QMouseEvent *event)
 		m_state = Released;
 		if(m_name=="play")
 		{
+			emit(buttonClicked(m_name));
 			m_name = "pause";
-			emit(changePicture(m_path + m_name + "_o.svg"));
+// 			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 		else
 		{
+			emit(buttonClicked(m_name));
 			m_name = "play";
-			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 	}
 }
@@ -88,12 +88,12 @@ void PlayButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	emit(changePicture(m_path + m_name + "_o.svg"));
+	loadPicture(m_name,m_state);
 	setToolTip(m_name);
 }
 void PlayButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	emit(changePicture(m_path + m_name + "_n.svg"));
+	loadPicture(m_name,m_state);
 }

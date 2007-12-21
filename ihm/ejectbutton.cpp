@@ -47,7 +47,7 @@ void EjectButton :: mousePressEvent(QMouseEvent *event)
 		{
 			event->accept();
 			m_state = Pressed;
-			emit(changePicture(m_path + m_name + "_p.svg"));
+			loadPicture(m_name,m_state);
 		}
 		else
 		{
@@ -60,8 +60,8 @@ void EjectButton :: mouseReleaseEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 		{
 			event->accept();
-			m_state = Released;
-			emit(changePicture(m_path + m_name + "_o.svg"));
+			m_state = Released;cmake 
+			emit(buttonClicked(m_name));
 		}
 		else
 		{
@@ -73,12 +73,12 @@ void EjectButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	emit(changePicture(m_path + m_name + "_o.svg"));
+	loadPicture(m_name,m_state);
 	setToolTip(m_name);
 }
 void EjectButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	emit(changePicture(m_path + m_name + "_n.svg"));
+	loadPicture(m_name,m_state);
 }

@@ -114,7 +114,7 @@ KSCD::KSCD( QWidget *parent )
 	connect(&queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
 	connect(&titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
 
-	connect(playPB, SIGNAL(clicked()), SLOT(playClicked()) );
+/*	connect(playPB, SIGNAL(clicked()), SLOT(playClicked()) );
 	connect(nextPB, SIGNAL(clicked()), SLOT(nextClicked()) );
 	connect(prevPB, SIGNAL(clicked()), SLOT(prevClicked()) );
 	connect(stopPB, SIGNAL(clicked()), SLOT(stopClicked()) );
@@ -122,7 +122,11 @@ KSCD::KSCD( QWidget *parent )
 	connect(songListCB, SIGNAL(activated(int)), SLOT(trackSelected(int)));
 
 	connect(shufflePB, SIGNAL(clicked()), SLOT(randomClicked()));
-	connect(repeatPB, SIGNAL(clicked()), SLOT(loopClicked()) );
+	connect(repeatPB, SIGNAL(clicked()), SLOT(loopClicked()) );*/
+
+	connect(window,SIGNAL(actionClicked(QString)),SLOT(actionButton(QString)));
+	connect(this,SIGNAL(picture(QString,StateButton)),window,SLOT(changePicture(QString,StateButton)));
+
 	//connect(m_cd, SIGNAL(randomPlaylistChanged(bool)), this, SLOT(randomChanged(bool)));
 	//connect(m_cd, SIGNAL(loopPlaylistChanged(bool)), this, SLOT(loopChanged(bool)));
 
@@ -306,39 +310,79 @@ void KSCD::setupPopups()
     mainPopup->addAction(m_actions->action(KStandardAction::name(KStandardAction::Quit)));
 }
 
-void KSCD::playClicked()
+void KSCD::actionButton(QString name)
 {
-    //if (m_cd->isPlaying() || m_cd->isPaused())
-        //m_cd->pause();
-	
-    //else
-        //m_cd->play();
-	switch(devices->getState())
+	StateButton state = Released;
+	if(name=="play")
 	{
-		case StoppedState:
+		if((devices->getState() == StoppedState) || (devices->getState()) == PausedState)
+		{
 			devices->play();
-			break;
-		case PausedState:
-			devices->play();
-			break;
-		case PlayingState:
+			emit(picture(name,state));
+		}
+	}
+	if(name=="pause")
+	{
+		if(devices->getState() == PlayingState)
+		{
 			devices->pause();
-			break;
-		default:break;
+			emit(picture(name,state));
+		}
 	}
-}
-
-void KSCD::stopClicked()
-{
-    //stoppedByUser = true;
-
-    //m_cd->stop();
-	if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
+	if(name=="stop")
 	{
-		devices->stop();
+		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
+		{
+			devices->stop();
+			emit(picture(name,state));	
+		}
+	}
+	if(name=="eject")
+	{
+		devices->eject();
+		emit(picture(name,state));
+	}
+	if(name=="next")
+	{
+		emit(picture(name,state));
+	}
+	if(name=="previous")
+	{
+		emit(picture(name,state));
+	}
+	if(name=="mute")
+	{
+		devices->mute(false);
+		emit(picture(name,state));
+	}
+	if(name=="unmute")
+	{
+		devices->mute(true);
+		emit(picture(name,state));
+	}
+	if(name == "random")
+	{
+		emit(picture(name,state));
+	}
+	if(name == "loop")
+	{
+		emit(picture(name,state));
+	}
+	if(name == "looptrack")
+	{
+		emit(picture(name,state));
+	}
+	if(name == "loopdisc")
+	{
+		emit(picture(name,state));
+	}
+	if(name == "tracklist")
+	{
+		emit(picture(name,state));
 	}
 }
 
+/*
 void KSCD::prevClicked()
 {
     //m_cd->prev();
@@ -349,7 +393,7 @@ void KSCD::nextClicked()
 {
 	//m_cd->next();
 	devices->mute(true);
-}
+}*/
 
 void KSCD::jumpToTime(int seconds)
 {
@@ -395,12 +439,12 @@ bool KSCD::event( QEvent *e )
 /**
  * Do everything needed if the user requested to eject the disc.
  *
- */
+ *//*
 void KSCD::ejectClicked()
 {
     //m_cd->eject();
 	devices->eject();
-}
+}*/
 
 void KSCD::closeEvent(QCloseEvent *e)
 {
@@ -414,24 +458,24 @@ void KSCD::closeEvent(QCloseEvent *e)
 
 //    e->accept();
 }
-
+/*
 void KSCD::randomClicked()
 {
     Prefs::setRandomPlay(!Prefs::randomPlay());
     //m_cd->setRandomPlaylist(Prefs::randomPlay());
-}
+}*/
 
 void KSCD::randomChanged(bool on)
 {
     randomled->setVisible(on);
     shufflePB->setChecked(on);
 }
-
+/*
 void KSCD::loopClicked()
 {
     Prefs::setLooping(!Prefs::looping()) ;
     //m_cd->setLoopPlaylist(Prefs::looping());
-}
+}*/
 
 void KSCD::loopChanged(bool on)
 {
