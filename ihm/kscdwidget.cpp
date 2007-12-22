@@ -67,10 +67,10 @@ void KscdWidget :: loadPicture(QString name,StateButton state)
 	}
 }
 
-void KscdWidget :: setName(QString sName)
-{
-	m_name = sName;
-}
+// void KscdWidget :: setName(QString sName)
+// {
+// 	m_name = sName;
+// }
 
 
 

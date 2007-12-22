@@ -59,7 +59,7 @@ public:
 signals:
 	void changePicture(QString);
 	void buttonClicked(QString);
-	void setName(QString);
+//	void setName(QString);
 };
 
 #endif /*KSCDWIDGET_H_*/

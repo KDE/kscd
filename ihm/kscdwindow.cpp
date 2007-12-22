@@ -114,7 +114,7 @@ void KscdWindow :: changePicture(QString name,StateButton state)
 	{
 		m_stopB->loadPicture(name,state);
 		m_playB->loadPicture("play",Default);
-		m_playB->setName("play");
+		//m_playB->setName("play");
 	}
 	if(name == "eject")
 	{

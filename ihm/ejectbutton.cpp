@@ -60,7 +60,7 @@ void EjectButton :: mouseReleaseEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 		{
 			event->accept();
-			m_state = Released;cmake 
+			m_state = Released;
 			emit(buttonClicked(m_name));
 		}
 		else
