@@ -97,13 +97,13 @@ KSCD::KSCD( QWidget *parent )
 	showVolumeInLabel();
 	connect(volumeSlider, SIGNAL(valueChanged(int)), SLOT(volChanged(int)));
 
-	connect(m_cd, SIGNAL(discChanged(unsigned)), this, SLOT(discChanged(unsigned)));
+	connect(m_cd, SIGNAL(discChanged(unsigned int)), this, SLOT(discChanged(unsigned int)));
 	connect(m_cd, SIGNAL(discInformation(KCompactDisc::DiscInfo)), this, SLOT(discInformation(KCompactDisc::DiscInfo)));
 	connect(m_cd, SIGNAL(discStatusChanged(KCompactDisc::DiscStatus)), this,
 		SLOT(discStatusChanged(KCompactDisc::DiscStatus)));
 
-	connect(m_cd, SIGNAL(playoutTrackChanged(unsigned)), this, SLOT(trackChanged(unsigned)));
-	connect(m_cd, SIGNAL(playoutPositionChanged(unsigned)), this, SLOT(trackPosition(unsigned)));
+	connect(m_cd, SIGNAL(playoutTrackChanged(unsigned int)), this, SLOT(trackChanged(unsigned int)));
+	connect(m_cd, SIGNAL(playoutPositionChanged(unsigned int)), this, SLOT(trackPosition(unsigned int)));
 
 	connect(&queryledtimer, SIGNAL(timeout()),  SLOT(togglequeryled()) );
 	connect(&titlelabeltimer, SIGNAL(timeout()),  SLOT(titlelabeltimeout()) );
