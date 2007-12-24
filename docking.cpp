@@ -24,7 +24,6 @@
 #include "docking.h"
 #include "kscd.h"
 
-#include <QToolTip>
 #include <QLabel>
 #include <QPushButton>
 #include <QWheelEvent>

@@ -22,7 +22,6 @@
 #include <qpainter.h>
 #include <qbrush.h>
 #include <qpen.h>
-#include <QColor>
 
 LedLamp::LedLamp(QWidget *parent, Type t) : QFrame(parent), 
   w( 10 ), h( 7 ), dx( 4 )

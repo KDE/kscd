@@ -39,16 +39,12 @@ class KCompactDisc;
 
 
 #include <QPushButton>
-#include <QLabel>
 #include <qdialog.h>
 #include <qapplication.h>
 #include <QTimer>
-#include <QComboBox>
 #include <qscrollbar.h>
 #include <qslider.h>
 #include <q3tabdialog.h>
-#include <QToolTip>
-#include <QMenu>
 
 #include "ledlamp.h"
 #include "ui_panel.h"
