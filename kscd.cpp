@@ -750,7 +750,7 @@ void KSCD::setCDInfo(KCDDB::CDInfo info)
 	// Some sanity provisions to ensure that the number of records matches what
 	// the CD actually contains.
 
-	Q_ASSERT(info.numberOfTracks() == cddbInfo.numberOfTracks());
+	Q_ASSERT(info.numberOfTracks() == m_cd->tracks());
 
 	cddbInfo = info;
 	populateSongList();
