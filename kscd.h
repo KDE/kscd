@@ -142,7 +142,6 @@ public slots:
 protected:
     // mostly start up stuff
     void readSettings();
-    void initFont();
     void drawPanel();
     void setupPopups();
     void setLEDs(int seconds);

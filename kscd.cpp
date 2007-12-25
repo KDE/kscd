@@ -80,7 +80,6 @@ KSCD::KSCD( QWidget *parent )
 	connect(cddb, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
 
 	readSettings();
-	initFont();
 	drawPanel();
 	setColors();
 
@@ -209,31 +208,6 @@ void KSCD::setDevice(const QString& dev)
 {
     Prefs::setCdDevice(dev);
     setDevicePaths();
-}
-
-/**
- * Initialize smallfont which fits into the 13 and 14 pixel widgets.
- */
-void KSCD::initFont()
-{
-/*  int theSmallPtSize = 10;
-
-  // Find a font that fits the 13 and 14 pixel widgets
-  QFont fn( KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold );
-  bool fits = false;
-  while (!fits && theSmallPtSize > 1)
-  {
-      QFontMetrics metrics(fn);
-      if(metrics.height() > 13)
-      {
-          --theSmallPtSize;
-          fn.setPointSize(theSmallPtSize);
-      } else {
-          fits = true;
-      }
-  }
-  smallfont = QFont(KGlobalSettings::generalFont().family(), theSmallPtSize, QFont::Bold);
-*/
 }
 
 /**
