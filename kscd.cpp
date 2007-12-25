@@ -5,6 +5,7 @@
  * Copyright (c) 2002-2003 Aaron J. Seigo <aseigo@kde.org>
  * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
  * Copyright (c) 2003-2006 Richard Lärkäng <nouseforaname@home.se>
+ * Copyright (c) 2007 Benjamin K. Stuhl <benjamin.stuhl@colorado.edu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +30,6 @@
 #include "kcompactdisc.h"
 
 #include <config-alsa.h>
-
 
 #include <QCloseEvent>
 #include <QKeyEvent>
@@ -1033,17 +1033,43 @@ void KSCD::showArtistLabel(QString infoStatus)
     artistlabel->setText(infoStatus);
 }
 
+/*
+ * KDE 4.0 quick fix: it looks like the conversion to mode
+ * CDDB info into KCompactDisc wasn't finished, so we work around
+ * it here for now by explicitly overriding data from m_cd with
+ * data from cddbInfo iff cddbInfo.isValid() && 
+ * cddbInfo.numberOfTracks() == m_cd->tracks()
+ */
+
 void KSCD::restoreArtistLabel()
 {
-    if(m_cd->tracks())
-        showArtistLabel(QString("%1 - %2").arg(m_cd->discArtist(), m_cd->discTitle()));
-    else
+    if(m_cd->tracks()) {
+        QString artist, title;
+
+        if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {
+            artist = cddbInfo.get(KCDDB::Artist).toString();
+            title = cddbInfo.get(KCDDB::Title).toString();
+        } else {
+            artist = m_cd->discArtist();
+            title = m_cd->discTitle();
+        }
+
+        showArtistLabel(QString("%1 - %2").arg(artist, title));
+    } else {
         showArtistLabel(i18n("NO DISC"));
+    }
 }
 
 void KSCD::information(QAction *action)
 {
-    const QString artist = m_cd->trackArtist();
+    QString artist = m_cd->trackArtist();
+
+    // see comment before restoreArtistLabel()
+    if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {
+        const KCDDB::TrackInfo& t = cddbInfo.track(m_cd->track() - 1);
+        artist = t.get(KCDDB::Artist).toString();
+    }
+
     if(artist.isEmpty())
         return;
 
@@ -1130,26 +1156,52 @@ void KSCD::keyPressEvent(QKeyEvent* e)
 
 QString KSCD::currentTrackTitle()
 {
+    // see comment before restoreArtistLabel()
+    if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {
+        const KCDDB::TrackInfo& t = cddbInfo.track(m_cd->track() - 1);
+        return t.get(KCDDB::Title).toString();
+    }
+
     return m_cd->trackTitle();
 }
 
 QString KSCD::currentAlbum()
 {
+    // see comment before restoreArtistLabel()
+    if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {
+        return cddbInfo.get(KCDDB::Title).toString();
+    }
+
     return m_cd->discTitle();
 }
 
 QString KSCD::currentArtist()
 {
+    // see comment before restoreArtistLabel()
+    if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {
+        const KCDDB::TrackInfo& t = cddbInfo.track(m_cd->track() - 1);
+        return t.get(KCDDB::Artist).toString();
+    }
+
     return m_cd->trackArtist();
 }
 
 QStringList KSCD::trackList()
 {
-  QStringList tracks;
-  for (uint i = 0; i < m_cd->tracks(); ++i)
-    tracks << m_cd->trackTitle(i);
+    QStringList tracks;
 
-  return tracks;
+    // see comment before restoreArtistLabel()
+    if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {
+        for (uint i = 0; i < m_cd->tracks(); ++i) {
+            const KCDDB::TrackInfo& t = cddbInfo.track(i);
+            tracks << t.get(KCDDB::Artist).toString();
+        }
+    } else {
+        for (uint i = 0; i < m_cd->tracks(); ++i)
+            tracks << m_cd->trackTitle(i);
+    }
+
+    return tracks;
 }
 
 void KSCD::populateSongList()
@@ -1164,11 +1216,21 @@ void KSCD::populateSongList()
         mysec = (tmp % 60);
         QString str1;
         str1.sprintf("%02u: ", i);
+
         QString str2;
         str2.sprintf(" (%02u:%02u) ", mymin,  mysec);
-        if (m_cd->discArtist() != m_cd->trackArtist(i))
-            str1.append(m_cd->trackArtist(i)).append(" - ");
-        str1.append(m_cd->trackTitle(i));
+	// see comment before restoreArtistLabel()
+        if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {
+            const KCDDB::TrackInfo& t = cddbInfo.track(i - 1);
+
+            if (cddbInfo.get(KCDDB::Artist).toString() != t.get(KCDDB::Artist).toString())
+                str1.append(t.get(KCDDB::Artist).toString()).append(" - ");
+            str1.append(t.get(KCDDB::Title).toString());
+        } else {
+            if (m_cd->discArtist() != m_cd->trackArtist(i))
+                str1.append(m_cd->trackArtist(i)).append(" - ");
+            str1.append(m_cd->trackTitle(i));
+        }
         str1.append(str2);
         songListCB->addItem(str1);
     }
