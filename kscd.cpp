@@ -234,7 +234,7 @@ void KSCD::setIcons()
     ejectPB->setIcon(KIcon(SmallIcon("media-eject")));
     prevPB->setIcon(KIcon(SmallIcon("media-skip-backward")));
     nextPB->setIcon(KIcon(SmallIcon("media-skip-forward")));
-    cddbPB->setIcon(KIcon(SmallIcon("fileview-text")));
+    cddbPB->setIcon(KIcon(SmallIcon("view-list-text")));
     infoPB->setIcon(KIcon(SmallIcon("system-run")));
 }
 
