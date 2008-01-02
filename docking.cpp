@@ -39,7 +39,7 @@ DockWidget::DockWidget( KSCD* parent, const char *name)
 {
     setObjectName(name);
     m_popup = 0;
-    setIcon(loadIcon("kscd-dock"));
+    setIcon(loadIcon("kscd"));
 
     // popup menu for right mouse button
     QMenu* popup = contextMenu();
