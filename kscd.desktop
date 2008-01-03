@@ -21,6 +21,7 @@ GenericName[fr]=Lecteur de CD audio
 GenericName[ga]=Seinnteoir Dlúthdhioscaí
 GenericName[gl]=Reproductor de CD
 GenericName[he]=נגן תקליטורים
+GenericName[hi]=सीडी प्लेयर
 GenericName[hu]=CD-lejátszó
 GenericName[is]=CD spilari
 GenericName[it]=Lettore CD
@@ -64,6 +65,7 @@ GenericName[zh_TW]=CD 播放器
 Name=KsCD
 Name[af]=Kscd
 Name[bn]=কে-এস-সিডি
+Name[hi]==के-एससीडी
 Name[sv]=Kscd
 Name[ta]=Ksகுறுந்தகடு
 Name[tg]=KsДиски Фишурда
