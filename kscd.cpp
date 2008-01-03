@@ -54,6 +54,8 @@
 #include <ktoolinvocation.h>
 
 #include <phonon/phononnamespace.h>
+#include <phonon/seekslider.h>
+
 #include "ihm/kscdwindow.h"
 
 using namespace KCDDB;
@@ -72,6 +74,7 @@ KSCD::KSCD( QWidget *parent )
   : QWidget( parent )
 {
 	KscdWindow *window = new KscdWindow;
+
 	window->show();
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 	setupUi(this);
@@ -82,7 +85,8 @@ KSCD::KSCD( QWidget *parent )
 	connect(window,SIGNAL(actionClicked(QString)),SLOT(actionButton(QString)));
 	connect(this,SIGNAL(picture(QString,StateButton)),window,SLOT(changePicture(QString,StateButton)));
 	devices = new HWControler();
-
+	connect(devices,SIGNAL(currentTime(qint64)),window,SLOT(setTime(qint64)));
+	window->addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
 
 }
 
@@ -125,10 +129,12 @@ void KSCD::actionButton(QString name)
 	}
 	if(name=="next")
 	{
+		devices->nextTrack();
 		emit(picture(name,state));
 	}
 	if(name=="previous")
 	{
+		devices->prevTrack();
 		emit(picture(name,state));
 	}
 	if(name=="mute")
@@ -147,14 +153,17 @@ void KSCD::actionButton(QString name)
 	}
 	if(name == "loop")
 	{
+		devices->setLoopMode(NoLoop);
 		emit(picture(name,state));
 	}
 	if(name == "looptrack")
 	{
+		devices->setLoopMode(LoopOne);
 		emit(picture(name,state));
 	}
 	if(name == "loopdisc")
 	{
+		devices->setLoopMode(LoopAll);
 		emit(picture(name,state));
 	}
 	if(name == "tracklist")

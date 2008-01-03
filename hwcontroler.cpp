@@ -41,12 +41,13 @@
 #include <phonon/mediaobject.h>
 #include <phonon/phononnamespace.h>
 #include <phonon/path.h>
-
+#include <phonon/mediacontroller.h>
 
 using namespace Phonon;
 
 HWControler :: HWControler ()
 {
+	loopState = NoLoop;
 	selectedCd=-1;
 	selectedS=-1;
 
@@ -93,6 +94,8 @@ void HWControler :: eject()
 }
 void HWControler :: play()
 {
+kDebug()<<"Remaining Time: "<<getRemainingTime ()<<"s";
+kDebug()<<"Track Time: "<<getTotalTime ()<<"s";
 kDebug() << selectedCd;
 	if((selectedCd!=-1))
 	{
@@ -113,11 +116,26 @@ kDebug() << selectedCd;
 }
 void HWControler :: nextTrack()
 {
+	if(!(selectedCd==-1))
+	{
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			mc->nextTitle();
+			catchCurrentTime(0);
+		}
+	}	
 
 }
 void HWControler :: prevTrack()
 {
-
+	if(!(selectedCd==-1))
+	{
+		if(cdIn[selectedCd].isCdInserted())
+		{
+			mc->previousTitle();
+			catchCurrentTime(0);
+		}
+	}
 }
 void HWControler :: stop()
 {
@@ -126,6 +144,7 @@ void HWControler :: stop()
 		if(cdIn[selectedCd].isCdInserted())
 		{
 			media->stop();
+			catchCurrentTime(0);
 		}
 	}
 }
@@ -146,14 +165,10 @@ void HWControler :: mute(bool mute)
 		speakers->setMuted(mute);
 	}
 }
-
+/*
 qint64 HWControler :: getCurrentTime ()
 {
 	if(!(selectedCd==-1))
-	{
-		return -1;
-	}
-	else
 	{
 		if(cdIn[selectedCd].isCdInserted())
 		{
@@ -164,14 +179,15 @@ qint64 HWControler :: getCurrentTime ()
 			return -1;
 		}
 	}
-}
-qint64 HWControler :: getTotalTime ()
-{
-	if(!(selectedCd==-1))
+
+	else
 	{
 		return -1;
 	}
-	else
+}*/
+qint64 HWControler :: getTotalTime ()
+{
+	if(!(selectedCd==-1))
 	{
 		if(cdIn[selectedCd].isCdInserted())
 		{
@@ -182,14 +198,15 @@ qint64 HWControler :: getTotalTime ()
 			return -1;
 		}
 	}
+
+	else
+	{
+		return -1;
+	}
 }
 qint64 HWControler :: getRemainingTime ()
 {
 	if(!(selectedCd==-1))
-	{
-		return -1;
-	}
-	else
 	{
 		if(cdIn[selectedCd].isCdInserted())
 		{
@@ -199,6 +216,11 @@ qint64 HWControler :: getRemainingTime ()
 		{
 			return -1;
 		}
+	}
+
+	else
+	{
+		return -1;
 	}
 }
 qreal HWControler :: getVolume()
@@ -240,11 +262,65 @@ void HWControler ::configMedia()
 			media->setCurrentSource(*cdIn[selectedCd].getMediaSource());
 			path = Phonon::createPath(media, speakers);
 			kDebug()<< "Phonon Loaded";
+			mc = new MediaController(media);
+			mc->setAutoplayTitles(true);
+			media->setTickInterval(100);
+			connect(media,SIGNAL(tick(qint64)),this,SLOT(replayTrack(qint64)));
+			connect(media,SIGNAL(tick(qint64)),this,SLOT(catchCurrentTime(qint64)));
+			connect(media,SIGNAL(finished()),this,SLOT(replayDisk()));
 		}
 	}
 }
 
+void HWControler ::setLoopMode(LoopMode lm)
+{
+	loopState = lm;
+	kDebug()<<"Loop Mode: "<<lm;
+}
+void HWControler ::replayTrack(qint64 pos)
+{
+	if(loopState==LoopOne)
+	{
+		
+		if (getRemainingTime()<= 500)
+		{
+			kDebug()<<"End of this track!";
+			stop();
+			mc->setCurrentTitle(mc->currentTitle());
+			play();
+		}
+/*
+		kDebug()<<"Replaying the track!";
+		int myPos;
+		if (pos==mc->availableTitles())
+		{
+			myPos=1;
+		}
+		else
+		{
+			myPos=pos-1;
+		}
+		mc->setCurrentTitle( myPos );*/
+	}
+}
+void HWControler ::replayDisk()
+{
+	if(loopState==LoopAll)
+	{
+		kDebug()<<"Replaying the disc!";
+		mc->setCurrentTitle( 1 );
+		play();
+	}
+}
 
+Phonon::MediaObject * HWControler ::getMedia()
+{
+	return media;
+}
+void HWControler ::catchCurrentTime(qint64 pos)
+{
+	emit(currentTime(pos));
+}
 /*
 
 Solid::OpticalDrive* HWcontroler ::getSelectedOpticalDrive()

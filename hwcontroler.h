@@ -37,10 +37,18 @@
 
 #include <phonon/mediasource.h>
 #include <phonon/mediaobject.h>
+#include <phonon/mediacontroller.h>
 #include <phonon/audiooutput.h>
 
 
 #include "audiocd.h"
+
+enum LoopMode
+{
+	NoLoop = 0,
+	LoopOne = 1,
+	LoopAll = 2
+};
 
 class HWControler : public QObject
 {
@@ -60,6 +68,11 @@ class HWControler : public QObject
 		int selectedS;
 	// Control play activity
 		Phonon::MediaObject *media;
+	// Control Next/Preview functions
+		Phonon::MediaController * mc;
+
+	// Loop Mode
+		LoopMode loopState;
 
 		Phonon::Path path;
 		
@@ -74,12 +87,23 @@ class HWControler : public QObject
 		void stop();
 		void pause();
 		void mute(bool mute);
-		qint64 getCurrentTime ();
 		qint64 getTotalTime ();
 		qint64 getRemainingTime ();
 		qreal getVolume();
 		Phonon::State getState();
 		void configMedia();
+		void setLoopMode(LoopMode lm);
+		Phonon::MediaObject * getMedia();
+
+	private slots:
+		void catchCurrentTime(qint64 pos);
+
+	public slots:
+		void replayTrack(qint64 pos);
+		void replayDisk();
+
+	signals:
+		void currentTime (qint64 pos);
 
 
 };

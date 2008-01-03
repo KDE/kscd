@@ -31,10 +31,12 @@
  *
  */
 #include "kscdwindow.h"
+#include <string.h>
+#include <stdio.h>
 
 KscdWindow::KscdWindow(QString skinPath):QWidget()
 {
- 	setMaximumSize ( 650,200 );
+ 	setMaximumSize ( 600,400 );
  	m_layout = new QGridLayout;
 	m_layout->setSizeConstraint(QLayout::SetMaximumSize);
 
@@ -48,6 +50,8 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
 	m_loopB = new LoopButton(this);
 	m_trackB = new TrackListButton(this);
 
+	time = new QLabel(" 0 0 : 0 0 ");
+
  	m_layout->addWidget(m_ejectB, 0, 1);
  	m_layout->addWidget(m_prevB, 1, 0);
  	m_layout->addWidget(m_playB, 1, 1);
@@ -57,6 +61,7 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
 	m_layout->addWidget(m_loopB, 3, 2,Qt::AlignCenter);
 	m_layout->addWidget(m_muteB, 3, 1,Qt::AlignCenter);
 	m_layout->addWidget(m_trackB, 3, 3,Qt::AlignCenter);
+	m_layout->addWidget(time,0,3,Qt::AlignCenter);
  	setLayout(m_layout);
 
 	show();
@@ -84,9 +89,26 @@ KscdWindow::~KscdWindow()
 	delete m_layout;
 }
 
+void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)
+{
+	m_layout->addWidget((QWidget*)ss, 1, 3);
+}
+
 QString KscdWindow::getSkinPath()
 {
 	return m_skinPath;
+}
+
+void KscdWindow::setTime(qint64 pos)
+{
+	qint64 md = ((pos/1000)/60)/10;
+	qint64 mu = ((pos/1000)/60)%10;
+	qint64 sd = ((pos/1000)%60)/10;
+	qint64 su = ((pos/1000)%60)%10;
+
+QString result;
+     QTextStream(&result) << " " << md << " " << mu << " : " << sd << " " << su << " ";
+	time->setText(result);
 }
 
 void KscdWindow::setSkinPath(QString sPath)

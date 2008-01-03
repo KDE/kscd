@@ -39,6 +39,8 @@
 #include <QSlider>
 #include <QLineEdit>
 #include <QSizePolicy>
+#include <QLabel>
+
 #include "kscdwidget.h"
 #include "stopbutton.h"
 #include "playbutton.h"
@@ -50,6 +52,8 @@
 #include "loopbutton.h"
 #include "tracklistbutton.h"
 #include "ihmnamespace.h"
+
+#include <phonon/seekslider.h>
 
 using namespace IHM;
 
@@ -69,6 +73,8 @@ private:
 	KscdWidget *m_loopB;
 	KscdWidget *m_trackB;
 
+	QLabel * time;
+
 	QString m_skinPath;
 public:
 	KscdWindow(QString sPath="./skin/default");
@@ -76,9 +82,13 @@ public:
 	QString getSkinPath();
 	void setSkinPath(QString sPath);
 
+	// Sorry Stan it's for my tests :p
+	void addSeekSlider(Phonon::SeekSlider *ss);
+
 public slots:
 	void catchButton(QString);
 	void changePicture(QString,StateButton);
+	void setTime(qint64 pos);
 signals:
 	void actionClicked(QString);
 
