@@ -30,7 +30,7 @@ CDDBDlg::CDDBDlg( QWidget* parent )
   setButtons( KDialog::Ok|KDialog::Cancel|KDialog::User1|KDialog::User2 );
   setDefaultButton( KDialog::Ok );
   setButtonText( User1, i18n( "Upload" ) );
-  setButtonText( User2, i18n( "Fetch Info" ) );
+  setButtonText( User2, i18n( "Download" ) );
 
   connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
   connect( this, SIGNAL( user1Clicked() ), SLOT( upload() ) );
@@ -41,6 +41,7 @@ CDDBDlg::CDDBDlg( QWidget* parent )
   cddbClient->setBlockingMode(false);
   connect (cddbClient, SIGNAL(finished(KCDDB::Result)),
                        SLOT(submitFinished(KCDDB::Result)));
+
 }
 
 CDDBDlg::~CDDBDlg()
@@ -61,6 +62,11 @@ void CDDBDlg::setData(
     setInfo(cddbInfo, trackStartFrames);
 } // setData
 
+KCDDB::TrackOffsetList CDDBDlg::getTrackStartFrames()
+{
+	return trackStartFrames ;
+}
+
 void CDDBDlg::submitFinished(KCDDB::Result r)
 {
   if (r == KCDDB::Success)
@@ -78,6 +84,7 @@ void CDDBDlg::submitFinished(KCDDB::Result r)
 
 void CDDBDlg::upload()
 {
+
     if (!validInfo())
         return;
 

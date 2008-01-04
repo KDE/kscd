@@ -38,8 +38,6 @@ class KCompactDisc;
 #include <libkcddb/client.h>
 
 // Solid implementation
-
-#include <QPushButton>
 #include <QLabel>
 #include <qdialog.h>
 #include <qapplication.h>
@@ -47,7 +45,6 @@ class KCompactDisc;
 #include <QComboBox>
 #include <qscrollbar.h>
 #include <qslider.h>
-#include <q3tabdialog.h>
 #include <QToolTip>
 #include <QMenu>
 #include "ledlamp.h"
@@ -62,9 +59,7 @@ class KCompactDisc;
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
 
-#include "ihm/ihmnamespace.h"
-
-using namespace IHM;
+#include "ihm/kscdwindow.h"
 
 class CDDBDlg;
 class DockWidget;
@@ -72,35 +67,46 @@ class QGridLayout;
 class KActionCollection;
 class KToggleAction;
 
+class KSCD : public KscdWindow, Ui::kscdPanelDlg, public KSessionManager {
 
-
-
-class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManager {
-
-    Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
-
-
+	Q_OBJECT
+	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
 
 public:
-    explicit KSCD(QWidget *parent = 0);
-    ~KSCD();
-    virtual bool saveState(QSessionManager& sm);
+	explicit KSCD(QWidget *parent = 0);
+	~KSCD();
+	virtual bool saveState(QSessionManager& sm);
 	void writeSettings();
+
+protected:
+	void populateSongList();
+
+private:
+	HWControler		*devices;
+
+	KCompactDisc	*m_cd; // kept for CDDB compatibility
+
+	// Info from CDDB
+	CDDBDlg			*cddialog;
+	KCDDB::CDInfo	cddbInfo;
+	KCDDB::Client	*cddb;
+
 
 signals:
 	void picture(QString,StateButton);
+	void CDDBClicked();
 
 public slots:
-    void actionButton(QString);
+	void actionButton(QString);
+	void lookupCDDB();
 
-
-
-private:
-
-	HWControler *devices;
-
-
+private slots:
+	void CDDialogSelected();
+	void CDDialogDone();
+	void lookupCDDBDone(KCDDB::Result);
+	void setCDInfo(KCDDB::CDInfo);
+	void showArtistLabel(QString);
+	void restoreArtistLabel();
 
 };
 

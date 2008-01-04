@@ -1,3 +1,5 @@
+#include "audiocd_test.h"
+
 AudioCD_test :: AudioCD_test()
 {
 
@@ -27,3 +29,4 @@ bool AudioCD_test :: getCdPath_test()
 {
 	return true;
 }
+

@@ -1,4 +1,10 @@
-class AudioCD_test {
+#include <QtCore>
+#include <QtTest>
+
+class AudioCD_test: public QObject {
+
+	Q_OBJECT
+
 	public:
 		AudioCD_test();
 
@@ -12,3 +18,5 @@ class AudioCD_test {
 
 		bool getCdPath_test();
 }
+
+

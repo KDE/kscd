@@ -272,6 +272,11 @@ void HWControler ::configMedia()
 	}
 }
 
+AudioCD HWControler::getCD()
+{
+	return cdIn[selectedCd];
+}
+
 void HWControler ::setLoopMode(LoopMode lm)
 {
 	loopState = lm;

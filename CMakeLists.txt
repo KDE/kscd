@@ -60,3 +60,16 @@ install(PROGRAMS workman2cddb.pl DESTINATION ${BIN_INSTALL_DIR})
 
 kde4_install_icons(${ICON_INSTALL_DIR})
 
+
+############ Tests ##############
+
+set(kscdtest_SRCS 
+    ${kscd_SRCS} 
+    tests/audiocd_test.cpp 
+    tests/hwcontroler_test.cpp 
+    tests/test.cpp 
+    ) 
+ 
+KDE4_ADD_UNIT_TEST(kscdtest ${kscdtest_SRCS}) 
+TARGET_LINK_LIBRARIES(kscdtest ${KDE4_KDEUI_LIBS} ${QT_QTTEST_LIBRARY})
+

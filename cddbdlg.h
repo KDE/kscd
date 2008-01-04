@@ -38,6 +38,8 @@ class CDDBDlg : public KCDDB::CDInfoDialog
       const KCDDB::CDInfo &_cddbInfo,
       const KCDDB::TrackOffsetList &_trackStartFrames);
 
+	KCDDB::TrackOffsetList getTrackStartFrames();
+
   private slots:
     void save();
     void upload();
@@ -52,8 +54,8 @@ class CDDBDlg : public KCDDB::CDInfoDialog
     bool validInfo();
     QString framesTime(unsigned frames);
 
-    KCDDB::CDInfo cddbInfo;
-    KCDDB::TrackOffsetList trackStartFrames;
-    KCDDB::Client *cddbClient;
+    KCDDB::CDInfo			cddbInfo;
+    KCDDB::TrackOffsetList	trackStartFrames;
+    KCDDB::Client*			cddbClient;
 };
 #endif // CDDBDLG_H

@@ -61,10 +61,10 @@ class HWControler : public QObject
 		QList<AudioCD> cdIn;
 	// Selected Cd to read
 		int selectedCd;
-	// List of Audio Out Put detected on the system
+	// List of detected Audio Output on the system
 		//QList<Phonon::AudioOutput> speakers;
 		Phonon::AudioOutput * speakers;
-	// Selected Out Put to use
+	// Selected Output to use
 		int selectedS;
 	// Control play activity
 		Phonon::MediaObject *media;
@@ -94,6 +94,7 @@ class HWControler : public QObject
 		void configMedia();
 		void setLoopMode(LoopMode lm);
 		Phonon::MediaObject * getMedia();
+		AudioCD getCD();
 
 	private slots:
 		void catchCurrentTime(qint64 pos);
@@ -104,7 +105,6 @@ class HWControler : public QObject
 
 	signals:
 		void currentTime (qint64 pos);
-
 
 };
 

@@ -33,6 +33,7 @@
 #ifndef KSCDWINDOW_H_
 #define KSCDWINDOW_H_
 
+#include <QLabel>
 #include <QWidget>
 #include <QGridLayout>
 #include <QLayout>
@@ -72,6 +73,8 @@ private:
 	KscdWidget *m_randB;
 	KscdWidget *m_loopB;
 	KscdWidget *m_trackB;
+	
+	QLabel *m_artistLabel ;
 
 	QLabel * time;
 
@@ -81,6 +84,9 @@ public:
 	virtual ~KscdWindow();
 	QString getSkinPath();
 	void setSkinPath(QString sPath);
+	
+	QLabel *getArtistLabel();
+	void setArtistLabel(QString artist);
 
 	// Sorry Stan it's for my tests :p
 	void addSeekSlider(Phonon::SeekSlider *ss);

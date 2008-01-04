@@ -49,6 +49,8 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
 	m_randB = new RandomButton(this);
 	m_loopB = new LoopButton(this);
 	m_trackB = new TrackListButton(this);
+	m_artistLabel = new QLabel("Welcome !");
+	m_artistLabel->setFixedWidth(200);
 
 	time = new QLabel(" 0 0 : 0 0 ");
 
@@ -62,7 +64,8 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
 	m_layout->addWidget(m_muteB, 3, 1,Qt::AlignCenter);
 	m_layout->addWidget(m_trackB, 3, 3,Qt::AlignCenter);
 	m_layout->addWidget(time,0,3,Qt::AlignCenter);
- 	setLayout(m_layout);
+	m_layout->addWidget(m_artistLabel, 1, 3,Qt::AlignCenter);
+	setLayout(m_layout);
 
 	show();
 
@@ -91,7 +94,7 @@ KscdWindow::~KscdWindow()
 
 void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)
 {
-	m_layout->addWidget((QWidget*)ss, 1, 3);
+	m_layout->addWidget((QWidget*)ss, 2, 3);
 }
 
 QString KscdWindow::getSkinPath()
@@ -116,13 +119,22 @@ void KscdWindow::setSkinPath(QString sPath)
 	m_skinPath = sPath;
 }
 
+QLabel* KscdWindow::getArtistLabel()
+{
+	return (m_artistLabel);
+}
+void KscdWindow::setArtistLabel(QString artist)
+{
+	m_artistLabel->setText(artist);
+}
+
 void KscdWindow::catchButton(QString name)
 {
 	kDebug()<<"Catch :" << name;
 	emit(actionClicked(name));
 }
 
-void KscdWindow :: changePicture(QString name,StateButton state)
+void KscdWindow::changePicture(QString name,StateButton state)
 {
 	if(name == "play")
 	{
