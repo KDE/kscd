@@ -76,8 +76,10 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow()
 	
 	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
 	connect(this,SIGNAL(picture(QString,StateButton)), this, SLOT(changePicture(QString,StateButton)));
-	
+
 	devices = new HWControler();
+	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(setTime(qint64)));
+	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
 
 	/* CDDB initialization */
 	cddbInfo.clear(); // The first freedb revision is "0"
@@ -90,11 +92,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow()
 	m_cd = new KCompactDisc();
 	m_cd->setDevice(Prefs::cdDevice(), 50, Prefs::digitalPlayback(), QString("cdin"), Prefs::audioDevice());
 
-	connect(this,SIGNAL(actionClicked(QString)),SLOT(actionButton(QString)));
-	connect(this,SIGNAL(picture(QString,StateButton)),SLOT(changePicture(QString,StateButton)));
-	devices = new HWControler();
-	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(setTime(qint64)));
-	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
+	
 
 }
 
@@ -254,12 +252,10 @@ void KSCD::lookupCDDBDone(Result result)
 	// seems to be irrelevant these days.
 	KCDDB::CDInfo info = cddb->lookupResponse().first();
 
-
-// TODO MULTIPLE INFO
 	// TODO Why doesn't libcddb not return MultipleRecordFound?
-	//if( result == KCDDB::MultipleRecordFound ) {
-	if(cddb->lookupResponse().count() > 1)
-	{
+	if( result == KCDDB::MultipleRecordFound ) {
+// 	if(cddb->lookupResponse().count() > 1)
+// 	{
 		CDInfoList cddb_info = cddb->lookupResponse();
 		QStringList list;
 		CDInfoList::iterator it;
@@ -286,7 +282,6 @@ void KSCD::lookupCDDBDone(Result result)
 			if( c < cddb_info.size() )
 			{
 				info = cddb_info[c];
-				cddialog->setData(cddbInfo, cddialog->getTrackStartFrames());
 			}
 		}
 		else
@@ -306,7 +301,7 @@ void KSCD::setCDInfo(KCDDB::CDInfo info)
 	// TODO Q_ASSERT(info.numberOfTracks() == cd->tracks());
 
 	cddbInfo = info;
-	//populateSongList();
+	populateSongList();
 	restoreArtistLabel();
 }
 
@@ -332,6 +327,40 @@ void KSCD::restoreArtistLabel()
 /*
     } else {
         showArtistLabel(i18n("NO DISC"));
+    }
+*/
+}
+
+void KSCD::populateSongList()
+{
+/*
+    songListCB->clear();
+    for (uint i = 1; i <= m_cd->tracks(); ++i)
+    {
+        unsigned tmp = m_cd->trackLength(i);
+        unsigned mymin;
+        unsigned mysec;
+        mymin = tmp / 60;
+        mysec = (tmp % 60);
+        QString str1;
+        str1.sprintf("%02u: ", i);
+
+        QString str2;
+        str2.sprintf(" (%02u:%02u) ", mymin,  mysec);
+	// see comment before restoreArtistLabel()
+        if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {
+            const KCDDB::TrackInfo& t = cddbInfo.track(i - 1);
+
+            if (cddbInfo.get(KCDDB::Artist).toString() != t.get(KCDDB::Artist).toString())
+                str1.append(t.get(KCDDB::Artist).toString()).append(" - ");
+            str1.append(t.get(KCDDB::Title).toString());
+        } else {
+            if (m_cd->discArtist() != m_cd->trackArtist(i))
+                str1.append(m_cd->trackArtist(i)).append(" - ");
+            str1.append(m_cd->trackTitle(i));
+        }
+        str1.append(str2);
+        songListCB->addItem(str1);
     }
 */
 }

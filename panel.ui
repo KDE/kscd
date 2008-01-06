@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>637</width>
-    <height>202</height>
+    <width>482</width>
+    <height>164</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -37,12 +37,9 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QComboBox" name="songListCB" />
-     </item>
-     <item>
       <layout class="QHBoxLayout" >
        <property name="spacing" >
-        <number>6</number>
+        <number>0</number>
        </property>
        <property name="leftMargin" >
         <number>0</number>
@@ -89,41 +86,12 @@
         </widget>
        </item>
        <item>
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>16</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
         <widget class="QLabel" name="volumeIcon" >
          <property name="toolTip" >
           <string>Volume control</string>
          </property>
          <property name="text" >
           <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSlider" name="volumeSlider" >
-         <property name="toolTip" >
-          <string>Volume control</string>
-         </property>
-         <property name="maximum" >
-          <number>100</number>
-         </property>
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -149,23 +117,7 @@
        <property name="verticalSpacing" >
         <number>1</number>
        </property>
-       <item row="1" column="1" >
-        <widget class="QPushButton" name="ejectPB" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>E&amp;ject</string>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item rowspan="3" row="0" column="2" colspan="2" >
+       <item rowspan="4" row="0" column="0" colspan="4" >
         <widget class="QFrame" name="backdrop" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
@@ -212,7 +164,7 @@
             <x>0</x>
             <y>0</y>
             <width>461</width>
-            <height>101</height>
+            <height>104</height>
            </rect>
           </property>
           <layout class="QGridLayout" >
@@ -399,134 +351,6 @@
          </widget>
         </widget>
        </item>
-       <item row="3" column="0" >
-        <widget class="QPushButton" name="shufflePB" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>R&amp;andom</string>
-         </property>
-         <property name="checkable" >
-          <bool>true</bool>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3" >
-        <widget class="QPushButton" name="infoPB" >
-         <property name="text" >
-          <string>E&amp;xtras</string>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="2" >
-        <widget class="QPushButton" name="playPB" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>Pla&amp;y</string>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" >
-        <widget class="QPushButton" name="stopPB" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>Stop</string>
-         </property>
-         <property name="shortcut" >
-          <string/>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2" >
-        <widget class="QPushButton" name="cddbPB" >
-         <property name="text" >
-          <string>&amp;CDDB</string>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" >
-        <widget class="QPushButton" name="repeatPB" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>Loop</string>
-         </property>
-         <property name="shortcut" >
-          <string/>
-         </property>
-         <property name="checkable" >
-          <bool>true</bool>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="QPushButton" name="nextPB" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>&amp;Mute</string>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" >
-        <widget class="QPushButton" name="prevPB" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text" >
-          <string>Unmute</string>
-         </property>
-         <property name="flat" >
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
     </layout>
@@ -543,18 +367,7 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>songListCB</tabstop>
   <tabstop>timeSlider</tabstop>
-  <tabstop>volumeSlider</tabstop>
-  <tabstop>playPB</tabstop>
-  <tabstop>stopPB</tabstop>
-  <tabstop>ejectPB</tabstop>
-  <tabstop>prevPB</tabstop>
-  <tabstop>nextPB</tabstop>
-  <tabstop>shufflePB</tabstop>
-  <tabstop>repeatPB</tabstop>
-  <tabstop>cddbPB</tabstop>
-  <tabstop>infoPB</tabstop>
  </tabstops>
  <resources/>
  <connections/>

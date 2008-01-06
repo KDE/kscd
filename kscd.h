@@ -67,7 +67,7 @@ class QGridLayout;
 class KActionCollection;
 class KToggleAction;
 
-class KSCD : public KscdWindow, Ui::kscdPanelDlg, public KSessionManager {
+class KSCD : public KscdWindow, public KSessionManager {
 
 	Q_OBJECT
 	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
