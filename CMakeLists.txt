@@ -37,6 +37,9 @@ set(kscd_SRCS
 	ihm/loopbutton.cpp
 	ihm/tracklistbutton.cpp)
 
+set(kscd_Resources ihm/skin)
+
+
 kde4_add_ui_files(kscd_SRCS panel.ui configWidgetUI.ui)
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
@@ -50,6 +53,9 @@ install(TARGETS kscd DESTINATION ${BIN_INSTALL_DIR})
 
 
 ########### install files ###############
+
+install(TARGETS kscd DESTINATION ${BIN_INSTALL_DIR})
+install(DIRECTORY ${kscd_Resources} DESTINATION ${DATA_INSTALL_DIR}/kscd)
 
 install(FILES kscd.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR})
 install(FILES kscd.profile.xml  DESTINATION  ${DATA_INSTALL_DIR}/profiles)

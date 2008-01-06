@@ -51,11 +51,11 @@ void PlayButton :: mousePressEvent(QMouseEvent *event)
 		m_state = Pressed;
 		if(m_name== "play")
 		{
-			loadPicture(m_name,m_state);
+			loadPicture(findFile(m_name,m_state));
 		}
 		else
 		{
-			loadPicture(m_name,m_state);
+			loadPicture(findFile(m_name,m_state));
 		}
 	}
 	else
@@ -74,7 +74,6 @@ void PlayButton :: mouseReleaseEvent(QMouseEvent *event)
 		{
 			emit(buttonClicked(m_name));
 			m_name = "pause";
-// 			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 		else
 		{
@@ -88,12 +87,12 @@ void PlayButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	loadPicture(m_name,m_state);
+	loadPicture(findFile(m_name,m_state));
 	setToolTip(m_name);
 }
 void PlayButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	loadPicture(m_name,m_state);
+	loadPicture(findFile(m_name,m_state));
 }

@@ -48,7 +48,7 @@ void LoopButton :: mousePressEvent(QMouseEvent *event)
 	{
 		event->accept();
 		m_state = Pressed;
-		emit(changePicture(m_path + m_name + "_p.svg"));
+		loadPicture(findFile(m_name,m_state));
 	}
 	else
 	{
@@ -64,21 +64,18 @@ void LoopButton :: mouseReleaseEvent(QMouseEvent *event)
 		m_state = Released;
 		if(m_name == "loop")
 		{
-			m_name = "looptrack";
+ 			m_name = "looptrack";
 			emit(buttonClicked(m_name));
-			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 		else if(m_name == "looptrack")
 		{
-			m_name = "loopdisc";
+ 			m_name = "loopdisc";
 			emit(buttonClicked(m_name));
-			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
-		else
+		else if(m_name == "loopdisc")
 		{
-			m_name = "loop";
+ 			m_name = "loop";
 			emit(buttonClicked(m_name));
-			emit(changePicture(m_path + m_name + "_o.svg"));
 		}
 	}
 }
@@ -87,7 +84,7 @@ void LoopButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	emit(changePicture(m_path + m_name + "_o.svg"));
+	loadPicture(findFile(m_name,m_state));
 	setToolTip(m_name);
 }
 
@@ -95,6 +92,6 @@ void LoopButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	emit(changePicture(m_path + m_name + "_n.svg"));
+	loadPicture(findFile(m_name,m_state));
 }
 

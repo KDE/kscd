@@ -47,7 +47,7 @@ void NextButton :: mousePressEvent(QMouseEvent *event)
 		{
 			event->accept();
 			m_state = Pressed;
-			loadPicture(m_name,m_state);
+			loadPicture(findFile(m_name,m_state));
 		}
 		else
 		{
@@ -62,7 +62,6 @@ void NextButton :: mouseReleaseEvent(QMouseEvent *event)
 			event->accept();
 			m_state = Released;
 			emit(buttonClicked(m_name));
-			loadPicture(m_name,m_state);
 		}
 		else
 		{
@@ -74,12 +73,12 @@ void NextButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	loadPicture(m_name,m_state);
+	loadPicture(findFile(m_name,m_state));
 	setToolTip(m_name);
 }
 void NextButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	loadPicture(m_name,m_state);
+	loadPicture(findFile(m_name,m_state));
 }

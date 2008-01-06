@@ -37,6 +37,7 @@
 #include <QWidget>
 #include <QRegion>
 #include <QMouseEvent>
+#include <KStandardDirs>
 #include <QString>
 #include <kdebug.h>
 #include "ihmnamespace.h"
@@ -46,6 +47,9 @@ using namespace IHM;
 class KscdWidget:public QSvgWidget
 {
 	Q_OBJECT
+private:
+	KStandardDirs *resource;
+
 protected:
 	QRegion *m_region;
 	StateButton m_state;
@@ -55,11 +59,14 @@ protected:
 public:
 	KscdWidget(QString sName,QWidget * parent=0);
 	virtual ~KscdWidget();
-	void loadPicture(QString,StateButton);
+	void loadPicture(QString);
+	QString findFile(QString,StateButton);
+	void setName(QString);
+	QString getName();
 signals:
 	void changePicture(QString);
 	void buttonClicked(QString);
-//	void setName(QString);
+// 	void setName(QString);
 };
 
 #endif /*KSCDWIDGET_H_*/

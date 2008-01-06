@@ -47,7 +47,7 @@ void EjectButton :: mousePressEvent(QMouseEvent *event)
 		{
 			event->accept();
 			m_state = Pressed;
-			loadPicture(m_name,m_state);
+			loadPicture(findFile(m_name,m_state));
 		}
 		else
 		{
@@ -73,12 +73,12 @@ void EjectButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	loadPicture(m_name,m_state);
+	loadPicture(findFile(m_name,m_state));
 	setToolTip(m_name);
 }
 void EjectButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	loadPicture(m_name,m_state);
+	loadPicture(findFile(m_name,m_state));
 }

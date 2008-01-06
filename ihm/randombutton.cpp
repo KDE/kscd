@@ -43,15 +43,24 @@ RandomButton::~RandomButton()
 
 void RandomButton :: mousePressEvent(QMouseEvent *event)
 {
-	if(m_region->contains(event->pos()))
-	{
-		event->accept();
-		emit(changePicture(m_path + m_name + "_p.svg"));
-	}
-	else
-	{
-		event->ignore();
-	}
+ 	if(m_region->contains(event->pos()))
+ 	{
+ 		event->accept();
+		m_state = Pressed;
+		if(m_name== "random")
+		{
+			loadPicture(findFile(m_name,m_state));
+		}
+		else
+		{
+			event->ignore();
+		}
+ 	}
+	
+ 	else
+ 	{
+ 		event->ignore();
+ 	}
 }
 
 void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
@@ -59,15 +68,15 @@ void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 	{
 		event->accept();
-		if(m_state == Default)
+		if(m_name=="random")
 		{
-			m_state = Embedded;
-			emit(changePicture(m_path + m_name + "_p.svg"));
+			m_name = "p_random";
+			emit(buttonClicked(m_name));
 		}
-		else if(m_state == Embedded)
+		else
 		{
-			m_state = Default;
- 			emit(changePicture(m_path + m_name + "_o.svg"));
+			m_name = "random";
+			emit(buttonClicked(m_name));
 		}
 	}
 	else
@@ -78,22 +87,22 @@ void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
 
 void RandomButton :: enterEvent (QEvent * event )
 {
-	if(m_state == Embedded)
+	if(m_name == "p_random")
 	{
 		event->ignore();
 	}
 	else
 	{
 		event->accept();
-		m_state = Default;
-		emit(changePicture(m_path + m_name + "_o.svg"));
+		m_state = Focused;
+		loadPicture(findFile(m_name,m_state));
 		setToolTip(m_name);
 	}
 }
 
 void RandomButton :: leaveEvent (QEvent * event )
 {
-	if(m_state == Embedded)
+	if(m_name == "p_random")
 	{
 		event->ignore();
 	}
@@ -101,6 +110,6 @@ void RandomButton :: leaveEvent (QEvent * event )
 	{
 		event->accept();
 		m_state = Default;
-		emit(changePicture(m_path + m_name + "_n.svg"));
+		loadPicture(findFile(m_name,m_state));
 	}
 }

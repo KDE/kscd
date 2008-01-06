@@ -129,7 +129,7 @@ void KSCD::actionButton(QString name)
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
 			devices->stop();
-			emit(picture(name,state));
+			emit(picture(name,Default));
 		}
 	}
 	if(name=="eject")
@@ -141,11 +141,39 @@ void KSCD::actionButton(QString name)
 	{
 		devices->nextTrack();
 		emit(picture(name,state));
+		if((devices->getState() == StoppedState))
+		{
+			devices->stop();
+			emit(picture("stop",Default));
+		}
+		if ((devices->getState() == PlayingState))
+		{
+			devices->play();
+		}
+		if ((devices->getState() == PausedState))
+		{
+			devices->stop();
+			emit(picture("stop",Default));
+		}
 	}
 	if(name=="previous")
 	{
 		devices->prevTrack();
 		emit(picture(name,state));
+		if((devices->getState() == StoppedState))
+		{
+			devices->stop();
+			emit(picture("stop",Default));
+		}
+		if ((devices->getState() == PlayingState))
+		{
+			devices->play();
+		}
+		if ((devices->getState() == PausedState))
+		{
+			devices->stop();
+			emit(picture("stop",Default));
+		}
 	}
 	if(name=="mute")
 	{
@@ -158,6 +186,10 @@ void KSCD::actionButton(QString name)
 		emit(picture(name,state));
 	}
 	if(name == "random")
+	{
+		emit(picture(name,state));
+	}
+	if(name == "p_random")
 	{
 		emit(picture(name,state));
 	}

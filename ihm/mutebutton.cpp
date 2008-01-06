@@ -35,7 +35,6 @@
 MuteButton::MuteButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
 	m_region = new QRegion(x(),y(),x()+width(),y()+height(),QRegion::Ellipse);
-	show();
 }
 
 MuteButton::~MuteButton()
@@ -50,11 +49,11 @@ void MuteButton :: mousePressEvent(QMouseEvent *event)
 		m_state = Pressed;
 		if(m_name== "mute")
 		{
-			loadPicture(m_name,m_state);
+			loadPicture(findFile(m_name,m_state));
 		}
 		else
 		{
-			loadPicture(m_name,m_state);
+			loadPicture(findFile(m_name,m_state));
 		}
 	}
 	else
@@ -86,7 +85,7 @@ void MuteButton :: enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Focused;
-	loadPicture(m_name,m_state);
+	loadPicture(findFile(m_name,m_state));
 	setToolTip(m_name);
 }
 
@@ -94,5 +93,5 @@ void MuteButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = Default;
-	loadPicture(m_name,m_state);
+	loadPicture(findFile(m_name,m_state));
 }

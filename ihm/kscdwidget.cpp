@@ -37,11 +37,15 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QSvgWidget(parent)
 	m_state = Default;
 	m_name = sName;
 
-	m_path = "./skin/default/" ;
+ 	m_path = "default" ;
 	
 	connect(this,SIGNAL(changePicture(QString)),this,SLOT(load(QString)));
 	setMouseTracking ( true );
-	emit(changePicture(m_path + sName+"_n.svg"));
+// 	emit(changePicture(m_path + sName+"_n.svg"));
+
+	resource = new KStandardDirs();
+ 	resource->addResourceDir("resources","/usr/local/share/apps/kscd/skin/",true);
+	loadPicture(findFile(m_name,m_state));
 	show();
 }
 
@@ -49,28 +53,38 @@ KscdWidget::~KscdWidget()
 {
 }
 
-void KscdWidget :: loadPicture(QString name,StateButton state)
+QString KscdWidget :: findFile(QString name,StateButton state)
 {
+	QString file;
 	switch(state)
 	{
-		case Default: emit(changePicture(m_path + name + "_n.svg"));
+		case Default: file = resource->findResource("resources",m_path +"/"+ name + "_n.svg");
 				break;
-		case Pressed: emit(changePicture(m_path + name + "_p.svg"));
+		case Pressed: file = resource->findResource("resources",m_path +"/"+ name + "_p.svg");
 				break;
-		case Released: emit(changePicture(m_path + name + "_o.svg"));
+		case Released: file = resource->findResource("resources",m_path +"/"+ name + "_o.svg");
 				break;
-		case Focused: emit(changePicture(m_path + name + "_o.svg"));
+		case Focused: file = resource->findResource("resources",m_path +"/"+ name + "_o.svg");
 				break;
-		case Embedded: emit(changePicture(m_path + name + "_p.svg"));
+		case Embedded: file = resource->findResource("resources",m_path +"/"+ name + "_p.svg");
 				break;
 		default:break;
 	}
+	return file;
 }
 
-// void KscdWidget :: setName(QString sName)
-// {
-// 	m_name = sName;
-// }
+void KscdWidget :: loadPicture(QString name)
+{
+	emit(changePicture(name));
+}
+
+void KscdWidget :: setName(QString sName)
+{
+	m_name = sName;
+}
 
 
-
+QString KscdWidget :: getName()
+ {
+ 	return m_name;
+ }

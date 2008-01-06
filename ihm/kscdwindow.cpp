@@ -138,56 +138,60 @@ void KscdWindow::changePicture(QString name,StateButton state)
 {
 	if(name == "play")
 	{
-		m_playB->loadPicture("pause",state);
+		m_playB->loadPicture(m_playB->findFile("pause",state));
 	}
 	if(name == "pause")
 	{
-		m_playB->loadPicture("play",state);
+		m_playB->loadPicture(m_playB->findFile("play",state));
 	}
 	if(name == "stop")
 	{
-		m_stopB->loadPicture(name,state);
-		m_playB->loadPicture("play",Default);
-		//m_playB->setName("play");
+		m_stopB->loadPicture(m_stopB->findFile(name,state));
+		m_playB->setName("play");
+		m_playB->loadPicture(m_playB->findFile(m_playB->getName(),Default));
 	}
 	if(name == "eject")
 	{
-		m_ejectB->loadPicture(name,state);
+		m_ejectB->loadPicture(m_ejectB->findFile(name,state));
 	}
 	if(name == "next")
 	{
-		m_nextB->loadPicture(name,state);
+		m_nextB->loadPicture(m_nextB->findFile(name,state));
 	}
 	if(name == "previous")
 	{
-		m_prevB->loadPicture(name,state);
+		m_prevB->loadPicture(m_prevB->findFile(name,state));
 	}
 	if(name == "mute")
 	{
-		m_muteB->loadPicture(name,state);
+		m_muteB->loadPicture(m_muteB->findFile(name,state));
 	}
 	if(name == "unmute")
 	{
-		m_muteB->loadPicture(name,state);
+		m_muteB->loadPicture(m_muteB->findFile(name,state));
 	}
 	if(name == "random")
 	{
-		m_randB->loadPicture(name,state);
+		m_randB->loadPicture(m_randB->findFile(name,state));
+	}
+	if(name == "p_random")
+	{
+		m_randB->loadPicture(m_randB->findFile("random",Pressed));
 	}
 	if(name == "loop")
 	{
-		m_loopB->loadPicture(name,state);
+		m_loopB->loadPicture(m_loopB->findFile(name,state));
 	}
 	if(name == "looptrack")
 	{
-		m_loopB->loadPicture(name,state);
+		m_loopB->loadPicture(m_loopB->findFile(name,state));
 	}
 	if(name == "loopdisc")
 	{
-		m_loopB->loadPicture(name,state);
+		m_loopB->loadPicture(m_loopB->findFile(name,state));
 	}
 	if(name == "tracklist")
 	{
-		m_trackB->loadPicture(name,state);
+		m_trackB->loadPicture(m_trackB->findFile(name,state));
 	}
 }
