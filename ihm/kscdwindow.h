@@ -52,6 +52,7 @@
 #include "randombutton.h"
 #include "loopbutton.h"
 #include "tracklistbutton.h"
+#include "volumebutton.h"
 #include "ihmnamespace.h"
 
 #include <phonon/seekslider.h>
@@ -73,6 +74,7 @@ private:
 	KscdWidget *m_randB;
 	KscdWidget *m_loopB;
 	KscdWidget *m_trackB;
+	KscdWidget *m_volumeB;
 	
 	QLabel *m_artistLabel ;
 

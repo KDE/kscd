@@ -36,9 +36,9 @@
 
 KscdWindow::KscdWindow(QString skinPath):QWidget()
 {
- 	setMaximumSize ( 600,400 );
+ 	setFixedSize ( 600,400 );
  	m_layout = new QGridLayout;
-	m_layout->setSizeConstraint(QLayout::SetMaximumSize);
+	m_layout->setSizeConstraint(QLayout::SetFixedSize);
 
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
@@ -49,9 +49,10 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
 	m_randB = new RandomButton(this);
 	m_loopB = new LoopButton(this);
 	m_trackB = new TrackListButton(this);
+	m_volumeB = new VolumeButton(this);
 	m_artistLabel = new QLabel("Welcome !");
-	m_artistLabel->setFixedWidth(200);
-
+	m_artistLabel->setFixedWidth(250);
+	m_artistLabel->setAlignment(Qt::AlignCenter);
 	time = new QLabel(" 0 0 : 0 0 ");
 
  	m_layout->addWidget(m_ejectB, 0, 1);
@@ -59,10 +60,11 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
  	m_layout->addWidget(m_playB, 1, 1);
  	m_layout->addWidget(m_nextB, 1, 2);
  	m_layout->addWidget(m_stopB, 2, 1);
+  	m_layout->addWidget(m_volumeB, 0,5,3,1,Qt::AlignCenter);
 	m_layout->addWidget(m_randB, 3, 0,Qt::AlignCenter);
 	m_layout->addWidget(m_loopB, 3, 2,Qt::AlignCenter);
-	m_layout->addWidget(m_muteB, 3, 1,Qt::AlignCenter);
-	m_layout->addWidget(m_trackB, 3, 3,Qt::AlignCenter);
+	m_layout->addWidget(m_muteB, 3, 4,Qt::AlignCenter);
+	m_layout->addWidget(m_trackB, 3, 6,Qt::AlignCenter);
 	m_layout->addWidget(time,0,3,Qt::AlignCenter);
 	m_layout->addWidget(m_artistLabel, 1, 3,Qt::AlignCenter);
 	setLayout(m_layout);

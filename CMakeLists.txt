@@ -35,7 +35,8 @@ set(kscd_SRCS
 	ihm/mutebutton.cpp
 	ihm/randombutton.cpp
 	ihm/loopbutton.cpp
-	ihm/tracklistbutton.cpp)
+	ihm/tracklistbutton.cpp
+	ihm/volumebutton.cpp)
 
 set(kscd_Resources ihm/skin)
 
