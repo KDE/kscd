@@ -4,26 +4,26 @@ class HWControler_test
 	public:
 		HWControler_test ();
 
-		bool all_tests();
+		void all_tests();
 
-		bool selectCd_test();
+		void selectCd_test();
 
-		bool selectSpeaker_test();
+		void selectSpeaker_test();
 
-		bool eject_test();
+		void eject_test();
 
-		bool play_test();
+		void play_test();
 
-		bool nextTrack_test();
+		void nextTrack_test();
 
-		bool prevTrack_test();
+		void prevTrack_test();
 
-		bool stop_test();
+		void stop_test();
 
-		bool pause_test();
+		void pause_test();
 
-		bool mute_test();
+		void mute_test();
 
-		bool isCdInserted_test();
+		void isCdInserted_test();
 
 }
