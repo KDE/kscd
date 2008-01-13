@@ -70,12 +70,19 @@ kde4_install_icons(${ICON_INSTALL_DIR})
 
 ############ Tests ##############
 
-set(kscdtest_SRCS 
-    ${kscd_SRCS} 
-    tests/audiocd_test.cpp 
-    tests/hwcontroler_test.cpp 
-    ) 
- 
-KDE4_ADD_UNIT_TEST(kscdtest ${kscdtest_SRCS}) 
-TARGET_LINK_LIBRARIES(kscdtest ${KDE4_KDEUI_LIBS} ${QT_QTTEST_LIBRARY})
+# HWControler test unit
+kde4_add_unit_test(HWControler_test
+	hwcontroler.cpp
+	audiocd.cpp
+	./tests/hwcontroler_test.cpp
+)
+
+# libraries needed for HWControler tests
+target_link_libraries(HWControler_test
+	${KDE4_KUTILS_LIBS}
+	${QT_QTTEST_LIBRARY}
+	kcddb
+	kcompactdisc
+)
+
 
