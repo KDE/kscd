@@ -68,12 +68,11 @@ bool stoppedByUser = true;
 
 KSCD::KSCD( QWidget *parent ) : KscdWindow()
 {
-	//KscdWindow *window = new KscdWindow;
-	//window->show();
-
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
-//	setupUi(this);
-	
+
+	// Set context menu policy to ActionsContextMenu
+	setContextMenuPolicy(Qt::ActionsContextMenu);
+
 	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
 	connect(this,SIGNAL(picture(QString,StateButton)), this, SLOT(changePicture(QString,StateButton)));
 
@@ -82,24 +81,36 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow()
 	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
 
 	/* CDDB initialization */
-	cddbInfo.clear(); // The first freedb revision is "0"
-	cddb = new KCDDB::Client();
-	cddialog = 0L;
-	connect(cddb, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
-	connect(this, SIGNAL(CDDBClicked()), SLOT(CDDialogSelected()));
+	m_cddbInfo.clear(); // The first freedb revision is "0"
+	m_cddb = new KCDDB::Client();
+	m_cddialog = 0L;
+	connect(m_cddb, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
+
 
 // TODO kept for CDDB compatibility
 	m_cd = new KCompactDisc();
 	m_cd->setDevice(Prefs::cdDevice(), 50, Prefs::digitalPlayback(), QString("cdin"), Prefs::audioDevice());
 
-	
+// TODO inactivate CDDB options if no disc
+	// Adds CDDB to the context menu
+	QAction* CDDBWindowAction = new QAction(i18n("CDDB..."), this);
+	addAction(CDDBWindowAction);
+	connect(CDDBWindowAction, SIGNAL(triggered()), this, SLOT(CDDialogSelected()));
 
+	// Adds download CDDB information
+	QAction* downloadCDDBAction = new QAction(i18n("Download CDDB"), this);
+	addAction(downloadCDDBAction);
+
+	connect(downloadCDDBAction, SIGNAL(triggered()), this, SLOT(lookupCDDB()));
+	
 }
 
 KSCD::~KSCD()
 {
 	delete devices;
 	delete m_cd;
+	delete m_cddialog;
+	delete m_cddb;
 }
 
 /**
@@ -210,7 +221,6 @@ void KSCD::actionButton(QString name)
 	}
 	if(name == "tracklist")
 	{
-		emit(CDDBClicked());
 		emit(picture(name,state));
 	}
 }
@@ -220,41 +230,43 @@ void KSCD::actionButton(QString name)
  */
 void KSCD::CDDialogSelected()
 {
-	if (!cddialog)
-	{
-		cddialog = new CDDBDlg(this);
 
-		connect(cddialog,SIGNAL(cddbQuery()),SLOT(lookupCDDB()));
-		connect(cddialog,SIGNAL(newCDInfoStored(KCDDB::CDInfo)), SLOT(setCDInfo(KCDDB::CDInfo)));
-		connect(cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
-		connect(cddialog,SIGNAL(play(int)),cddialog,SLOT(slotTrackSelected(int)));
+	if (!m_cddialog)
+	{
+		kDebug() << "Create a CDDB Dialog" ;
+		/* CDDB Dialog initialization */
+		m_cddialog = new CDDBDlg(this);
+		connect(m_cddialog,SIGNAL(newCDInfoStored(KCDDB::CDInfo)), SLOT(setCDInfo(KCDDB::CDInfo)));
+ 		connect(m_cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
+// 		connect(cddialog,SIGNAL(play(int)),cddialog,SLOT(slotTrackSelected(int)));
 	}
 
-	
-	cddialog->show();
-	cddialog->raise();
+	m_cddialog->show();
+//	m_cddialog->raise(); // Puts the window on top
 
 }
 
 void KSCD::CDDialogDone()
 {
-	cddialog->delayedDestruct();
-	cddialog = 0L;
+	m_cddialog->delayedDestruct();
+	m_cddialog = 0L;
 }
 
 void KSCD::lookupCDDB()
 {
 	if (devices->getCD().isCdInserted())
 	{
-		kDebug() << "!!!!!! lookupCDDB() called !!!!!!";
-		
 		showArtistLabel(i18n("Start freedb lookup."));
 	
-		cddb->config().reparse();
-		cddb->setBlockingMode(false);
+		m_cddb->config().reparse();
+		m_cddb->setBlockingMode(false);
 
 //TODO get CD signature through Solid
-		cddb->lookup(m_cd->discSignature());
+		m_cddb->lookup(m_cd->discSignature());
+	}
+	else{
+		showArtistLabel(i18n("No Disc"));
+		QTimer::singleShot(3000, this, SLOT(restoreArtistLabel()));
 	}
 }
 
@@ -265,9 +277,7 @@ void KSCD::showArtistLabel(QString infoStatus)
 
 void KSCD::lookupCDDBDone(Result result)
 {
-	kDebug() << "lookupcddbdone :" << result ;
-
-	if ((result != KCDDB::Success) && (result != KCDDB::MultipleRecordFound))
+	if (result != KCDDB::Success)
 	{
 		if(result == NoRecordFound)
 			showArtistLabel(i18n("No matching freedb entry found."));
@@ -278,17 +288,11 @@ void KSCD::lookupCDDBDone(Result result)
 		return;
 	}
 
-	// The intent of the original code here seems to have been to perform the
-	// lookup, and then to convert all the string data within the CDDB response
-	// using the use Prefs::selectedEncoding() and a QTextCodec. However, that
-	// seems to be irrelevant these days.
-	KCDDB::CDInfo info = cddb->lookupResponse().first();
+	KCDDB::CDInfo info = m_cddb->lookupResponse().first();
 
-	// TODO Why doesn't libcddb not return MultipleRecordFound?
-	if( result == KCDDB::MultipleRecordFound ) {
-// 	if(cddb->lookupResponse().count() > 1)
-// 	{
-		CDInfoList cddb_info = cddb->lookupResponse();
+	// If there is more than 1 result display a choice window
+	if(m_cddb->lookupResponse().count() > 1) {
+		CDInfoList cddb_info = m_cddb->lookupResponse();
 		QStringList list;
 		CDInfoList::iterator it;
 		for ( it = cddb_info.begin(); it != cddb_info.end(); ++it  )
@@ -332,35 +336,33 @@ void KSCD::setCDInfo(KCDDB::CDInfo info)
 	// the CD actually contains.
 	// TODO Q_ASSERT(info.numberOfTracks() == cd->tracks());
 
-	cddbInfo = info;
+	m_cddbInfo = info;
 	populateSongList();
 	restoreArtistLabel();
 }
 
 void KSCD::restoreArtistLabel()
 {
-//TODO verifications
-/*    if(m_cd->tracks()) {*/
-        QString artist, title;
+	if (devices->getCD().isCdInserted())
+	{
+		QString artist, title;
 
-/*
-        if (cddbInfo.isValid() && cddbInfo.numberOfTracks() == m_cd->tracks()) {*/
-            artist = cddbInfo.get(KCDDB::Artist).toString();
-            title = cddbInfo.get(KCDDB::Title).toString();
-	kDebug() << "!!!!!!!!!!!!!!!restore artist label!!!!!!!!!!!!" ;
 
-/*        } else {
-            artist = m_cd->discArtist();
-            title = m_cd->discTitle();
-        }
-*/
+		if (m_cddbInfo.isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/) {
+			artist = m_cddbInfo.get(KCDDB::Artist).toString();
+			title = m_cddbInfo.get(KCDDB::Title).toString();
+			kDebug() << "!!!!!!!!!!!!!!!restore artist label!!!!!!!!!!!!" ;
+		}
+		else{
+			artist = m_cd->discArtist();
+			title = m_cd->discTitle();
+		}
+		showArtistLabel(QString("%1 - %2").arg(artist, title));
 
-        showArtistLabel(QString("%1 - %2").arg(artist, title));
-/*
-    } else {
-        showArtistLabel(i18n("NO DISC"));
-    }
-*/
+	} else {
+		showArtistLabel(i18n("Welcome to KsCD !"));
+	}
+
 }
 
 void KSCD::populateSongList()
@@ -410,10 +412,10 @@ void KSCD::writeSettings()
  */
 bool KSCD::saveState(QSessionManager& /*sm*/)
 {
-  writeSettings();
-  KConfigGroup config(KApplication::kApplication()->sessionConfig(), "General");
-  config.writeEntry("Show", isVisible());
-  return true;
+	writeSettings();
+	KConfigGroup config(KApplication::kApplication()->sessionConfig(), "General");
+	config.writeEntry("Show", isVisible());
+	return true;
 }
 
 /**
@@ -457,7 +459,7 @@ int main( int argc, char *argv[] )
             }
             if (args->isSet("start"))
             {
-                kscd.call( "play" );
+                kscd.call("play");
             }
         }
         exit(0);

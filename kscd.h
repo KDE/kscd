@@ -82,14 +82,14 @@ protected:
 	void populateSongList();
 
 private:
-	HWControler		*devices;
+	HWControler* devices;
 
-	KCompactDisc	*m_cd; // kept for CDDB compatibility
+	KCompactDisc* m_cd; // kept for CDDB compatibility
 
 	// Info from CDDB
-	CDDBDlg			*cddialog;
-	KCDDB::CDInfo	cddbInfo;
-	KCDDB::Client	*cddb;
+	CDDBDlg* m_cddialog;
+	KCDDB::CDInfo m_cddbInfo;
+	KCDDB::Client* m_cddb;
 
 
 signals:

@@ -31,7 +31,8 @@
  *
  */
 #include "kscdwindow.h"
-#include <string.h>
+#include <QString>
+#include <klocalizedstring.h>
 #include <stdio.h>
 
 KscdWindow::KscdWindow(QString skinPath):QWidget()
@@ -50,7 +51,7 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
 	m_loopB = new LoopButton(this);
 	m_trackB = new TrackListButton(this);
 	m_volumeB = new VolumeButton(this);
-	m_artistLabel = new QLabel("Welcome !");
+	m_artistLabel = new QLabel(i18n("Welcome to KsCD !"));
 	m_artistLabel->setFixedWidth(250);
 	m_artistLabel->setAlignment(Qt::AlignCenter);
 	time = new QLabel(" 0 0 : 0 0 ");

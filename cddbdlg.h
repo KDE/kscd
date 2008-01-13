@@ -28,34 +28,35 @@
 
 class CDDBDlg : public KCDDB::CDInfoDialog
 {
-  Q_OBJECT
-
-  public:
-    explicit CDDBDlg(QWidget* parent);
-    ~CDDBDlg();
-
-    void setData(
-      const KCDDB::CDInfo &_cddbInfo,
-      const KCDDB::TrackOffsetList &_trackStartFrames);
-
+	Q_OBJECT
+	
+	public:
+	explicit CDDBDlg(QWidget* parent);
+	~CDDBDlg();
+	
+	void setData(
+		const KCDDB::CDInfo &_cddbInfo,
+		const KCDDB::TrackOffsetList &_trackStartFrames);
+	
 	KCDDB::TrackOffsetList getTrackStartFrames();
-
-  private slots:
-    void save();
-    void upload();
-    void submitFinished(KCDDB::Result);
-
-  signals:
-    void cddbQuery();
-    void newCDInfoStored(KCDDB::CDInfo);
-    void play(int i);
-
-  private:
-    bool validInfo();
-    QString framesTime(unsigned frames);
-
-    KCDDB::CDInfo			cddbInfo;
-    KCDDB::TrackOffsetList	trackStartFrames;
-    KCDDB::Client*			cddbClient;
+	
+	private slots:
+	void save();
+	void upload();
+	void submitFinished(KCDDB::Result);
+	
+	void fillDlg();
+	
+	signals:
+	void newCDInfoStored(KCDDB::CDInfo);
+//	void play(int i);
+	
+	private:
+	bool validInfo();
+	QString framesTime(unsigned frames);
+	
+	KCDDB::Client* m_cddbClient;
+	KCDDB::CDInfo m_cddbInfo;
+	KCDDB::TrackOffsetList m_trackStartFrames;
 };
 #endif // CDDBDLG_H
