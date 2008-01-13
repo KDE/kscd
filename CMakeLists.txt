@@ -74,7 +74,6 @@ set(kscdtest_SRCS
     ${kscd_SRCS} 
     tests/audiocd_test.cpp 
     tests/hwcontroler_test.cpp 
-    tests/test.cpp 
     ) 
  
 KDE4_ADD_UNIT_TEST(kscdtest ${kscdtest_SRCS}) 
