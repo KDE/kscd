@@ -47,8 +47,9 @@ void LoopButton :: mousePressEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 	{
 		event->accept();
-		m_state = Pressed;
-		loadPicture(findFile(m_name,m_state));
+		m_state = "pressed";
+		m_id = m_name + "_" + m_state;
+		emit(needRepaint());
 	}
 	else
 	{
@@ -61,20 +62,23 @@ void LoopButton :: mouseReleaseEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 	{
 		event->accept();
-		m_state = Released;
+		m_state = "over";
 		if(m_name == "loop")
 		{
  			m_name = "looptrack";
+			m_id = m_name + "_" + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else if(m_name == "looptrack")
 		{
  			m_name = "loopdisc";
+			m_id = m_name + "_" + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else if(m_name == "loopdisc")
 		{
  			m_name = "loop";
+			m_id = m_name + "_" + m_state;
 			emit(buttonClicked(m_name));
 		}
 	}
@@ -83,15 +87,17 @@ void LoopButton :: mouseReleaseEvent(QMouseEvent *event)
 void LoopButton :: enterEvent (QEvent * event )
 {
 	event->accept();
-	m_state = Focused;
-	loadPicture(findFile(m_name,m_state));
+	m_state = "over";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
 	setToolTip(m_name);
 }
 
 void LoopButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
-	m_state = Default;
-	loadPicture(findFile(m_name,m_state));
+	m_state = "default";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
 }
 

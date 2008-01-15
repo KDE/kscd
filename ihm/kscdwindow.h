@@ -52,12 +52,11 @@
 #include "randombutton.h"
 #include "loopbutton.h"
 #include "tracklistbutton.h"
-#include "volumebutton.h"
-#include "ihmnamespace.h"
+// #include "volumebutton.h"
+
 
 #include <phonon/seekslider.h>
 
-using namespace IHM;
 
 class KscdWindow:public QWidget
 {
@@ -72,30 +71,27 @@ private:
 	KscdWidget *m_ejectB;
 	KscdWidget *m_muteB;
 	KscdWidget *m_randB;
-	KscdWidget *m_loopB;
+ 	KscdWidget *m_loopB;
 	KscdWidget *m_trackB;
-	KscdWidget *m_volumeB;
+// 	KscdWidget *m_volumeB;
 	
 	QLabel *m_artistLabel ;
 
 	QLabel * time;
-
-	QString m_skinPath;
 public:
-	KscdWindow(QString sPath="./skin/default");
+	KscdWindow();
 	virtual ~KscdWindow();
-	QString getSkinPath();
-	void setSkinPath(QString sPath);
+	
 	
 	QLabel *getArtistLabel();
 	void setArtistLabel(QString artist);
 
-	// Sorry Stan it's for my tests :p
+
 	void addSeekSlider(Phonon::SeekSlider *ss);
 
 public slots:
-	void catchButton(QString);
-	void changePicture(QString,StateButton);
+ 	void catchButton(QString);
+	void changePicture(QString,QString);
 	void setTime(qint64 pos);
 signals:
 	void actionClicked(QString);

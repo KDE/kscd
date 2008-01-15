@@ -32,7 +32,7 @@
  */
 #include "ejectbutton.h"
 
-EjectButton::EjectButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
+EjectButton::EjectButton(QWidget * parent, QString sName):KscdWidget(sName,parent)
 {
 	m_region = new QRegion(x(),y(),x() + width(),y()+height(),QRegion::Ellipse);
 }
@@ -46,8 +46,9 @@ void EjectButton :: mousePressEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 		{
 			event->accept();
-			m_state = Pressed;
-			loadPicture(findFile(m_name,m_state));
+			m_state = "pressed";
+			m_id = m_name + "_" + m_state;
+			emit(needRepaint());
 		}
 		else
 		{
@@ -60,7 +61,8 @@ void EjectButton :: mouseReleaseEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 		{
 			event->accept();
-			m_state = Released;
+			m_state = "over";
+			m_id = m_name + "_" + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else
@@ -72,13 +74,15 @@ void EjectButton :: mouseReleaseEvent(QMouseEvent *event)
 void EjectButton :: enterEvent (QEvent * event )
 {
 	event->accept();
-	m_state = Focused;
-	loadPicture(findFile(m_name,m_state));
+	m_state = "over";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
 	setToolTip(m_name);
 }
 void EjectButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
-	m_state = Default;
-	loadPicture(findFile(m_name,m_state));
+	m_state = "default";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
 }

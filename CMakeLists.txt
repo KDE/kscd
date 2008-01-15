@@ -27,19 +27,19 @@ set(kscd_SRCS
 	cdcombobox.cpp
 	ihm/kscdwindow.cpp 
 	ihm/kscdwidget.cpp 
+	ihm/ejectbutton.cpp 
 	ihm/stopbutton.cpp 
 	ihm/playbutton.cpp 
 	ihm/nextbutton.cpp 
 	ihm/previousbutton.cpp 
-	ihm/ejectbutton.cpp 
 	ihm/mutebutton.cpp
 	ihm/randombutton.cpp
-	ihm/loopbutton.cpp
+ 	ihm/loopbutton.cpp
 	ihm/tracklistbutton.cpp
-	ihm/volumebutton.cpp)
+# 	ihm/volumebutton.cpp
+)
 
 set(kscd_Resources ihm/skin)
-
 
 kde4_add_ui_files(kscd_SRCS panel.ui configWidgetUI.ui)
 

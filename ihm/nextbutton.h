@@ -40,9 +40,6 @@
 #include <QEvent>
 #include <kdebug.h>
 #include "kscdwidget.h"
-#include "ihmnamespace.h"
-
-using namespace IHM;
 
 class NextButton:public KscdWidget
 {
@@ -54,9 +51,6 @@ public:
 	void mouseReleaseEvent(QMouseEvent * event);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
-signals:
-	void buttonClicked(QString);
-
 };
 
 #endif /*NEXTBUTTON_H_*/

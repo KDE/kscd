@@ -39,11 +39,7 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <kdebug.h>
-#include <QSize>
 #include "kscdwidget.h"
-#include "ihmnamespace.h"
-#include <QSize>
-using namespace IHM;
 
 class PlayButton:public KscdWidget
 {
@@ -55,9 +51,6 @@ public:
 	void mouseReleaseEvent(QMouseEvent * event);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
-signals:
-	void buttonClicked(QString);
-
 };
 
 #endif /*PLAYBUTTON_H_*/

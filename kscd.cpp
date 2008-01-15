@@ -68,13 +68,14 @@ bool stoppedByUser = true;
 
 KSCD::KSCD( QWidget *parent ) : KscdWindow()
 {
+
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 
 	// Set context menu policy to ActionsContextMenu
 	setContextMenuPolicy(Qt::ActionsContextMenu);
 
 	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
-	connect(this,SIGNAL(picture(QString,StateButton)), this, SLOT(changePicture(QString,StateButton)));
+	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
 
 	devices = new HWControler();
 	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(setTime(qint64)));
@@ -118,7 +119,7 @@ KSCD::~KSCD()
  */
 void KSCD::actionButton(QString name)
 {
-	StateButton state = Released;
+	QString state = "over";
 	if(name=="play")
 	{
 		if((devices->getState() == StoppedState) || (devices->getState()) == PausedState)
@@ -140,50 +141,45 @@ void KSCD::actionButton(QString name)
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
 			devices->stop();
-			emit(picture(name,Default));
+			emit(picture(name,state));
 		}
 	}
 	if(name=="eject")
 	{
 		devices->eject();
 		emit(picture(name,state));
+		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
+		{
+			devices->stop();
+			emit(picture("stop","default"));
+		}
 	}
 	if(name=="next")
 	{
 		devices->nextTrack();
 		emit(picture(name,state));
-		if((devices->getState() == StoppedState))
+		if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 		{
 			devices->stop();
-			emit(picture("stop",Default));
+			emit(picture("stop","default"));
 		}
 		if ((devices->getState() == PlayingState))
 		{
 			devices->play();
-		}
-		if ((devices->getState() == PausedState))
-		{
-			devices->stop();
-			emit(picture("stop",Default));
 		}
 	}
 	if(name=="previous")
 	{
 		devices->prevTrack();
 		emit(picture(name,state));
-		if((devices->getState() == StoppedState))
+		if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 		{
 			devices->stop();
-			emit(picture("stop",Default));
+			emit(picture("stop","default"));
 		}
 		if ((devices->getState() == PlayingState))
 		{
 			devices->play();
-		}
-		if ((devices->getState() == PausedState))
-		{
-			devices->stop();
-			emit(picture("stop",Default));
 		}
 	}
 	if(name=="mute")

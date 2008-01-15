@@ -46,8 +46,9 @@ void NextButton :: mousePressEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 		{
 			event->accept();
-			m_state = Pressed;
-			loadPicture(findFile(m_name,m_state));
+			m_state = "pressed";
+			m_id = m_name + "_" + m_state;
+			emit(needRepaint());
 		}
 		else
 		{
@@ -60,7 +61,8 @@ void NextButton :: mouseReleaseEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 		{
 			event->accept();
-			m_state = Released;
+			m_state = "over";
+			m_id = m_name + "_" + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else
@@ -72,13 +74,16 @@ void NextButton :: mouseReleaseEvent(QMouseEvent *event)
 void NextButton :: enterEvent (QEvent * event )
 {
 	event->accept();
-	m_state = Focused;
-	loadPicture(findFile(m_name,m_state));
+	m_state = "over";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
 	setToolTip(m_name);
 }
+
 void NextButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
-	m_state = Default;
-	loadPicture(findFile(m_name,m_state));
+	m_state = "default";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
 }

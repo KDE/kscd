@@ -35,9 +35,27 @@
 VolumeButton::VolumeButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
 	m_region = new QRegion(x(),y(),x()+width(),y()+height(),QRegion::Ellipse);
-	show();
 }
 
 VolumeButton::~VolumeButton()
 {
+}
+
+void VolumeButton :: mousePressEvent(QMouseEvent *event)
+{
+	if(m_region->contains(event->pos()))
+	{
+		event->accept();
+		grabMouse(Qt::ClosedHandCursor);
+		
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void VolumeButton :: mouseReleaseEvent(QMouseEvent *event)
+{
+	releaseMouse();
 }

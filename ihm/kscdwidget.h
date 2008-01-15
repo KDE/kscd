@@ -33,40 +33,43 @@
 #ifndef KSCDWIDGET_H_
 #define KSCDWIDGET_H_
 
-#include <QSvgWidget>
+#include <QSvgRenderer>
 #include <QWidget>
 #include <QRegion>
 #include <QMouseEvent>
 #include <KStandardDirs>
+#include <QPainter>
 #include <QString>
 #include <kdebug.h>
-#include "ihmnamespace.h"
 
-using namespace IHM;
-
-class KscdWidget:public QSvgWidget
+class KscdWidget:public QWidget
 {
 	Q_OBJECT
-private:
-	KStandardDirs *resource;
 
 protected:
 	QRegion *m_region;
-	StateButton m_state;
+	QString m_state;
 	QString m_name;
+	QString m_file;
 	QString m_path;
+	QString m_id;
+	QSvgRenderer *m_renderer;
+	
+  	void paintEvent(QPaintEvent *event);
 
 public:
 	KscdWidget(QString sName,QWidget * parent=0);
 	virtual ~KscdWidget();
-	void loadPicture(QString);
-	QString findFile(QString,StateButton);
 	void setName(QString);
 	QString getName();
+	void setId(QString,QString);
+	QString getId();
+
+	void loadPicture(QString,QString);
 signals:
-	void changePicture(QString);
+	void needRepaint();
+	void changePicture();
 	void buttonClicked(QString);
-// 	void setName(QString);
 };
 
 #endif /*KSCDWIDGET_H_*/

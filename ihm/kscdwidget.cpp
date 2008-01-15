@@ -32,50 +32,26 @@
  */
 #include "kscdwidget.h"
 
-KscdWidget::KscdWidget(QString sName,QWidget * parent):QSvgWidget(parent)
+KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 {
-	m_state = Default;
-	m_name = sName;
-
- 	m_path = "default" ;
+	m_state = "default";
+ 	m_name = sName;
+	m_id = m_name + "_" + m_state;
+	m_file = "default.svg";
 	
-	connect(this,SIGNAL(changePicture(QString)),this,SLOT(load(QString)));
+	m_path = KStandardDirs::installPath("data") + "/kscd/skin/" + m_file;
+	
+	m_renderer = new QSvgRenderer(m_path,this);
+	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
+			m_renderer->boundsOnElement(m_id).height());
+ 	
+	connect(this, SIGNAL(needRepaint()),this, SLOT(repaint()));
+	connect(this,SIGNAL(changePicture()),this,SLOT(update()));
 	setMouseTracking ( true );
-// 	emit(changePicture(m_path + sName+"_n.svg"));
-
-	resource = new KStandardDirs();
- 	resource->addResourceDir("resources","/usr/local/share/apps/kscd/skin/",true);
-	loadPicture(findFile(m_name,m_state));
-	show();
 }
 
 KscdWidget::~KscdWidget()
 {
-}
-
-QString KscdWidget :: findFile(QString name,StateButton state)
-{
-	QString file;
-	switch(state)
-	{
-		case Default: file = resource->findResource("resources",m_path +"/"+ name + "_n.svg");
-				break;
-		case Pressed: file = resource->findResource("resources",m_path +"/"+ name + "_p.svg");
-				break;
-		case Released: file = resource->findResource("resources",m_path +"/"+ name + "_o.svg");
-				break;
-		case Focused: file = resource->findResource("resources",m_path +"/"+ name + "_o.svg");
-				break;
-		case Embedded: file = resource->findResource("resources",m_path +"/"+ name + "_p.svg");
-				break;
-		default:break;
-	}
-	return file;
-}
-
-void KscdWidget :: loadPicture(QString name)
-{
-	emit(changePicture(name));
 }
 
 void KscdWidget :: setName(QString sName)
@@ -85,6 +61,30 @@ void KscdWidget :: setName(QString sName)
 
 
 QString KscdWidget :: getName()
+{
+	return m_name;
+}
+
+void KscdWidget :: setId(QString name,QString state)
+{
+	m_id = name + "_" + state;
+}
+
+
+QString KscdWidget :: getId()
  {
- 	return m_name;
+ 	return m_id;
  }
+
+void KscdWidget :: loadPicture(QString name,QString state)
+{
+	m_id= name + "_" + state;
+	emit(changePicture());
+	emit(needRepaint());
+}
+
+void KscdWidget :: paintEvent(QPaintEvent *event)
+{
+	QPainter painter(this);
+	m_renderer->render(&painter,m_id);
+}

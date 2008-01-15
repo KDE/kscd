@@ -36,14 +36,10 @@
 #include <QWidget>
 #include <QString>
 #include <QRegion>
-#include <QWheelEvent>
+#include <QMouseEvent>
 #include <QEvent>
 #include <kdebug.h>
 #include "kscdwidget.h"
-#include "ihmnamespace.h"
-#include <QString>
-
-using namespace IHM;
 
 class VolumeButton:public KscdWidget
 {
@@ -51,10 +47,8 @@ class VolumeButton:public KscdWidget
 public:
 	VolumeButton(QWidget * parent=0, QString sName="volume");
 	virtual ~VolumeButton();
-
-signals:
-	void buttonClicked(QString);
-
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
 };
 
 #endif /*VOLUMEBUTTON_H_*/

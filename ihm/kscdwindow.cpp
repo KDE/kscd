@@ -35,7 +35,7 @@
 #include <klocalizedstring.h>
 #include <stdio.h>
 
-KscdWindow::KscdWindow(QString skinPath):QWidget()
+KscdWindow::KscdWindow():QWidget()
 {
  	setFixedSize ( 600,400 );
  	m_layout = new QGridLayout;
@@ -50,7 +50,7 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
 	m_randB = new RandomButton(this);
 	m_loopB = new LoopButton(this);
 	m_trackB = new TrackListButton(this);
-	m_volumeB = new VolumeButton(this);
+// 	m_volumeB = new VolumeButton(this);
 	m_artistLabel = new QLabel(i18n("Welcome to KsCD !"));
 	m_artistLabel->setFixedWidth(250);
 	m_artistLabel->setAlignment(Qt::AlignCenter);
@@ -61,12 +61,12 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
  	m_layout->addWidget(m_playB, 1, 1);
  	m_layout->addWidget(m_nextB, 1, 2);
  	m_layout->addWidget(m_stopB, 2, 1);
-  	m_layout->addWidget(m_volumeB, 0,5,3,1,Qt::AlignCenter);
+//   	m_layout->addWidget(m_volumeB, 0,5,3,1,Qt::AlignCenter);
 	m_layout->addWidget(m_randB, 3, 0,Qt::AlignCenter);
-	m_layout->addWidget(m_loopB, 3, 2,Qt::AlignCenter);
+ 	m_layout->addWidget(m_loopB, 3, 2,Qt::AlignCenter);
 	m_layout->addWidget(m_muteB, 3, 4,Qt::AlignCenter);
 	m_layout->addWidget(m_trackB, 3, 6,Qt::AlignCenter);
-	m_layout->addWidget(time,0,3,Qt::AlignCenter);
+ 	m_layout->addWidget(time,0,3,Qt::AlignCenter);
 	m_layout->addWidget(m_artistLabel, 1, 3,Qt::AlignCenter);
 	setLayout(m_layout);
 
@@ -76,10 +76,10 @@ KscdWindow::KscdWindow(QString skinPath):QWidget()
 	connect(m_playB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_prevB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_nextB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_ejectB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+ 	connect(m_ejectB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_muteB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_randB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+ 	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_trackB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 }
 
@@ -89,7 +89,7 @@ KscdWindow::~KscdWindow()
 	delete m_stopB;
 	delete m_nextB;
 	delete m_prevB;
-	delete m_ejectB;
+ 	delete m_ejectB;
 	delete m_muteB;
 	delete m_trackB;
 	delete m_layout;
@@ -100,10 +100,6 @@ void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)
 	m_layout->addWidget((QWidget*)ss, 2, 3);
 }
 
-QString KscdWindow::getSkinPath()
-{
-	return m_skinPath;
-}
 
 void KscdWindow::setTime(qint64 pos)
 {
@@ -117,10 +113,6 @@ QString result;
 	time->setText(result);
 }
 
-void KscdWindow::setSkinPath(QString sPath)
-{
-	m_skinPath = sPath;
-}
 
 QLabel* KscdWindow::getArtistLabel()
 {
@@ -137,64 +129,66 @@ void KscdWindow::catchButton(QString name)
 	emit(actionClicked(name));
 }
 
-void KscdWindow::changePicture(QString name,StateButton state)
+void KscdWindow::changePicture(QString name,QString state)
 {
 	if(name == "play")
 	{
-		m_playB->loadPicture(m_playB->findFile("pause",state));
+		m_playB->loadPicture("pause",state);
 	}
 	if(name == "pause")
 	{
-		m_playB->loadPicture(m_playB->findFile("play",state));
+		m_playB->loadPicture("play",state);
 	}
 	if(name == "stop")
 	{
-		m_stopB->loadPicture(m_stopB->findFile(name,state));
+		m_stopB->loadPicture(name,state);
 		m_playB->setName("play");
-		m_playB->loadPicture(m_playB->findFile(m_playB->getName(),Default));
+		m_playB->loadPicture(m_playB->getName(),"default");
 	}
 	if(name == "eject")
 	{
-		m_ejectB->loadPicture(m_ejectB->findFile(name,state));
+		m_ejectB->loadPicture(name,state);
+		m_playB->setName("play");
+		m_playB->loadPicture(m_playB->getName(),"default");
 	}
 	if(name == "next")
 	{
-		m_nextB->loadPicture(m_nextB->findFile(name,state));
+		m_nextB->loadPicture(name,state);
 	}
 	if(name == "previous")
 	{
-		m_prevB->loadPicture(m_prevB->findFile(name,state));
+		m_prevB->loadPicture(name,state);
 	}
 	if(name == "mute")
 	{
-		m_muteB->loadPicture(m_muteB->findFile(name,state));
+		m_muteB->loadPicture(name,state);
 	}
 	if(name == "unmute")
 	{
-		m_muteB->loadPicture(m_muteB->findFile(name,state));
+		m_muteB->loadPicture(name,state);
 	}
 	if(name == "random")
 	{
-		m_randB->loadPicture(m_randB->findFile(name,state));
+		m_randB->loadPicture(name,state);
 	}
 	if(name == "p_random")
 	{
-		m_randB->loadPicture(m_randB->findFile("random",Pressed));
+		m_randB->loadPicture("random","pressed");
 	}
 	if(name == "loop")
 	{
-		m_loopB->loadPicture(m_loopB->findFile(name,state));
+		m_loopB->loadPicture(name,state);
 	}
 	if(name == "looptrack")
 	{
-		m_loopB->loadPicture(m_loopB->findFile(name,state));
+		m_loopB->loadPicture(name,state);
 	}
 	if(name == "loopdisc")
 	{
-		m_loopB->loadPicture(m_loopB->findFile(name,state));
+		m_loopB->loadPicture(name,state);
 	}
 	if(name == "tracklist")
 	{
-		m_trackB->loadPicture(m_trackB->findFile(name,state));
+		m_trackB->loadPicture(name,state);
 	}
 }

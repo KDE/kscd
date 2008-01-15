@@ -46,10 +46,11 @@ void RandomButton :: mousePressEvent(QMouseEvent *event)
  	if(m_region->contains(event->pos()))
  	{
  		event->accept();
-		m_state = Pressed;
+		m_state = "pressed";
 		if(m_name== "random")
 		{
-			loadPicture(findFile(m_name,m_state));
+			m_id = m_name + "_" + m_state;
+			emit(needRepaint());
 		}
 		else
 		{
@@ -68,14 +69,17 @@ void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 	{
 		event->accept();
+		m_state = "over";
 		if(m_name=="random")
 		{
 			m_name = "p_random";
+			m_id = m_name + "_" + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else
 		{
 			m_name = "random";
+			m_id = m_name + "_" + m_state;
 			emit(buttonClicked(m_name));
 		}
 	}
@@ -94,8 +98,9 @@ void RandomButton :: enterEvent (QEvent * event )
 	else
 	{
 		event->accept();
-		m_state = Focused;
-		loadPicture(findFile(m_name,m_state));
+		m_state = "over";
+		m_id = m_name + "_" + m_state;
+		emit(needRepaint());
 		setToolTip(m_name);
 	}
 }
@@ -109,7 +114,8 @@ void RandomButton :: leaveEvent (QEvent * event )
 	else
 	{
 		event->accept();
-		m_state = Default;
-		loadPicture(findFile(m_name,m_state));
+		m_state = "default";
+		m_id = m_name + "_" + m_state;
+		emit(needRepaint());
 	}
 }

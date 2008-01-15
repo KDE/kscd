@@ -93,7 +93,7 @@ private:
 
 
 signals:
-	void picture(QString,StateButton);
+	void picture(QString,QString);
 	void CDDBClicked();
 
 public slots:

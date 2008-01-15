@@ -41,9 +41,6 @@
 #include <QEvent>
 #include <kdebug.h>
 #include "kscdwidget.h"
-#include "ihmnamespace.h"
-#include <QString>
-using namespace IHM;
 
 class MuteButton:public KscdWidget
 {
@@ -55,9 +52,6 @@ public:
 	void mouseReleaseEvent(QMouseEvent * event);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
-signals:
-	void buttonClicked(QString);
-
 };
 
 #endif /*MUTEBUTTON_H_*/
