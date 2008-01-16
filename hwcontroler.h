@@ -39,6 +39,7 @@
 #include <phonon/mediaobject.h>
 #include <phonon/mediacontroller.h>
 #include <phonon/audiooutput.h>
+#include <phonon/volumeslider.h>
 
 
 #include "audiocd.h"
@@ -94,6 +95,7 @@ class HWControler : public QObject
 		void configMedia();
 		void setLoopMode(LoopMode lm);
 		Phonon::MediaObject * getMedia();
+		Phonon::AudioOutput * getAudioOutPut();
 		AudioCD getCD();
 
 	private slots:

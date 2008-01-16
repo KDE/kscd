@@ -64,8 +64,8 @@ KscdWindow::KscdWindow():QWidget()
 //   	m_layout->addWidget(m_volumeB, 0,5,3,1,Qt::AlignCenter);
 	m_layout->addWidget(m_randB, 3, 0,Qt::AlignCenter);
  	m_layout->addWidget(m_loopB, 3, 2,Qt::AlignCenter);
-	m_layout->addWidget(m_muteB, 3, 4,Qt::AlignCenter);
-	m_layout->addWidget(m_trackB, 3, 6,Qt::AlignCenter);
+	m_layout->addWidget(m_muteB,0, 4,Qt::AlignCenter);
+	m_layout->addWidget(m_trackB, 3, 4,Qt::AlignCenter);
  	m_layout->addWidget(time,0,3,Qt::AlignCenter);
 	m_layout->addWidget(m_artistLabel, 1, 3,Qt::AlignCenter);
 	setLayout(m_layout);
@@ -98,6 +98,11 @@ KscdWindow::~KscdWindow()
 void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)
 {
 	m_layout->addWidget((QWidget*)ss, 2, 3);
+}
+void KscdWindow::addVolumeSlider(Phonon::VolumeSlider *vs)
+{
+	m_layout->addWidget((QWidget*)vs, 1, 4);
+
 }
 
 

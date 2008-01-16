@@ -56,6 +56,7 @@
 
 
 #include <phonon/seekslider.h>
+#include <phonon/volumeslider.h>
 
 
 class KscdWindow:public QWidget
@@ -88,6 +89,7 @@ public:
 
 
 	void addSeekSlider(Phonon::SeekSlider *ss);
+	void addVolumeSlider(Phonon::VolumeSlider *vs);
 
 public slots:
  	void catchButton(QString);

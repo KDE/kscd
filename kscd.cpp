@@ -80,6 +80,10 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow()
 	devices = new HWControler();
 	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(setTime(qint64)));
 	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
+	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
+	vs->setOrientation(Qt::Vertical);
+	addVolumeSlider(vs);
+
 
 	/* CDDB initialization */
 	m_cddbInfo.clear(); // The first freedb revision is "0"

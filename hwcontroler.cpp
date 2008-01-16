@@ -327,6 +327,11 @@ void HWControler ::catchCurrentTime(qint64 pos)
 {
 	emit(currentTime(pos));
 }
+Phonon::AudioOutput * HWControler ::getAudioOutPut()
+{
+	return speakers;
+}
+
 /*
 
 Solid::OpticalDrive* HWcontroler ::getSelectedOpticalDrive()
