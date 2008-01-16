@@ -61,9 +61,15 @@ private:
 //	CDDBDlg* m_cddialog;
 	KCDDB::CDInfo m_cddbInfo;
 	KCDDB::Client* m_cddbClient;
+	KCDDB::TrackOffsetList m_cdSignature;
 	
 public:
 	KCDDB::Client* getCddbClient(){return m_cddbClient;}
+	KCDDB::CDInfo getCddbInfo(){return m_cddbInfo;}
+	
+	KCDDB::TrackOffsetList getCdSignature(){return m_cdSignature;}
+	
+	void setup(int nbTrack, KCDDB::TrackOffsetList signature);
 
 private slots:
 	void CDDialogSelected();
@@ -74,7 +80,8 @@ private slots:
 
 signals:
 	void showArtistLabel(QString);
-
+	void showTrackinfoLabel(QString);
+	void restoreTrackinfoLabel();
 };
 
 #endif

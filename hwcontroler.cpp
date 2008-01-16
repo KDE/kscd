@@ -123,7 +123,6 @@ kDebug() << selectedCd;
 }
 void HWControler :: nextTrack()
 {
-	kDebug()<< "!!!!!!!!!!!!!!!! NEXT !!!!!!!!!!!!!!";
 	if(!(selectedCd==-1))
 	{
 		if(cdIn[selectedCd].isCdInserted())

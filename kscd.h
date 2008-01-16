@@ -101,6 +101,12 @@ class KSCD : public KscdWindow, public KSessionManager {
 	Q_OBJECT
 	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
 
+private:
+	int currentTrack;
+	HWControler* devices;
+	KCompactDisc* m_cd; // kept for CDDB compatibility
+	CDDBManager* m_cddbManager;
+
 public:
 	explicit KSCD(QWidget *parent = 0);
 	~KSCD();
@@ -110,16 +116,12 @@ public:
 protected:
 	void populateSongList();
 
-private:
-	HWControler* devices;
-	KCompactDisc* m_cd; // kept for CDDB compatibility
-	CDDBManager* m_cddbManager;
-
 signals:
 	void picture(QString,QString);
 
 public slots:
 	void lookupCDDB();
+	void restoreTrackinfoLabel();
 	void actionButton(QString);	
 
 };

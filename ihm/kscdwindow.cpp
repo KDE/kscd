@@ -51,23 +51,38 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_loopB = new LoopButton(this);
 	m_trackB = new TrackListButton(this);
 // 	m_volumeB = new VolumeButton(this);
+	
+	// Panel
+	m_panel = new QWidget(this);
+	m_panel->setLayout(new QGridLayout);
+	
+	m_time = new QLabel(" 0 0 : 0 0 ");
+	
 	m_artistLabel = new QLabel(i18n("Welcome to KsCD !"));
 	m_artistLabel->setFixedWidth(250);
 	m_artistLabel->setAlignment(Qt::AlignCenter);
-	time = new QLabel(" 0 0 : 0 0 ");
+	
+	m_trackinfoLabel = new QLabel;
+	m_trackinfoLabel->setFixedWidth(250);
+	m_trackinfoLabel->setAlignment(Qt::AlignCenter);
 
+	// Items positionment
  	m_layout->addWidget(m_ejectB, 0, 1);
  	m_layout->addWidget(m_prevB, 1, 0);
  	m_layout->addWidget(m_playB, 1, 1);
  	m_layout->addWidget(m_nextB, 1, 2);
  	m_layout->addWidget(m_stopB, 2, 1);
 //   	m_layout->addWidget(m_volumeB, 0,5,3,1,Qt::AlignCenter);
-	m_layout->addWidget(m_randB, 3, 0,Qt::AlignCenter);
- 	m_layout->addWidget(m_loopB, 3, 2,Qt::AlignCenter);
-	m_layout->addWidget(m_muteB,0, 4,Qt::AlignCenter);
-	m_layout->addWidget(m_trackB, 3, 4,Qt::AlignCenter);
- 	m_layout->addWidget(time,0,3,Qt::AlignCenter);
-	m_layout->addWidget(m_artistLabel, 1, 3,Qt::AlignCenter);
+	m_layout->addWidget(m_randB, 3, 0, Qt::AlignCenter);
+ 	m_layout->addWidget(m_loopB, 3, 2, Qt::AlignCenter);
+	m_layout->addWidget(m_muteB,0, 4, Qt::AlignCenter);
+	m_layout->addWidget(m_trackB, 3, 4, Qt::AlignCenter);
+	
+	m_layout->addWidget(m_panel, 0, 3, 2, 1);
+	dynamic_cast<QGridLayout*>(m_panel->layout())->addWidget(m_time,0,0, Qt::AlignCenter);
+	dynamic_cast<QGridLayout*>(m_panel->layout())->addWidget(m_artistLabel, 1, 0, Qt::AlignCenter);
+	dynamic_cast<QGridLayout*>(m_panel->layout())->addWidget(m_trackinfoLabel, 2, 0, Qt::AlignCenter);
+	
 	setLayout(m_layout);
 
 	show();
@@ -92,6 +107,11 @@ KscdWindow::~KscdWindow()
  	delete m_ejectB;
 	delete m_muteB;
 	delete m_trackB;
+	
+	delete m_time;
+	delete m_artistLabel ;
+	delete m_trackinfoLabel ;
+	
 	delete m_layout;
 }
 
@@ -113,14 +133,17 @@ void KscdWindow::setTime(qint64 pos)
 	qint64 sd = ((pos/1000)%60)/10;
 	qint64 su = ((pos/1000)%60)%10;
 
-QString result;
-     QTextStream(&result) << " " << md << " " << mu << " : " << sd << " " << su << " ";
-	time->setText(result);
+	QString result;
+	QTextStream(&result) << " " << md << " " << mu << " : " << sd << " " << su << " ";
+	m_time->setText(result);
 }
 
+/**
+ * Manages the Artist label
+ */
 void KscdWindow::showArtistLabel(QString infoStatus)
 {
-	setArtistLabel(infoStatus);
+	m_artistLabel->setText(infoStatus);
 }
 
 QLabel* KscdWindow::getArtistLabel()
@@ -129,13 +152,17 @@ QLabel* KscdWindow::getArtistLabel()
 }
 
 /**
- * Manages the Artist label
+ * Manages the Trackinfo Label
  */
-void KscdWindow::setArtistLabel(QString artist)
+void KscdWindow::showTrackinfoLabel(QString infoStatus)
 {
-	m_artistLabel->setText(artist);
+	m_trackinfoLabel->setText(infoStatus);
 }
 
+QLabel* KscdWindow::getTrackinfoLabel()
+{
+	return (m_trackinfoLabel);
+}
 
 
 /**

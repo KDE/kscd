@@ -76,27 +76,30 @@ private:
 	KscdWidget *m_trackB;
 // 	KscdWidget *m_volumeB;
 	
+	QWidget *m_panel;
+	QLabel * m_time;
 	QLabel *m_artistLabel ;
-
-	QLabel * time;
+	QLabel *m_trackinfoLabel ;
+	
+	
 public:
 	KscdWindow(QWidget *parent = 0);
 	virtual ~KscdWindow();
 	
 	
 	QLabel *getArtistLabel();
-	void setArtistLabel(QString artist);
-
-
+	QLabel *getTrackinfoLabel();
+	
 	void addSeekSlider(Phonon::SeekSlider *ss);
 	void addVolumeSlider(Phonon::VolumeSlider *vs);
 
 public slots:
  	void catchButton(QString);
-	void changePicture(QString,QString);
+	void changePicture(QString, QString);
 	void setTime(qint64 pos);
 	void showArtistLabel(QString);
-
+	void showTrackinfoLabel(QString);
+	
 	
 signals:
 	void actionClicked(QString);

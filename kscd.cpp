@@ -69,7 +69,9 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(CDDBDownloadAction, SIGNAL(triggered()), this, SLOT(lookupCDDB()));
 
 	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
-
+	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
+	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
+	currentTrack=0;
 
 }
 
@@ -83,6 +85,9 @@ KSCD::~KSCD()
 	delete m_cddb;*/
 }
 
+/**
+ * CDDB Management
+ */
 void KSCD::lookupCDDB()
 {
 	kDebug() << "Lookup CDDB" ;
@@ -102,6 +107,22 @@ void KSCD::lookupCDDB()
 		showArtistLabel(i18n("No Disc"));
 		QTimer::singleShot(3000, m_cddbManager, SLOT(restoreArtistLabel()));
 	}
+}
+
+void KSCD::restoreTrackinfoLabel()
+{
+	kDebug() << "!!!!!!!!restore Trackinfo label!!!!!!" ;
+	QString num, title;
+
+	if (m_cddbManager->getCddbInfo().isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/)
+	{
+		title = m_cddbManager->getCddbInfo().track(currentTrack).get(KCDDB::Title).toString();
+	}
+	else{
+		title = i18n("Unknown");
+	}
+	emit showTrackinfoLabel(QString("%1 - %2").arg(num, title));
+
 }
 
 /**
@@ -148,6 +169,10 @@ void KSCD::actionButton(QString name)
 	{
 		devices->nextTrack();
 		emit(picture(name,state));
+		
+		currentTrack++;
+		kDebug() << "Track : "<<currentTrack ;
+		showTrackinfoLabel(QString("%1 - %2").arg(QString(currentTrack), m_cddbManager->getCddbInfo().track(currentTrack).get(KCDDB::Title).toString())) ;
 		if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 		{
 			devices->stop();
@@ -162,6 +187,11 @@ void KSCD::actionButton(QString name)
 	{
 		devices->prevTrack();
 		emit(picture(name,state));
+
+		currentTrack--;
+		kDebug() << "Track : "<<currentTrack ;
+		showTrackinfoLabel(QString("%1 - %2").arg(QString(currentTrack), m_cddbManager->getCddbInfo().track(currentTrack).get(KCDDB::Title).toString())) ;
+		
 		if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 		{
 			devices->stop();

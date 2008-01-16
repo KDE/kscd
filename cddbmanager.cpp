@@ -44,13 +44,29 @@ CDDBManager::CDDBManager()
 	connect(m_cddbClient, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
 
 // TODO inactivate CDDB options if no disc
-
+// TODO erase that !
+	for (int i=0; i<20; i++)
+	{
+		kDebug() << i << "!!!!!!!!!!!Changed" ;
+		m_cddbInfo.track(i).set(KCDDB::Title, QString("unknown") ) ;
+	}
 }
 
 CDDBManager::~CDDBManager()
 {
 //	delete m_cddialog;
 	delete m_cddbClient;
+}
+
+// Fonction to be called whenever a new Disc is inserted
+void CDDBManager::setup(int nbTrack, KCDDB::TrackOffsetList signature)
+{
+	m_cdSignature = signature;
+	
+	for (int i=0; i<nbTrack; i++)
+	{
+		m_cddbInfo.track(i).set(KCDDB::Title, QString("unknown") ) ;
+	}
 }
 
 void CDDBManager::CDDialogSelected()
@@ -158,6 +174,7 @@ void CDDBManager::setCDInfo(KCDDB::CDInfo info)
 	}
 //	populateSongList();
 	restoreArtistLabel();
+	emit restoreTrackinfoLabel();
 }
 
 void CDDBManager::restoreArtistLabel()
@@ -182,6 +199,8 @@ void CDDBManager::restoreArtistLabel()
 	}*/
 
 }
+
+
 
 void CDDBManager::populateSongList()
 {
