@@ -78,6 +78,11 @@ AudioCD::AudioCD(Solid::Device aCd)
 	src = new MediaSource(Cd,block->device());
 */
 }
+
+AudioCD::~AudioCD()
+{
+}
+
 Solid::OpticalDrive * AudioCD::getCdDrive()
 {
 	return cdDrive;

@@ -79,6 +79,7 @@ class HWControler : public QObject
 		
 	public:
 		HWControler();
+		~HWControler();
 		void selectCd(int cdNum);
 		void selectSpeaker(int sNum);
 		void eject();

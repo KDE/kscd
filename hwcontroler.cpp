@@ -77,6 +77,13 @@ HWControler :: HWControler ()
 	configMedia();
 }
 
+HWControler::~HWControler ()
+{
+	delete speakers;
+	delete media;
+	delete mc;
+}
+
 void HWControler :: selectCd(int cdNum)
 {
 

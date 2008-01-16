@@ -80,7 +80,7 @@ private:
 
 	QLabel * time;
 public:
-	KscdWindow();
+	KscdWindow(QWidget *parent = 0);
 	virtual ~KscdWindow();
 	
 	
@@ -95,6 +95,9 @@ public slots:
  	void catchButton(QString);
 	void changePicture(QString,QString);
 	void setTime(qint64 pos);
+	void showArtistLabel(QString);
+
+	
 signals:
 	void actionClicked(QString);
 

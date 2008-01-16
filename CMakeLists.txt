@@ -18,13 +18,14 @@ add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 set(kscd_SRCS 
 	kscd.cpp 
-	docking.cpp 
+# 	docking.cpp 
 	hwcontroler.cpp 
 	audiocd.cpp 
-	bwlednum.cpp 
-	configWidget.cpp 
-	cddbdlg.cpp 
-	cdcombobox.cpp
+# 	bwlednum.cpp 
+# 	configWidget.cpp 
+# 	cddbdlg.cpp 
+	cddbmanager.cpp
+# 	cdcombobox.cpp
 	ihm/kscdwindow.cpp 
 	ihm/kscdwidget.cpp 
 	ihm/ejectbutton.cpp 

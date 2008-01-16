@@ -35,7 +35,7 @@
 #include <klocalizedstring.h>
 #include <stdio.h>
 
-KscdWindow::KscdWindow():QWidget()
+KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {
  	setFixedSize ( 600,400 );
  	m_layout = new QGridLayout;
@@ -118,16 +118,29 @@ QString result;
 	time->setText(result);
 }
 
+void KscdWindow::showArtistLabel(QString infoStatus)
+{
+	setArtistLabel(infoStatus);
+}
 
 QLabel* KscdWindow::getArtistLabel()
 {
 	return (m_artistLabel);
 }
+
+/**
+ * Manages the Artist label
+ */
 void KscdWindow::setArtistLabel(QString artist)
 {
 	m_artistLabel->setText(artist);
 }
 
+
+
+/**
+ * Links treatments with the UI
+ */
 void KscdWindow::catchButton(QString name)
 {
 	kDebug()<<"Catch :" << name;

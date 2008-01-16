@@ -25,18 +25,6 @@
 #ifndef __KSCD__
 #define __KSCD__
 
-#include <QGridLayout>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QCloseEvent>
-
-// CD support.
-class KCompactDisc;
-
-// CDDB support via libkcddb
-#include <libkcddb/kcddb.h>
-#include <libkcddb/client.h>
-
 // Solid implementation
 #include <QLabel>
 #include <qdialog.h>
@@ -47,19 +35,60 @@ class KCompactDisc;
 #include <qslider.h>
 #include <QToolTip>
 #include <QMenu>
-#include "ledlamp.h"
-#include "ui_panel.h"
+#include <QCloseEvent>
+#include <QKeyEvent>
+#include <QEvent>
+#include <QMenu>
+#include <QtDBus>
+#include <QGridLayout>
+#include <QKeyEvent>
+#include <QEvent>
+#include <QCloseEvent>
+
+// CD support.
+class KCompactDisc;
+
+// CDDB support via libkcddb
+#include <libkcddb/cddb.h>
+#include <libkcddb/kcddb.h>
+#include <libkcddb/client.h>
+
+#include <phonon/phononnamespace.h>
+#include <phonon/seekslider.h>
+
+#include "ihm/kscdwindow.h"
 #include "hwcontroler.h"
+#include "cddbmanager.h"
 #include "prefs.h"
+#include "cddbdlg.h"
 #include "configWidget.h"
+#include "docking.h"
+#include <config-alsa.h>
+
+
 #include <kapplication.h>
 #include <kconfigdialog.h>
 #include <k3process.h>
 #include <krandomsequence.h>
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
-
-#include "ihm/kscdwindow.h"
+#include <kcompactdisc.h>
+#include <kdebug.h>
+#include <kaboutdata.h>
+#include <kactioncollection.h>
+#include <kcmdlineargs.h>
+#include <khelpmenu.h>
+#include <kshortcutsdialog.h>
+#include <kiconloader.h>
+#include <kinputdialog.h>
+#include <kmessagebox.h>
+#include <kmenu.h>
+#include <krun.h>
+#include <kstandardaction.h>
+#include <kstringhandler.h>
+#include <kuniqueapplication.h>
+#include <kcmoduleloader.h>
+#include <ktoolinvocation.h>
 
 class CDDBDlg;
 class DockWidget;
@@ -83,30 +112,15 @@ protected:
 
 private:
 	HWControler* devices;
-
 	KCompactDisc* m_cd; // kept for CDDB compatibility
-
-	// Info from CDDB
-	CDDBDlg* m_cddialog;
-	KCDDB::CDInfo m_cddbInfo;
-	KCDDB::Client* m_cddb;
-
+	CDDBManager* m_cddbManager;
 
 signals:
 	void picture(QString,QString);
-	void CDDBClicked();
 
 public slots:
-	void actionButton(QString);
 	void lookupCDDB();
-
-private slots:
-	void CDDialogSelected();
-	void CDDialogDone();
-	void lookupCDDBDone(KCDDB::Result);
-	void setCDInfo(KCDDB::CDInfo);
-	void showArtistLabel(QString);
-	void restoreArtistLabel();
+	void actionButton(QString);	
 
 };
 

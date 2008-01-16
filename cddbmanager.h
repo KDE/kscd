@@ -9,8 +9,10 @@
  * --------------
  * ISI KsCD Team :
  * --------------
+ * Stanislas KRZYWDA <stanislas.krzywda@gmail.com>
+ * Sovanramy Var <mastasushi@gmail.com>
  * Bouchikhi Mohamed-Amine <bouchikhi.amine@gmail.com>
- * Gastellu Sylvain
+ * Gastellu Sylvain<sylvain.gastellu@gmail.com>
  * -----------------------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or modify
@@ -28,35 +30,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef __AUDIOCD__
-#define __AUDIOCD__
 
-#include <solid/opticaldisc.h>
-#include <solid/device.h>
-#include <solid/opticaldrive.h>
-#include <solid/block.h>
+#ifndef __CDDBMANAGER_H__
+#define __CDDBMANAGER_H__
 
-#include <phonon/mediasource.h>
+// CDDB support via libkcddb
+#include <libkcddb/kcddb.h>
+#include <libkcddb/client.h>
+using namespace KCDDB;
 
-#include <QString>
+#include <klocalizedstring.h>
+#include <QTimer>
+#include <kinputdialog.h>
+#include <kdebug.h>
 
 
-class AudioCD
+class CDDBManager : public QObject
 {
-	private:
-		Solid::OpticalDrive *cdDrive;
-		Solid::OpticalDisc *cd;
-		Solid::Block *block;
-		Phonon::MediaSource *src;
+	Q_OBJECT
 
-	public:
-		AudioCD(Solid::Device aCd);
-		~AudioCD();
-		Solid::OpticalDrive * getCdDrive();
-		Solid::OpticalDisc * getCd();
-		Phonon::MediaSource * getMediaSource();
-		QString getCdPath();
-		bool isCdInserted();
+public:
+	CDDBManager();
+	~CDDBManager();
+
+protected:
+	void populateSongList();
+
+private:
+	// Info from CDDB
+//	CDDBDlg* m_cddialog;
+	KCDDB::CDInfo m_cddbInfo;
+	KCDDB::Client* m_cddbClient;
+	
+public:
+	KCDDB::Client* getCddbClient(){return m_cddbClient;}
+
+private slots:
+	void CDDialogSelected();
+	void CDDialogDone();
+	void lookupCDDBDone(KCDDB::Result);
+	void setCDInfo(KCDDB::CDInfo);
+	void restoreArtistLabel();
+
+signals:
+	void showArtistLabel(QString);
+
 };
 
 #endif
