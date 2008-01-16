@@ -121,8 +121,15 @@ void HWControler :: nextTrack()
 	{
 		if(cdIn[selectedCd].isCdInserted())
 		{
-			mc->nextTitle();
-			catchCurrentTime(0);
+			if(mc->currentTitle() == mc->availableTitles())
+			{
+				mc->setCurrentTitle(1);
+			}
+			else
+			{
+				mc->nextTitle();
+				catchCurrentTime(0);
+			}
 		}
 	}	
 
@@ -133,8 +140,15 @@ void HWControler :: prevTrack()
 	{
 		if(cdIn[selectedCd].isCdInserted())
 		{
-			mc->previousTitle();
-			catchCurrentTime(0);
+			if(mc->currentTitle() == 1)
+			{
+				mc->setCurrentTitle(mc->availableTitles());
+			}
+			else
+			{
+				mc->previousTitle();
+				catchCurrentTime(0);
+			}
 		}
 	}
 }
@@ -233,6 +247,13 @@ qreal HWControler :: getVolume()
 	else
 	{
 		return speakers->volume();
+	}
+}
+void HWControler :: setVolume(qreal vol)
+{
+	if (selectedS != -1)
+	{
+		speakers->setVolume(vol);
 	}
 }
 Phonon::State HWControler ::getState()

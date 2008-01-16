@@ -91,6 +91,7 @@ class HWControler : public QObject
 		qint64 getTotalTime ();
 		qint64 getRemainingTime ();
 		qreal getVolume();
+		void setVolume(qreal vol);
 		Phonon::State getState();
 		void configMedia();
 		void setLoopMode(LoopMode lm);
