@@ -90,6 +90,8 @@ class KCompactDisc;
 #include <kcmoduleloader.h>
 #include <ktoolinvocation.h>
 
+#include <sstream>
+
 class CDDBDlg;
 class DockWidget;
 class QGridLayout;
