@@ -70,6 +70,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
 	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
+	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
 	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
 	currentTrack=1;
 
@@ -88,6 +89,7 @@ KSCD::~KSCD()
 /**
  * CDDB Management
  */
+// TODO move this function to CDDBManager and add an signature attribute
 void KSCD::lookupCDDB()
 {
 	kDebug() << "Lookup CDDB" ;
@@ -105,21 +107,44 @@ void KSCD::lookupCDDB()
 	}
 	else{
 		showArtistLabel(i18n("No Disc"));
-		QTimer::singleShot(3000, m_cddbManager, SLOT(restoreArtistLabel()));
+		QTimer::singleShot(3000, this, SLOT(restoreArtistLabel()));
 	}
+}
+
+void KSCD::restoreArtistLabel()
+{
+// 	if (devices->getCD().isCdInserted())
+// 	{
+		QString artist, title;
+
+		if (m_cddbManager->getCddbInfo().isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/) {
+			artist = m_cddbManager->getCddbInfo().get(KCDDB::Artist).toString();
+			title = m_cddbManager->getCddbInfo().get(KCDDB::Title).toString();
+			kDebug() << "!!!!!!!!restore artist label!!!!!!" ;
+		}
+		else{
+			artist = i18n("Unknown artist");
+			title = i18n("Unknown album");
+		}
+		showArtistLabel(QString("%1 - %2").arg(artist, title));
+/*
+	} else {
+		showArtistLabel(i18n("Welcome to KsCD !"));
+	}*/
+
 }
 
 void KSCD::restoreTrackinfoLabel()
 {
 	kDebug() << "!!!!!!!!restore Trackinfo label!!!!!!" << currentTrack ;
-	QString title = QString("%1 - ").arg(currentTrack) ;
+	QString title = QString("%1 - ").arg(currentTrack, 2, 10, QLatin1Char( '0' )) ;
 
 	if (m_cddbManager->getCddbInfo().isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/)
 	{
 		title.append(m_cddbManager->getCddbInfo().track(currentTrack).get(KCDDB::Title).toString());
 	}
 	else{
-		title = i18n("Unknown");
+		title.append(i18n("unknown"));
 	}
 	emit showTrackinfoLabel(title);
 
@@ -137,6 +162,8 @@ void KSCD::actionButton(QString name)
 		{
 			devices->play();
 			emit(picture(name,state));
+			restoreArtistLabel();
+			restoreTrackinfoLabel();
 		}
 	}
 	if(name=="pause")

@@ -76,11 +76,11 @@ private slots:
 	void CDDialogDone();
 	void lookupCDDBDone(KCDDB::Result);
 	void setCDInfo(KCDDB::CDInfo);
-	void restoreArtistLabel();
 
 signals:
 	void showArtistLabel(QString);
 	void showTrackinfoLabel(QString);
+	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 };
 

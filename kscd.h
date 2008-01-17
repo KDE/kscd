@@ -90,8 +90,6 @@ class KCompactDisc;
 #include <kcmoduleloader.h>
 #include <ktoolinvocation.h>
 
-#include <sstream>
-
 class CDDBDlg;
 class DockWidget;
 class QGridLayout;
@@ -123,8 +121,9 @@ signals:
 
 public slots:
 	void lookupCDDB();
+	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
-	void actionButton(QString);	
+	void actionButton(QString);
 
 };
 

@@ -105,7 +105,7 @@ void CDDBManager::lookupCDDBDone(Result result)
 		else
 			emit showArtistLabel(i18n("Error getting freedb entry."));
 
-		QTimer::singleShot(3000, this, SLOT(restoreArtistLabel()));
+		QTimer::singleShot(3000, this, SIGNAL(restoreArtistLabel()));
 		return;
 	}
 
@@ -173,34 +173,9 @@ void CDDBManager::setCDInfo(KCDDB::CDInfo info)
 		kDebug() << i << " " << m_cddbInfo.track(i).get(KCDDB::Artist).toString() ;
 	}
 //	populateSongList();
-	restoreArtistLabel();
+	emit restoreArtistLabel();
 	emit restoreTrackinfoLabel();
 }
-
-void CDDBManager::restoreArtistLabel()
-{
-// 	if (devices->getCD().isCdInserted())
-// 	{
-		QString artist, title;
-
-		if (m_cddbInfo.isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/) {
-			artist = m_cddbInfo.get(KCDDB::Artist).toString();
-			title = m_cddbInfo.get(KCDDB::Title).toString();
-			kDebug() << "!!!!!!!!restore artist label!!!!!!" ;
-		}
-		else{
-			artist = i18n("Unknown artist");
-			title = i18n("Unknown album");
-		}
-		emit showArtistLabel(QString("%1 - %2").arg(artist, title));
-/*
-	} else {
-		showArtistLabel(i18n("Welcome to KsCD !"));
-	}*/
-
-}
-
-
 
 void CDDBManager::populateSongList()
 {
