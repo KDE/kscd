@@ -41,6 +41,7 @@ using namespace KCDDB;
 
 #include <klocalizedstring.h>
 #include <QTimer>
+#include <QDialog>
 #include <kinputdialog.h>
 #include <kdebug.h>
 
@@ -59,6 +60,7 @@ protected:
 private:
 	// Info from CDDB
 //	CDDBDlg* m_cddialog;
+	QDialog * m_cddialog;
 	KCDDB::CDInfo m_cddbInfo;
 	KCDDB::Client* m_cddbClient;
 	KCDDB::TrackOffsetList m_cdSignature;

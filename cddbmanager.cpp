@@ -50,6 +50,9 @@ CDDBManager::CDDBManager()
 		kDebug() << i << "!!!!!!!!!!!Changed" ;
 		m_cddbInfo.track(i).set(KCDDB::Title, QString("unknown") ) ;
 	}
+
+	//Create CDDB Window
+	m_cddialog = new QDialog(0, Qt::Window);
 }
 
 CDDBManager::~CDDBManager()
@@ -72,6 +75,9 @@ void CDDBManager::setup(int nbTrack, KCDDB::TrackOffsetList signature)
 void CDDBManager::CDDialogSelected()
 {	
 	kDebug() << "CDDialogSelected1" ;
+
+	m_cddialog->show();
+
 /*
 // 	if (!m_cddialog)
 // 	{
