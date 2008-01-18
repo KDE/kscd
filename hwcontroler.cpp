@@ -47,18 +47,28 @@ using namespace Phonon;
 
 HWControler :: HWControler ()
 {
+
+	// in kscd starting, no loop option
 	loopState = NoLoop;
+
+	// init CD detection
 	selectedCd=-1;
+
+	// init Speakers detection
 	selectedS=-1;
 
+	// getting all optical disc driver
 	QList<Solid::Device> devList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDrive, QString());
 
+	// if no optical drive detected
 	if (devList.isEmpty())
 	{
 		kDebug() << "No Optical Drive detected!";
 		selectedCd = -1;
 
 	}
+
+	// else loading  all optical drives
 	else
 	{
 		for (int i = 0; i < devList.size();i++)
@@ -66,14 +76,16 @@ HWControler :: HWControler ()
 			cdIn.append(AudioCD(devList[i]));
 			selectedCd = 0;
 		}
-		/*connect(cdIn[selectedCd].getCdDrive(), SIGNAL(ejectDone(Solid::ErrorType,
-					QVariant, const QString)), this, SLOT(reloadSystem()));
-			kDebug()<<"connecting ejectdone with reloadSystem!";*/
 	}
+
 	//TODO: Load ALL audio output
 	speakers = new Phonon::AudioOutput ( MusicCategory, this );
 	selectedS=0;
+
+	// init of media object
 	media = new Phonon::MediaObject(this);
+
+	// Multimedia configuration
 	configMedia();
 }
 
@@ -84,32 +96,35 @@ HWControler::~HWControler ()
 	delete mc;
 }
 
+// TODO function to switch optical drive
 void HWControler :: selectCd(int cdNum)
 {
 
 }
+
+// TODO function to switch audio output
 void HWControler :: selectSpeaker(int sNum)
 {
 
 }
+
 void HWControler :: eject()
 {
+	// if optical drive detected with a cd inside
 	if(!(selectedCd==-1))
 	{
 		cdIn[selectedCd].getCdDrive()->eject();
 	}
 }
+
 void HWControler :: play()
 {
-kDebug()<<"Remaining Time: "<<getRemainingTime ()<<"s";
-kDebug()<<"Track Time: "<<getTotalTime ()<<"s";
-kDebug() << selectedCd;
 	if((selectedCd!=-1))
 	{
 		if(cdIn[selectedCd].isCdInserted())
 		{
 			media->play();
-			kDebug() << cdIn[selectedCd].getMediaSource()->fileName();
+			kDebug() << getCurrentTrack() <<"/"<< getTotalTrack();
 		}
 		else
 		{
@@ -186,26 +201,7 @@ void HWControler :: mute(bool mute)
 		speakers->setMuted(mute);
 	}
 }
-/*
-qint64 HWControler :: getCurrentTime ()
-{
-	if(!(selectedCd==-1))
-	{
-		if(cdIn[selectedCd].isCdInserted())
-		{
-			return media->currentTime();
-		}
-		else
-		{
-			return -1;
-		}
-	}
 
-	else
-	{
-		return -1;
-	}
-}*/
 qint64 HWControler :: getTotalTime ()
 {
 	if(!(selectedCd==-1))
@@ -358,6 +354,20 @@ Phonon::AudioOutput * HWControler ::getAudioOutPut()
 {
 	return speakers;
 }
+int HWControler ::getCurrentTrack()
+{
+	return mc->currentTitle();
+}
+int HWControler ::getTotalTrack()
+{
+	return mc->availableTitles();
+}
+void HWControler ::play(int track)
+{
+	mc->setCurrentTitle(track);
+	play();
+}
+
 
 /*
 

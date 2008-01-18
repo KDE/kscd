@@ -84,6 +84,7 @@ class HWControler : public QObject
 		void selectSpeaker(int sNum);
 		void eject();
 		void play();
+		void play(int track);
 		void nextTrack();
 		void prevTrack();
 		void stop();
@@ -99,6 +100,8 @@ class HWControler : public QObject
 		Phonon::MediaObject * getMedia();
 		Phonon::AudioOutput * getAudioOutPut();
 		AudioCD getCD();
+		int getCurrentTrack();
+		int getTotalTrack();
 
 	private slots:
 		void catchCurrentTime(qint64 pos);
