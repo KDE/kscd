@@ -349,6 +349,11 @@ Phonon::MediaObject * HWControler ::getMedia()
 void HWControler ::catchCurrentTime(qint64 pos)
 {
 	emit(currentTime(pos));
+	if (pos <= 500)
+	{
+		kDebug()<<"New Track Playing!";
+		emit(trackChanged());
+	}
 }
 Phonon::AudioOutput * HWControler ::getAudioOutPut()
 {
