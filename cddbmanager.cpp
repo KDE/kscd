@@ -71,21 +71,22 @@ void CDDBManager::setup(int nbTrack, KCDDB::TrackOffsetList signature)
 
 void CDDBManager::CDDialogSelected()
 {	
-	kDebug() << "CDDialogSelected" ;
+	kDebug() << "CDDialogSelected1" ;
 /*
-	if (!m_cddialog)
-	{
+// 	if (!m_cddialog)
+// 	{
 		kDebug() << "Create a CDDB Dialog" ;
 		// CDDB Dialog initialization
 		m_cddialog = new CDDBDlg(this);
 		connect(m_cddialog,SIGNAL(newCDInfoStored(KCDDB::CDInfo)), SLOT(setCDInfo(KCDDB::CDInfo)));
 		connect(m_cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
-// 		connect(cddialog,SIGNAL(play(int)),cddialog,SLOT(slotTrackSelected(int)));
-	}
-
+ 		connect(cddialog,SIGNAL(play(int)),cddialog,SLOT(slotTrackSelected(int)));
+// 	}
+	kDebug() << "CDDialogSelected" ;
 	m_cddialog->show();
-//	m_cddialog->raise(); // Puts the window on top
-*/
+	kDebug() << "CDDialogSelected" ;
+	m_cddialog->raise(); // Puts the window on top*/
+
 }
 
 void CDDBManager::CDDialogDone()

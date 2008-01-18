@@ -72,7 +72,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
 	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
 	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
-	currentTrack=1;
+	currentTrack=0;
 
 }
 
@@ -137,7 +137,7 @@ void KSCD::restoreArtistLabel()
 void KSCD::restoreTrackinfoLabel()
 {
 	kDebug() << "!!!!!!!!restore Trackinfo label!!!!!!" << currentTrack ;
-	QString title = QString("%1 - ").arg(currentTrack, 2, 10, QLatin1Char( '0' )) ;
+	QString title = QString("%1 - ").arg(currentTrack+1, 2, 10, QLatin1Char( '0' )) ;
 
 	if (m_cddbManager->getCddbInfo().isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/)
 	{
