@@ -102,7 +102,6 @@ class KSCD : public KscdWindow, public KSessionManager {
 	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
 
 private:
-	int currentTrack;
 	HWControler* devices;
 	KCompactDisc* m_cd; // kept for CDDB compatibility
 	CDDBManager* m_cddbManager;

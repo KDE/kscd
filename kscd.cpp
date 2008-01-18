@@ -72,8 +72,8 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
 	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
 	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
-	currentTrack=0;
-
+	
+	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 }
 
 KSCD::~KSCD()
@@ -136,12 +136,11 @@ void KSCD::restoreArtistLabel()
 
 void KSCD::restoreTrackinfoLabel()
 {
-	kDebug() << "!!!!!!!!restore Trackinfo label!!!!!!" << currentTrack ;
-	QString title = QString("%1 - ").arg(currentTrack+1, 2, 10, QLatin1Char( '0' )) ;
+	QString title = QString("%1 - ").arg(devices->getCurrentTrack(), 2, 10, QLatin1Char( '0' )) ;
 
 	if (m_cddbManager->getCddbInfo().isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/)
 	{
-		title.append(m_cddbManager->getCddbInfo().track(currentTrack).get(KCDDB::Title).toString());
+		title.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Title).toString());
 	}
 	else{
 		title.append(i18n("unknown"));
@@ -197,9 +196,6 @@ void KSCD::actionButton(QString name)
 		devices->nextTrack();
 		emit(picture(name,state));
 		
-		currentTrack++;
-		
-		kDebug() << "Track : "<<currentTrack ;
 
 		restoreTrackinfoLabel();
 		if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
@@ -217,8 +213,6 @@ void KSCD::actionButton(QString name)
 		devices->prevTrack();
 		emit(picture(name,state));
 
-		currentTrack--;
-		kDebug() << "Track : "<<currentTrack ;
 		restoreTrackinfoLabel();
 		
 		if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
