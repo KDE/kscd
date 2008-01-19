@@ -35,21 +35,28 @@
 #include <solid/device.h>
 #include <solid/opticaldrive.h>
 #include <solid/block.h>
+#include <solid/devicenotifier.h>
 
 #include <phonon/mediasource.h>
 
 #include <QString>
+#include <QObject>
 
 
-class AudioCD
+class AudioCD: public QObject
 {
+	Q_OBJECT
+
 	private:
+		Solid::DeviceNotifier * bell;
+		Solid::Device odsign;
 		Solid::OpticalDrive *cdDrive;
 		Solid::OpticalDisc *cd;
 		Solid::Block *block;
 		Phonon::MediaSource *src;
 
 	public:
+		AudioCD();
 		AudioCD(Solid::Device aCd);
 		~AudioCD();
 		Solid::OpticalDrive * getCdDrive();
@@ -57,6 +64,12 @@ class AudioCD
 		Phonon::MediaSource * getMediaSource();
 		QString getCdPath();
 		bool isCdInserted();
+	public slots:
+		void catchEjectPressed();
+		void reloadCD();
+
+	signals:
+		void discChanged ();
 };
 
 #endif

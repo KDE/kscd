@@ -32,6 +32,7 @@
  */
 #include "kscdwindow.h"
 #include <QString>
+#include <QTextEdit>
 #include <klocalizedstring.h>
 #include <stdio.h>
 
@@ -57,8 +58,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_panel->setLayout(new QGridLayout);
 	
 	m_time = new QLabel(" 0 0 : 0 0 ");
-	
-	m_artistLabel = new QLabel(i18n("Welcome to KsCD !"));
+// 	QTextEdit * t = new QTextEdit("<b>Welcome to KsCD !</b>");
+	m_artistLabel = new QLabel(i18n("<qt><scroll><b>Welcome to KsCD !</b></scroll></qt>"));
 	m_artistLabel->setFixedWidth(250);
 	m_artistLabel->setAlignment(Qt::AlignCenter);
 	

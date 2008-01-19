@@ -93,7 +93,7 @@ KSCD::~KSCD()
 void KSCD::lookupCDDB()
 {
 	kDebug() << "Lookup CDDB" ;
-	if (devices->getCD().isCdInserted())
+	if (devices->getCD()->isCdInserted())
 	{
 		showArtistLabel(i18n("Start freedb lookup."));
 	

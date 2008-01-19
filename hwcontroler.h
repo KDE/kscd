@@ -59,7 +59,7 @@ class HWControler : public QObject
 	private:
 
 	// List of Cds inserted
-		QList<AudioCD> cdIn;
+		QList<AudioCD *> cdIn;
 	// Selected Cd to read
 		int selectedCd;
 	// List of detected Audio Output on the system
@@ -95,20 +95,22 @@ class HWControler : public QObject
 		qreal getVolume();
 		void setVolume(qreal vol);
 		Phonon::State getState();
-		void configMedia();
 		void setLoopMode(LoopMode lm);
 		Phonon::MediaObject * getMedia();
 		Phonon::AudioOutput * getAudioOutPut();
-		AudioCD getCD();
+		AudioCD* getCD();
 		int getCurrentTrack();
 		int getTotalTrack();
 
 	private slots:
 		void catchCurrentTime(qint64 pos);
+		void catchTitleChanged();
 
 	public slots:
 		void replayTrack(qint64 pos);
 		void replayDisk();
+		void configMedia();
+
 
 	signals:
 		void currentTime (qint64 pos);

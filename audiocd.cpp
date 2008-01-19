@@ -35,6 +35,7 @@
 #include <solid/device.h>
 #include <solid/opticaldrive.h>
 #include <solid/block.h>
+#include <solid/devicenotifier.h>
 
 #include <kdebug.h>
 
@@ -43,11 +44,26 @@
 #include <QString>
 
 using namespace Phonon;
-
+AudioCD::AudioCD()
+{
+cdDrive = NULL;
+cd = NULL;
+block = NULL;
+src = NULL;
+}
 AudioCD::AudioCD(Solid::Device aCd)
 {
+
+	odsign=aCd;
+
+	bell=Solid::DeviceNotifier::instance();
+
 	// get the opticaldrive
 	cdDrive=aCd.as<Solid::OpticalDrive>();
+	
+	connect(cdDrive,SIGNAL(ejectDone(Solid::ErrorType, QVariant, const QString &)),this,SLOT(catchEjectPressed()));
+	connect(bell,SIGNAL(deviceAdded(const QString)),this,SLOT(reloadCD()));
+
 	cd = NULL;
 	block = NULL;
 	src = NULL;
@@ -58,20 +74,25 @@ AudioCD::AudioCD(Solid::Device aCd)
 	if (devList.isEmpty())
 	{
 		kDebug() << "No Optical Disc detected in the computer!";
+		cd = NULL;
+		block = NULL;
+		src = NULL;
 
 	}
 	else
 	{
 		for (int i = 0; i < devList.size();i++)
 		{
-			if (devList[i].parentUdi()==aCd.udi())
+			if (devList[i].parentUdi()==odsign.udi())
 			{
 				cd = devList[i].as<Solid::OpticalDisc>();
-				block = aCd.as<Solid::Block>();
+				block = odsign.as<Solid::Block>();
 				src = new MediaSource(Cd,block->device());
 			}
 		}
 	}
+
+
 /*
 	cdDrive = Solid::Device(aCd.parentUdi()).as<Solid::OpticalDrive>();
 	block = Solid::Device(aCd.parentUdi()).as<Solid::Block>();
@@ -103,4 +124,43 @@ bool AudioCD::isCdInserted()
 {
 	return (cd!=NULL);
 }
+void AudioCD::catchEjectPressed()
+{
+	kDebug() << "#o#o#o#o#o#o#o#o#o#o#o#o#o#o#Eject Pressed!";
 
+	cd = NULL;
+	block = NULL;
+	src = NULL;
+
+	emit(discChanged ());
+}
+void AudioCD::reloadCD()
+{
+	// look for an opticaldisc inserted in this drive
+	QList<Solid::Device> devList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDisc, QString());
+
+	if (devList.isEmpty())
+	{
+		kDebug() << "No Optical Disc detected in the computer!";
+		cd = NULL;
+		block = NULL;
+		src = NULL;
+		emit(discChanged ());
+
+	}
+	else
+	{
+		for (int i = 0; i < devList.size();i++)
+		{
+			if (devList[i].parentUdi()==odsign.udi())
+			{
+				kDebug() << "CD inserted!";
+				cd = devList[i].as<Solid::OpticalDisc>();
+				block = odsign.as<Solid::Block>();
+				src = new MediaSource(Cd,block->device());
+				emit(discChanged ());
+			}
+		}
+	}
+	
+}
