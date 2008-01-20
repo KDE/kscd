@@ -33,12 +33,11 @@ bool stoppedByUser = true;
 
 KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 {
-
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 
-	// Set context menu policy to ActionsContextMenu
-	setContextMenuPolicy(Qt::ActionsContextMenu);
-
+/**
+ * General
+ */
 	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
 	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
 
@@ -50,16 +49,30 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	vs->setMuteVisible(false);
 	addVolumeSlider(vs);
 
-
+/**
+ * CDDB
+ */
 // TODO kept for CDDB compatibility
-	m_cd = new KCompactDisc();
-	m_cd->setDevice(Prefs::cdDevice(), 50, Prefs::digitalPlayback(), QString("phonon"), Prefs::audioDevice());
+// TODO inactivate CDDB options if no disc
+ 	m_cd = new KCompactDisc();
+ 	m_cd->setDevice(Prefs::cdDevice(), 50, Prefs::digitalPlayback(), QString("phonon"), Prefs::audioDevice());
 
 	// CDDB Initialization
 	m_cddbManager = new CDDBManager();
+	
+	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
+	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
+	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
+	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
+	
+	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 
-// TODO inactivate CDDB options if no disc
-	// Adds CDDB to the context menu
+/**
+ * Contextual Menu
+ */
+	// Set context menu policy to ActionsContextMenu
+	setContextMenuPolicy(Qt::ActionsContextMenu);
+
 	QAction* CDDBWindowAction = new QAction(i18n("CDDB..."), this);
 	addAction(CDDBWindowAction);
 	connect(CDDBWindowAction, SIGNAL(triggered()), m_cddbManager, SLOT(CDDialogSelected()));
@@ -68,12 +81,6 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	addAction(CDDBDownloadAction);
 	connect(CDDBDownloadAction, SIGNAL(triggered()), this, SLOT(lookupCDDB()));
 
-	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
-	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
-	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
-	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
-	
-	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 }
 
 KSCD::~KSCD()
@@ -107,45 +114,57 @@ void KSCD::lookupCDDB()
 	}
 	else{
 		showArtistLabel(i18n("No Disc"));
-		QTimer::singleShot(3000, this, SLOT(restoreArtistLabel()));
+		QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
 	}
 }
 
 void KSCD::restoreArtistLabel()
 {
-// 	if (devices->getCD().isCdInserted())
-// 	{
+	if (devices->getCD()->isCdInserted())
+	{
 		QString artist, title;
 
-		if (m_cddbManager->getCddbInfo().isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/) {
+		if (m_cddbManager->getCddbInfo().isValid() && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()) {
 			artist = m_cddbManager->getCddbInfo().get(KCDDB::Artist).toString();
 			title = m_cddbManager->getCddbInfo().get(KCDDB::Title).toString();
-			kDebug() << "!!!!!!!!restore artist label!!!!!!" ;
 		}
-		else{
+		else
+		{
 			artist = i18n("Unknown artist");
 			title = i18n("Unknown album");
 		}
 		showArtistLabel(QString("%1 - %2").arg(artist, title));
-/*
-	} else {
+	}
+	else
+	{
 		showArtistLabel(i18n("Welcome to KsCD !"));
-	}*/
+	}
 
 }
 
 void KSCD::restoreTrackinfoLabel()
 {
-	QString title = QString("%1 - ").arg(devices->getCurrentTrack(), 2, 10, QLatin1Char( '0' )) ;
+	QString title ;
 
-	if (m_cddbManager->getCddbInfo().isValid()/* && cddbInfo.numberOfTracks() == m_cd->tracks()*/)
+	// If disc is inserted
+	if (devices->getCD()->isCdInserted())
 	{
-		title.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Title).toString());
+		title = QString("%1 - ").arg(devices->getCurrentTrack(), 2, 10, QLatin1Char('0')) ;
+	
+		if (m_cddbManager->getCddbInfo().isValid() && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack())
+		{
+			title.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Title).toString());
+		}
+		else
+		{
+			title.append(i18n("unknown"));
+		}
+		showTrackinfoLabel(title);
 	}
-	else{
-		title.append(i18n("unknown"));
+	else
+	{
+		showTrackinfoLabel(title);
 	}
-	emit showTrackinfoLabel(title);
 
 }
 

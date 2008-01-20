@@ -105,6 +105,7 @@ private:
 	HWControler* devices;
 	KCompactDisc* m_cd; // kept for CDDB compatibility
 	CDDBManager* m_cddbManager;
+	KConfigDialog* configDialog;
 
 public:
 	explicit KSCD(QWidget *parent = 0);

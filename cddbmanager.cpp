@@ -47,17 +47,17 @@ CDDBManager::CDDBManager()
 // TODO erase that !
 	for (int i=0; i<20; i++)
 	{
-		kDebug() << i << "!!!!!!!!!!!Changed" ;
 		m_cddbInfo.track(i).set(KCDDB::Title, QString("unknown") ) ;
 	}
 
 	//Create CDDB Window
 	m_cddialog = new QDialog(0, Qt::Window);
+	m_cddialog->setModal(true);
 }
 
 CDDBManager::~CDDBManager()
 {
-//	delete m_cddialog;
+	delete m_cddialog;
 	delete m_cddbClient;
 }
 
@@ -182,6 +182,12 @@ void CDDBManager::setCDInfo(KCDDB::CDInfo info)
 //	populateSongList();
 	emit restoreArtistLabel();
 	emit restoreTrackinfoLabel();
+}
+
+QList <CDDBTrack>* CDDBManager::getTrackList()
+{
+	QList<CDDBTrack>* list;
+	return list;
 }
 
 void CDDBManager::populateSongList()
