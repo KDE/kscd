@@ -115,6 +115,7 @@ class HWControler : public QObject
 	signals:
 		void currentTime (qint64 pos);
 		void trackChanged();
+		void cdLoaded();
 
 };
 

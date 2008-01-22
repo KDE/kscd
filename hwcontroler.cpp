@@ -298,12 +298,17 @@ void HWControler ::configMedia()
 			connect(media,SIGNAL(finished()),this,SLOT(replayDisk()));
 			connect(mc,SIGNAL(titleChanged(int)),this,SLOT(catchTitleChanged()));
 		}
+		emit(cdLoaded());
 	}
 }
 
 AudioCD * HWControler::getCD()
 {
-	return cdIn[selectedCd];
+	if((selectedCd!=-1))
+	{
+		return cdIn[selectedCd];
+	}
+	return NULL;
 }
 
 void HWControler ::setLoopMode(LoopMode lm)
@@ -323,33 +328,34 @@ void HWControler ::replayTrack(qint64 pos)
 			mc->setCurrentTitle(mc->currentTitle());
 			play();
 		}
-/*
-		kDebug()<<"Replaying the track!";
-		int myPos;
-		if (pos==mc->availableTitles())
-		{
-			myPos=1;
-		}
-		else
-		{
-			myPos=pos-1;
-		}
-		mc->setCurrentTitle( myPos );*/
 	}
 }
 void HWControler ::replayDisk()
 {
-	if(loopState==LoopAll)
+	if((selectedCd!=-1))
 	{
-		kDebug()<<"Replaying the disc!";
-		mc->setCurrentTitle( 1 );
-		play();
+		if(cdIn[selectedCd]->isCdInserted())
+		{
+			if(loopState==LoopAll)
+			{
+				kDebug()<<"Replaying the disc!";
+				mc->setCurrentTitle( 1 );
+				play();
+			}
+		}
 	}
 }
 
 Phonon::MediaObject * HWControler ::getMedia()
 {
-	return media;
+	if((selectedCd!=-1))
+	{
+		if(cdIn[selectedCd]->isCdInserted())
+		{
+			return media;
+		}
+	}
+	return NULL;
 }
 void HWControler ::catchCurrentTime(qint64 pos)
 {
@@ -361,83 +367,41 @@ Phonon::AudioOutput * HWControler ::getAudioOutPut()
 }
 int HWControler ::getCurrentTrack()
 {
-	return mc->currentTitle();
+	if((selectedCd!=-1))
+	{
+		if(cdIn[selectedCd]->isCdInserted())
+		{
+			return mc->currentTitle();
+		}
+	}
+	return 0;
 }
 int HWControler ::getTotalTrack()
 {
-	return mc->availableTitles();
+	if((selectedCd!=-1))
+	{
+		if(cdIn[selectedCd]->isCdInserted())
+		{
+			return mc->availableTitles();
+		}
+	}
+	return 0;
 }
 void HWControler ::play(int track)
 {
-	mc->setCurrentTitle(track);
-	play();
+	if((selectedCd!=-1))
+	{
+		if(cdIn[selectedCd]->isCdInserted())
+		{
+			mc->setAutoplayTitles(true);
+			mc->setCurrentTitle(track);
+			media->play();
+		}
+	}
+
 }
 void HWControler ::catchTitleChanged()
 {
 	emit(trackChanged());
 }
 
-
-
-/*
-
-Solid::OpticalDrive* HWcontroler ::getSelectedOpticalDrive()
-{
-	return CDDrive[ODactual];
-}
-void HWcontroler ::setSelectedOpticalDrive(int num)
-{
-	if (num >= CDDrive.size())
-	{
-		kDebug() << "Invalid Parameter!";
-	}
-	else
-	{
-		ODactual=num;
-	}
-}
-void HWcontroler ::loadCDDevices()
-{
-//	----	Loading Optical Drives	----	//
-
-	kDebug() << "Loading Optical Drives";
-
-	// list all Optical Drives of the system
-	CDDriveList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDrive, QString());
-
-	
-	if (CDDriveList.size()<1)
-	{
-		kDebug() << "No Optical detected!";
-	}
-	else
-	{
-		for (int i = 0; i < CDDriveList.size();i++)
-		{
-			kDebug() << "Optical Disc detected: " << CDDriveList[i].udi();
-			kDebug() << "Optical Disc detected: " << CDDriveList[i].parentUdi();
-			// Devices to OpticalDrive
-			CDDrive.append(CDDriveList[i].as<Solid::OpticalDrive>());
-		}
-	}
-	kDebug() << "bus: "<< CDDrive[ODactual]->bus();
-}
-void HWcontroler ::loadReading() // Not finished
-{
-	Solid::Block * b = CDDriveList[ODactual].as<Solid::Block>();
-	kDebug()<<b->device();
-	MS = new Phonon::MediaSource(Cd,b->device());
-	media = new Phonon::MediaObject();
-	//connect(media, SIGNAL(finished()), SLOT(slotFinished()));
-	media->setCurrentSource(MS->fileName());
-}
-void HWcontroler ::playSelectedOpticalDrive() // Not finished
-{
-	media->play();
-}
-void HWcontroler::ejectSelectedOpticalDrive()
-{
-	CDDrive[ODactual]->eject();
-	kDebug() << CDDriveList[ODactual].udi() << " ejected!";
-}
-*/
