@@ -66,6 +66,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
 	
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
+	connect(devices,SIGNAL(cdLoaded()),this,SLOT(refreshCDDB()));
 
 /**
  * Contextual Menu
@@ -81,6 +82,10 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	addAction(CDDBDownloadAction);
 	connect(CDDBDownloadAction, SIGNAL(triggered()), this, SLOT(lookupCDDB()));
 
+	QAction* test = new QAction(i18n("Test"), this);
+	addAction(test);
+	connect(test, SIGNAL(triggered()), this, SLOT(test()));
+
 }
 
 KSCD::~KSCD()
@@ -93,9 +98,30 @@ KSCD::~KSCD()
 	delete m_cddb;*/
 }
 
+void KSCD::test()
+{
+	QList <CDDBTrack> list = m_cddbManager->getTrackList();
+	for(int i=0; i < devices->getTotalTrack(); i++)
+	{
+		kDebug() << " test " << list[i].Title ;
+		kDebug() << " test " << list[i].Artist ;
+	}
+}
+
 /**
  * CDDB Management
  */
+// TODO move this function to CDDBManager and add an signature attribute
+void KSCD::refreshCDDB()
+{
+	kDebug() << "refreshCDDB" ;
+	if (devices->getCD()->isCdInserted())
+	{
+		m_cddbManager->setupCDDB(devices->getTotalTrack(), m_cd->discSignature() );
+	}
+}
+
+
 // TODO move this function to CDDBManager and add an signature attribute
 void KSCD::lookupCDDB()
 {

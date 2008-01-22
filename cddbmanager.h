@@ -70,7 +70,7 @@ protected:
 
 private:
 	// Info from CDDB
-	QDialog * m_cddialog;
+	QDialog* m_cddialog;
 	KCDDB::CDInfo m_cddbInfo;
 	KCDDB::Client* m_cddbClient;
 	KCDDB::TrackOffsetList m_cdSignature;
@@ -81,14 +81,15 @@ public:
 	KCDDB::Client* getCddbClient(){ return m_cddbClient; }
 	KCDDB::CDInfo getCddbInfo(){ return m_cddbInfo; }
 	KCDDB::TrackOffsetList getCdSignature(){ return m_cdSignature; }
+	QList <CDDBTrack> getTrackList();
+	
+	void setupCDDB(int nbTrack, KCDDB::TrackOffsetList signature);
 
 private slots:
-	void setup(int nbTrack, KCDDB::TrackOffsetList signature);
 	void CDDialogSelected();
 	void CDDialogDone();
 	void lookupCDDBDone(KCDDB::Result);
 	void setCDInfo(KCDDB::CDInfo);
-	QList <CDDBTrack>* getTrackList();
 
 signals:
 	void showArtistLabel(QString);

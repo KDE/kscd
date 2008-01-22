@@ -120,6 +120,8 @@ signals:
 	void picture(QString,QString);
 
 public slots:
+	void test();
+	void refreshCDDB();
 	void lookupCDDB();
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();

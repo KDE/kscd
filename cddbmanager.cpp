@@ -62,7 +62,7 @@ CDDBManager::~CDDBManager()
 }
 
 // Fonction to be called whenever a new Disc is inserted
-void CDDBManager::setup(int nbTrack, KCDDB::TrackOffsetList signature)
+void CDDBManager::setupCDDB(int nbTrack, KCDDB::TrackOffsetList signature)
 {
 	m_cdSignature = signature;
 	
@@ -174,19 +174,33 @@ void CDDBManager::setCDInfo(KCDDB::CDInfo info)
 	// Trace
 	kDebug() << m_cddbInfo.toString() ;
 	
-	for (int i=0; i<m_cddbInfo.numberOfTracks (); i++)
+	for (int i=0; i<m_cddbInfo.numberOfTracks(); i++)
 	{
-		kDebug() << i << " " << m_cddbInfo.track(i).get(KCDDB::Title).toString() ;
-		kDebug() << i << " " << m_cddbInfo.track(i).get(KCDDB::Artist).toString() ;
+		kDebug() << i << " title " << m_cddbInfo.track(i).get(KCDDB::Title).toString() ;
+		kDebug() << i << " artist " << m_cddbInfo.track(i).get(KCDDB::Artist).toString() ;
+		kDebug() << i << " length " << m_cddbInfo.track(i).get(KCDDB::Length).toString() ;
 	}
 //	populateSongList();
 	emit restoreArtistLabel();
 	emit restoreTrackinfoLabel();
 }
 
-QList <CDDBTrack>* CDDBManager::getTrackList()
+QList <CDDBTrack> CDDBManager::getTrackList()
 {
-	QList<CDDBTrack>* list;
+	QList<CDDBTrack> list;
+	CDDBTrack track;
+	for (int i=0; i<m_cddbInfo.numberOfTracks(); i++)
+	{
+		track.Title = m_cddbInfo.track(i).get(KCDDB::Title).toString();
+		track.Comment = m_cddbInfo.track(i).get(KCDDB::Comment).toString();
+		track.Artist = m_cddbInfo.track(i).get(KCDDB::Artist).toString();
+		track.Genre = m_cddbInfo.track(i).get(KCDDB::Genre).toString();
+		track.Year = m_cddbInfo.track(i).get(KCDDB::Year).toString();
+		track.Length = m_cddbInfo.track(i).get(KCDDB::Length).toString();
+		track.Category = m_cddbInfo.track(i).get(KCDDB::Category).toString();
+		
+		list << track;
+	}
 	return list;
 }
 
