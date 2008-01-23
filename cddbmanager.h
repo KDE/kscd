@@ -50,6 +50,7 @@ using namespace KCDDB;
 #include <QGridLayout>
 #include <QLayout>
 #include <QLineEdit>
+#include <QTextEdit>
 #include <QTableWidget>
 #include <QStringList>
 #include <QTableWidgetItem>
@@ -70,7 +71,7 @@ class CDDBManager : public QObject
 	Q_OBJECT
 
 public:
-	CDDBManager();
+	CDDBManager(QWidget *parent = 0);
 	~CDDBManager();
 
 protected:
@@ -84,32 +85,13 @@ private:
 	KCDDB::TrackOffsetList m_cdSignature;
 	bool infoSet;
 	bool autoDownload;
-
-	//CDDB Window
-	QLabel * albumTitleLabel;
-	QLabel * albumArtistLabel;
-	QLabel * albumCommentLabel;
-	QLabel * albumGenreLabel;
-	QLabel * albumYearLabel;
-	QLabel * albumCategoryLabel;
-	QLabel * albumLengthLabel;
-	
-	QLineEdit * albumTitlelineEdit;
-	QLineEdit * albumArtistlineEdit;
-	QLineEdit * albumCommentlineEdit;
-	QLineEdit * albumGenrelineEdit;
-	QLineEdit * albumYearlineEdit;
-	QLineEdit * albumCategorylineEdit;
-	QLineEdit * albumLengthlineEdit;
-
-	QTableWidget * tracksTable;
-	QTableWidgetItem * infoItem;
 	
 public:
 	KCDDB::Client* getCddbClient(){ return m_cddbClient; }
 	KCDDB::CDInfo getCddbInfo(){ return m_cddbInfo; }
 	KCDDB::TrackOffsetList getCdSignature(){ return m_cdSignature; }
 	QList <CDDBTrack> getTrackList();
+	QString getDiscTitle();
 	
 	void setupCDDB(int nbTrack, KCDDB::TrackOffsetList signature);
 

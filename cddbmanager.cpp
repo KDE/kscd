@@ -34,7 +34,7 @@
 
 class KSCD;
 
-CDDBManager::CDDBManager()
+CDDBManager::CDDBManager(QWidget *parent)
 {
 	// CDDB initialization
 	m_cddbInfo.clear(); // The first freedb revision is "0"
@@ -50,13 +50,11 @@ CDDBManager::CDDBManager()
 		m_cddbInfo.track(i).set(KCDDB::Title, QString("unknown") ) ;
 	}
 
-	//Create CDDB Window
-	m_cddialog = new QDialog(0, Qt::Window);
 }
 
 CDDBManager::~CDDBManager()
 {
-	delete m_cddialog;
+//	delete m_cddialog;
 	delete m_cddbClient;
 }
 
@@ -74,103 +72,116 @@ void CDDBManager::setupCDDB(int nbTrack, KCDDB::TrackOffsetList signature)
 void CDDBManager::CDDialogSelected()
 {	
 	kDebug() << "CDDialogSelected1" ;
-
+	
+	//Create CDDB Window
+	m_cddialog = new QDialog(0, Qt::Widget);
+	
 	//m_cddialog->raise();// Puts the window on top
 
 	m_cddialog->setWindowTitle(tr("CDDB Manager"));
-	m_cddialog->setFixedSize ( 450,500 );
+	m_cddialog->resize(400, 500);
+	m_cddialog->setMinimumSize(300,500);
+//	m_cddialog->setDefault(true);
+	
+	
 	QGridLayout * mainLayout = new QGridLayout;
 
 	// Album Info
 	QGridLayout * albumLayout = new QGridLayout;
 
 	// Album Title
-	albumTitleLabel = new QLabel(tr("Album Title :"));
-	albumTitlelineEdit = new QLineEdit;
+	QLabel* albumTitleLabel = new QLabel(tr("Album Title"));
+	QLineEdit* albumTitlelineEdit = new QLineEdit;
 	albumTitlelineEdit->insert (m_cddbInfo.get(Title).toString());
 	//albumTitleLabel->setBuddy(albumTitlelineEdit);
 	albumLayout->addWidget(albumTitleLabel, 0, 0);
 	albumLayout->addWidget(albumTitlelineEdit, 0, 1);
 
-
 	// Artist
-	albumArtistLabel = new QLabel(tr("Artist :"));
-	albumArtistlineEdit = new QLineEdit;
+	QLabel* albumArtistLabel = new QLabel(tr("Artist"));
+	QLineEdit* albumArtistlineEdit = new QLineEdit;
 	albumArtistlineEdit->insert (m_cddbInfo.get(Artist).toString());
 	//albumArtistLabel->setBuddy(albumArtistlineEdit);
 	albumLayout->addWidget(albumArtistLabel, 1, 0);
 	albumLayout->addWidget(albumArtistlineEdit, 1, 1);
 
-	// Comment
-	albumCommentLabel = new QLabel(tr("Comment :"));
-	albumCommentlineEdit = new QLineEdit;
-	albumCommentlineEdit->insert (m_cddbInfo.get(Comment).toString());
-	//albumCommentLabel->setBuddy(albumCommentlineEdit);
-	albumLayout->addWidget(albumCommentLabel, 2, 0);
-	albumLayout->addWidget(albumCommentlineEdit, 2, 1);
-
+	// Year
+	QLabel* albumYearLabel = new QLabel(tr("Year"));
+	QLineEdit* albumYearlineEdit = new QLineEdit;
+	albumYearlineEdit->insert (m_cddbInfo.get(Year).toString());
+	//albumYearLabel->setBuddy(albumYearlineEdit);
+	albumLayout->addWidget(albumYearLabel, 2, 0);
+	albumLayout->addWidget(albumYearlineEdit, 2, 1);
+	
+	
 	// Genre
-	albumGenreLabel = new QLabel(tr("Genre :"));
-	albumGenrelineEdit = new QLineEdit;
+	QLabel* albumGenreLabel = new QLabel(tr("Genre"));
+	QLineEdit* albumGenrelineEdit = new QLineEdit;
 	albumGenrelineEdit->insert (m_cddbInfo.get(Genre).toString());
 	//albumGenreLabel->setBuddy(albumGenrelineEdit);
 	albumLayout->addWidget(albumGenreLabel, 3, 0);
 	albumLayout->addWidget(albumGenrelineEdit, 3, 1);
 
-	// Year
-	albumYearLabel = new QLabel(tr("Year :"));
-	albumYearlineEdit = new QLineEdit;
-	albumYearlineEdit->insert (m_cddbInfo.get(Year).toString());
-	//albumYearLabel->setBuddy(albumYearlineEdit);
-	albumLayout->addWidget(albumYearLabel, 4, 0);
-	albumLayout->addWidget(albumYearlineEdit, 4, 1);
-
 	// Category
-	albumCategoryLabel = new QLabel(tr("Category :"));
-	albumCategorylineEdit = new QLineEdit;
+	QLabel* albumCategoryLabel = new QLabel(tr("Category"));
+	QLineEdit* albumCategorylineEdit = new QLineEdit;
 	albumCategorylineEdit->insert (m_cddbInfo.get(Category).toString());
 	//albumCategoryLabel->setBuddy(albumCategorylineEdit);
-	albumLayout->addWidget(albumCategoryLabel, 5, 0);
-	albumLayout->addWidget(albumCategorylineEdit, 5, 1);
+	albumLayout->addWidget(albumCategoryLabel, 4, 0);
+	albumLayout->addWidget(albumCategorylineEdit, 4, 1);
 
 	// Length
-	albumLengthLabel = new QLabel(tr("Length :"));
-	albumLengthlineEdit = new QLineEdit;
-	albumLengthlineEdit->insert (m_cddbInfo.get(Length).toString());
+	QLabel* albumLengthLabel = new QLabel(tr("Length"));
+	QLineEdit* albumLengthlineEdit = new QLineEdit;
+	albumLengthlineEdit->insert(m_cddbInfo.get(Length).toString());
 	//albumLengthLabel->setBuddy(albumLengthlineEdit);
-	albumLayout->addWidget(albumLengthLabel, 6, 0);
-	albumLayout->addWidget(albumLengthlineEdit, 6, 1);	
+	albumLayout->addWidget(albumLengthLabel, 5, 0);
+	albumLayout->addWidget(albumLengthlineEdit, 5, 1);
+	
+	// Comment
+	QLabel* albumCommentLabel = new QLabel(tr("Comment"));
+	QTextEdit* albumCommenttextEdit = new QTextEdit;
+	albumCommenttextEdit->append(m_cddbInfo.get(Comment).toString());
+	//albumCommentLabel->setBuddy(albumCommentlineEdit);
+	albumLayout->addWidget(albumCommentLabel, 6, 0, Qt::AlignTop);
+	albumLayout->addWidget(albumCommenttextEdit, 6, 1, Qt::AlignVCenter);
 
+
+	//Tracks
 	mainLayout->addLayout(albumLayout, 0, 0);
 	
-	//Tracks
-	tracksTable = new QTableWidget(0, 7);
-     	QStringList tracklabels;
-     	tracklabels << tr("Title") << tr("Artist") << tr("Genre") << tr("Category") << tr("Year") << tr("Length") << tr("Comment");
-     	tracksTable->setHorizontalHeaderLabels(tracklabels);
-     	//tracksTable->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
-     	//tracksTable->verticalHeader()->hide();
+	QTableWidget* tracksTable = new QTableWidget(0, 7);
+	QStringList tracklabels;
+	tracklabels << tr("Title") << tr("Artist") << tr("Genre") << tr("Category") << tr("Year") << tr("Length") << tr("Comment");
+	tracksTable->setHorizontalHeaderLabels(tracklabels);
+	//tracksTable->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+	//tracksTable->verticalHeader()->hide();
 	kDebug() << "taille tablo : " << sizeof(tracklabels);
- 	int taille = sizeof(tracklabels);
+	int taille = sizeof(tracklabels);
 	kDebug() << "taille tablo int : " << taille;
 	kDebug() << "tracklabel : " << tracklabels[4];
 	int row = tracksTable->rowCount();
 // 	tracksTable->insertRow(row);
 	for (int i=0; i<20; i++) {
-		int row = tracksTable->rowCount();
+		
+		row = tracksTable->rowCount();
 		tracksTable->insertRow(row);
+		
 		for (int j=0; j<taille+3; j++) {
-			infoItem = new QTableWidgetItem(m_cddbInfo.track(i).get(tracklabels[j]).toString());
+			
+			QTableWidgetItem* infoItem = new QTableWidgetItem(m_cddbInfo.track(i).get(tracklabels[j]).toString());
 			tracksTable->setItem(i, j, infoItem);
 		}
 		
 	}
-     	tracksTable->setShowGrid(false);
+	
+	tracksTable->setShowGrid(false);
 	mainLayout->addWidget(tracksTable, 1, 0);
 
 	m_cddialog->setLayout(mainLayout);
 
 	m_cddialog->show();
+//	m_cddialog->exec();
 /*	table = new QTableWidget(20, 8, m_cddialog);
 
 	// Association entre le manipulateur de model et le model de la table
@@ -336,6 +347,11 @@ QList <CDDBTrack> CDDBManager::getTrackList()
 		list << track;
 	}
 	return list;
+}
+
+QString CDDBManager::getDiscTitle()
+{
+	return m_cddbInfo.get(KCDDB::Title).toString();
 }
 
 void CDDBManager::populateSongList()

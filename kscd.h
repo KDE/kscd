@@ -90,11 +90,11 @@ class KCompactDisc;
 #include <kcmoduleloader.h>
 #include <ktoolinvocation.h>
 
-class CDDBDlg;
-class DockWidget;
-class QGridLayout;
-class KActionCollection;
-class KToggleAction;
+// class CDDBDlg;
+// class DockWidget;
+// class QGridLayout;
+// class KActionCollection;
+// class KToggleAction;
 
 class KSCD : public KscdWindow, public KSessionManager {
 

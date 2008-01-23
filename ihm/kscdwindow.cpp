@@ -54,8 +54,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 // 	m_volumeB = new VolumeButton(this);
 	
 	// Panel
-	m_panel = new QWidget(this);
-	m_panel->setLayout(new QGridLayout);
+	QGridLayout* panelLayout = new QGridLayout;
+	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
 	
 	m_time = new QLabel(" 0 0 : 0 0 ");
 // 	QTextEdit * t = new QTextEdit("<b>Welcome to KsCD !</b>");
@@ -79,10 +79,9 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_layout->addWidget(m_muteB,0, 4, Qt::AlignCenter);
 	m_layout->addWidget(m_trackB, 3, 4, Qt::AlignCenter);
 	
-	m_layout->addWidget(m_panel, 0, 3, 2, 1);
-	dynamic_cast<QGridLayout*>(m_panel->layout())->addWidget(m_time,0,0, Qt::AlignCenter);
-	dynamic_cast<QGridLayout*>(m_panel->layout())->addWidget(m_artistLabel, 1, 0, Qt::AlignCenter);
-	dynamic_cast<QGridLayout*>(m_panel->layout())->addWidget(m_trackinfoLabel, 2, 0, Qt::AlignCenter);
+	panelLayout->addWidget(m_time,0,0, Qt::AlignCenter);
+	panelLayout->addWidget(m_artistLabel, 1, 0, Qt::AlignCenter);
+	panelLayout->addWidget(m_trackinfoLabel, 2, 0, Qt::AlignCenter);
 	
 	setLayout(m_layout);
 

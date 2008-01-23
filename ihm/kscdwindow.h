@@ -76,7 +76,6 @@ private:
 	KscdWidget *m_trackB;
 // 	KscdWidget *m_volumeB;
 	
-	QWidget *m_panel;
 	QLabel * m_time;
 	QLabel *m_artistLabel ;
 	QLabel *m_trackinfoLabel ;

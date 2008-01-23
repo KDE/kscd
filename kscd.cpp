@@ -58,7 +58,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
  	m_cd->setDevice(Prefs::cdDevice(), 50, Prefs::digitalPlayback(), QString("phonon"), Prefs::audioDevice());
 
 	// CDDB Initialization
-	m_cddbManager = new CDDBManager();
+	m_cddbManager = new CDDBManager(this);
 	
 	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
 	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
