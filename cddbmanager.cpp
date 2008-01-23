@@ -77,7 +77,7 @@ void CDDBManager::CDDialogSelected()
 
 	//m_cddialog->raise();// Puts the window on top
 
-	
+	m_cddialog->setWindowTitle(tr("CDDB Manager"));
 	m_cddialog->setFixedSize ( 450,500 );
 	QGridLayout * mainLayout = new QGridLayout;
 
@@ -94,7 +94,7 @@ void CDDBManager::CDDialogSelected()
 
 
 	// Artist
-	albumArtistLabel = new QLabel(tr("Album Artist :"));
+	albumArtistLabel = new QLabel(tr("Artist :"));
 	albumArtistlineEdit = new QLineEdit;
 	albumArtistlineEdit->insert (m_cddbInfo.get(Artist).toString());
 	//albumArtistLabel->setBuddy(albumArtistlineEdit);
@@ -102,7 +102,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumArtistlineEdit, 1, 1);
 
 	// Comment
-	albumCommentLabel = new QLabel(tr("Album Comment :"));
+	albumCommentLabel = new QLabel(tr("Comment :"));
 	albumCommentlineEdit = new QLineEdit;
 	albumCommentlineEdit->insert (m_cddbInfo.get(Comment).toString());
 	//albumCommentLabel->setBuddy(albumCommentlineEdit);
@@ -110,7 +110,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumCommentlineEdit, 2, 1);
 
 	// Genre
-	albumGenreLabel = new QLabel(tr("Album Genre :"));
+	albumGenreLabel = new QLabel(tr("Genre :"));
 	albumGenrelineEdit = new QLineEdit;
 	albumGenrelineEdit->insert (m_cddbInfo.get(Genre).toString());
 	//albumGenreLabel->setBuddy(albumGenrelineEdit);
@@ -118,7 +118,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumGenrelineEdit, 3, 1);
 
 	// Year
-	albumYearLabel = new QLabel(tr("Album Year :"));
+	albumYearLabel = new QLabel(tr("Year :"));
 	albumYearlineEdit = new QLineEdit;
 	albumYearlineEdit->insert (m_cddbInfo.get(Year).toString());
 	//albumYearLabel->setBuddy(albumYearlineEdit);
@@ -126,7 +126,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumYearlineEdit, 4, 1);
 
 	// Category
-	albumCategoryLabel = new QLabel(tr("Album Category :"));
+	albumCategoryLabel = new QLabel(tr("Category :"));
 	albumCategorylineEdit = new QLineEdit;
 	albumCategorylineEdit->insert (m_cddbInfo.get(Category).toString());
 	//albumCategoryLabel->setBuddy(albumCategorylineEdit);
@@ -134,7 +134,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumCategorylineEdit, 5, 1);
 
 	// Length
-	albumLengthLabel = new QLabel(tr("Album Length :"));
+	albumLengthLabel = new QLabel(tr("Length :"));
 	albumLengthlineEdit = new QLineEdit;
 	albumLengthlineEdit->insert (m_cddbInfo.get(Length).toString());
 	//albumLengthLabel->setBuddy(albumLengthlineEdit);
