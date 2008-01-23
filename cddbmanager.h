@@ -46,6 +46,11 @@ using namespace KCDDB;
 #include <QTimer>
 #include <QDialog>
 
+#include <QLabel>
+#include <QGridLayout>
+#include <QLayout>
+#include <QLineEdit>
+
 struct CDDBTrack
 {
 	QString Title;
@@ -76,6 +81,23 @@ private:
 	KCDDB::TrackOffsetList m_cdSignature;
 	bool infoSet;
 	bool autoDownload;
+
+	//CDDB Window
+	QLabel * albumTitleLabel;
+	QLabel * albumArtistLabel;
+	QLabel * albumCommentLabel;
+	QLabel * albumGenreLabel;
+	QLabel * albumYearLabel;
+	QLabel * albumCategoryLabel;
+	QLabel * albumLengthLabel;
+	
+	QLineEdit * albumTitlelineEdit;
+	QLineEdit * albumArtistlineEdit;
+	QLineEdit * albumCommentlineEdit;
+	QLineEdit * albumGenrelineEdit;
+	QLineEdit * albumYearlineEdit;
+	QLineEdit * albumCategorylineEdit;
+	QLineEdit * albumLengthlineEdit;
 	
 public:
 	KCDDB::Client* getCddbClient(){ return m_cddbClient; }

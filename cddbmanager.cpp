@@ -52,7 +52,6 @@ CDDBManager::CDDBManager()
 
 	//Create CDDB Window
 	m_cddialog = new QDialog(0, Qt::Window);
-	m_cddialog->setModal(true);
 }
 
 CDDBManager::~CDDBManager()
@@ -76,7 +75,106 @@ void CDDBManager::CDDialogSelected()
 {	
 	kDebug() << "CDDialogSelected1" ;
 
+	//m_cddialog->raise();// Puts the window on top
+
+	
+	m_cddialog->setFixedSize ( 300,500 );
+
+	albumTitleLabel = new QLabel(tr("Album Title :"));
+	albumTitlelineEdit = new QLineEdit;
+	//albumTitleLabel->setBuddy(albumTitlelineEdit);
+
+	albumArtistLabel = new QLabel(tr("Album Artist :"));
+	albumArtistlineEdit = new QLineEdit;
+	//albumArtistLabel->setBuddy(albumArtistlineEdit);
+
+	albumCommentLabel = new QLabel(tr("Album Comment :"));
+	albumCommentlineEdit = new QLineEdit;
+	//albumCommentLabel->setBuddy(albumCommentlineEdit);
+
+	albumGenreLabel = new QLabel(tr("Album Genre :"));
+	albumGenrelineEdit = new QLineEdit;
+	//albumGenreLabel->setBuddy(albumGenrelineEdit);
+
+	albumYearLabel = new QLabel(tr("Album Year :"));
+	albumYearlineEdit = new QLineEdit;
+	//albumYearLabel->setBuddy(albumYearlineEdit);
+
+	albumCategoryLabel = new QLabel(tr("Album Category :"));
+	albumCategorylineEdit = new QLineEdit;
+	//albumCategoryLabel->setBuddy(albumCategorylineEdit);
+
+	albumLengthLabel = new QLabel(tr("Album Length :"));
+	albumLengthlineEdit = new QLineEdit;
+	//albumLengthLabel->setBuddy(albumLengthlineEdit);
+
+	QGridLayout * mainLayout = new QGridLayout;
+	//mainLayout->setSizeConstraint(QLayout::SetFixedSize);
+	
+	mainLayout->addWidget(albumTitleLabel, 0, 0);
+	mainLayout->addWidget(albumTitlelineEdit, 0, 1);
+
+	mainLayout->addWidget(albumArtistLabel, 1, 0);
+	mainLayout->addWidget(albumArtistlineEdit, 1, 1);
+
+	mainLayout->addWidget(albumCommentLabel, 2, 0);
+	mainLayout->addWidget(albumCommentlineEdit, 2, 1);
+
+	mainLayout->addWidget(albumGenreLabel, 3, 0);
+	mainLayout->addWidget(albumGenrelineEdit, 3, 1);
+
+	mainLayout->addWidget(albumYearLabel, 4, 0);
+	mainLayout->addWidget(albumYearlineEdit, 4, 1);
+
+	mainLayout->addWidget(albumCategoryLabel, 5, 0);
+	mainLayout->addWidget(albumCategorylineEdit, 5, 1);
+
+	mainLayout->addWidget(albumLengthLabel, 6, 0);
+	mainLayout->addWidget(albumLengthlineEdit, 6, 1);	
+
+	m_cddialog->setLayout(mainLayout);
+
 	m_cddialog->show();
+/*	table = new QTableWidget(20, 8, m_cddialog);
+
+	// Association entre le manipulateur de model et le model de la table
+	QAbstractItemModel * model = table->model ();
+
+
+	// Columns
+	model->setData(model->index(0,1),"Title");
+	model->setData(model->index(0,2),"Artist");
+	model->setData(model->index(0,3),"Genre");
+	model->setData(model->index(0,4),"Year");
+	model->setData(model->index(0,5),"Length");
+	model->setData(model->index(0,6),"Category");
+	model->setData(model->index(0,7),"Comment");
+	
+	// CD Info
+	model->setData(model->index(1,0),"CD");
+	model->setData(model->index(1,1),m_cddbInfo.get(Title).toString());
+	model->setData(model->index(1,2),m_cddbInfo.get(Artist).toString());
+	model->setData(model->index(1,3),m_cddbInfo.get(Genre).toString());
+	model->setData(model->index(1,4),m_cddbInfo.get(Year).toString());
+	model->setData(model->index(1,5),m_cddbInfo.get(Length).toString());
+	model->setData(model->index(1,6),m_cddbInfo.get(Category).toString());
+	model->setData(model->index(1,7),m_cddbInfo.get(Comment).toString());
+	
+	// Track Info
+	for (int i=0; i<25; i++) {
+		model->setData(model->index(i+2,0),QString("Track %1").arg(i+1));
+		model->setData(model->index(i+2,1),m_cddbInfo.track(i).get(Title).toString());
+		model->setData(model->index(i+2,2),m_cddbInfo.track(i).get(Artist).toString());
+		model->setData(model->index(i+2,3),m_cddbInfo.track(i).get(Genre).toString());
+		model->setData(model->index(i+2,4),m_cddbInfo.track(i).get(Year).toString());
+		model->setData(model->index(i+2,5),m_cddbInfo.track(i).get(Length).toString());
+		model->setData(model->index(i+2,6),m_cddbInfo.track(i).get(Category).toString());
+		model->setData(model->index(i+2,7),m_cddbInfo.track(i).get(Comment).toString());
+	}
+	
+	table->show();*/
+
+
 
 /*
 // 	if (!m_cddialog)

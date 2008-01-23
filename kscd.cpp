@@ -53,7 +53,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
  * CDDB
  */
 // TODO kept for CDDB compatibility
-// TODO inactivate CDDB options if no disc
+// TODO deactivate CDDB options if no disc
  	m_cd = new KCompactDisc();
  	m_cd->setDevice(Prefs::cdDevice(), 50, Prefs::digitalPlayback(), QString("phonon"), Prefs::audioDevice());
 
