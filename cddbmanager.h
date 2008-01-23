@@ -50,6 +50,9 @@ using namespace KCDDB;
 #include <QGridLayout>
 #include <QLayout>
 #include <QLineEdit>
+#include <QTableWidget>
+#include <QStringList>
+#include <QTableWidgetItem>
 
 struct CDDBTrack
 {
@@ -98,6 +101,9 @@ private:
 	QLineEdit * albumYearlineEdit;
 	QLineEdit * albumCategorylineEdit;
 	QLineEdit * albumLengthlineEdit;
+
+	QTableWidget * tracksTable;
+	QTableWidgetItem * infoItem;
 	
 public:
 	KCDDB::Client* getCddbClient(){ return m_cddbClient; }

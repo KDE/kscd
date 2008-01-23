@@ -78,59 +78,95 @@ void CDDBManager::CDDialogSelected()
 	//m_cddialog->raise();// Puts the window on top
 
 	
-	m_cddialog->setFixedSize ( 300,500 );
+	m_cddialog->setFixedSize ( 450,500 );
+	QGridLayout * mainLayout = new QGridLayout;
 
+	// Album Info
+	QGridLayout * albumLayout = new QGridLayout;
+
+	// Album Title
 	albumTitleLabel = new QLabel(tr("Album Title :"));
 	albumTitlelineEdit = new QLineEdit;
+	albumTitlelineEdit->insert (m_cddbInfo.get(Title).toString());
 	//albumTitleLabel->setBuddy(albumTitlelineEdit);
+	albumLayout->addWidget(albumTitleLabel, 0, 0);
+	albumLayout->addWidget(albumTitlelineEdit, 0, 1);
 
+
+	// Artist
 	albumArtistLabel = new QLabel(tr("Album Artist :"));
 	albumArtistlineEdit = new QLineEdit;
+	albumArtistlineEdit->insert (m_cddbInfo.get(Artist).toString());
 	//albumArtistLabel->setBuddy(albumArtistlineEdit);
+	albumLayout->addWidget(albumArtistLabel, 1, 0);
+	albumLayout->addWidget(albumArtistlineEdit, 1, 1);
 
+	// Comment
 	albumCommentLabel = new QLabel(tr("Album Comment :"));
 	albumCommentlineEdit = new QLineEdit;
+	albumCommentlineEdit->insert (m_cddbInfo.get(Comment).toString());
 	//albumCommentLabel->setBuddy(albumCommentlineEdit);
+	albumLayout->addWidget(albumCommentLabel, 2, 0);
+	albumLayout->addWidget(albumCommentlineEdit, 2, 1);
 
+	// Genre
 	albumGenreLabel = new QLabel(tr("Album Genre :"));
 	albumGenrelineEdit = new QLineEdit;
+	albumGenrelineEdit->insert (m_cddbInfo.get(Genre).toString());
 	//albumGenreLabel->setBuddy(albumGenrelineEdit);
+	albumLayout->addWidget(albumGenreLabel, 3, 0);
+	albumLayout->addWidget(albumGenrelineEdit, 3, 1);
 
+	// Year
 	albumYearLabel = new QLabel(tr("Album Year :"));
 	albumYearlineEdit = new QLineEdit;
+	albumYearlineEdit->insert (m_cddbInfo.get(Year).toString());
 	//albumYearLabel->setBuddy(albumYearlineEdit);
+	albumLayout->addWidget(albumYearLabel, 4, 0);
+	albumLayout->addWidget(albumYearlineEdit, 4, 1);
 
+	// Category
 	albumCategoryLabel = new QLabel(tr("Album Category :"));
 	albumCategorylineEdit = new QLineEdit;
+	albumCategorylineEdit->insert (m_cddbInfo.get(Category).toString());
 	//albumCategoryLabel->setBuddy(albumCategorylineEdit);
+	albumLayout->addWidget(albumCategoryLabel, 5, 0);
+	albumLayout->addWidget(albumCategorylineEdit, 5, 1);
 
+	// Length
 	albumLengthLabel = new QLabel(tr("Album Length :"));
 	albumLengthlineEdit = new QLineEdit;
+	albumLengthlineEdit->insert (m_cddbInfo.get(Length).toString());
 	//albumLengthLabel->setBuddy(albumLengthlineEdit);
+	albumLayout->addWidget(albumLengthLabel, 6, 0);
+	albumLayout->addWidget(albumLengthlineEdit, 6, 1);	
 
-	QGridLayout * mainLayout = new QGridLayout;
-	//mainLayout->setSizeConstraint(QLayout::SetFixedSize);
+	mainLayout->addLayout(albumLayout, 0, 0);
 	
-	mainLayout->addWidget(albumTitleLabel, 0, 0);
-	mainLayout->addWidget(albumTitlelineEdit, 0, 1);
-
-	mainLayout->addWidget(albumArtistLabel, 1, 0);
-	mainLayout->addWidget(albumArtistlineEdit, 1, 1);
-
-	mainLayout->addWidget(albumCommentLabel, 2, 0);
-	mainLayout->addWidget(albumCommentlineEdit, 2, 1);
-
-	mainLayout->addWidget(albumGenreLabel, 3, 0);
-	mainLayout->addWidget(albumGenrelineEdit, 3, 1);
-
-	mainLayout->addWidget(albumYearLabel, 4, 0);
-	mainLayout->addWidget(albumYearlineEdit, 4, 1);
-
-	mainLayout->addWidget(albumCategoryLabel, 5, 0);
-	mainLayout->addWidget(albumCategorylineEdit, 5, 1);
-
-	mainLayout->addWidget(albumLengthLabel, 6, 0);
-	mainLayout->addWidget(albumLengthlineEdit, 6, 1);	
+	//Tracks
+	tracksTable = new QTableWidget(0, 7);
+     	QStringList tracklabels;
+     	tracklabels << tr("Title") << tr("Artist") << tr("Genre") << tr("Category") << tr("Year") << tr("Length") << tr("Comment");
+     	tracksTable->setHorizontalHeaderLabels(tracklabels);
+     	//tracksTable->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+     	//tracksTable->verticalHeader()->hide();
+	kDebug() << "taille tablo : " << sizeof(tracklabels);
+ 	int taille = sizeof(tracklabels);
+	kDebug() << "taille tablo int : " << taille;
+	kDebug() << "tracklabel : " << tracklabels[4];
+	int row = tracksTable->rowCount();
+// 	tracksTable->insertRow(row);
+	for (int i=0; i<20; i++) {
+		int row = tracksTable->rowCount();
+		tracksTable->insertRow(row);
+		for (int j=0; j<taille+3; j++) {
+			infoItem = new QTableWidgetItem(m_cddbInfo.track(i).get(tracklabels[j]).toString());
+			tracksTable->setItem(i, j, infoItem);
+		}
+		
+	}
+     	tracksTable->setShowGrid(false);
+	mainLayout->addWidget(tracksTable, 1, 0);
 
 	m_cddialog->setLayout(mainLayout);
 
