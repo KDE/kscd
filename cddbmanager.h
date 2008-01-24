@@ -54,6 +54,7 @@ using namespace KCDDB;
 #include <QTableWidget>
 #include <QStringList>
 #include <QTableWidgetItem>
+#include <QPushButton>
 
 struct CDDBTrack
 {
@@ -85,6 +86,7 @@ private:
 	KCDDB::TrackOffsetList m_cdSignature;
 	bool infoSet;
 	bool autoDownload;
+	int numberTracks;
 	
 public:
 	KCDDB::Client* getCddbClient(){ return m_cddbClient; }

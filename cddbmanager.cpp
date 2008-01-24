@@ -50,6 +50,15 @@ CDDBManager::CDDBManager(QWidget *parent)
 		m_cddbInfo.track(i).set(KCDDB::Title, QString("unknown") ) ;
 	}
 
+	// Number of Tracks
+	kDebug() << "Nb of Tracks : " << m_cddbInfo.numberOfTracks() ;
+	if (m_cddbInfo.numberOfTracks()==0) {
+		numberTracks = 20;
+	}
+	else {
+		numberTracks = m_cddbInfo.numberOfTracks();
+	}
+
 }
 
 CDDBManager::~CDDBManager()
@@ -146,23 +155,19 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumCommentLabel, 6, 0, Qt::AlignTop);
 	albumLayout->addWidget(albumCommenttextEdit, 6, 1, Qt::AlignVCenter);
 
-
-	//Tracks
 	mainLayout->addLayout(albumLayout, 0, 0);
-	
+
+	//Tracks	
 	QTableWidget* tracksTable = new QTableWidget(0, 7);
 	QStringList tracklabels;
 	tracklabels << tr("Title") << tr("Artist") << tr("Genre") << tr("Category") << tr("Year") << tr("Length") << tr("Comment");
 	tracksTable->setHorizontalHeaderLabels(tracklabels);
 	//tracksTable->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
 	//tracksTable->verticalHeader()->hide();
-	kDebug() << "taille tablo : " << sizeof(tracklabels);
 	int taille = sizeof(tracklabels);
-	kDebug() << "taille tablo int : " << taille;
-	kDebug() << "tracklabel : " << tracklabels[4];
 	int row = tracksTable->rowCount();
 // 	tracksTable->insertRow(row);
-	for (int i=0; i<20; i++) {
+	for (int i=0; i<numberTracks; i++) {
 		
 		row = tracksTable->rowCount();
 		tracksTable->insertRow(row);
@@ -177,6 +182,20 @@ void CDDBManager::CDDialogSelected()
 	
 	tracksTable->setShowGrid(false);
 	mainLayout->addWidget(tracksTable, 1, 0);
+
+	// Buttons
+	QGridLayout * buttonsLayout = new QGridLayout;
+
+	// Save Button
+	QPushButton *savebutton = new QPushButton("Save");
+	buttonsLayout->addWidget(savebutton, 0, 0);
+
+	//Cancel Button
+	QPushButton *cancelbutton = new QPushButton("Cancel");
+	//cancelbutton->addAction(m_cddialog->close(),this,SLOT(close()));
+	buttonsLayout->addWidget(cancelbutton, 0, 1);
+
+	mainLayout->addLayout(buttonsLayout, 2, 0);
 
 	m_cddialog->setLayout(mainLayout);
 
