@@ -1883,8 +1883,9 @@
       </g>
     </g>
     <g
-       id="volume"
-       transform="translate(0,200)">
+       id="volume_default"
+       transform="translate(0,200)"
+       inkscape:label="#volume">
       <path
          d="M 99.5 50 A 49.5 49.5 0 1 1  0.5,50 A 49.5 49.5 0 1 1  99.5 50 z"
          sodipodi:ry="49.5"

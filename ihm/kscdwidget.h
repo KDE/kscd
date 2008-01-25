@@ -54,7 +54,9 @@ protected:
 	QString m_path;
 	QString m_id;
 	QSvgRenderer *m_renderer;
+
 	
+
   	void paintEvent(QPaintEvent *event);
 
 public:

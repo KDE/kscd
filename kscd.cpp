@@ -41,13 +41,16 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
 	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
 
+	connect(this,SIGNAL(trackClicked(int)), this, SLOT(playTrack(int)));
+	connect(this,SIGNAL(actionVolume(qreal)), this, SLOT(changeVolume(qreal)));
+
 	devices = new HWControler();
 	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(setTime(qint64)));
-	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
-	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
-	vs->setOrientation(Qt::Vertical);
-	vs->setMuteVisible(false);
-	addVolumeSlider(vs);
+ 	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
+// 	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
+// 	vs->setOrientation(Qt::Vertical);
+// 	vs->setMuteVisible(false);
+// 	addVolumeSlider(vs);
 
 /**
  * CDDB
@@ -60,6 +63,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	// CDDB Initialization
 	m_cddbManager = new CDDBManager(this);
 	
+
 	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
 	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
 	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
@@ -81,11 +85,6 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	QAction* CDDBDownloadAction = new QAction(i18n("Download Information"), this);
 	addAction(CDDBDownloadAction);
 	connect(CDDBDownloadAction, SIGNAL(triggered()), this, SLOT(lookupCDDB()));
-
-	QAction* test = new QAction(i18n("Test"), this);
-	addAction(test);
-	connect(test, SIGNAL(triggered()), this, SLOT(test()));
-
 }
 
 KSCD::~KSCD()
@@ -96,16 +95,6 @@ KSCD::~KSCD()
 
 /*	delete m_cddialog;
 	delete m_cddb;*/
-}
-
-void KSCD::test()
-{
-	QList <CDDBTrack> list = m_cddbManager->getTrackList();
-	for(int i=0; i < devices->getTotalTrack(); i++)
-	{
-		kDebug() << " test " << list[i].Title ;
-		kDebug() << " test " << list[i].Artist ;
-	}
 }
 
 /**
@@ -192,6 +181,19 @@ void KSCD::restoreTrackinfoLabel()
 		showTrackinfoLabel(title);
 	}
 
+}
+void KSCD::changeVolume(qreal value)
+{
+	kDebug()<<"changeVolume enter "<<value;
+	devices->setVolume(value);
+}
+
+
+void KSCD::playTrack(int track)
+{
+	kDebug()<<"playtrack enter "<<track;
+	devices->play(track);
+	emit(picture("play","default"));
 }
 
 /**
@@ -306,7 +308,17 @@ void KSCD::actionButton(QString name)
 	if(name == "tracklist")
 	{
 		//emit(CDDBClicked(m_cd->discSignature()));
-		emit(picture(name,state));
+		kDebug()<<"state track window:"<<m_stateTrackWindow;
+		if(m_stateTrackWindow == true)
+		{
+			kDebug()<<"close track window";
+		}
+		else
+		{
+			createTrackWindow(m_cddbManager->getTrackList(),m_cddbManager->getDiscTitle());
+			kDebug()<<"open track window";
+		}
+		emit(picture(name,"default"));
 	}
 }
 
@@ -355,7 +367,6 @@ int main( int argc, char *argv[] )
     options.add("+[device]", ki18n("CD device, can be a path or a media:/ URL"));
     KCmdLineArgs::addCmdLineOptions(options);
     KUniqueApplication::addCmdLineOptions();
-
     KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
     if (!KUniqueApplication::start())
     {
@@ -376,9 +387,7 @@ int main( int argc, char *argv[] )
         exit(0);
     }
     KUniqueApplication a;
-
     KSCD *k = new KSCD();
-
     a.setTopWidget( k );
  //   a.setMainWidget( k );
 

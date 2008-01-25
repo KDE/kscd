@@ -45,6 +45,8 @@
 #include <QEvent>
 #include <QCloseEvent>
 
+#include <QCursor>
+
 // CD support.
 class KCompactDisc;
 
@@ -120,13 +122,13 @@ signals:
 	void picture(QString,QString);
 
 public slots:
-	void test();
 	void refreshCDDB();
 	void lookupCDDB();
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 	void actionButton(QString);
-
+	void playTrack(int);
+	void changeVolume(qreal);
 };
 
 #endif

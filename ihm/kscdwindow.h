@@ -42,6 +42,16 @@
 #include <QSizePolicy>
 #include <QLabel>
 
+#include <QTableWidget>
+#include <QTableView>
+#include <QStringList>
+#include <QTableWidgetItem>
+#include <klocalizedstring.h>
+#include <QHeaderView>
+#include <QTimer>
+#include <QList>
+#include <QStringList>
+#include <KInputDialog>
 #include "kscdwidget.h"
 #include "stopbutton.h"
 #include "playbutton.h"
@@ -52,8 +62,8 @@
 #include "randombutton.h"
 #include "loopbutton.h"
 #include "tracklistbutton.h"
-// #include "volumebutton.h"
-
+#include "volumebutton.h"
+#include "cddbmanager.h"
 
 #include <phonon/seekslider.h>
 #include <phonon/volumeslider.h>
@@ -74,15 +84,31 @@ private:
 	KscdWidget *m_randB;
  	KscdWidget *m_loopB;
 	KscdWidget *m_trackB;
-// 	KscdWidget *m_volumeB;
-	
+ 	KscdWidget *m_volumeB;
+
 	QLabel * m_time;
 	QLabel *m_artistLabel ;
 	QLabel *m_trackinfoLabel ;
 	
-	
+
+protected:
+
+	/** create a track window
+	* @return void
+	**/
+	void createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle);
+
+	/** The window track state : true = visible / false = hide */
+	bool m_stateTrackWindow;
 public:
+	/**
+ 	* Creates a new Kscdwindow instance
+	*/
 	KscdWindow(QWidget *parent = 0);
+	
+	/**
+	 * Destroys an instance of Kscdwindow
+	 */
 	virtual ~KscdWindow();
 	
 	
@@ -91,9 +117,10 @@ public:
 	
 	void addSeekSlider(Phonon::SeekSlider *ss);
 	void addVolumeSlider(Phonon::VolumeSlider *vs);
-
+	
 public slots:
  	void catchButton(QString);
+	void catchVolume(qreal);
 	void changePicture(QString, QString);
 	void setTime(qint64 pos);
 	void showArtistLabel(QString);
@@ -102,7 +129,8 @@ public slots:
 	
 signals:
 	void actionClicked(QString);
-
+	void actionVolume(qreal);
+	void trackClicked(int);
 };
 
 #endif /*KSCDWINDOW_H_*/

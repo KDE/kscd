@@ -51,8 +51,13 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_randB = new RandomButton(this);
 	m_loopB = new LoopButton(this);
 	m_trackB = new TrackListButton(this);
-// 	m_volumeB = new VolumeButton(this);
+	m_volumeB = new VolumeButton(this);
 	
+	
+	m_stateTrackWindow = false;
+// 	m_trackW = new QTableWidget(100,9);
+// 	createTrackWindow();
+
 	// Panel
 	QGridLayout* panelLayout = new QGridLayout;
 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
@@ -73,18 +78,17 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
  	m_layout->addWidget(m_playB, 1, 1);
  	m_layout->addWidget(m_nextB, 1, 2);
  	m_layout->addWidget(m_stopB, 2, 1);
-//   	m_layout->addWidget(m_volumeB, 0,5,3,1,Qt::AlignCenter);
+  	m_layout->addWidget(m_volumeB, 0,5,3,1);
+//    	m_layout->addWidget(m_volumeB, 1,5,Qt::AlignCenter);
 	m_layout->addWidget(m_randB, 3, 0, Qt::AlignCenter);
  	m_layout->addWidget(m_loopB, 3, 2, Qt::AlignCenter);
-	m_layout->addWidget(m_muteB,0, 4, Qt::AlignCenter);
-	m_layout->addWidget(m_trackB, 3, 4, Qt::AlignCenter);
+ 	m_layout->addWidget(m_muteB,3, 4, Qt::AlignCenter);
+	m_layout->addWidget(m_trackB, 3, 6, Qt::AlignCenter);
 	
 	panelLayout->addWidget(m_time,0,0, Qt::AlignCenter);
 	panelLayout->addWidget(m_artistLabel, 1, 0, Qt::AlignCenter);
 	panelLayout->addWidget(m_trackinfoLabel, 2, 0, Qt::AlignCenter);
-	
 	setLayout(m_layout);
-
 	show();
 
 	connect(m_stopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
@@ -96,6 +100,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	connect(m_randB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
  	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_trackB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_volumeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_volumeB,SIGNAL(volumeChange(qreal)),SLOT(catchVolume(qreal)));	
 }
 
 KscdWindow::~KscdWindow()
@@ -113,6 +119,40 @@ KscdWindow::~KscdWindow()
 	delete m_trackinfoLabel ;
 	
 	delete m_layout;
+}
+
+void KscdWindow :: createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle)
+{
+	QStringList list;
+	int trackNumber = 1;
+	bool ok = false;
+	QList<CDDBTrack>::iterator it;
+	for (it = trackList.begin(); it != trackList.end(); ++it)
+	{
+		list.append( QString(" %1	%2			%3	%4	%5	%6	%7").arg(trackNumber).arg((*it).Title).arg(albumTitle).arg((*it).Genre).arg((*it).Category).arg((*it).Year).arg((*it).Comment));
+		trackNumber++;
+	}
+	QString res = KInputDialog::getItem(i18n("TrackList Window"),
+				i18n("Select a Track :"), list, 1, false,&ok);
+	kDebug()<<"create track res:"<<res;
+	if(ok)
+	{
+		// The user selected and item and pressed OK
+		int pos = 1;
+		for(QStringList::Iterator it = list.begin(); it != list.end(); ++it )
+		{
+			if( *it == res) break;
+			
+			pos++;
+		}
+		kDebug()<<"create pos:"<<pos;
+		emit(trackClicked(pos));
+	}
+	else
+	{
+		return;
+		// user pressed Cancel
+	}
 }
 
 void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)
@@ -174,6 +214,10 @@ void KscdWindow::catchButton(QString name)
 	emit(actionClicked(name));
 }
 
+void KscdWindow::catchVolume(qreal value)
+{
+	emit(actionVolume(value));
+}
 void KscdWindow::changePicture(QString name,QString state)
 {
 	if(name == "play")

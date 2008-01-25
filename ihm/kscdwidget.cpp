@@ -47,6 +47,7 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
  	
 	connect(this, SIGNAL(needRepaint()),this, SLOT(repaint()));
 	connect(this,SIGNAL(changePicture()),this,SLOT(update()));
+// 	connect(this, SIGNAL(update()),this, SLOT(repaint()));
 	setMouseTracking ( true );
 }
 

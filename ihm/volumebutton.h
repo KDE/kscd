@@ -34,21 +34,46 @@
 #define VOLUMEBUTTON_H_
 
 #include <QWidget>
+#include <QAbstractSlider>
 #include <QString>
 #include <QRegion>
 #include <QMouseEvent>
 #include <QEvent>
+#include <QPainter>
 #include <kdebug.h>
 #include "kscdwidget.h"
+#include <QWheelEvent>
+#include <math.h>
 
 class VolumeButton:public KscdWidget
 {
 	Q_OBJECT
+
+private:
+	qreal m_vValue;
+	int m_angle;
+	int m_posX;
+	int m_posY;
+	int m_centerX;
+	int m_centerY;
+	int m_deplacement;
+	bool m_move;
+
+private:
+	qreal posToAngle(int x, int y);
+	qreal angleToValue(int);
+	int valueToAngle(qreal);
+	void rotation(int);
 public:
-	VolumeButton(QWidget * parent=0, QString sName="volume");
+	VolumeButton(QWidget * parent=0, QString sName="volume", qreal value=50.0);
 	virtual ~VolumeButton();
-	void mousePressEvent(QMouseEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
+// 	void mousePressEvent(QMouseEvent * event);
+// 	void mouseReleaseEvent(QMouseEvent * event);
+// 	void mouseMoveEvent(QMouseEvent * event);
+	void wheelEvent(QWheelEvent * event);
+	void paintEvent(QPaintEvent* event);
+signals:
+	void volumeChange(qreal);
 };
 
 #endif /*VOLUMEBUTTON_H_*/
