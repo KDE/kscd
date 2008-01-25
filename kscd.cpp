@@ -330,6 +330,15 @@ void KSCD::writeSettings()
     Prefs::self()->writeConfig();
 }
 
+
+/**
+ * returns devices
+ */
+HWControler* KSCD::getDevices()
+{
+	return devices;
+}
+
 /**
  * Save state on session termination
  */

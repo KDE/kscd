@@ -114,6 +114,7 @@ public:
 	~KSCD();
 	virtual bool saveState(QSessionManager& sm);
 	void writeSettings();
+	HWControler * getDevices();
 
 protected:
 	void populateSongList();

@@ -57,6 +57,8 @@ using namespace KCDDB;
 #include <QPushButton>
 #include <KStandardAction>
 
+class KSCD;
+
 struct CDDBTrack
 {
 	QString Title;
@@ -73,7 +75,7 @@ class CDDBManager : public QObject
 	Q_OBJECT
 
 public:
-	CDDBManager(QWidget *parent = 0);
+	CDDBManager(KSCD *parent = 0);
 	~CDDBManager();
 
 protected:
@@ -87,7 +89,7 @@ private:
 	KCDDB::TrackOffsetList m_cdSignature;
 	bool infoSet;
 	bool autoDownload;
-	int numberTracks;
+	KSCD * pKscd;
 	
 public:
 	KCDDB::Client* getCddbClient(){ return m_cddbClient; }

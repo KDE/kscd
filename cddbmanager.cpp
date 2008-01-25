@@ -31,10 +31,11 @@
  *
  */
 #include "cddbmanager.h"
+#include "kscd.h"
 
 class KSCD;
 
-CDDBManager::CDDBManager(QWidget *parent)
+CDDBManager::CDDBManager(KSCD *parent)
 {
 	// CDDB initialization
 	m_cddbInfo.clear(); // The first freedb revision is "0"
@@ -50,20 +51,14 @@ CDDBManager::CDDBManager(QWidget *parent)
 		m_cddbInfo.track(i).set(KCDDB::Title, QString("unknown") ) ;
 	}
 
-	// Number of Tracks
-	kDebug() << "Nb of Tracks : " << m_cddbInfo.numberOfTracks() ;
-	if (m_cddbInfo.numberOfTracks()==0) {
-		numberTracks = 20;
-	}
-	else {
-		numberTracks = m_cddbInfo.numberOfTracks();
-	}
-
+	// KsCD pointer
+	pKscd = parent;
+	
 }
 
 CDDBManager::~CDDBManager()
 {
-//	delete m_cddialog;
+	delete m_cddialog;
 	delete m_cddbClient;
 }
 
@@ -83,7 +78,7 @@ void CDDBManager::CDDialogSelected()
 	kDebug() << "CDDialogSelected1" ;
 	
 	//Create CDDB Window
-	m_cddialog = new QDialog(0, Qt::Widget);
+	m_cddialog = new QDialog(0, Qt::Window);
 	
 	//m_cddialog->raise();// Puts the window on top
 
@@ -167,7 +162,7 @@ void CDDBManager::CDDialogSelected()
 	int taille = sizeof(tracklabels);
 	int row = tracksTable->rowCount();
 // 	tracksTable->insertRow(row);
-	for (int i=0; i<numberTracks; i++) {
+	for (int i=0; i < pKscd->getDevices()->getTotalTrack(); i++) {
 		
 		row = tracksTable->rowCount();
 		tracksTable->insertRow(row);
@@ -192,7 +187,6 @@ void CDDBManager::CDDialogSelected()
 
 	//Cancel Button
 	QPushButton *cancelbutton = new QPushButton("Cancel");
-	//cancelbutton->addAction(KStandardAction::Quit,this,SLOT(close()));
 	connect(cancelbutton,SIGNAL(clicked()),this,SLOT(CDDialogDone()));
 	buttonsLayout->addWidget(cancelbutton, 0, 1);
 
