@@ -55,6 +55,7 @@ using namespace KCDDB;
 #include <QStringList>
 #include <QTableWidgetItem>
 #include <QPushButton>
+#include <KStandardAction>
 
 struct CDDBTrack
 {

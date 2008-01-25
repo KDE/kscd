@@ -183,6 +183,7 @@ void HWControler :: stop()
 		{
 			mc->setAutoplayTitles(false);
 			media->stop();
+			mc->setCurrentTitle(1);
 			catchCurrentTime(0);
 		}
 	}

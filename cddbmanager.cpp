@@ -192,7 +192,8 @@ void CDDBManager::CDDialogSelected()
 
 	//Cancel Button
 	QPushButton *cancelbutton = new QPushButton("Cancel");
-	//cancelbutton->addAction(m_cddialog->close(),this,SLOT(close()));
+	//cancelbutton->addAction(KStandardAction::Quit,this,SLOT(close()));
+	connect(cancelbutton,SIGNAL(clicked()),this,SLOT(CDDialogDone()));
 	buttonsLayout->addWidget(cancelbutton, 0, 1);
 
 	mainLayout->addLayout(buttonsLayout, 2, 0);
@@ -261,7 +262,8 @@ void CDDBManager::CDDialogSelected()
 
 void CDDBManager::CDDialogDone()
 {
-	kDebug() << "test CDDB" ;
+	kDebug() << "close CDDB Manager" ;
+	m_cddialog->hide();
 	/*
 	m_cddialog->delayedDestruct();
 	m_cddialog = 0L;*/
