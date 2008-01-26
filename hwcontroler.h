@@ -32,6 +32,7 @@
 #define __HWCONTROLER__
 
 #include <QObject>
+#include <QList>
 #include <solid/device.h>
 #include <solid/opticaldisc.h>
 
@@ -76,6 +77,12 @@ class HWControler : public QObject
 		LoopMode loopState;
 
 		Phonon::Path path;
+
+		bool random;
+
+		QList<int> playList;
+
+		int posPlayList;
 		
 	public:
 		HWControler();
@@ -101,6 +108,10 @@ class HWControler : public QObject
 		AudioCD* getCD();
 		int getCurrentTrack();
 		int getTotalTrack();
+		void setRandom(bool b);
+
+	private:
+		void loadPlayList();
 
 	private slots:
 		void catchCurrentTime(qint64 pos);

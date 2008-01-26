@@ -51,6 +51,8 @@ HWControler :: HWControler ()
 	// in kscd starting, no loop option
 	loopState = NoLoop;
 
+	random = false;
+
 	// init CD detection
 	selectedCd=-1;
 
@@ -294,6 +296,7 @@ void HWControler ::configMedia()
 			mc = new MediaController(media);
 			mc->setAutoplayTitles(false);
 			media->setTickInterval(100);
+			loadPlayList();
 			connect(media,SIGNAL(tick(qint64)),this,SLOT(replayTrack(qint64)));
 			connect(media,SIGNAL(tick(qint64)),this,SLOT(catchCurrentTime(qint64)));
 			connect(media,SIGNAL(finished()),this,SLOT(replayDisk()));
@@ -319,16 +322,32 @@ void HWControler ::setLoopMode(LoopMode lm)
 }
 void HWControler ::replayTrack(qint64 pos)
 {
-	if(loopState==LoopOne)
+	if(getRemainingTime()<= 500)
 	{
 		
-		if (getRemainingTime()<= 500)
+		switch (loopState)
 		{
-			kDebug()<<"End of this track!";
-			stop();
-			mc->setCurrentTitle(mc->currentTitle());
-			play();
+			case LoopOne:
+					kDebug()<<"End of this track!";
+					stop();
+					mc->setCurrentTitle(mc->currentTitle());
+					play();
+					break;
+			default:
+					if (random)
+					{
+						if (posPlayList == getTotalTrack() - 1)
+						{
+							posPlayList = 0;
+						}
+						else
+						{
+							posPlayList = posPlayList + 1;
+						}
+						play(playList[posPlayList]);
+					}
 		}
+		
 	}
 }
 void HWControler ::replayDisk()
@@ -406,3 +425,15 @@ void HWControler ::catchTitleChanged()
 	emit(trackChanged());
 }
 
+void HWControler ::loadPlayList()
+{
+	posPlayList = 0;
+	for (int i = 0; i<getTotalTrack();i++)
+	{
+		playList.append(getTotalTrack()-i);
+	}
+}
+void HWControler :: setRandom(bool b)
+{
+	random = b;
+}

@@ -34,7 +34,7 @@
 #include <QString>
 #include <QTextEdit>
 #include <klocalizedstring.h>
-#include <stdio.h>
+
 
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {
