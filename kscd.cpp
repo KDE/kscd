@@ -284,12 +284,12 @@ void KSCD::actionButton(QString name)
 	}
 	if(name == "random")
 	{
-		devices->setRandom(true);
+		devices->setRandom(false);
 		emit(picture(name,state));
 	}
 	if(name == "p_random")
 	{
-		devices->setRandom(false);
+		devices->setRandom(true);
 		emit(picture(name,state));
 	}
 	if(name == "loop")

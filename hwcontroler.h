@@ -112,6 +112,8 @@ class HWControler : public QObject
 
 	private:
 		void loadPlayList();
+		int generateNumber(int inter);
+		void playRand();
 
 	private slots:
 		void catchCurrentTime(qint64 pos);

@@ -34,6 +34,7 @@
 #include <solid/device.h>
 #include <solid/deviceinterface.h>
 #include <solid/block.h>
+#include <time.h>
 
 #include <kdebug.h>
 
@@ -126,9 +127,16 @@ void HWControler :: play()
 	{
 		if(cdIn[selectedCd]->isCdInserted())
 		{
+			if (!random)
+			{
 			mc->setAutoplayTitles(true);
 			media->play();
 			kDebug() << getCurrentTrack() <<"/"<< getTotalTrack();
+			}
+			else
+			{
+				playRand();
+			}
 		}
 		else
 		{
@@ -146,14 +154,21 @@ void HWControler :: nextTrack()
 	{
 		if(cdIn[selectedCd]->isCdInserted())
 		{
-			if(mc->currentTitle() == mc->availableTitles())
+			if(!random)
 			{
-				mc->setCurrentTitle(1);
+				if(mc->currentTitle() == mc->availableTitles())
+				{
+					mc->setCurrentTitle(1);
+				}
+				else
+				{
+					mc->nextTitle();
+					catchCurrentTime(0);
+				}
 			}
 			else
 			{
-				mc->nextTitle();
-				catchCurrentTime(0);
+				playRand();
 			}
 		}
 	}	
@@ -165,14 +180,21 @@ void HWControler :: prevTrack()
 	{
 		if(cdIn[selectedCd]->isCdInserted())
 		{
-			if(mc->currentTitle() == 1)
+			if(!random)
 			{
-				mc->setCurrentTitle(mc->availableTitles());
+				if(mc->currentTitle() == 1)
+				{
+					mc->setCurrentTitle(mc->availableTitles());
+				}
+				else
+				{
+					mc->previousTitle();
+					catchCurrentTime(0);
+				}
 			}
 			else
 			{
-				mc->previousTitle();
-				catchCurrentTime(0);
+				playRand();
 			}
 		}
 	}
@@ -329,27 +351,44 @@ void HWControler ::replayTrack(qint64 pos)
 		{
 			case LoopOne:
 					kDebug()<<"End of this track!";
-					stop();
+					media->stop();
 					mc->setCurrentTitle(mc->currentTitle());
-					play();
+					media->play();
 					break;
 			default:
 					if (random)
 					{
-						if (posPlayList == getTotalTrack() - 1)
-						{
-							posPlayList = 0;
-						}
-						else
-						{
-							posPlayList = posPlayList + 1;
-						}
-						play(playList[posPlayList]);
+						playRand();
+						
 					}
 		}
 		
 	}
 }
+void HWControler ::playRand()
+{
+	kDebug()<<"random mode!";
+	bool endOfList = false;
+	if (posPlayList == getTotalTrack() - 1)
+	{
+		posPlayList = 0;
+		endOfList = true;
+		
+	}
+	else
+	{
+		posPlayList = posPlayList + 1;
+	}
+	if(endOfList and loopState!=LoopAll)
+	{
+		stop();
+	}
+	else
+	{
+		play(playList[posPlayList]);
+	}
+}
+
 void HWControler ::replayDisk()
 {
 	if((selectedCd!=-1))
@@ -425,15 +464,41 @@ void HWControler ::catchTitleChanged()
 	emit(trackChanged());
 }
 
-void HWControler ::loadPlayList()
-{
-	posPlayList = 0;
-	for (int i = 0; i<getTotalTrack();i++)
-	{
-		playList.append(getTotalTrack()-i);
-	}
-}
+
 void HWControler :: setRandom(bool b)
 {
 	random = b;
+	if (b) kDebug() << "Random Activated";
+}
+
+void HWControler ::loadPlayList()
+{
+	srand( time( NULL ) );
+	int pos;
+
+	posPlayList = 0;
+
+	QList<int> tmp;
+	for (int i = 0; i<getTotalTrack();i++)
+	{
+		tmp.append(i+1);
+	}
+
+
+	for (int i = getTotalTrack(); i>0; i--)
+	{
+		pos = generateNumber(i);
+		playList.append(tmp[pos-1]);
+		tmp.removeAt(pos-1);
+	}
+
+	for (int i = 0; i<getTotalTrack();i++)
+	{
+		kDebug() << "Playlist : " << playList[i];
+	}
+}
+
+int HWControler ::generateNumber(int inter)
+{
+	return 1 + int( double( rand() ) / ( double( RAND_MAX) + 1 ) * inter );
 }
