@@ -58,7 +58,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 // TODO kept for CDDB compatibility
 // TODO deactivate CDDB options if no disc
  	m_cd = new KCompactDisc();
- 	m_cd->setDevice(Prefs::cdDevice(), 50, Prefs::digitalPlayback(), QString("phonon"), Prefs::audioDevice());
+ 	m_cd->setDevice(Prefs::cdDevice(), 50, false, QString("phonon"), Prefs::audioDevice());
 
 	// CDDB Initialization
 	m_cddbManager = new CDDBManager(this);
@@ -70,7 +70,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
 	
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
-	connect(devices,SIGNAL(cdLoaded()),this,SLOT(refreshCDDB()));
+	connect(devices,SIGNAL(cdLoaded()),m_cddbManager,SLOT(refreshCDDB()));
 
 /**
  * Contextual Menu
@@ -84,7 +84,11 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	QAction* CDDBDownloadAction = new QAction(i18n("Download Information"), this);
 	addAction(CDDBDownloadAction);
-	connect(CDDBDownloadAction, SIGNAL(triggered()), this, SLOT(lookupCDDB()));
+	connect(CDDBDownloadAction, SIGNAL(triggered()), m_cddbManager, SLOT(lookupCDDB()));
+
+	QAction* test = new QAction(i18n("test"), this);
+	addAction(test);
+	connect(test, SIGNAL(triggered()), this, SLOT(test()));
 }
 
 KSCD::~KSCD()
@@ -97,49 +101,25 @@ KSCD::~KSCD()
 	delete m_cddb;*/
 }
 
+void KSCD::test()
+{
+	kDebug () << "total time : " << devices->getTotalTime() ;
+}
+
 /**
  * CDDB Management
  */
-// TODO move this function to CDDBManager and add an signature attribute
-void KSCD::refreshCDDB()
-{
-	kDebug() << "refreshCDDB" ;
-	if (devices->getCD()->isCdInserted())
-	{
-		m_cddbManager->setupCDDB(devices->getTotalTrack(), m_cd->discSignature() );
-	}
-}
-
-
-// TODO move this function to CDDBManager and add an signature attribute
-void KSCD::lookupCDDB()
-{
-	kDebug() << "Lookup CDDB" ;
-	if (devices->getCD()->isCdInserted())
-	{
-		showArtistLabel(i18n("Start freedb lookup."));
-	
-		m_cddbManager->getCddbClient()->config().reparse();
-		m_cddbManager->getCddbClient()->setBlockingMode(false);
-		
-//TODO get CD signature through Solid
-		m_cddbManager->getCddbClient()->lookup(m_cd->discSignature());
-
-		kDebug() << m_cd->discSignature() ;
-	}
-	else{
-		showArtistLabel(i18n("No Disc"));
-		QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
-	}
-}
 
 void KSCD::restoreArtistLabel()
 {
-	if (devices->getCD()->isCdInserted())
+	kDebug() << "NbTracks CDDB = " << m_cddbManager->getCddbInfo().numberOfTracks();
+	kDebug() << "NbTracks Devices = " << devices->getTotalTrack();
+
+	if( devices->getCD()->isCdInserted() && devices->isDiscValid() )
 	{
 		QString artist, title;
 
-		if (m_cddbManager->getCddbInfo().isValid() && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()) {
+		if (m_cddbManager->getCddbInfo().isValid()/* && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()*/) {
 			artist = m_cddbManager->getCddbInfo().get(KCDDB::Artist).toString();
 			title = m_cddbManager->getCddbInfo().get(KCDDB::Title).toString();
 		}
@@ -152,7 +132,7 @@ void KSCD::restoreArtistLabel()
 	}
 	else
 	{
-		showArtistLabel(i18n("Welcome to KsCD !"));
+		showArtistLabel(i18n("<b>Welcome to KsCD !</b>"));
 	}
 
 }
@@ -166,7 +146,7 @@ void KSCD::restoreTrackinfoLabel()
 	{
 		title = QString("%1 - ").arg(devices->getCurrentTrack(), 2, 10, QLatin1Char('0')) ;
 	
-		if (m_cddbManager->getCddbInfo().isValid() && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack())
+		if (m_cddbManager->getCddbInfo().isValid()/* && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()*/)
 		{
 			title.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Title).toString());
 		}
@@ -204,29 +184,101 @@ void KSCD::actionButton(QString name)
 	QString state = "over";
 	if(name=="play")
 	{
-		if((devices->getState() == StoppedState) || (devices->getState()) == PausedState)
+		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
-			devices->play();
-			emit(picture(name,state));
-			restoreArtistLabel();
-			restoreTrackinfoLabel();
+			if(!devices->getCD()->isCdInserted())
+				showArtistLabel(i18n("No disc"));
+			else
+				showArtistLabel(i18n("Invalid disc"));
+			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
 		}
+		else
+		{
+			if((devices->getState() == StoppedState) || (devices->getState()) == PausedState)
+			{
+				devices->play();
+				restoreTrackinfoLabel();
+				restoreArtistLabel();
+			}
+		}
+		emit(picture(name,state));
 	}
 	if(name=="pause")
 	{
-		if(devices->getState() == PlayingState)
+		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
-			devices->pause();
-			emit(picture(name,state));
+			if(!devices->getCD()->isCdInserted())
+				showArtistLabel(i18n("No disc"));
+			else
+				showArtistLabel(i18n("Invalid disc"));
+			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
 		}
+		else{
+			if(devices->getState() == PlayingState)
+			{
+				devices->pause();
+			}
+		}
+		emit(picture(name,state));
+	}
+	if(name=="next")
+	{
+		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
+		{
+			if(!devices->getCD()->isCdInserted())
+				showArtistLabel(i18n("No disc"));
+			else
+				showArtistLabel(i18n("Invalid disc"));
+			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
+		}
+		else
+		{
+			devices->nextTrack();
+			restoreTrackinfoLabel();
+			if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
+			{
+				devices->stop(false);
+			}
+			if ((devices->getState() == PlayingState))
+			{
+				devices->play();
+			}
+		}
+		emit(picture(name,state));
+	}
+	if(name=="previous")
+	{
+		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted()) 
+		{
+			if(!devices->getCD()->isCdInserted())
+				showArtistLabel(i18n("No disc"));
+			else
+				showArtistLabel(i18n("Invalid disc"));
+			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
+		}
+		else
+		{
+			devices->prevTrack();
+			restoreTrackinfoLabel();
+			
+			if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
+			{
+				devices->stop(false);
+			}
+			if ((devices->getState() == PlayingState))
+			{
+				devices->play();
+			}
+		}
+		emit(picture(name,state));
 	}
 	if(name=="stop")
 	{
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
 			devices->stop();
-			emit(picture(name,state));
 		}
+		emit(picture(name,state));
 	}
 	if(name=="eject")
 	{
@@ -235,41 +287,6 @@ void KSCD::actionButton(QString name)
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
 			devices->stop();
-			emit(picture("stop","default"));
-		}
-	}
-	if(name=="next")
-	{
-		devices->nextTrack();
-		emit(picture(name,state));
-		
-
-		restoreTrackinfoLabel();
-		if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
-		{
-			devices->stop();
-			emit(picture("stop","default"));
-		}
-		if ((devices->getState() == PlayingState))
-		{
-			devices->play();
-		}
-	}
-	if(name=="previous")
-	{
-		devices->prevTrack();
-		emit(picture(name,state));
-
-		restoreTrackinfoLabel();
-		
-		if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
-		{
-			devices->stop();
-			emit(picture("stop","default"));
-		}
-		if ((devices->getState() == PlayingState))
-		{
-			devices->play();
 		}
 	}
 	if(name=="mute")
@@ -284,11 +301,13 @@ void KSCD::actionButton(QString name)
 	}
 	if(name == "random")
 	{
+		kDebug() << 5;
 		devices->setRandom(false);
 		emit(picture(name,state));
 	}
 	if(name == "p_random")
 	{
+		kDebug() << 6;
 		devices->setRandom(true);
 		emit(picture(name,state));
 	}
@@ -309,7 +328,6 @@ void KSCD::actionButton(QString name)
 	}
 	if(name == "tracklist")
 	{
-		//emit(CDDBClicked(m_cd->discSignature()));
 		kDebug()<<"state track window:"<<m_stateTrackWindow;
 		if(m_stateTrackWindow == true)
 		{
@@ -334,11 +352,16 @@ void KSCD::writeSettings()
 
 
 /**
- * returns devices
+ * Accessors
  */
 HWControler* KSCD::getDevices()
 {
 	return devices;
+}
+
+KCompactDisc* KSCD::getCd()
+{
+	return m_cd;
 }
 
 /**
@@ -400,7 +423,7 @@ int main( int argc, char *argv[] )
     KUniqueApplication a;
     KSCD *k = new KSCD();
     a.setTopWidget( k );
- //   a.setMainWidget( k );
+//   a.setMainWidget(k);
 
     k->setWindowTitle(KGlobal::caption());
 

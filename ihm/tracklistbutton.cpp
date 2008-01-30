@@ -66,20 +66,3 @@ void TrackListButton :: mouseReleaseEvent(QMouseEvent *event)
 		emit(buttonClicked(m_name));
 	}
 }
-
-void TrackListButton :: enterEvent (QEvent * event )
-{
-	event->accept();
-	m_state = "over";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
-	setToolTip(m_name);
-}
-
-void TrackListButton :: leaveEvent (QEvent * event )
-{
-	event->accept();
-	m_state = "default";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
-}

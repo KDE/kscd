@@ -59,6 +59,7 @@ HWControler :: HWControler ()
 
 	// init Speakers detection
 	selectedS=-1;
+	setVolume(50);
 
 	// getting all optical disc driver
 	QList<Solid::Device> devList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDrive, QString());
@@ -199,7 +200,7 @@ void HWControler :: prevTrack()
 		}
 	}
 }
-void HWControler :: stop()
+void HWControler :: stop(bool restart)
 {
 	if(!(selectedCd==-1))
 	{
@@ -207,7 +208,10 @@ void HWControler :: stop()
 		{
 			mc->setAutoplayTitles(false);
 			media->stop();
-			mc->setCurrentTitle(1);
+			if (restart)
+			{
+				mc->setCurrentTitle(1);
+			}
 			catchCurrentTime(0);
 		}
 	}
@@ -283,7 +287,7 @@ void HWControler :: setVolume(qreal vol)
 {
 	if (selectedS != -1)
 	{
-		speakers->setVolume(vol);
+		speakers->setVolume(vol*0.01);
 	}
 }
 Phonon::State HWControler ::getState()
@@ -335,6 +339,37 @@ AudioCD * HWControler::getCD()
 		return cdIn[selectedCd];
 	}
 	return NULL;
+}
+
+const QList<unsigned> &HWControler::getDiscSignature()
+{
+	QList<unsigned> trackStartFrames ;
+/*
+	int nbTracks = getTotalTrack() ;
+	if(nbTracks > 0)
+	{
+		kDebug() << "Sig " << nbTracks << " tracks";
+		
+		for(int i = 1; i <= nbTracks; i++)
+		{
+			trackStartFrames.append(getTrackStart(m_handle, i));
+		}
+		trackStartFrames.append(getTrackStart(m_handle, i));
+	}
+		kDebug() << "TrackStartFrames " << trackStartFrames;
+*/
+	return trackStartFrames;
+}
+
+int getTrackStart(void *p, int trackNum)
+{/*
+	struct wm_drive *pdrive = (struct wm_drive *)p;
+
+	if (trackNum < 1 ||trackNum > (getTotalTrack()+1))
+		return 0;
+
+	return pdrive->thiscd.trk[CARRAY(trackNum)].start;*/
+return 0;
 }
 
 void HWControler ::setLoopMode(LoopMode lm)
@@ -469,6 +504,19 @@ void HWControler :: setRandom(bool b)
 {
 	random = b;
 	if (b) kDebug() << "Random Activated";
+	else kDebug() << "Random Desactivated";
+}
+
+
+bool HWControler::isDiscValid()
+{
+	if(getCD()->isCdInserted())
+	{
+		kDebug() << "1" ;
+		return !(getCD()->getCd()->discType()&0x01) ;
+	}
+	else
+		return false;
 }
 
 void HWControler ::loadPlayList()

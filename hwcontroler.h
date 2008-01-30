@@ -94,7 +94,7 @@ class HWControler : public QObject
 		void play(int track);
 		void nextTrack();
 		void prevTrack();
-		void stop();
+		void stop(bool restart=true); // @param restart, if true restart from the beginning of the disc
 		void pause();
 		void mute(bool mute);
 		qint64 getTotalTime ();
@@ -106,9 +106,11 @@ class HWControler : public QObject
 		Phonon::MediaObject * getMedia();
 		Phonon::AudioOutput * getAudioOutPut();
 		AudioCD* getCD();
+		const QList<unsigned> &getDiscSignature();
 		int getCurrentTrack();
 		int getTotalTrack();
 		void setRandom(bool b);
+		bool isDiscValid();
 
 	private:
 		void loadPlayList();

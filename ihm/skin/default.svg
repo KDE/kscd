@@ -823,13 +823,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2"
-     inkscape:cx="106.78609"
-     inkscape:cy="109.17026"
+     inkscape:cx="222.76661"
+     inkscape:cy="590.60614"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="looptrack_pressed"
      inkscape:window-width="1204"
-     inkscape:window-height="672"
-     inkscape:window-x="76"
+     inkscape:window-height="673"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      showgrid="true"
      width="270px"
@@ -1456,12 +1456,12 @@
       <text
          sodipodi:linespacing="100%"
          id="text2188"
-         y="22"
-         x="9.1379385"
+         y="21.6"
+         x="9.8254385"
          style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#001c3c;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Utopia"
          xml:space="preserve"><tspan
-           y="22"
-           x="9.1379385"
+           y="21.6"
+           x="9.8254385"
            id="tspan2190"
            sodipodi:role="line">1</tspan></text>
     </g>
@@ -1480,12 +1480,12 @@
       <text
          sodipodi:linespacing="100%"
          id="text2370"
-         y="22"
-         x="9.1379385"
+         y="21.6"
+         x="9.7758055"
          style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#001c3c;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Utopia"
          xml:space="preserve"><tspan
-           y="22"
-           x="9.1379385"
+           y="21.6"
+           x="9.7758055"
            id="tspan2372"
            sodipodi:role="line">1</tspan></text>
     </g>
@@ -1504,12 +1504,12 @@
       <text
          sodipodi:linespacing="100%"
          id="text2375"
-         y="22"
-         x="9.1379385"
+         y="21.6"
+         x="9.8199997"
          style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#001c3c;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Utopia"
          xml:space="preserve"><tspan
-           y="22"
-           x="9.1379385"
+           y="21.6"
+           x="9.8199997"
            id="tspan2377"
            sodipodi:role="line">1</tspan></text>
     </g>
@@ -1903,7 +1903,8 @@
          sodipodi:cx="20"
          id="path4405"
          style="opacity:1;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#001c3c;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         sodipodi:type="arc" />
+         sodipodi:type="arc"
+         transform="translate(1,-4)" />
     </g>
   </g>
 </svg>

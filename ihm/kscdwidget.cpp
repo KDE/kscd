@@ -89,3 +89,20 @@ void KscdWidget :: paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	m_renderer->render(&painter,m_id);
 }
+
+void KscdWidget :: enterEvent (QEvent * event )
+{
+	event->accept();
+	m_state = "over";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
+	setToolTip(m_name);
+}
+
+void KscdWidget :: leaveEvent (QEvent * event )
+{
+	event->accept();
+	m_state = "default";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
+}

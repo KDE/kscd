@@ -115,6 +115,7 @@ public:
 	virtual bool saveState(QSessionManager& sm);
 	void writeSettings();
 	HWControler * getDevices();
+	KCompactDisc* getCd(); // kept for CDDB compatibility
 
 protected:
 	void populateSongList();
@@ -123,8 +124,7 @@ signals:
 	void picture(QString,QString);
 
 public slots:
-	void refreshCDDB();
-	void lookupCDDB();
+	void test();
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 	void actionButton(QString);

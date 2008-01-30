@@ -70,19 +70,3 @@ void EjectButton :: mouseReleaseEvent(QMouseEvent *event)
 			event->ignore();
 		}
 }
-
-void EjectButton :: enterEvent (QEvent * event )
-{
-	event->accept();
-	m_state = "over";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
-	setToolTip(m_name);
-}
-void EjectButton :: leaveEvent (QEvent * event )
-{
-	event->accept();
-	m_state = "default";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
-}

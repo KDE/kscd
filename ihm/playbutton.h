@@ -49,8 +49,6 @@ public:
 	virtual ~PlayButton();
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
-	void enterEvent (QEvent * event);
-	void leaveEvent (QEvent * event);
 };
 
 #endif /*PLAYBUTTON_H_*/

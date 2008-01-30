@@ -223,10 +223,12 @@ void KscdWindow::changePicture(QString name,QString state)
 	if(name == "play")
 	{
 		m_playB->loadPicture("pause",state);
+		m_playB->setName("pause");
 	}
 	if(name == "pause")
 	{
 		m_playB->loadPicture("play",state);
+		m_playB->setName("play");
 	}
 	if(name == "stop")
 	{
@@ -258,11 +260,14 @@ void KscdWindow::changePicture(QString name,QString state)
 	}
 	if(name == "random")
 	{
+		kDebug() << 3;
 		m_randB->loadPicture(name,state);
 	}
 	if(name == "p_random")
 	{
+		kDebug() << 4;
 		m_randB->loadPicture("random","pressed");
+		
 	}
 	if(name == "loop")
 	{

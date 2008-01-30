@@ -1,4 +1,3 @@
-
 /*
  * Kscd - A simple cd player for the KDE Project
  *
@@ -49,16 +48,8 @@ void PlayButton :: mousePressEvent(QMouseEvent *event)
 	{
 		event->accept();
 		m_state = "pressed";
-		if(m_name== "play")
-		{
-			m_id = m_name + "_" + m_state;
-			emit(needRepaint());
-		}
-		else
-		{
-			m_id = m_name + "_" + m_state;
-			emit(needRepaint());
-		}
+		m_id = m_name + "_" + m_state;
+		emit(needRepaint());
 	}
 	else
 	{
@@ -72,33 +63,8 @@ void PlayButton :: mouseReleaseEvent(QMouseEvent *event)
 	{
 		event->accept();
 		m_state = "over";
-		if(m_name=="play")
-		{
-			emit(buttonClicked(m_name));
-			m_name = "pause";
-			m_id = m_name + "_" + m_state;
-		}
-		else
-		{
-			emit(buttonClicked(m_name));
-			m_name = "play";
-			m_id = m_name + "_" + m_state;
-		}
+		emit(buttonClicked(m_name));
+		m_id = m_name + "_" + m_state;
+		emit(needRepaint());
 	}
-}
-
-void PlayButton :: enterEvent (QEvent * event )
-{
-	event->accept();
-	m_state = "over";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
-	setToolTip(m_name);
-}
-void PlayButton :: leaveEvent (QEvent * event )
-{
-	event->accept();
-	m_state = "default";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
 }

@@ -51,8 +51,6 @@ public:
 	virtual ~PreviousButton();
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
-	void enterEvent (QEvent * event);
-	void leaveEvent (QEvent * event);
 };
 
 #endif /*PREVIOUSBUTTON_H_*/

@@ -43,8 +43,6 @@ VolumeButton::VolumeButton(QWidget * parent,QString sName,qreal value):KscdWidge
 	m_move = false;
 	kDebug()<<"start m_value:"<<m_vValue;
 	kDebug()<<"start m_angle:"<<m_angle;
-	kDebug()<<"start m_centreX:"<<m_centerX;
-	kDebug()<<"start m_centreY:"<<m_centerY;
 // 	setEnabled(true);
 }
 
@@ -52,27 +50,28 @@ VolumeButton::~VolumeButton()
 {
 }
 
-// void VolumeButton :: mousePressEvent(QMouseEvent *event)
-// {
-// 	if(m_region->contains(event->pos()))
-// 	{
-// 		event->accept();
-//  		m_posX = event->x();
-//  		m_posY = event->y();
-// 	kDebug()<<"press m_posX:"<<m_posX;
-// 	kDebug()<<"press m_posY:"<<m_posY;
-// 	kDebug()<<"press m_angle:"<<m_angle;
-// 		grabMouse(Qt::ClosedHandCursor);
-// 		m_move =true;
-// 	}
-// 	else
-// 	{
-// 		event->ignore();
-// 	}
-// }
+void VolumeButton :: mousePressEvent(QMouseEvent *event)
+{
+	if(m_region->contains(event->pos()))
+	{
+		event->accept();
+/*		m_posX = event->x();
+		m_posY = event->y();
+	kDebug()<<"press m_posX:"<<m_posX;
+	kDebug()<<"press m_posY:"<<m_posY;
+	kDebug()<<"press m_angle:"<<m_angle;
+		*/
+		m_move =true;
+		grabMouse(Qt::ClosedHandCursor);
+	}
+	else
+	{
+		event->ignore();
+	}
+}
 // 
-// void VolumeButton :: mouseMoveEvent(QMouseEvent *event)
-// {
+void VolumeButton :: mouseMoveEvent(QMouseEvent *event)
+{
 // 	if(m_region->contains(event->pos()) && m_move == true)
 // 	{
 // 		event->accept();
@@ -187,24 +186,28 @@ VolumeButton::~VolumeButton()
 // 	{
 // 		event->ignore();
 // 	}
-// }
+}
 
-// void VolumeButton :: mouseReleaseEvent(QMouseEvent *event)
-// {
-// 	releaseMouse();
-// 	m_move = false;
-// }
+void VolumeButton :: mouseReleaseEvent(QMouseEvent *event)
+{
+	releaseMouse();
+	m_move = false;
+}
 
 void VolumeButton :: wheelEvent(QWheelEvent *event)
-{		
-	int pas = (324 / event->delta());
-	if((m_angle + pas)>=0 && (m_angle + pas)<=270)
-	{
-		event->accept();
-		m_angle += pas;
-		emit(volumeChange(angleToValue(m_angle)));
+{
+	qreal step = valueToAngle((event->delta()/120)*wheelStep);
+	kDebug() << "step " << step ;
+	
+	if((m_angle + step)>=0 && (m_angle + step)<=250)
+	{	
+//		event->accept();
+		m_angle += step;
+		m_vValue += (event->delta()/120)*wheelStep;
+		emit(volumeChange(m_vValue));
 		rotation(m_angle);
-		kDebug()<<"wheel value:"<<angleToValue(m_angle);
+		kDebug() << "m_angle " << m_angle ;
+		kDebug() << "m_vValue " << m_vValue ;
 	}
 	else
 	{
@@ -213,22 +216,20 @@ void VolumeButton :: wheelEvent(QWheelEvent *event)
 }
 
 
-void VolumeButton::rotation (int angle)
+void VolumeButton::rotation (qreal angle)
 {
 	m_angle = angle;
 	emit(update());
 }
 
-qreal VolumeButton::angleToValue(int angle)
+qreal VolumeButton::angleToValue(qreal angle)
 {
- 	m_vValue = ((qreal)(m_angle)/2.7);
- 	return m_vValue;
+	return angle/wheelStep ;
 }
 
-int VolumeButton::valueToAngle(qreal value)
+qreal VolumeButton::valueToAngle(qreal value)
 {
- 	m_angle = (qreal)(m_vValue * 2.7);
- 	return m_angle;
+	return value*wheelStep ;
 }
 // qreal VolumeButton::posToAngle(int x, int y)
 // {
@@ -256,8 +257,19 @@ void VolumeButton :: paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	painter.translate((m_renderer->boundsOnElement(m_id).width())/2,
 				(m_renderer->boundsOnElement(m_id).height())/2);
-	painter.rotate((qreal)m_angle);
+	painter.rotate(m_angle);
 	painter.translate(-(m_renderer->boundsOnElement(m_id).width())/2,
 				-(m_renderer->boundsOnElement(m_id).height())/2);
 	m_renderer->render(&painter,m_id);
+}
+
+void VolumeButton :: enterEvent (QEvent * event )
+{
+	event->accept();
+	setToolTip(m_name);
+}
+
+void VolumeButton :: leaveEvent (QEvent * event )
+{
+	event->accept();
 }

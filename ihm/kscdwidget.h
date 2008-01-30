@@ -54,10 +54,8 @@ protected:
 	QString m_path;
 	QString m_id;
 	QSvgRenderer *m_renderer;
-
 	
-
-  	void paintEvent(QPaintEvent *event);
+	void paintEvent(QPaintEvent *event);
 
 public:
 	KscdWidget(QString sName,QWidget * parent=0);
@@ -66,8 +64,10 @@ public:
 	QString getName();
 	void setId(QString,QString);
 	QString getId();
-
 	void loadPicture(QString,QString);
+	void enterEvent (QEvent * event);
+	void leaveEvent (QEvent * event);
+	
 signals:
 	void needRepaint();
 	void changePicture();

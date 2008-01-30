@@ -70,20 +70,3 @@ void NextButton :: mouseReleaseEvent(QMouseEvent *event)
 			event->ignore();
 		}
 }
-
-void NextButton :: enterEvent (QEvent * event )
-{
-	event->accept();
-	m_state = "over";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
-	setToolTip(m_name);
-}
-
-void NextButton :: leaveEvent (QEvent * event )
-{
-	event->accept();
-	m_state = "default";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
-}

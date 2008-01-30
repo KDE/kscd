@@ -40,20 +40,23 @@ CDDBManager::CDDBManager(KSCD *parent)
 	// CDDB initialization
 	m_cddbInfo.clear(); // The first freedb revision is "0"
 	m_cddbClient = new KCDDB::Client();
+	
+	// KsCD pointer
+	pKscd = parent;
 //	m_cddialog = 0L;
 	
-	connect(m_cddbClient, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
 
 // TODO inactivate CDDB options if no disc
 // TODO erase that !
-	for (int i=0; i<20; i++)
+	if( pKscd->getDevices()->getCD()->isCdInserted() && pKscd->getDevices()->isDiscValid() )
 	{
-		m_cddbInfo.track(i).set(KCDDB::Title, QString("unknown") ) ;
+		for (int i=0; i<pKscd->getDevices()->getTotalTrack(); i++)
+		{
+			m_cddbInfo.track(i).set(KCDDB::Title, QString(i18n("Unknown")) ) ;
+		}
 	}
-
-	// KsCD pointer
-	pKscd = parent;
 	
+	connect(m_cddbClient, SIGNAL(finished(KCDDB::Result)), this, SLOT(lookupCDDBDone(KCDDB::Result)));
 }
 
 CDDBManager::~CDDBManager()
@@ -83,7 +86,7 @@ void CDDBManager::CDDialogSelected()
 	//m_cddialog->raise();// Puts the window on top
 
 	m_cddialog->setWindowTitle(tr("CDDB Manager"));
-	m_cddialog->resize(400, 500);
+	m_cddialog->resize(400, 600);
 	m_cddialog->setMinimumSize(300,500);
 //	m_cddialog->setDefault(true);
 	
@@ -148,7 +151,7 @@ void CDDBManager::CDDialogSelected()
 	albumCommenttextEdit->append(m_cddbInfo.get(Comment).toString());
 	//albumCommentLabel->setBuddy(albumCommentlineEdit);
 	albumLayout->addWidget(albumCommentLabel, 6, 0, Qt::AlignTop);
-	albumLayout->addWidget(albumCommenttextEdit, 6, 1, Qt::AlignVCenter);
+	albumLayout->addWidget(albumCommenttextEdit, 6, 1);
 
 	mainLayout->addLayout(albumLayout, 0, 0);
 
@@ -263,6 +266,45 @@ void CDDBManager::CDDialogDone()
 	m_cddialog = 0L;*/
 }
 
+void CDDBManager::refreshCDDB()
+{
+	kDebug() << "refreshCDDB" ;
+	if (pKscd->getDevices()->getCD()->isCdInserted())
+	{
+		setupCDDB(pKscd->getDevices()->getTotalTrack(), pKscd->getCd()->discSignature() );
+	}
+}
+
+// TODO move this function to CDDBManager and add an signature attribute
+void CDDBManager::lookupCDDB()
+{
+	kDebug() << "Lookup CDDB" ;
+	if(!pKscd->getDevices()->getCD()->isCdInserted())
+	{
+		showArtistLabel(i18n("No Disc"));
+		QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
+	}
+	else
+	{
+		if(!pKscd->getDevices()->isDiscValid())
+		{
+			showArtistLabel(i18n("Invalid disc"));
+			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
+		}
+		else
+		{
+			showArtistLabel(i18n("Start freedb lookup."));
+		
+			getCddbClient()->config().reparse();
+			getCddbClient()->setBlockingMode(false);
+			
+	//TODO get CD signature through Solid
+			getCddbClient()->lookup( pKscd->getCd()->discSignature() );
+	
+			kDebug() << pKscd->getCd()->discSignature() ;
+		}
+	}
+}
 void CDDBManager::lookupCDDBDone(Result result)
 {
 	if (result != KCDDB::Success)
@@ -331,9 +373,6 @@ void CDDBManager::setCDInfo(KCDDB::CDInfo info)
 	kDebug() << m_cddbInfo.get(Length).toString() ;
 	kDebug() << m_cddbInfo.get(Category).toString() ;
 	
-	// Trace
-	kDebug() << m_cddbInfo.toString() ;
-	
 	for (int i=0; i<m_cddbInfo.numberOfTracks(); i++)
 	{
 		kDebug() << i << " title " << m_cddbInfo.track(i).get(KCDDB::Title).toString() ;
@@ -369,9 +408,9 @@ QString CDDBManager::getDiscTitle()
 	return m_cddbInfo.get(KCDDB::Title).toString();
 }
 
+/*
 void CDDBManager::populateSongList()
 {
-/*
 	songListCB->clear();
 	for (uint i = 1; i <= m_cd->tracks(); ++i)
 	{
@@ -400,5 +439,6 @@ void CDDBManager::populateSongList()
 	str1.append(str2);
 	songListCB->addItem(str1);
 }
-*/
+
 }
+*/

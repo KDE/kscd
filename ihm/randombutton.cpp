@@ -57,7 +57,6 @@ void RandomButton :: mousePressEvent(QMouseEvent *event)
 			event->ignore();
 		}
  	}
-	
  	else
  	{
  		event->ignore();
@@ -72,16 +71,17 @@ void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
 		m_state = "over";
 		if(m_name=="random")
 		{
+			kDebug() << "1" ;
 			m_name = "p_random";
-			m_id = m_name + "_" + m_state;
-			emit(buttonClicked(m_name));
 		}
 		else
 		{
+			kDebug() << "2" ;
 			m_name = "random";
-			m_id = m_name + "_" + m_state;
-			emit(buttonClicked(m_name));
 		}
+		kDebug() << m_name ;
+		m_id = m_name + "_" + m_state;
+		emit(buttonClicked(m_name));
 	}
 	else
 	{

@@ -78,9 +78,6 @@ public:
 	CDDBManager(KSCD *parent = 0);
 	~CDDBManager();
 
-protected:
-	void populateSongList();
-
 private:
 	// Info from CDDB
 	QDialog* m_cddialog;
@@ -95,6 +92,7 @@ public:
 	KCDDB::Client* getCddbClient(){ return m_cddbClient; }
 	KCDDB::CDInfo getCddbInfo(){ return m_cddbInfo; }
 	KCDDB::TrackOffsetList getCdSignature(){ return m_cdSignature; }
+	
 	QList <CDDBTrack> getTrackList();
 	QString getDiscTitle();
 	
@@ -103,6 +101,8 @@ public:
 private slots:
 	void CDDialogSelected();
 	void CDDialogDone();
+	void refreshCDDB();
+	void lookupCDDB();
 	void lookupCDDBDone(KCDDB::Result);
 	void setCDInfo(KCDDB::CDInfo);
 

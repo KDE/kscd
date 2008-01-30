@@ -49,8 +49,6 @@ public:
 	virtual ~StopButton();
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
-	void enterEvent (QEvent * event);
-	void leaveEvent (QEvent * event);
 };
 
 #endif /*STOPBUTTON_H_*/

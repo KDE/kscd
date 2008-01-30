@@ -45,13 +45,14 @@
 #include <QWheelEvent>
 #include <math.h>
 
+#define wheelStep	2.5
 class VolumeButton:public KscdWidget
 {
 	Q_OBJECT
 
 private:
 	qreal m_vValue;
-	int m_angle;
+	qreal m_angle;
 	int m_posX;
 	int m_posY;
 	int m_centerX;
@@ -61,17 +62,19 @@ private:
 
 private:
 	qreal posToAngle(int x, int y);
-	qreal angleToValue(int);
-	int valueToAngle(qreal);
-	void rotation(int);
+	qreal angleToValue(qreal);
+	qreal valueToAngle(qreal);
+	void rotation(qreal);
 public:
 	VolumeButton(QWidget * parent=0, QString sName="volume", qreal value=50.0);
 	virtual ~VolumeButton();
-// 	void mousePressEvent(QMouseEvent * event);
-// 	void mouseReleaseEvent(QMouseEvent * event);
-// 	void mouseMoveEvent(QMouseEvent * event);
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
+	void mouseMoveEvent(QMouseEvent * event);
 	void wheelEvent(QWheelEvent * event);
 	void paintEvent(QPaintEvent* event);
+	void enterEvent (QEvent * event);
+	void leaveEvent (QEvent * event);
 signals:
 	void volumeChange(qreal);
 };
