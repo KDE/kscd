@@ -33,40 +33,23 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef PANEL_H_
-#define PANEL_H_
+#ifndef CONFIGWINDOW_H_
+#define CONFIGWINDOW_H_
 
 #include <QLabel>
 #include <QWidget>
 #include <QObject>
 
 
-class Panel:public QObject
+class ConfigWindow:public QObject
 {
 	Q_OBJECT
 
-	private:
-		
-	// Title of the track
-		QLabel * lTrackTitle;
-	// Author name
-		QLabel * lAuthor;
-	// Album title
-		QLabel * lAlbumTitle;
-	// Volume text
-		QLabel * lVolume;
-	// TrackState (play,pause...)
-		QLabel * lTrackState;
-	// Loop mode activated
-		QLabel * lLoopMode;
-	// Random activated
-		QLabel * lRandomMode;
-	// Time Status
-		QLabel * lTime;
+
 
 	public:
-		Panel(QWidget *parent = 0);
-		~Panel();
+		ConfigWindow(QWidget *parent = 0);
+		~ConfigWindow();
 }
 
 #endif

@@ -38,6 +38,8 @@ set(kscd_SRCS
  	ihm/loopbutton.cpp
 	ihm/tracklistbutton.cpp
  	ihm/volumebutton.cpp
+# 	ihm/panel.cpp
+# 	ihm/configwindow.cpp
 )
 
 set(kscd_Resources ihm/skin)

@@ -287,8 +287,9 @@ void HWControler :: setVolume(qreal vol)
 {
 	if (selectedS != -1)
 	{
-		speakers->setVolume(vol*0.01);
+		speakers->setVolume(vol/100);
 	}
+
 }
 Phonon::State HWControler ::getState()
 {
@@ -322,7 +323,6 @@ void HWControler ::configMedia()
 			mc = new MediaController(media);
 			mc->setAutoplayTitles(false);
 			media->setTickInterval(100);
-			loadPlayList();
 			connect(media,SIGNAL(tick(qint64)),this,SLOT(replayTrack(qint64)));
 			connect(media,SIGNAL(tick(qint64)),this,SLOT(catchCurrentTime(qint64)));
 			connect(media,SIGNAL(finished()),this,SLOT(replayDisk()));
@@ -504,7 +504,15 @@ void HWControler :: setRandom(bool b)
 {
 	random = b;
 	if (b) kDebug() << "Random Activated";
-	else kDebug() << "Random Desactivated";
+
+
+	if((selectedCd!=-1))
+	{
+		if(cdIn[selectedCd]->isCdInserted())
+		{
+			loadPlayList();
+		}
+	}
 }
 
 
@@ -521,6 +529,7 @@ bool HWControler::isDiscValid()
 
 void HWControler ::loadPlayList()
 {
+
 	srand( time( NULL ) );
 	int pos;
 
@@ -532,6 +541,7 @@ void HWControler ::loadPlayList()
 		tmp.append(i+1);
 	}
 
+	playList.clear();
 
 	for (int i = getTotalTrack(); i>0; i--)
 	{

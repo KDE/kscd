@@ -69,6 +69,7 @@
 #include <phonon/volumeslider.h>
 
 
+
 class KscdWindow:public QWidget
 {
 	Q_OBJECT
@@ -87,9 +88,9 @@ private:
  	KscdWidget *m_volumeB;
 
 	QLabel * m_time;
-	QLabel *m_artistLabel ;
-	QLabel *m_trackinfoLabel ;
-	
+	QLabel * m_artistLabel ;
+	QLabel * m_trackinfoLabel ;
+
 
 protected:
 
@@ -132,5 +133,4 @@ signals:
 	void actionVolume(qreal);
 	void trackClicked(int);
 };
-
 #endif /*KSCDWINDOW_H_*/
