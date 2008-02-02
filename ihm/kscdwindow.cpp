@@ -36,6 +36,7 @@
 #include <klocalizedstring.h>
 
 #include "panel.h"
+#include "configwindow.h"
 
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {
@@ -60,7 +61,10 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 // 	createTrackWindow();
 
 	// Panel
-	Panel *panel = new Panel(this);
+	Panel *m_panel = new Panel(this);
+
+	// Configuration windows
+	ConfigWindow *m_config = new ConfigWindow(this);
 
 	QGridLayout* panelLayout = new QGridLayout;
 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
@@ -82,10 +86,14 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
  	m_layout->addWidget(m_nextB, 1, 2);
  	m_layout->addWidget(m_stopB, 2, 1);
   	m_layout->addWidget(m_volumeB, 0,5,3,1);
+
+  	m_layout->addWidget(m_panel, 0,3,2,2);
+
+
 //    	m_layout->addWidget(m_volumeB, 1,5,Qt::AlignCenter);
 	m_layout->addWidget(m_randB, 3, 0, Qt::AlignCenter);
  	m_layout->addWidget(m_loopB, 3, 2, Qt::AlignCenter);
- 	m_layout->addWidget(m_muteB,3, 4, Qt::AlignCenter);
+ 	m_layout->addWidget(m_muteB,0, 6, Qt::AlignCenter);
 	m_layout->addWidget(m_trackB, 3, 6, Qt::AlignCenter);
 	
 	panelLayout->addWidget(m_time,0,0, Qt::AlignCenter);
@@ -160,7 +168,7 @@ void KscdWindow :: createTrackWindow(QList<CDDBTrack> trackList,QString albumTit
 
 void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)
 {
-	m_layout->addWidget((QWidget*)ss, 2, 3);
+	m_layout->addWidget((QWidget*)ss, 2, 3,1,2);
 }
 void KscdWindow::addVolumeSlider(Phonon::VolumeSlider *vs)
 {

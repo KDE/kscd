@@ -34,12 +34,20 @@
 #define PANEL_H_
 
 #include <QWidget>
+#include <QGroupBox>
+#include <QLabel>
+#include <QVBoxLayout>
 
 
 
-class Panel:public QWidget
+class Panel:public QGroupBox
 {
 	Q_OBJECT
+
+private:
+	QVBoxLayout * vbl_layout;
+	QLabel * l_title;
+
 public:
 	Panel(QWidget * parent=0);
 	virtual ~Panel();

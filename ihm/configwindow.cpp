@@ -31,9 +31,11 @@
  *
  */
 #include "configwindow.h"
+#include <kconfigdialog.h>
 
 ConfigWindow::ConfigWindow(QWidget * parent):QWidget(parent)
 {
+
 }
 
 ConfigWindow::~ConfigWindow()

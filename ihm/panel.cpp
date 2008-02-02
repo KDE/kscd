@@ -32,8 +32,12 @@
  */
 #include "panel.h"
 
-Panel::Panel(QWidget * parent):QWidget(parent)
+Panel::Panel(QWidget * parent):QGroupBox(parent)
 {
+	vbl_layout = new QVBoxLayout;
+	l_title = new QLabel("title");
+	vbl_layout->addWidget(l_title);
+	setLayout(vbl_layout);
 }
 
 Panel::~Panel()
