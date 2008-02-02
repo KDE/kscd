@@ -9,14 +9,12 @@
  * --------------
  * ISI KsCD Team :
  * --------------
- * Audureau Jérôme
+ * Stanislas KRZYWDA <stanislas.krzywda@gmail.com>
+ * Sovanramy Var <mastasushi@gmail.com>
  * Bouchikhi Mohamed-Amine <bouchikhi.amine@gmail.com>
  * Gastellu Sylvain<sylvain.gastellu@gmail.com>
- * KRZYWDA Stanislas <stanislas.krzywda@gmail.com>
- * Rapicault Emilie
- * Var Sovanramy <mastasushi@gmail.com>
  * -----------------------------------------------------------------------------
-*
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -34,13 +32,12 @@
  */
 #include "panel.h"
 
-Panel::Panel(QObject *parent):QObject(parent)
+Panel::Panel(QWidget * parent):QWidget(parent)
 {
-
 }
+
 Panel::~Panel()
 {
-
 }
 
-// End of panel.cpp
+

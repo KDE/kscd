@@ -35,6 +35,7 @@
 #include <QTextEdit>
 #include <klocalizedstring.h>
 
+#include "panel.h"
 
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {
@@ -59,6 +60,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 // 	createTrackWindow();
 
 	// Panel
+	Panel *panel = new Panel(this);
+
 	QGridLayout* panelLayout = new QGridLayout;
 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
 	
