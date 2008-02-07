@@ -55,12 +55,12 @@ void VolumeButton :: mousePressEvent(QMouseEvent *event)
 	if(m_region->contains(event->pos()))
 	{
 		event->accept();
-/*		m_posX = event->x();
+		m_posX = event->x();
 		m_posY = event->y();
-	kDebug()<<"press m_posX:"<<m_posX;
-	kDebug()<<"press m_posY:"<<m_posY;
-	kDebug()<<"press m_angle:"<<m_angle;
-		*/
+		kDebug()<<"press m_posX:"<<m_posX;
+		kDebug()<<"press m_posY:"<<m_posY;
+		kDebug()<<"press m_angle:"<<m_angle;
+		
 		m_move =true;
 		grabMouse(Qt::ClosedHandCursor);
 	}
@@ -72,121 +72,57 @@ void VolumeButton :: mousePressEvent(QMouseEvent *event)
 // 
 void VolumeButton :: mouseMoveEvent(QMouseEvent *event)
 {
-// 	if(m_region->contains(event->pos()) && m_move == true)
-// 	{
-// 		event->accept();
-// 	kDebug()<<"move m_posX:"<<m_posX;
-// 	kDebug()<<"move m_posY:"<<m_posY;
-// 	kDebug()<<"move eventX:"<<event->x();
-// 	kDebug()<<"mvoe eventY:"<<event->y();
-// 	kDebug()<<"move m_angle:"<<m_angle;
-// 		m_deplacement = m_posY - event->y();
-// 
-// 	kDebug()<<"move m_deplacement:"<<(m_posY - event->y());
-// 		if(m_deplacement == 0)
-// 		{
-// 			m_deplacement = m_posX - event->x();
-// 			if(m_posX < m_centerX)
-// 			{
-// 				
-// 				kDebug()<<"move depX:"<<(m_posX - event->x());
-// 				if((m_angle + (qreal)m_deplacement) < 0.0)
-// 				{
-// 					rotation(m_angle - (0.0 - m_angle));
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 				else if ((m_angle + (qreal)m_deplacement) > 270.0)
-// 				{
-// 					rotation(m_angle  - (270.0 - m_angle));
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 				else
-// 				{
-// 					rotation(m_angle + (qreal)m_deplacement);
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 			}
-// 			else
-// 			{
-// 				if((m_angle + (qreal)m_deplacement) < 0.0)
-// 				{
-// 					rotation(m_angle - 0.0 - m_angle);
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 				else if ((m_angle + (qreal)m_deplacement) > 270.0)
-// 				{
-// 					rotation(m_angle  - (270.0 - m_angle));
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 				else
-// 				{
-// 					rotation(m_angle - (qreal)m_deplacement);
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 			}
-// 		}
-// 		else
-// 		{
-// 	kDebug()<<"move m_deplacement:"<<(m_posY - event->y());
-// 			if(m_posX < m_centerX)
-// 			{
-// 				
-// 				if((m_angle + (qreal)m_deplacement) < 0.0)
-// 				{
-// 					rotation(m_angle - 0.0 - m_angle);
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 				else if ((m_angle + (qreal)m_deplacement) > 270.0)
-// 				{
-// 					rotation(m_angle  - (270.0 - m_angle));
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 				else
-// 				{
-// 					rotation(m_angle + (qreal)m_deplacement);
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 			}
-// 			else
-// 			{
-// 				if((m_angle + (qreal)m_deplacement) < 0.0)
-// 				{
-// 					rotation(m_angle - 0.0 - m_angle);
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 				else if ((m_angle + (qreal)m_deplacement) > 270.0)
-// 				{
-// 					rotation(m_angle  - (270.0 - m_angle));
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 				else
-// 				{
-// 					rotation(m_angle - (qreal)m_deplacement);
-// 					emit(volChanged(angleToValue(m_angle)));
-// 				}
-// 			}
-// 		}
-// 	}
-// 		if (posToAngle(event->x(),event->y()) > m_angle)
-// 		{
-		/* angle between press position and center axe*/
-// 		qreal teta1 = posToAngle(m_posX,m_posY);
-		/* angle between move position and center axe*/
-// 		qreal teta2 = posToAngle(event->x(),event->y());
-		/* move angle */
-// 		qreal teta = teta2 - teta1;
-// 		kDebug()<<"move teta1:"<<teta1;
-// 		kDebug()<<"move teta2:"<<teta2;
-// 		kDebug()<<"move teta:"<<teta;
-// 		kDebug()<<"move rotation:"<<(180 * (teta))/3.1415;
-// 		rotation(m_angle - (180 * (teta))/3.1415);
+      if(m_region->contains(event->pos()) && m_move == true){
+	    event->accept();
 
-// 		}
-// 	else
-// 	{
-// 		event->ignore();
-// 	}
+	    //find the angle
+	    
+		//find three triangle side's length	
+	    qreal b=(qreal)sqrt((m_centerX - m_posX)*(m_centerX - m_posX) + (m_centerY - m_posY)*(m_centerY - m_posY));
+	    qreal a=(qreal)sqrt((event->x() - m_posX)*(event->x() - m_posX) + (event->y()- m_posY)*(event->y()- m_posY));
+	    qreal c=(qreal)sqrt((m_centerX - event->x())*(m_centerX - event->x()) + (m_centerY - event->y())*(m_centerY - event->y()));
+	    	//find angle in radian between last point, center point and the new point
+		qreal A=(qreal)acos((b*b+c*c-a*a)/(2*b*c));
+	    
+	    kDebug()<<"move A:"<<A;
+	    kDebug()<<"move A degree:"<<(180 * (A))/3.1415;
+	    kDebug()<<"move m_angle:"<<m_angle;
+		
+	//sound must be higher
+	if(event->x()>m_centerX && event->y()< m_posY 
+		|| event->x()< m_centerX && event->y()>m_posY 
+		|| event->y()<m_centerY && event->y()==m_posY && event->x()<m_posX
+		|| event->y()>m_centerY && event->y()==m_posY && event->x()>m_posX){
+		
+		if((m_angle - (180 * (A))/3.1415)>=0){
+			rotation(m_angle - (180 * (A))/3.1415); //change m_angle
+			m_vValue=angleToValue(m_angle);		//change m_vValue
+			emit(volumeChange(m_vValue));		// change sound volume
+		}
+	//sound must be lower
+	}else if(event->x()<=m_centerX && event->y()< m_posY 
+		|| event->x()>= m_centerX && event->y()>m_posY 
+		|| event->y()<m_centerY && event->y()==m_posY && event->x()>m_posX
+		|| event->y()>m_centerY && event->y()==m_posY && event->x()<m_posX){
+
+
+		if((m_angle + (180 * (A))/3.1415)<=250){
+			rotation(m_angle + (180 * (A))/3.1415);
+			m_vValue=angleToValue(m_angle);
+			emit(volumeChange(m_vValue));
+		}
+
+	}
+
+	    //new position
+	    m_posX = event->x();
+	    m_posY = event->y();
+
+      }else{
+	    event->ignore();
+      }
 }
+
 
 void VolumeButton :: mouseReleaseEvent(QMouseEvent *event)
 {
@@ -231,27 +167,6 @@ qreal VolumeButton::valueToAngle(qreal value)
 {
 	return value*wheelStep ;
 }
-// qreal VolumeButton::posToAngle(int x, int y)
-// {
-// 			kDebug()<<"posToAngle x:"<<x;
-// 		kDebug()<<"posToAngle y:"<<y;
-// 			kDebug()<<"posToAngle m_centerx:"<<m_centerX;
-// 		kDebug()<<"posToAngle m_centery:"<<m_centerY;
-// 	qreal adj = abs(x - m_centerX);
-// 		kDebug()<<"posToAngle adj:"<<adj;
-// 
-// 	qreal opp = abs(y- m_centerY);
-// 		kDebug()<<"posToAngle opp:"<<opp;
-// 
-// 	qreal hyp = sqrt(adj*adj + opp*opp);
-// 		kDebug()<<"posToAngle hyp:"<<hyp;
-// 		kDebug()<<"posToAngle adj/hyp:"<<adj/hyp;
-// 	qreal angle = acos(adj/hyp);
-// 		kDebug()<<"posToAngle angle:"<<angle;
-// 		
-// 	return angle;
-// }
-
 void VolumeButton :: paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);

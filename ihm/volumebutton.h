@@ -61,7 +61,6 @@ private:
 	bool m_move;
 
 private:
-	qreal posToAngle(int x, int y);
 	qreal angleToValue(qreal);
 	qreal valueToAngle(qreal);
 	void rotation(qreal);
