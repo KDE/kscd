@@ -43,7 +43,6 @@
 class Panel:public QGroupBox
 {
 	Q_OBJECT
-
 private:
 	QVBoxLayout * vbl_layout;
 	QLabel * l_title;
@@ -51,6 +50,9 @@ private:
 public:
 	Panel(QWidget * parent=0);
 	virtual ~Panel();
+
+public slots:
+	void update_panel_label();
 };
 
 #endif /*EJECTBUTTON_H_*/

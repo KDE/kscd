@@ -30,18 +30,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+
 #include "panel.h"
+#include <QTimer>
 
 Panel::Panel(QWidget * parent):QGroupBox(parent)
 {
 	vbl_layout = new QVBoxLayout;
-	l_title = new QLabel("title");
+	QTimer * timer = new QTimer ();
+	timer->setSingleShot(false);
+	l_title = new QLabel();
 	vbl_layout->addWidget(l_title);
 	setLayout(vbl_layout);
+	connect(timer,SIGNAL(timeout()),this,SLOT(update_panel_label()));
+	timer->start(333);
+}
+
+void Panel::update_panel_label(){
+	
 }
 
 Panel::~Panel()
 {
+	delete this;
 }
 
 

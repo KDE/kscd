@@ -71,7 +71,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	
 	m_time = new QLabel(" 0 0 : 0 0 ");
 // 	QTextEdit * t = new QTextEdit("<b>Welcome to KsCD !</b>");
-	m_artistLabel = new QLabel(i18n("<qt><scroll><b>Welcome to KsCD !</b></scroll></qt>"));
+	m_artistLabel = new QLabel(i18n("<qt><font face=Impact>Welcome to KsCD !</font></qt>"));
 	m_artistLabel->setFixedWidth(250);
 	m_artistLabel->setAlignment(Qt::AlignCenter);
 	
