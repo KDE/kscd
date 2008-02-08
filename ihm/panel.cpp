@@ -32,22 +32,64 @@
  */
 
 #include "panel.h"
+#include <kdebug.h>
 #include <QTimer>
 
 Panel::Panel(QWidget * parent):QGroupBox(parent)
 {
 	vbl_layout = new QVBoxLayout;
-	QTimer * timer = new QTimer ();
+	timer = new QTimer ();
 	timer->setSingleShot(false);
-	l_title = new QLabel();
+	index=0;
+	l_title = new QLabel("title");
+	QString str = l_title->text();
+	if(str.count() >53)
+	{
+		str = str+"     ";
+	}
+	l_title->setText(str);
 	vbl_layout->addWidget(l_title);
 	setLayout(vbl_layout);
 	connect(timer,SIGNAL(timeout()),this,SLOT(update_panel_label()));
-	timer->start(333);
+	timer->start(1);
 }
 
 void Panel::update_panel_label(){
+
+	QString str = l_title->text();
+	int nb =  str.count();
+	// to stop the timer if the size of the title is lower than the panel
+	if( nb <= 53)
+	{
+		index++;
+		if( index == 53)
+		{
+			timer->stop();
+		}
+	}
 	
+	// if the size is lower than the size of the panel
+	while(nb< 53)
+	{
+		//add  " " to have the same size that the panel
+		str = str+" ";
+		nb++;
+	}
+	
+	//recup the first letter
+	QChar c = str.data()[0];
+	
+	//create a new data
+	QString data;
+	for(int i = 1; i < nb; i++)
+	{
+		data = data+str.data()[i];
+	}
+
+	
+	//add the last letter
+	data = data+c;
+	l_title->setText(data);
 }
 
 Panel::~Panel()

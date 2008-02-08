@@ -44,8 +44,10 @@ class Panel:public QGroupBox
 {
 	Q_OBJECT
 private:
+	QTimer * timer;
 	QVBoxLayout * vbl_layout;
 	QLabel * l_title;
+	int index;
 
 public:
 	Panel(QWidget * parent=0);
