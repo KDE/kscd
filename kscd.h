@@ -61,14 +61,14 @@ class KCompactDisc;
 
 // MusicBrainz
 #include <iostream>
-#include <musicbrainz3/artistalias.h>
-#include <musicbrainz3/artist.h>
-#include <musicbrainz3/disc.h>
-#include <musicbrainz3/webservice.h>
-#include <musicbrainz3/query.h>
-#include <musicbrainz3/model.h>
-using namespace std;
-using namespace MusicBrainz;
+// #include <musicbrainz3/artistalias.h>
+// #include <musicbrainz3/artist.h>
+// #include <musicbrainz3/disc.h>
+// #include <musicbrainz3/webservice.h>
+// #include <musicbrainz3/query.h>
+// #include <musicbrainz3/model.h>
+// using namespace std;
+// using namespace MusicBrainz;
 
 #include "ihm/kscdwindow.h"
 #include "hwcontroler.h"
@@ -134,6 +134,8 @@ protected:
 
 signals:
 	void picture(QString,QString);
+	//Shortcut signals
+	void playshortcut();
 
 public slots:
 	void test();
