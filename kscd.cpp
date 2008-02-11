@@ -103,7 +103,59 @@ KSCD::~KSCD()
 
 void KSCD::test()
 {
-	kDebug () << "total time : " << devices->getTotalTime() ;
+/*
+	//kDebug () << "total time : " << devices->getTotalTime() ;
+	string device;
+
+	Disc *disc;
+// 	try {
+		disc = readDisc(device);
+// 	}
+// 	catch (MusicBrainz::DiscError &e) {
+// 		cout << "Error: " << e.what() << endl;
+// 		return 1;
+// 	}
+	QString discId = (QString)disc->getId().c_str();
+	delete disc;
+//	cout << "Disc Id: " << discId << endl << endl;
+
+	Query q;
+	ReleaseResultList results;
+// 	try {
+    ReleaseFilter f ;//= ReleaseFilter().discId(discId.toStdString());
+        results = q.getReleases(&f);
+// 	}
+// 	catch (WebServiceError &e) {
+// 		cout << "Error: " << e.what() << endl;
+// 		return 1;
+// 	}
+
+	for (ReleaseResultList::iterator i = results.begin(); i != results.end(); i++) {
+		ReleaseResult *result = *i;
+		Release *release;
+// 		try {
+			release = q.getReleaseById(result->getRelease()->getId(), &ReleaseIncludes().tracks().artist());
+// 		}
+// 		catch (WebServiceError &e) {
+// 			cout << "Error: " << e.what() << endl;
+// 			continue;
+// 		}
+		cout << "Id      : " << release->getId() << endl;
+		cout << "Title   : " << release->getTitle() << endl;
+		cout << "Tracks  : ";
+		int trackno = 1;
+		for (TrackList::iterator j = release->getTracks().begin(); j != release->getTracks().end(); j++) {
+			Track *track = *j;
+			MusicBrainz::Artist *artist = track->getArtist();
+			if (!artist)
+				artist = release->getArtist();
+			cout << trackno++ << ". " << artist->getName() << " / " << track->getTitle() << endl;
+			cout << "          ";
+		}
+		cout << endl;
+		delete result;
+	}
+*/
 }
 
 /**

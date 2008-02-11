@@ -55,8 +55,20 @@ class KCompactDisc;
 #include <libkcddb/kcddb.h>
 #include <libkcddb/client.h>
 
+// Phonon libs
 #include <phonon/phononnamespace.h>
 #include <phonon/seekslider.h>
+
+// MusicBrainz
+#include <iostream>
+#include <musicbrainz3/artistalias.h>
+#include <musicbrainz3/artist.h>
+#include <musicbrainz3/disc.h>
+#include <musicbrainz3/webservice.h>
+#include <musicbrainz3/query.h>
+#include <musicbrainz3/model.h>
+using namespace std;
+using namespace MusicBrainz;
 
 #include "ihm/kscdwindow.h"
 #include "hwcontroler.h"

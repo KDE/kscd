@@ -518,13 +518,14 @@ void HWControler :: setRandom(bool b)
 
 bool HWControler::isDiscValid()
 {
-	if(getCD()->isCdInserted())
+/*	if(getCD()->isCdInserted())
 	{
-		kDebug() << "1" ;
 		return !(getCD()->getCd()->discType()&0x01) ;
 	}
 	else
 		return false;
+*/
+return true;
 }
 
 void HWControler ::loadPlayList()

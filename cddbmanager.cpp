@@ -107,7 +107,7 @@ void CDDBManager::CDDialogSelected()
 	// Artist
 	QLabel* albumArtistLabel = new QLabel(tr("Artist"));
 	QLineEdit* albumArtistlineEdit = new QLineEdit;
-	albumArtistlineEdit->insert (m_cddbInfo.get(Artist).toString());
+	albumArtistlineEdit->insert (m_cddbInfo.get(KCDDB::Artist).toString());
 	//albumArtistLabel->setBuddy(albumArtistlineEdit);
 	albumLayout->addWidget(albumArtistLabel, 1, 0);
 	albumLayout->addWidget(albumArtistlineEdit, 1, 1);
@@ -305,7 +305,7 @@ void CDDBManager::lookupCDDB()
 		}
 	}
 }
-void CDDBManager::lookupCDDBDone(Result result)
+void CDDBManager::lookupCDDBDone(KCDDB::Result result)
 {
 	if (result != KCDDB::Success)
 	{
@@ -327,7 +327,7 @@ void CDDBManager::lookupCDDBDone(Result result)
 		CDInfoList::iterator it;
 		for ( it = cddb_info.begin(); it != cddb_info.end(); ++it  )
 		{
-			list.append( QString("%1, %2, %3, %4").arg((*it).get(Artist).toString()).arg((*it).get(Title).toString()).arg((*it).get(Genre).toString()).arg((*it).get(KCDDB::Category).toString()));
+			list.append( QString("%1, %2, %3, %4").arg((*it).get(KCDDB::Artist).toString()).arg((*it).get(KCDDB::Title).toString()).arg((*it).get(KCDDB::Genre).toString()).arg((*it).get(KCDDB::Category).toString()));
 		}
 	
 		bool ok(false);
@@ -365,13 +365,13 @@ void CDDBManager::setCDInfo(KCDDB::CDInfo info)
 
 	m_cddbInfo = info;
 	
-	kDebug() << m_cddbInfo.get(Title).toString() ;
-	kDebug() << m_cddbInfo.get(Comment).toString() ;
-	kDebug() << m_cddbInfo.get(Artist).toString() ;
-	kDebug() << m_cddbInfo.get(Genre).toString() ;
-	kDebug() << m_cddbInfo.get(Year).toString() ;
-	kDebug() << m_cddbInfo.get(Length).toString() ;
-	kDebug() << m_cddbInfo.get(Category).toString() ;
+	kDebug() << m_cddbInfo.get(KCDDB::Title).toString() ;
+	kDebug() << m_cddbInfo.get(KCDDB::Comment).toString() ;
+	kDebug() << m_cddbInfo.get(KCDDB::Artist).toString() ;
+	kDebug() << m_cddbInfo.get(KCDDB::Genre).toString() ;
+	kDebug() << m_cddbInfo.get(KCDDB::Year).toString() ;
+	kDebug() << m_cddbInfo.get(KCDDB::Length).toString() ;
+	kDebug() << m_cddbInfo.get(KCDDB::Category).toString() ;
 	
 	for (int i=0; i<m_cddbInfo.numberOfTracks(); i++)
 	{
