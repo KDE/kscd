@@ -89,14 +89,14 @@ class HWControler : public QObject
 		~HWControler();
 		void selectCd(int cdNum);
 		void selectSpeaker(int sNum);
-		void eject();
-		void play();
+		//void eject();
+		//void play();
 		void play(int track);
-		void nextTrack();
-		void prevTrack();
-		void stop(bool restart=true); // @param restart, if true restart from the beginning of the disc
-		void pause();
-		void mute(bool mute);
+// 		void nextTrack();
+// 		void prevTrack();
+// 		void stop(bool restart=true); // @param restart, if true restart from the beginning of the disc
+// 		void pause();
+// 		void mute(bool mute);
 		qint64 getTotalTime ();
 		qint64 getRemainingTime ();
 		qreal getVolume();
@@ -109,7 +109,6 @@ class HWControler : public QObject
 		const QList<unsigned> &getDiscSignature();
 		int getCurrentTrack();
 		int getTotalTrack();
-		void setRandom(bool b);
 		bool isDiscValid();
 
 	private:
@@ -125,7 +124,14 @@ class HWControler : public QObject
 		void replayTrack(qint64 pos);
 		void replayDisk();
 		void configMedia();
-
+		void eject();
+		void play();
+		void nextTrack();
+		void prevTrack();
+		void stop(bool restart=true); // @param restart, if true restart from the beginning of the disc
+		void pause();
+		void mute(bool mute);
+		void setRandom(bool b);
 
 	signals:
 		void currentTime (qint64 pos);

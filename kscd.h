@@ -120,6 +120,13 @@ private:
 	KCompactDisc* m_cd; // kept for CDDB compatibility
 	CDDBManager* m_cddbManager;
 	KConfigDialog* configDialog;
+	
+	bool mute;
+	bool play;
+	bool random;
+	bool looptrack;
+	bool loopdisc;
+	void setDefaultShortcuts();
 
 public:
 	explicit KSCD(QWidget *parent = 0);
@@ -135,7 +142,7 @@ protected:
 signals:
 	void picture(QString,QString);
 	//Shortcut signals
-	void playshortcut();
+	//void playshortcut();
 
 public slots:
 	void test();
@@ -144,6 +151,12 @@ public slots:
 	void actionButton(QString);
 	void playTrack(int);
 	void changeVolume(qreal);
+	void tracklistShortcut();
+	void muteShortcut();
+	void playShortcut();
+	void randomShortcut();
+	void looptrackShortcut();
+	void loopdiscShortcut();
 };
 
 #endif

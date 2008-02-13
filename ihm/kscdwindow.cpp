@@ -132,7 +132,7 @@ void KscdWindow :: createTrackWindow(QList<CDDBTrack> trackList,QString albumTit
 		trackNumber++;
 	}
 	QString res = KInputDialog::getItem(i18n("TrackList Window"),
-				i18n("Select a Track :"), list, 1, false,&ok);
+				i18n("Select a Track :"), list, 0, false,&ok);
 	kDebug()<<"create track res:"<<res;
 	if(ok)
 	{

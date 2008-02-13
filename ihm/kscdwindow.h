@@ -94,7 +94,7 @@ protected:
 	/** create a track window
 	* @return void
 	**/
-	void createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle);
+	//void createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle);
 
 	/** The window track state : true = visible / false = hide */
 	bool m_stateTrackWindow;
@@ -117,6 +117,8 @@ public:
 	void addVolumeSlider(Phonon::VolumeSlider *vs);
 	
 public slots:
+	void createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle);
+
  	void catchButton(QString);
 	void catchVolume(qreal);
 	void changePicture(QString, QString);

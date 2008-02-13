@@ -81,14 +81,26 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	QAction* CDDBWindowAction = new QAction(i18n("CDDB..."), this);
 	addAction(CDDBWindowAction);
 	connect(CDDBWindowAction, SIGNAL(triggered()), m_cddbManager, SLOT(CDDialogSelected()));
+	//shortcut
+	CDDBWindowAction->setShortcut(tr("w"));
 
 	QAction* CDDBDownloadAction = new QAction(i18n("Download Information"), this);
 	addAction(CDDBDownloadAction);
 	connect(CDDBDownloadAction, SIGNAL(triggered()), m_cddbManager, SLOT(lookupCDDB()));
+	//shortcut
+	CDDBDownloadAction->setShortcut(tr("d"));
 
 	QAction* test = new QAction(i18n("test"), this);
 	addAction(test);
 	connect(test, SIGNAL(triggered()), this, SLOT(test()));
+
+//////////Set Shortcuts
+	setDefaultShortcuts();
+	mute = false;
+	play = false;
+	random = false;
+	looptrack = false;
+	loopdisc = false;
 }
 
 KSCD::~KSCD()
@@ -233,6 +245,8 @@ void KSCD::playTrack(int track)
  */
 void KSCD::actionButton(QString name)
 {
+	//test
+	kDebug()<<"actionButton "<<name;
 	QString state = "over";
 	if(name=="play")
 	{
@@ -494,6 +508,154 @@ int main( int argc, char *argv[] )
 		Prefs::self()->setCdDevice(args->arg(0));
 
     return a.exec();
+}
+
+void KSCD::setDefaultShortcuts()
+{
+	//play/pause
+	QAction* play_pause_shortcut = new QAction(i18n("play"), this);
+	addAction(play_pause_shortcut);
+	play_pause_shortcut->setShortcut(tr("Space"));
+	connect(play_pause_shortcut, SIGNAL(triggered()), this, SLOT(playShortcut()));
+	//connect(play_pause_shortcut, SIGNAL(triggered()), devices, SLOT(pause()));
+	
+	//stop
+	QAction* stop_shortcut = new QAction(i18n("stop"), this);
+	addAction(stop_shortcut);
+	stop_shortcut->setShortcut(tr("s"));
+	connect(stop_shortcut, SIGNAL(triggered()), devices, SLOT(stop()));
+
+	//next
+	QAction* next_shortcut = new QAction(i18n("next"), this);
+	addAction(next_shortcut);
+	next_shortcut->setShortcut(tr("Right"));
+	connect(next_shortcut, SIGNAL(triggered()), devices, SLOT(nextTrack()));
+
+	//previous
+	QAction* previous_shortcut = new QAction(i18n("previous"), this);
+	addAction(previous_shortcut);
+	previous_shortcut->setShortcut(tr("Left"));
+	connect(previous_shortcut, SIGNAL(triggered()), devices, SLOT(prevTrack()));
+
+	//eject
+	QAction* eject_shortcut = new QAction(i18n("eject"), this);
+	addAction(eject_shortcut);
+	eject_shortcut->setShortcut(tr("e"));
+	connect(eject_shortcut, SIGNAL(triggered()), devices, SLOT(eject()));
+
+	//volume up/down
+
+	//random
+	QAction* random_shortcut = new QAction(i18n("random"), this);
+	addAction(random_shortcut);
+	random_shortcut->setShortcut(tr("r"));
+	connect(random_shortcut, SIGNAL(triggered()), this, SLOT(randomShortcut()));
+
+	//looptrack
+	QAction* looptrack_shortcut = new QAction(i18n("looptrack"), this);
+	addAction(looptrack_shortcut);
+	looptrack_shortcut->setShortcut(tr("l"));
+	connect(looptrack_shortcut, SIGNAL(triggered()), this, SLOT(looptrackShortcut()));
+
+	//loopdisc
+	QAction* loopdisc_shortcut = new QAction(i18n("loopdisc"), this);
+	addAction(loopdisc_shortcut);
+	loopdisc_shortcut->setShortcut(tr("Ctrl+l"));
+	connect(loopdisc_shortcut, SIGNAL(triggered()), this, SLOT(loopdiscShortcut()));
+
+	//download info
+	//Done in constructor
+
+	//cddb window
+	//Done in constructor	
+
+	//tracklist
+	QAction* tracklist_shortcut = new QAction(i18n("tracklist"), this);
+	addAction(tracklist_shortcut);
+	tracklist_shortcut->setShortcut(tr("t"));
+	connect(tracklist_shortcut, SIGNAL(triggered()), this, SLOT(tracklistShortcut()));
+
+	//mute
+	QAction* mute_shortcut = new QAction(i18n("mute"), this);
+	addAction(mute_shortcut);
+	mute_shortcut->setShortcut(tr("m"));
+	connect(mute_shortcut, SIGNAL(triggered()), this, SLOT(muteShortcut()));
+
+}
+
+void KSCD::tracklistShortcut()
+{
+	actionButton("tracklist");
+}
+
+void KSCD::muteShortcut()
+{
+	if (!mute)
+	{
+		actionButton("unmute");
+		mute = !mute;
+	}
+	else
+	{
+		actionButton("mute");
+		mute = !mute;
+	}
+}
+
+void KSCD::playShortcut()
+{
+	if (!play)
+	{
+		actionButton("play");
+		play = !play;
+	}
+	else
+	{
+		actionButton("pause");
+		play = !play;
+	}
+}
+
+void KSCD::randomShortcut()
+{
+	if (!random)
+	{
+		actionButton("p_random");
+		random = !random;
+	}
+	else
+	{
+		actionButton("random");
+		random = !random;
+	}
+}
+
+void KSCD::looptrackShortcut()
+{
+	if (!looptrack)
+	{
+		actionButton("looptrack");
+		looptrack = !looptrack;
+	}
+	else
+	{
+		actionButton("loop");
+		looptrack = !looptrack;
+	}
+}
+
+void KSCD::loopdiscShortcut()
+{
+	if (!loopdisc)
+	{
+		actionButton("loopdisc");
+		loopdisc = !loopdisc;
+	}
+	else
+	{
+		actionButton("loop");
+		loopdisc = !loopdisc;
+	}
 }
 
 #include "kscd.moc"

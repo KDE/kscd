@@ -198,62 +198,6 @@ void CDDBManager::CDDialogSelected()
 	m_cddialog->setLayout(mainLayout);
 
 	m_cddialog->show();
-//	m_cddialog->exec();
-/*	table = new QTableWidget(20, 8, m_cddialog);
-
-	// Association entre le manipulateur de model et le model de la table
-	QAbstractItemModel * model = table->model ();
-
-
-	// Columns
-	model->setData(model->index(0,1),"Title");
-	model->setData(model->index(0,2),"Artist");
-	model->setData(model->index(0,3),"Genre");
-	model->setData(model->index(0,4),"Year");
-	model->setData(model->index(0,5),"Length");
-	model->setData(model->index(0,6),"Category");
-	model->setData(model->index(0,7),"Comment");
-	
-	// CD Info
-	model->setData(model->index(1,0),"CD");
-	model->setData(model->index(1,1),m_cddbInfo.get(Title).toString());
-	model->setData(model->index(1,2),m_cddbInfo.get(Artist).toString());
-	model->setData(model->index(1,3),m_cddbInfo.get(Genre).toString());
-	model->setData(model->index(1,4),m_cddbInfo.get(Year).toString());
-	model->setData(model->index(1,5),m_cddbInfo.get(Length).toString());
-	model->setData(model->index(1,6),m_cddbInfo.get(Category).toString());
-	model->setData(model->index(1,7),m_cddbInfo.get(Comment).toString());
-	
-	// Track Info
-	for (int i=0; i<25; i++) {
-		model->setData(model->index(i+2,0),QString("Track %1").arg(i+1));
-		model->setData(model->index(i+2,1),m_cddbInfo.track(i).get(Title).toString());
-		model->setData(model->index(i+2,2),m_cddbInfo.track(i).get(Artist).toString());
-		model->setData(model->index(i+2,3),m_cddbInfo.track(i).get(Genre).toString());
-		model->setData(model->index(i+2,4),m_cddbInfo.track(i).get(Year).toString());
-		model->setData(model->index(i+2,5),m_cddbInfo.track(i).get(Length).toString());
-		model->setData(model->index(i+2,6),m_cddbInfo.track(i).get(Category).toString());
-		model->setData(model->index(i+2,7),m_cddbInfo.track(i).get(Comment).toString());
-	}
-	
-	table->show();*/
-
-
-
-/*
-// 	if (!m_cddialog)
-// 	{
-		kDebug() << "Create a CDDB Dialog" ;
-		// CDDB Dialog initialization
-		m_cddialog = new CDDBDlg(this);
-		connect(m_cddialog,SIGNAL(newCDInfoStored(KCDDB::CDInfo)), SLOT(setCDInfo(KCDDB::CDInfo)));
-		connect(m_cddialog,SIGNAL(finished()),SLOT(CDDialogDone()));
- 		connect(cddialog,SIGNAL(play(int)),cddialog,SLOT(slotTrackSelected(int)));
-// 	}
-	kDebug() << "CDDialogSelected" ;
-	m_cddialog->show();
-	kDebug() << "CDDialogSelected" ;
-	m_cddialog->raise(); // Puts the window on top*/
 
 }
 
