@@ -127,6 +127,20 @@ private:
 	bool looptrack;
 	bool loopdisc;
 	void setDefaultShortcuts();
+	QAction* play_pause_shortcut;
+	QAction* stop_shortcut;
+	QAction* next_shortcut;
+	QAction* previous_shortcut;
+	QAction* eject_shortcut;
+	QAction* random_shortcut;
+	QAction* looptrack_shortcut;
+	QAction* loopdisc_shortcut;
+	QAction* tracklist_shortcut;
+	QAction* mute_shortcut;
+	QAction* CDDBDownloadAction;
+	QAction* CDDBWindowAction;
+	QAction* volume_up_shortcut;
+	QAction* volume_down_shortcut;
 
 public:
 	explicit KSCD(QWidget *parent = 0);
@@ -135,6 +149,7 @@ public:
 	void writeSettings();
 	HWControler * getDevices();
 	KCompactDisc* getCd(); // kept for CDDB compatibility
+	void setShortcut(QString, QString);
 
 protected:
 	void populateSongList();
@@ -157,6 +172,8 @@ public slots:
 	void randomShortcut();
 	void looptrackShortcut();
 	void loopdiscShortcut();
+	void volumeUpShortcut();
+	void volumeDownShortcut();
 };
 
 #endif
