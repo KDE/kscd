@@ -35,55 +35,74 @@
 #include <kdebug.h>
 #include <QTimer>
 
-Panel::Panel(QWidget * parent):QGroupBox(parent)
+
+Panel::Panel(QWidget * parent):QWidget(parent)
 {
+
+	setAutoFillBackground(true); 
+	p_panelColor= new QPalette(Qt::black);
+	setPalette(*p_panelColor);
 	vbl_layout = new QVBoxLayout;
-	timer = new QTimer ();
-	timer->setSingleShot(false);
+
+//------------------------------------------------------------------------
+
 	index=0;
 	l_title = new QLabel("title");
-	QString str = l_title->text();
+	/*QString str = l_title->text();
 	if(str.count() >53)
 	{
 		str = str+"     ";
 	}
-	l_title->setText(str);
+	l_title->setText(str);*/
 	vbl_layout->addWidget(l_title);
+	l_album = new QLabel();
+	vbl_layout->addWidget(l_album);
+	l_author = new QLabel();
+	vbl_layout->addWidget(l_author);
+	l_volume = new QLabel();
+	vbl_layout->addWidget(l_volume);
+	l_time = new QLabel();
+	vbl_layout->addWidget(l_time);
+//------------------------------------------------------------------------
+
 	setLayout(vbl_layout);
+
+//------------------------------------------------------------------------
+
+	QTimer * timer = new QTimer ();
+	timer->setSingleShot(false);
 	connect(timer,SIGNAL(timeout()),this,SLOT(update_panel_label()));
-	timer->start(1);
+	timer->start(150);
 }
 
 void Panel::update_panel_label(){
 
-	QString str = l_title->text();
-	int nb =  str.count();
+	
 	// to stop the timer if the size of the title is lower than the panel
-	if( nb <= 53)
+	/*if( l_title->text().count()<= 53)
 	{
 		index++;
 		if( index == 53)
 		{
 			timer->stop();
 		}
-	}
+	}*/
 	
 	// if the size is lower than the size of the panel
-	while(nb< 53)
+	while(l_title->text().count()< 53)
 	{
 		//add  " " to have the same size that the panel
-		str = str+" ";
-		nb++;
+		l_title->setText(l_title->text()+" ");
 	}
 	
 	//recup the first letter
-	QChar c = str.data()[0];
+	QChar c = l_title->text().data()[0];
 	
 	//create a new data
 	QString data;
-	for(int i = 1; i < nb; i++)
+	for(int i = 1; i <l_title->text().count(); i++)
 	{
-		data = data+str.data()[i];
+		data = data+l_title->text().data()[i];
 	}
 
 	
@@ -97,4 +116,46 @@ Panel::~Panel()
 	delete this;
 }
 
+QString Panel::getTitle()
+{
+	return l_title->text();
+}
+QString Panel::getAlbum()
+{
+	return l_album->text();
 
+}
+QString Panel::getAuthor()
+{
+	return l_author->text();
+
+}
+QString Panel::getVolume()
+{
+	return l_volume->text();
+
+}
+void Panel::setTitle(QString * title)
+{
+	l_title->setText(*title);
+}
+void Panel::setAuthor(QString * author)
+{
+	l_title->setText(*author);
+
+}
+void Panel::setAlbum(QString * album)
+{
+	l_title->setText(*album);
+
+}
+void Panel::setVolume(QString * volume)
+{
+	l_title->setText(*volume);
+
+}
+void Panel::setTime(QString * time)
+{
+	l_time->setText(*time);
+
+}

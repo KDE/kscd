@@ -37,10 +37,10 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QPalette>
 
 
-
-class Panel:public QGroupBox
+class Panel:public QWidget
 {
 	Q_OBJECT
 private:
@@ -49,12 +49,29 @@ private:
 	QLabel * l_title;
 	int index;
 
+	const QPalette * p_panelColor;
+
+	QLabel * l_author;
+	QLabel * l_album;
+	QLabel * l_playing_state;
+	QLabel * l_volume;
+	QLabel * l_time;
 public:
 	Panel(QWidget * parent=0);
 	virtual ~Panel();
 
+	QString getTitle();
+	QString getAlbum();
+	QString getAuthor();
+	QString getVolume();
+
 public slots:
 	void update_panel_label();
+	void setTitle(QString * title);
+	void setAuthor(QString * author);
+	void setAlbum(QString * album);
+	void setVolume(QString * volume);
+	void setTime(QString * time);
 };
 
 #endif /*EJECTBUTTON_H_*/

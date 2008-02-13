@@ -64,7 +64,7 @@
 #include "tracklistbutton.h"
 #include "volumebutton.h"
 #include "cddbmanager.h"
-
+#include "panel.h"
 #include <phonon/seekslider.h>
 #include <phonon/volumeslider.h>
 
@@ -87,10 +87,7 @@ private:
 	KscdWidget *m_trackB;
  	KscdWidget *m_volumeB;
 
-	QLabel * m_time;
-	QLabel * m_artistLabel ;
-	QLabel * m_trackinfoLabel ;
-
+	Panel *m_panel;
 
 protected:
 

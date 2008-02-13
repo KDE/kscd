@@ -61,7 +61,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 // 	createTrackWindow();
 
 	// Panel
-	Panel *m_panel = new Panel(this);
+	m_panel = new Panel(this);
 
 	// Configuration windows
 	ConfigWindow *m_config = new ConfigWindow(this);
@@ -69,15 +69,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	QGridLayout* panelLayout = new QGridLayout;
 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
 	
-	m_time = new QLabel(" 0 0 : 0 0 ");
-// 	QTextEdit * t = new QTextEdit("<b>Welcome to KsCD !</b>");
-	m_artistLabel = new QLabel(i18n("<qt><font face=Impact>Welcome to KsCD !</font></qt>"));
-	m_artistLabel->setFixedWidth(250);
-	m_artistLabel->setAlignment(Qt::AlignCenter);
-	
-	m_trackinfoLabel = new QLabel;
-	m_trackinfoLabel->setFixedWidth(250);
-	m_trackinfoLabel->setAlignment(Qt::AlignCenter);
+
+
 
 	// Items positionment
  	m_layout->addWidget(m_ejectB, 0, 1);
@@ -96,9 +89,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
  	m_layout->addWidget(m_muteB,0, 6, Qt::AlignCenter);
 	m_layout->addWidget(m_trackB, 3, 6, Qt::AlignCenter);
 	
-	panelLayout->addWidget(m_time,0,0, Qt::AlignCenter);
-	panelLayout->addWidget(m_artistLabel, 1, 0, Qt::AlignCenter);
-	panelLayout->addWidget(m_trackinfoLabel, 2, 0, Qt::AlignCenter);
+
 	setLayout(m_layout);
 	show();
 
@@ -124,10 +115,7 @@ KscdWindow::~KscdWindow()
  	delete m_ejectB;
 	delete m_muteB;
 	delete m_trackB;
-	
-	delete m_time;
-	delete m_artistLabel ;
-	delete m_trackinfoLabel ;
+
 	
 	delete m_layout;
 }
@@ -184,9 +172,9 @@ void KscdWindow::setTime(qint64 pos)
 	qint64 sd = ((pos/1000)%60)/10;
 	qint64 su = ((pos/1000)%60)%10;
 
-	QString result;
-	QTextStream(&result) << " " << md << " " << mu << " : " << sd << " " << su << " ";
-	m_time->setText(result);
+	QString * result = new QString();
+	QTextStream(result) << " " << md << " " << mu << " : " << sd << " " << su << " ";
+	m_panel->setTime(result);
 }
 
 /**
@@ -194,25 +182,16 @@ void KscdWindow::setTime(qint64 pos)
  */
 void KscdWindow::showArtistLabel(QString infoStatus)
 {
-	m_artistLabel->setText(infoStatus);
+	m_panel->setAuthor(&infoStatus);
 }
 
-QLabel* KscdWindow::getArtistLabel()
-{
-	return (m_artistLabel);
-}
 
 /**
  * Manages the Trackinfo Label
  */
 void KscdWindow::showTrackinfoLabel(QString infoStatus)
 {
-	m_trackinfoLabel->setText(infoStatus);
-}
-
-QLabel* KscdWindow::getTrackinfoLabel()
-{
-	return (m_trackinfoLabel);
+	m_panel->setTitle(&infoStatus);
 }
 
 
