@@ -22,6 +22,7 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+
 #ifndef __KSCD__
 #define __KSCD__
 
@@ -55,20 +56,8 @@ class KCompactDisc;
 #include <libkcddb/kcddb.h>
 #include <libkcddb/client.h>
 
-// Phonon libs
 #include <phonon/phononnamespace.h>
 #include <phonon/seekslider.h>
-
-// MusicBrainz
-#include <iostream>
-// #include <musicbrainz3/artistalias.h>
-// #include <musicbrainz3/artist.h>
-// #include <musicbrainz3/disc.h>
-// #include <musicbrainz3/webservice.h>
-// #include <musicbrainz3/query.h>
-// #include <musicbrainz3/model.h>
-// using namespace std;
-// using namespace MusicBrainz;
 
 #include "ihm/kscdwindow.h"
 #include "hwcontroler.h"
@@ -78,8 +67,7 @@ class KCompactDisc;
 #include "configWidget.h"
 #include "docking.h"
 #include <config-alsa.h>
-
-
+#include "ihm/titlePopUp.h"
 #include <kapplication.h>
 #include <kconfigdialog.h>
 #include <k3process.h>
@@ -120,27 +108,9 @@ private:
 	KCompactDisc* m_cd; // kept for CDDB compatibility
 	CDDBManager* m_cddbManager;
 	KConfigDialog* configDialog;
+	TitlePopUp* w_titlePopUp;
+	void showTitlePopUp(QString , QString);
 	
-	bool mute;
-	bool play;
-	bool random;
-	bool looptrack;
-	bool loopdisc;
-	void setDefaultShortcuts();
-	QAction* play_pause_shortcut;
-	QAction* stop_shortcut;
-	QAction* next_shortcut;
-	QAction* previous_shortcut;
-	QAction* eject_shortcut;
-	QAction* random_shortcut;
-	QAction* looptrack_shortcut;
-	QAction* loopdisc_shortcut;
-	QAction* tracklist_shortcut;
-	QAction* mute_shortcut;
-	QAction* CDDBDownloadAction;
-	QAction* CDDBWindowAction;
-	QAction* volume_up_shortcut;
-	QAction* volume_down_shortcut;
 
 public:
 	explicit KSCD(QWidget *parent = 0);
@@ -149,15 +119,12 @@ public:
 	void writeSettings();
 	HWControler * getDevices();
 	KCompactDisc* getCd(); // kept for CDDB compatibility
-	void setShortcut(QString, QString);
 
 protected:
 	void populateSongList();
 
 signals:
 	void picture(QString,QString);
-	//Shortcut signals
-	//void playshortcut();
 
 public slots:
 	void test();
@@ -166,14 +133,7 @@ public slots:
 	void actionButton(QString);
 	void playTrack(int);
 	void changeVolume(qreal);
-	void tracklistShortcut();
-	void muteShortcut();
-	void playShortcut();
-	void randomShortcut();
-	void looptrackShortcut();
-	void loopdiscShortcut();
-	void volumeUpShortcut();
-	void volumeDownShortcut();
+	void hideTitlePopUp();
 };
 
 #endif
