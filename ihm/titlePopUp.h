@@ -23,36 +23,27 @@
 #ifndef TITLEPOPUP_H
 #define TITLEPOPUP_H
 
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
+#include <QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QWidget>
+
+#include <kdebug.h>
 
 
 class TitlePopUp : public QWidget
 {
-   public:
-       QLabel *lengthLbl;
-       QLabel *titleLbl;
+private:
+	QGridLayout* m_layout;
+	QLabel* m_lengthLbl;
+	QLabel* m_titleLbl;
 
-      explicit TitlePopUp( QWidget *parent ) : QWidget( parent ) {
-        setObjectName(QString::fromUtf8("titlePopUp"));
-	setWindowFlags ( Qt::FramelessWindowHint );
-        resize(296, 64);
-        setCursor(QCursor(Qt::PointingHandCursor));
-        setContextMenuPolicy(Qt::NoContextMenu);
-        setAutoFillBackground(false);
-        lengthLbl = new QLabel(this);
-        lengthLbl->setObjectName(QString::fromUtf8("lengthLbl"));
-        lengthLbl->setGeometry(QRect(20, 30, 241, 22));
-        titleLbl = new QLabel(this);
-        titleLbl->setObjectName(QString::fromUtf8("titleLbl"));
-        titleLbl->setGeometry(QRect(20, 10, 201, 22));
+public:
+	explicit TitlePopUp(QWidget *parent=0);
+	~TitlePopUp();
 
-      }
+public slots:
+	void showTitlePopUp(QString , QString);
+	
 };
-
 
 #endif // TITLEPOPUP_H

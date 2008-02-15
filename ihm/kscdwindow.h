@@ -65,6 +65,7 @@
 #include "volumebutton.h"
 #include "cddbmanager.h"
 #include "panel.h"
+#include "ihm/titlePopUp.h"
 #include <phonon/seekslider.h>
 #include <phonon/volumeslider.h>
 
@@ -83,13 +84,15 @@ private:
 	KscdWidget *m_ejectB;
 	KscdWidget *m_muteB;
 	KscdWidget *m_randB;
- 	KscdWidget *m_loopB;
+	KscdWidget *m_loopB;
 	KscdWidget *m_trackB;
- 	KscdWidget *m_volumeB;
+	KscdWidget *m_volumeB;
 
 	Panel *m_panel;
 
 protected:
+
+	TitlePopUp *m_titlePopUp;
 
 	/** create a track window
 	* @return void
@@ -118,14 +121,13 @@ public:
 	
 public slots:
 	void createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle);
-
- 	void catchButton(QString);
+	void hideTitlePopUp();
+	void catchButton(QString);
 	void catchVolume(qreal);
 	void changePicture(QString, QString);
 	void setTime(qint64 pos);
 	void showArtistLabel(QString);
 	void showTrackinfoLabel(QString);
-	
 	
 signals:
 	void actionClicked(QString);

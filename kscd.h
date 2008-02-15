@@ -71,7 +71,6 @@ using namespace std;
 // using namespace MusicBrainz;
 
 #include "ihm/kscdwindow.h"
-#include "ihm/titlePopUp.h"
 
 #include "hwcontroler.h"
 #include "cddbmanager.h"
@@ -122,7 +121,6 @@ private:
 	KCompactDisc* m_cd; // kept for CDDB compatibility
 	CDDBManager* m_cddbManager;
 	KConfigDialog* configDialog;
-	TitlePopUp* w_titlePopUp;
 	
 	bool mute;
 	bool play;
@@ -159,6 +157,10 @@ protected:
 
 signals:
 	void picture(QString,QString);
+
+	/* Popup signals */
+	void showTitlePopUp(QString, QString);
+	void hideTitlePopUp();
 	//Shortcut signals
 	//void playshortcut();
 
@@ -176,8 +178,6 @@ public slots:
 	void loopdiscShortcut();
 	void volumeUpShortcut();
 	void volumeDownShortcut();
-	void showTitlePopUp(QString , QString);
-	void hideTitlePopUp();
 	void actionButton(QString);
 };
 

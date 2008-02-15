@@ -31,6 +31,7 @@
  *
  */
 #include "kscdwindow.h"
+#include "titlePopUp.h"
 #include <QString>
 #include <QTextEdit>
 #include <klocalizedstring.h>
@@ -63,32 +64,31 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	// Panel
 	m_panel = new Panel(this);
 
+//  	instantiating of kscd title popup
+	m_titlePopUp = new TitlePopUp();
+
 	// Configuration windows
 	ConfigWindow *m_config = new ConfigWindow(this);
 
 	QGridLayout* panelLayout = new QGridLayout;
 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
-	
-
-
 
 	// Items positionment
- 	m_layout->addWidget(m_ejectB, 0, 1);
- 	m_layout->addWidget(m_prevB, 1, 0);
- 	m_layout->addWidget(m_playB, 1, 1);
- 	m_layout->addWidget(m_nextB, 1, 2);
- 	m_layout->addWidget(m_stopB, 2, 1);
-  	m_layout->addWidget(m_volumeB, 0,5,3,1);
-
-  	m_layout->addWidget(m_panel, 0,3,2,2);
+	m_layout->addWidget(m_ejectB, 0, 1);
+	m_layout->addWidget(m_prevB, 1, 0);
+	m_layout->addWidget(m_playB, 1, 1);
+	m_layout->addWidget(m_nextB, 1, 2);
+	m_layout->addWidget(m_stopB, 2, 1);
+	m_layout->addWidget(m_volumeB, 0,5,3,1);
+	
+	m_layout->addWidget(m_panel, 0,3,2,2);
 
 
 //    	m_layout->addWidget(m_volumeB, 1,5,Qt::AlignCenter);
 	m_layout->addWidget(m_randB, 3, 0, Qt::AlignCenter);
- 	m_layout->addWidget(m_loopB, 3, 2, Qt::AlignCenter);
- 	m_layout->addWidget(m_muteB,0, 6, Qt::AlignCenter);
+	m_layout->addWidget(m_loopB, 3, 2, Qt::AlignCenter);
+	m_layout->addWidget(m_muteB,0, 6, Qt::AlignCenter);
 	m_layout->addWidget(m_trackB, 3, 6, Qt::AlignCenter);
-	
 
 	setLayout(m_layout);
 	show();
@@ -97,13 +97,13 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	connect(m_playB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_prevB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_nextB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
- 	connect(m_ejectB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_ejectB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_muteB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_randB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
- 	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_trackB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_volumeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_volumeB,SIGNAL(volumeChange(qreal)),SLOT(catchVolume(qreal)));	
+	connect(m_volumeB,SIGNAL(volumeChange(qreal)),SLOT(catchVolume(qreal)));
 }
 
 KscdWindow::~KscdWindow()
@@ -112,12 +112,14 @@ KscdWindow::~KscdWindow()
 	delete m_stopB;
 	delete m_nextB;
 	delete m_prevB;
- 	delete m_ejectB;
+	delete m_ejectB;
 	delete m_muteB;
 	delete m_trackB;
 
-	
+	delete m_titlePopUp;
+
 	delete m_layout;
+	
 }
 
 void KscdWindow :: createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle)
@@ -185,7 +187,6 @@ void KscdWindow::showArtistLabel(QString infoStatus)
 	m_panel->setAuthor(&infoStatus);
 }
 
-
 /**
  * Manages the Trackinfo Label
  */
@@ -194,6 +195,16 @@ void KscdWindow::showTrackinfoLabel(QString infoStatus)
 	m_panel->setTitle(&infoStatus);
 }
 
+/**
+* hide the title popUp
+*/
+void KscdWindow::hideTitlePopUp()
+{
+	if(m_titlePopUp != NULL)
+	{
+		m_titlePopUp->hide();
+	}
+}
 
 /**
  * Links treatments with the UI

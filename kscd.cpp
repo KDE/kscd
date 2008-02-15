@@ -52,6 +52,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 // 	vs->setMuteVisible(false);
 // 	addVolumeSlider(vs);
 
+
 /**
  * CDDB
  */
@@ -101,9 +102,6 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	random = false;
 	looptrack = false;
 	loopdisc = false;
-
-//  	instantiating of kscd title popup
-	w_titlePopUp = new TitlePopUp(0);
 }
 
 KSCD::~KSCD()
@@ -224,12 +222,12 @@ void KSCD::restoreTrackinfoLabel()
 		else
 		{
 			title.append(i18n("unknown"));
-			length.append(i18n("unknown"));
+			length.append(i18n("duration"));
 		}
 		showTrackinfoLabel(title);
 
-		//showing the title popup with title info and title lenght
-		showTitlePopUp(title, length);
+		//shows the title popup with title info and title lenght
+		m_titlePopUp->showTitlePopUp(title, length);
 	  //programming title popup hiding
 		QTimer::singleShot(5000, this, SLOT(hideTitlePopUp()));
 	}
@@ -237,9 +235,6 @@ void KSCD::restoreTrackinfoLabel()
 	{
 		showTrackinfoLabel(title);
 	}
-	
-	
-
 }
 void KSCD::changeVolume(qreal value)
 {
@@ -487,28 +482,6 @@ void KSCD::playTrack(int track)
 	kDebug()<<"playtrack enter "<<track;
 	devices->play(track);
 	emit(picture("play","default"));
-}
-
-/**
-*show a popup containning curent track title an his length
-*/
-void KSCD::showTitlePopUp(QString trackTitle, QString trackLength)
-{
-	w_titlePopUp->lengthLbl->setText(trackLength);
-	w_titlePopUp->titleLbl->setText(trackTitle);
-	w_titlePopUp->show();
-}
-
-/**
-*hide the title popUp
-*/
-void KSCD::hideTitlePopUp()
-{
-	if (this->w_titlePopUp != NULL)
-	{
-		//hiding the title popUp
-		this->w_titlePopUp->hide();
-	}
 }
 
 /**
