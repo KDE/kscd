@@ -1,5 +1,7 @@
 project(kscd)
 
+# macro_optional_find_package(MusicBrainz3)
+
 include_directories(
 		${CMAKE_SOURCE_DIR}/libkcddb
 		${CMAKE_BINARY_DIR}/libkcddb
