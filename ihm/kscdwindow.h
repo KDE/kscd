@@ -72,7 +72,9 @@
 #include <phonon/seekslider.h>
 #include <phonon/volumeslider.h>
 
+#include <QLCDNumber>
 #include <QMainWindow>
+
 
 
 class KscdWindow:public QWidget
@@ -92,9 +94,10 @@ private:
 	KscdWidget *m_trackB;
 	KscdWidget *m_volumeB;
 
+	QLCDNumber * m_time;
 	TrackListDlg *m_trackDlg;
 
-	QLabel * m_time;
+
 	QLabel * m_artistLabel ;
 	QLabel * m_trackinfoLabel ;
 	Panel *m_panel;

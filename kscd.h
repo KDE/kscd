@@ -79,7 +79,7 @@ using namespace std;
 #include "configWidget.h"
 #include "docking.h"
 #include <config-alsa.h>
-
+#include <QLCDNumber>
 
 #include <kapplication.h>
 #include <kconfigdialog.h>

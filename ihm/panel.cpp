@@ -44,16 +44,9 @@ Panel::Panel(QWidget * parent):QWidget(parent)
 	setPalette(*p_panelColor);
 	vbl_layout = new QVBoxLayout;
 
-//------------------------------------------------------------------------
-
 	index=0;
 	l_title = new QLabel("WELCOME!");
-	/*QString str = l_title->text();
-	if(str.count() >53)
-	{
-		str = str+"     ";
-	}
-	l_title->setText(str);*/
+
 	vbl_layout->addWidget(l_title);
 	l_album = new QLabel();
 	vbl_layout->addWidget(l_album);
@@ -63,11 +56,9 @@ Panel::Panel(QWidget * parent):QWidget(parent)
 	vbl_layout->addWidget(l_volume);
 	l_time = new QLabel();
 	vbl_layout->addWidget(l_time);
-//------------------------------------------------------------------------
 
 	setLayout(vbl_layout);
 
-//------------------------------------------------------------------------
 
 	QTimer * timer = new QTimer ();
 	timer->setSingleShot(false);
@@ -77,16 +68,7 @@ Panel::Panel(QWidget * parent):QWidget(parent)
 
 void Panel::update_panel_label(){
 
-	
-	// to stop the timer if the size of the title is lower than the panel
-	/*if( l_title->text().count()<= 53)
-	{
-		index++;
-		if( index == 53)
-		{
-			timer->stop();
-		}
-	}*/
+
 	
 	// if the size is lower than the size of the panel
 	while(l_title->text().count()< 53)

@@ -73,6 +73,16 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 
 	QGridLayout* panelLayout = new QGridLayout;
 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
+	m_time = new QLCDNumber();
+	m_time->display("00:00:00");
+// 	QTextEdit * t = new QTextEdit("<b>Welcome to KsCD !</b>");
+	m_artistLabel = new QLabel(i18n("<qt><font face=Impact>Welcome to KsCD !</font></qt>"));
+	m_artistLabel->setFixedWidth(250);
+	m_artistLabel->setAlignment(Qt::AlignCenter);
+	
+	m_trackinfoLabel = new QLabel;
+	m_trackinfoLabel->setFixedWidth(250);
+	m_trackinfoLabel->setAlignment(Qt::AlignCenter);
 
 	// Items positionment
 	m_layout->addWidget(m_ejectB, 0, 1);
@@ -81,7 +91,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_layout->addWidget(m_nextB, 1, 2);
 	m_layout->addWidget(m_stopB, 2, 1);
 	m_layout->addWidget(m_volumeB, 0,5,3,1);
-	
+	m_layout->addWidget(m_time,1,3,1,2);
 	m_layout->addWidget(m_panel, 0,3,2,2);
 
 
@@ -182,9 +192,9 @@ void KscdWindow::setTime(qint64 pos)
 	qint64 sd = ((pos/1000)%60)/10;
 	qint64 su = ((pos/1000)%60)%10;
 
-	QString * result = new QString();
-	QTextStream(result) << " " << md << " " << mu << " : " << sd << " " << su << " ";
-	m_panel->setTime(result);
+	QString result;
+	QTextStream(&result) << md << mu << ":" << sd << su;
+	m_time->display(result);
 }
 
 /**

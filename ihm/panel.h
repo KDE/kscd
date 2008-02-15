@@ -37,6 +37,8 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QVBoxLayout>
+
+#include <QLCDNumber>
 #include <QPalette>
 
 
@@ -47,6 +49,8 @@ private:
 	QTimer * timer;
 	QVBoxLayout * vbl_layout;
 	QLabel * l_title;
+	QLCDNumber * num_lcd;
+	QLabel * l_test;
 	int index;
 
 	const QPalette * p_panelColor;
