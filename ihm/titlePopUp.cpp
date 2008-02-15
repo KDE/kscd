@@ -21,7 +21,7 @@ TitlePopUp::TitlePopUp( QWidget *parent ) : QWidget( parent, Qt::FramelessWindow
 
 
 	setLayout(m_layout);
-	raise();
+//	raise();
 
 }
 
@@ -37,7 +37,6 @@ TitlePopUp::~TitlePopUp()
 */
 void TitlePopUp::showTitlePopUp(QString trackTitle, QString trackLength)
 {
-	kDebug() << "!!!!!!!!!!!!!!!!!!allalalala!!!!!!!!!!!" ;
 	m_lengthLbl->setText(trackLength);
 	m_titleLbl->setText(trackTitle);
 	show();
