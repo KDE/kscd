@@ -72,6 +72,7 @@
 #include <phonon/seekslider.h>
 #include <phonon/volumeslider.h>
 
+#include <QMainWindow>
 
 
 class KscdWindow:public QWidget
@@ -129,6 +130,8 @@ public:
 
 	QLabel *getArtistLabel();
 	QLabel *getTrackinfoLabel();
+
+	Panel *getPanel();
 	
 	void addSeekSlider(Phonon::SeekSlider *ss);
 	void addVolumeSlider(Phonon::VolumeSlider *vs);

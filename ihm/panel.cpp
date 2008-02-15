@@ -47,7 +47,7 @@ Panel::Panel(QWidget * parent):QWidget(parent)
 //------------------------------------------------------------------------
 
 	index=0;
-	l_title = new QLabel("title");
+	l_title = new QLabel("WELCOME!");
 	/*QString str = l_title->text();
 	if(str.count() >53)
 	{
@@ -57,7 +57,7 @@ Panel::Panel(QWidget * parent):QWidget(parent)
 	vbl_layout->addWidget(l_title);
 	l_album = new QLabel();
 	vbl_layout->addWidget(l_album);
-	l_author = new QLabel();
+	l_author = new QLabel("                                                     ");
 	vbl_layout->addWidget(l_author);
 	l_volume = new QLabel();
 	vbl_layout->addWidget(l_volume);
@@ -113,7 +113,16 @@ void Panel::update_panel_label(){
 
 Panel::~Panel()
 {
-	delete this;
+	delete 	timer;
+	delete vbl_layout;
+	delete l_title;
+	delete p_panelColor;
+
+	delete l_author;
+	delete l_album;
+	delete l_playing_state;
+	delete l_volume;
+	delete l_time;
 }
 
 QString Panel::getTitle()
@@ -157,5 +166,20 @@ void Panel::setVolume(QString * volume)
 void Panel::setTime(QString * time)
 {
 	l_time->setText(*time);
+
+}
+void Panel::setPanelColor(QColor c){
+	const QPalette *p = new QPalette(c);
+	setPalette(*p);
+
+
+	//p_panelColor->setColor(QPalette::Background,c);
+}
+void Panel::setTextColor(QColor c){
+
+	QPalette p(c);
+	p.setColor(QPalette::Text,c);
+	setPalette(p);
+	//p_panelColor->setColor(QPalette::Text,c);
 
 }

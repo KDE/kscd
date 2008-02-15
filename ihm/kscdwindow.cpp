@@ -104,10 +104,12 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_trackB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_volumeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),SLOT(catchVolume(qreal)));
 
 	connect(m_trackDlg,SIGNAL(itemClicked(int))
 		,this,SLOT(doubleClickedEvent(int)));
+
 }
 
 KscdWindow::~KscdWindow()
@@ -292,4 +294,7 @@ void KscdWindow::changePicture(QString name,QString state)
 	{
 		m_trackB->loadPicture(name,state);
 	}
+}
+Panel * KscdWindow::getPanel(){
+	return m_panel;
 }

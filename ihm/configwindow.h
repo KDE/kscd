@@ -34,16 +34,87 @@
 #define CONFIGWINDOW_H_
 
 #include <QWidget>
+#include <QMainWindow>
+#include <QTabWidget>
+#include <QGridLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QLabel>
+#include <QCheckBox>
+#include <QList>
+#include <QColor>
 
+#include <kcolorbutton.h>
 #include <kdebug.h>
 
 
-class ConfigWindow:public QWidget
+class ConfigWindow:public QMainWindow
 {
 	Q_OBJECT
+
+	QWidget * confPage;
+	QVBoxLayout * lConfPage;
+
+	QTabWidget * tab;
+	QWidget * hwPage;
+	QWidget * panelPage;
+	QWidget * shortcutsPage;
+
+	QGridLayout * hwGrid;
+	QGridLayout * panelGrid;
+	QGridLayout * scGrid;
+
+	QWidget * wButtons;
+	QHBoxLayout * lButtons;
+
+	QPushButton * bOk;
+	QPushButton * bApply;
+	QPushButton * bCancel;
+
+// Hardware Configuration
+
+	QCheckBox * cbEject;
+	QLabel * lEject;
+
+// Panel Configuration
+	QLabel * lPanelColor;
+	KColorButton * cbPanel;
+
+	QLabel * lTextColor;
+	KColorButton * cbText;
+
+	QList<int> actionsCalled;
+
+enum actions{
+	Eject = 1,
+	PanelColor = 2,
+	TextColor = 3
+};
+
+
 public:
 	ConfigWindow(QWidget * parent=0);
 	virtual ~ConfigWindow();
+
+private:
+	void setPanelConf();
+	void setHardConfig();
+	void setSCConfig();
+	void applyAction(actions a);
+
+signals:
+	void ejectChanged(bool b);
+	void panelColorChanged(QColor c);
+	void textColorChanged(QColor c);
+
+private slots:
+	void apply();
+	void ok();
+	void catchCBEject();
+	void catchPanelColor();
+	void catchTextColor();
+
 };
 
 #endif /*EJECTBUTTON_H_*/

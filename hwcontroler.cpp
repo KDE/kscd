@@ -48,6 +48,7 @@ using namespace Phonon;
 
 HWControler :: HWControler ()
 {
+	setEjectActivated(false);
 
 	// in kscd starting, no loop option
 	loopState = NoLoop;
@@ -436,6 +437,11 @@ void HWControler ::replayDisk()
 				mc->setCurrentTitle( 1 );
 				play();
 			}
+			else{
+				if(isEjectAtTheEndOfTheCdActivated){
+					eject();
+				 }
+			}
 		}
 	}
 }
@@ -559,4 +565,13 @@ void HWControler ::loadPlayList()
 int HWControler ::generateNumber(int inter)
 {
 	return 1 + int( double( rand() ) / ( double( RAND_MAX) + 1 ) * inter );
+}
+void HWControler ::setEjectActivated(bool b)
+{
+	isEjectAtTheEndOfTheCdActivated = b;
+	kDebug() << "Eject at the end mode changed";
+}
+bool HWControler ::isEjectActivated()
+{
+	return isEjectAtTheEndOfTheCdActivated;
 }

@@ -22,6 +22,7 @@
  *
  */
 #include "kscd.h"
+#include "ihm/configwindow.h"
 
 using namespace Phonon;
 using namespace KCDDB;
@@ -92,9 +93,15 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	//shortcut
 	CDDBDownloadAction->setShortcut(tr("d"));
 
-	QAction* test = new QAction(i18n("test"), this);
+	ConfigWindow * conf = new ConfigWindow(this);
+
+	connect(conf,SIGNAL(ejectChanged(bool)),devices,SLOT(setEjectActivated(bool)));
+	connect(conf,SIGNAL(panelColorChanged(QColor)),getPanel(),SLOT(setPanelColor(QColor)));
+	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
+
+	QAction* test = new QAction(i18n("Configure..."), this);
 	addAction(test);
-	connect(test, SIGNAL(triggered()), this, SLOT(test()));
+	connect(test, SIGNAL(triggered()), conf, SLOT(show()));
 
 //////////Set Shortcuts
 	setDefaultShortcuts();

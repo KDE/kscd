@@ -72,6 +72,8 @@ public slots:
 	void setAlbum(QString * album);
 	void setVolume(QString * volume);
 	void setTime(QString * time);
+	void setPanelColor(QColor c);
+	void setTextColor(QColor c);
 };
 
-#endif /*EJECTBUTTON_H_*/
+#endif 
