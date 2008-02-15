@@ -73,6 +73,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 	connect(devices,SIGNAL(cdLoaded()),m_cddbManager,SLOT(refreshCDDB()));
 
+
 /**
  * Contextual Menu
  */
@@ -640,14 +641,14 @@ void KSCD::actionButton(QString name)
 	}
 	if(name == "tracklist")
 	{
-		kDebug()<<"state track window:"<<m_stateTrackWindow;
-		if(m_stateTrackWindow == true)
+		if(m_stateTrackDialog == true)
 		{
 			kDebug()<<"close track window";
+			closeTrackDialog();
 		}
 		else
 		{
-			createTrackWindow(m_cddbManager->getTrackList(),m_cddbManager->getDiscTitle());
+			createTrackDialog(m_cddbManager->getTrackList(),m_cddbManager->getDiscTitle());
 			kDebug()<<"open track window";
 		}
 		emit(picture(name,"default"));

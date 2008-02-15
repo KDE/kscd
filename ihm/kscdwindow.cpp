@@ -57,8 +57,9 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_volumeB = new VolumeButton(this);
 	
 	
-	m_stateTrackWindow = false;
-// 	m_trackW = new QTableWidget(100,9);
+	m_stateTrackDialog = false;
+	m_trackDlgCreated = false;
+ 	m_trackDlg = new TrackListDlg(parent);
 // 	createTrackWindow();
 
 	// Panel
@@ -104,6 +105,9 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	connect(m_trackB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_volumeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),SLOT(catchVolume(qreal)));
+
+	connect(m_trackDlg,SIGNAL(itemClicked(int))
+		,this,SLOT(doubleClickedEvent(int)));
 }
 
 KscdWindow::~KscdWindow()
@@ -120,40 +124,42 @@ KscdWindow::~KscdWindow()
 
 	delete m_layout;
 	
+
+	delete m_trackDlg;
 }
 
-void KscdWindow :: createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle)
+void KscdWindow :: closeTrackDialog()
 {
-	QStringList list;
-	int trackNumber = 1;
-	bool ok = false;
+	kDebug()<<"Close Track Dialog";
+	m_stateTrackDialog = false;
+	m_trackDlg->hide();
+}
+
+void KscdWindow :: createTrackDialog(QList<CDDBTrack> trackList,QString albumTitle)
+{
 	QList<CDDBTrack>::iterator it;
-	for (it = trackList.begin(); it != trackList.end(); ++it)
+	m_trackDlg->removeRowsTrackTable(trackList.size());
+
+	m_stateTrackDialog = true;
+	m_trackDlg->setAlbumLbl(albumTitle);
+ 	int trackNumber = 1;
+	for(it = trackList.begin();it != trackList.end();it++)
 	{
-		list.append( QString(" %1	%2			%3	%4	%5	%6	%7").arg(trackNumber).arg((*it).Title).arg(albumTitle).arg((*it).Genre).arg((*it).Category).arg((*it).Year).arg((*it).Comment));
+		m_trackDlg->addRowTrackTable(trackNumber-1);
+		m_trackDlg->addItemTrackTable(trackNumber-1,0,QString::number(trackNumber));
+		m_trackDlg->addItemTrackTable(trackNumber-1,1,(*it).Title);
+		m_trackDlg->addItemTrackTable(trackNumber-1,2,(*it).Length);
+		m_trackDlg->setYearLbl((*it).Year);
 		trackNumber++;
 	}
-	QString res = KInputDialog::getItem(i18n("TrackList Window"),
-				i18n("Select a Track :"), list, 0, false,&ok);
-	kDebug()<<"create track res:"<<res;
-	if(ok)
-	{
-		// The user selected and item and pressed OK
-		int pos = 1;
-		for(QStringList::Iterator it = list.begin(); it != list.end(); ++it )
-		{
-			if( *it == res) break;
-			
-			pos++;
-		}
-		kDebug()<<"create pos:"<<pos;
-		emit(trackClicked(pos));
-	}
-	else
-	{
-		return;
-		// user pressed Cancel
-	}
+	m_trackDlg->moveTrackDialog(x(),y()+frameGeometry().height());
+	m_trackDlg->show();
+}
+
+void KscdWindow :: doubleClickedEvent(int pos)
+{
+	kDebug()<<"signal recu\n"<<"pos clicked:"<<pos;
+ 	emit(trackClicked(pos));
 }
 
 void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)

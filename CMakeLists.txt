@@ -43,11 +43,12 @@ set(kscd_SRCS
 	ihm/panel.cpp
 	ihm/configwindow.cpp
 	ihm/titlePopUp.cpp
+	ihm/tracklistdlg.cpp
 )
 
 set(kscd_Resources ihm/skin)
 
-kde4_add_ui_files(kscd_SRCS panel.ui configWidgetUI.ui)
+kde4_add_ui_files(kscd_SRCS ihm/trackListDlgUI.ui)
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
 

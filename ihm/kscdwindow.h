@@ -42,6 +42,8 @@
 #include <QSizePolicy>
 #include <QLabel>
 
+#include <QModelIndex>
+
 #include <QTableWidget>
 #include <QTableView>
 #include <QStringList>
@@ -64,6 +66,7 @@
 #include "tracklistbutton.h"
 #include "volumebutton.h"
 #include "cddbmanager.h"
+#include "tracklistdlg.h"
 #include "panel.h"
 #include "ihm/titlePopUp.h"
 #include <phonon/seekslider.h>
@@ -88,19 +91,31 @@ private:
 	KscdWidget *m_trackB;
 	KscdWidget *m_volumeB;
 
+	TrackListDlg *m_trackDlg;
+
+	QLabel * m_time;
+	QLabel * m_artistLabel ;
+	QLabel * m_trackinfoLabel ;
 	Panel *m_panel;
 
 protected:
+	 /**
+	 * Create the track list dialog
+	 */
+	void createTrackDialog(QList<CDDBTrack> trackList,QString albumTitle);
+
+	 /**
+	 * Close the track list dialog
+	 */
+	void closeTrackDialog();
 
 	TitlePopUp *m_titlePopUp;
 
-	/** create a track window
-	* @return void
-	**/
-	//void createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle);
+	/** The dialog track state : true = visible / false = hide */
+	bool m_stateTrackDialog;
 
-	/** The window track state : true = visible / false = hide */
-	bool m_stateTrackWindow;
+	/** The state creation of the track dialog */
+	bool m_trackDlgCreated;
 public:
 	/**
  	* Creates a new Kscdwindow instance
@@ -111,8 +126,7 @@ public:
 	 * Destroys an instance of Kscdwindow
 	 */
 	virtual ~KscdWindow();
-	
-	
+
 	QLabel *getArtistLabel();
 	QLabel *getTrackinfoLabel();
 	
@@ -120,7 +134,6 @@ public:
 	void addVolumeSlider(Phonon::VolumeSlider *vs);
 	
 public slots:
-	void createTrackWindow(QList<CDDBTrack> trackList,QString albumTitle);
 	void hideTitlePopUp();
 	void catchButton(QString);
 	void catchVolume(qreal);
@@ -128,7 +141,9 @@ public slots:
 	void setTime(qint64 pos);
 	void showArtistLabel(QString);
 	void showTrackinfoLabel(QString);
-	
+
+	void doubleClickedEvent(int);
+
 signals:
 	void actionClicked(QString);
 	void actionVolume(qreal);

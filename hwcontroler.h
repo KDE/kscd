@@ -42,7 +42,6 @@
 #include <phonon/audiooutput.h>
 #include <phonon/volumeslider.h>
 
-
 #include "audiocd.h"
 
 enum LoopMode

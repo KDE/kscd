@@ -530,7 +530,6 @@ return true;
 
 void HWControler ::loadPlayList()
 {
-
 	srand( time( NULL ) );
 	int pos;
 
