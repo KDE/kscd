@@ -32,8 +32,6 @@
  *
  */
 
-
-
 #include "titlePopUp.h"
 
 TitlePopUp::TitlePopUp( QWidget *parent ) : QWidget( parent, Qt::FramelessWindowHint )

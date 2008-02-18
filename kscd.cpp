@@ -99,9 +99,13 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(conf,SIGNAL(panelColorChanged(QColor)),getPanel(),SLOT(setPanelColor(QColor)));
 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
 
-	QAction* test = new QAction(i18n("Configure..."), this);
+	QAction* configure = new QAction(i18n("Configure..."), this);
+	addAction(configure);
+	connect(configure, SIGNAL(triggered()), conf, SLOT(show()));
+
+	QAction* test = new QAction(i18n("test"), this);
 	addAction(test);
-	connect(test, SIGNAL(triggered()), conf, SLOT(show()));
+	connect(test, SIGNAL(triggered()), this, SLOT(test()));
 
 //////////Set Shortcuts
 	setDefaultShortcuts();
@@ -126,58 +130,71 @@ KSCD::~KSCD()
 void KSCD::test()
 {
 	//kDebug () << "total time : " << devices->getTotalTime() ;
-	string device;
 
-// 	Disc *disc;
-/*
-// 	try {
-		disc = readDisc(device);
-// 	}
-// 	catch (MusicBrainz::DiscError &e) {
-// 		cout << "Error: " << e.what() << endl;
-// 		return 1;
-// 	}
-	QString discId = (QString)disc->getId().c_str();
-	delete disc;
-//	cout << "Disc Id: " << discId << endl << endl;
-
-	Query q;
-	ReleaseResultList results;
-// 	try {
-    ReleaseFilter f ;//= ReleaseFilter().discId(discId.toStdString());
-        results = q.getReleases(&f);
-// 	}
-// 	catch (WebServiceError &e) {
-// 		cout << "Error: " << e.what() << endl;
-// 		return 1;
-// 	}
-
-	for (ReleaseResultList::iterator i = results.begin(); i != results.end(); i++) {
-		ReleaseResult *result = *i;
-		Release *release;
-// 		try {
-			release = q.getReleaseById(result->getRelease()->getId(), &ReleaseIncludes().tracks().artist());
-// 		}
-// 		catch (WebServiceError &e) {
-// 			cout << "Error: " << e.what() << endl;
-// 			continue;
-// 		}
-		cout << "Id      : " << release->getId() << endl;
-		cout << "Title   : " << release->getTitle() << endl;
-		cout << "Tracks  : ";
-		int trackno = 1;
-		for (TrackList::iterator j = release->getTracks().begin(); j != release->getTracks().end(); j++) {
-			Track *track = *j;
-			MusicBrainz::Artist *artist = track->getArtist();
-			if (!artist)
-				artist = release->getArtist();
-			cout << trackno++ << ". " << artist->getName() << " / " << track->getTitle() << endl;
-			cout << "          ";
-		}
-		cout << endl;
-		delete result;
+	MusicBrainz o;
+	string      error, data;
+	bool        ret;
+	int         numTracks, trackNum;
+	
+	// Set the proper server to use. Defaults to mm.musicbrainz.org:80
+	if (getenv("MB_SERVER"))
+	{
+		string server(getenv("MB_SERVER"));
+		o.SetServer(server, 80);
 	}
-*/
+	
+	// Check to see if the debug env var has been set 
+	if (getenv("MB_DEBUG"))
+		o.SetDebug(atoi(getenv("MB_DEBUG")));
+	
+	// If you need to use a proxy, uncomment/edit the following line
+	// as appropriate
+	//o.SetProxy("proxy.mydomain.com", 80);
+	
+	// Tell the client library to return data in ISO8859-1 and not UTF-8
+	o.UseUTF8(false);
+	
+	// Execute the GetCDInfo query, which pulls the TOC from the 
+	// audio CD in the cd-rom drive, calculates the disk id and 
+	// requests the data from the server
+	ret = o.Query(string(MBQ_GetCDInfo));
+	if (!ret)
+	{
+		o.GetQueryError(error);
+		printf("Query failed: %s\n", error.c_str());
+		exit (0);
+	}
+	
+	// Check to see how many items were returned from the server
+	if (o.DataInt(MBE_GetNumAlbums) < 1)
+	{
+		printf("This CD was not found.\n");
+		exit (0);
+	}
+	
+	// Select the first album
+	o.Select(MBS_SelectAlbum, 1);
+	
+	// Get the number of tracks
+	numTracks = o.DataInt(MBE_AlbumGetNumTracks);
+	kDebug() << "NumTracks: \n" << numTracks << endl;
+	
+	// Now get and print the title of the cd
+	printf("Album Name: '%s'\n", o.Data(MBE_AlbumGetAlbumName).c_str());
+	o.GetIDFromURL(o.Data(MBE_AlbumGetAlbumId), data);
+	printf("   AlbumId: '%s'\n\n", data.c_str());
+	
+	for(int i = 1; i <= numTracks; i++)
+	{
+		// Print out the artist and then print the title of the tracks
+		printf("    Artist: '%s'\n", o.Data(MBE_AlbumGetArtistName, i).c_str());
+	
+		trackNum = o.DataInt(MBE_AlbumGetTrackNum, i);
+		printf("  Track %2d: '%s'\n", 
+			trackNum, o.Data(MBE_AlbumGetTrackName, i).c_str());
+		o.GetIDFromURL(o.Data(MBE_AlbumGetTrackId, i), data);
+		printf("   TrackId: '%s'\n\n", data.c_str());
+	}
 }
 
 /**

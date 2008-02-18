@@ -132,10 +132,11 @@ KscdWindow::~KscdWindow()
 	delete m_muteB;
 	delete m_trackB;
 
+
+	hideTitlePopUp();
 	delete m_titlePopUp;
 
 	delete m_layout;
-	
 
 	delete m_trackDlg;
 }
