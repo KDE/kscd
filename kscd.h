@@ -59,25 +59,11 @@ class KCompactDisc;
 #include <phonon/phononnamespace.h>
 #include <phonon/seekslider.h>
 
-// // MusicBrainz
-// #include <iostream>
-// #include <musicbrainz3/artistalias.h>
-// #include <musicbrainz3/artist.h>
-// #include <musicbrainz3/disc.h>
-// #include <musicbrainz3/webservice.h>
-// #include <musicbrainz3/query.h>
-// #include <musicbrainz3/model.h>
-// using namespace std;
-// using namespace MusicBrainz;
-
-#include <stdio.h>
-#include <stdlib.h>
-#include "musicbrainz/musicbrainz.h"
-
 #include "ihm/kscdwindow.h"
 
 #include "hwcontroler.h"
 #include "cddbmanager.h"
+#include "mbmanager.h"
 #include "prefs.h"
 #include "cddbdlg.h"
 #include "configWidget.h"
@@ -126,12 +112,14 @@ private:
 	CDDBManager* m_cddbManager;
 	KConfigDialog* configDialog;
 	
+	MBManager* m_MBManager;
+	
 	bool mute;
 	bool play;
 	bool random;
 	bool looptrack;
 	bool loopdisc;
-	void setDefaultShortcuts();
+	
 	QAction* play_pause_shortcut;
 	QAction* stop_shortcut;
 	QAction* next_shortcut;
@@ -150,6 +138,7 @@ private:
 public:
 	explicit KSCD(QWidget *parent = 0);
 	~KSCD();
+	
 	virtual bool saveState(QSessionManager& sm);
 	void writeSettings();
 	HWControler * getDevices();
@@ -157,7 +146,8 @@ public:
 	void setShortcut(QString, QString);
 
 protected:
-	void populateSongList();
+	void setDefaultShortcuts();
+	void setContextualMenu();
 
 signals:
 	void picture(QString,QString);

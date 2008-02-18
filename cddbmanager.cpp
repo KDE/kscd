@@ -309,21 +309,6 @@ void CDDBManager::setCDInfo(KCDDB::CDInfo info)
 
 	m_cddbInfo = info;
 	
-	kDebug() << m_cddbInfo.get(KCDDB::Title).toString() ;
-	kDebug() << m_cddbInfo.get(KCDDB::Comment).toString() ;
-	kDebug() << m_cddbInfo.get(KCDDB::Artist).toString() ;
-	kDebug() << m_cddbInfo.get(KCDDB::Genre).toString() ;
-	kDebug() << m_cddbInfo.get(KCDDB::Year).toString() ;
-	kDebug() << m_cddbInfo.get(KCDDB::Length).toString() ;
-	kDebug() << m_cddbInfo.get(KCDDB::Category).toString() ;
-	
-	for (int i=0; i<m_cddbInfo.numberOfTracks(); i++)
-	{
-		kDebug() << i << " title " << m_cddbInfo.track(i).get(KCDDB::Title).toString() ;
-		kDebug() << i << " artist " << m_cddbInfo.track(i).get(KCDDB::Artist).toString() ;
-		kDebug() << i << " length " << m_cddbInfo.track(i).get(KCDDB::Length).toString() ;
-	}
-//	populateSongList();
 	emit restoreArtistLabel();
 	emit restoreTrackinfoLabel();
 }

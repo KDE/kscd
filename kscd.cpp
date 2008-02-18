@@ -64,9 +64,13 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	// CDDB Initialization
 	m_cddbManager = new CDDBManager(this);
-	
+	m_MBManager = new MBManager();
+	m_MBManager->discLookup();
 
-	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
+	//connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
+	connect(m_MBManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
+	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
+	
 	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
 	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
 	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
@@ -103,6 +107,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	addAction(configure);
 	connect(configure, SIGNAL(triggered()), conf, SLOT(show()));
 
+// Experimental Function
 	QAction* test = new QAction(i18n("test"), this);
 	addAction(test);
 	connect(test, SIGNAL(triggered()), this, SLOT(test()));
@@ -127,74 +132,17 @@ KSCD::~KSCD()
 	delete m_cddb;*/
 }
 
+void KSCD::setContextualMenu()
+{
+	// TODO move from Kscd() to here
+	
+}
+
 void KSCD::test()
 {
 	//kDebug () << "total time : " << devices->getTotalTime() ;
 
-	MusicBrainz o;
-	string      error, data;
-	bool        ret;
-	int         numTracks, trackNum;
-	
-	// Set the proper server to use. Defaults to mm.musicbrainz.org:80
-	if (getenv("MB_SERVER"))
-	{
-		string server(getenv("MB_SERVER"));
-		o.SetServer(server, 80);
-	}
-	
-	// Check to see if the debug env var has been set 
-	if (getenv("MB_DEBUG"))
-		o.SetDebug(atoi(getenv("MB_DEBUG")));
-	
-	// If you need to use a proxy, uncomment/edit the following line
-	// as appropriate
-	//o.SetProxy("proxy.mydomain.com", 80);
-	
-	// Tell the client library to return data in ISO8859-1 and not UTF-8
-	o.UseUTF8(false);
-	
-	// Execute the GetCDInfo query, which pulls the TOC from the 
-	// audio CD in the cd-rom drive, calculates the disk id and 
-	// requests the data from the server
-	ret = o.Query(string(MBQ_GetCDInfo));
-	if (!ret)
-	{
-		o.GetQueryError(error);
-		printf("Query failed: %s\n", error.c_str());
-		exit (0);
-	}
-	
-	// Check to see how many items were returned from the server
-	if (o.DataInt(MBE_GetNumAlbums) < 1)
-	{
-		printf("This CD was not found.\n");
-		exit (0);
-	}
-	
-	// Select the first album
-	o.Select(MBS_SelectAlbum, 1);
-	
-	// Get the number of tracks
-	numTracks = o.DataInt(MBE_AlbumGetNumTracks);
-	kDebug() << "NumTracks: \n" << numTracks << endl;
-	
-	// Now get and print the title of the cd
-	printf("Album Name: '%s'\n", o.Data(MBE_AlbumGetAlbumName).c_str());
-	o.GetIDFromURL(o.Data(MBE_AlbumGetAlbumId), data);
-	printf("   AlbumId: '%s'\n\n", data.c_str());
-	
-	for(int i = 1; i <= numTracks; i++)
-	{
-		// Print out the artist and then print the title of the tracks
-		printf("    Artist: '%s'\n", o.Data(MBE_AlbumGetArtistName, i).c_str());
-	
-		trackNum = o.DataInt(MBE_AlbumGetTrackNum, i);
-		printf("  Track %2d: '%s'\n", 
-			trackNum, o.Data(MBE_AlbumGetTrackName, i).c_str());
-		o.GetIDFromURL(o.Data(MBE_AlbumGetTrackId, i), data);
-		printf("   TrackId: '%s'\n\n", data.c_str());
-	}
+	m_MBManager->infoDisplay();
 }
 
 /**
@@ -210,15 +158,17 @@ void KSCD::restoreArtistLabel()
 	{
 		QString artist, title;
 
-		if (m_cddbManager->getCddbInfo().isValid()/* && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()*/) {
-			artist = m_cddbManager->getCddbInfo().get(KCDDB::Artist).toString();
-			title = m_cddbManager->getCddbInfo().get(KCDDB::Title).toString();
-		}
-		else
-		{
-			artist = i18n("Unknown artist");
-			title = i18n("Unknown album");
-		}
+// 		if (m_cddbManager->getCddbInfo().isValid()/* && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()*/) {
+// 			artist = m_cddbManager->getCddbInfo().get(KCDDB::Artist).toString();
+// 			title = m_cddbManager->getCddbInfo().get(KCDDB::Title).toString();
+// 		}
+// 		else
+// 		{
+// 			artist = i18n("Unknown artist");
+// 			title = i18n("Unknown album");
+// 		}
+		artist = m_MBManager->getDiscInfo().Artist;
+		title = m_MBManager->getDiscInfo().Title;
 		showArtistLabel(QString("%1 - %2").arg(artist, title));
 	}
 	else
@@ -236,19 +186,20 @@ void KSCD::restoreTrackinfoLabel()
 	if (devices->getCD()->isCdInserted())
 	{
 		title = QString("%1 - ").arg(devices->getCurrentTrack(), 2, 10, QLatin1Char('0')) ;
-		//setting length
-		length = "";
 
-		if (m_cddbManager->getCddbInfo().isValid()/* && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()*/)
-		{
-			title.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Title).toString());
-			length.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Length).toString());
-		}
-		else
-		{
-			title.append(i18n("unknown"));
-			length.append(i18n("duration"));
-		}
+// 		if (m_cddbManager->getCddbInfo().isValid()/* && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()*/)
+// 		{
+// 			title.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Title).toString());
+// 			length.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Length).toString());
+// 		}
+// 		else
+// 		{
+// 			title.append(i18n("unknown"));
+// 			length.append(i18n("duration"));
+// 		}
+		title.append(m_MBManager->getTrackList()[devices->getCurrentTrack()-1].Title);
+		length.append(m_MBManager->getTrackList()[devices->getCurrentTrack()-1].Duration);
+		
 		showTrackinfoLabel(title);
 
 		//shows the title popup with title info and title lenght
@@ -271,14 +222,14 @@ void KSCD::setDefaultShortcuts()
 {
 	//play/pause
 	play_pause_shortcut = new QAction(i18n("play"), this);
-	addAction(play_pause_shortcut);
+// 	addAction(play_pause_shortcut);
 	play_pause_shortcut->setShortcut(tr("Space"));
 	connect(play_pause_shortcut, SIGNAL(triggered()), this, SLOT(playShortcut()));
 	//connect(play_pause_shortcut, SIGNAL(triggered()), devices, SLOT(pause()));
 	
 	//stop
 	stop_shortcut = new QAction(i18n("stop"), this);
-	addAction(stop_shortcut);
+// 	addAction(stop_shortcut);
 	stop_shortcut->setShortcut(tr("s"));
 	connect(stop_shortcut, SIGNAL(triggered()), devices, SLOT(stop()));
 
