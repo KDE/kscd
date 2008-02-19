@@ -41,33 +41,3 @@ PreviousButton::PreviousButton(QWidget * parent,QString sName):KscdWidget(sName,
 PreviousButton::~PreviousButton()
 {
 }
-
-void PreviousButton :: mousePressEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-		{
-			event->accept();
-			m_state = "pressed";
-			m_id = m_name + "_" + m_state;
-			emit(needRepaint());
-		}
-		else
-		{
-			event->ignore();
-		}
-}
-
-void PreviousButton :: mouseReleaseEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-		m_state = "over";
-		m_id = m_name + "_" + m_state;
-		emit(buttonClicked(m_name));
-	}
-	else
-	{
-		event->ignore();
-	}
-}

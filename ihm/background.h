@@ -44,9 +44,17 @@
 class BackGround:public KscdWidget
 {
 	Q_OBJECT
+private:
+	int m_posX;
+	int m_posY;
+	int m_deplacement;
+	bool m_move;
 public:
 	BackGround(QWidget * parent=0, QString sName="kscdBack");
 	virtual ~BackGround();
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent * event);
 };
 
 #endif /*MAINWINDOW_H_*/

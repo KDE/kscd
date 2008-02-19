@@ -78,6 +78,8 @@ public slots:
 	void setTime(QString * time);
 	void setPanelColor(QColor c);
 	void setTextColor(QColor c);
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
 };
 
 #endif 

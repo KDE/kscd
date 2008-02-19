@@ -167,3 +167,27 @@ void Panel::setTextColor(QColor c){
 	//p_panelColor->setColor(QPalette::Text,c);
 
 }
+
+void Panel :: mousePressEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void Panel :: mouseReleaseEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
+}

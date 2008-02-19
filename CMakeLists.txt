@@ -26,7 +26,7 @@ set(kscd_SRCS
 # 	bwlednum.cpp 
 # 	configWidget.cpp 
 # 	cddbdlg.cpp 
-	cddbmanager.cpp
+# 	cddbmanager.cpp
 	mbmanager.cpp
 # 	cdcombobox.cpp
 	ihm/kscdwindow.cpp 

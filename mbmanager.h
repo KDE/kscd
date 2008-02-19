@@ -73,12 +73,6 @@ public:
 	MBManager();
 	~MBManager();
 	
-	/** Gets information about the disc inserted */
-	void discLookup();
-	
-	/** Displays information */
-	void infoDisplay();
-	
 /**
 * Getters/Setters
 */
@@ -87,8 +81,12 @@ public:
 	QList <MBTrackInfo> getTrackList() { return this->m_trackList; }
 	bool isValidInfo() { return this->m_validInfo; }
 	
-private slots:
+public slots:
+	/** Gets information about the disc inserted */
+	void discLookup();
 	
+	/** Displays information */
+	void infoDisplay();
 	
 signals:
 	void showArtistLabel(QString);

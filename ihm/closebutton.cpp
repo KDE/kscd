@@ -41,33 +41,3 @@ CloseButton::CloseButton(QWidget * parent,QString sName):KscdWidget(sName,parent
 CloseButton::~CloseButton()
 {
 }
-
-void CloseButton :: mousePressEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-		{
-			event->accept();
-			m_state = "pressed";
-			m_id = m_name + "_" + m_state;
-			emit(needRepaint());
-		}
-		else
-		{
-			event->ignore();
-		}
-}
-
-void CloseButton :: mouseReleaseEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-		{
-			event->accept();
-			m_state = "over";
-			m_id = m_name + "_" + m_state;
-// 			emit(buttonClicked(m_name));
-		}
-		else
-		{
-			event->ignore();
-		}
-}

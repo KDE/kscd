@@ -34,8 +34,44 @@
 
 BackGround::BackGround(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
+	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+	m_move = false;
 }
 
 BackGround::~BackGround()
 {
+}
+
+void BackGround :: mousePressEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+		m_posX = event->x();
+		m_posY = event->y();
+		m_move =true;
+// 		grabMouse(Qt::ClosedHandCursor);
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void BackGround :: mouseReleaseEvent(QMouseEvent *event)
+{
+	releaseMouse();
+	m_move = false;
+}
+
+void BackGround :: mouseMoveEvent(QMouseEvent * event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()) && m_move == true){
+		event->accept();
+// 		kDebug() << "curpos :" << event->pos();
+	}
+	else
+	{
+		event->ignore();
+	}
 }

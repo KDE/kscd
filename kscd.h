@@ -48,12 +48,12 @@
 #include <QCursor>
 
 // CD support.
-class KCompactDisc;
+// class KCompactDisc;
 
 // CDDB support via libkcddb
-#include <libkcddb/cddb.h>
-#include <libkcddb/kcddb.h>
-#include <libkcddb/client.h>
+// #include <libkcddb/cddb.h>
+// #include <libkcddb/kcddb.h>
+// #include <libkcddb/client.h>
 
 // Phonon libs
 #include <phonon/phononnamespace.h>
@@ -62,7 +62,7 @@ class KCompactDisc;
 #include "ihm/kscdwindow.h"
 
 #include "hwcontroler.h"
-#include "cddbmanager.h"
+// #include "cddbmanager.h"
 #include "mbmanager.h"
 #include "prefs.h"
 #include "cddbdlg.h"
@@ -77,7 +77,7 @@ class KCompactDisc;
 #include <krandomsequence.h>
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
-#include <kcompactdisc.h>
+// #include <kcompactdisc.h>
 #include <kdebug.h>
 #include <kaboutdata.h>
 #include <kactioncollection.h>
@@ -108,8 +108,8 @@ class KSCD : public KscdWindow, public KSessionManager {
 
 private:
 	HWControler* devices;
-	KCompactDisc* m_cd; // kept for CDDB compatibility
-	CDDBManager* m_cddbManager;
+// 	KCompactDisc* m_cd; // kept for CDDB compatibility
+// 	CDDBManager* m_cddbManager;
 	KConfigDialog* configDialog;
 	
 	MBManager* m_MBManager;
@@ -142,7 +142,7 @@ public:
 	virtual bool saveState(QSessionManager& sm);
 	void writeSettings();
 	HWControler * getDevices();
-	KCompactDisc* getCd(); // kept for CDDB compatibility
+// 	KCompactDisc* getCd(); // kept for CDDB compatibility
 	void setShortcut(QString, QString);
 
 protected:

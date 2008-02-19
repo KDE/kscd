@@ -57,27 +57,31 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 /**
  * CDDB
  */
-// TODO kept for CDDB compatibility
-// TODO deactivate CDDB options if no disc
- 	m_cd = new KCompactDisc();
- 	m_cd->setDevice(Prefs::cdDevice(), 50, false, QString("phonon"), Prefs::audioDevice());
-
-	// CDDB Initialization
-	m_cddbManager = new CDDBManager(this);
+// // TODO kept for CDDB compatibility
+// // TODO deactivate CDDB options if no disc
+//  	m_cd = new KCompactDisc();
+//  	m_cd->setDevice(Prefs::cdDevice(), 50, false, QString("phonon"), Prefs::audioDevice());
+// 
+// 	// CDDB Initialization
+// 	m_cddbManager = new CDDBManager(this);
+	
+	// Music Brainz initialisation
 	m_MBManager = new MBManager();
+	// TODO move lookup to cd detected
 	m_MBManager->discLookup();
 
-	//connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
+	
 	connect(m_MBManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
 	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
 	
-	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
-	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
-	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
+// 	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
+// 	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
+// 	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
+// 	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
 	
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
-	connect(devices,SIGNAL(cdLoaded()),m_cddbManager,SLOT(refreshCDDB()));
-
+// 	connect(devices,SIGNAL(cdLoaded()),m_cddbManager,SLOT(refreshCDDB()));
+	connect(devices,SIGNAL(cdLoaded()),m_MBManager,SLOT(discLookup()));
 
 /**
  * Contextual Menu
@@ -85,17 +89,17 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	// Set context menu policy to ActionsContextMenu
 	setContextMenuPolicy(Qt::ActionsContextMenu);
 
-	CDDBWindowAction = new QAction(i18n("CDDB..."), this);
-	addAction(CDDBWindowAction);
-	connect(CDDBWindowAction, SIGNAL(triggered()), m_cddbManager, SLOT(CDDialogSelected()));
-	//shortcut
-	CDDBWindowAction->setShortcut(tr("w"));
-
-	CDDBDownloadAction = new QAction(i18n("Download Information"), this);
-	addAction(CDDBDownloadAction);
-	connect(CDDBDownloadAction, SIGNAL(triggered()), m_cddbManager, SLOT(lookupCDDB()));
-	//shortcut
-	CDDBDownloadAction->setShortcut(tr("d"));
+// 	CDDBWindowAction = new QAction(i18n("CDDB..."), this);
+// 	addAction(CDDBWindowAction);
+// 	connect(CDDBWindowAction, SIGNAL(triggered()), m_cddbManager, SLOT(CDDialogSelected()));
+// 	//shortcut
+// 	CDDBWindowAction->setShortcut(tr("w"));
+// 
+// 	CDDBDownloadAction = new QAction(i18n("Download Information"), this);
+// 	addAction(CDDBDownloadAction);
+// 	connect(CDDBDownloadAction, SIGNAL(triggered()), m_cddbManager, SLOT(lookupCDDB()));
+// 	//shortcut
+// 	CDDBDownloadAction->setShortcut(tr("d"));
 
 	ConfigWindow * conf = new ConfigWindow(this);
 
@@ -124,8 +128,8 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 KSCD::~KSCD()
 {
 	delete devices;
-	delete m_cd;
-	delete m_cddbManager;
+// 	delete m_cd;
+// 	delete m_cddbManager;
 //	delete w_titlePopUp;	//deleting of the title popup
 
 /*	delete m_cddialog;
@@ -151,8 +155,8 @@ void KSCD::test()
 
 void KSCD::restoreArtistLabel()
 {
-	kDebug() << "NbTracks CDDB = " << m_cddbManager->getCddbInfo().numberOfTracks();
-	kDebug() << "NbTracks Devices = " << devices->getTotalTrack();
+// 	kDebug() << "NbTracks CDDB = " << m_cddbManager->getCddbInfo().numberOfTracks();
+// 	kDebug() << "NbTracks Devices = " << devices->getTotalTrack();
 
 	if( devices->getCD()->isCdInserted() && devices->isDiscValid() )
 	{
@@ -222,14 +226,14 @@ void KSCD::setDefaultShortcuts()
 {
 	//play/pause
 	play_pause_shortcut = new QAction(i18n("play"), this);
-// 	addAction(play_pause_shortcut);
+	addAction(play_pause_shortcut);
 	play_pause_shortcut->setShortcut(tr("Space"));
 	connect(play_pause_shortcut, SIGNAL(triggered()), this, SLOT(playShortcut()));
 	//connect(play_pause_shortcut, SIGNAL(triggered()), devices, SLOT(pause()));
 	
 	//stop
 	stop_shortcut = new QAction(i18n("stop"), this);
-// 	addAction(stop_shortcut);
+	addAction(stop_shortcut);
 	stop_shortcut->setShortcut(tr("s"));
 	connect(stop_shortcut, SIGNAL(triggered()), devices, SLOT(stop()));
 
@@ -624,6 +628,16 @@ void KSCD::actionButton(QString name)
 		devices->setLoopMode(LoopAll);
 		emit(picture(name,state));
 	}
+	if(name=="minimize")
+	{
+		showMinimized ();
+		emit(picture(name,state));
+	}
+	if(name=="close")
+	{
+		close();
+		emit(picture(name,state));
+	}
 	if(name == "tracklist")
 	{
 		if(m_stateTrackDialog == true)
@@ -633,7 +647,8 @@ void KSCD::actionButton(QString name)
 		}
 		else
 		{
-			createTrackDialog(m_cddbManager->getTrackList(),m_cddbManager->getDiscTitle());
+			//createTrackDialog(m_cddbManager->getTrackList(),m_cddbManager->getDiscTitle());
+			createTrackDialog(m_MBManager->getTrackList(),m_MBManager->getDiscInfo().Title);
 			kDebug()<<"open track window";
 		}
 		emit(picture(name,"default"));
@@ -657,10 +672,10 @@ HWControler* KSCD::getDevices()
 	return devices;
 }
 
-KCompactDisc* KSCD::getCd()
-{
-	return m_cd;
-}
+// KCompactDisc* KSCD::getCd()
+// {
+// // 	return m_cd;
+// }
 
 /**
  * Save state on session termination

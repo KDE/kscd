@@ -68,6 +68,8 @@ public:
 	void loadPicture(QString,QString);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
 
 signals:
 	void needRepaint();

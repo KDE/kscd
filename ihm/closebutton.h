@@ -48,9 +48,6 @@ public:
 	CloseButton(QWidget * parent=0, QString sName="close");
 	virtual ~CloseButton();
 
-private:
- 	void mousePressEvent(QMouseEvent * event);
- 	void mouseReleaseEvent(QMouseEvent * event);
 };
 
 #endif /*CLOSEBUTTON_H_*/

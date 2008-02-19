@@ -47,8 +47,7 @@ class TrackListButton:public KscdWidget
 public:
 	TrackListButton(QWidget * parent=0, QString sName="tracklist");
 	virtual ~TrackListButton();
-	void mousePressEvent(QMouseEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
+	
 };
 
 #endif /*TRACKLISTBUTTON_H_*/

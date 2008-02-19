@@ -76,3 +76,28 @@ void TitlePopUp::showTitlePopUp(QString trackTitle, QString trackLength)
 // 	m_titleLbl->setText(trackTitle);
 	show();
 }
+
+
+void TitlePopUp :: mousePressEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void TitlePopUp :: mouseReleaseEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
+}

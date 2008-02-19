@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
    sodipodi:docbase="/home/kde-devel/isi-kscd/kdemultimedia/kscd/ihm/skin"
-   sodipodi:docname="Orange2.svg"
+   sodipodi:docname="Melon.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
    inkscape:export-filename="C:\Documents and Settings\Pup\Bureau\Orange.png"
@@ -26,7 +26,7 @@
     <linearGradient
        id="linearGradient4514">
       <stop
-         style="stop-color:#ff4b04;stop-opacity:1;"
+         style="stop-color:#e34000;stop-opacity:1;"
          offset="0"
          id="stop4516" />
       <stop
@@ -43,9 +43,9 @@
       <stop
          id="stop3605"
          offset="0"
-         style="stop-color:#ffffff;stop-opacity:0;" />
+         style="stop-color:#000000;stop-opacity:1;" />
       <stop
-         style="stop-color:#0ffd00;stop-opacity:0;"
+         style="stop-color:#0ec100;stop-opacity:1;"
          offset="0.75"
          id="stop3607" />
       <stop
@@ -56,7 +56,7 @@
     <linearGradient
        id="linearGradientlinearGradientPanelD">
       <stop
-         style="stop-color:#a50000;stop-opacity:1;"
+         style="stop-color:#e54d00;stop-opacity:1;"
          offset="0"
          id="stop17125" />
       <stop
@@ -118,9 +118,9 @@
       <stop
          id="stop3434"
          offset="0.80000001"
-         style="stop-color:#ffe341;stop-opacity:1;" />
+         style="stop-color:#a6ff41;stop-opacity:1;" />
       <stop
-         style="stop-color:#b50000;stop-opacity:1;"
+         style="stop-color:#005b10;stop-opacity:1;"
          offset="1"
          id="stop3436" />
     </linearGradient>
@@ -217,7 +217,7 @@
       <stop
          id="stop7142"
          offset="0"
-         style="stop-color:#c80000;stop-opacity:1;" />
+         style="stop-color:#0ec800;stop-opacity:1;" />
       <stop
          style="stop-color:#fff10a;stop-opacity:1;"
          offset="0.88636363"
@@ -234,13 +234,13 @@
          offset="0"
          style="stop-color:#ffffff;stop-opacity:1;" />
       <stop
-         style="stop-color:#ffa641;stop-opacity:1;"
-         offset="0.77499998"
+         style="stop-color:#90cf00;stop-opacity:1;"
+         offset="0.75396824"
          id="stop6171" />
       <stop
          id="stop6173"
          offset="1"
-         style="stop-color:#a50000;stop-opacity:1;" />
+         style="stop-color:#000000;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        id="linearGradientBaseD2">
@@ -250,10 +250,10 @@
          id="stop3259" />
       <stop
          id="stop3261"
-         offset="0.82499999"
-         style="stop-color:#ffde26;stop-opacity:1;" />
+         offset="0.76984125"
+         style="stop-color:#589f00;stop-opacity:1;" />
       <stop
-         style="stop-color:#cc0202;stop-opacity:1;"
+         style="stop-color:#031c00;stop-opacity:1;"
          offset="1"
          id="stop3263" />
     </linearGradient>
@@ -275,15 +275,15 @@
     <linearGradient
        id="linearGradientBaseP">
       <stop
-         style="stop-color:#c80000;stop-opacity:1;"
+         style="stop-color:#3ebe1a;stop-opacity:1;"
          offset="0"
          id="stop5099" />
       <stop
          id="stop5101"
-         offset="0.84090906"
-         style="stop-color:#ffd81e;stop-opacity:1;" />
+         offset="0.80158728"
+         style="stop-color:#efe820;stop-opacity:1;" />
       <stop
-         style="stop-color:#ff601e;stop-opacity:1;"
+         style="stop-color:#d64800;stop-opacity:1;"
          offset="1"
          id="stop5103" />
     </linearGradient>
@@ -295,10 +295,14 @@
          id="stop3143" />
       <stop
          id="stop3145"
-         offset="0.69999999"
-         style="stop-color:#ffad37;stop-opacity:1;" />
+         offset="0.54154921"
+         style="stop-color:#8ebc00;stop-opacity:1;" />
       <stop
-         style="stop-color:#b40000;stop-opacity:1;"
+         style="stop-color:#0d5e00;stop-opacity:1;"
+         offset="0.81079811"
+         id="stop11631" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
          offset="1"
          id="stop3147" />
     </linearGradient>
@@ -309,13 +313,13 @@
          offset="0"
          style="stop-color:#ffffff;stop-opacity:1;" />
       <stop
-         style="stop-color:#ffe941;stop-opacity:1;"
-         offset="0.75"
+         style="stop-color:#7ecd00;stop-opacity:1;"
+         offset="0.65079367"
          id="stop3188" />
       <stop
          id="stop3190"
          offset="1"
-         style="stop-color:#bf0000;stop-opacity:1;" />
+         style="stop-color:#040e00;stop-opacity:1;" />
     </linearGradient>
     <radialGradient
        inkscape:collect="always"
@@ -342,7 +346,7 @@
        xlink:href="#linearGradientIcoD"
        id="radialGradientPlayIcoP"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.5261367,-1.2631463e-7,2.33713e-7,2.8356607,-22.404551,-78.015576)"
+       gradientTransform="matrix(1.2746485,-1.0319328e-7,1.5604241e-7,1.9385533,-11.716299,-39.88851)"
        cx="42.5"
        cy="42.5"
        fx="42.5"
@@ -763,7 +767,7 @@
        fx="132.86092"
        fy="42.499996"
        r="14.66667"
-       gradientTransform="matrix(1.5905945,2.3509075e-7,-4.2773277e-7,2.8939861,-78.466909,-80.494434)"
+       gradientTransform="matrix(1.0044669,7.084711e-8,-1.2213358e-7,1.7223173,-0.5934774,-30.698492)"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
@@ -786,16 +790,6 @@
        r="10.352941"
        gradientTransform="matrix(1,0,0,1.4829545,0,-14.488636)"
        gradientUnits="userSpaceOnUse" />
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3603"
-       id="radialGradient3617"
-       gradientUnits="userSpaceOnUse"
-       cx="42.5"
-       cy="42.5"
-       fx="42.5"
-       fy="42.5"
-       r="42.5" />
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradientIcoD"
@@ -1209,6 +1203,15 @@
        fx="12.5"
        fy="12.5"
        r="13" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3603"
+       id="linearGradient9691"
+       x1="-1.145172"
+       y1="127.26019"
+       x2="699.85437"
+       y2="127.26019"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1217,11 +1220,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.6203867"
-     inkscape:cx="259.27067"
-     inkscape:cy="748.38763"
+     inkscape:zoom="1.28"
+     inkscape:cx="194.91459"
+     inkscape:cy="930.14246"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="kscd_default"
      inkscape:window-width="1233"
      inkscape:window-height="934"
      inkscape:window-x="0"
@@ -1262,16 +1265,6 @@
          id="playIcoO"
          d="M 122.58333,14.166665 L 122.58333,70.833332 L 150.91667,42.499998 L 122.58333,14.166665 z "
          style="fill:url(#radialGradient11219);fill-opacity:1;fill-rule:evenodd;stroke:#550000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         d="M 84.5 42.5 A 42 42 0 1 1  0.5,42.5 A 42 42 0 1 1  84.5 42.5 z"
-         sodipodi:ry="42"
-         sodipodi:rx="42"
-         sodipodi:cy="42.5"
-         sodipodi:cx="42.5"
-         id="path2626"
-         style="opacity:1;color:#000000;fill:url(#radialGradient3617);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         sodipodi:type="arc"
-         transform="matrix(1.1093713,0,0,1.1156847,85.423457,-4.2753571)" />
     </g>
     <g
        id="play_pressed"
@@ -2165,7 +2158,7 @@
          id="kscdBack_default"
          inkscape:label="#kscdBack">
         <rect
-           style="fill:#ffa608;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.290344;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           style="fill:url(#linearGradient9691);fill-opacity:1.0;fill-rule:nonzero;stroke:#550000;stroke-width:2.290344;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
            id="KscdBackground"
            width="698.70917"
            height="254.52039"

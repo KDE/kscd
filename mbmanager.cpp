@@ -116,8 +116,8 @@ void MBManager::discLookup()
 	m_discInfo.Title = MB.Data(MBE_AlbumGetAlbumName).c_str();
 	m_discInfo.Artist = MB.Data(MBE_AlbumGetAlbumArtistName).c_str();
 	
-	MBTrackInfo track;	
-	
+	m_trackList.clear();
+	MBTrackInfo track;
 	for(int i = 1; i <= numTracks; i++)
 	{
 		
@@ -146,6 +146,5 @@ void MBManager::discLookup()
 
 void MBManager::infoDisplay()
 {
-	showTrackinfoLabel("lalala");
 	showArtistLabel(m_discInfo.Artist);
 }

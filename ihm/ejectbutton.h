@@ -48,9 +48,7 @@ class EjectButton:public KscdWidget
 public:
 	EjectButton(QWidget * parent=0, QString sName="eject");
 	virtual ~EjectButton();
-private:
- 	void mousePressEvent(QMouseEvent * event);
- 	void mouseReleaseEvent(QMouseEvent * event);
+
 };
 
 #endif /*EJECTBUTTON_H_*/

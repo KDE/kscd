@@ -47,8 +47,7 @@ class NextButton:public KscdWidget
 public:
 	NextButton(QWidget * parent=0, QString sName="next");
 	virtual ~NextButton();
-	void mousePressEvent(QMouseEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
+	
 };
 
 #endif /*NEXTBUTTON_H_*/

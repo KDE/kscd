@@ -49,8 +49,7 @@ class PreviousButton:public KscdWidget
 public:
 	PreviousButton(QWidget * parent=0, QString sName="previous");
 	virtual ~PreviousButton();
-	void mousePressEvent(QMouseEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
+
 };
 
 #endif /*PREVIOUSBUTTON_H_*/

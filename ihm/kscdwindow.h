@@ -65,13 +65,16 @@
 #include "loopbutton.h"
 #include "tracklistbutton.h"
 #include "volumebutton.h"
-#include "cddbmanager.h"
 #include "tracklistdlg.h"
 #include "closebutton.h"
 #include "minimizebutton.h"
 #include "background.h"
 #include "panel.h"
 #include "titlePopUp.h"
+
+// #include "cddbmanager.h"
+#include "mbmanager.h"
+
 #include <phonon/seekslider.h>
 #include <phonon/volumeslider.h>
 
@@ -111,7 +114,7 @@ protected:
 	 /**
 	 * Create the track list dialog
 	 */
-	void createTrackDialog(QList<CDDBTrack> trackList,QString albumTitle);
+	void createTrackDialog(QList<MBTrackInfo> trackList,QString albumTitle);
 
 	 /**
 	 * Close the track list dialog

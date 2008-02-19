@@ -87,6 +87,9 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 
 	connect(m_trackDlg,SIGNAL(itemClicked(int))
 		,this,SLOT(doubleClickedEvent(int)));
+	
+	connect(m_miniB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_closeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 
 }
 
@@ -115,9 +118,9 @@ void KscdWindow :: closeTrackDialog()
 	m_trackDlg->hide();
 }
 
-void KscdWindow :: createTrackDialog(QList<CDDBTrack> trackList,QString albumTitle)
+void KscdWindow :: createTrackDialog(QList<MBTrackInfo> trackList,QString albumTitle)
 {
-	QList<CDDBTrack>::iterator it;
+	QList<MBTrackInfo>::iterator it;
 	m_trackDlg->removeRowsTrackTable(trackList.size());
 
 	m_stateTrackDialog = true;
@@ -128,8 +131,8 @@ void KscdWindow :: createTrackDialog(QList<CDDBTrack> trackList,QString albumTit
 		m_trackDlg->addRowTrackTable(trackNumber-1);
 		m_trackDlg->addItemTrackTable(trackNumber-1,0,QString::number(trackNumber));
 		m_trackDlg->addItemTrackTable(trackNumber-1,1,(*it).Title);
-		m_trackDlg->addItemTrackTable(trackNumber-1,2,(*it).Length);
-		m_trackDlg->setYearLbl((*it).Year);
+		m_trackDlg->addItemTrackTable(trackNumber-1,2,(*it).Duration);
+//		m_trackDlg->setYearLbl((*it).Year);
 		trackNumber++;
 	}
 	m_trackDlg->moveTrackDialog(x(),y()+frameGeometry().height());
@@ -146,12 +149,6 @@ void KscdWindow :: doubleClickedEvent(int pos)
 // {
 // 	m_layout->addWidget((QWidget*)ss, 2, 3,1,2);
 // }
-// void KscdWindow::addVolumeSlider(Phonon::VolumeSlider *vs)
-// {
-// 	m_layout->addWidget((QWidget*)vs, 1, 4);
-// 
-// }
-
 
 void KscdWindow::setTime(qint64 pos)
 {
@@ -247,14 +244,11 @@ void KscdWindow::changePicture(QString name,QString state)
 	}
 	if(name == "random")
 	{
-		kDebug() << 3;
 		m_randB->loadPicture(name,state);
 	}
 	if(name == "p_random")
 	{
-		kDebug() << 4;
-		m_randB->loadPicture("random","pressed");
-		
+		m_randB->loadPicture("random","pressed");	
 	}
 	if(name == "loop")
 	{
@@ -271,6 +265,14 @@ void KscdWindow::changePicture(QString name,QString state)
 	if(name == "tracklist")
 	{
 		m_trackB->loadPicture(name,state);
+	}
+	if(name == "close")
+	{
+		m_closeB->loadPicture(name,state);
+	}
+	if(name == "minimize")
+	{
+		m_miniB->loadPicture(name,state);
 	}
 }
 Panel * KscdWindow::getPanel(){

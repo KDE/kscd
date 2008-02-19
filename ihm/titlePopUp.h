@@ -52,6 +52,9 @@ private:
 public:
 	explicit TitlePopUp(QWidget *parent=0,QString sName="popup");
 	~TitlePopUp();
+	
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
 
 public slots:
 	void showTitlePopUp(QString , QString);

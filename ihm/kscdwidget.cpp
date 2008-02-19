@@ -38,7 +38,7 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
  	m_name = sName;
 	m_id = m_name + "_" + m_state;
 
-	m_path = KStandardDirs::installPath("data") + "/kscd/skin/Orange2.svg";
+	m_path = KStandardDirs::installPath("data") + "/kscd/skin/default.svg";
 	m_renderer = new QSvgRenderer(m_path,this);
 	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
 			m_renderer->boundsOnElement(m_id).height());
@@ -115,5 +115,36 @@ void KscdWidget :: leaveEvent (QEvent * event )
 		m_state = "default";
 		m_id = m_name + "_" + m_state;
 		emit(needRepaint());
+	}
+}
+
+
+void KscdWidget :: mousePressEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+		m_state = "pressed";
+		m_id = m_name + "_" + m_state;
+		emit(needRepaint());
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+		m_state = "over";
+		m_id = m_name + "_" + m_state;
+		emit(buttonClicked(m_name));
+	}
+	else
+	{
+		event->ignore();
 	}
 }

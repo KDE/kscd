@@ -48,9 +48,6 @@ public:
 	MinimizeButton(QWidget * parent=0, QString sName="minimize");
 	virtual ~MinimizeButton();
 
-private:
- 	void mousePressEvent(QMouseEvent * event);
- 	void mouseReleaseEvent(QMouseEvent * event);
 };
 
 #endif /*MINIMIZEBUTTON_H_*/

@@ -47,8 +47,7 @@ class StopButton:public KscdWidget
 public:
 	StopButton(QWidget * parent=0, QString sName="stop");
 	virtual ~StopButton();
-	void mousePressEvent(QMouseEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
+
 };
 
 #endif /*STOPBUTTON_H_*/
