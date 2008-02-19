@@ -153,8 +153,8 @@ signals:
 	void picture(QString,QString);
 
 	/* Popup signals */
-	void showTitlePopUp(QString, QString);
-	void hideTitlePopUp();
+// 	void showTitlePopUp(QString, QString);
+// 	void hideTitlePopUp();
 	//Shortcut signals
 	//void playshortcut();
 

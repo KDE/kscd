@@ -30,44 +30,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#include "stopbutton.h"
+#include "background.h"
 
-StopButton::StopButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
-{
-	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
-	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
-}
-
-StopButton::~StopButton()
+BackGround::BackGround(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
 }
 
-void StopButton :: mousePressEvent(QMouseEvent *event)
+BackGround::~BackGround()
 {
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-		m_state = "pressed";
-		m_id = m_name + "_" + m_state;
-		emit(needRepaint());
-	}
-	else
-	{
-		event->ignore();
-	}
-}
-
-void StopButton :: mouseReleaseEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-		m_state = "over";
-		m_id = m_name + "_" + m_state;
-		emit(buttonClicked(m_name));
-	}
-	else
-	{
-		event->ignore();
-	}
 }

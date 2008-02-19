@@ -36,13 +36,13 @@
 #define TITLEPOPUP_H
 
 #include <QGridLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QWidget>
-
+#include <QLabel>
+#include <QWidget>
+#include "kscdwidget.h"
 #include <kdebug.h>
 
 
-class TitlePopUp : public QWidget
+class TitlePopUp : public KscdWidget
 {
 private:
 	QGridLayout* m_layout;
@@ -50,7 +50,7 @@ private:
 	QLabel* m_titleLbl;
 
 public:
-	explicit TitlePopUp(QWidget *parent=0);
+	explicit TitlePopUp(QWidget *parent=0,QString sName="popup");
 	~TitlePopUp();
 
 public slots:

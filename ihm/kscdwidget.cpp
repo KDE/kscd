@@ -37,17 +37,14 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 	m_state = "default";
  	m_name = sName;
 	m_id = m_name + "_" + m_state;
-	m_file = "default.svg";
-	
-	m_path = KStandardDirs::installPath("data") + "/kscd/skin/" + m_file;
-	
+
+	m_path = KStandardDirs::installPath("data") + "/kscd/skin/Orange2.svg";
 	m_renderer = new QSvgRenderer(m_path,this);
 	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
 			m_renderer->boundsOnElement(m_id).height());
  	
 	connect(this, SIGNAL(needRepaint()),this, SLOT(repaint()));
 	connect(this,SIGNAL(changePicture()),this,SLOT(update()));
-// 	connect(this, SIGNAL(update()),this, SLOT(repaint()));
 	setMouseTracking ( true );
 }
 
@@ -92,17 +89,31 @@ void KscdWidget :: paintEvent(QPaintEvent *event)
 
 void KscdWidget :: enterEvent (QEvent * event )
 {
-	event->accept();
-	m_state = "over";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
-	setToolTip(m_name);
+	if(m_name == "kscdBack" || m_name == "panel")
+	{
+		event->ignore();
+	}
+	else
+	{
+		event->accept();
+		m_state = "over";
+		m_id = m_name + "_" + m_state;
+		emit(needRepaint());
+		setToolTip(m_name);
+	}
 }
 
 void KscdWidget :: leaveEvent (QEvent * event )
 {
-	event->accept();
-	m_state = "default";
-	m_id = m_name + "_" + m_state;
-	emit(needRepaint());
+	if(m_name == "kscdBack" || m_name == "panel")
+	{
+		event->ignore();
+	}
+	else
+	{
+		event->accept();
+		m_state = "default";
+		m_id = m_name + "_" + m_state;
+		emit(needRepaint());
+	}
 }

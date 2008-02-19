@@ -47,7 +47,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	devices = new HWControler();
 	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(setTime(qint64)));
- 	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
+//  	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
 // 	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
 // 	vs->setOrientation(Qt::Vertical);
 // 	vs->setMuteVisible(false);
@@ -203,9 +203,9 @@ void KSCD::restoreTrackinfoLabel()
 		showTrackinfoLabel(title);
 
 		//shows the title popup with title info and title lenght
-		m_titlePopUp->showTitlePopUp(title, length);
+// 		m_titlePopUp->showTitlePopUp(title, length);
 	  //programming title popup hiding
-		QTimer::singleShot(5000, this, SLOT(hideTitlePopUp()));
+// 		QTimer::singleShot(5000, this, SLOT(hideTitlePopUp()));
 	}
 	else
 	{
@@ -375,11 +375,13 @@ void KSCD::muteShortcut()
 	if (!mute)
 	{
 		actionButton("unmute");
+		emit(picture("unmute","default"));
 		mute = !mute;
 	}
 	else
 	{
 		actionButton("mute");
+		emit(picture("mute","default"));
 		mute = !mute;
 	}
 }
@@ -389,11 +391,13 @@ void KSCD::playShortcut()
 	if (!play)
 	{
 		actionButton("play");
+		emit(picture("play","default"));
 		play = !play;
 	}
 	else
 	{
 		actionButton("pause");
+		emit(picture("pause","default"));
 		play = !play;
 	}
 }
@@ -403,11 +407,13 @@ void KSCD::randomShortcut()
 	if (!random)
 	{
 		actionButton("p_random");
+		emit(picture("p_random","default"));
 		random = !random;
 	}
 	else
 	{
 		actionButton("random");
+		emit(picture("random","default"));
 		random = !random;
 	}
 }
@@ -417,11 +423,13 @@ void KSCD::looptrackShortcut()
 	if (!looptrack)
 	{
 		actionButton("looptrack");
+		emit(picture("looptrack","default"));
 		looptrack = !looptrack;
 	}
 	else
 	{
 		actionButton("loop");
+		emit(picture("loop","default"));
 		looptrack = !looptrack;
 	}
 }
@@ -431,11 +439,13 @@ void KSCD::loopdiscShortcut()
 	if (!loopdisc)
 	{
 		actionButton("loopdisc");
+		emit(picture("loopdisc","default"));
 		loopdisc = !loopdisc;
 	}
 	else
 	{
 		actionButton("loop");
+		emit(picture("loop","default"));
 		loopdisc = !loopdisc;
 	}
 }

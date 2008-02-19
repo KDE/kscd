@@ -36,8 +36,10 @@
 #include <QTimer>
 
 
-Panel::Panel(QWidget * parent):QWidget(parent)
+Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 {
+	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 
 	setAutoFillBackground(true); 
 	p_panelColor= new QPalette(Qt::black);

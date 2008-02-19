@@ -41,10 +41,10 @@
 
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {
- 	setFixedSize ( 600,400 );
- 	m_layout = new QGridLayout;
-	m_layout->setSizeConstraint(QLayout::SetFixedSize);
-
+	setWindowFlags(Qt::FramelessWindowHint);
+// 	setAttribute(Qt::WA_NoBackground);
+//  	setFixedSize ( 600,400 );
+	m_backG = new BackGround(this);
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
 	m_nextB = new NextButton(this);
@@ -55,53 +55,21 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_loopB = new LoopButton(this);
 	m_trackB = new TrackListButton(this);
 	m_volumeB = new VolumeButton(this);
-	
+	m_closeB = new CloseButton(this);
+	m_miniB = new MinimizeButton(this);
+	m_panel = new Panel(this);
+// 	m_popUp = new TitlePopUp(this);
 	
 	m_stateTrackDialog = false;
 	m_trackDlgCreated = false;
  	m_trackDlg = new TrackListDlg(parent);
 // 	createTrackWindow();
 
-	// Panel
-	m_panel = new Panel(this);
-
-//  	instantiating of kscd title popup
-	m_titlePopUp = new TitlePopUp();
-
 	// Configuration windows
 	ConfigWindow *m_config = new ConfigWindow(this);
 
-	QGridLayout* panelLayout = new QGridLayout;
-	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
-	m_time = new QLCDNumber();
-	m_time->display("00:00:00");
-// 	QTextEdit * t = new QTextEdit("<b>Welcome to KsCD !</b>");
-	m_artistLabel = new QLabel(i18n("<qt><font face=Impact>Welcome to KsCD !</font></qt>"));
-	m_artistLabel->setFixedWidth(250);
-	m_artistLabel->setAlignment(Qt::AlignCenter);
-	
-	m_trackinfoLabel = new QLabel;
-	m_trackinfoLabel->setFixedWidth(250);
-	m_trackinfoLabel->setAlignment(Qt::AlignCenter);
-
-	// Items positionment
-	m_layout->addWidget(m_ejectB, 0, 1);
-	m_layout->addWidget(m_prevB, 1, 0);
-	m_layout->addWidget(m_playB, 1, 1);
-	m_layout->addWidget(m_nextB, 1, 2);
-	m_layout->addWidget(m_stopB, 2, 1);
-	m_layout->addWidget(m_volumeB, 0,5,3,1);
-	m_layout->addWidget(m_time,1,3,1,2);
-	m_layout->addWidget(m_panel, 0,3,2,2);
-
-
-//    	m_layout->addWidget(m_volumeB, 1,5,Qt::AlignCenter);
-	m_layout->addWidget(m_randB, 3, 0, Qt::AlignCenter);
-	m_layout->addWidget(m_loopB, 3, 2, Qt::AlignCenter);
-	m_layout->addWidget(m_muteB,0, 6, Qt::AlignCenter);
-	m_layout->addWidget(m_trackB, 3, 6, Qt::AlignCenter);
-
-	setLayout(m_layout);
+// 	QGridLayout* panelLayout = new QGridLayout;
+// 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
 	show();
 
 	connect(m_stopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
@@ -131,12 +99,11 @@ KscdWindow::~KscdWindow()
 	delete m_ejectB;
 	delete m_muteB;
 	delete m_trackB;
-
-
-	hideTitlePopUp();
-	delete m_titlePopUp;
-
-	delete m_layout;
+	delete m_panel;
+	delete m_closeB;
+	delete m_backG;
+	delete m_miniB;
+// 	delete /*m_popUp*/;
 
 	delete m_trackDlg;
 }
@@ -175,15 +142,15 @@ void KscdWindow :: doubleClickedEvent(int pos)
  	emit(trackClicked(pos));
 }
 
-void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)
-{
-	m_layout->addWidget((QWidget*)ss, 2, 3,1,2);
-}
-void KscdWindow::addVolumeSlider(Phonon::VolumeSlider *vs)
-{
-	m_layout->addWidget((QWidget*)vs, 1, 4);
-
-}
+// void KscdWindow::addSeekSlider(Phonon::SeekSlider *ss)
+// {
+// 	m_layout->addWidget((QWidget*)ss, 2, 3,1,2);
+// }
+// void KscdWindow::addVolumeSlider(Phonon::VolumeSlider *vs)
+// {
+// 	m_layout->addWidget((QWidget*)vs, 1, 4);
+// 
+// }
 
 
 void KscdWindow::setTime(qint64 pos)
@@ -195,7 +162,7 @@ void KscdWindow::setTime(qint64 pos)
 
 	QString result;
 	QTextStream(&result) << md << mu << ":" << sd << su;
-	m_time->display(result);
+// 	m_time->display(result);
 }
 
 /**
@@ -217,13 +184,13 @@ void KscdWindow::showTrackinfoLabel(QString infoStatus)
 /**
 * hide the title popUp
 */
-void KscdWindow::hideTitlePopUp()
-{
-	if(m_titlePopUp != NULL)
-	{
-		m_titlePopUp->hide();
-	}
-}
+// void KscdWindow::hideTitlePopUp()
+// {
+// 	if(m_titlePopUp != NULL)
+// 	{
+// 		m_titlePopUp->hide();
+// 	}
+// }
 
 /**
  * Links treatments with the UI

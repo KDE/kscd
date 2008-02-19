@@ -30,44 +30,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#include "stopbutton.h"
+#ifndef MINIMIZEBUTTON_H_
+#define MINIMIZEBUTTON_H_
 
-StopButton::StopButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
-{
-	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
-	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
-}
+#include <QWidget>
+#include <QString>
+#include <QRegion>
+#include <QMouseEvent>
+#include <QEvent>
+#include <kdebug.h>
+#include "kscdwidget.h"
 
-StopButton::~StopButton()
+class MinimizeButton:public KscdWidget
 {
-}
+	Q_OBJECT
+public:
+	MinimizeButton(QWidget * parent=0, QString sName="minimize");
+	virtual ~MinimizeButton();
 
-void StopButton :: mousePressEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-		m_state = "pressed";
-		m_id = m_name + "_" + m_state;
-		emit(needRepaint());
-	}
-	else
-	{
-		event->ignore();
-	}
-}
+private:
+ 	void mousePressEvent(QMouseEvent * event);
+ 	void mouseReleaseEvent(QMouseEvent * event);
+};
 
-void StopButton :: mouseReleaseEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-		m_state = "over";
-		m_id = m_name + "_" + m_state;
-		emit(buttonClicked(m_name));
-	}
-	else
-	{
-		event->ignore();
-	}
-}
+#endif /*MINIMIZEBUTTON_H_*/

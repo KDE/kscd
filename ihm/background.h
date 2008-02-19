@@ -30,44 +30,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#include "stopbutton.h"
+#ifndef MAINWINDOW_H_
+#define MAINWINDOW_H_
 
-StopButton::StopButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
-{
-	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
-	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
-}
+#include <QWidget>
+#include <QString>
+#include <QRegion>
+#include <QMouseEvent>
+#include <QEvent>
+#include <kdebug.h>
+#include "kscdwidget.h"
 
-StopButton::~StopButton()
+class BackGround:public KscdWidget
 {
-}
+	Q_OBJECT
+public:
+	BackGround(QWidget * parent=0, QString sName="kscdBack");
+	virtual ~BackGround();
+};
 
-void StopButton :: mousePressEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-		m_state = "pressed";
-		m_id = m_name + "_" + m_state;
-		emit(needRepaint());
-	}
-	else
-	{
-		event->ignore();
-	}
-}
-
-void StopButton :: mouseReleaseEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-		m_state = "over";
-		m_id = m_name + "_" + m_state;
-		emit(buttonClicked(m_name));
-	}
-	else
-	{
-		event->ignore();
-	}
-}
+#endif /*MAINWINDOW_H_*/

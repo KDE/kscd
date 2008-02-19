@@ -34,7 +34,8 @@
 
 PreviousButton::PreviousButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
-	m_region = new QRegion(x(),y(),x() + width(),y()+height(),QRegion::Ellipse);
+	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 }
 
 PreviousButton::~PreviousButton()
@@ -43,7 +44,7 @@ PreviousButton::~PreviousButton()
 
 void PreviousButton :: mousePressEvent(QMouseEvent *event)
 {
-	if(m_region->contains(event->pos()))
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 		{
 			event->accept();
 			m_state = "pressed";
@@ -58,7 +59,7 @@ void PreviousButton :: mousePressEvent(QMouseEvent *event)
 
 void PreviousButton :: mouseReleaseEvent(QMouseEvent *event)
 {
-	if(m_region->contains(event->pos()))
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
 		m_state = "over";

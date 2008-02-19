@@ -43,7 +43,7 @@
 #include <QLabel>
 
 #include <QModelIndex>
-
+#include <QPalette>
 #include <QTableWidget>
 #include <QTableView>
 #include <QStringList>
@@ -67,8 +67,11 @@
 #include "volumebutton.h"
 #include "cddbmanager.h"
 #include "tracklistdlg.h"
+#include "closebutton.h"
+#include "minimizebutton.h"
+#include "background.h"
 #include "panel.h"
-#include "ihm/titlePopUp.h"
+#include "titlePopUp.h"
 #include <phonon/seekslider.h>
 #include <phonon/volumeslider.h>
 
@@ -76,13 +79,12 @@
 #include <QMainWindow>
 
 
-
 class KscdWindow:public QWidget
 {
 	Q_OBJECT
 
 private:
-	QGridLayout *m_layout;
+// 	QGridLayout *m_layout;
 	KscdWidget *m_stopB;
 	KscdWidget *m_playB;
 	KscdWidget *m_prevB;
@@ -93,14 +95,17 @@ private:
 	KscdWidget *m_loopB;
 	KscdWidget *m_trackB;
 	KscdWidget *m_volumeB;
-
-	QLCDNumber * m_time;
+	KscdWidget *m_closeB;
+	KscdWidget *m_backG;
+	KscdWidget *m_miniB;
+	Panel *m_panel;
+// 	KscdWidget *m_popUp;
+// 	QLCDNumber * m_time;
 	TrackListDlg *m_trackDlg;
 
-
-	QLabel * m_artistLabel ;
-	QLabel * m_trackinfoLabel ;
-	Panel *m_panel;
+// 	QLabel * m_time;
+// 	QLabel * m_artistLabel ;
+// 	QLabel * m_trackinfoLabel ;
 
 protected:
 	 /**
@@ -113,7 +118,6 @@ protected:
 	 */
 	void closeTrackDialog();
 
-	TitlePopUp *m_titlePopUp;
 
 	/** The dialog track state : true = visible / false = hide */
 	bool m_stateTrackDialog;
@@ -136,11 +140,11 @@ public:
 
 	Panel *getPanel();
 	
-	void addSeekSlider(Phonon::SeekSlider *ss);
-	void addVolumeSlider(Phonon::VolumeSlider *vs);
+// 	void addSeekSlider(Phonon::SeekSlider *ss);
+// 	void addVolumeSlider(Phonon::VolumeSlider *vs);
 	
 public slots:
-	void hideTitlePopUp();
+// 	void hideTitlePopUp();
 	void catchButton(QString);
 	void catchVolume(qreal);
 	void changePicture(QString, QString);

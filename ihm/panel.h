@@ -40,9 +40,9 @@
 
 #include <QLCDNumber>
 #include <QPalette>
+#include "kscdwidget.h"
 
-
-class Panel:public QWidget
+class Panel:public KscdWidget
 {
 	Q_OBJECT
 private:
@@ -61,7 +61,7 @@ private:
 	QLabel * l_volume;
 	QLabel * l_time;
 public:
-	Panel(QWidget * parent=0);
+	Panel(QWidget * parent=0, QString sName="panel");
 	virtual ~Panel();
 
 	QString getTitle();

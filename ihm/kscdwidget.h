@@ -36,6 +36,7 @@
 #include <QSvgRenderer>
 #include <QWidget>
 #include <QRegion>
+#include <QRectF>
 #include <QMouseEvent>
 #include <KStandardDirs>
 #include <QPainter>
@@ -47,7 +48,7 @@ class KscdWidget:public QWidget
 	Q_OBJECT
 
 protected:
-	QRegion *m_region;
+	QRegion *m_bounds;
 	QString m_state;
 	QString m_name;
 	QString m_file;
@@ -67,7 +68,7 @@ public:
 	void loadPicture(QString,QString);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
-	
+
 signals:
 	void needRepaint();
 	void changePicture();

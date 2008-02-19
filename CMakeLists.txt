@@ -43,8 +43,11 @@ set(kscd_SRCS
 	ihm/volumebutton.cpp
 	ihm/panel.cpp
 	ihm/configwindow.cpp
-	ihm/titlePopUp.cpp
+# 	ihm/titlePopUp.cpp
 	ihm/tracklistdlg.cpp
+	ihm/background.cpp
+	ihm/closebutton.cpp
+	ihm/minimizebutton.cpp
 )
 
 set(kscd_Resources ihm/skin)

@@ -34,16 +34,13 @@
 
 VolumeButton::VolumeButton(QWidget * parent,QString sName,qreal value):KscdWidget(sName,parent)
 {
-  	m_region = new QRegion(x(),y(),x()+width(),y()+height(),QRegion::Ellipse);
-
+	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 	m_vValue = value;
 	m_angle = valueToAngle(m_vValue);
 	m_centerX = width()/2;
 	m_centerY = height()/2;
 	m_move = false;
-	kDebug()<<"start m_value:"<<m_vValue;
-	kDebug()<<"start m_angle:"<<m_angle;
-// 	setEnabled(true);
 }
 
 VolumeButton::~VolumeButton()
@@ -52,15 +49,11 @@ VolumeButton::~VolumeButton()
 
 void VolumeButton :: mousePressEvent(QMouseEvent *event)
 {
-	if(m_region->contains(event->pos()))
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
 		m_posX = event->x();
 		m_posY = event->y();
-		kDebug()<<"press m_posX:"<<m_posX;
-		kDebug()<<"press m_posY:"<<m_posY;
-		kDebug()<<"press m_angle:"<<m_angle;
-		
 		m_move =true;
 		grabMouse(Qt::ClosedHandCursor);
 	}
@@ -72,7 +65,7 @@ void VolumeButton :: mousePressEvent(QMouseEvent *event)
 // 
 void VolumeButton :: mouseMoveEvent(QMouseEvent *event)
 {
-      if(m_region->contains(event->pos()) && m_move == true){
+      if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()) && m_move == true){
 	    event->accept();
 
 	    //find the angle
@@ -83,10 +76,6 @@ void VolumeButton :: mouseMoveEvent(QMouseEvent *event)
 	    qreal c=(qreal)sqrt((m_centerX - event->x())*(m_centerX - event->x()) + (m_centerY - event->y())*(m_centerY - event->y()));
 	    	//find angle in radian between last point, center point and the new point
 		qreal A=(qreal)acos((b*b+c*c-a*a)/(2*b*c));
-	    
-	    kDebug()<<"move A:"<<A;
-	    kDebug()<<"move A degree:"<<(180 * (A))/3.1415;
-	    kDebug()<<"move m_angle:"<<m_angle;
 		
 	//sound must be higher
 	if(event->x()>m_centerX && event->y()< m_posY 
@@ -133,7 +122,6 @@ void VolumeButton :: mouseReleaseEvent(QMouseEvent *event)
 void VolumeButton :: wheelEvent(QWheelEvent *event)
 {
 	qreal step = valueToAngle((event->delta()/120)*wheelStep);
-	kDebug() << "step " << step ;
 	
 	if((m_angle + step)>=0 && (m_angle + step)<=250)
 	{	
@@ -142,8 +130,6 @@ void VolumeButton :: wheelEvent(QWheelEvent *event)
 		m_vValue += (event->delta()/120)*wheelStep;
 		emit(volumeChange(m_vValue));
 		rotation(m_angle);
-		kDebug() << "m_angle " << m_angle ;
-		kDebug() << "m_vValue " << m_vValue ;
 	}
 	else
 	{

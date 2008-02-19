@@ -34,7 +34,8 @@
 
 RandomButton::RandomButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
-	m_region = new QRegion(x(),y(),x() + width(),y()+height(),QRegion::Ellipse);
+	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 }
 
 RandomButton::~RandomButton()
@@ -43,7 +44,7 @@ RandomButton::~RandomButton()
 
 void RandomButton :: mousePressEvent(QMouseEvent *event)
 {
- 	if(m_region->contains(event->pos()))
+ 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
  	{
  		event->accept();
 		m_state = "pressed";
@@ -65,7 +66,7 @@ void RandomButton :: mousePressEvent(QMouseEvent *event)
 
 void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
 {
-	if(m_region->contains(event->pos()))
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
 		m_state = "over";
