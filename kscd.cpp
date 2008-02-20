@@ -107,8 +107,9 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(conf,SIGNAL(panelColorChanged(QColor)),getPanel(),SLOT(setPanelColor(QColor)));
 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
 
-	QAction* configure = new QAction(i18n("Configure..."), this);
+	configure = new QAction(i18n("Configure..."), this);
 	addAction(configure);
+	configure->setShortcut(tr("c"));
 	connect(configure, SIGNAL(triggered()), conf, SLOT(show()));
 
 // Experimental Function
@@ -123,6 +124,8 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	random = false;
 	looptrack = false;
 	loopdisc = false;
+	//For User Shortcuts Configuration
+	connect(conf,SIGNAL(ShortcutChanged(QString,QString)),this,SLOT(setShortcut(QString,QString)));
 }
 
 KSCD::~KSCD()
@@ -289,6 +292,9 @@ void KSCD::setDefaultShortcuts()
 	//Done in constructor
 
 	//cddb window
+	//Done in constructor
+
+	//Configure KsCD
 	//Done in constructor	
 
 	//tracklist
@@ -307,64 +313,80 @@ void KSCD::setDefaultShortcuts()
 
 void KSCD::setShortcut(QString name, QString key)
 {
-	if (name == "play_pause")
+	kDebug()<<"SetShortcut, "<<name<<" : "<<key;
+	if (name == "Play/Pause")
 	{
 		play_pause_shortcut->setShortcut(key);
 	}
 
-	if (name == "stop")
+	if (name == "Stop")
 	{
 		stop_shortcut->setShortcut(key);
 	}
 
-	if (name == "next")
+	if (name == "Next Track")
 	{
 		next_shortcut->setShortcut(key);
 	}
 
-	if (name == "previous")
+	if (name == "Previous Track")
 	{
 		previous_shortcut->setShortcut(key);
 	}
 
-	if (name == "eject")
+	if (name == "Eject")
 	{
 		eject_shortcut->setShortcut(key);
 	}
 
-	if (name == "random")
+	if (name == "Random")
 	{
 		random_shortcut->setShortcut(key);
 	}
 
-	if (name == "looptrack")
+	if (name == "Loop Track")
 	{
 		looptrack_shortcut->setShortcut(key);
 	}
 
-	if (name == "loopdisc")
+	if (name == "Loop Disc")
 	{
 		loopdisc_shortcut->setShortcut(key);
 	}
 
-	if (name == "tracklist")
+	if (name == "Tracklist")
 	{
 		tracklist_shortcut->setShortcut(key);
 	}
 
-	if (name == "mute")
+	if (name == "Mute")
 	{
 		mute_shortcut->setShortcut(key);
 	}
 
-	if (name == "download_info")
+	if (name == "Download Info")
 	{
 		CDDBDownloadAction->setShortcut(key);
 	}
 
-	if (name == "cddbWindow")
+	if (name == "CDDB Window")
 	{
 		CDDBWindowAction->setShortcut(key);
+	}
+	
+	if (name == "Volume Up")
+	{
+		volume_up_shortcut->setShortcut(key);
+	}
+	
+	if (name == "Volume Down")
+	{
+		volume_down_shortcut->setShortcut(key);
+	}
+
+	if (name == "Configure KsCD")
+	{
+		configure->setShortcut(key);
 	}
 
 }
@@ -380,13 +402,13 @@ void KSCD::muteShortcut()
 	{
 		actionButton("unmute");
 		emit(picture("unmute","default"));
-		mute = !mute;
+		//mute = !mute;
 	}
 	else
 	{
 		actionButton("mute");
 		emit(picture("mute","default"));
-		mute = !mute;
+		//mute = !mute;
 	}
 }
 
@@ -396,13 +418,13 @@ void KSCD::playShortcut()
 	{
 		actionButton("play");
 		emit(picture("play","default"));
-		play = !play;
+		//play = !play;
 	}
 	else
 	{
 		actionButton("pause");
 		emit(picture("pause","default"));
-		play = !play;
+		//play = !play;
 	}
 }
 
@@ -412,13 +434,13 @@ void KSCD::randomShortcut()
 	{
 		actionButton("p_random");
 		emit(picture("p_random","default"));
-		random = !random;
+		//random = !random;
 	}
 	else
 	{
 		actionButton("random");
 		emit(picture("random","default"));
-		random = !random;
+		//random = !random;
 	}
 }
 
@@ -428,13 +450,13 @@ void KSCD::looptrackShortcut()
 	{
 		actionButton("looptrack");
 		emit(picture("looptrack","default"));
-		looptrack = !looptrack;
+		//looptrack = !looptrack;
 	}
 	else
 	{
 		actionButton("loop");
 		emit(picture("loop","default"));
-		looptrack = !looptrack;
+		//looptrack = !looptrack;
 	}
 }
 
@@ -444,13 +466,13 @@ void KSCD::loopdiscShortcut()
 	{
 		actionButton("loopdisc");
 		emit(picture("loopdisc","default"));
-		loopdisc = !loopdisc;
+		//loopdisc = !loopdisc;
 	}
 	else
 	{
 		actionButton("loop");
 		emit(picture("loop","default"));
-		loopdisc = !loopdisc;
+		//loopdisc = !loopdisc;
 	}
 }
 
@@ -502,6 +524,7 @@ void KSCD::actionButton(QString name)
 			}
 		}
 		emit(picture(name,state));
+		play = !play;
 	}
 	if(name=="pause")
 	{
@@ -520,6 +543,7 @@ void KSCD::actionButton(QString name)
 			}
 		}
 		emit(picture(name,state));
+		play = !play;
 	}
 	if(name=="next")
 	{
@@ -595,38 +619,48 @@ void KSCD::actionButton(QString name)
 	{
 		devices->mute(false);
 		emit(picture(name,state));
+		mute = !mute;
 	}
 	if(name=="unmute")
 	{
 		devices->mute(true);
 		emit(picture(name,state));
+		mute = !mute;
 	}
 	if(name == "random")
 	{
 		kDebug() << 5;
 		devices->setRandom(false);
 		emit(picture(name,state));
+		random = !random;
 	}
 	if(name == "p_random")
 	{
 		kDebug() << 6;
 		devices->setRandom(true);
 		emit(picture(name,state));
+		random = !random;
 	}
 	if(name == "loop")
 	{
 		devices->setLoopMode(NoLoop);
 		emit(picture(name,state));
+		looptrack = false;
+		loopdisc = false;
 	}
 	if(name == "looptrack")
 	{
 		devices->setLoopMode(LoopOne);
 		emit(picture(name,state));
+		looptrack = true;
+		loopdisc = false;
 	}
 	if(name == "loopdisc")
 	{
 		devices->setLoopMode(LoopAll);
 		emit(picture(name,state));
+		loopdisc = true;
+		looptrack = false;
 	}
 	if(name=="minimize")
 	{

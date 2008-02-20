@@ -120,6 +120,7 @@ private:
 	bool looptrack;
 	bool loopdisc;
 	
+	QAction* configure;
 	QAction* play_pause_shortcut;
 	QAction* stop_shortcut;
 	QAction* next_shortcut;
@@ -143,8 +144,7 @@ public:
 	void writeSettings();
 	HWControler * getDevices();
 // 	KCompactDisc* getCd(); // kept for CDDB compatibility
-	void setShortcut(QString, QString);
-
+	
 protected:
 	void setDefaultShortcuts();
 	void setContextualMenu();
@@ -173,6 +173,8 @@ public slots:
 	void volumeUpShortcut();
 	void volumeDownShortcut();
 	void actionButton(QString);
+	void setShortcut(QString, QString);
+
 };
 
 #endif

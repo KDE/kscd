@@ -34,21 +34,21 @@
 #include "hwcontroler.h"
 #include "audiocd.h"
 #include "hwcontroler_test.h"
-/*
+
 void HWControler_test::testEject()
 {
 	QCOMPARE(1, 1);
 }
-
+/*
 void HWControler_test :: selectSpeaker_test()
 {
 }
-*/
+
 void HWControler_test :: eject_test()
 {
 	
 }
-/*
+
 void HWControler_test :: play_test()
 {
 }
@@ -60,22 +60,27 @@ void HWControler_test :: nextTrack_test()
 
 void HWControler_test :: prevTrack_test()
 {
+
 }
 
 void HWControler_test :: stop_test()
 {
+
 }
 
 void HWControler_test :: pause_test()
 {
+
 }
 
 void HWControler_test :: mute_test()
 {
+
 }
 
 void HWControler_test :: isCdInserted_test()
 {
+
 }*/
 
 QTEST_KDEMAIN_CORE(HWControler_test)

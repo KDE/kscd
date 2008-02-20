@@ -44,6 +44,7 @@
 #include <QCheckBox>
 #include <QList>
 #include <QColor>
+#include <QLineEdit>
 
 #include <kcolorbutton.h>
 #include <kdebug.h>
@@ -59,7 +60,7 @@ class ConfigWindow:public QMainWindow
 	QTabWidget * tab;
 	QWidget * hwPage;
 	QWidget * panelPage;
-	QWidget * shortcutsPage;
+	QWidget * scPage;
 
 	QGridLayout * hwGrid;
 	QGridLayout * panelGrid;
@@ -84,12 +85,63 @@ class ConfigWindow:public QMainWindow
 	QLabel * lTextColor;
 	KColorButton * cbText;
 
+// Shortcuts conf
+	QLineEdit* playShortcut;
+	QLineEdit* stopShortcut;
+	QLineEdit* ejectShortcut;
+	QLineEdit* nextShortcut;
+	QLineEdit* previousShortcut;
+	QLineEdit* volumeUpShortcut;
+	QLineEdit* volumeDownShortcut;
+	QLineEdit* randomShortcut;
+	QLineEdit* loopTrackShortcut;
+	QLineEdit* loopDiscShortcut;
+	QLineEdit* trackListShortcut;
+	QLineEdit* cddbWindowShortcut;
+	QLineEdit* downloadInfoShortcut;
+	QLineEdit* muteShortcut;
+	QLineEdit* configureShortcut;
+	
+	QLabel* playLabel;
+	QLabel* stopLabel;
+	QLabel* ejectLabel;
+	QLabel* nextLabel;
+	QLabel* previousLabel;
+	QLabel* volumeUpLabel;
+	QLabel* volumeDownLabel;
+	QLabel* randomLabel;
+	QLabel* loopTrackLabel;
+	QLabel* loopDiscLabel;
+	QLabel* trackListLabel;
+	QLabel* cddbWindowLabel;
+	QLabel* downloadInfoLabel;
+	QLabel* muteLabel;
+	QLabel* configureLabel;
+	
+//------------------------------------
+
+
 	QList<int> actionsCalled;
 
 enum actions{
 	Eject = 1,
 	PanelColor = 2,
-	TextColor = 3
+	TextColor = 3,
+	PlayShortcut = 4,
+	StopShortcut = 5,
+	EjectShortcut = 6,
+	NextShortcut = 7,
+	PreviousShortcut = 8,
+	VolumeUpShortcut = 9,
+	VolumeDownShortcut = 10,
+	RandomShortcut = 11,
+	LoopTrackShortcut = 12,
+	LoopDiscShortcut = 13,
+	TrackListShortcut = 14,
+	CDDBWindowShortcut = 15,
+	DownloadInfoShortcut = 16,
+	MuteShortcut = 17,
+	ConfigureShortcut = 18	
 };
 
 
@@ -107,6 +159,7 @@ signals:
 	void ejectChanged(bool b);
 	void panelColorChanged(QColor c);
 	void textColorChanged(QColor c);
+	void ShortcutChanged(QString name, QString key);
 
 private slots:
 	void apply();
@@ -114,7 +167,22 @@ private slots:
 	void catchCBEject();
 	void catchPanelColor();
 	void catchTextColor();
-
+	void catchPlayShortcut();
+	void catchStopShortcut();
+	void catchEjectShortcut();
+	void catchNextShortcut();
+	void catchPreviousShortcut();
+	void catchVolumeUpShortcut();
+	void catchVolumeDownShortcut();
+	void catchRandomShortcut();
+	void catchLoopTrackShortcut();
+	void catchLoopDiscShortcut();
+	void catchTrackListShortcut();
+	void catchCddbWindowShortcut();
+	void catchDownloadInfoShortcut();
+	void catchMuteShortcut();
+	void catchConfigureShortcut();
+		
 };
 
 #endif /*EJECTBUTTON_H_*/
