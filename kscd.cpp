@@ -46,7 +46,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(this,SIGNAL(actionVolume(qreal)), this, SLOT(changeVolume(qreal)));
 
 	devices = new HWControler();
-	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(setTime(qint64)));
+	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(catchtime(qint64)));
 //  	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
 // 	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
 // 	vs->setOrientation(Qt::Vertical);
@@ -176,11 +176,12 @@ void KSCD::restoreArtistLabel()
 // 		}
 		artist = m_MBManager->getDiscInfo().Artist;
 		title = m_MBManager->getDiscInfo().Title;
-		showArtistLabel(QString("%1 - %2").arg(artist, title));
+		showArtistLabel(QString("%1").arg(artist));
+		showArtistAlbum(QString("%1").arg(title));
 	}
 	else
 	{
-		showArtistLabel(i18n("<b>Welcome to KsCD !</b>"));
+		showArtistLabel(i18n("WELCOME!"));
 	}
 
 }
@@ -790,5 +791,10 @@ int main( int argc, char *argv[] )
 
     return a.exec();
 }
+
+void KSCD::catchtime(qint64 pos){
+	setTime(pos);
+}
+
 
 #include "kscd.moc"

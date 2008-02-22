@@ -101,16 +101,15 @@ private:
 	KscdWidget *m_closeB;
 	KscdWidget *m_backG;
 	KscdWidget *m_miniB;
-	Panel *m_panel;
 // 	KscdWidget *m_popUp;
-// 	QLCDNumber * m_time;
+//	QLCDNumber * m_time;
 	TrackListDlg *m_trackDlg;
-
-// 	QLabel * m_time;
+//	QLabel * m_time;
 // 	QLabel * m_artistLabel ;
 // 	QLabel * m_trackinfoLabel ;
-
+	Panel *m_panel;
 protected:
+	
 	 /**
 	 * Create the track list dialog
 	 */
@@ -127,6 +126,7 @@ protected:
 
 	/** The state creation of the track dialog */
 	bool m_trackDlgCreated;
+	
 public:
 	/**
  	* Creates a new Kscdwindow instance
@@ -138,11 +138,11 @@ public:
 	 */
 	virtual ~KscdWindow();
 
-	QLabel *getArtistLabel();
-	QLabel *getTrackinfoLabel();
+// 	QLabel *getArtistLabel();
+// 	QLabel *getTrackinfoLabel();
 
-	Panel *getPanel();
-	
+ 	KscdWidget * getPanel();
+	void setTime(qint64 pos);
 // 	void addSeekSlider(Phonon::SeekSlider *ss);
 // 	void addVolumeSlider(Phonon::VolumeSlider *vs);
 	
@@ -151,15 +151,15 @@ public slots:
 	void catchButton(QString);
 	void catchVolume(qreal);
 	void changePicture(QString, QString);
-	void setTime(qint64 pos);
+	void doubleClickedEvent(int);
 	void showArtistLabel(QString);
 	void showTrackinfoLabel(QString);
-
-	void doubleClickedEvent(int);
-
+	void showArtistAlbum(QString);
+	//void setTime(qint64 pos);
 signals:
 	void actionClicked(QString);
 	void actionVolume(qreal);
 	void trackClicked(int);
+
 };
 #endif /*KSCDWINDOW_H_*/

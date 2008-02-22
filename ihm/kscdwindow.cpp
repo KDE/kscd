@@ -85,8 +85,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),SLOT(catchVolume(qreal)));
 
-	connect(m_trackDlg,SIGNAL(itemClicked(int))
-		,this,SLOT(doubleClickedEvent(int)));
+	connect(m_trackDlg,SIGNAL(itemClicked(int)),this,SLOT(doubleClickedEvent(int)));
 	
 	connect(m_miniB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_closeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
@@ -150,33 +149,6 @@ void KscdWindow :: doubleClickedEvent(int pos)
 // 	m_layout->addWidget((QWidget*)ss, 2, 3,1,2);
 // }
 
-void KscdWindow::setTime(qint64 pos)
-{
-	qint64 md = ((pos/1000)/60)/10;
-	qint64 mu = ((pos/1000)/60)%10;
-	qint64 sd = ((pos/1000)%60)/10;
-	qint64 su = ((pos/1000)%60)%10;
-
-	QString result;
-	QTextStream(&result) << md << mu << ":" << sd << su;
-// 	m_time->display(result);
-}
-
-/**
- * Manages the Artist label
- */
-void KscdWindow::showArtistLabel(QString infoStatus)
-{
-	m_panel->setAuthor(&infoStatus);
-}
-
-/**
- * Manages the Trackinfo Label
- */
-void KscdWindow::showTrackinfoLabel(QString infoStatus)
-{
-	m_panel->setTitle(&infoStatus);
-}
 
 /**
 * hide the title popUp
@@ -275,6 +247,30 @@ void KscdWindow::changePicture(QString name,QString state)
 		m_miniB->loadPicture(name,state);
 	}
 }
-Panel * KscdWindow::getPanel(){
+KscdWidget * KscdWindow::getPanel(){
 	return m_panel;
+}
+
+/**
+ * Manages the Trackinfo Label
+ */
+void KscdWindow::showTrackinfoLabel(QString infoStatus)
+{
+	m_panel->setTitle(&infoStatus);
+}
+
+/**
+ * Manages the Artist label
+ */
+void KscdWindow::showArtistLabel(QString infoStatus)
+{
+	m_panel->setAuthor(&infoStatus);
+}
+void KscdWindow::showArtistAlbum(QString infoStatus)
+{
+	m_panel->setAlbum(&infoStatus);
+}
+
+void KscdWindow::setTime(qint64 pos){
+	m_panel->setTime(pos);
 }

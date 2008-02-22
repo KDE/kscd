@@ -94,6 +94,7 @@
 #include <kuniqueapplication.h>
 #include <kcmoduleloader.h>
 #include <ktoolinvocation.h>
+#include "panel.h"
 
 // class CDDBDlg;
 // class DockWidget;
@@ -174,7 +175,7 @@ public slots:
 	void volumeDownShortcut();
 	void actionButton(QString);
 	void setShortcut(QString, QString);
-
+	void catchtime(qint64 pos);
 };
 
 #endif

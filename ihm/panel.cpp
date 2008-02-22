@@ -16,7 +16,7 @@
  * -----------------------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU General Public License as published byfor the time
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
@@ -44,23 +44,21 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	setAutoFillBackground(true); 
 	p_panelColor= new QPalette(Qt::black);
 	setPalette(*p_panelColor);
-	vbl_layout = new QVBoxLayout;
+	vbl_layout = new QGridLayout();
 
 	index=0;
 	l_title = new QLabel("WELCOME!");
 
-	vbl_layout->addWidget(l_title);
-	l_album = new QLabel();
-	vbl_layout->addWidget(l_album);
-	l_author = new QLabel("                                                     ");
-	vbl_layout->addWidget(l_author);
-	l_volume = new QLabel();
-	vbl_layout->addWidget(l_volume);
-	l_time = new QLabel();
-	vbl_layout->addWidget(l_time);
-
+	vbl_layout->addWidget(l_title,5,0);
+	l_album = new QLabel("");
+	vbl_layout->addWidget(l_album, 4,0);
+	l_author = new QLabel("");
+	vbl_layout->addWidget(l_author, 3, 0);
+//	l_volume = new QLabel();
+//	vbl_layout->addWidget(l_volume, 4, 1);
+	l_time = new QLabel("0 0 : 0 0");
+	vbl_layout->addWidget(l_time, 6, 0);
 	setLayout(vbl_layout);
-
 
 	QTimer * timer = new QTimer ();
 	timer->setSingleShot(false);
@@ -134,12 +132,12 @@ void Panel::setTitle(QString * title)
 }
 void Panel::setAuthor(QString * author)
 {
-	l_title->setText(*author);
+	l_author->setText(*author);
 
 }
 void Panel::setAlbum(QString * album)
 {
-	l_title->setText(*album);
+	l_album->setText(*album);
 
 }
 void Panel::setVolume(QString * volume)
@@ -147,11 +145,7 @@ void Panel::setVolume(QString * volume)
 	l_title->setText(*volume);
 
 }
-void Panel::setTime(QString * time)
-{
-	l_time->setText(*time);
 
-}
 void Panel::setPanelColor(QColor c){
 	const QPalette *p = new QPalette(c);
 	setPalette(*p);
@@ -191,3 +185,15 @@ void Panel :: mouseReleaseEvent(QMouseEvent *event)
 		event->ignore();
 	}
 }
+
+void Panel::setTime(qint64 pos)
+{
+	qint64 md = ((pos/1000)/60)/10;
+	qint64 mu = ((pos/1000)/60)%10;
+	qint64 sd = ((pos/1000)%60)/10;
+	qint64 su = ((pos/1000)%60)%10;
+	QString result;
+	QTextStream(&result) << md << " " << mu << " : " << sd << " " << su;
+	l_time->setText(result);
+}
+

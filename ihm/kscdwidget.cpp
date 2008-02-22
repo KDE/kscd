@@ -37,7 +37,7 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 	m_state = "default";
  	m_name = sName;
 	m_id = m_name + "_" + m_state;
-	m_path = KStandardDirs::installPath("data") + "/kscd/skin/default.svg";
+	m_path = KStandardDirs::installPath("data") + "/kscd/skin/Melon.svg";
 	m_renderer = new QSvgRenderer(m_path,this);
 	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
 			m_renderer->boundsOnElement(m_id).height());

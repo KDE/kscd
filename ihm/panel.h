@@ -46,8 +46,9 @@ class Panel:public KscdWidget
 {
 	Q_OBJECT
 private:
+
 	QTimer * timer;
-	QVBoxLayout * vbl_layout;
+	QGridLayout * vbl_layout;
 	QLabel * l_title;
 	QLCDNumber * num_lcd;
 	QLabel * l_test;
@@ -69,17 +70,17 @@ public:
 	QString getAuthor();
 	QString getVolume();
 
+
 public slots:
+	void setTime(qint64 pos);
 	void update_panel_label();
+	void setPanelColor(QColor c);
+	void setTextColor(QColor c);
 	void setTitle(QString * title);
 	void setAuthor(QString * author);
 	void setAlbum(QString * album);
 	void setVolume(QString * volume);
-	void setTime(QString * time);
-	void setPanelColor(QColor c);
-	void setTextColor(QColor c);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
 };
-
 #endif 
