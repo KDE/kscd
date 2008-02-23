@@ -36,7 +36,7 @@
 #include <solid/opticaldrive.h>
 #include <solid/block.h>
 #include <solid/devicenotifier.h>
-
+#include <QString>
 #include <phonon/mediasource.h>
 
 #include <QString>
@@ -64,6 +64,8 @@ class AudioCD: public QObject
 		Phonon::MediaSource * getMediaSource();
 		QString getCdPath();
 		bool isCdInserted();
+		QString signature();
+
 	public slots:
 		void catchEjectPressed();
 		void reloadCD();

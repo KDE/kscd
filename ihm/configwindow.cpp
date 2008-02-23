@@ -33,8 +33,10 @@
 #include "configwindow.h"
 #include <kconfigdialog.h>
 
-ConfigWindow::ConfigWindow(QWidget * parent):QMainWindow(parent)
+ConfigWindow::ConfigWindow(KSCD * parent):QMainWindow()
 {
+
+	player = parent;
 
 	confPage = new QWidget(this);
 	lConfPage = new QVBoxLayout(this);
@@ -78,7 +80,7 @@ ConfigWindow::ConfigWindow(QWidget * parent):QMainWindow(parent)
 	lButtons->addWidget(bApply);
 	connect(bApply,SIGNAL(clicked()),this,SLOT(apply()));
 	lButtons->addWidget(bCancel);
-
+	connect(bCancel,SIGNAL(clicked()),this,SLOT(cancel()));
 	
 
 }
@@ -131,13 +133,22 @@ void ConfigWindow::setHardConfig(){
 	hwPage->setLayout(hwGrid);
 
 	cbEject = new QCheckBox(this);
-	lEject = new QLabel("Eject the CD at the end of the disc",this);
+	lEject = new QLabel("Eject the CD at the end of the disc :",this);
 
-	hwGrid->addWidget(cbEject, 0, 0);
-	hwGrid->addWidget(lEject, 0, 1);
+	hwGrid->addWidget(cbEject, 0, 1);
+	hwGrid->addWidget(lEject, 0, 0);
+
+	cbDriver = new QComboBox(this);
+	lDriver = new QLabel("Choose the primary CD Reader :");
+	for (int i = 0; i < player->getDevices()->nbCdReader() ;i++){
+		cbDriver->addItem(player->getDevices()->getCdReader(i));
+	}
+	hwGrid->addWidget(cbDriver, 1, 1);
+	hwGrid->addWidget(lDriver, 1, 0);
+
 
 	connect(cbEject,SIGNAL(stateChanged ( int )),this,SLOT(catchCBEject()));
-	
+	connect(cbDriver,SIGNAL(currentIndexChanged ( int )),this,SLOT(catchCBDriver()));
 
 }
 void ConfigWindow::setSCConfig(){
@@ -302,6 +313,8 @@ void ConfigWindow::applyAction(actions a){
 			kDebug()<<"EMIT configure!";
 			emit(ShortcutChanged(configureLabel->text(),configureShortcut->text()));
 			break;
+		case DriverChanged:
+			player->getDevices()->selectCd(cbDriver->currentIndex());
 		
 	}
 
@@ -310,8 +323,16 @@ void ConfigWindow::catchCBEject(){
 	actionsCalled.append(Eject);
 	kDebug()<<"check baby check!";
 }
+void ConfigWindow::catchCBDriver(){
+	actionsCalled.append(DriverChanged);
+	kDebug()<<"Pimary Driver Changed!";
+}
 void ConfigWindow::ok(){
 	apply();
+	hide();
+}
+void ConfigWindow::cancel(){
+	actionsCalled.clear();
 	hide();
 }
 void ConfigWindow::catchPanelColor(){

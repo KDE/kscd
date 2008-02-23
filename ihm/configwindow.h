@@ -45,14 +45,19 @@
 #include <QList>
 #include <QColor>
 #include <QLineEdit>
+#include <QComboBox>
 
 #include <kcolorbutton.h>
 #include <kdebug.h>
+
+#include "../kscd.h"
 
 
 class ConfigWindow:public QMainWindow
 {
 	Q_OBJECT
+
+	KSCD * player;
 
 	QWidget * confPage;
 	QVBoxLayout * lConfPage;
@@ -73,10 +78,16 @@ class ConfigWindow:public QMainWindow
 	QPushButton * bApply;
 	QPushButton * bCancel;
 
+	// Close your eyes XD
+	KSCD * kscd;
+	// You can open your eyes!
+
 // Hardware Configuration
 
 	QCheckBox * cbEject;
 	QLabel * lEject;
+	QComboBox * cbDriver;
+	QLabel * lDriver;
 
 // Panel Configuration
 	QLabel * lPanelColor;
@@ -141,12 +152,13 @@ enum actions{
 	CDDBWindowShortcut = 15,
 	DownloadInfoShortcut = 16,
 	MuteShortcut = 17,
-	ConfigureShortcut = 18	
+	ConfigureShortcut = 18,
+	DriverChanged = 19
 };
 
 
 public:
-	ConfigWindow(QWidget * parent=0);
+	ConfigWindow(KSCD *parent);
 	virtual ~ConfigWindow();
 
 private:
@@ -164,7 +176,9 @@ signals:
 private slots:
 	void apply();
 	void ok();
+	void cancel();
 	void catchCBEject();
+	void catchCBDriver();
 	void catchPanelColor();
 	void catchTextColor();
 	void catchPlayShortcut();

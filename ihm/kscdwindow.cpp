@@ -42,8 +42,13 @@
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
-// 	setAttribute(Qt::WA_NoBackground);
-//  	setFixedSize ( 600,400 );
+
+
+
+	setAttribute(Qt::WA_NoSystemBackground);
+	QColor color(Qt::transparent);
+	QPalette v_palette(QPalette::Background,color);
+	setPalette(v_palette);
 	m_backG = new BackGround(this);
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
@@ -64,10 +69,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_trackDlgCreated = false;
  	m_trackDlg = new TrackListDlg(parent);
 // 	createTrackWindow();
-
-	// Configuration windows
-	ConfigWindow *m_config = new ConfigWindow(this);
-
+	
 // 	QGridLayout* panelLayout = new QGridLayout;
 // 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
 	show();
@@ -250,6 +252,15 @@ void KscdWindow::changePicture(QString name,QString state)
 KscdWidget * KscdWindow::getPanel(){
 	return m_panel;
 }
+
+
+void  KscdWindow::paintEvent(QPaintEvent *event)
+{
+	QPainter painter(this);
+
+	painter.setBackgroundMode(Qt::TransparentMode);
+}
+
 
 /**
  * Manages the Trackinfo Label

@@ -141,8 +141,12 @@ public:
 // 	QLabel *getArtistLabel();
 // 	QLabel *getTrackinfoLabel();
 
+//	Panel *getPanel();
+	void paintEvent(QPaintEvent *event);
+
  	KscdWidget * getPanel();
 	void setTime(qint64 pos);
+
 // 	void addSeekSlider(Phonon::SeekSlider *ss);
 // 	void addVolumeSlider(Phonon::VolumeSlider *vs);
 	

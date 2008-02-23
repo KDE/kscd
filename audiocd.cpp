@@ -164,3 +164,6 @@ void AudioCD::reloadCD()
 	}
 	
 }
+QString AudioCD::signature(){
+	return odsign.udi();
+}

@@ -575,3 +575,9 @@ bool HWControler ::isEjectActivated()
 {
 	return isEjectAtTheEndOfTheCdActivated;
 }
+int HWControler ::nbCdReader(){
+	return  cdIn.size();
+}
+QString HWControler ::getCdReader(int num){
+	return cdIn[num]->signature();
+}

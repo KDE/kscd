@@ -42,7 +42,7 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 
 	setAutoFillBackground(true); 
-	p_panelColor= new QPalette(Qt::black);
+	p_panelColor= new QPalette(Qt::transparent);
 	setPalette(*p_panelColor);
 	vbl_layout = new QGridLayout();
 

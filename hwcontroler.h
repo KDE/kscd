@@ -33,6 +33,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QString>
 #include <solid/device.h>
 #include <solid/opticaldisc.h>
 
@@ -105,6 +106,8 @@ class HWControler : public QObject
 		int getTotalTrack();
 		bool isDiscValid();
 		bool isEjectActivated();
+		int nbCdReader();
+		QString getCdReader(int num);
 
 	private:
 		void loadPlayList();
