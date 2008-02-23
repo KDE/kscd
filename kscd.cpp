@@ -34,6 +34,13 @@ bool stoppedByUser = true;
 
 KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 {
+	QString commande = "cp "+KStandardDirs::installPath("data") + "kscd/ihm/skin/TRANA___.TTF ~/.fonts/TRANA___.TTF";
+char * chemin = (char *)malloc(1024 * sizeof(char));
+kDebug () << commande;
+	strcpy(chemin, commande.toAscii().data());
+	system(chemin);
+	//system("cp "+KStandardDirs::installPath("data") + "/kscd/ihm/skin/TRANGA__.TTF ~/.fonts/TRANGA__.TTF");
+  
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 
 /**
@@ -740,7 +747,7 @@ int main( int argc, char *argv[] )
     aboutData.addCredit(ki18n("Steven Grimm"), ki18n("Workman library"));
     aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
     aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
-
+    
     KCmdLineArgs::init( argc, argv, &aboutData );
 
     KCmdLineOptions options;
