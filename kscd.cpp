@@ -34,8 +34,9 @@ bool stoppedByUser = true;
 
 KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 {
-	QString commande = "cp "+KStandardDirs::installPath("data") + "kscd/ihm/skin/TRANA___.TTF ~/.fonts/TRANA___.TTF";
-char * chemin = (char *)malloc(1024 * sizeof(char));
+	QString commande = "cp "+KStandardDirs::installPath("data") + "kscd/ihm/skin/*.TTF ~/.fonts/";
+	commande.replace("/ihm/","/");
+	char * chemin = (char *)malloc(1024 * sizeof(char));
 kDebug () << commande;
 	strcpy(chemin, commande.toAscii().data());
 	system(chemin);
