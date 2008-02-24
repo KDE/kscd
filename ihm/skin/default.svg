@@ -14,7 +14,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
-   sodipodi:docbase="/home/kde-devel/isi-kscd/kdemultimedia/kscd/ihm/skin"
+   sodipodi:docbase="/home/Stan/isi-kscd/kdemultimedia/kscd/ihm/skin"
    sodipodi:docname="default.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
@@ -1264,6 +1264,16 @@
        r="10.61615"
        gradientTransform="matrix(1.5519303,3.1059464e-7,-2.4386579e-7,1.2185101,-23.346722,-5.2507309)"
        gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradientlinearGradientPanelD"
+       id="linearGradient5402"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(242.4387,170.5522)"
+       x1="-0.43869507"
+       y1="-0.43869507"
+       x2="270.43869"
+       y2="9.4477758" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1276,10 +1286,10 @@
      inkscape:cx="6.0097504"
      inkscape:cy="869.06479"
      inkscape:document-units="px"
-     inkscape:current-layer="stop_default"
-     inkscape:window-width="1233"
-     inkscape:window-height="934"
-     inkscape:window-x="0"
+     inkscape:current-layer="kscd_default"
+     inkscape:window-width="1210"
+     inkscape:window-height="744"
+     inkscape:window-x="70"
      inkscape:window-y="0"
      showgrid="true"
      width="700px"
@@ -2570,29 +2580,26 @@
            id="path8463"
            inkscape:connector-type="polyline" />
       </g>
-      <g
-         id="seekSlider">
-        <rect
-           style="fill:url(#linearGradient4553);fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:0.87739015;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-           id="seekBar"
-           width="270"
-           height="9.0090809"
-           x="240.43869"
-           y="170.55223"
-           ry="4.5045404"
-           inkscape:label="#rect5395" />
-        <path
-           transform="translate(234.94757,165.05243)"
-           d="M 20 10 A 10 10 0 1 1  0,10 A 10 10 0 1 1  20 10 z"
-           sodipodi:ry="10"
-           sodipodi:rx="10"
-           sodipodi:cy="10"
-           sodipodi:cx="10"
-           id="seekCursor_default"
-           style="color:#000000;fill:url(#radialGradient3507);fill-opacity:1;fill-rule:evenodd;stroke:#550000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-           sodipodi:type="arc"
-           inkscape:label="#path4390" />
-      </g>
+      <rect
+         inkscape:label="#rect5395"
+         ry="4.5045404"
+         y="170.55223"
+         x="242.43869"
+         height="9.0090809"
+         width="270"
+         id="seekSlider_default"
+         style="fill:url(#linearGradient5402);fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:0.87739015;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:label="#path4390"
+         sodipodi:type="arc"
+         style="color:#000000;fill:url(#radialGradient3507);fill-opacity:1;fill-rule:evenodd;stroke:#550000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="seekCursor_default"
+         sodipodi:cx="10"
+         sodipodi:cy="10"
+         sodipodi:rx="10"
+         sodipodi:ry="10"
+         d="M 20 10 A 10 10 0 1 1  0,10 A 10 10 0 1 1  20 10 z"
+         transform="translate(234.94757,165.05243)" />
     </g>
     <path
        transform="translate(29.998259,330.07866)"
