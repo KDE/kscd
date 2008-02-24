@@ -48,6 +48,8 @@ set(kscd_SRCS
 	ihm/background.cpp
 	ihm/closebutton.cpp
 	ihm/minimizebutton.cpp
+	ihm/seekslider.cpp
+	ihm/seekcursor.cpp
 )
 
 set(kscd_Resources ihm/skin)

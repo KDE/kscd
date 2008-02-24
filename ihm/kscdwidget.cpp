@@ -37,7 +37,7 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 	m_state = "default";
  	m_name = sName;
 	m_id = m_name + "_" + m_state;
-	m_path = KStandardDirs::installPath("data") + "/kscd/skin/Melon.svg";
+	m_path = KStandardDirs::installPath("data") + "/kscd/skin/Remote.svg";
 	m_renderer = new QSvgRenderer(m_path,this);
 	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
 			m_renderer->boundsOnElement(m_id).height());
@@ -88,33 +88,19 @@ void KscdWidget :: paintEvent(QPaintEvent *event)
 
 void KscdWidget :: enterEvent (QEvent * event )
 {
-	if(m_name == "kscdBack" || m_name == "panel")
-	{
-		event->ignore();
-	}
-	else
-	{
-		event->accept();
-		m_state = "over";
-		m_id = m_name + "_" + m_state;
-		emit(needRepaint());
-		setToolTip(m_name);
-	}
+	event->accept();
+	m_state = "over";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
+	setToolTip(m_name);
 }
 
 void KscdWidget :: leaveEvent (QEvent * event )
 {
-	if(m_name == "kscdBack" || m_name == "panel")
-	{
-		event->ignore();
-	}
-	else
-	{
-		event->accept();
-		m_state = "default";
-		m_id = m_name + "_" + m_state;
-		emit(needRepaint());
-	}
+	event->accept();
+	m_state = "default";
+	m_id = m_name + "_" + m_state;
+	emit(needRepaint());
 }
 
 
@@ -141,6 +127,7 @@ void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
 		m_state = "over";
 		m_id = m_name + "_" + m_state;
 		emit(buttonClicked(m_name));
+		emit(needRepaint());
 	}
 	else
 	{

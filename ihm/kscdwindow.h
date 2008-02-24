@@ -71,7 +71,8 @@
 #include "background.h"
 #include "panel.h"
 #include "titlePopUp.h"
-
+#include "seekslider.h"
+#include "seekcursor.h"
 // #include "cddbmanager.h"
 #include "mbmanager.h"
 
@@ -101,13 +102,19 @@ private:
 	KscdWidget *m_closeB;
 	KscdWidget *m_backG;
 	KscdWidget *m_miniB;
-// 	KscdWidget *m_popUp;
+	KscdWidget *m_slider;
+	KscdWidget *m_cursor;
+	Panel *m_panel;
+
+	KscdWidget *m_popUp;
 //	QLCDNumber * m_time;
 	TrackListDlg *m_trackDlg;
+
+	const QPalette * p_panelColor;
+// 	QLabel * m_time;
 //	QLabel * m_time;
 // 	QLabel * m_artistLabel ;
 // 	QLabel * m_trackinfoLabel ;
-	Panel *m_panel;
 protected:
 	
 	 /**
@@ -126,6 +133,9 @@ protected:
 
 	/** The state creation of the track dialog */
 	bool m_trackDlgCreated;
+	
+// 	void paintEvent(QPaintEvent* event);
+
 	
 public:
 	/**
@@ -158,6 +168,8 @@ public slots:
 	void doubleClickedEvent(int);
 	void showArtistLabel(QString);
 	void showTrackinfoLabel(QString);
+	void moveWindow(QPoint);
+
 	void showArtistAlbum(QString);
 	//void setTime(qint64 pos);
 signals:

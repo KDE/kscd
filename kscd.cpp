@@ -528,8 +528,6 @@ void KSCD::actionButton(QString name)
 				devices->play();
 				restoreTrackinfoLabel();
 				restoreArtistLabel();
-
-				
 			}
 		}
 		emit(picture(name,state));

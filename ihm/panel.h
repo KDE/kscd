@@ -69,6 +69,9 @@ public:
 	QString getAlbum();
 	QString getAuthor();
 	QString getVolume();
+private:
+	void enterEvent (QEvent * event);
+	void leaveEvent (QEvent * event);
 
 
 public slots:

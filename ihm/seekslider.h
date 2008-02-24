@@ -30,39 +30,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef BACKGROUND_H_
-#define BACKGROUND_H_
+#ifndef SEEKSLIDER_H_
+#define SEEKSLIDER_H_
 
 #include <QWidget>
 #include <QString>
 #include <QRegion>
 #include <QMouseEvent>
 #include <QEvent>
-#include <QPoint>
 #include <kdebug.h>
 #include "kscdwidget.h"
 
-class BackGround:public KscdWidget
+class SeekSlider:public KscdWidget
 {
 	Q_OBJECT
-private:
-	int m_posX;
-	int m_posY;
-	QPoint mousePosition;
-	int m_deplacement;
-	bool m_move;
 public:
-	BackGround(QWidget * parent=0, QString sName="kscdBack");
-	virtual ~BackGround();
-
+	SeekSlider(QWidget * parent=0, QString sName="seekSlider");
+	virtual ~SeekSlider();
 private:
-	void mousePressEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent * event);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
-signals:
-	void moveValue(QPoint);
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
+
 };
 
-#endif /*BACKGROUND_H_*/
+#endif /*SEEKSLIDER_H_*/

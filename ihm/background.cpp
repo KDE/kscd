@@ -47,10 +47,9 @@ void BackGround :: mousePressEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		m_posX = event->x();
-		m_posY = event->y();
+		mousePosition = event->pos();
 		m_move =true;
-// 		grabMouse(Qt::ClosedHandCursor);
+		grabMouse(Qt::ClosedHandCursor);
 	}
 	else
 	{
@@ -66,12 +65,23 @@ void BackGround :: mouseReleaseEvent(QMouseEvent *event)
 
 void BackGround :: mouseMoveEvent(QMouseEvent * event)
 {
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()) && m_move == true){
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()) && m_move == true)
+	{
 		event->accept();
-// 		kDebug() << "curpos :" << event->pos();
+		emit(moveValue(event->globalPos() - mousePosition));
 	}
 	else
 	{
 		event->ignore();
 	}
+}
+
+void BackGround :: enterEvent (QEvent * event)
+{
+	event->ignore();
+}
+
+void BackGround :: leaveEvent (QEvent * event)
+{
+	event->ignore();
 }

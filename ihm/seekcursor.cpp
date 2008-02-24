@@ -30,39 +30,48 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef BACKGROUND_H_
-#define BACKGROUND_H_
+#include "seekcursor.h"
 
-#include <QWidget>
-#include <QString>
-#include <QRegion>
-#include <QMouseEvent>
-#include <QEvent>
-#include <QPoint>
-#include <kdebug.h>
-#include "kscdwidget.h"
-
-class BackGround:public KscdWidget
+SeekCursor::SeekCursor(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
-	Q_OBJECT
-private:
-	int m_posX;
-	int m_posY;
-	QPoint mousePosition;
-	int m_deplacement;
-	bool m_move;
-public:
-	BackGround(QWidget * parent=0, QString sName="kscdBack");
-	virtual ~BackGround();
+	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+}
 
-private:
-	void mousePressEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent * event);
-	void enterEvent (QEvent * event);
-	void leaveEvent (QEvent * event);
-signals:
-	void moveValue(QPoint);
-};
+SeekCursor::~SeekCursor()
+{
+}
 
-#endif /*BACKGROUND_H_*/
+// void SeekCursor :: mousePressEvent(QMouseEvent *event)
+// {
+// 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+// 	{
+// 		event->accept();
+// 	}
+// 	else
+// 	{
+// 		event->ignore();
+// 	}
+// }
+// 
+// void SeekCursor :: mouseReleaseEvent(QMouseEvent *event)
+// {
+// 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+// 	{
+// 		event->accept();
+// 	}
+// 	else
+// 	{
+// 		event->ignore();
+// 	}
+// }
+
+// void SeekCursor :: enterEvent (QEvent * event)
+// {
+// 	event->ignore();
+// }
+// 
+// void SeekCursor :: leaveEvent (QEvent * event)
+// {	
+// 	event->ignore();
+// }

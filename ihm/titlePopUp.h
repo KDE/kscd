@@ -52,7 +52,10 @@ private:
 public:
 	explicit TitlePopUp(QWidget *parent=0,QString sName="popup");
 	~TitlePopUp();
-	
+
+private:
+	void enterEvent(QEvent* event);
+	void leaveEvent(QEvent* event);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
 

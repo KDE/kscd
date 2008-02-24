@@ -42,13 +42,21 @@
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
-
-
-
-	setAttribute(Qt::WA_NoSystemBackground);
-	QColor color(Qt::transparent);
-	QPalette v_palette(QPalette::Background,color);
-	setPalette(v_palette);
+	setAutoFillBackground(false);
+// 	QColor v_color(Qt::transparent);
+// 	v_color.setAlpha(0);
+// 	kDebug()<<v_color.spec();
+// 	QPalette v_palette(v_color);
+// 	setPalette(v_palette);
+// // 	setAttribute(Qt::WA_NoBackground);
+// //  	setFixedSize ( 600,400 );
+// 
+// 
+// 
+// 	setAttribute(Qt::WA_NoSystemBackground);
+// 	QColor color(Qt::transparent);
+// 	QPalette v_palette(QPalette::Background,color);
+// 	setPalette(v_palette);
 	m_backG = new BackGround(this);
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
@@ -62,6 +70,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_volumeB = new VolumeButton(this);
 	m_closeB = new CloseButton(this);
 	m_miniB = new MinimizeButton(this);
+	m_slider = new SeekSlider(this);
+	m_cursor = new SeekCursor(this);
 	m_panel = new Panel(this);
 // 	m_popUp = new TitlePopUp(this);
 	
@@ -91,6 +101,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	
 	connect(m_miniB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_closeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_backG,SIGNAL(moveValue(QPoint)),this,SLOT(moveWindow(QPoint)));
 
 }
 
@@ -107,10 +118,20 @@ KscdWindow::~KscdWindow()
 	delete m_closeB;
 	delete m_backG;
 	delete m_miniB;
+	delete m_slider;
+	delete m_cursor;
 // 	delete /*m_popUp*/;
 
 	delete m_trackDlg;
 }
+
+// void KscdWindow :: paintEvent(QPaintEvent* event)
+// {
+// 	QPainter painter(this);
+// 	painter.setPen(Qt::NoPen);
+// 	painter.setBrush(Qt::transparent);
+// 
+// }
 
 void KscdWindow :: closeTrackDialog()
 {
@@ -166,16 +187,23 @@ void KscdWindow :: doubleClickedEvent(int pos)
 /**
  * Links treatments with the UI
  */
-void KscdWindow::catchButton(QString name)
+void KscdWindow :: catchButton(QString name)
 {
 	kDebug()<<"Catch :" << name;
 	emit(actionClicked(name));
 }
 
-void KscdWindow::catchVolume(qreal value)
+void KscdWindow :: catchVolume(qreal value)
 {
 	emit(actionVolume(value));
 }
+
+void KscdWindow :: moveWindow(QPoint value)
+{
+	kDebug()<<"move window in:"<<value;
+	move(value);
+}
+
 void KscdWindow::changePicture(QString name,QString state)
 {
 	if(name == "play")

@@ -186,6 +186,16 @@ void Panel :: mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
+void Panel :: enterEvent (QEvent * event)
+{
+	event->ignore();
+}
+
+void Panel :: leaveEvent (QEvent * event)
+{
+	event->ignore();
+}
+
 void Panel::setTime(qint64 pos)
 {
 	qint64 md = ((pos/1000)/60)/10;
@@ -196,4 +206,3 @@ void Panel::setTime(qint64 pos)
 	QTextStream(&result) << "<center><font face='Transponder AOE' size=18><b>" << md << " " << mu << " : " << sd << " " << su << "</b></font></center>";
 	l_time->setText(result);
 }
-
