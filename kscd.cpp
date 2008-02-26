@@ -77,7 +77,6 @@ kDebug () << commande;
 	m_MBManager = new MBManager();
 	// TODO move lookup to cd detected
 	m_MBManager->discLookup();
-
 	
 	connect(m_MBManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
 	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
@@ -102,12 +101,18 @@ kDebug () << commande;
 // 	connect(CDDBWindowAction, SIGNAL(triggered()), m_cddbManager, SLOT(CDDialogSelected()));
 // 	//shortcut
 // 	CDDBWindowAction->setShortcut(tr("w"));
-// 
-// 	CDDBDownloadAction = new QAction(i18n("Download Information"), this);
-// 	addAction(CDDBDownloadAction);
-// 	connect(CDDBDownloadAction, SIGNAL(triggered()), m_cddbManager, SLOT(lookupCDDB()));
-// 	//shortcut
-// 	CDDBDownloadAction->setShortcut(tr("d"));
+
+	DownloadAction = new QAction(i18n("Download Information"), this);
+	addAction(DownloadAction);
+	connect(DownloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
+	//shortcut
+	DownloadAction->setShortcut(tr("d"));
+	
+	UploadAction = new QAction(i18n("Upload Information"), this);
+	addAction(UploadAction);
+	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(infoDisplay()));
+	//shortcut
+	DownloadAction->setShortcut(tr("u"));
 
 	ConfigWindow * conf = new ConfigWindow(this);
 
@@ -375,7 +380,7 @@ void KSCD::setShortcut(QString name, QString key)
 
 	if (name == "Download Info")
 	{
-		CDDBDownloadAction->setShortcut(key);
+		DownloadAction->setShortcut(key);
 	}
 
 	if (name == "CDDB Window")

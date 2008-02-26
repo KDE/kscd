@@ -132,7 +132,8 @@ private:
 	QAction* loopdisc_shortcut;
 	QAction* tracklist_shortcut;
 	QAction* mute_shortcut;
-	QAction* CDDBDownloadAction;
+	QAction* DownloadAction;
+	QAction* UploadAction;
 	QAction* CDDBWindowAction;
 	QAction* volume_up_shortcut;
 	QAction* volume_down_shortcut;

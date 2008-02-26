@@ -14,7 +14,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
-   sodipodi:docbase="/home/Stan/isi-kscd/kdemultimedia/kscd/ihm/skin"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/kdemultimedia/kscd/ihm/skin"
    sodipodi:docname="Remote.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
@@ -1303,6 +1303,26 @@
        fy="30"
        r="30.5"
        gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradientLoopDiscD"
+       id="linearGradient2545"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.4779322,0,0,0.7664567,17.227918,171.19582)"
+       x1="-0.43869507"
+       y1="-0.43869507"
+       x2="270.43869"
+       y2="9.4477758" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradientLoopDiscD"
+       id="linearGradient2549"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.4779322,0,0,0.7664567,17.227918,171.19582)"
+       x1="-0.43869507"
+       y1="-0.43869507"
+       x2="270.43869"
+       y2="9.4477758" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1311,14 +1331,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.1171429"
-     inkscape:cx="350"
-     inkscape:cy="1060.1282"
+     inkscape:zoom="2.2342858"
+     inkscape:cx="139.21979"
+     inkscape:cy="1145.1579"
      inkscape:document-units="px"
      inkscape:current-layer="kscd_default"
      inkscape:window-width="1210"
      inkscape:window-height="744"
-     inkscape:window-x="70"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      showgrid="true"
      width="700px"
@@ -2354,6 +2374,15 @@
            transform="translate(-585.5,-9.5)"
            inkscape:connector-type="polyline" />
       </g>
+      <rect
+         inkscape:label="#rect5395"
+         ry="3.4525352"
+         y="171.19583"
+         x="17.227911"
+         height="6.9050703"
+         width="129.04169"
+         id="seekBar_default"
+         style="fill:url(#linearGradient2549);fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:0.53103077;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <path
          inkscape:label="#path4390"
          sodipodi:type="arc"

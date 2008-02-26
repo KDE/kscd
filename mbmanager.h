@@ -38,9 +38,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "musicbrainz/musicbrainz.h"
+#include "musicbrainz/mb_c.h"
+#include "musicbrainz/browser.h"
 
 // KDE includes
 #include <kdebug.h>
+#include <klocalizedstring.h>
 
 // QT includes
 #include <qstring.h>
