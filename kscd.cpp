@@ -112,7 +112,7 @@ kDebug () << commande;
 	addAction(UploadAction);
 	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(infoDisplay()));
 	//shortcut
-	DownloadAction->setShortcut(tr("u"));
+	UploadAction->setShortcut(tr("u"));
 
 	ConfigWindow * conf = new ConfigWindow(this);
 

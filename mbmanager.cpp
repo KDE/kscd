@@ -225,8 +225,8 @@ void MBManager::infoDisplay()
 	else
 		mb_SetDepth(o, 2);
 
-//	browser = "firefox";
-	browser = "konqueror";
+	browser = "firefox";
+//	browser = "konqueror";
 	
     // Tell the client library to return data in ISO8859-1 and not UTF-8
 	mb_UseUTF8(o, 0);
