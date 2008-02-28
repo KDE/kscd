@@ -37,7 +37,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	QString commande = "cp "+KStandardDirs::installPath("data") + "kscd/ihm/skin/*.TTF ~/.fonts/";
 	commande.replace("/ihm/","/");
 	char * chemin = (char *)malloc(1024 * sizeof(char));
-kDebug () << commande;
+	kDebug () << commande;
 	strcpy(chemin, commande.toAscii().data());
 	system(chemin);
 	//system("cp "+KStandardDirs::installPath("data") + "/kscd/ihm/skin/TRANGA__.TTF ~/.fonts/TRANGA__.TTF");
@@ -45,7 +45,7 @@ kDebug () << commande;
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 
 /**
- * General
+	 * General
  */
 	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
 	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
@@ -63,13 +63,13 @@ kDebug () << commande;
 
 
 /**
- * CDDB
+	 * CDDB
  */
 // // TODO kept for CDDB compatibility
 // // TODO deactivate CDDB options if no disc
 //  	m_cd = new KCompactDisc();
 //  	m_cd->setDevice(Prefs::cdDevice(), 50, false, QString("phonon"), Prefs::audioDevice());
-// 
+	// 
 // 	// CDDB Initialization
 // 	m_cddbManager = new CDDBManager(this);
 	
@@ -91,7 +91,7 @@ kDebug () << commande;
 	connect(devices,SIGNAL(cdLoaded()),m_MBManager,SLOT(discLookup()));
 
 /**
- * Contextual Menu
+	 * Contextual Menu
  */
 	// Set context menu policy to ActionsContextMenu
 	setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -119,6 +119,9 @@ kDebug () << commande;
 	connect(conf,SIGNAL(ejectChanged(bool)),devices,SLOT(setEjectActivated(bool)));
 	connect(conf,SIGNAL(panelColorChanged(QColor)),getPanel(),SLOT(setPanelColor(QColor)));
 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
+	//Find skin --> Two ways of change
+	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
+	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 
 	configure = new QAction(i18n("Configure..."), this);
 	addAction(configure);
@@ -129,6 +132,11 @@ kDebug () << commande;
 	QAction* test = new QAction(i18n("test"), this);
 	addAction(test);
 	connect(test, SIGNAL(triggered()), this, SLOT(test()));
+
+//Find out skin
+	QAction* findS = new QAction(i18n("find out skin"), this);
+	addAction(findS);
+	connect(findS, SIGNAL(triggered()), this, SLOT(showFinderSkin()));
 
 //////////Set Shortcuts
 	setDefaultShortcuts();
@@ -152,6 +160,35 @@ KSCD::~KSCD()
 	delete m_cddb;*/
 }
 
+//Apply changes on kscdwidgets with new skin
+void KSCD::setNewSkin(QString newS){
+	kDebug () << "make change with new skin :"<<newS;
+	
+	QSvgRenderer* rend = new QSvgRenderer(newS,this);
+	this->resize(rend->boundsOnElement("kscd_default").width(),
+				 rend->boundsOnElement("kscd_default").height());
+
+	m_backG->changeSkin(newS);
+	m_stopB->changeSkin(newS);
+	m_playB->changeSkin(newS);
+	m_prevB->changeSkin(newS);
+	m_nextB->changeSkin(newS);
+	m_ejectB->changeSkin(newS);
+	m_muteB->changeSkin(newS);
+	m_randB->changeSkin(newS);
+	m_loopB->changeSkin(newS);
+	m_trackB->changeSkin(newS);
+	m_volumeB->changeSkin(newS);
+	m_closeB->changeSkin(newS);
+	m_miniB->changeSkin(newS);
+	m_panel->changeSkin(newS);
+	m_slider->changeSkin(newS);
+	m_cursor->changeSkin(newS);
+	//m_popUp->changeSkin(newS);;
+		
+}
+
+
 void KSCD::setContextualMenu()
 {
 	// TODO move from Kscd() to here
@@ -164,6 +201,17 @@ void KSCD::test()
 
 	m_MBManager->infoDisplay();
 }
+
+/**
+ * Find out new skin
+ */
+void KSCD::showFinderSkin()
+{
+	kDebug () << "Find out a new skin : begining";
+	makeFinderSkinDialog();
+}
+
+
 
 /**
  * CDDB Management
@@ -706,7 +754,7 @@ void KSCD::actionButton(QString name)
  */
 void KSCD::writeSettings()
 {
-    Prefs::self()->writeConfig();
+	Prefs::self()->writeConfig();
 }
 
 
@@ -739,68 +787,68 @@ bool KSCD::saveState(QSessionManager& /*sm*/)
  */
 int main( int argc, char *argv[] )
 {
-    KAboutData aboutData("kscd", 0, ki18n("KsCD"),
-                            "1.5", ki18n(description),
-                            KAboutData::License_GPL,
-                            ki18n("(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo"));
-    aboutData.addAuthor(ki18n("Aaron J. Seigo"), ki18n("Current maintainer"), "aseigo@kde.org");
-    aboutData.addAuthor(ki18n("Alexander Kern"),ki18n("Workman library update, CDTEXT, CDDA"), "kernalex@kde.org");
-    aboutData.addAuthor(ki18n("Bernd Johannes Wuebben"),KLocalizedString(), "wuebben@kde.org");
-    aboutData.addAuthor(ki18n("Dirk Försterling"), ki18n("Workman library, previous maintainer"), "milliByte@gmx.net");
-    aboutData.addCredit(ki18n("Wilfried Huss"), ki18n("Patches galore"));
-    aboutData.addCredit(ki18n("Steven Grimm"), ki18n("Workman library"));
-    aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
-    aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
+	KAboutData aboutData("kscd", 0, ki18n("KsCD"),
+						 "1.5", ki18n(description),
+									  KAboutData::License_GPL,
+		   ki18n("(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo"));
+	aboutData.addAuthor(ki18n("Aaron J. Seigo"), ki18n("Current maintainer"), "aseigo@kde.org");
+	aboutData.addAuthor(ki18n("Alexander Kern"),ki18n("Workman library update, CDTEXT, CDDA"), "kernalex@kde.org");
+	aboutData.addAuthor(ki18n("Bernd Johannes Wuebben"),KLocalizedString(), "wuebben@kde.org");
+	aboutData.addAuthor(ki18n("Dirk Försterling"), ki18n("Workman library, previous maintainer"), "milliByte@gmx.net");
+	aboutData.addCredit(ki18n("Wilfried Huss"), ki18n("Patches galore"));
+	aboutData.addCredit(ki18n("Steven Grimm"), ki18n("Workman library"));
+	aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
+	aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
     
-    KCmdLineArgs::init( argc, argv, &aboutData );
+	KCmdLineArgs::init( argc, argv, &aboutData );
 
-    KCmdLineOptions options;
-    options.add("s");
-    options.add("start", ki18n("Start playing"));
-    options.add("+[device]", ki18n("CD device, can be a path or a media:/ URL"));
-    KCmdLineArgs::addCmdLineOptions(options);
-    KUniqueApplication::addCmdLineOptions();
-    KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
-    if (!KUniqueApplication::start())
-    {
-        fprintf(stderr, "kscd is already running\n");
-        if (args->count() > 0 || args->isSet("start"))
-        {
-            QDBusInterface kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
+	KCmdLineOptions options;
+	options.add("s");
+	options.add("start", ki18n("Start playing"));
+	options.add("+[device]", ki18n("CD device, can be a path or a media:/ URL"));
+	KCmdLineArgs::addCmdLineOptions(options);
+	KUniqueApplication::addCmdLineOptions();
+	KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
+	if (!KUniqueApplication::start())
+	{
+		fprintf(stderr, "kscd is already running\n");
+		if (args->count() > 0 || args->isSet("start"))
+		{
+			QDBusInterface kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
             // Forward the command line args to the running instance.
-            if (args->count() > 0)
-            {
-                kscd.call( "setDevice",  QString(args->arg(0)));
-            }
-            if (args->isSet("start"))
-            {
-                kscd.call("play");
-            }
-        }
-        exit(0);
-    }
-    KUniqueApplication a;
-    KSCD *k = new KSCD();
-    a.setTopWidget( k );
+			if (args->count() > 0)
+			{
+				kscd.call( "setDevice",  QString(args->arg(0)));
+			}
+			if (args->isSet("start"))
+			{
+				kscd.call("play");
+			}
+		}
+		exit(0);
+	}
+	KUniqueApplication a;
+	KSCD *k = new KSCD();
+	a.setTopWidget( k );
 //   a.setMainWidget(k);
 
-    k->setWindowTitle(KGlobal::caption());
+	k->setWindowTitle(KGlobal::caption());
 
-    if (kapp->isSessionRestored())
-    {
-        KConfigGroup group(KApplication::kApplication()->sessionConfig(), "General");
-        if (group.readEntry("Show", false))
-            k->show();
-    }
-    else
-    {
-        k->show();
-    }
+	if (kapp->isSessionRestored())
+	{
+		KConfigGroup group(KApplication::kApplication()->sessionConfig(), "General");
+		if (group.readEntry("Show", false))
+			k->show();
+	}
+	else
+	{
+		k->show();
+	}
 
-    if (args->count() > 0)
+	if (args->count() > 0)
 		Prefs::self()->setCdDevice(args->arg(0));
 
-    return a.exec();
+	return a.exec();
 }
 
 void KSCD::catchtime(qint64 pos){

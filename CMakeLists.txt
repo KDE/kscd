@@ -50,11 +50,12 @@ set(kscd_SRCS
 	ihm/minimizebutton.cpp
 	ihm/seekslider.cpp
 	ihm/seekcursor.cpp
+	ihm/finderSkin.cpp
 )
 
 set(kscd_Resources ihm/skin)
 
-kde4_add_ui_files(kscd_SRCS ihm/trackListDlgUI.ui)
+kde4_add_ui_files(kscd_SRCS ihm/trackListDlgUI.ui ihm/finderSkinUI.ui)
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
 

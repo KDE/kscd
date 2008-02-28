@@ -189,7 +189,7 @@ void MBManager::infoDisplay()
 	showArtistLabel(m_discInfo.Artist);
 	
 	musicbrainz_t o;
-	char          url[1025], *browser = NULL;
+	char          url[1025];
 /*
 	if (argc > 1 && strcmp(argv[1], "--help") == 0)
 	{
@@ -225,8 +225,8 @@ void MBManager::infoDisplay()
 	else
 		mb_SetDepth(o, 2);
 
-	browser = "firefox";
-//	browser = "konqueror";
+//	m_browser = "firefox";
+//	m_browser = "konqueror";
 	
     // Tell the client library to return data in ISO8859-1 and not UTF-8
 	mb_UseUTF8(o, 0);
@@ -235,13 +235,15 @@ void MBManager::infoDisplay()
 	if (mb_GetWebSubmitURL(o, url, 1024))
 	{
 		int ret;
-        
-		printf("URL: %s\n", url);
 
-//		browser = browser ? browser : "mozilla";
-		ret = LaunchBrowser(url, browser);
+		printf("URL: %s\n", url);
+		
+		if (!m_browser)
+			m_browser = "konqueror";
+		
+		ret = LaunchBrowser(url, m_browser);
 		if (ret == 0)
-			printf("Could not launch browser. (%s)\n", browser);
+			printf("Could not launch browser. (%s)\n", m_browser);
 	}
 	else
 		printf("Could not read CD-ROM parameters. Is there a CD in the drive?\n");

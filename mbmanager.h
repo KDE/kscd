@@ -70,6 +70,8 @@ private:
 	DiscInfo m_discInfo;				/// Contains the album's information
 	QList <MBTrackInfo> m_trackList;	/// List of tracks information
 	
+	char * m_browser;
+	
 	bool m_validInfo;					/// Tells whether the lookup query succeeded
 	
 public:

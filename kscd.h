@@ -177,6 +177,8 @@ public slots:
 	void actionButton(QString);
 	void setShortcut(QString, QString);
 	void catchtime(qint64 pos);
+	void showFinderSkin();
+	void setNewSkin(QString);
 };
 
 #endif
