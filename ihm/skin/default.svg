@@ -2611,7 +2611,7 @@
          inkscape:label="#seekSlider">
         <rect
            style="fill:url(#linearGradient4553);fill-opacity:1;fill-rule:nonzero;stroke:#001c78;stroke-width:0.87739015;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-           id="seekBar"
+           id="seekBar_default"
            width="270"
            height="9.0090809"
            x="240.43869"

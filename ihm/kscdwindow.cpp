@@ -79,7 +79,12 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_trackDlgCreated = false;
  	m_trackDlg = new TrackListDlg(parent);
 // 	createTrackWindow();
-	
+
+	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
+
+	// Configuration windows
+	//ConfigWindow *m_config = new ConfigWindow(this);
+
 // 	QGridLayout* panelLayout = new QGridLayout;
 // 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
 	show();
@@ -123,6 +128,7 @@ KscdWindow::~KscdWindow()
 // 	delete /*m_popUp*/;
 
 	delete m_trackDlg;
+	delete m_finderSkin;
 }
 
 // void KscdWindow :: paintEvent(QPaintEvent* event)
@@ -161,6 +167,11 @@ void KscdWindow :: createTrackDialog(QList<MBTrackInfo> trackList,QString albumT
 	m_trackDlg->show();
 }
 
+void KscdWindow :: makeFinderSkinDialog()
+{
+	kDebug()<<"kscdWindow:createFinderSkinDialog";
+ 	m_finderSkin->show();
+}
 void KscdWindow :: doubleClickedEvent(int pos)
 {
 	kDebug()<<"signal recu\n"<<"pos clicked:"<<pos;

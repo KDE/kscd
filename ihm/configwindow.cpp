@@ -53,7 +53,6 @@ ConfigWindow::ConfigWindow(KSCD * parent):QMainWindow()
 	lConfPage->addWidget(tab);
 	lConfPage->addWidget(wButtons);
 
-
 	resize(500,600);
 	hwPage = new QWidget(tab);
 	panelPage = new QWidget(tab);
@@ -63,8 +62,11 @@ ConfigWindow::ConfigWindow(KSCD * parent):QMainWindow()
 	setPanelConf();
 	setSCConfig();
 
+
 	tab->addTab(hwPage,"Hardware");
-	tab->addTab(panelPage,"Panel");
+	tab->addTab(panelPage,"Visual");
+//	tab->addTab(shortcutsPage,"ShortCuts");
+//	tab->addTab(panelPage,"Panel");
 	tab->addTab(scPage,"Shortcuts");
 
 	setCentralWidget(confPage);
@@ -109,23 +111,45 @@ ConfigWindow::~ConfigWindow(){
 }
 
 void ConfigWindow::setPanelConf(){
+
+//Panel Color
 	panelGrid = new QGridLayout(panelPage);
 	panelPage->setLayout(panelGrid);
 
 	cbPanel = new KColorButton(QColor(Qt::black),this);
 	lPanelColor = new QLabel("Choose Panel Color : ",this);
 
+
 	panelGrid->addWidget(lPanelColor, 0, 0);
 	panelGrid->addWidget(cbPanel, 0, 1);
 
+
+//Panel Text Color
 	cbText = new KColorButton(QColor(Qt::white),this);
 	lTextColor = new QLabel("Choose Text Color : ",this);
 
 	panelGrid->addWidget(lTextColor, 1, 0);
 	panelGrid->addWidget(cbText, 1, 1);
 
+
+//Change global skin
+	skinFound=false;
+	newSkin= new QString();
+	lPath= new QLabel("Skin File :", this);
+	titleFile= new QLabel("Choose a new skin");
+	pBrowser= new QPushButton("new",this);
+	pClearB= new QPushButton("clear",this);
+	pClearB->setEnabled(false);
+	
+	panelGrid->addWidget(lPath, 2, 0);
+	panelGrid->addWidget(titleFile, 2, 1);
+	panelGrid->addWidget(pBrowser, 2, 2);
+	panelGrid->addWidget(pClearB, 2, 3);
+
 	connect(cbPanel,SIGNAL(changed ( const QColor )),this,SLOT(catchPanelColor()));
 	connect(cbText,SIGNAL(changed ( const QColor )),this,SLOT(catchTextColor()));
+	connect(pBrowser,SIGNAL(clicked()),this,SLOT(makeBrowser()));
+	connect(pClearB,SIGNAL(clicked()),this,SLOT(clearBrowser()));
 
 }
 void ConfigWindow::setHardConfig(){
@@ -235,12 +259,26 @@ void ConfigWindow::setSCConfig(){
 	connect (configureShortcut, SIGNAL(textChanged ( const QString & )),this,SLOT(catchConfigureShortcut()));
 	
 }
+
 void ConfigWindow::apply(){
+
+	if(skinFound==true){//skin
+		catchPathFinderSkin();	
+	}
+
 	for(int index = 0; index < actionsCalled.size(); index++){
 		applyAction((actions)actionsCalled[index]);
-
 	}
 	actionsCalled.clear();
+
+	if(skinFound==true){
+		kDebug()<<"clear after ok";
+		newSkin->clear();
+		titleFile->clear();
+		titleFile->setText("Choose a new skin");
+		pClearB->setEnabled(false);
+		skinFound=false;		
+	}
 }
 void ConfigWindow::applyAction(actions a){
 	switch(a){
@@ -253,6 +291,9 @@ void ConfigWindow::applyAction(actions a){
 		case TextColor:
 			emit(textColorChanged(cbText->color()));
 			break;
+		case FinderS:
+			emit(pathSkinChanged(*newSkin));
+			break;	
 		case PlayShortcut:
 			kDebug()<<"EMIT play!";
 			emit(ShortcutChanged(playLabel->text(),playShortcut->text()));
@@ -317,7 +358,6 @@ void ConfigWindow::applyAction(actions a){
 			player->getDevices()->selectCd(cbDriver->currentIndex());
 		
 	}
-
 }
 void ConfigWindow::catchCBEject(){
 	actionsCalled.append(Eject);
@@ -328,11 +368,34 @@ void ConfigWindow::catchCBDriver(){
 	kDebug()<<"Pimary Driver Changed!";
 }
 void ConfigWindow::ok(){
+
+	if(skinFound==true){
+		catchPathFinderSkin();	
+	}
+
 	apply();
+
+	if(skinFound==true){
+		kDebug()<<"clear after ok";
+		newSkin->clear();
+		titleFile->clear();
+		titleFile->setText("Choose a new skin");
+		pClearB->setEnabled(false);
+		skinFound=false;		
+	}
 	hide();
 }
 void ConfigWindow::cancel(){
 	actionsCalled.clear();
+
+	kDebug()<<"clear newSkin after cancel";
+	newSkin->clear();
+	titleFile->clear();
+	titleFile->setText("Choose a new skin");
+	pClearB->setEnabled(false);
+
+	skinFound=false;		
+
 	hide();
 }
 void ConfigWindow::catchPanelColor(){
@@ -342,6 +405,39 @@ void ConfigWindow::catchPanelColor(){
 void ConfigWindow::catchTextColor(){
 	actionsCalled.append(TextColor);
 	kDebug()<<"user has chosen a new text color";
+}
+void ConfigWindow::catchPathFinderSkin(){
+	actionsCalled.append(FinderS);
+	kDebug()<<"user has chosen a new skin";
+}
+void ConfigWindow::makeBrowser(){
+	kDebug()<<"browser";
+	QFileDialog fileDlg(this,"Find a new skin", "/home", NULL);
+	fileDlg.setFileMode(QFileDialog::ExistingFile);
+	fileDlg.setFilter(tr("SVG Files (*.svg)"));
+	fileDlg.setViewMode(QFileDialog::Detail);
+	QStringList fileNames;
+	if(fileDlg.exec()) fileNames= fileDlg.selectedFiles();
+	kDebug()<<"Noms choisis:"<<fileNames;
+ 	
+
+	if(!fileNames.empty()){//a new file has been chosen
+		skinFound=true;
+		delete(newSkin);
+		newSkin=new QString(fileNames.first());	
+		titleFile->setText(((fileNames.first()).split("/")).back());
+		pClearB->setEnabled(true);
+	}else{
+		kDebug()<<"Aucun file choisi";
+	}
+}
+void ConfigWindow::clearBrowser(){
+	kDebug()<<"clean browser";
+	newSkin->clear();
+	titleFile->clear();
+	skinFound=false;
+	pClearB->setEnabled(false);
+	titleFile->setText("Choose a new skin");
 }
 void ConfigWindow::catchPlayShortcut(){
 	actionsCalled.append(PlayShortcut);
@@ -403,3 +499,4 @@ void ConfigWindow::catchConfigureShortcut(){
 	actionsCalled.append(ConfigureShortcut);
 	kDebug()<<"Configure Shortcut catched";
 }
+

@@ -42,7 +42,7 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 	m_state = "default";
  	m_name = sName;
 	m_id = m_name + "_" + m_state;
-	m_path = KStandardDirs::installPath("data") + "/kscd/skin/default.svg";
+	m_path = KStandardDirs::installPath("data") + "/kscd/skin/default.svg";//Have to be changed
 	m_renderer = new QSvgRenderer(m_path,this);
 	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
 			m_renderer->boundsOnElement(m_id).height());
@@ -54,6 +54,26 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 
 KscdWidget::~KscdWidget()
 {
+	delete m_renderer;
+}
+
+/* change skin path and refresh */
+void KscdWidget::changeSkin(QString newPathSkin){
+	kDebug () << "make change with new skin:"<<newPathSkin;
+	m_path=newPathSkin;
+
+	delete(m_renderer);
+	m_renderer = new QSvgRenderer(m_path,this);
+	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
+			m_renderer->boundsOnElement(m_id).height());
+	loadPicture(getName(),"default");
+	kDebug () << "kscdwidget name :"<<m_name;
+	kDebug () << "kscdwidget etat :"<<m_state;
+	kDebug () << "kscdwidget id :"<<m_id;
+
+	
+	move(m_renderer->boundsOnElement(m_id).x(),
+			m_renderer->boundsOnElement(m_id).y());
 }
 
 void KscdWidget :: setName(QString sName)
@@ -65,6 +85,11 @@ void KscdWidget :: setName(QString sName)
 QString KscdWidget :: getName()
 {
 	return m_name;
+}
+
+QString KscdWidget :: getState()
+{
+	return m_state;
 }
 
 void KscdWidget :: setId(QString name,QString state)

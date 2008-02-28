@@ -41,11 +41,17 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QLabel>
+#include <QLineEdit>
 #include <QCheckBox>
 #include <QList>
 #include <QColor>
-#include <QLineEdit>
+
+#include <QFileDialog>
+#include <QStringList>
+
+
 #include <QComboBox>
+
 
 #include <kcolorbutton.h>
 #include <kdebug.h>
@@ -66,10 +72,12 @@ class ConfigWindow:public QMainWindow
 	QWidget * hwPage;
 	QWidget * panelPage;
 	QWidget * scPage;
+	QWidget * finderSkinPage;
 
 	QGridLayout * hwGrid;
 	QGridLayout * panelGrid;
 	QGridLayout * scGrid;
+	QGridLayout * fSGrid;
 
 	QWidget * wButtons;
 	QHBoxLayout * lButtons;
@@ -95,6 +103,14 @@ class ConfigWindow:public QMainWindow
 
 	QLabel * lTextColor;
 	KColorButton * cbText;
+
+// FinderSkin Configuration
+	QLabel * lPath;
+	QLabel * titleFile;
+	QPushButton * pBrowser;
+	QPushButton * pClearB;
+	QString * newSkin;
+	bool skinFound;
 
 // Shortcuts conf
 	QLineEdit* playShortcut;
@@ -153,7 +169,8 @@ enum actions{
 	DownloadInfoShortcut = 16,
 	MuteShortcut = 17,
 	ConfigureShortcut = 18,
-	DriverChanged = 19
+	DriverChanged = 19,
+	FinderS =20
 };
 
 
@@ -171,7 +188,12 @@ signals:
 	void ejectChanged(bool b);
 	void panelColorChanged(QColor c);
 	void textColorChanged(QColor c);
+
+	void pathSkinChanged(QString);
 	void ShortcutChanged(QString name, QString key);
+
+
+
 
 private slots:
 	void apply();
@@ -181,6 +203,10 @@ private slots:
 	void catchCBDriver();
 	void catchPanelColor();
 	void catchTextColor();
+
+	void makeBrowser();
+	void clearBrowser();
+
 	void catchPlayShortcut();
 	void catchStopShortcut();
 	void catchEjectShortcut();
@@ -196,7 +222,10 @@ private slots:
 	void catchDownloadInfoShortcut();
 	void catchMuteShortcut();
 	void catchConfigureShortcut();
-		
+
+public:
+	void catchPathFinderSkin();
+
 };
 
 #endif /*EJECTBUTTON_H_*/

@@ -45,7 +45,7 @@ class SeekSlider:public KscdWidget
 {
 	Q_OBJECT
 public:
-	SeekSlider(QWidget * parent=0, QString sName="seekSlider");
+	SeekSlider(QWidget * parent=0, QString sName="seekBar");
 	virtual ~SeekSlider();
 private:
 	void enterEvent (QEvent * event);

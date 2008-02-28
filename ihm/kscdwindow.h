@@ -73,6 +73,10 @@
 #include "titlePopUp.h"
 #include "seekslider.h"
 #include "seekcursor.h"
+//Roman's modifications/////////////////////////////////////////////////////////
+#include "finderSkin.h"
+#include <QSvgRenderer>
+
 // #include "cddbmanager.h"
 #include "mbmanager.h"
 
@@ -82,12 +86,14 @@
 #include <QLCDNumber>
 #include <QMainWindow>
 
+#include <kdebug.h>
 
 class KscdWindow:public QWidget
 {
 	Q_OBJECT
 
-private:
+protected: 
+//private:
 // 	QGridLayout *m_layout;
 	KscdWidget *m_stopB;
 	KscdWidget *m_playB;
@@ -109,13 +115,14 @@ private:
 	KscdWidget *m_popUp;
 //	QLCDNumber * m_time;
 	TrackListDlg *m_trackDlg;
+	FinderSkin *m_finderSkin;
 
 	const QPalette * p_panelColor;
 // 	QLabel * m_time;
 //	QLabel * m_time;
 // 	QLabel * m_artistLabel ;
 // 	QLabel * m_trackinfoLabel ;
-protected:
+
 	
 	 /**
 	 * Create the track list dialog
@@ -135,8 +142,6 @@ protected:
 	bool m_trackDlgCreated;
 	
 // 	void paintEvent(QPaintEvent* event);
-
-	
 public:
 	/**
  	* Creates a new Kscdwindow instance
@@ -170,8 +175,15 @@ public slots:
 	void showTrackinfoLabel(QString);
 	void moveWindow(QPoint);
 
+	/**
+	 * Show the finder skin dialog
+	 */
+	void makeFinderSkinDialog();	
+
+
 	void showArtistAlbum(QString);
 	//void setTime(qint64 pos);
+
 signals:
 	void actionClicked(QString);
 	void actionVolume(qreal);

@@ -58,7 +58,7 @@ protected:
 	QString m_path;
 	QString m_id;
 	QSvgRenderer *m_renderer;
-	
+
 	void paintEvent(QPaintEvent *event);
 
 public:
@@ -66,6 +66,7 @@ public:
 	virtual ~KscdWidget();
 	void setName(QString);
 	QString getName();
+	QString getState();
 	void setId(QString,QString);
 	QString getId();
 	void loadPicture(QString,QString);
@@ -73,6 +74,7 @@ public:
 	void leaveEvent (QEvent * event);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
+	void changeSkin(QString);
 	void setHourglass();
 
 public slots:
