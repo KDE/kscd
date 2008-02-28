@@ -47,6 +47,9 @@ class KscdWidget:public QWidget
 {
 	Q_OBJECT
 
+private:
+	QWidget * parent;
+
 protected:
 	QRegion *m_bounds;
 	QString m_state;
@@ -70,7 +73,10 @@ public:
 	void leaveEvent (QEvent * event);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
+	void setHourglass();
 
+public slots:
+	void unsetHourglass();
 
 signals:
 	void needRepaint();

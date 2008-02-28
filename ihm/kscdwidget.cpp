@@ -31,14 +31,18 @@
  *
  */
 #include "kscdwidget.h"
+#include <QTimer>
 
 KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 {
+	//Hourglass
+	this->parent = parent;
+	setHourglass();
+
 	m_state = "default";
  	m_name = sName;
 	m_id = m_name + "_" + m_state;
 	m_path = KStandardDirs::installPath("data") + "/kscd/skin/default.svg";
-
 	m_renderer = new QSvgRenderer(m_path,this);
 	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
 			m_renderer->boundsOnElement(m_id).height());
@@ -134,4 +138,15 @@ void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
 	{
 		event->ignore();
 	}
+}
+
+void KscdWidget :: setHourglass()
+{
+	parent->setCursor(Qt::WaitCursor);
+	QTimer::singleShot(8000, this, SLOT(unsetHourglass()));
+}
+
+void KscdWidget :: unsetHourglass()
+{
+	parent->unsetCursor();
 }
