@@ -1308,9 +1308,9 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.64"
      inkscape:cx="-57.157247"
-     inkscape:cy="1285.2501"
+     inkscape:cy="1097.7501"
      inkscape:document-units="px"
-     inkscape:current-layer="play_default"
+     inkscape:current-layer="kscd_default"
      inkscape:window-width="1233"
      inkscape:window-height="934"
      inkscape:window-x="0"
@@ -2614,7 +2614,7 @@
          x="240.43869"
          height="9.0090809"
          width="270"
-         id="seekSlider_default"
+         id="seekBar_default"
          style="fill:url(#linearGradient8371);fill-opacity:1;fill-rule:nonzero;stroke:#a0005e;stroke-width:0.87739015;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <path
          inkscape:label="#path4390"
