@@ -98,8 +98,8 @@ class ConfigWindow:public QMainWindow
 	QLabel * lDriver;
 
 // Panel Configuration
-	QLabel * lPanelColor;
-	KColorButton * cbPanel;
+// 	QLabel * lPanelColor;
+// 	KColorButton * cbPanel;
 
 	QLabel * lTextColor;
 	KColorButton * cbText;
@@ -152,7 +152,7 @@ class ConfigWindow:public QMainWindow
 
 enum actions{
 	Eject = 1,
-	PanelColor = 2,
+// 	PanelColor = 2,
 	TextColor = 3,
 	PlayShortcut = 4,
 	StopShortcut = 5,
@@ -186,7 +186,7 @@ private:
 
 signals:
 	void ejectChanged(bool b);
-	void panelColorChanged(QColor c);
+// 	void panelColorChanged(QColor c);
 	void textColorChanged(QColor c);
 
 	void pathSkinChanged(QString);
@@ -201,7 +201,7 @@ private slots:
 	void cancel();
 	void catchCBEject();
 	void catchCBDriver();
-	void catchPanelColor();
+// 	void catchPanelColor();
 	void catchTextColor();
 
 	void makeBrowser();

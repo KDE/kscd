@@ -43,8 +43,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
 	setAutoFillBackground(false);
-// 	QColor v_color(Qt::transparent);
-// 	v_color.setAlpha(0);
+// 	QColor v_color(Qt::color1);
+// 	v_color.setAlpha(40);
 // 	kDebug()<<v_color.spec();
 // 	QPalette v_palette(v_color);
 // 	setPalette(v_palette);
@@ -71,10 +71,9 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_closeB = new CloseButton(this);
 	m_miniB = new MinimizeButton(this);
 	m_slider = new SeekSlider(this);
-	m_cursor = new SeekCursor(this);
+// 	m_cursor = new SeekCursor(this);
 	m_panel = new Panel(this);
 // 	m_popUp = new TitlePopUp(this);
-	
 	m_stateTrackDialog = false;
 	m_trackDlgCreated = false;
  	m_trackDlg = new TrackListDlg(parent);
@@ -87,7 +86,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 
 // 	QGridLayout* panelLayout = new QGridLayout;
 // 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
-	show();
+
 
 	connect(m_stopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_playB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
@@ -107,7 +106,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	connect(m_miniB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_closeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_backG,SIGNAL(moveValue(QPoint)),this,SLOT(moveWindow(QPoint)));
-
+	show();
 }
 
 KscdWindow::~KscdWindow()
@@ -124,7 +123,7 @@ KscdWindow::~KscdWindow()
 	delete m_backG;
 	delete m_miniB;
 	delete m_slider;
-	delete m_cursor;
+// 	delete m_cursor;
 // 	delete /*m_popUp*/;
 
 	delete m_trackDlg;
@@ -211,7 +210,6 @@ void KscdWindow :: catchVolume(qreal value)
 
 void KscdWindow :: moveWindow(QPoint value)
 {
-	kDebug()<<"move window in:"<<value;
 	move(value);
 }
 
@@ -296,7 +294,6 @@ KscdWidget * KscdWindow::getPanel(){
 void  KscdWindow::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
-
 	painter.setBackgroundMode(Qt::TransparentMode);
 }
 

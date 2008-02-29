@@ -108,11 +108,11 @@ protected:
 	KscdWidget *m_closeB;
 	KscdWidget *m_backG;
 	KscdWidget *m_miniB;
-	KscdWidget *m_slider;
-	KscdWidget *m_cursor;
+	SeekSlider *m_slider;
+// 	KscdWidget *m_cursor;
 	Panel *m_panel;
 
-	KscdWidget *m_popUp;
+// 	KscdWidget *m_popUp;
 //	QLCDNumber * m_time;
 	TrackListDlg *m_trackDlg;
 	FinderSkin *m_finderSkin;

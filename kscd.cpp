@@ -125,7 +125,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	ConfigWindow * conf = new ConfigWindow(this);
 
 	connect(conf,SIGNAL(ejectChanged(bool)),devices,SLOT(setEjectActivated(bool)));
-	connect(conf,SIGNAL(panelColorChanged(QColor)),getPanel(),SLOT(setPanelColor(QColor)));
+// 	connect(conf,SIGNAL(panelColorChanged(QColor)),getPanel(),SLOT(setPanelColor(QColor)));
 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
 	//Find skin --> Two ways of change
 	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
@@ -190,8 +190,9 @@ void KSCD::setNewSkin(QString newS){
 	m_closeB->changeSkin(newS);
 	m_miniB->changeSkin(newS);
 	m_panel->changeSkin(newS);
-	m_slider->changeSkin(newS);
-	m_cursor->changeSkin(newS);
+ 	(m_slider->cursor())->changeSkin(newS);
+	(m_slider->bar())->changeSkin(newS);
+// 	m_cursor->changeSkin(newS);
 	//m_popUp->changeSkin(newS);;
 		
 }

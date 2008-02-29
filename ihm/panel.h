@@ -77,7 +77,7 @@ private:
 public slots:
 	void setTime(qint64 pos);
 	void update_panel_label();
-	void setPanelColor(QColor c);
+// 	void setPanelColor(QColor c);
 	void setTextColor(QColor c);
 	void setTitle(QString * title);
 	void setAuthor(QString * author);

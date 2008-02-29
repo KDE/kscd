@@ -47,8 +47,9 @@ class SeekCursor:public KscdWidget
 public:
 	SeekCursor(QWidget * parent=0, QString sName="seekCursor");
 	virtual ~SeekCursor();
-// private:
-// 	QTimeLine* m_timeline;
+private:
+	float position;
+	int pas;
 };
 
 #endif /*SEEKSLIDER_H_*/

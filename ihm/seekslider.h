@@ -39,20 +39,29 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <kdebug.h>
-#include "kscdwidget.h"
+// #include "kscdwidget.h"
+#include "seekbar.h"
+#include "seekcursor.h"
 
-class SeekSlider:public KscdWidget
+class SeekSlider:public QWidget
 {
 	Q_OBJECT
-public:
-	SeekSlider(QWidget * parent=0, QString sName="seekBar");
-	virtual ~SeekSlider();
-private:
-	void enterEvent (QEvent * event);
-	void leaveEvent (QEvent * event);
-	void mousePressEvent(QMouseEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
 
+public:
+	SeekSlider(QWidget * parent=0);
+	virtual ~SeekSlider();
+
+	void changeSkin(QString);
+
+	SeekCursor* cursor();
+	SeekBar* bar();
+private:
+	SeekBar* m_bar;
+	SeekCursor* m_cursor;
+	quint64 time;
+private:
+	int lengthToTime(int length);
+	int timeToLength(int time);
 };
 
 #endif /*SEEKSLIDER_H_*/

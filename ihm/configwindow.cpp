@@ -104,8 +104,8 @@ ConfigWindow::~ConfigWindow(){
 	delete bCancel;
 	delete cbEject;
 	delete lEject;
-	delete lPanelColor;
-	delete cbPanel;
+// 	delete lPanelColor;
+// 	delete cbPanel;
 	delete lTextColor;
 	delete cbText;
 }
@@ -116,12 +116,12 @@ void ConfigWindow::setPanelConf(){
 	panelGrid = new QGridLayout(panelPage);
 	panelPage->setLayout(panelGrid);
 
-	cbPanel = new KColorButton(QColor(Qt::black),this);
-	lPanelColor = new QLabel("Choose Panel Color : ",this);
+// 	cbPanel = new KColorButton(QColor(Qt::black),this);
+// 	lPanelColor = new QLabel("Choose Panel Color : ",this);
 
 
-	panelGrid->addWidget(lPanelColor, 0, 0);
-	panelGrid->addWidget(cbPanel, 0, 1);
+// 	panelGrid->addWidget(lPanelColor, 0, 0);
+// 	panelGrid->addWidget(cbPanel, 0, 1);
 
 
 //Panel Text Color
@@ -146,7 +146,7 @@ void ConfigWindow::setPanelConf(){
 	panelGrid->addWidget(pBrowser, 2, 2);
 	panelGrid->addWidget(pClearB, 2, 3);
 
-	connect(cbPanel,SIGNAL(changed ( const QColor )),this,SLOT(catchPanelColor()));
+// 	connect(cbPanel,SIGNAL(changed ( const QColor )),this,SLOT(catchPanelColor()));
 	connect(cbText,SIGNAL(changed ( const QColor )),this,SLOT(catchTextColor()));
 	connect(pBrowser,SIGNAL(clicked()),this,SLOT(makeBrowser()));
 	connect(pClearB,SIGNAL(clicked()),this,SLOT(clearBrowser()));
@@ -285,9 +285,9 @@ void ConfigWindow::applyAction(actions a){
 		case Eject:
 			emit(ejectChanged(cbEject->isChecked()));
 			break;
-		case PanelColor:
-			emit(panelColorChanged(cbPanel->color()));
-			break;
+// 		case PanelColor:
+// 			emit(panelColorChanged(cbPanel->color()));
+// 			break;
 		case TextColor:
 			emit(textColorChanged(cbText->color()));
 			break;
@@ -398,10 +398,10 @@ void ConfigWindow::cancel(){
 
 	hide();
 }
-void ConfigWindow::catchPanelColor(){
-	actionsCalled.append(PanelColor);
-	kDebug()<<"user has chosen a new panel color";
-}
+// void ConfigWindow::catchPanelColor(){
+// 	actionsCalled.append(PanelColor);
+// 	kDebug()<<"user has chosen a new panel color";
+// }
 void ConfigWindow::catchTextColor(){
 	actionsCalled.append(TextColor);
 	kDebug()<<"user has chosen a new text color";

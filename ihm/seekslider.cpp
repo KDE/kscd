@@ -32,46 +32,33 @@
  */
 #include "seekslider.h"
 
-SeekSlider::SeekSlider(QWidget * parent,QString sName):KscdWidget(sName,parent)
+SeekSlider::SeekSlider(QWidget * parent):QWidget(parent)
 {
-	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
-	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+	m_bar = new SeekBar(parent);
+	m_cursor = new SeekCursor(parent);
+	kDebug()<<"width bar"<<m_bar->width();
 }
 
 SeekSlider::~SeekSlider()
 {
 }
 
-void SeekSlider :: mousePressEvent(QMouseEvent *event)
+SeekCursor* SeekSlider :: cursor()
 {
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-	}
-	else
-	{
-		event->ignore();
-	}
+	return m_cursor;
 }
 
-void SeekSlider :: mouseReleaseEvent(QMouseEvent *event)
+SeekBar* SeekSlider :: bar()
 {
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-	}
-	else
-	{
-		event->ignore();
-	}
+	return m_bar;
 }
 
-void SeekSlider :: enterEvent (QEvent * event)
+int SeekSlider :: lengthToTime(int length)
 {
-	event->ignore();
+	return 1;
 }
 
-void SeekSlider :: leaveEvent (QEvent * event)
-{	
-	event->ignore();
+int SeekSlider :: timeToLength(int time)
+{
+	return 1;
 }

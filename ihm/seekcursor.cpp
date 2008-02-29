@@ -36,6 +36,7 @@ SeekCursor::SeekCursor(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+	position = 0.0;
 }
 
 SeekCursor::~SeekCursor()
@@ -64,14 +65,4 @@ SeekCursor::~SeekCursor()
 // 	{
 // 		event->ignore();
 // 	}
-// }
-
-// void SeekCursor :: enterEvent (QEvent * event)
-// {
-// 	event->ignore();
-// }
-// 
-// void SeekCursor :: leaveEvent (QEvent * event)
-// {	
-// 	event->ignore();
 // }

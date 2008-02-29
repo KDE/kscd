@@ -146,13 +146,13 @@ void Panel::setVolume(QString * volume)
 
 }
 
-void Panel::setPanelColor(QColor c){
-	const QPalette *p = new QPalette(c);
-	setPalette(*p);
-
-
-	//p_panelColor->setColor(QPalette::Background,c);
-}
+// void Panel::setPanelColor(QColor c){
+// 	const QPalette *p = new QPalette(c);
+// 	setPalette(*p);
+// 
+// 
+// 	//p_panelColor->setColor(QPalette::Background,c);
+// }
 void Panel::setTextColor(QColor c){
 
 	QPalette p(c);
@@ -203,6 +203,8 @@ void Panel::setTime(qint64 pos)
 	qint64 sd = ((pos/1000)%60)/10;
 	qint64 su = ((pos/1000)%60)%10;
 	QString result;
-	QTextStream(&result) << "<center><font face='Transponder AOE' size=6><b>" << md << mu << " : " << sd << su << "</b></font></center>";
+
+	QTextStream(&result) << "<center><font face='Transponder AOE' size=5><b>" << md << mu << " : " << sd << su << "</b></font></center>";
+
 	l_time->setText(result);
 }

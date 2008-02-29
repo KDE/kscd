@@ -44,12 +44,13 @@ BackGround::~BackGround()
 
 void BackGround :: mousePressEvent(QMouseEvent *event)
 {
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()) 
+		&& event->button() == Qt::LeftButton)
 	{
 		event->accept();
 		mousePosition = event->pos();
 		m_move =true;
-		grabMouse(Qt::ClosedHandCursor);
+		grabMouse(Qt::SizeAllCursor);
 	}
 	else
 	{

@@ -50,6 +50,7 @@ set(kscd_SRCS
 	ihm/minimizebutton.cpp
 	ihm/seekslider.cpp
 	ihm/seekcursor.cpp
+	ihm/seekbar.cpp
 	ihm/finderSkin.cpp
 )
 
