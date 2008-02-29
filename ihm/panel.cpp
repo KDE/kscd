@@ -47,16 +47,16 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	vbl_layout = new QGridLayout();
 
 	index=0;
-	l_title = new QLabel("WELCOME!");
+	l_title = new QLabel("");
 
 	vbl_layout->addWidget(l_title,5,0,1,NULL);
-	l_album = new QLabel("");
+	l_album = new QLabel("WELCOME!");
 	vbl_layout->addWidget(l_album, 4,0);
 	l_author = new QLabel("");
 	vbl_layout->addWidget(l_author, 3, 0);
 //	l_volume = new QLabel("");
 //	vbl_layout->addWidget(l_volume, 4, 1);
-	l_time = new QLabel("<center><font face='Transponder AOE' size=18><b>0 0 : 0 0</b></font></center>");
+	l_time = new QLabel("<center><font face='Transponder AOE' size=6><b>00 : 00</b></font></center>");
 	vbl_layout->addWidget(l_time, 6, 0);
 	setLayout(vbl_layout);
 
@@ -203,6 +203,6 @@ void Panel::setTime(qint64 pos)
 	qint64 sd = ((pos/1000)%60)/10;
 	qint64 su = ((pos/1000)%60)%10;
 	QString result;
-	QTextStream(&result) << "<center><font face='Transponder AOE' size=18><b>" << md << " " << mu << " : " << sd << " " << su << "</b></font></center>";
+	QTextStream(&result) << "<center><font face='Transponder AOE' size=6><b>" << md << mu << " : " << sd << su << "</b></font></center>";
 	l_time->setText(result);
 }
