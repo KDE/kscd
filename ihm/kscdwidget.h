@@ -75,10 +75,6 @@ public:
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
 	void changeSkin(QString);
-	void setHourglass();
-
-public slots:
-	void unsetHourglass();
 
 signals:
 	void needRepaint();

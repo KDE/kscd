@@ -35,10 +35,6 @@
 
 KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 {
-	//Hourglass
-	this->parent = parent;
-	setHourglass();
-
 	m_state = "default";
  	m_name = sName;
 	m_id = m_name + "_" + m_state;
@@ -163,15 +159,4 @@ void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
 	{
 		event->ignore();
 	}
-}
-
-void KscdWidget :: setHourglass()
-{
-	parent->setCursor(Qt::WaitCursor);
-	QTimer::singleShot(8000, this, SLOT(unsetHourglass()));
-}
-
-void KscdWidget :: unsetHourglass()
-{
-	parent->unsetCursor();
 }
