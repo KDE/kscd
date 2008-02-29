@@ -122,7 +122,7 @@ private:
 	bool loopdisc;
 	
 	QAction* configure;
-	QAction* play_pause_shortcut;
+	//QAction* play_pause_shortcut;
 	QAction* stop_shortcut;
 	QAction* next_shortcut;
 	QAction* previous_shortcut;
@@ -138,6 +138,8 @@ private:
 	QAction* volume_up_shortcut;
 	QAction* volume_down_shortcut;
 
+	void setHourglass();
+
 public:
 	explicit KSCD(QWidget *parent = 0);
 	~KSCD();
@@ -146,7 +148,7 @@ public:
 	void writeSettings();
 	HWControler * getDevices();
 // 	KCompactDisc* getCd(); // kept for CDDB compatibility
-	
+	QAction* play_pause_shortcut;
 protected:
 	void setDefaultShortcuts();
 	void setContextualMenu();
@@ -179,6 +181,7 @@ public slots:
 	void catchtime(qint64 pos);
 	void showFinderSkin();
 	void setNewSkin(QString);
+	void unsetHourglass();
 };
 
 #endif

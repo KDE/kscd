@@ -34,6 +34,14 @@ bool stoppedByUser = true;
 
 KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 {
+/**
+ * Hourglass
+ */
+	setHourglass();
+/**
+   *************************/	
+
+
 	QString commande = "cp "+KStandardDirs::installPath("data") + "kscd/ihm/skin/*.TTF ~/.fonts/";
 	commande.replace("/ihm/","/");
 	char * chemin = (char *)malloc(1024 * sizeof(char));
@@ -294,7 +302,6 @@ void KSCD::setDefaultShortcuts()
 	addAction(play_pause_shortcut);
 	play_pause_shortcut->setShortcut(tr("Space"));
 	connect(play_pause_shortcut, SIGNAL(triggered()), this, SLOT(playShortcut()));
-	//connect(play_pause_shortcut, SIGNAL(triggered()), devices, SLOT(pause()));
 	
 	//stop
 	stop_shortcut = new QAction(i18n("stop"), this);
@@ -747,6 +754,19 @@ void KSCD::actionButton(QString name)
 		}
 		emit(picture(name,"default"));
 	}
+}
+
+/**
+ * Hourglass
+ */
+void KSCD::setHourglass()
+{
+	this->setCursor(Qt::WaitCursor);
+	QTimer::singleShot(8000, this, SLOT(unsetHourglass()));
+}
+void KSCD::unsetHourglass()
+{
+	this->unsetCursor();
 }
 
 /**
