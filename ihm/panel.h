@@ -50,17 +50,19 @@ private:
 	QTimer * timer;
 	QGridLayout * vbl_layout;
 	QLabel * l_title;
-	QLCDNumber * num_lcd;
 	QLabel * l_test;
 	int index;
-
+	QColor color;
 	const QPalette * p_panelColor;
-
 	QLabel * l_author;
 	QLabel * l_album;
 	QLabel * l_playing_state;
 	QLabel * l_volume;
 	QLabel * l_time;
+	QLabel * l_loop;
+	QLabel * l_random;
+	QLabel * l_info;
+	QLabel * textSize;
 public:
 	Panel(QWidget * parent=0, QString sName="panel");
 	virtual ~Panel();
@@ -69,6 +71,9 @@ public:
 	QString getAlbum();
 	QString getAuthor();
 	QString getVolume();
+	QString getLoop();
+	QString getRandom();
+	QString getInfo();
 private:
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
@@ -77,13 +82,16 @@ private:
 public slots:
 	void setTime(qint64 pos);
 	void update_panel_label();
-// 	void setPanelColor(QColor c);
 	void setTextColor(QColor c);
 	void setTitle(QString * title);
 	void setAuthor(QString * author);
 	void setAlbum(QString * album);
 	void setVolume(QString * volume);
+	void setLoop(QString loop);
+	void setRandom(QString random);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
+	void displayInfo(QString loop, QString random);
+	void setTextSize(QString size);
 };
 #endif 

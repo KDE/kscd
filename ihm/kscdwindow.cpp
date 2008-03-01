@@ -98,11 +98,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_trackB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_volumeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),SLOT(catchVolume(qreal)));
-
 	connect(m_trackDlg,SIGNAL(itemClicked(int)),this,SLOT(doubleClickedEvent(int)));
-	
 	connect(m_miniB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_closeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_backG,SIGNAL(moveValue(QPoint)),this,SLOT(moveWindow(QPoint)));
@@ -320,4 +317,37 @@ void KscdWindow::showArtistAlbum(QString infoStatus)
 
 void KscdWindow::setTime(qint64 pos){
 	m_panel->setTime(pos);
+}
+void KscdWindow::panelInfo(QString mess)
+{
+	QString informationDisplay;
+	if(mess == "loop")
+	{
+		m_panel->setLoop("");
+		//m_panel->setLoop("");
+	}
+	if(mess == "looptrack")
+	{
+		m_panel->setLoop("loop track  ");
+		//m_panel->setLoop("loop track  ");
+		//informationDisplay = "loop track  ";
+	}
+	if(mess == "loopdisc")
+	{
+		//m_panel->setLoop("loop disc  ");
+		//informationDisplay = "loop disc  ";
+		m_panel->setLoop("loop disc  ");
+	}	
+	if(mess == "random")
+	{
+		//m_panel->setRandom("");
+		m_panel->setRandom("");
+	}
+	if(mess == "p_random")
+	{
+		//m_panel->setRandom("random");
+		//informationDisplay += "random";
+		m_panel->setRandom("random");
+	}
+	m_panel->displayInfo(m_panel->getLoop(),m_panel->getRandom());
 }

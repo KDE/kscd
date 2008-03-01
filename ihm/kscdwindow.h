@@ -174,7 +174,7 @@ public slots:
 	void showArtistLabel(QString);
 	void showTrackinfoLabel(QString);
 	void moveWindow(QPoint);
-
+	void panelInfo(QString);
 	/**
 	 * Show the finder skin dialog
 	 */

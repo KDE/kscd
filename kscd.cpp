@@ -57,12 +57,13 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
  */
 	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
 	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
-
+	
 	connect(this,SIGNAL(trackClicked(int)), this, SLOT(playTrack(int)));
 	connect(this,SIGNAL(actionVolume(qreal)), this, SLOT(changeVolume(qreal)));
 
 	devices = new HWControler();
 	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(catchtime(qint64)));
+	connect(this,SIGNAL(infoPanel(QString)),this,SLOT(panelInfo(QString)));
 //  	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
 // 	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
 // 	vs->setOrientation(Qt::Vertical);
@@ -125,7 +126,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	ConfigWindow * conf = new ConfigWindow(this);
 
 	connect(conf,SIGNAL(ejectChanged(bool)),devices,SLOT(setEjectActivated(bool)));
-// 	connect(conf,SIGNAL(panelColorChanged(QColor)),getPanel(),SLOT(setPanelColor(QColor)));
+	connect(conf,SIGNAL(textSizeChanged(QString)),getPanel(),SLOT(setTextSize(QString)));
 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
 	//Find skin --> Two ways of change
 	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
@@ -251,7 +252,7 @@ void KSCD::restoreArtistLabel()
 	}
 	else
 	{
-		showArtistLabel(i18n("WELCOME!"));
+		showArtistLabel(i18n(""));
 	}
 
 }
@@ -504,12 +505,15 @@ void KSCD::randomShortcut()
 	{
 		actionButton("p_random");
 		emit(picture("p_random","default"));
+		emit(infoPanel("p_random"));
+
 		//random = !random;
 	}
 	else
 	{
 		actionButton("random");
 		emit(picture("random","default"));
+		emit(infoPanel("random"));
 		//random = !random;
 	}
 }
@@ -520,12 +524,16 @@ void KSCD::looptrackShortcut()
 	{
 		actionButton("looptrack");
 		emit(picture("looptrack","default"));
+		emit(infoPanel("looptrack"));
+
 		//looptrack = !looptrack;
 	}
 	else
 	{
 		actionButton("loop");
 		emit(picture("loop","default"));
+		emit(infoPanel("loop"));
+
 		//looptrack = !looptrack;
 	}
 }
@@ -536,12 +544,16 @@ void KSCD::loopdiscShortcut()
 	{
 		actionButton("loopdisc");
 		emit(picture("loopdisc","default"));
+		emit(infoPanel("loopdisc"));
+
 		//loopdisc = !loopdisc;
 	}
 	else
 	{
 		actionButton("loop");
 		emit(picture("loop","default"));
+		emit(infoPanel("loop"));
+
 		//loopdisc = !loopdisc;
 	}
 }
@@ -700,6 +712,8 @@ void KSCD::actionButton(QString name)
 		kDebug() << 5;
 		devices->setRandom(false);
 		emit(picture(name,state));
+		emit(infoPanel("random"));
+
 		random = !random;
 	}
 	if(name == "p_random")
@@ -707,12 +721,16 @@ void KSCD::actionButton(QString name)
 		kDebug() << 6;
 		devices->setRandom(true);
 		emit(picture(name,state));
+		emit(infoPanel("p_random"));
+
 		random = !random;
 	}
 	if(name == "loop")
 	{
 		devices->setLoopMode(NoLoop);
 		emit(picture(name,state));
+		emit(infoPanel("loop"));
+
 		looptrack = false;
 		loopdisc = false;
 	}
@@ -720,6 +738,8 @@ void KSCD::actionButton(QString name)
 	{
 		devices->setLoopMode(LoopOne);
 		emit(picture(name,state));
+		emit(infoPanel("looptrack"));
+
 		looptrack = true;
 		loopdisc = false;
 	}
@@ -727,6 +747,8 @@ void KSCD::actionButton(QString name)
 	{
 		devices->setLoopMode(LoopAll);
 		emit(picture(name,state));
+		emit(infoPanel("loopdisc"));
+
 		loopdisc = true;
 		looptrack = false;
 	}

@@ -105,7 +105,7 @@ ConfigWindow::~ConfigWindow(){
 	delete cbEject;
 	delete lEject;
 // 	delete lPanelColor;
-// 	delete cbPanel;
+ 	delete lTextSize;
 	delete lTextColor;
 	delete cbText;
 }
@@ -131,6 +131,11 @@ void ConfigWindow::setPanelConf(){
 	panelGrid->addWidget(lTextColor, 1, 0);
 	panelGrid->addWidget(cbText, 1, 1);
 
+//Panel Text size
+	textSizeBox = new QLineEdit;
+	lTextSize = new QLabel("Choose text size : ",this);
+	panelGrid->addWidget(lTextSize,2, 0);
+	panelGrid->addWidget(textSizeBox,2, 1);
 
 //Change global skin
 	skinFound=false;
@@ -141,13 +146,16 @@ void ConfigWindow::setPanelConf(){
 	pClearB= new QPushButton("clear",this);
 	pClearB->setEnabled(false);
 	
-	panelGrid->addWidget(lPath, 2, 0);
-	panelGrid->addWidget(titleFile, 2, 1);
-	panelGrid->addWidget(pBrowser, 2, 2);
-	panelGrid->addWidget(pClearB, 2, 3);
+	panelGrid->addWidget(lPath, 3, 0);
+	panelGrid->addWidget(titleFile, 3, 1);
+	panelGrid->addWidget(pBrowser, 3, 2);
+	panelGrid->addWidget(pClearB, 3, 3);
 
 // 	connect(cbPanel,SIGNAL(changed ( const QColor )),this,SLOT(catchPanelColor()));
 	connect(cbText,SIGNAL(changed ( const QColor )),this,SLOT(catchTextColor()));
+//Connexion for the size panel
+	connect(textSizeBox,SIGNAL(textChanged ( const QString & )),this,SLOT(catchTextSize()));
+
 	connect(pBrowser,SIGNAL(clicked()),this,SLOT(makeBrowser()));
 	connect(pClearB,SIGNAL(clicked()),this,SLOT(clearBrowser()));
 
@@ -285,9 +293,9 @@ void ConfigWindow::applyAction(actions a){
 		case Eject:
 			emit(ejectChanged(cbEject->isChecked()));
 			break;
-// 		case PanelColor:
-// 			emit(panelColorChanged(cbPanel->color()));
-// 			break;
+		case TextSize:
+			emit(textSizeChanged(textSizeBox->text()));
+			break;
 		case TextColor:
 			emit(textColorChanged(cbText->color()));
 			break;
@@ -387,15 +395,12 @@ void ConfigWindow::ok(){
 }
 void ConfigWindow::cancel(){
 	actionsCalled.clear();
-
 	kDebug()<<"clear newSkin after cancel";
 	newSkin->clear();
 	titleFile->clear();
 	titleFile->setText("Choose a new skin");
 	pClearB->setEnabled(false);
-
-	skinFound=false;		
-
+	skinFound=false;
 	hide();
 }
 // void ConfigWindow::catchPanelColor(){
@@ -405,6 +410,10 @@ void ConfigWindow::cancel(){
 void ConfigWindow::catchTextColor(){
 	actionsCalled.append(TextColor);
 	kDebug()<<"user has chosen a new text color";
+}
+void ConfigWindow::catchTextSize(){
+	actionsCalled.append(TextSize);
+	kDebug()<<"user has chosen a new text size";
 }
 void ConfigWindow::catchPathFinderSkin(){
 	actionsCalled.append(FinderS);

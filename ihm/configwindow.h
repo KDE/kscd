@@ -104,6 +104,8 @@ class ConfigWindow:public QMainWindow
 	QLabel * lTextColor;
 	KColorButton * cbText;
 
+	QLineEdit * textSizeBox;
+	QLabel * lTextSize;
 // FinderSkin Configuration
 	QLabel * lPath;
 	QLabel * titleFile;
@@ -152,7 +154,7 @@ class ConfigWindow:public QMainWindow
 
 enum actions{
 	Eject = 1,
-// 	PanelColor = 2,
+	TextSize = 2,
 	TextColor = 3,
 	PlayShortcut = 4,
 	StopShortcut = 5,
@@ -188,7 +190,7 @@ signals:
 	void ejectChanged(bool b);
 // 	void panelColorChanged(QColor c);
 	void textColorChanged(QColor c);
-
+	void textSizeChanged(QString size);
 	void pathSkinChanged(QString);
 	void ShortcutChanged(QString name, QString key);
 
@@ -203,7 +205,7 @@ private slots:
 	void catchCBDriver();
 // 	void catchPanelColor();
 	void catchTextColor();
-
+	void catchTextSize();
 	void makeBrowser();
 	void clearBrowser();
 

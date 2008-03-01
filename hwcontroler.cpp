@@ -395,7 +395,6 @@ void HWControler ::replayTrack(qint64 pos)
 					if (random)
 					{
 						playRand();
-						
 					}
 		}
 		
@@ -403,7 +402,6 @@ void HWControler ::replayTrack(qint64 pos)
 }
 void HWControler ::playRand()
 {
-	kDebug()<<"random mode!";
 	bool endOfList = false;
 	if (posPlayList == getTotalTrack() - 1)
 	{
@@ -433,7 +431,6 @@ void HWControler ::replayDisk()
 		{
 			if(loopState==LoopAll)
 			{
-				kDebug()<<"Replaying the disc!";
 				mc->setCurrentTitle( 1 );
 				play();
 			}

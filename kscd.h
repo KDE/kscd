@@ -155,6 +155,7 @@ protected:
 
 signals:
 	void picture(QString,QString);
+	void infoPanel(QString);
 
 	/* Popup signals */
 // 	void showTitlePopUp(QString, QString);
