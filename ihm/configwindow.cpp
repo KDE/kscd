@@ -131,12 +131,6 @@ void ConfigWindow::setPanelConf(){
 	panelGrid->addWidget(lTextColor, 1, 0);
 	panelGrid->addWidget(cbText, 1, 1);
 
-//Panel Text size
-	textSizeBox = new QLineEdit;
-	lTextSize = new QLabel("Choose text size : ",this);
-	panelGrid->addWidget(lTextSize,2, 0);
-	panelGrid->addWidget(textSizeBox,2, 1);
-
 //Change global skin
 	skinFound=false;
 	newSkin= new QString();
@@ -146,19 +140,18 @@ void ConfigWindow::setPanelConf(){
 	pClearB= new QPushButton("clear",this);
 	pClearB->setEnabled(false);
 	
-	panelGrid->addWidget(lPath, 3, 0);
-	panelGrid->addWidget(titleFile, 3, 1);
-	panelGrid->addWidget(pBrowser, 3, 2);
-	panelGrid->addWidget(pClearB, 3, 3);
-
-// 	connect(cbPanel,SIGNAL(changed ( const QColor )),this,SLOT(catchPanelColor()));
+	panelGrid->addWidget(lPath, 4, 0);
+	panelGrid->addWidget(titleFile, 4, 1);
+	panelGrid->addWidget(pBrowser, 4, 2);
+	panelGrid->addWidget(pClearB, 4, 3);
+	QFont myFont;
+	kdeBoxFont = new KFontDialog ();
+	kdeBoxFont->setFont(myFont);
+	panelGrid->addWidget(kdeBoxFont, 3, 0, 1, 4);
 	connect(cbText,SIGNAL(changed ( const QColor )),this,SLOT(catchTextColor()));
-//Connexion for the size panel
-	connect(textSizeBox,SIGNAL(textChanged ( const QString & )),this,SLOT(catchTextSize()));
-
+	connect(kdeBoxFont, SIGNAL (fontSelected (const QFont &)),this,SLOT(catchTextSizeFont()));
 	connect(pBrowser,SIGNAL(clicked()),this,SLOT(makeBrowser()));
 	connect(pClearB,SIGNAL(clicked()),this,SLOT(clearBrowser()));
-
 }
 void ConfigWindow::setHardConfig(){
 	hwGrid = new QGridLayout(hwPage);
@@ -293,9 +286,6 @@ void ConfigWindow::applyAction(actions a){
 		case Eject:
 			emit(ejectChanged(cbEject->isChecked()));
 			break;
-		case TextSize:
-			emit(textSizeChanged(textSizeBox->text()));
-			break;
 		case TextColor:
 			emit(textColorChanged(cbText->color()));
 			break;
@@ -364,7 +354,9 @@ void ConfigWindow::applyAction(actions a){
 			break;
 		case DriverChanged:
 			player->getDevices()->selectCd(cbDriver->currentIndex());
-		
+		case TextSizeFont:
+			emit(textSizeFontChanged(kdeBoxFont->font()));
+			break;	
 	}
 }
 void ConfigWindow::catchCBEject(){
@@ -411,10 +403,12 @@ void ConfigWindow::catchTextColor(){
 	actionsCalled.append(TextColor);
 	kDebug()<<"user has chosen a new text color";
 }
-void ConfigWindow::catchTextSize(){
-	actionsCalled.append(TextSize);
-	kDebug()<<"user has chosen a new text size";
+
+void ConfigWindow::catchTextSizeFont(){
+	actionsCalled.append(TextSizeFont);
+	kDebug()<<"user has chosen a new text size and font";
 }
+
 void ConfigWindow::catchPathFinderSkin(){
 	actionsCalled.append(FinderS);
 	kDebug()<<"user has chosen a new skin";

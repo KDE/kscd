@@ -171,6 +171,13 @@ void Panel::setTextSize(QString size){
 	l_info->setFont( QFont( "Times", size.toInt(), QFont::Normal ));
 }
 
+void Panel::setTextSizeFont(QFont font){
+	l_author->setFont(font);
+	l_title->setFont(font);
+	l_album->setFont(font);
+	l_time->setFont(font);
+	l_info->setFont(font);
+}
 
 void Panel::setTextColor(QColor c){
 	color = c;

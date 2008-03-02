@@ -51,7 +51,7 @@
 
 
 #include <QComboBox>
-
+#include <kfontdialog.h>
 
 #include <kcolorbutton.h>
 #include <kdebug.h>
@@ -103,8 +103,6 @@ class ConfigWindow:public QMainWindow
 
 	QLabel * lTextColor;
 	KColorButton * cbText;
-
-	QLineEdit * textSizeBox;
 	QLabel * lTextSize;
 // FinderSkin Configuration
 	QLabel * lPath;
@@ -113,6 +111,7 @@ class ConfigWindow:public QMainWindow
 	QPushButton * pClearB;
 	QString * newSkin;
 	bool skinFound;
+	KFontDialog * kdeBoxFont;
 
 // Shortcuts conf
 	QLineEdit* playShortcut;
@@ -172,7 +171,8 @@ enum actions{
 	MuteShortcut = 17,
 	ConfigureShortcut = 18,
 	DriverChanged = 19,
-	FinderS =20
+	FinderS =20,
+	TextSizeFont = 21
 };
 
 
@@ -193,6 +193,7 @@ signals:
 	void textSizeChanged(QString size);
 	void pathSkinChanged(QString);
 	void ShortcutChanged(QString name, QString key);
+	void textSizeFontChanged(QFont font);
 
 
 
@@ -205,7 +206,8 @@ private slots:
 	void catchCBDriver();
 // 	void catchPanelColor();
 	void catchTextColor();
-	void catchTextSize();
+	void catchTextSizeFont();
+// ---
 	void makeBrowser();
 	void clearBrowser();
 

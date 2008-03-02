@@ -93,5 +93,6 @@ public slots:
 	void mouseReleaseEvent(QMouseEvent * event);
 	void displayInfo(QString loop, QString random);
 	void setTextSize(QString size);
+	void setTextSizeFont(QFont font);
 };
 #endif 

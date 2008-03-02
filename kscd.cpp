@@ -128,6 +128,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(conf,SIGNAL(ejectChanged(bool)),devices,SLOT(setEjectActivated(bool)));
 	connect(conf,SIGNAL(textSizeChanged(QString)),getPanel(),SLOT(setTextSize(QString)));
 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
+	connect(conf,SIGNAL(textSizeFontChanged(QFont)),getPanel(),SLOT(setTextSizeFont(QFont)));
 	//Find skin --> Two ways of change
 	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
