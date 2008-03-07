@@ -111,8 +111,11 @@ class ConfigWindow:public QMainWindow
 	QPushButton * pClearB;
 	QString * newSkin;
 	bool skinFound;
-	KFontDialog * kdeBoxFont;
-
+//Find a new font
+	QFont myFont;
+	QLabel * titleFont;
+	QLabel * presentationText;
+	QPushButton * buttonFont;
 // Shortcuts conf
 	QLineEdit* playShortcut;
 	QLineEdit* stopShortcut;
@@ -204,7 +207,6 @@ private slots:
 	void cancel();
 	void catchCBEject();
 	void catchCBDriver();
-// 	void catchPanelColor();
 	void catchTextColor();
 	void catchTextSizeFont();
 // ---

@@ -33,9 +33,11 @@
 #include "configwindow.h"
 #include <kconfigdialog.h>
 
+
 ConfigWindow::ConfigWindow(KSCD * parent):QMainWindow()
 {
-
+	
+	setFixedSize(600,600);
 	player = parent;
 
 	confPage = new QWidget(this);
@@ -116,14 +118,6 @@ void ConfigWindow::setPanelConf(){
 	panelGrid = new QGridLayout(panelPage);
 	panelPage->setLayout(panelGrid);
 
-// 	cbPanel = new KColorButton(QColor(Qt::black),this);
-// 	lPanelColor = new QLabel("Choose Panel Color : ",this);
-
-
-// 	panelGrid->addWidget(lPanelColor, 0, 0);
-// 	panelGrid->addWidget(cbPanel, 0, 1);
-
-
 //Panel Text Color
 	cbText = new KColorButton(QColor(Qt::white),this);
 	lTextColor = new QLabel("Choose Text Color : ",this);
@@ -139,19 +133,27 @@ void ConfigWindow::setPanelConf(){
 	pBrowser= new QPushButton("new",this);
 	pClearB= new QPushButton("clear",this);
 	pClearB->setEnabled(false);
-	
+
 	panelGrid->addWidget(lPath, 4, 0);
 	panelGrid->addWidget(titleFile, 4, 1);
 	panelGrid->addWidget(pBrowser, 4, 2);
 	panelGrid->addWidget(pClearB, 4, 3);
-	QFont myFont;
-	kdeBoxFont = new KFontDialog ();
-	kdeBoxFont->setFont(myFont);
-	panelGrid->addWidget(kdeBoxFont, 3, 0, 1, 4);
+
+
+//Change the font of the text
+	buttonFont = new QPushButton("New font",this);
+	titleFont = new QLabel ("Font can change here :");
+	presentationText = new QLabel("aA,bB,cC...123...");
+
+	panelGrid->addWidget(titleFont, 2, 0);
+	panelGrid->addWidget(buttonFont, 2, 1);
+	panelGrid->addWidget(presentationText, 2, 2);
+	
+
 	connect(cbText,SIGNAL(changed ( const QColor )),this,SLOT(catchTextColor()));
-	connect(kdeBoxFont, SIGNAL (fontSelected (const QFont &)),this,SLOT(catchTextSizeFont()));
 	connect(pBrowser,SIGNAL(clicked()),this,SLOT(makeBrowser()));
 	connect(pClearB,SIGNAL(clicked()),this,SLOT(clearBrowser()));
+ 	connect(buttonFont,SIGNAL(clicked()),this,SLOT(catchTextSizeFont()));
 }
 void ConfigWindow::setHardConfig(){
 	hwGrid = new QGridLayout(hwPage);
@@ -354,9 +356,10 @@ void ConfigWindow::applyAction(actions a){
 			break;
 		case DriverChanged:
 			player->getDevices()->selectCd(cbDriver->currentIndex());
+			break;
 		case TextSizeFont:
-			emit(textSizeFontChanged(kdeBoxFont->font()));
-			break;	
+			emit(textSizeFontChanged(myFont));
+			break;
 	}
 }
 void ConfigWindow::catchCBEject(){
@@ -395,16 +398,14 @@ void ConfigWindow::cancel(){
 	skinFound=false;
 	hide();
 }
-// void ConfigWindow::catchPanelColor(){
-// 	actionsCalled.append(PanelColor);
-// 	kDebug()<<"user has chosen a new panel color";
-// }
 void ConfigWindow::catchTextColor(){
 	actionsCalled.append(TextColor);
 	kDebug()<<"user has chosen a new text color";
 }
 
 void ConfigWindow::catchTextSizeFont(){
+	KFontDialog::getFont(myFont);
+	presentationText->setFont(myFont);
 	actionsCalled.append(TextSizeFont);
 	kDebug()<<"user has chosen a new text size and font";
 }
@@ -502,4 +503,3 @@ void ConfigWindow::catchConfigureShortcut(){
 	actionsCalled.append(ConfigureShortcut);
 	kDebug()<<"Configure Shortcut catched";
 }
-
