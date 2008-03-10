@@ -42,12 +42,12 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
    *************************/	
 
 
-	QString commande = "cp "+KStandardDirs::installPath("data") + "kscd/ihm/skin/*.TTF ~/.fonts/";
-	commande.replace("/ihm/","/");
-	char * chemin = (char *)malloc(1024 * sizeof(char));
-	kDebug () << commande;
-	strcpy(chemin, commande.toAscii().data());
-	system(chemin);
+// 	QString commande = "cp "+KStandardDirs::installPath("data") + "kscd/ihm/skin/*.TTF ~/.fonts/";
+// 	commande.replace("/ihm/","/");
+// 	char * chemin = (char *)malloc(1024 * sizeof(char));
+// 	kDebug () << commande;
+// 	strcpy(chemin, commande.toAscii().data());
+// 	system(chemin);
 	//system("cp "+KStandardDirs::installPath("data") + "/kscd/ihm/skin/TRANGA__.TTF ~/.fonts/TRANGA__.TTF");
   
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
@@ -70,7 +70,10 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 // 	vs->setMuteVisible(false);
 // 	addVolumeSlider(vs);
 
-
+/**
+ *	SETTINGS
+ */
+	loadSettings();
 /**
 	 * CDDB
  */
@@ -123,25 +126,20 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	//shortcut
 	UploadAction->setShortcut(tr("u"));
 
-	ConfigWindow * conf = new ConfigWindow(this);
+// 	ConfigWindow * conf = new ConfigWindow(this);
 
-	connect(conf,SIGNAL(ejectChanged(bool)),devices,SLOT(setEjectActivated(bool)));
-	connect(conf,SIGNAL(textSizeChanged(QString)),getPanel(),SLOT(setTextSize(QString)));
-	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
-	connect(conf,SIGNAL(textSizeFontChanged(QFont)),getPanel(),SLOT(setTextSizeFont(QFont)));
+// 	connect(conf,SIGNAL(ejectChanged(bool)),devices,SLOT(setEjectActivated(bool)));
+// 	connect(conf,SIGNAL(textSizeChanged(QString)),getPanel(),SLOT(setTextSize(QString)));
+// 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
+// 	connect(conf,SIGNAL(textSizeFontChanged(QFont)),getPanel(),SLOT(setTextSizeFont(QFont)));
 	//Find skin --> Two ways of change
-	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
+// 	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 
 	configure = new QAction(i18n("Configure..."), this);
 	addAction(configure);
 	configure->setShortcut(tr("c"));
-	connect(configure, SIGNAL(triggered()), conf, SLOT(show()));
-
-// Experimental Function
-	QAction* test = new QAction(i18n("test"), this);
-	addAction(test);
-	connect(test, SIGNAL(triggered()), this, SLOT(test()));
+	connect(configure, SIGNAL(triggered()), this, SLOT(optionsPreferences()));
 
 //Find out skin
 	QAction* findS = new QAction(i18n("find out skin"), this);
@@ -156,7 +154,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	looptrack = false;
 	loopdisc = false;
 	//For User Shortcuts Configuration
-	connect(conf,SIGNAL(ShortcutChanged(QString,QString)),this,SLOT(setShortcut(QString,QString)));
+// 	connect(conf,SIGNAL(ShortcutChanged(QString,QString)),this,SLOT(setShortcut(QString,QString)));
 }
 
 KSCD::~KSCD()
@@ -199,18 +197,10 @@ void KSCD::setNewSkin(QString newS){
 		
 }
 
-
 void KSCD::setContextualMenu()
 {
 	// TODO move from Kscd() to here
 	
-}
-
-void KSCD::test()
-{
-	//kDebug () << "total time : " << devices->getTotalTime() ;
-
-	m_MBManager->infoDisplay();
 }
 
 /**
@@ -798,7 +788,7 @@ void KSCD::unsetHourglass()
  */
 void KSCD::writeSettings()
 {
-	Prefs::self()->writeConfig();
+// 	Prefs::self()->writeConfig();
 }
 
 
@@ -826,6 +816,46 @@ bool KSCD::saveState(QSessionManager& /*sm*/)
 	return true;
 }
 
+void KSCD :: optionsPreferences()
+{
+	if ( KConfigDialog::showDialog( "settings" ) )  {
+	        return;
+	}
+
+	//KConfigDialog didn't find an instance of this dialog, so lets create it :
+	KConfigDialog* dialog = new KConfigDialog( this, "settings",  Prefs::self() );
+	// Add the General Settings page
+	QWidget *generalSettingsDlg = new QWidget;
+	ui_general.setupUi(generalSettingsDlg);
+	
+	dialog->addPage(generalSettingsDlg, i18n("General"), "kscd");
+  
+	QWidget *interfaceSettingsDlg = new QWidget;
+	ui_interface.setupUi(interfaceSettingsDlg);
+	
+	dialog->addPage(interfaceSettingsDlg, i18n("Interface"), "fill-color");
+	connect(dialog, SIGNAL(settingsChanged( const QString &)), this, SLOT(updateSettings()));
+	dialog->setAttribute( Qt::WA_DeleteOnClose );
+	dialog->setHelp(QString(),"kscd");
+	dialog->show();
+}
+
+void KSCD :: updateSettings()
+{
+	m_panel->setTextColor(Prefs::textColor());
+	kDebug()<<"color config:"<<Prefs::textColor();
+	m_panel->setTextSizeFont(Prefs::textFont());
+	kDebug()<<"font config:"<<Prefs::textFont();
+	devices->setEjectActivated(Prefs::ejectOnFinish());
+	kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
+}
+
+void KSCD :: loadSettings()
+{
+	m_panel->setTextColor(Prefs::textColor());
+	m_panel->setTextSizeFont(Prefs::textFont());
+	devices->setEjectActivated(Prefs::ejectOnFinish());
+}
 /**
  * main()
  */
@@ -889,8 +919,8 @@ int main( int argc, char *argv[] )
 		k->show();
 	}
 
-	if (args->count() > 0)
-		Prefs::self()->setCdDevice(args->arg(0));
+// 	if (args->count() > 0)
+// 		Prefs::self()->setCdDevice(args->arg(0));
 
 	return a.exec();
 }

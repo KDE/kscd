@@ -3,28 +3,10 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
-    <include>KGlobalSettings</include>
-    <include>kcompactdisc.h</include>
+    <!--<include>KGlobalSettings</include>-->
+    <!--<include>kcompactdisc.h</include>-->
     <kcfgfile name="kscdrc"/>
-    <group name="GENERAL">
-        <entry name="Volume" type="UInt">
-            <label>Output Volume</label>
-            <default>40</default>
-        </entry>
-        <entry name="RandomPlay" type="Bool">
-            <label>Play random tracks.</label>
-            <whatsthis>When this option is selected the playing order
-            of the CD tracks is chosen at random.</whatsthis>
-            <default>false</default>
-        </entry>
-        <entry name="Docking" type="Bool">
-            <label>Show an icon in the system tray.</label>
-            <whatsthis>When this option is selected an icon will appear in the system tray. Note that KsCD will &lt;i&gt;not&lt;/i&gt; quit when the window is closed if a system tray icon is displayed. You may quit KsCD by clicking the Quit button or right-clicking on the system tray icon and selecting the appropriate entry.</whatsthis>
-            <default>true</default>
-        </entry>
-        <entry name="TrackAnnouncement" type="Bool">
-            <default>false</default>
-        </entry>
+    <group name="General">
         <entry name="Autoplay" type="Bool">
             <label>Start playing when a CD is inserted.</label>
             <whatsthis>When this option is selected the CD will start playing automatically upon being inserted into the CD-ROM.</whatsthis>
@@ -35,70 +17,20 @@
             <whatsthis>When this option is selected the CD will automatically eject when it is finished.</whatsthis>
             <default>false</default>
         </entry>
-        <entry name="Looping" type="Bool">
-            <label>Loop tracks.</label>
-            <default>false</default>
+    </group>
+    <group name="Interface">
+	<entry name="TextColor" type="Color">
+            <label>The text color that will be used in the panel.</label>
+	    <whatsthis>Change the color of the text in the panel</whatsthis>
+            <default>#000000</default>
         </entry>
-        <entry name="TimeDisplayMode" type="Enum">
-            <choices>
-                <choice name="TRACK_SEC"/>
-                <choice name="TRACK_REM"/>
-                <choice name="TOTAL_SEC"/>
-                <choice name="TOTAL_REM"/>
-            </choices>
-            <default>TRACK_SEC</default>
+        <entry name="TextFont" type="Font">
+            <label>The font that will be used for the panel.</label>
+	    <whatsthis>Change the font of the text in the panel</whatsthis>
         </entry>
-        <entry name="CdDevice" type="String">
-            <default code="true">KCompactDisc::defaultCdromDeviceName()</default>
-        </entry>
-        <entry name="AudioSystem" type="Enum">
-            <choices>
-                <choice name="phonon"/>
-                <choice name="arts"/>
-                <choice name="alsa"/>
-                <choice name="sun"/>
-            </choices>
-            <default>phonon</default>
-        </entry>
-        <entry name="AudioDevice" type="String">
-            <label>The audio device KsCD uses.</label>
-        </entry>
-        <entry name="DigitalPlayback" type="Bool">
-            <label>Use direct digital playback.</label>
-            <whatsthis>When this option is selected KsCD will attempt to play the CD using direct digital playback. This option is useful if the CD-ROM is not connected directly to the sound output on the computer. Note that digital playback is slower than the normal method of playback.</whatsthis>
-            <default>false</default>
-        </entry>
-        <entry name="ledColor" type="Color">
-            <label>The foreground color that will be used in the LCD display.</label>
-            <default>#e2e0ff</default>
-        </entry>
-        <entry name="ledFont" type="Font">
-            <label>The font that will be used for the LCD display.</label>
-            <default><code>QFont(KGlobalSettings::generalFont().family(), 10, QFont::Bold)</code></default>
-        </entry>
-        <entry name="BackColor" type="Color">
-            <label>The background color that will be used for the LCD display.</label>
-            <default>black</default>
-        </entry>
-        <entry name="SelectEncoding" type="Bool">
-            <label>Allow encoding selection.</label>
-            <whatsthis>When this option is selected, you have the ability to select encoding for the results of a CDDB request. The standard describes CDDB results as being strictly Latin1. This is not true, as non-English speaking users often use other 8-bit encodings.</whatsthis>
-            <default>false</default>
-        </entry>
-        <entry name="SelectedEncoding" type="Enum">
-            <choices>
-                <choice name="AUTO"/>
-                <choice name="utf8"/>
-                <choice name="CP1250"/>
-                <choice name="CP1251"/>
-                <choice name="CP1252"/>
-                <choice name="CP1253"/>
-                <choice name="CP1254"/>
-                <choice name="CP1255"/>
-                <choice name="CP1256"/>
-                <choice name="CP1257"/>
-            </choices>
-            <default>utf8</default>
-        </entry>
+	<entry name="SkinChooser" type="Path">
+	  <label>The skin that will be use for the application</label>
+	  <whatsthis>Change the skin of the application</whatsthis>
+	</entry>
     </group>
 </kcfg>

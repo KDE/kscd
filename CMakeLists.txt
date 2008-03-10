@@ -20,15 +20,9 @@ add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 set(kscd_SRCS 
 	kscd.cpp 
-# 	docking.cpp 
 	hwcontroler.cpp 
 	audiocd.cpp 
-# 	bwlednum.cpp 
-# 	configWidget.cpp 
-# 	cddbdlg.cpp 
-# 	cddbmanager.cpp
 	mbmanager.cpp
-# 	cdcombobox.cpp
 	ihm/kscdwindow.cpp 
 	ihm/kscdwidget.cpp 
 	ihm/ejectbutton.cpp 
@@ -42,7 +36,6 @@ set(kscd_SRCS
 	ihm/tracklistbutton.cpp
 	ihm/volumebutton.cpp
 	ihm/panel.cpp
-	ihm/configwindow.cpp
 # 	ihm/titlePopUp.cpp
 	ihm/tracklistdlg.cpp
 	ihm/background.cpp
@@ -56,10 +49,11 @@ set(kscd_SRCS
 
 set(kscd_Resources ihm/skin)
 
-kde4_add_ui_files(kscd_SRCS ihm/trackListDlgUI.ui ihm/finderSkinUI.ui)
+kde4_add_ui_files(kscd_SRCS ihm/trackListDlgUI.ui ihm/finderSkinUI.ui generalSettings.ui interfaceSettings.ui)
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
 
+# kde_kcfg_DATA(kscd.kcfg)
 
 kde4_add_executable(kscd ${kscd_SRCS})
 

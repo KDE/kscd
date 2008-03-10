@@ -49,7 +49,6 @@ using namespace Phonon;
 HWControler :: HWControler ()
 {
 	setEjectActivated(false);
-
 	// in kscd starting, no loop option
 	loopState = NoLoop;
 
@@ -568,7 +567,7 @@ void HWControler ::setEjectActivated(bool b)
 	isEjectAtTheEndOfTheCdActivated = b;
 	kDebug() << "Eject at the end mode changed";
 }
-bool HWControler ::isEjectActivated()
+bool HWControler :: isEjectActivated()
 {
 	return isEjectAtTheEndOfTheCdActivated;
 }

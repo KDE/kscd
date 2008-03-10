@@ -39,6 +39,9 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QPoint>
+#include <QBitmap>
+#include <QPainter>
+#include <QPoint>
 #include <kdebug.h>
 #include "kscdwidget.h"
 

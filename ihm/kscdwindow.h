@@ -86,15 +86,17 @@
 #include <QLCDNumber>
 #include <QMainWindow>
 
+#include "prefs.h"
+
+
 #include <kdebug.h>
 
 class KscdWindow:public QWidget
 {
 	Q_OBJECT
 
-protected: 
-//private:
-// 	QGridLayout *m_layout;
+protected:
+
 	KscdWidget *m_stopB;
 	KscdWidget *m_playB;
 	KscdWidget *m_prevB;
@@ -109,19 +111,13 @@ protected:
 	KscdWidget *m_backG;
 	KscdWidget *m_miniB;
 	SeekSlider *m_slider;
-// 	KscdWidget *m_cursor;
 	Panel *m_panel;
 
-// 	KscdWidget *m_popUp;
-//	QLCDNumber * m_time;
+
 	TrackListDlg *m_trackDlg;
 	FinderSkin *m_finderSkin;
 
 	const QPalette * p_panelColor;
-// 	QLabel * m_time;
-//	QLabel * m_time;
-// 	QLabel * m_artistLabel ;
-// 	QLabel * m_trackinfoLabel ;
 
 	
 	 /**
@@ -141,7 +137,6 @@ protected:
 	/** The state creation of the track dialog */
 	bool m_trackDlgCreated;
 	
-// 	void paintEvent(QPaintEvent* event);
 public:
 	/**
  	* Creates a new Kscdwindow instance
@@ -153,18 +148,11 @@ public:
 	 */
 	virtual ~KscdWindow();
 
-// 	QLabel *getArtistLabel();
-// 	QLabel *getTrackinfoLabel();
-
-//	Panel *getPanel();
 	void paintEvent(QPaintEvent *event);
 
  	KscdWidget * getPanel();
 	void setTime(qint64 pos);
 
-// 	void addSeekSlider(Phonon::SeekSlider *ss);
-// 	void addVolumeSlider(Phonon::VolumeSlider *vs);
-	
 public slots:
 // 	void hideTitlePopUp();
 	void catchButton(QString);
@@ -175,11 +163,11 @@ public slots:
 	void showTrackinfoLabel(QString);
 	void moveWindow(QPoint);
 	void panelInfo(QString);
+
 	/**
 	 * Show the finder skin dialog
 	 */
-	void makeFinderSkinDialog();	
-
+	void makeFinderSkinDialog();
 
 	void showArtistAlbum(QString);
 	//void setTime(qint64 pos);

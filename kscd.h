@@ -66,7 +66,7 @@
 #include "mbmanager.h"
 #include "prefs.h"
 #include "cddbdlg.h"
-#include "configWidget.h"
+// #include "configWidget.h"
 #include "docking.h"
 #include <config-alsa.h>
 #include <QLCDNumber>
@@ -96,6 +96,9 @@
 #include <ktoolinvocation.h>
 #include "panel.h"
 
+#include "prefs.h"
+#include "ui_generalSettings.h"
+#include "ui_interfaceSettings.h"
 // class CDDBDlg;
 // class DockWidget;
 // class QGridLayout;
@@ -111,7 +114,6 @@ private:
 	HWControler* devices;
 // 	KCompactDisc* m_cd; // kept for CDDB compatibility
 // 	CDDBManager* m_cddbManager;
-	KConfigDialog* configDialog;
 	
 	MBManager* m_MBManager;
 	
@@ -140,6 +142,16 @@ private:
 
 	void setHourglass();
 
+	// Settings.
+	Ui::generalSettings ui_general;
+	Ui::interfaceSettings ui_interface;
+
+	/**
+	 * Load the last settings 
+	 */
+	void loadSettings();
+
+
 public:
 	explicit KSCD(QWidget *parent = 0);
 	~KSCD();
@@ -164,7 +176,6 @@ signals:
 	//void playshortcut();
 
 public slots:
-	void test();
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 	void changeVolume(qreal);
@@ -183,6 +194,12 @@ public slots:
 	void showFinderSkin();
 	void setNewSkin(QString);
 	void unsetHourglass();
+
+	/**
+	* Open the config window
+	*/
+	void optionsPreferences();
+	void updateSettings();
 };
 
 #endif

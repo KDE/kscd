@@ -108,7 +108,6 @@ class HWControler : public QObject
 		bool isEjectActivated();
 		int nbCdReader();
 		QString getCdReader(int num);
-
 	private:
 		void loadPlayList();
 		int generateNumber(int inter);

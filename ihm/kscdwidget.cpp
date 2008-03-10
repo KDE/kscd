@@ -160,3 +160,13 @@ void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
 		event->ignore();
 	}
 }
+
+QRegion* KscdWidget :: bounds()
+{
+	return m_bounds;
+}
+
+QBitmap KscdWidget :: bitmap()
+{
+	return m_bitmap;
+}
