@@ -36,7 +36,6 @@
 
 ConfigWindow::ConfigWindow(KSCD * parent):QMainWindow()
 {
-	
 	setFixedSize(600,600);
 	player = parent;
 
@@ -46,7 +45,6 @@ ConfigWindow::ConfigWindow(KSCD * parent):QMainWindow()
 	confPage->setLayout(lConfPage);
 
 	tab = new QTabWidget(this);
-
 
 	wButtons= new QWidget(this) ;
 	lButtons= new QHBoxLayout(this);

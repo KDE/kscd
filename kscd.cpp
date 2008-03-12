@@ -190,10 +190,10 @@ void KSCD::setNewSkin(QString newS){
 	m_closeB->changeSkin(newS);
 	m_miniB->changeSkin(newS);
 	m_panel->changeSkin(newS);
- 	(m_slider->cursor())->changeSkin(newS);
+	(m_slider->cursor())->changeSkin(newS);
 	(m_slider->bar())->changeSkin(newS);
 // 	m_cursor->changeSkin(newS);
-	//m_popUp->changeSkin(newS);;
+// 	m_popUp->changeSkin(newS);;
 		
 }
 
@@ -848,12 +848,14 @@ void KSCD :: updateSettings()
 	kDebug()<<"font config:"<<Prefs::textFont();
 	devices->setEjectActivated(Prefs::ejectOnFinish());
 	kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
+	m_panel->setEjectAct(Prefs::ejectOnFinish());
 }
 
 void KSCD :: loadSettings()
 {
 	m_panel->setTextColor(Prefs::textColor());
 	m_panel->setTextSizeFont(Prefs::textFont());
+	m_panel->setEjectAct(Prefs::ejectOnFinish());
 	devices->setEjectActivated(Prefs::ejectOnFinish());
 }
 /**

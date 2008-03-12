@@ -46,15 +46,16 @@ class Panel:public KscdWidget
 {
 	Q_OBJECT
 private:
-
 	QTimer * timer;
 	QGridLayout * vbl_layout;
+	QGridLayout * vbl_layoutIntern;
 	QLabel * l_title;
 	QLabel * l_test;
 	int index;
 	QColor color;
 	const QPalette * p_panelColor;
 	QLabel * l_author;
+	QLabel * titleTrack;
 	QLabel * l_album;
 	QLabel * l_playing_state;
 	QLabel * l_volume;
@@ -63,10 +64,10 @@ private:
 	QLabel * l_random;
 	QLabel * l_info;
 	QLabel * textSize;
+	QLabel * ejectStatus;
 public:
 	Panel(QWidget * parent=0, QString sName="panel");
 	virtual ~Panel();
-
 	QString getTitle();
 	QString getAlbum();
 	QString getAuthor();
@@ -77,6 +78,7 @@ public:
 private:
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
+	void setTitleDisplay(QString * title);
 
 
 public slots:
@@ -92,7 +94,7 @@ public slots:
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
 	void displayInfo(QString loop, QString random);
-	void setTextSize(QString size);
 	void setTextSizeFont(QFont font);
+	void setEjectAct(bool b);
 };
 #endif 

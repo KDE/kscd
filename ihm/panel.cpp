@@ -39,7 +39,7 @@
 
 Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 {
-	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Rectangle);
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 
 	setAutoFillBackground(true); 
@@ -49,9 +49,10 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	vbl_layout->setVerticalSpacing(1);
 
 	index=0;
-	
+	ejectStatus = new QLabel("");
+	titleTrack = new QLabel("");
 	l_title = new QLabel("");
-	vbl_layout->addWidget(l_title,4,0,1,NULL);
+	vbl_layout->addWidget(l_title,4,0);
 	l_album = new QLabel("<center>WELCOME!</center>");
 	vbl_layout->addWidget(l_album,3,0);
 	l_author = new QLabel("");
@@ -60,9 +61,11 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	l_random = new QLabel("");
 	l_info = new QLabel("");
 	textSize = new QLabel("");
-	vbl_layout->addWidget(l_info,1,0);
-//	l_volume = new QLabel("");
-//	vbl_layout->addWidget(l_volume, 4, 1);
+	vbl_layoutIntern = new QGridLayout();
+	vbl_layout->addLayout(vbl_layoutIntern,0,0);
+	vbl_layoutIntern->addWidget(l_loop,0,0);
+	vbl_layoutIntern->addWidget(l_random,0,1);
+	vbl_layoutIntern->addWidget(ejectStatus,0,2);
 	l_time = new QLabel("<center><font size="+textSize->text()+"><b>00 : 00</b></font></center>");
 	vbl_layout->addWidget(l_time, 6, 0);
 	setLayout(vbl_layout);
@@ -78,8 +81,69 @@ void Panel::update_panel_label(){
 
 	if(l_title->text().count()>0)
 	{
+		QFont fontActually = l_title->font();
+		int pointSize = fontActually.pointSize() ;
+		int addSpace;
+		switch (pointSize)
+		{
+			case 4:
+				addSpace = 260;
+				break;
+			case 5:
+				addSpace = 250;
+				break;
+			case 6:
+				addSpace = 240;
+				break;
+			case 7:
+				addSpace = 135;
+				break;
+			case 8:
+				addSpace = 125;
+				break;
+			case 9:
+				addSpace = 120;
+				break;
+			case 10:
+				addSpace = 90;
+				break;
+			case 11:
+				addSpace = 80;
+				break;
+			case 12:
+				addSpace = 77;
+				break;
+			case 13:
+				addSpace = 75;
+				break;
+			case 14:
+				addSpace = 72;
+				break;
+			case 15:
+				addSpace = 63;
+				break;
+			case 16:
+				addSpace = 58;
+				break;
+			case 17:
+				addSpace = 55;
+				break;
+			case 18:
+				addSpace = 52;
+				break;
+			case 19:
+				addSpace = 49;
+				break;
+			default:
+				addSpace = 50;
+		}
+		if(l_title->text().count()!= addSpace)
+		{
+			l_title->setText(titleTrack->text());
+		}
+		
 		// if the size is lower than the size of the panel
-		while(l_title->text().count()< 53)
+		while(l_title->text().count()< addSpace)
 		{
 			//add  " " to have the same size that the panel
 			l_title->setText(l_title->text()+" ");
@@ -96,7 +160,7 @@ void Panel::update_panel_label(){
 		}
 		//add the last letter
 		data =data+c;
-		setTitle(& data);
+		setTitleDisplay(& data);
 	}
 }
 
@@ -106,7 +170,7 @@ Panel::~Panel()
 	delete vbl_layout;
 	delete l_title;
 	delete p_panelColor;
-
+	delete ejectStatus;
 	delete l_author;
 	delete l_album;
 	delete l_playing_state;
@@ -141,9 +205,14 @@ QString Panel::getRandom()
 {
 	return l_random->text();
 }
+void Panel::setTitleDisplay(QString * title)
+{
+	l_title->setText(* title);
+}
 void Panel::setTitle(QString * title)
 {
 	l_title->setText(* title);
+	titleTrack->setText(* title);
 }
 void Panel::setAuthor(QString * author)
 {
@@ -153,7 +222,6 @@ void Panel::setAlbum(QString * album)
 {
 
 	QString mess = * album;
-	
 	l_album->setText(mess);
 
 }
@@ -162,21 +230,15 @@ void Panel::setVolume(QString * volume)
 	l_title->setText(*volume);
 
 }
-void Panel::setTextSize(QString size){
-	kDebug() << "TAILLE DE LA POLICE : " << size;
-	l_author->setFont( QFont( "Times", size.toInt(), QFont::Normal ));
-	l_title->setFont( QFont( "Times", size.toInt(), QFont::Normal ));
-	l_album->setFont( QFont( "Times", size.toInt(), QFont::Normal ));
-	l_time->setFont( QFont( "Times", size.toInt(), QFont::Normal ));
-	l_info->setFont( QFont( "Times", size.toInt(), QFont::Normal ));
-}
 
 void Panel::setTextSizeFont(QFont font){
 	l_author->setFont(font);
 	l_title->setFont(font);
 	l_album->setFont(font);
 	l_time->setFont(font);
-	l_info->setFont(font);
+	l_loop->setFont(font);
+	l_random->setFont(font);
+	ejectStatus->setFont(font);
 }
 
 void Panel::setTextColor(QColor c){
@@ -188,7 +250,21 @@ void Panel::setTextColor(QColor c){
 	l_author->setPalette(pal);
 	l_album->setPalette(pal);
 	l_time->setPalette(pal);
-	l_info->setPalette(pal);
+	l_loop->setPalette(pal);
+	l_random->setPalette(pal);
+	ejectStatus->setPalette(pal);
+}
+
+void Panel::setEjectAct(bool b){
+	if(b)
+	{
+		ejectStatus->setText("eject CD");
+	}
+	else
+	{
+		ejectStatus->setText("");
+	} 
+	
 }
 
 void Panel :: mousePressEvent(QMouseEvent *event)
@@ -248,9 +324,8 @@ void Panel::setRandom(QString random)
 //concatenation display info random and loop panel
 void Panel::displayInfo(QString loop, QString random)
 {
-	QString info;
-	QTextStream(&info)<<loop<<random;
-	l_info->setText(info);
+	l_loop->setText(loop);
+	l_random->setText(random);
 }
 QString Panel::getInfo()
 {
