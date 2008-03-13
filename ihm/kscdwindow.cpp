@@ -90,6 +90,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	connect(m_miniB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_closeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
 	connect(m_backG,SIGNAL(moveValue(QPoint)),this,SLOT(moveWindow(QPoint)));
+	connect(m_volumeB,SIGNAL(volumeChange(qreal)),m_panel,SLOT(setVolumeDisplay(qreal)));
 	show();
 }
 

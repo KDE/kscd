@@ -57,6 +57,8 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	vbl_layout->addWidget(l_album,3,0);
 	l_author = new QLabel("");
 	vbl_layout->addWidget(l_author,2, 0);
+	volumeDisplay = new QLabel("");
+	vbl_layout->addWidget(volumeDisplay,5,0);
 	l_loop = new QLabel("");
 	l_random = new QLabel("");
 	l_info = new QLabel("");
@@ -67,7 +69,7 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	vbl_layoutIntern->addWidget(l_random,0,1);
 	vbl_layoutIntern->addWidget(ejectStatus,0,2);
 	l_time = new QLabel("<center><font size="+textSize->text()+"><b>00 : 00</b></font></center>");
-	vbl_layout->addWidget(l_time, 6, 0);
+	vbl_layout->addWidget(l_time, 5, 0);
 	setLayout(vbl_layout);
 
 	QTimer * timer = new QTimer ();
@@ -77,8 +79,11 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 }
 
 void Panel::update_panel_label(){
-
-
+	timerVolume=timerVolume-1;
+	if(timerVolume < 0)
+	{
+		volumeDisplay->setText("");
+	}
 	if(l_title->text().count()>0)
 	{
 		QFont fontActually = l_title->font();
@@ -239,6 +244,7 @@ void Panel::setTextSizeFont(QFont font){
 	l_loop->setFont(font);
 	l_random->setFont(font);
 	ejectStatus->setFont(font);
+	volumeDisplay->setFont(font);
 }
 
 void Panel::setTextColor(QColor c){
@@ -253,6 +259,7 @@ void Panel::setTextColor(QColor c){
 	l_loop->setPalette(pal);
 	l_random->setPalette(pal);
 	ejectStatus->setPalette(pal);
+	volumeDisplay->setPalette(pal);
 }
 
 void Panel::setEjectAct(bool b){
@@ -308,7 +315,7 @@ void Panel::setTime(qint64 pos)
 	qint64 sd = ((pos/1000)%60)/10;
 	qint64 su = ((pos/1000)%60)%10;
 	QString result;
-	QTextStream(&result) << "<center><b>" << md << mu << " : " << sd << su << "</b></center>";
+	QTextStream(&result) << "<center><b>"<< md << mu << " : " << sd << su <<"</b></center>";
 	l_time->setText(result);
 }
 
@@ -330,4 +337,13 @@ void Panel::displayInfo(QString loop, QString random)
 QString Panel::getInfo()
 {
 	return l_info->text();
+}
+
+void Panel::setVolumeDisplay(qreal volume)
+{
+	timerVolume = 20;
+	int q = volume;
+	QString s;
+	s = "<p align=right>"+s.number(q)+"</p>";
+	volumeDisplay->setText(s);
 }

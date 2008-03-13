@@ -46,12 +46,14 @@ class Panel:public KscdWidget
 {
 	Q_OBJECT
 private:
+	QLabel * volumeDisplay;
 	QTimer * timer;
 	QGridLayout * vbl_layout;
 	QGridLayout * vbl_layoutIntern;
 	QLabel * l_title;
 	QLabel * l_test;
 	int index;
+	int timerVolume;
 	QColor color;
 	const QPalette * p_panelColor;
 	QLabel * l_author;
@@ -65,6 +67,7 @@ private:
 	QLabel * l_info;
 	QLabel * textSize;
 	QLabel * ejectStatus;
+	
 public:
 	Panel(QWidget * parent=0, QString sName="panel");
 	virtual ~Panel();
@@ -96,5 +99,6 @@ public slots:
 	void displayInfo(QString loop, QString random);
 	void setTextSizeFont(QFont font);
 	void setEjectAct(bool b);
+	void setVolumeDisplay(qreal volume);
 };
 #endif 
