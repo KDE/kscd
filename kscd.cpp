@@ -257,25 +257,11 @@ void KSCD::restoreTrackinfoLabel()
 	{
 		title = QString("%1 - ").arg(devices->getCurrentTrack(), 2, 10, QLatin1Char('0')) ;
 
-// 		if (m_cddbManager->getCddbInfo().isValid()/* && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()*/)
-// 		{
-// 			title.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Title).toString());
-// 			length.append(m_cddbManager->getCddbInfo().track(devices->getCurrentTrack()-1).get(KCDDB::Length).toString());
-// 		}
-// 		else
-// 		{
-// 			title.append(i18n("unknown"));
-// 			length.append(i18n("duration"));
-// 		}
 		title.append(m_MBManager->getTrackList()[devices->getCurrentTrack()-1].Title);
 		length.append(m_MBManager->getTrackList()[devices->getCurrentTrack()-1].Duration);
 		
 		showTrackinfoLabel(title);
 
-		//shows the title popup with title info and title lenght
-// 		m_titlePopUp->showTitlePopUp(title, length);
-	  //programming title popup hiding
-// 		QTimer::singleShot(5000, this, SLOT(hideTitlePopUp()));
 	}
 	else
 	{

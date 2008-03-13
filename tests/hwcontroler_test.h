@@ -35,32 +35,28 @@
 #define HWCONTROLER_TEST_H
 #include <QObject>
 #include <qtest_kde.h>
-
+#include <QtTest>
+#include <QtCore>
+#include "hwcontroler.h"
 class HWControler_test : public QObject
 {
 
 	Q_OBJECT
+	HWControler* devices ;
 
-	private slots:
-		void testEject();
-/*
-		void selectSpeaker_test();
-
+	public:
 		void eject_test();
-
+		void nextTrack_test();
+		void prevTrack_test();
+		void stop_test();
+		void pause_test();
+		void mute_test();
+		void setVolume_test();
+		void configMedia_test();
+		void replayTrack_test();
+		void replayDisk_test();
 		void play_test();
 
-		void nextTrack_test();
 
-		void prevTrack_test();
-
-		void stop_test();
-
-		void pause_test();
-
-		void mute_test();
-
-		void isCdInserted_test();
-*/
 };
 #endif

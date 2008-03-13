@@ -86,6 +86,13 @@ kde4_add_unit_test(HWControler_test
 	./tests/hwcontroler_test.cpp
 )
 
+# AudioCD test unit
+kde4_add_unit_test(AudioCD_test
+	audiocd.cpp
+	./tests/audiocd_test.cpp
+)
+
+
 # libraries needed for HWControler tests
 target_link_libraries(HWControler_test
 	${KDE4_KUTILS_LIBS}
@@ -95,3 +102,10 @@ target_link_libraries(HWControler_test
 )
 
 
+# libraries needed for AudioCD tests
+target_link_libraries(AudioCD_test
+	${KDE4_KUTILS_LIBS}
+	${QT_QTTEST_LIBRARY}
+	kcddb
+	kcompactdisc
+)

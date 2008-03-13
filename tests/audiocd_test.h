@@ -31,24 +31,23 @@
  *
  */
 
+#ifndef AUDIOCD_TEST_H
+#define AUDIOCD_TEST_H
 
-#include <QtCore>
+#include <QObject>
+#include <qtest_kde.h>
 #include <QtTest>
+#include <QtCore>
 
+#include "audiocd.h"
 class AudioCD_test: public QObject {
 
 	Q_OBJECT
-
+	AudioCD * audio_cd;
 	public:
-		AudioCD_test();
 
-		void getCdDrive_test();
-
-		void getCd_test();
-
-		void getMediaSource_test();
-
-		void getCdPath_test();
-}
+		void reloadCD_test();
+};
+#endif
 
 

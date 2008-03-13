@@ -35,52 +35,164 @@
 #include "audiocd.h"
 #include "hwcontroler_test.h"
 
-void HWControler_test::testEject()
-{
-	QCOMPARE(1, 1);
-}
-/*
-void HWControler_test :: selectSpeaker_test()
-{
-}
-
+/*We will eject the CD and very if it is always inserted*/
 void HWControler_test :: eject_test()
 {
-	
+	devices = new HWControler();
+	devices->eject();
+	QVERIFY(! devices->getCD()->isCdInserted());
+	delete(devices);
+
+
 }
 
+/*We will play the current track an check the state of phonon*/
 void HWControler_test :: play_test()
 {
+	devices = new HWControler();
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->play();
+		QCOMPARE(devices->getState(), Phonon::PlayingState);
+	}
+	else
+	{
+		QVERIFY(true);
+	}
+	delete(devices);
 }
 
+/*We will next the CD and verify if the remaining time has changed*/
 void HWControler_test :: nextTrack_test()
 {
-	
+	devices = new HWControler();
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->nextTrack();
+		QCOMPARE(devices->getMedia()->remainingTime(), devices->getMedia()->currentTime());
+		
+	}	
+	QVERIFY(true);
+	delete(devices);
 }
 
 void HWControler_test :: prevTrack_test()
 {
-
+	devices = new HWControler();
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->nextTrack();
+		QCOMPARE(devices->getMedia()->remainingTime(), devices->getMedia()->currentTime());
+		
+	}	
+	QVERIFY(true);
+	delete(devices);
 }
 
 void HWControler_test :: stop_test()
 {
-
+	devices = new HWControler();
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->stop();
+		QCOMPARE(devices->getState(), Phonon::StoppedState);
+	}
+	else
+	{
+		QVERIFY(true);
+	}
+	delete(devices);
 }
 
 void HWControler_test :: pause_test()
 {
-
+	devices = new HWControler();
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->stop();
+		QCOMPARE(devices->getState(), Phonon::PausedState);
+	}
+	else
+	{
+		QVERIFY(true);
+	}
+	delete(devices);
 }
 
 void HWControler_test :: mute_test()
 {
+	devices = new HWControler();
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->mute(true);
+		QCOMPARE(devices->getVolume(), 0.0);
+	}
+	else
+	{
+		QVERIFY(true);
+	}
+	delete(devices);
 
 }
 
-void HWControler_test :: isCdInserted_test()
+void HWControler_test :: setVolume_test()
 {
+	devices = new HWControler();
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->setVolume(10.0);
+		QCOMPARE(devices->getVolume(), 10.0);
+	}
+	else
+	{
+		QVERIFY(true);
+	}
+	delete(devices);
 
-}*/
+}
+
+void HWControler_test ::configMedia_test()
+{
+	devices = new HWControler();
+	if(devices->getCD()->isCdInserted())
+	{
+		QVERIFY(devices->isDiscValid());
+	}else
+	{
+		QVERIFY(true);
+	}
+	delete(devices);
+}
+
+void HWControler_test ::replayTrack_test()
+{
+	devices = new HWControler();
+	
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->play(1);
+		devices->replayTrack(1);
+		QCOMPARE(devices->getCurrentTrack(), 1);
+		
+	}	
+	QVERIFY(true);
+	delete(devices);
+}
+
+void HWControler_test ::replayDisk_test()
+{
+	devices = new HWControler();
+	
+	if(devices->getCD()->isCdInserted())
+	{
+		devices->replayDisk();
+		QCOMPARE(devices->getCurrentTrack(), 1);
+		
+	}	
+	QVERIFY(true);
+	delete(devices);
+}
+
+
 
 QTEST_KDEMAIN_CORE(HWControler_test)

@@ -31,32 +31,16 @@
  *
  */
 
-
+#include "audiocd.h"
 #include "audiocd_test.h"
 
-AudioCD_test :: AudioCD_test()
+//this test sequencec neeed to insert a CD
+void AudioCD_test::reloadCD_test()
 {
-
+	audio_cd = new AudioCD;
+    	audio_cd->reloadCD();
+    	QVERIFY( audio_cd->isCdInserted() );
+	delete (audio_cd);
 }
 
-void AudioCD_test :: all_tests()
-{
-	getCdDrive_test() && getCd_test() && getMediaSource_test() && getCdPath_test();
-}
-
-void AudioCD_test :: getCdDrive_test()
-{
-}
-
-void AudioCD_test :: getCd_test()
-{
-}
-
-void AudioCD_test :: getMediaSource_test()
-{
-}
-
-void AudioCD_test :: getCdPath_test()
-{
-}
-
+QTEST_KDEMAIN_CORE(AudioCD_test)
