@@ -176,6 +176,10 @@ signals:
 	//void playshortcut();
 
 public slots:
+		
+
+//	void test();
+
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 	void changeVolume(qreal);
@@ -191,8 +195,8 @@ public slots:
 	void actionButton(QString);
 	void setShortcut(QString, QString);
 	void catchtime(qint64 pos);
-	void showFinderSkin();
-	void setNewSkin(QString);
+
+	//void setNewSkin(QString);
 	void unsetHourglass();
 
 	/**

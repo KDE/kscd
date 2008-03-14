@@ -135,6 +135,9 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	//Find skin --> Two ways of change
 // 	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
+	//Find skin --> Two ways of change
+//	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
+//	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 
 	configure = new QAction(i18n("Configure..."), this);
 	addAction(configure);
@@ -142,9 +145,14 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	connect(configure, SIGNAL(triggered()), this, SLOT(optionsPreferences()));
 
 //Find out skin
-	QAction* findS = new QAction(i18n("find out skin"), this);
+/*	QAction* findS = new QAction(i18n("find out skin"), this);
 	addAction(findS);
 	connect(findS, SIGNAL(triggered()), this, SLOT(showFinderSkin()));
+*/
+//Find out skin
+	QAction* findS = new QAction(i18n("find out skin"), this);
+	addAction(findS);
+	connect(findS, SIGNAL(triggered()), this, SLOT(makeFinderSkinDialog()));
 
 //////////Set Shortcuts
 	setDefaultShortcuts();
@@ -168,49 +176,22 @@ KSCD::~KSCD()
 	delete m_cddb;*/
 }
 
-//Apply changes on kscdwidgets with new skin
-void KSCD::setNewSkin(QString newS){
-	kDebug () << "make change with new skin :"<<newS;
-	
-	QSvgRenderer* rend = new QSvgRenderer(newS,this);
-	this->resize(rend->boundsOnElement("kscd_default").width(),
-				 rend->boundsOnElement("kscd_default").height());
-
-	m_backG->changeSkin(newS);
-	m_stopB->changeSkin(newS);
-	m_playB->changeSkin(newS);
-	m_prevB->changeSkin(newS);
-	m_nextB->changeSkin(newS);
-	m_ejectB->changeSkin(newS);
-	m_muteB->changeSkin(newS);
-	m_randB->changeSkin(newS);
-	m_loopB->changeSkin(newS);
-	m_trackB->changeSkin(newS);
-	m_volumeB->changeSkin(newS);
-	m_closeB->changeSkin(newS);
-	m_miniB->changeSkin(newS);
-	m_panel->changeSkin(newS);
-	(m_slider->cursor())->changeSkin(newS);
-	(m_slider->bar())->changeSkin(newS);
-// 	m_cursor->changeSkin(newS);
-// 	m_popUp->changeSkin(newS);;
-		
-}
-
 void KSCD::setContextualMenu()
 {
 	// TODO move from Kscd() to here
 	
 }
 
+
+
 /**
- * Find out new skin
- */
-void KSCD::showFinderSkin()
+* Find out new skin
+*/
+/*void KSCD::showFinderSkin()
 {
 	kDebug () << "Find out a new skin : begining";
 	makeFinderSkinDialog();
-}
+}*/
 
 
 

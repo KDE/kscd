@@ -58,8 +58,7 @@ void KscdWidget::changeSkin(QString newPathSkin){
 	kDebug () << "make change with new skin:"<<newPathSkin;
 	m_path=newPathSkin;
 
-	delete(m_renderer);
-	m_renderer = new QSvgRenderer(m_path,this);
+	m_renderer->load(m_path);
 	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
 			m_renderer->boundsOnElement(m_id).height());
 	loadPicture(getName(),"default");

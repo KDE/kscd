@@ -168,6 +168,11 @@ public slots:
 	 * Show the finder skin dialog
 	 */
 	void makeFinderSkinDialog();
+	
+	/**
+	* Refresh skin
+	*/
+	void setNewSkin(QString);
 
 	void showArtistAlbum(QString);
 	//void setTime(qint64 pos);

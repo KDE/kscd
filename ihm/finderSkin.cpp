@@ -24,6 +24,10 @@
 
 #include "finderSkin.h"
 
+QString FinderSkin::pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
+//"/home/kde-devel/isi-kscd/kdemultimedia/kscd/ihm/skin/";
+
+
 /*
  *  Constructs a finderSkin which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
@@ -37,17 +41,79 @@ FinderSkin::FinderSkin(QWidget* parent):finderSkinUI(parent)
 
 	newSkin= new QString();
 	skinFound=false;
+	
+	QDir *directory= new QDir(FinderSkin::pathSkins);
+	kDebug()<<"path :"<<directory->absolutePath();
+	
+	QStringList filter;
+	filter<<"*.svg";
+	directory->setNameFilters(filter);	
+	
+	QStringList list = directory->entryList();
+	comboBoxTitleSkin->addItems(list);
+	//QFileInfoList *list = &(directory->entryInfoList());
+	/*if (list)
+	{
+		QFileInfo*  fi;	
+		QFileInfoListIterator it (list);
+		
+		while((fi = it.current()) != 0)
+		{
+			if (fi->fileName() == "." || fi->fileName() == "..")
+			{
+				
+			} else {
+				comboBoxTitleSkin->addItem(fi->fileName());
+			}
+		}
+	}*/
+/*	
+	kDebug()<<"vide"<<list->empty();
+	QStringList* listTitles=new QStringList();
+	for(int i=0;i<list->size();i++){
+		listTitles->push_back((list->value(i)).fileName()) ;
+		kDebug()<<"file name :"<<(list->value(i)).fileName();
+	}
+	kDebug()<<"Apres le for";
+	comboBoxTitleSkin->addItems(*listTitles);
+*/
 
-	clearButton->setEnabled(false);
+	//comboBoxTitleSkin->addItems(*list);
+
 	connect(buttonBox,SIGNAL(accepted()), SLOT(accept())); 
 	connect(buttonBox,SIGNAL(rejected()), SLOT(reject()));
 	connect(browserButton,SIGNAL(clicked()), SLOT(showBrowser()));
-	connect(clearButton,SIGNAL(clicked()),SLOT(clearBrowser()));
+	connect(checkOtherSkin,SIGNAL(clicked()),SLOT(showNewSkin()));
+	//connect(checkOtherSkin,SIGNAL(),SLOT(hideNewSkin()));
+	connect(comboBoxTitleSkin,SIGNAL(activated(QString)),SLOT(setNewSkin2(QString)));
+	//connect(clearButton,SIGNAL(clicked()),SLOT(clearBrowser()));
 }
 
 FinderSkin::~FinderSkin()
 {
 	delete newSkin;
+}
+
+void FinderSkin::setNewSkin2(QString nameFile) {
+	skinFound=true;
+	delete(newSkin);
+	newSkin=new QString(FinderSkin::pathSkins+nameFile);	
+}
+
+void FinderSkin::showNewSkin(){
+	if(checkOtherSkin->isChecked()) {
+		lDefaultSkin->setEnabled(false);
+		comboBoxTitleSkin->setEnabled(false);
+		lNewSkin->setEnabled(true);
+		browserButton->setEnabled(true);
+		lTitleSkin->setEnabled(true);
+	}else{
+		lDefaultSkin->setEnabled(true);
+		comboBoxTitleSkin->setEnabled(true);
+		lNewSkin->setEnabled(false);
+		browserButton->setEnabled(false);
+		lTitleSkin->setEnabled(false);
+	}
 }
 
 void FinderSkin::accept(){
@@ -59,7 +125,7 @@ void FinderSkin::accept(){
 	lTitleSkin->clear();
 	lTitleSkin->setText("Choose a new skin");
 	this->hide();
-	clearButton->setEnabled(false);
+	
 }
 
 void FinderSkin::reject(){
@@ -69,7 +135,6 @@ void FinderSkin::reject(){
 	lTitleSkin->clear();
 	lTitleSkin->setText("Choose a new skin");
 	this->hide();
-	clearButton->setEnabled(false);
 }
 
 void FinderSkin::showBrowser(){
@@ -82,23 +147,13 @@ void FinderSkin::showBrowser(){
 	if(fileDlg.exec()) fileNames= fileDlg.selectedFiles();
 	kDebug()<<"Noms choisis:"<<fileNames;
  	
-
 	if(!fileNames.empty()){
 		skinFound=true;
 		delete(newSkin);
 		newSkin=new QString(fileNames.first());	
 		lTitleSkin->setText(((fileNames.first()).split("/")).back());
-		clearButton->setEnabled(true);
+		//clearButton->setEnabled(true);
 	}else{
 		kDebug()<<"Aucun file choisi";
 	}
-}
-
-void FinderSkin::clearBrowser(){
-	kDebug()<<"clearBrowserclicked";
-	skinFound=false;
-	newSkin->clear();
-	lTitleSkin->clear();
-	lTitleSkin->setText("Choose a new skin");
-	clearButton->setEnabled(false);
 }

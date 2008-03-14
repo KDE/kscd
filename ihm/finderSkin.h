@@ -28,6 +28,12 @@
 
 #include <QDialog>
 #include <QtGui>
+#include <QFileInfoList>
+#include <QFileInfoListIterator>
+#include <QDir>
+#include <QFileInfo>
+#include <KStandardDirs>
+
 
 #include <kdebug.h>
 
@@ -45,15 +51,17 @@ class FinderSkin : public finderSkinUI
    private:
 	QString * newSkin;
 	bool skinFound;
-
+	
 
    public:
+
+	static QString pathSkins;
+
  	/**Create an instance of FinderSkin */
 	FinderSkin(QWidget* parent = 0);
 
 	/**Destroy an instance of FinderSkin */
         ~FinderSkin();
-
 
    public slots:
 	/**ok action*/
@@ -63,9 +71,9 @@ class FinderSkin : public finderSkinUI
 	/** open a new browser to find out new svg files on hard disc */
 	void showBrowser();
 	/** clear the new skin**/
-	void clearBrowser();
+	void showNewSkin();
 
-
+	void setNewSkin2(QString);
    signals:
 	/**Send new skin path*/ 
 	void pathSkinChanged(QString);

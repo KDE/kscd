@@ -156,6 +156,37 @@ void KscdWindow :: makeFinderSkinDialog()
 	kDebug()<<"kscdWindow:createFinderSkinDialog";
  	m_finderSkin->show();
 }
+
+//Apply changes on kscdwidgets with new skin
+void KscdWindow::setNewSkin(QString newS){
+	kDebug () << "make change with new skin :"<<newS;
+	
+	QSvgRenderer* rend = new QSvgRenderer(newS,this);
+	this->resize(rend->boundsOnElement("kscd_default").width(),
+			rend->boundsOnElement("kscd_default").height());
+
+	m_backG->changeSkin(newS);
+	m_stopB->changeSkin(newS);
+	m_playB->changeSkin(newS);
+	m_prevB->changeSkin(newS);
+	m_nextB->changeSkin(newS);
+	m_ejectB->changeSkin(newS);
+	m_muteB->changeSkin(newS);
+	m_randB->changeSkin(newS);
+	m_loopB->changeSkin(newS);
+	m_trackB->changeSkin(newS);
+	m_volumeB->changeSkin(newS);
+	m_closeB->changeSkin(newS);
+	m_miniB->changeSkin(newS);
+	m_panel->changeSkin(newS);
+ 	(m_slider->cursor())->changeSkin(newS);
+	(m_slider->bar())->changeSkin(newS);	
+
+//m_popUp->changeSkin(newS);;
+		
+}
+
+
 void KscdWindow :: doubleClickedEvent(int pos)
 {
 	kDebug()<<"signal recu\n"<<"pos clicked:"<<pos;
