@@ -40,7 +40,7 @@
 #include "configwindow.h"
 
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
-{
+{	
 	setWindowFlags(Qt::FramelessWindowHint);
 	setAutoFillBackground(false);
 

@@ -104,6 +104,21 @@
 // class QGridLayout;
 // class KActionCollection;
 // class KToggleAction;
+#include <kshortcutseditor.h>
+
+// enum  	ActionType {
+// 		WidgetAction = Qt::WidgetShortcut, 
+// 		WindowAction = Qt::WindowShortcut, 
+// 		ApplicationAction = Qt::ApplicationShortcut, 
+// 		GlobalAction = 4, 
+// 		AllActions = 0xffffffff
+// 	}
+// enum  	LetterShortcuts {
+// 		LetterShortcutsDisallowed = 0, 
+// 		LetterShortcutsAllowed
+// 	}
+
+
 
 class KSCD : public KscdWindow, public KSessionManager {
 
@@ -123,8 +138,9 @@ private:
 	bool looptrack;
 	bool loopdisc;
 	
+	QAction* configure_shortcuts;
 	QAction* configure;
-	//QAction* play_pause_shortcut;
+	QAction* play_pause_shortcut;
 	QAction* stop_shortcut;
 	QAction* next_shortcut;
 	QAction* previous_shortcut;
@@ -139,6 +155,9 @@ private:
 	QAction* CDDBWindowAction;
 	QAction* volume_up_shortcut;
 	QAction* volume_down_shortcut;
+	QAction* quit_shortcut;
+	QAction* minimize_shortcut;
+	KActionCollection * m_actions;
 
 	void setHourglass();
 
@@ -160,7 +179,6 @@ public:
 	void writeSettings();
 	HWControler * getDevices();
 // 	KCompactDisc* getCd(); // kept for CDDB compatibility
-	QAction* play_pause_shortcut;
 protected:
 	void setDefaultShortcuts();
 	void setContextualMenu();
@@ -192,12 +210,15 @@ public slots:
 	void loopdiscShortcut();
 	void volumeUpShortcut();
 	void volumeDownShortcut();
+	void quitShortcut();
+	void minimizeShortcut();
 	void actionButton(QString);
 	void setShortcut(QString, QString);
 	void catchtime(qint64 pos);
 
 	//void setNewSkin(QString);
 	void unsetHourglass();
+	void configureShortcuts();
 
 	/**
 	* Open the config window

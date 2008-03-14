@@ -21,6 +21,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+// #include <QKeyEvent>
+// #include <kactioncollection.h>
+// #include <kshortcutsdialog.h>
 #include "kscd.h"
 #include "ihm/configwindow.h"
 
@@ -108,23 +111,24 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	// Set context menu policy to ActionsContextMenu
 	setContextMenuPolicy(Qt::ActionsContextMenu);
 
-// 	CDDBWindowAction = new QAction(i18n("CDDB..."), this);
-// 	addAction(CDDBWindowAction);
-// 	connect(CDDBWindowAction, SIGNAL(triggered()), m_cddbManager, SLOT(CDDialogSelected()));
-// 	//shortcut
-// 	CDDBWindowAction->setShortcut(tr("w"));
+	configure_shortcuts = new QAction(i18n("Configure Shortcuts"), this);
+	addAction(configure_shortcuts);
+	connect(configure_shortcuts, SIGNAL(triggered()), this, SLOT(configureShortcuts()));
 
-	DownloadAction = new QAction(i18n("Download Information"), this);
+/*	DownloadAction = new QAction(i18n("Download Information"), this);
+	DownloadAction->setShortcut(tr("d"));
+	DownloadAction = m_actions->addAction("Download Info");
+	DownloadAction->setText("Download Info");
 	addAction(DownloadAction);
 	connect(DownloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
-	//shortcut
-	DownloadAction->setShortcut(tr("d"));
 	
 	UploadAction = new QAction(i18n("Upload Information"), this);
-	addAction(UploadAction);
-	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(infoDisplay()));
-	//shortcut
 	UploadAction->setShortcut(tr("u"));
+	UploadAction = m_actions->addAction("Upload Info");
+	UploadAction->setText("Upload Info");
+	addAction(UploadAction);
+	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(infoDisplay()));*/
+	
 
 // 	ConfigWindow * conf = new ConfigWindow(this);
 
@@ -161,7 +165,11 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	random = false;
 	looptrack = false;
 	loopdisc = false;
+	
 	//For User Shortcuts Configuration
+	
+	//SCEditor = new KShortcutsEditor (parent, AllActions, LetterShortcutsAllowed);
+
 // 	connect(conf,SIGNAL(ShortcutChanged(QString,QString)),this,SLOT(setShortcut(QString,QString)));
 }
 
@@ -257,68 +265,121 @@ void KSCD::changeVolume(qreal value)
 
 void KSCD::setDefaultShortcuts()
 {
+	m_actions = new KActionCollection(this);
+	m_actions->setConfigGroup("Shortcuts");
+
+	//quit
+	quit_shortcut = new QAction(i18n("quit"), this);
+	quit_shortcut->setShortcut(tr("Escape"));
+	quit_shortcut = m_actions->addAction("Quit");
+	quit_shortcut->setText("Quit");
+	addAction(quit_shortcut);
+	connect(quit_shortcut, SIGNAL(triggered()), this, SLOT(quitShortcut()));
+
+	//minimize
+	minimize_shortcut = new QAction(i18n("minimize"), this);
+	minimize_shortcut->setShortcut(tr("Alt+Escape"));
+	minimize_shortcut = m_actions->addAction("Minimize");
+	minimize_shortcut->setText("Minimize");
+	addAction(minimize_shortcut);
+	connect(minimize_shortcut, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
+	
 	//play/pause
 	play_pause_shortcut = new QAction(i18n("play"), this);
+	play_pause_shortcut->setShortcut(Qt::Key_Space);
+	play_pause_shortcut = m_actions->addAction("Play/Pause");
+	play_pause_shortcut->setText("Play/Pause");
 	addAction(play_pause_shortcut);
-	play_pause_shortcut->setShortcut(tr("Space"));
 	connect(play_pause_shortcut, SIGNAL(triggered()), this, SLOT(playShortcut()));
 	
 	//stop
 	stop_shortcut = new QAction(i18n("stop"), this);
-	addAction(stop_shortcut);
 	stop_shortcut->setShortcut(tr("s"));
+	stop_shortcut = m_actions->addAction("Stop");
+	stop_shortcut->setText("Stop");
+	addAction(stop_shortcut);
 	connect(stop_shortcut, SIGNAL(triggered()), devices, SLOT(stop()));
 
 	//next
 	next_shortcut = new QAction(i18n("next"), this);
-	addAction(next_shortcut);
 	next_shortcut->setShortcut(tr("Right"));
+	next_shortcut = m_actions->addAction("next");
+	next_shortcut->setText("Next");
+	addAction(next_shortcut);
 	connect(next_shortcut, SIGNAL(triggered()), devices, SLOT(nextTrack()));
 
 	//previous
 	previous_shortcut = new QAction(i18n("previous"), this);
-	addAction(previous_shortcut);
 	previous_shortcut->setShortcut(tr("Left"));
+	previous_shortcut = m_actions->addAction("previous");
+	previous_shortcut->setText("Previous");
+	addAction(previous_shortcut);
 	connect(previous_shortcut, SIGNAL(triggered()), devices, SLOT(prevTrack()));
 
 	//eject
 	eject_shortcut = new QAction(i18n("eject"), this);
-	addAction(eject_shortcut);
 	eject_shortcut->setShortcut(tr("e"));
+	eject_shortcut = m_actions->addAction("eject");
+	eject_shortcut->setText("Eject");
+	addAction(eject_shortcut);
 	connect(eject_shortcut, SIGNAL(triggered()), devices, SLOT(eject()));
 
 	//volume up
 	volume_up_shortcut = new QAction(i18n("volume_up"), this);
-	addAction(volume_up_shortcut);
 	volume_up_shortcut->setShortcut(tr("Up"));
+	volume_up_shortcut = m_actions->addAction("volume_up");
+	volume_up_shortcut->setText("Volume Up");
+	addAction(volume_up_shortcut);
 	connect(volume_up_shortcut, SIGNAL(triggered()), this, SLOT(volumeUpShortcut()));
 
 	//volume down
 	volume_down_shortcut = new QAction(i18n("volume_down"), this);
-	addAction(volume_down_shortcut);
 	volume_down_shortcut->setShortcut(tr("Down"));
+	volume_down_shortcut = m_actions->addAction("volume_down");
+	volume_down_shortcut->setText("Volume Down");
+	addAction(volume_down_shortcut);
 	connect(volume_down_shortcut, SIGNAL(triggered()), this, SLOT(volumeDownShortcut()));
 
 	//random
 	random_shortcut = new QAction(i18n("random"), this);
-	addAction(random_shortcut);
 	random_shortcut->setShortcut(tr("r"));
+	random_shortcut = m_actions->addAction("random");
+	random_shortcut->setText("Random");
+	addAction(random_shortcut);
 	connect(random_shortcut, SIGNAL(triggered()), this, SLOT(randomShortcut()));
 
 	//looptrack
 	looptrack_shortcut = new QAction(i18n("looptrack"), this);
-	addAction(looptrack_shortcut);
 	looptrack_shortcut->setShortcut(tr("l"));
+	looptrack_shortcut = m_actions->addAction("looptrack");
+	looptrack_shortcut->setText("Repeat Track");
+	addAction(looptrack_shortcut);
 	connect(looptrack_shortcut, SIGNAL(triggered()), this, SLOT(looptrackShortcut()));
 
 	//loopdisc
 	loopdisc_shortcut = new QAction(i18n("loopdisc"), this);
-	addAction(loopdisc_shortcut);
 	loopdisc_shortcut->setShortcut(tr("Ctrl+l"));
+	loopdisc_shortcut = m_actions->addAction("loopdisc");
+	loopdisc_shortcut->setText("Repeat Album");
+	addAction(loopdisc_shortcut);
 	connect(loopdisc_shortcut, SIGNAL(triggered()), this, SLOT(loopdiscShortcut()));
 
 	//download info
-	//Done in constructor
+	DownloadAction = new QAction(i18n("Download Information"), this);
+	DownloadAction->setShortcut(tr("d"));
+	DownloadAction = m_actions->addAction("Download Info");
+	DownloadAction->setText("Download Info");
+	addAction(DownloadAction);
+	connect(DownloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
+
+	//upload info
+// 	UploadAction = new QAction(i18n("Upload Information"), this);
+// 	UploadAction->setShortcut(tr("u"));
+// 	UploadAction = m_actions->addAction("Upload Info");
+// 	UploadAction->setText("Upload Info");
+// 	addAction(UploadAction);
+// 	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(infoDisplay()));
+
 
 	//cddb window
 	//Done in constructor
@@ -328,16 +389,29 @@ void KSCD::setDefaultShortcuts()
 
 	//tracklist
 	tracklist_shortcut = new QAction(i18n("tracklist"), this);
-	addAction(tracklist_shortcut);
+	//tracklist_shortcut->setShortcut(tr("t"));
+	tracklist_shortcut = m_actions->addAction("tracklist");
+	tracklist_shortcut->setText("Show Tracklist");
 	tracklist_shortcut->setShortcut(tr("t"));
+	addAction(tracklist_shortcut);
 	connect(tracklist_shortcut, SIGNAL(triggered()), this, SLOT(tracklistShortcut()));
 
 	//mute
 	mute_shortcut = new QAction(i18n("mute"), this);
-	addAction(mute_shortcut);
 	mute_shortcut->setShortcut(tr("m"));
+	mute_shortcut = m_actions->addAction("mute");
+	mute_shortcut->setText("Mute/Unmute");
+	addAction(mute_shortcut);
 	connect(mute_shortcut, SIGNAL(triggered()), this, SLOT(muteShortcut()));
 
+	//Read saved settings
+	m_actions->readSettings();
+	//configureShortcuts();
+}
+
+void KSCD::configureShortcuts()
+{
+	KShortcutsDialog::configure(m_actions, KShortcutsEditor::LetterShortcutsAllowed, this, true);
 }
 
 void KSCD::setShortcut(QString name, QString key)
@@ -418,6 +492,18 @@ void KSCD::setShortcut(QString name, QString key)
 		configure->setShortcut(key);
 	}
 
+}
+
+void KSCD::quitShortcut()
+{
+	kDebug()<<"Quit Shortcut";
+	actionButton("close");
+}
+
+void KSCD::minimizeShortcut()
+{
+	kDebug()<<"Minimize Shortcut";
+	actionButton("minimize");
 }
 
 void KSCD::tracklistShortcut()
