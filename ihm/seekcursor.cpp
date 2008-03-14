@@ -36,33 +36,34 @@ SeekCursor::SeekCursor(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
-	position = 0.0;
+	m_posInit = x();
+	init();
 }
 
 SeekCursor::~SeekCursor()
 {
 }
 
-// void SeekCursor :: mousePressEvent(QMouseEvent *event)
-// {
-// 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-// 	{
-// 		event->accept();
-// 	}
-// 	else
-// 	{
-// 		event->ignore();
-// 	}
-// }
-// 
-// void SeekCursor :: mouseReleaseEvent(QMouseEvent *event)
-// {
-// 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-// 	{
-// 		event->accept();
-// 	}
-// 	else
-// 	{
-// 		event->ignore();
-// 	}
-// }
+int SeekCursor :: getStep()
+{
+	return m_step;
+}
+
+void SeekCursor :: setStep(qint64 time,int lenght)
+{
+
+	m_step = ceil((SECOND_IN_MILLI * (float)lenght)/(float)time);
+	kDebug()<<"m_step:"<<m_step;
+}
+
+void SeekCursor :: init()
+{
+	m_posCurrent = m_posInit;
+	move(m_posCurrent,y());
+}
+
+void SeekCursor :: moveCursor(qreal pos)
+{
+	m_posCurrent = m_posCurrent + getStep();
+	move(m_posCurrent,y());
+}

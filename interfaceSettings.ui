@@ -5,92 +5,65 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>326</width>
-    <height>106</height>
+    <width>327</width>
+    <height>80</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <item>
-    <layout class="QGridLayout" >
-     <item row="0" column="0" colspan="2" >
-      <widget class="QLabel" name="label" >
-       <property name="text" >
-        <string>Text Font:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2" colspan="2" >
-      <widget class="KFontRequester" name="kcfg_TextFont" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" colspan="2" >
-      <widget class="QLabel" name="label_2" >
-       <property name="text" >
-        <string>Text Color:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2" >
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>111</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="1" column="3" >
-      <widget class="KColorButton" name="kcfg_TextColor" />
-     </item>
-     <item row="2" column="0" >
-      <widget class="QLabel" name="label_3" >
-       <property name="enabled" >
-        <bool>false</bool>
-       </property>
-       <property name="text" >
-        <string>Skin:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1" colspan="2" >
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>151</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="2" column="3" >
-      <widget class="KPushButton" name="kcfg_SkinChooser" >
-       <property name="enabled" >
-        <bool>false</bool>
-       </property>
-       <property name="text" >
-        <string>Browse...</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-  </layout>
+  <widget class="QWidget" name="" >
+   <property name="geometry" >
+    <rect>
+     <x>5</x>
+     <y>10</y>
+     <width>318</width>
+     <height>63</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" >
+    <item row="0" column="0" >
+     <widget class="QLabel" name="label" >
+      <property name="text" >
+       <string>Text Font:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" colspan="2" >
+     <widget class="KFontRequester" name="kcfg_TextFont" >
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" >
+     <widget class="QLabel" name="label_2" >
+      <property name="text" >
+       <string>Text Color:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" >
+     <spacer>
+      <property name="orientation" >
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" >
+       <size>
+        <width>111</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="2" >
+     <widget class="KColorButton" name="kcfg_TextColor" />
+    </item>
+   </layout>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -102,11 +75,6 @@
    <class>KFontRequester</class>
    <extends>QWidget</extends>
    <header>kfontrequester.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

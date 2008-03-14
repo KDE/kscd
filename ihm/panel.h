@@ -81,6 +81,8 @@ public:
 private:
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
 	void setTitleDisplay(QString * title);
 
 
@@ -94,8 +96,6 @@ public slots:
 	void setVolume(QString * volume);
 	void setLoop(QString loop);
 	void setRandom(QString random);
-	void mousePressEvent(QMouseEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
 	void displayInfo(QString loop, QString random);
 	void setTextSizeFont(QFont font);
 	void setEjectAct(bool b);

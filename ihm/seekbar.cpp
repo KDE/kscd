@@ -42,6 +42,30 @@ SeekBar::~SeekBar()
 {
 }
 
+void SeekBar :: mousePressEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void SeekBar :: mouseReleaseEvent(QMouseEvent *event)
+{
+	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
+	{
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
 void SeekBar :: enterEvent (QEvent * event)
 {
 	event->ignore();

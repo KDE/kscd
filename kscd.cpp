@@ -160,7 +160,7 @@ void KSCD::setupActions()
 	test->setShortcut(Qt::CTRL + Qt::Key_T);
 	
 //Find out skin
-	QAction* findS = new QAction(i18n("find out skin"), this);
+	QAction* findS = new QAction(i18n("Skin..."), this);
 	addAction(findS);
 	connect(findS, SIGNAL(triggered()), this, SLOT(makeFinderSkinDialog()));
 	
@@ -616,7 +616,10 @@ void KSCD::actionButton(QString name)
 		{
 			if((devices->getState() == StoppedState) || (devices->getState()) == PausedState)
 			{
+				kDebug()<<"time total"<<devices->getTotalTime();
 				devices->play();
+				m_slider->stop();
+				m_slider->start(devices->getTotalTime());
 				restoreTrackinfoLabel();
 				restoreArtistLabel();
 			}
@@ -638,6 +641,7 @@ void KSCD::actionButton(QString name)
 			if(devices->getState() == PlayingState)
 			{
 				devices->pause();
+				m_slider->pause();
 			}
 		/*}*/
 		emit(picture(name,state));
@@ -660,9 +664,12 @@ void KSCD::actionButton(QString name)
 			if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 			{
 				devices->stop(false);
+				m_slider->stop();
 			}
 			if ((devices->getState() == PlayingState))
 			{
+				m_slider->stop();
+				m_slider->start(devices->getTotalTime());
 				devices->play();
 				
 			}
@@ -687,11 +694,13 @@ void KSCD::actionButton(QString name)
 			if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 			{
 				devices->stop(false);
+				m_slider->stop();
 			}
 			if ((devices->getState() == PlayingState))
 			{
+				m_slider->stop();
 				devices->play();
-
+				m_slider->start(devices->getTotalTime());
 			}
 		}
 		emit(picture(name,state));
@@ -701,6 +710,7 @@ void KSCD::actionButton(QString name)
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
 			devices->stop();
+			m_slider->stop();
 		}
 		emit(picture(name,state));
 	}
@@ -711,6 +721,7 @@ void KSCD::actionButton(QString name)
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
 			devices->stop();
+			m_slider->stop();
 		}
 	}
 	if(name=="mute")

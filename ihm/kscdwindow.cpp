@@ -66,6 +66,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 
 // 	setMask(*m_backG->bitmap());
 
+
 	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
 
 	// Configuration windows
@@ -95,6 +96,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 
 KscdWindow::~KscdWindow()
 {
+
 	delete m_playB;
 	delete m_stopB;
 	delete m_nextB;
@@ -107,7 +109,10 @@ KscdWindow::~KscdWindow()
 	delete m_backG;
 	delete m_miniB;
 	delete m_slider;
-// 	delete m_cursor;
+	delete m_miniB;
+ 	delete m_volumeB;
+	delete m_loopB;
+	delete m_randB;
 // 	delete /*m_popUp*/;
 
 	delete m_trackDlg;
@@ -166,7 +171,9 @@ void KscdWindow::setNewSkin(QString newS){
 
 	m_backG->changeSkin(newS);
 	m_stopB->changeSkin(newS);
-	m_playB->changeSkin(newS);
+	kDebug()<<"name play1:"<<m_playB->getName();
+	kDebug()<<"name id1:"<<m_playB->getId();
+	m_playB->changeSkin(newS);	
 	m_prevB->changeSkin(newS);
 	m_nextB->changeSkin(newS);
 	m_ejectB->changeSkin(newS);

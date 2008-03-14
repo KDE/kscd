@@ -50,7 +50,6 @@ class KscdWidget:public QWidget
 
 protected:
 	QRegion *m_bounds;
-	QBitmap m_bitmap;
 	QString m_state;
 	QString m_name;
 	QString m_file;
@@ -75,9 +74,7 @@ public:
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
 	void changeSkin(QString);
-
 	QRegion* bounds();
-	QBitmap bitmap();
 signals:
 	void needRepaint();
 	void changePicture();

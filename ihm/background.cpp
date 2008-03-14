@@ -33,21 +33,17 @@
 #include "background.h"
 
 BackGround::BackGround(QWidget * parent,QString sName):KscdWidget(sName,parent)
+
 {
- 	kDebug()<<"background size:"<<(m_renderer->boundsOnElement(getId())).toRect().size();
+//  	kDebug()<<"background size:"<<(m_renderer->boundsOnElement(getId())).toRect().size();
 // 	QPixmap pix((m_renderer->boundsOnElement(m_id)).toRect().size());
-	
-	m_bitmap = QBitmap((m_renderer->boundsOnElement(getId())).toRect().size());
-	
-	kDebug()<<"bitmap size:"<<m_bitmap.size();
-	
-	QPainter painter(&m_bitmap);
-	
-	m_renderer->render(&painter,getId(),QRect((m_renderer->boundsOnElement(getId())).toRect().topLeft(),m_bitmap.size()));
-	
-	m_bounds = new QRegion(m_bitmap);
-	
-	//m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+
+// 	m_bitmap = QBitmap((m_renderer->boundsOnElement(getId())).toRect().size());
+// 	kDebug()<<"bitmap size:"<<m_bitmap.size();
+// 	QPainter painter(&m_bitmap);
+// 	m_renderer->render(&painter,getId(),QRect((m_renderer->boundsOnElement(getId())).toRect().topLeft(),m_bitmap.size()));
+// 	m_bounds = new QRegion(m_bitmap);
+	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 	m_move = false;
 }

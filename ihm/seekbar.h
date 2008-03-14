@@ -50,6 +50,8 @@ public:
 private:
 	void leaveEvent(QEvent* event);
 	void enterEvent(QEvent* event);
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
 };
 
 #endif /*SEEKBAR_H_*/

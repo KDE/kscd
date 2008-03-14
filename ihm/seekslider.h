@@ -38,6 +38,7 @@
 #include <QRegion>
 #include <QMouseEvent>
 #include <QEvent>
+#include <QTimeLine>
 #include <kdebug.h>
 // #include "kscdwidget.h"
 #include "seekbar.h"
@@ -51,17 +52,73 @@ public:
 	SeekSlider(QWidget * parent=0);
 	virtual ~SeekSlider();
 
-	void changeSkin(QString);
-
 	SeekCursor* cursor();
 	SeekBar* bar();
+
+	void setTime(qint64);
+	qint64 getTime();
+
+	/**
+	 * Calculation of move to do in 1 second
+	 */
+	void  setStep(qint64 time,int length);
+	int  getStep();
+
+	/**
+	 * Initialize all attibutes
+	 */
+	void init(qint64);
+
+	/**
+	 * Start the qtimeline
+	 */
+	void start(qint64 time);
+
+	/**
+	 * Stop the qtimeline
+	 */
+	void stop();
+
+	/**
+	 * Paused the qtimeline
+	 */
+	void pause();
+
 private:
+
+	/**
+	 * The bar of the slider
+	 */
 	SeekBar* m_bar;
+
+	/**
+	 * The cursor of the slider
+	 */
 	SeekCursor* m_cursor;
-	quint64 time;
-private:
-	int lengthToTime(int length);
-	int timeToLength(int time);
+
+	/**
+	 * A QTimeLine
+	 */	
+	QTimeLine* m_timeL;
+
+	/**
+	 * Current state of the slider
+	 */	
+	QTimeLine::State m_state;
+
+	/**
+	 * Total time of the current track
+	 */
+	qint64 m_time;
+	/**
+	 * Move to do in 1 second
+	 */
+	int m_step;
+public slots:
+	/**
+	 * Restart the qtimeline after the pause mode
+	 */
+	void resume(QTimeLine::State state);
 };
 
 #endif /*SEEKSLIDER_H_*/

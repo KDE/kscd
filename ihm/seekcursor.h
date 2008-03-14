@@ -40,6 +40,8 @@
 #include <QEvent>
 #include <kdebug.h>
 #include "kscdwidget.h"
+#include <math.h>
+#define SECOND_IN_MILLI	1000
 
 class SeekCursor:public KscdWidget
 {
@@ -47,9 +49,33 @@ class SeekCursor:public KscdWidget
 public:
 	SeekCursor(QWidget * parent=0, QString sName="seekCursor");
 	virtual ~SeekCursor();
+	
+	/**
+	 * Initialize the cursor to his initial posion
+	 */
+	void init();
+
+	int getStep();
+	void setStep(qint64,int);
 private:
-	float position;
-	int pas;
+	/**
+	 * Initial x position of the cursor
+	 */
+	int m_posInit;
+	/**
+	 * Current x position of the cursor
+	 */
+	int m_posCurrent;
+	/**
+	 * The step to move the cursor
+	 */
+	int m_step;
+public slots:
+	/**
+	 * Move the cursor 
+	 * @param: qreal 
+	 */
+	void moveCursor(qreal);
 };
 
 #endif /*SEEKSLIDER_H_*/

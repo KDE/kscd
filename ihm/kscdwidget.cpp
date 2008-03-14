@@ -74,10 +74,6 @@ void KscdWidget::changeSkin(QString newPathSkin)
 	move(m_renderer->boundsOnElement(newId).x(),
 		 m_renderer->boundsOnElement(newId).y());
 	
-	m_bitmap = QBitmap((m_renderer->boundsOnElement(getId())).toRect().size());
-	QPainter painter(&m_bitmap);
-	m_renderer->render(&painter,getId(),QRect((m_renderer->boundsOnElement(getId())).toRect().topLeft(),m_bitmap.size()));
-	
 	emit(changePicture());
 	emit(needRepaint());
 	
@@ -119,6 +115,8 @@ void KscdWidget :: loadPicture(QString name,QString state)
 
 void KscdWidget :: paintEvent(QPaintEvent *event)
 {
+	
+
 	QPainter painter(this);
 	if (m_renderer->elementExists(m_id))
 		m_renderer->render(&painter,m_id);
@@ -173,12 +171,9 @@ void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
+
 QRegion* KscdWidget :: bounds()
 {
 	return m_bounds;
 }
 
-QBitmap KscdWidget :: bitmap()
-{
-	return m_bitmap;
-}
