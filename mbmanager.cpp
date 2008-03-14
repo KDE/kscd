@@ -58,21 +58,13 @@ void MBManager::discLookup()
 		MB.SetServer(server, 80);
 		kDebug() << "!! set server !!" ;
 	}
-	else
-	{
-		kDebug() << "no server" ;
-	}
 	
 	// Check to see if the debug env var has been set 
 	if (getenv("MB_DEBUG"))
 	{
 		MB.SetDebug(atoi(getenv("MB_DEBUG")));
-		kDebug() << "!! set debug !!" ;
 	}
-	else
-	{
-		kDebug() << "no debug" ;
-	}
+
 	
 	
 	// If you need to use a proxy, uncomment/edit the following line
@@ -139,7 +131,7 @@ void MBManager::discLookup()
 		for(int i = 1; i <= numTracks; i++)
 		{
 			
-			track.Title = MB.Data(MBE_AlbumGetTrackName, i).c_str();		
+			track.Title = MB.Data(MBE_AlbumGetTrackName, i).c_str();
 			track.Artist = MB.Data(MBE_AlbumGetArtistName, i).c_str();
 			track.Duration = MB.Data(MBE_AlbumGetTrackDuration, i).c_str();
 			
@@ -184,30 +176,13 @@ void MBManager::discLookup()
 	}
 }
 
-void MBManager::infoDisplay()
+void MBManager::discUpload()
 {
 	showArtistLabel(m_discInfo.Artist);
 	
 	musicbrainz_t o;
 	char          url[1025];
-/*
-	if (argc > 1 && strcmp(argv[1], "--help") == 0)
-	{
-		printf("Usage: cdlookup [options] [device]\n");
-		printf("\nDefault drive is /dev/cdrom\n");
-		printf("\nOptions:\n");
-		printf(" -k       - use the Konqueror to submit\n");
-		printf(" -m       - use the Mozilla to submit\n");
-		printf(" -o       - use the Opera to submit\n");
-		printf(" -l       - use the lynx to submit\n");
-		printf(" -g       - use the galeon to submit\n");
-		printf("\nBy default Netscape will be used. You may also set the\n");
-		printf("BROWSER environment variable to specify your browser of "
-				"choice. Check http://www.tuxedo.org/~esr/BROWSER/index.html "
-				"for details.\n");
-		exit(0);
-	}
-*/
+
     // Create the musicbrainz object, which will be needed for subsequent calls
 	o = mb_New();
 
@@ -226,7 +201,7 @@ void MBManager::infoDisplay()
 		mb_SetDepth(o, 2);
 
 //	m_browser = "firefox";
-//	m_browser = "konqueror";
+	m_browser = "konqueror";
 	
     // Tell the client library to return data in ISO8859-1 and not UTF-8
 	mb_UseUTF8(o, 0);
@@ -251,3 +226,4 @@ void MBManager::infoDisplay()
     // and clean up the musicbrainz object
 	mb_Delete(o);
 }
+

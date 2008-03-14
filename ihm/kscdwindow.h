@@ -112,7 +112,7 @@ protected:
 	KscdWidget *m_miniB;
 	SeekSlider *m_slider;
 	Panel *m_panel;
-
+	KscdWidget *m_popup;
 
 	TrackListDlg *m_trackDlg;
 	FinderSkin *m_finderSkin;
@@ -154,7 +154,6 @@ public:
 	void setTime(qint64 pos);
 
 public slots:
-// 	void hideTitlePopUp();
 	void catchButton(QString);
 	void catchVolume(qreal);
 	void changePicture(QString, QString);

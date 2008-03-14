@@ -48,9 +48,6 @@ class KscdWidget:public QWidget
 {
 	Q_OBJECT
 
-private:
-	QWidget * parent;
-
 protected:
 	QRegion *m_bounds;
 	QBitmap m_bitmap;
@@ -59,6 +56,7 @@ protected:
 	QString m_file;
 	QString m_path;
 	QString m_id;
+	QString m_baseName;
 	QSvgRenderer *m_renderer;
 
 	void paintEvent(QPaintEvent *event);

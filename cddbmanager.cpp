@@ -48,7 +48,7 @@ CDDBManager::CDDBManager(KSCD *parent)
 
 // TODO inactivate CDDB options if no disc
 // TODO erase that !
-	if( pKscd->getDevices()->getCD()->isCdInserted() && pKscd->getDevices()->isDiscValid() )
+//	if( pKscd->getDevices()->getCD()->isCdInserted() && pKscd->getDevices()->isDiscValid() )
 	{
 		for (int i=0; i<pKscd->getDevices()->getTotalTrack(); i++)
 		{
@@ -212,11 +212,13 @@ void CDDBManager::CDDialogDone()
 
 void CDDBManager::refreshCDDB()
 {
+	/*
 	kDebug() << "refreshCDDB" ;
 	if (pKscd->getDevices()->getCD()->isCdInserted())
 	{
 		setupCDDB(pKscd->getDevices()->getTotalTrack(), pKscd->getCd()->discSignature() );
 	}
+	*/
 }
 
 // TODO move this function to CDDBManager and add an signature attribute
@@ -243,9 +245,9 @@ void CDDBManager::lookupCDDB()
 			getCddbClient()->setBlockingMode(false);
 			
 	//TODO get CD signature through Solid
-			getCddbClient()->lookup( pKscd->getCd()->discSignature() );
+			//getCddbClient()->lookup( pKscd->getCd()->discSignature() );
 	
-			kDebug() << pKscd->getCd()->discSignature() ;
+//			kDebug() << pKscd->getCd()->discSignature() ;
 		}
 	}
 }

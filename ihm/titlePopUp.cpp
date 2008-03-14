@@ -34,9 +34,9 @@
 
 #include "titlePopUp.h"
 
-TitlePopUp::TitlePopUp(QWidget *parent,QString sName) : KscdWidget(sName,parent)
+TitlePopUp::TitlePopUp(QWidget *parent, QString sName) : KscdWidget(sName,parent)
 {
-	m_region = new QRegion(x(),y(),x()+width(),y()+height(),QRegion::Ellipse);
+//	m_region = new QRegion(x(),y(),x()+width(),y()+height(),QRegion::Ellipse);
 	move(parent->width()/2,parent->height()/2);
 
 	m_layout = new QGridLayout;
@@ -74,43 +74,14 @@ TitlePopUp::~TitlePopUp()
 */
 void TitlePopUp::showTitlePopUp(QString trackTitle, QString trackLength)
 {
-// 	QTimer::singleShot(5000, this, SLOT(hideTitlePopUp()));
+	QTimer::singleShot(5000, this, SLOT(hideTitlePopUp()));
 	m_lengthLbl->setText(trackLength);
 	m_titleLbl->setText(trackTitle);
 	show();
 }
 
-
-void TitlePopUp :: mousePressEvent(QMouseEvent *event)
+void TitlePopUp::hideTitlePopUp()
 {
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-	}
-	else
-	{
-		event->ignore();
-	}
+	hide();
 }
 
-void TitlePopUp :: mouseReleaseEvent(QMouseEvent *event)
-{
-	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
-	{
-		event->accept();
-	}
-	else
-	{
-		event->ignore();
-	}
-}
-
-void TitlePopUp :: enterEvent(QEvent* event)
-{
-	event->ignore();
-]
-
-void TitlePopUp :: leaveEvent(QEvent* event)
-{
-	event->ignore();
-}

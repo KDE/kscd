@@ -62,10 +62,9 @@
 #include "ihm/kscdwindow.h"
 
 #include "hwcontroler.h"
-// #include "cddbmanager.h"
+#include "cddbmanager.h"
 #include "mbmanager.h"
 #include "prefs.h"
-#include "cddbdlg.h"
 // #include "configWidget.h"
 #include "docking.h"
 #include <config-alsa.h>
@@ -128,7 +127,7 @@ class KSCD : public KscdWindow, public KSessionManager {
 private:
 	HWControler* devices;
 // 	KCompactDisc* m_cd; // kept for CDDB compatibility
-// 	CDDBManager* m_cddbManager;
+	CDDBManager* m_cddbManager;
 	
 	MBManager* m_MBManager;
 	
@@ -170,7 +169,6 @@ private:
 	 */
 	void loadSettings();
 
-
 public:
 	explicit KSCD(QWidget *parent = 0);
 	~KSCD();
@@ -180,8 +178,8 @@ public:
 	HWControler * getDevices();
 // 	KCompactDisc* getCd(); // kept for CDDB compatibility
 protected:
+	void setupActions();
 	void setDefaultShortcuts();
-	void setContextualMenu();
 
 signals:
 	void picture(QString,QString);
@@ -194,10 +192,8 @@ signals:
 	//void playshortcut();
 
 public slots:
-		
 
-//	void test();
-
+	void test();
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 	void changeVolume(qreal);
@@ -225,6 +221,7 @@ public slots:
 	*/
 	void optionsPreferences();
 	void updateSettings();
+	void configureKeys();
 };
 
 #endif

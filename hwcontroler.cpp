@@ -128,16 +128,18 @@ void HWControler :: play()
 	{
 		if(cdIn[selectedCd]->isCdInserted())
 		{
-			if (!random)
-			{
-			mc->setAutoplayTitles(true);
-			media->play();
-			kDebug() << getCurrentTrack() <<"/"<< getTotalTrack();
-			}
-			else
-			{
+			/*if (!random)
+			{*/
+				mc->setAutoplayTitles(true);
+				media->play();
+				kDebug() << getCurrentTrack() <<"/"<< getTotalTrack();
+//			}
+			/*else
+			{	
+				kDebug() << "Booooooooooooooooo";
+				
 				playRand();
-			}
+			}*/
 		}
 		else
 		{
@@ -339,37 +341,6 @@ AudioCD * HWControler::getCD()
 		return cdIn[selectedCd];
 	}
 	return NULL;
-}
-
-const QList<unsigned> &HWControler::getDiscSignature()
-{
-	QList<unsigned> trackStartFrames ;
-/*
-	int nbTracks = getTotalTrack() ;
-	if(nbTracks > 0)
-	{
-		kDebug() << "Sig " << nbTracks << " tracks";
-		
-		for(int i = 1; i <= nbTracks; i++)
-		{
-			trackStartFrames.append(getTrackStart(m_handle, i));
-		}
-		trackStartFrames.append(getTrackStart(m_handle, i));
-	}
-		kDebug() << "TrackStartFrames " << trackStartFrames;
-*/
-	return trackStartFrames;
-}
-
-int getTrackStart(void *p, int trackNum)
-{/*
-	struct wm_drive *pdrive = (struct wm_drive *)p;
-
-	if (trackNum < 1 ||trackNum > (getTotalTrack()+1))
-		return 0;
-
-	return pdrive->thiscd.trk[CARRAY(trackNum)].start;*/
-return 0;
 }
 
 void HWControler ::setLoopMode(LoopMode lm)

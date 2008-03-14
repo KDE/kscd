@@ -37,14 +37,10 @@ bool stoppedByUser = true;
 
 KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 {
-/**
- * Hourglass
- */
+	/** Hourglass */
 	setHourglass();
-/**
-   *************************/	
 
-
+	/** Application initialization */
 // 	QString commande = "cp "+KStandardDirs::installPath("data") + "kscd/ihm/skin/*.TTF ~/.fonts/";
 // 	commande.replace("/ihm/","/");
 // 	char * chemin = (char *)malloc(1024 * sizeof(char));
@@ -55,19 +51,9 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
   
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
 
-/**
-	 * General
- */
-	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
-	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
-	
-	connect(this,SIGNAL(trackClicked(int)), this, SLOT(playTrack(int)));
-	connect(this,SIGNAL(actionVolume(qreal)), this, SLOT(changeVolume(qreal)));
-
 	devices = new HWControler();
-	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(catchtime(qint64)));
-	connect(this,SIGNAL(infoPanel(QString)),this,SLOT(panelInfo(QString)));
-//  	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
+	
+// 	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
 // 	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
 // 	vs->setOrientation(Qt::Vertical);
 // 	vs->setMuteVisible(false);
@@ -77,36 +63,52 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
  *	SETTINGS
  */
 	loadSettings();
-/**
-	 * CDDB
- */
-// // TODO kept for CDDB compatibility
-// // TODO deactivate CDDB options if no disc
-//  	m_cd = new KCompactDisc();
-//  	m_cd->setDevice(Prefs::cdDevice(), 50, false, QString("phonon"), Prefs::audioDevice());
-	// 
-// 	// CDDB Initialization
-// 	m_cddbManager = new CDDBManager(this);
 	
-	// Music Brainz initialisation
+	/** Music Brainz initialisation	*/
 	m_MBManager = new MBManager();
-	// TODO move lookup to cd detected
 	m_MBManager->discLookup();
 	
+	setupActions();
+	
+}
+
+KSCD::~KSCD()
+{
+	delete devices;
+	delete m_MBManager;
+// 	delete m_cd;
+// 	delete m_cddbManager;
+//	delete w_titlePopUp;	//deleting of the title popup
+
+/*	delete m_cddialog;
+	delete m_cddb;*/
+}
+
+void KSCD::setupActions()
+{	
+	/**
+	 * General
+	 */
+	// Connects UI with actions triggering
+	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
+	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
+	
+	// General connects
+	connect(this,SIGNAL(trackClicked(int)), this, SLOT(playTrack(int)));
+	connect(this,SIGNAL(actionVolume(qreal)), this, SLOT(changeVolume(qreal)));
+	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(catchtime(qint64)));
+	connect(this,SIGNAL(infoPanel(QString)),this,SLOT(panelInfo(QString)));
+	
+	// MB
 	connect(m_MBManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
 	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
 	
-// 	connect(m_cddbManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
-// 	connect(m_cddbManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
-// 	connect(m_cddbManager, SIGNAL(restoreArtistLabel()), this, SLOT(restoreArtistLabel()));
-// 	connect(m_cddbManager, SIGNAL(restoreTrackinfoLabel()), this, SLOT(restoreTrackinfoLabel()));
-	
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
-// 	connect(devices,SIGNAL(cdLoaded()),m_cddbManager,SLOT(refreshCDDB()));
+//	connect(devices,SIGNAL(trackChanged()),m_popUp,SLOT(showTitlePopUp()));
 	connect(devices,SIGNAL(cdLoaded()),m_MBManager,SLOT(discLookup()));
 
 /**
-	 * Contextual Menu
+ * Contextual Menu
  */
 	// Set context menu policy to ActionsContextMenu
 	setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -121,14 +123,17 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	DownloadAction->setText("Download Info");
 	addAction(DownloadAction);
 	connect(DownloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
+	DownloadAction->setShortcut(tr("d"));
 	
 	UploadAction = new QAction(i18n("Upload Information"), this);
 	UploadAction->setShortcut(tr("u"));
 	UploadAction = m_actions->addAction("Upload Info");
 	UploadAction->setText("Upload Info");
 	addAction(UploadAction);
+
+	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
+	UploadAction->setShortcut(tr("u"));
 	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(infoDisplay()));*/
-	
 
 // 	ConfigWindow * conf = new ConfigWindow(this);
 
@@ -136,6 +141,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 // 	connect(conf,SIGNAL(textSizeChanged(QString)),getPanel(),SLOT(setTextSize(QString)));
 // 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
 // 	connect(conf,SIGNAL(textSizeFontChanged(QFont)),getPanel(),SLOT(setTextSizeFont(QFont)));
+
 	//Find skin --> Two ways of change
 // 	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
@@ -148,16 +154,17 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	configure->setShortcut(tr("c"));
 	connect(configure, SIGNAL(triggered()), this, SLOT(optionsPreferences()));
 
-//Find out skin
-/*	QAction* findS = new QAction(i18n("find out skin"), this);
-	addAction(findS);
-	connect(findS, SIGNAL(triggered()), this, SLOT(showFinderSkin()));
-*/
+	QAction* test = new QAction(i18n("test"), this);
+	addAction(test);
+	connect(test, SIGNAL(triggered()), this, SLOT(test()));
+	test->setShortcut(Qt::CTRL + Qt::Key_T);
+	
 //Find out skin
 	QAction* findS = new QAction(i18n("find out skin"), this);
 	addAction(findS);
 	connect(findS, SIGNAL(triggered()), this, SLOT(makeFinderSkinDialog()));
-
+	
+	
 //////////Set Shortcuts
 	setDefaultShortcuts();
 	mute = false;
@@ -173,35 +180,12 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 // 	connect(conf,SIGNAL(ShortcutChanged(QString,QString)),this,SLOT(setShortcut(QString,QString)));
 }
 
-KSCD::~KSCD()
+void KSCD::test()
 {
-	delete devices;
-// 	delete m_cd;
-// 	delete m_cddbManager;
-//	delete w_titlePopUp;	//deleting of the title popup
-
-/*	delete m_cddialog;
-	delete m_cddb;*/
+	//kDebug () << "total time : " << devices->getTotalTime() ;
+	//kDebug () << "CDDB disc ID : " << devices->getMedia()->metaData("MUSICBRAINZ_DISCID") ;
+	configureKeys();
 }
-
-void KSCD::setContextualMenu()
-{
-	// TODO move from Kscd() to here
-	
-}
-
-
-
-/**
-* Find out new skin
-*/
-/*void KSCD::showFinderSkin()
-{
-	kDebug () << "Find out a new skin : begining";
-	makeFinderSkinDialog();
-}*/
-
-
 
 /**
  * CDDB Management
@@ -209,22 +193,9 @@ void KSCD::setContextualMenu()
 
 void KSCD::restoreArtistLabel()
 {
-// 	kDebug() << "NbTracks CDDB = " << m_cddbManager->getCddbInfo().numberOfTracks();
-// 	kDebug() << "NbTracks Devices = " << devices->getTotalTrack();
-
 	if( devices->getCD()->isCdInserted() && devices->isDiscValid() )
 	{
 		QString artist, title;
-
-// 		if (m_cddbManager->getCddbInfo().isValid()/* && m_cddbManager->getCddbInfo().numberOfTracks() == devices->getTotalTrack()*/) {
-// 			artist = m_cddbManager->getCddbInfo().get(KCDDB::Artist).toString();
-// 			title = m_cddbManager->getCddbInfo().get(KCDDB::Title).toString();
-// 		}
-// 		else
-// 		{
-// 			artist = i18n("Unknown artist");
-// 			title = i18n("Unknown album");
-// 		}
 		artist = m_MBManager->getDiscInfo().Artist;
 		title = m_MBManager->getDiscInfo().Title;
 		showArtistLabel(QString("%1").arg(artist));
@@ -232,7 +203,7 @@ void KSCD::restoreArtistLabel()
 	}
 	else
 	{
-		showArtistLabel(i18n(""));
+		showArtistLabel("");
 	}
 
 }
@@ -245,12 +216,11 @@ void KSCD::restoreTrackinfoLabel()
 	if (devices->getCD()->isCdInserted())
 	{
 		title = QString("%1 - ").arg(devices->getCurrentTrack(), 2, 10, QLatin1Char('0')) ;
-
 		title.append(m_MBManager->getTrackList()[devices->getCurrentTrack()-1].Title);
 		length.append(m_MBManager->getTrackList()[devices->getCurrentTrack()-1].Duration);
 		
 		showTrackinfoLabel(title);
-
+		m_popup = new TitlePopUp(this, "popup");
 	}
 	else
 	{
@@ -605,13 +575,17 @@ void KSCD::loopdiscShortcut()
 void KSCD::volumeUpShortcut()
 {
 	if (devices->getVolume()<=0.99)
+	{
 		this->changeVolume(devices->getVolume()*100+1);
+	}
 }
 
 void KSCD::volumeDownShortcut()
 {
 	if (devices->getVolume()>=0.01)
+	{
 		this->changeVolume(devices->getVolume()*100-1);
+	}
 }
 
 
@@ -652,7 +626,7 @@ void KSCD::actionButton(QString name)
 	}
 	if(name=="pause")
 	{
-		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
+		/*if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
 			if(!devices->getCD()->isCdInserted())
 				showArtistLabel(i18n("No disc"));
@@ -660,12 +634,12 @@ void KSCD::actionButton(QString name)
 				showArtistLabel(i18n("Invalid disc"));
 			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
 		}
-		else{
+		else{*/
 			if(devices->getState() == PlayingState)
 			{
 				devices->pause();
 			}
-		}
+		/*}*/
 		emit(picture(name,state));
 		play = !play;
 	}
@@ -753,7 +727,6 @@ void KSCD::actionButton(QString name)
 	}
 	if(name == "random")
 	{
-		kDebug() << 5;
 		devices->setRandom(false);
 		emit(picture(name,state));
 		emit(infoPanel("random"));
@@ -762,7 +735,6 @@ void KSCD::actionButton(QString name)
 	}
 	if(name == "p_random")
 	{
-		kDebug() << 6;
 		devices->setRandom(true);
 		emit(picture(name,state));
 		emit(infoPanel("p_random"));
@@ -844,6 +816,10 @@ void KSCD::writeSettings()
 // 	Prefs::self()->writeConfig();
 }
 
+void KSCD::configureKeys()
+{
+	KShortcutsDialog::configure(m_actions, KShortcutsEditor::LetterShortcutsAllowed, this, true);
+}
 
 /**
  * Accessors
@@ -911,6 +887,11 @@ void KSCD :: loadSettings()
 	m_panel->setEjectAct(Prefs::ejectOnFinish());
 	devices->setEjectActivated(Prefs::ejectOnFinish());
 }
+
+void KSCD::catchtime(qint64 pos){
+	setTime(pos);
+}
+
 /**
  * main()
  */
@@ -978,10 +959,6 @@ int main( int argc, char *argv[] )
 // 		Prefs::self()->setCdDevice(args->arg(0));
 
 	return a.exec();
-}
-
-void KSCD::catchtime(qint64 pos){
-	setTime(pos);
 }
 
 

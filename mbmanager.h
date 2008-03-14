@@ -90,8 +90,8 @@ public slots:
 	/** Gets information about the disc inserted */
 	void discLookup();
 	
-	/** Displays information */
-	void infoDisplay();
+	/** Uploads information */
+	void discUpload();
 	
 signals:
 	void showArtistLabel(QString);

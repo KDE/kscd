@@ -67,6 +67,7 @@ private:
 public:
 	VolumeButton(QWidget * parent=0, QString sName="volume", qreal value=50.0);
 	virtual ~VolumeButton();
+	void changeSkin(QString newPathSkin);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
 	void mouseMoveEvent(QMouseEvent * event);

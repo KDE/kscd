@@ -14,7 +14,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
-   sodipodi:docbase="/home/Stan/isi-kscd/kdemultimedia/kscd/ihm/skin"
+   sodipodi:docbase="/home/kde-devel/isi-kscd/kdemultimedia/kscd/ihm/skin"
    sodipodi:docname="default.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
@@ -796,7 +796,7 @@
        y1="45.000011"
        x2="180"
        y2="185.64035"
-       gradientTransform="matrix(0.6381852,0,0,1.0019549,399.53595,286.14626)" />
+       gradientTransform="matrix(0.6381852,0,0,1.0019549,203.97673,215.43558)" />
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradientIcoD"
@@ -1320,10 +1320,10 @@
      inkscape:cx="463.02925"
      inkscape:cy="1112.6826"
      inkscape:document-units="px"
-     inkscape:current-layer="kscd_default"
+     inkscape:current-layer="layer1"
      inkscape:window-width="1210"
      inkscape:window-height="742"
-     inkscape:window-x="70"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      showgrid="true"
      width="700px"
@@ -2189,8 +2189,8 @@
        id="popup_default"
        width="222.74808"
        height="99.22728"
-       x="399.8443"
-       y="351.75745"
+       x="204.28508"
+       y="281.04675"
        ry="9.3610649"
        inkscape:label="#rect12276" />
     <path
@@ -2615,7 +2615,6 @@
            id="path8463"
            inkscape:connector-type="polyline" />
       </g>
-
       <rect
          inkscape:label="#rect5395"
          ry="4.5045404"

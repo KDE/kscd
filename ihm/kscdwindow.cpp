@@ -31,7 +31,6 @@
  *
  */
 #include "kscdwindow.h"
-#include "titlePopUp.h"
 #include <QString>
 #include <QTextEdit>
 #include <klocalizedstring.h>
@@ -59,13 +58,13 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_miniB = new MinimizeButton(this);
 	m_slider = new SeekSlider(this);
 	m_panel = new Panel(this);
-// 	m_popUp = new TitlePopUp(this);
 	m_stateTrackDialog = false;
 	m_trackDlgCreated = false;
  	m_trackDlg = new TrackListDlg(parent);
+	
 // 	createTrackWindow();
 
-// 	setMask(*m_backG->bounds());
+// 	setMask(*m_backG->bitmap());
 
 	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
 

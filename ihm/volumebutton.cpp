@@ -45,6 +45,15 @@ VolumeButton::VolumeButton(QWidget * parent,QString sName,qreal value):KscdWidge
 
 VolumeButton::~VolumeButton()
 {
+	delete m_bounds ;
+}
+
+/* change skin path and refresh */
+void VolumeButton::changeSkin(QString newPathSkin)
+{
+	changeSkin(newPathSkin) ;
+	m_centerX = width()/2;
+	m_centerY = height()/2;
 }
 
 void VolumeButton :: mousePressEvent(QMouseEvent *event)

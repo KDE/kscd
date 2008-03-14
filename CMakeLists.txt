@@ -22,6 +22,9 @@ set(kscd_SRCS
 	kscd.cpp 
 	hwcontroler.cpp 
 	audiocd.cpp 
+# 	bwlednum.cpp 
+# 	configWidget.cpp 
+# 	cddbdlg.cpp 
 	mbmanager.cpp
 	ihm/kscdwindow.cpp 
 	ihm/kscdwidget.cpp 
@@ -36,7 +39,7 @@ set(kscd_SRCS
 	ihm/tracklistbutton.cpp
 	ihm/volumebutton.cpp
 	ihm/panel.cpp
-# 	ihm/titlePopUp.cpp
+	ihm/titlePopUp.cpp
 	ihm/tracklistdlg.cpp
 	ihm/background.cpp
 	ihm/closebutton.cpp

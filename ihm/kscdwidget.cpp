@@ -37,15 +37,19 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 {
 	m_state = "default";
  	m_name = sName;
+	m_baseName = m_name;
 	m_id = m_name + "_" + m_state;
 	m_path = KStandardDirs::installPath("data") + "/kscd/skin/default.svg";
 	m_renderer = new QSvgRenderer(m_path,this);
-	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
-			m_renderer->boundsOnElement(m_id).height());
- 	
-	connect(this, SIGNAL(needRepaint()),this, SLOT(repaint()));
-	connect(this,SIGNAL(changePicture()),this,SLOT(update()));
-	setMouseTracking ( true );
+	if (m_renderer->elementExists(m_id))
+	{
+		setFixedSize(m_renderer->boundsOnElement(m_id).width(),
+				m_renderer->boundsOnElement(m_id).height());
+		
+		connect(this, SIGNAL(needRepaint()),this, SLOT(repaint()));
+		connect(this,SIGNAL(changePicture()),this,SLOT(update()));
+		setMouseTracking ( true );
+	}
 }
 
 KscdWidget::~KscdWidget()
@@ -54,21 +58,29 @@ KscdWidget::~KscdWidget()
 }
 
 /* change skin path and refresh */
-void KscdWidget::changeSkin(QString newPathSkin){
-	kDebug () << "make change with new skin:"<<newPathSkin;
+void KscdWidget::changeSkin(QString newPathSkin)
+{
+	QString newId = m_baseName + "_default";
+			
+//	kDebug () << "make change with new skin:"<<newPathSkin;
 	m_path=newPathSkin;
 
 	m_renderer->load(m_path);
-	setFixedSize(m_renderer->boundsOnElement(m_id).width(),
-			m_renderer->boundsOnElement(m_id).height());
-	loadPicture(getName(),"default");
-	kDebug () << "kscdwidget name :"<<m_name;
-	kDebug () << "kscdwidget etat :"<<m_state;
-	kDebug () << "kscdwidget id :"<<m_id;
-
+	setFixedSize(m_renderer->boundsOnElement(newId).width(),
+				 m_renderer->boundsOnElement(newId).height());
 	
-	move(m_renderer->boundsOnElement(m_id).x(),
-			m_renderer->boundsOnElement(m_id).y());
+	m_bounds = new QRegion((m_renderer->boundsOnElement(newId)).toRect(),QRegion::Ellipse);
+	
+	move(m_renderer->boundsOnElement(newId).x(),
+		 m_renderer->boundsOnElement(newId).y());
+	
+	m_bitmap = QBitmap((m_renderer->boundsOnElement(getId())).toRect().size());
+	QPainter painter(&m_bitmap);
+	m_renderer->render(&painter,getId(),QRect((m_renderer->boundsOnElement(getId())).toRect().topLeft(),m_bitmap.size()));
+	
+	emit(changePicture());
+	emit(needRepaint());
+	
 }
 
 void KscdWidget :: setName(QString sName)
@@ -108,7 +120,8 @@ void KscdWidget :: loadPicture(QString name,QString state)
 void KscdWidget :: paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
-	m_renderer->render(&painter,m_id);
+	if (m_renderer->elementExists(m_id))
+		m_renderer->render(&painter,m_id);
 }
 
 void KscdWidget :: enterEvent (QEvent * event )
