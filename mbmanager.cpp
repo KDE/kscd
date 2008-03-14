@@ -58,11 +58,19 @@ void MBManager::discLookup()
 		MB.SetServer(server, 80);
 		kDebug() << "!! set server !!" ;
 	}
+	else
+	{
+		kDebug() << "no server";
+	}
 	
 	// Check to see if the debug env var has been set 
 	if (getenv("MB_DEBUG"))
 	{
 		MB.SetDebug(atoi(getenv("MB_DEBUG")));
+	}
+	else
+	{
+		kDebug() << "no debug";
 	}
 
 	
@@ -79,7 +87,7 @@ void MBManager::discLookup()
 	// requests the data from the server
 	ret = MB.Query(string(MBQ_GetCDInfo));
 	
-	
+	kDebug() << "query passed";
 	if (!ret)
 	{
 		MB.GetQueryError(error);
@@ -110,18 +118,6 @@ void MBManager::discLookup()
 	
 	if (m_validInfo == true)
 	{
-/*		
-		// Now get and print the title of the cd
-		printf("Album Name: '%s'\n", MB.Data(MBE_AlbumGetAlbumName).c_str());	
-	// TODO idea -> maybe get the album art through Amazon ASIN site :
-	// http://amazon.com/gp/product/ASIN-VALUE-HERE
-		printf("ASIN: '%s'\n", MB.Data(MBE_AlbumGetAmazonAsin).c_str());
-		printf("num release dates: '%s'\n", MB.Data(MBE_AlbumGetNumReleaseDates).c_str());
-		printf("artist: '%s'\n", MB.Data(MBE_AlbumGetAlbumArtistName).c_str());	
-		printf("artist sort name: '%s'\n", MB.Data(MBE_AlbumGetAlbumArtistSortName).c_str());
-		MB.GetIDFromURL(MB.Data(MBE_AlbumGetAlbumId), data);
-		printf("   AlbumId: '%s'\n\n", data.c_str());
-*/	
 		// Sets info
 		m_discInfo.Title = MB.Data(MBE_AlbumGetAlbumName).c_str();
 		m_discInfo.Artist = MB.Data(MBE_AlbumGetAlbumArtistName).c_str();
@@ -130,33 +126,17 @@ void MBManager::discLookup()
 		MBTrackInfo track;
 		for(int i = 1; i <= numTracks; i++)
 		{
-			
 			track.Title = MB.Data(MBE_AlbumGetTrackName, i).c_str();
 			track.Artist = MB.Data(MBE_AlbumGetArtistName, i).c_str();
 			track.Duration = MB.Data(MBE_AlbumGetTrackDuration, i).c_str();
 			
 			m_trackList << track;
-	/*
-			// Print out the artist and then print the title of the tracks
-			printf("    Artist: '%s'\n", MB.Data(MBE_AlbumGetArtistName, i).c_str());
-		
-	//		trackNum = MB.DataInt(MBE_AlbumGetTrackNum, i);
-			printf("  Track %2d: '%s'\n", 
-				trackNum, MB.Data(MBE_AlbumGetTrackName, i).c_str());
-			
-			printf("   Duration: '%s'\n", MB.Data(MBE_AlbumGetTrackDuration, i).c_str());
-			
-			MB.GetIDFromURL(MB.Data(MBE_AlbumGetTrackId, i), data);
-			printf("   TrackId: '%s'\n\n", data.c_str());
-			
-			trackNum++;
-	*/
 		}
 	}
 	else
 	{
 		// FIXME get the real track number
-		numTracks = 20;
+		numTracks = 25;
 		// If invalid data, fill the informations with something
 		// Sets info
 		m_discInfo.Title = i18n("Unknown album");

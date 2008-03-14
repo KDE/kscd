@@ -112,57 +112,40 @@ void KSCD::setupActions()
  */
 	// Set context menu policy to ActionsContextMenu
 	setContextMenuPolicy(Qt::ActionsContextMenu);
+	
+	m_actions = new KActionCollection(this);
+	m_actions->setConfigGroup("Configuration");
 
-	configure_shortcuts = new QAction(i18n("Configure Shortcuts"), this);
+//	configure_shortcuts = new QAction(i18n("Configure Shortcuts..."), this);
+	configure_shortcuts = m_actions->addAction(i18n("Configure Shortcuts..."));
+	configure_shortcuts->setShortcut(i18n("Configure Shortcuts..."));
+	configure_shortcuts->setText(i18n("Configure Shortcuts..."));
 	addAction(configure_shortcuts);
 	connect(configure_shortcuts, SIGNAL(triggered()), this, SLOT(configureShortcuts()));
 
-/*	DownloadAction = new QAction(i18n("Download Information"), this);
-	DownloadAction->setShortcut(tr("d"));
-	DownloadAction = m_actions->addAction("Download Info");
-	DownloadAction->setText("Download Info");
-	addAction(DownloadAction);
-	connect(DownloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
-	DownloadAction->setShortcut(tr("d"));
-	
-	UploadAction = new QAction(i18n("Upload Information"), this);
-	UploadAction->setShortcut(tr("u"));
-	UploadAction = m_actions->addAction("Upload Info");
-	UploadAction->setText("Upload Info");
-	addAction(UploadAction);
-
-	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
-	UploadAction->setShortcut(tr("u"));
-	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(infoDisplay()));*/
-
-// 	ConfigWindow * conf = new ConfigWindow(this);
-
-// 	connect(conf,SIGNAL(ejectChanged(bool)),devices,SLOT(setEjectActivated(bool)));
-// 	connect(conf,SIGNAL(textSizeChanged(QString)),getPanel(),SLOT(setTextSize(QString)));
-// 	connect(conf,SIGNAL(textColorChanged(QColor)),getPanel(),SLOT(setTextColor(QColor)));
-// 	connect(conf,SIGNAL(textSizeFontChanged(QFont)),getPanel(),SLOT(setTextSizeFont(QFont)));
-
-	//Find skin --> Two ways of change
-// 	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
-	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
-	//Find skin --> Two ways of change
-//	connect(conf, SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
-//	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
-
-	configure = new QAction(i18n("Configure..."), this);
+	configure = m_actions->addAction(i18n("Configure..."));
+	configure->setShortcut(i18n("Configure..."));
+	configure->setText(i18n("Configure..."));
 	addAction(configure);
 	configure->setShortcut(tr("c"));
 	connect(configure, SIGNAL(triggered()), this, SLOT(optionsPreferences()));
 
-	QAction* test = new QAction(i18n("test"), this);
+/*	QAction* test = new QAction(i18n("test"), this);
 	addAction(test);
 	connect(test, SIGNAL(triggered()), this, SLOT(test()));
 	test->setShortcut(Qt::CTRL + Qt::Key_T);
+	*/
 	
 //Find out skin
-	QAction* findS = new QAction(i18n("Skin..."), this);
+//	QAction* findS = new QAction(i18n("Skin..."), this);
+	QAction* findS = m_actions->addAction(i18n("Skin..."));
+	findS->setShortcut(i18n("Skin..."));
+	findS->setText(i18n("Skin..."));
 	addAction(findS);
 	connect(findS, SIGNAL(triggered()), this, SLOT(makeFinderSkinDialog()));
+	
+	//Find skin --> Two ways of change
+	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 	
 	
 //////////Set Shortcuts
@@ -172,12 +155,7 @@ void KSCD::setupActions()
 	random = false;
 	looptrack = false;
 	loopdisc = false;
-	
-	//For User Shortcuts Configuration
-	
-	//SCEditor = new KShortcutsEditor (parent, AllActions, LetterShortcutsAllowed);
 
-// 	connect(conf,SIGNAL(ShortcutChanged(QString,QString)),this,SLOT(setShortcut(QString,QString)));
 }
 
 void KSCD::test()
@@ -235,8 +213,21 @@ void KSCD::changeVolume(qreal value)
 
 void KSCD::setDefaultShortcuts()
 {
-	m_actions = new KActionCollection(this);
-	m_actions->setConfigGroup("Shortcuts");
+	//download info
+	DownloadAction = new QAction(i18n("Download Information"), this);
+	DownloadAction = m_actions->addAction("Download Info");
+	DownloadAction->setText("Download Info");
+	addAction(DownloadAction);
+	DownloadAction->setShortcut(tr("d"));
+	connect(DownloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
+
+	//upload info
+	UploadAction = new QAction(i18n("Upload Information"), this);
+	UploadAction = m_actions->addAction("Upload Info");
+	UploadAction->setText("Upload Info");
+	addAction(UploadAction);
+	UploadAction->setShortcut(tr("u"));
+	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
 
 	//quit
 	quit_shortcut = new QAction(i18n("quit"), this);
@@ -333,23 +324,6 @@ void KSCD::setDefaultShortcuts()
 	loopdisc_shortcut->setText("Repeat Album");
 	addAction(loopdisc_shortcut);
 	connect(loopdisc_shortcut, SIGNAL(triggered()), this, SLOT(loopdiscShortcut()));
-
-	//download info
-	DownloadAction = new QAction(i18n("Download Information"), this);
-	DownloadAction->setShortcut(tr("d"));
-	DownloadAction = m_actions->addAction("Download Info");
-	DownloadAction->setText("Download Info");
-	addAction(DownloadAction);
-	connect(DownloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
-
-	//upload info
-// 	UploadAction = new QAction(i18n("Upload Information"), this);
-// 	UploadAction->setShortcut(tr("u"));
-// 	UploadAction = m_actions->addAction("Upload Info");
-// 	UploadAction->setText("Upload Info");
-// 	addAction(UploadAction);
-// 	connect(UploadAction, SIGNAL(triggered()), m_MBManager, SLOT(infoDisplay()));
-
 
 	//cddb window
 	//Done in constructor
