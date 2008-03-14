@@ -196,7 +196,7 @@ void MBManager::discUpload()
 		if (!m_browser)
 			m_browser = "konqueror";
 		
-		ret = LaunchBrowser(url, m_browser);
+//		ret = LaunchBrowser(url, m_browser);
 		if (ret == 0)
 			printf("Could not launch browser. (%s)\n", m_browser);
 	}

@@ -197,6 +197,7 @@ public slots:
 	void restoreTrackinfoLabel();
 	void changeVolume(qreal);
 	void playTrack(int);
+
 	void tracklistShortcut();
 	void muteShortcut();
 	void playShortcut();
