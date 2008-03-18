@@ -157,22 +157,18 @@ void KscdWindow :: createTrackDialog(QList<MBTrackInfo> trackList,QString albumT
 
 void KscdWindow :: makeFinderSkinDialog()
 {
-	kDebug()<<"kscdWindow:createFinderSkinDialog";
- 	m_finderSkin->show();
+	m_finderSkin->show();
 }
 
 //Apply changes on kscdwidgets with new skin
 void KscdWindow::setNewSkin(QString newS){
-	kDebug () << "make change with new skin :"<<newS;
-	
+
 	QSvgRenderer* rend = new QSvgRenderer(newS,this);
 	this->resize(rend->boundsOnElement("kscd_default").width(),
 			rend->boundsOnElement("kscd_default").height());
 
 	m_backG->changeSkin(newS);
 	m_stopB->changeSkin(newS);
-	kDebug()<<"name play1:"<<m_playB->getName();
-	kDebug()<<"name id1:"<<m_playB->getId();
 	m_playB->changeSkin(newS);	
 	m_prevB->changeSkin(newS);
 	m_nextB->changeSkin(newS);

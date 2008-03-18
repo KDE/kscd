@@ -25,8 +25,6 @@
 #include "finderSkin.h"
 
 QString FinderSkin::pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
-//"/home/kde-devel/isi-kscd/kdemultimedia/kscd/ihm/skin/";
-
 
 /*
  *  Constructs a finderSkin which is a child of 'parent', with the
@@ -37,13 +35,10 @@ QString FinderSkin::pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/"
  */
 FinderSkin::FinderSkin(QWidget* parent):finderSkinUI(parent)
 {
-	kDebug()<<"creation finderSkin";
-
 	newSkin= new QString();
 	skinFound=false;
 	
 	QDir *directory= new QDir(FinderSkin::pathSkins);
-	kDebug()<<"path :"<<directory->absolutePath();
 	
 	QStringList filter;
 	filter<<"*.svg";
@@ -51,42 +46,12 @@ FinderSkin::FinderSkin(QWidget* parent):finderSkinUI(parent)
 	
 	QStringList list = directory->entryList();
 	comboBoxTitleSkin->addItems(list);
-	//QFileInfoList *list = &(directory->entryInfoList());
-	/*if (list)
-	{
-		QFileInfo*  fi;	
-		QFileInfoListIterator it (list);
-		
-		while((fi = it.current()) != 0)
-		{
-			if (fi->fileName() == "." || fi->fileName() == "..")
-			{
-				
-			} else {
-				comboBoxTitleSkin->addItem(fi->fileName());
-			}
-		}
-	}*/
-/*	
-	kDebug()<<"vide"<<list->empty();
-	QStringList* listTitles=new QStringList();
-	for(int i=0;i<list->size();i++){
-		listTitles->push_back((list->value(i)).fileName()) ;
-		kDebug()<<"file name :"<<(list->value(i)).fileName();
-	}
-	kDebug()<<"Apres le for";
-	comboBoxTitleSkin->addItems(*listTitles);
-*/
-
-	//comboBoxTitleSkin->addItems(*list);
 
 	connect(buttonBox,SIGNAL(accepted()), SLOT(accept())); 
 	connect(buttonBox,SIGNAL(rejected()), SLOT(reject()));
 	connect(browserButton,SIGNAL(clicked()), SLOT(showBrowser()));
 	connect(checkOtherSkin,SIGNAL(clicked()),SLOT(showNewSkin()));
-	//connect(checkOtherSkin,SIGNAL(),SLOT(hideNewSkin()));
-	connect(comboBoxTitleSkin,SIGNAL(activated(QString)),SLOT(setNewSkin2(QString)));
-	//connect(clearButton,SIGNAL(clicked()),SLOT(clearBrowser()));
+	connect(comboBoxTitleSkin,SIGNAL(activated(QString)),SLOT(setNewSkinPath(QString)));
 }
 
 FinderSkin::~FinderSkin()
@@ -94,7 +59,7 @@ FinderSkin::~FinderSkin()
 	delete newSkin;
 }
 
-void FinderSkin::setNewSkin2(QString nameFile) {
+void FinderSkin::setNewSkinPath(QString nameFile) {
 	skinFound=true;
 	delete(newSkin);
 	newSkin=new QString(FinderSkin::pathSkins+nameFile);	
@@ -129,7 +94,6 @@ void FinderSkin::accept(){
 }
 
 void FinderSkin::reject(){
-	kDebug()<<"cancel clicked";
 	skinFound=false;
 	newSkin->clear();
 	lTitleSkin->clear();
@@ -138,22 +102,17 @@ void FinderSkin::reject(){
 }
 
 void FinderSkin::showBrowser(){
-	kDebug()<<"browser";
 	QFileDialog fileDlg(this,"Find a new skin", "/home", NULL);
 	fileDlg.setFileMode(QFileDialog::ExistingFile);
 	fileDlg.setFilter(tr("SVG Files (*.svg)"));
 	fileDlg.setViewMode(QFileDialog::Detail);
 	QStringList fileNames;
 	if(fileDlg.exec()) fileNames= fileDlg.selectedFiles();
-	kDebug()<<"Noms choisis:"<<fileNames;
- 	
+	
 	if(!fileNames.empty()){
 		skinFound=true;
 		delete(newSkin);
 		newSkin=new QString(fileNames.first());	
 		lTitleSkin->setText(((fileNames.first()).split("/")).back());
-		//clearButton->setEnabled(true);
-	}else{
-		kDebug()<<"Aucun file choisi";
 	}
 }

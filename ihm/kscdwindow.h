@@ -73,7 +73,6 @@
 #include "titlePopUp.h"
 #include "seekslider.h"
 #include "seekcursor.h"
-//Roman's modifications
 #include "finderSkin.h"
 #include <QSvgRenderer>
 

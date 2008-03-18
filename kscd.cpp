@@ -143,8 +143,6 @@ void KSCD::setupActions()
 	findS->setText(i18n("Skin..."));
 	addAction(findS);
 	connect(findS, SIGNAL(triggered()), this, SLOT(makeFinderSkinDialog()));
-	
-	//Find skin --> Two ways of change
 	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
 	
 	

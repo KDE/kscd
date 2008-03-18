@@ -58,14 +58,16 @@ KscdWidget::~KscdWidget()
 }
 
 /* change skin path and refresh */
+
 void KscdWidget::changeSkin(QString newPathSkin)
 {
 	QString newId = m_baseName + "_default";
 			
-//	kDebug () << "make change with new skin:"<<newPathSkin;
 	m_path=newPathSkin;
 
 	m_renderer->load(m_path);
+
+//	loadPicture(getName(),"default");
 	setFixedSize(m_renderer->boundsOnElement(newId).width(),
 				 m_renderer->boundsOnElement(newId).height());
 	
