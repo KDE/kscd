@@ -105,7 +105,7 @@ protected:
 	KscdWidget *m_randB;
 	KscdWidget *m_loopB;
 	KscdWidget *m_trackB;
-	KscdWidget *m_volumeB;
+	VolumeButton *m_volumeB;
 	KscdWidget *m_closeB;
 	KscdWidget *m_backG;
 	KscdWidget *m_miniB;
