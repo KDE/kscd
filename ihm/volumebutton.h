@@ -75,6 +75,7 @@ public:
 	void paintEvent(QPaintEvent* event);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
+	void volumeShortcut(qreal);
 signals:
 	void volumeChange(qreal);
 };

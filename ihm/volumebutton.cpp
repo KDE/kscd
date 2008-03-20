@@ -114,7 +114,7 @@ void VolumeButton :: mouseMoveEvent(QMouseEvent *event)
 
 	    //new position
 	    m_posX = event->x();
-	    m_posY = event->y();
+	    m_posY = event->y();kDebug()<<"Quit Shortcut";
 
       }else{
 	    event->ignore();
@@ -131,7 +131,7 @@ void VolumeButton :: mouseReleaseEvent(QMouseEvent *event)
 void VolumeButton :: wheelEvent(QWheelEvent *event)
 {
 	qreal step = valueToAngle((event->delta()/120)*wheelStep);
-	
+
 	if((m_angle + step)>=0 && (m_angle + step)<=250)
 	{	
 //		event->accept();
@@ -182,4 +182,15 @@ void VolumeButton :: enterEvent (QEvent * event )
 void VolumeButton :: leaveEvent (QEvent * event )
 {
 	event->accept();
+}
+
+void VolumeButton::volumeShortcut(qreal value)
+{
+	if (m_vValue<=100 && m_vValue>=0)
+	{
+		qreal angle = valueToAngle(value);
+		rotation (m_angle + angle);
+		m_vValue+=value;
+		emit(volumeChange(m_vValue));
+	}
 }

@@ -289,6 +289,7 @@ void KSCD::setDefaultShortcuts()
 	volume_up_shortcut->setText("Volume Up");
 	addAction(volume_up_shortcut);
 	volume_up_shortcut->setShortcut(tr("Up"));
+	//connect(volume_up_shortcut, SIGNAL(triggered()), m_volumeB, SIGNAL(volumeupSignal()));
 	connect(volume_up_shortcut, SIGNAL(triggered()), this, SLOT(volumeUpShortcut()));
 
 	//volume down
@@ -545,17 +546,17 @@ void KSCD::loopdiscShortcut()
 
 void KSCD::volumeUpShortcut()
 {
-	if (devices->getVolume()<=0.99)
+	if (devices->getVolume()<=0.96)
 	{
-		this->changeVolume(devices->getVolume()*100+1);
+		m_volumeB->volumeShortcut(5.0);
 	}
 }
 
 void KSCD::volumeDownShortcut()
 {
-	if (devices->getVolume()>=0.01)
+	if (devices->getVolume()>=0.05)
 	{
-		this->changeVolume(devices->getVolume()*100-1);
+		m_volumeB->volumeShortcut(-5.0);
 	}
 }
 

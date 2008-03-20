@@ -187,8 +187,6 @@ signals:
 	/* Popup signals */
 // 	void showTitlePopUp(QString, QString);
 // 	void hideTitlePopUp();
-	//Shortcut signals
-	//void playshortcut();
 
 public slots:
 
