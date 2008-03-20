@@ -47,26 +47,15 @@
 
 #include <QCursor>
 
-// CD support.
-// class KCompactDisc;
-
-// CDDB support via libkcddb
-// #include <libkcddb/cddb.h>
-// #include <libkcddb/kcddb.h>
-// #include <libkcddb/client.h>
-
 // Phonon libs
 #include <phonon/phononnamespace.h>
 #include <phonon/seekslider.h>
 
 #include "ihm/kscdwindow.h"
-
 #include "hwcontroler.h"
-#include "cddbmanager.h"
 #include "mbmanager.h"
 #include "prefs.h"
 // #include "configWidget.h"
-#include "docking.h"
 #include <config-alsa.h>
 #include <QLCDNumber>
 
@@ -125,10 +114,7 @@ class KSCD : public KscdWindow, public KSessionManager {
 	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
 
 private:
-	HWControler* devices;
-// 	KCompactDisc* m_cd; // kept for CDDB compatibility
-	CDDBManager* m_cddbManager;
-	
+	HWControler* devices;	
 	MBManager* m_MBManager;
 	
 	bool mute;

@@ -54,10 +54,10 @@ public:
 	TitlePopUp(QWidget *parent=0, QString sName="popup");
 	~TitlePopUp();
 	
-	void enterEvent (QEvent * event){}
-	void leaveEvent (QEvent * event){}
-	void mousePressEvent(QMouseEvent * event){}
-	void mouseReleaseEvent(QMouseEvent * event){}
+	void enterEvent (QEvent * event){event->ignore();}
+	void leaveEvent (QEvent * event){event->ignore();}
+	void mousePressEvent(QMouseEvent * event){event->ignore();}
+	void mouseReleaseEvent(QMouseEvent * event){event->ignore();}
 
 public slots:
 	void showTitlePopUp(QString , QString);

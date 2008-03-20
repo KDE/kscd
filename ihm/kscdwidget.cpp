@@ -68,17 +68,19 @@ void KscdWidget::changeSkin(QString newPathSkin)
 	m_renderer->load(m_path);
 
 //	loadPicture(getName(),"default");
-	setFixedSize(m_renderer->boundsOnElement(newId).width(),
-				 m_renderer->boundsOnElement(newId).height());
-	
-	m_bounds = new QRegion((m_renderer->boundsOnElement(newId)).toRect(),QRegion::Ellipse);
-	
-	move(m_renderer->boundsOnElement(newId).x(),
-		 m_renderer->boundsOnElement(newId).y());
-	
-	emit(changePicture());
-	emit(needRepaint());
-	
+	if (m_renderer->elementExists(m_id))
+	{
+		setFixedSize(m_renderer->boundsOnElement(newId).width(),
+					m_renderer->boundsOnElement(newId).height());
+		
+		m_bounds = new QRegion((m_renderer->boundsOnElement(newId)).toRect(),QRegion::Ellipse);
+		
+		move(m_renderer->boundsOnElement(newId).x(),
+			m_renderer->boundsOnElement(newId).y());
+		
+		emit(changePicture());
+		emit(needRepaint());
+	}
 }
 
 void KscdWidget :: setName(QString sName)

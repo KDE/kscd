@@ -56,24 +56,23 @@ void MBManager::discLookup()
 	{
 		string server(getenv("MB_SERVER"));
 		MB.SetServer(server, 80);
-		kDebug() << "!! set server !!" ;
+		//kDebug() << "!! set server !!" ;
 	}
 	else
 	{
-		kDebug() << "no server";
+		//kDebug() << "no server";
 	}
 	
 	// Check to see if the debug env var has been set 
 	if (getenv("MB_DEBUG"))
 	{
 		MB.SetDebug(atoi(getenv("MB_DEBUG")));
+		//kDebug() << "!! set debug !!" ;
 	}
 	else
 	{
-		kDebug() << "no debug";
+		//kDebug() << "no debug";
 	}
-
-	
 	
 	// If you need to use a proxy, uncomment/edit the following line
 	// as appropriate
@@ -87,7 +86,7 @@ void MBManager::discLookup()
 	// requests the data from the server
 	ret = MB.Query(string(MBQ_GetCDInfo));
 	
-	kDebug() << "query passed";
+	//kDebug() << "query passed";
 	if (!ret)
 	{
 		MB.GetQueryError(error);
@@ -114,7 +113,7 @@ void MBManager::discLookup()
 
 	// Get the number of tracks
 	numTracks = MB.DataInt(MBE_AlbumGetNumTracks);
-	kDebug() << "NumTracks: " << numTracks << endl;
+	//kDebug() << "NumTracks: " << numTracks << endl;
 	
 	if (m_validInfo == true)
 	{
@@ -196,14 +195,14 @@ void MBManager::discUpload()
 		if (!m_browser)
 			m_browser = "konqueror";
 		
-//		ret = LaunchBrowser(url, m_browser);
+		ret = LaunchBrowser(url, m_browser);
 		if (ret == 0)
 			printf("Could not launch browser. (%s)\n", m_browser);
 	}
 	else
 		printf("Could not read CD-ROM parameters. Is there a CD in the drive?\n");
 
-    // and clean up the musicbrainz object
+// and clean up the musicbrainz object
 	mb_Delete(o);
 }
 

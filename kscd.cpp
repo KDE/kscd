@@ -28,8 +28,6 @@
 #include "ihm/configwindow.h"
 
 using namespace Phonon;
-using namespace KCDDB;
-class CDDB;
 
 static const char description[] = I18N_NOOP("KDE CD player");
 

@@ -3,10 +3,10 @@ project(kscd)
 find_package(MusicBrainz REQUIRED)
 
 include_directories(
-		${CMAKE_SOURCE_DIR}/libkcddb
-		${CMAKE_BINARY_DIR}/libkcddb
-		${CMAKE_SOURCE_DIR}/libkcompactdisc
-		${CMAKE_BINARY_DIR}/libkcompactdisc
+# 		${CMAKE_SOURCE_DIR}/libkcddb
+# 		${CMAKE_BINARY_DIR}/libkcddb
+# 		${CMAKE_SOURCE_DIR}/libkcompactdisc
+# 		${CMAKE_BINARY_DIR}/libkcompactdisc
 		${CMAKE_SOURCE_DIR}/kscd
 		${CMAKE_BINARY_DIR}/kscd
 		)
@@ -80,7 +80,7 @@ install(FILES kscd.profile.xml  DESTINATION  ${DATA_INSTALL_DIR}/profiles)
 install(FILES kscd.kcfg  DESTINATION  ${KCFG_INSTALL_DIR})
 install(FILES audiocd_play.desktop  DESTINATION
 ${SERVICES_INSTALL_DIR}/ServiceMenus)
-install(PROGRAMS workman2cddb.pl DESTINATION ${BIN_INSTALL_DIR})
+# install(PROGRAMS workman2cddb.pl DESTINATION ${BIN_INSTALL_DIR})
 
 kde4_install_icons(${ICON_INSTALL_DIR})
 

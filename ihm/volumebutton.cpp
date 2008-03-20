@@ -51,9 +51,27 @@ VolumeButton::~VolumeButton()
 /* change skin path and refresh */
 void VolumeButton::changeSkin(QString newPathSkin)
 {
-	changeSkin(newPathSkin) ;
-	m_centerX = width()/2;
-	m_centerY = height()/2;
+	QString newId = m_baseName + "_default";
+			
+	m_path=newPathSkin;
+
+	m_renderer->load(m_path);
+	if (m_renderer->elementExists(m_id))
+	{
+	//	loadPicture(getName(),"default");
+		setFixedSize(m_renderer->boundsOnElement(newId).width(),
+					m_renderer->boundsOnElement(newId).height());
+		
+		m_bounds = new QRegion((m_renderer->boundsOnElement(newId)).toRect(),QRegion::Ellipse);
+		
+		move(m_renderer->boundsOnElement(newId).x(),
+			m_renderer->boundsOnElement(newId).y());
+		
+		emit(changePicture());
+		emit(needRepaint());
+		m_centerX = width()/2;
+		m_centerY = height()/2;
+	}
 }
 
 void VolumeButton :: mousePressEvent(QMouseEvent *event)
