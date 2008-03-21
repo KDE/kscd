@@ -1613,15 +1613,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.78993932"
-     inkscape:cx="177.06614"
-     inkscape:cy="1040.5788"
+     inkscape:zoom="1.5798786"
+     inkscape:cx="-31.770865"
+     inkscape:cy="1093.2673"
      inkscape:document-units="px"
-     inkscape:current-layer="kscd_default"
+     inkscape:current-layer="g4972"
      inkscape:window-width="1210"
      inkscape:window-height="744"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="191"
      showgrid="true"
      width="700px"
      height="1300px" />
@@ -2287,7 +2287,7 @@
            transform="matrix(0.5115913,0,0,0.7731097,-44.10156,-208.49914)">
           <g
              id="g5051"
-             transform="matrix(0.9137498,0,0,0.9070337,-283.33478,42.083749)">
+             transform="matrix(0.9137397,2.9070343e-3,-6.3173685e-3,0.9070237,-280.55938,38.111839)">
             <path
                style="fill:#000000;fill-opacity:0.81325301;fill-rule:nonzero;stroke:none;stroke-width:1.20000005;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;filter:url(#filter5951);enable-background:accumulate"
                d="M 141.40625,537.25 C 131.5572,537.25 123.625,544.61952 123.625,553.75 L 123.625,964.84375 C 123.625,973.9742 131.5572,981.34373 141.40625,981.34375 L 976.25,981.34375 C 986.09905,981.34375 994.03123,973.97418 994.03125,964.84375 L 994.03125,553.75 C 994.03125,544.61955 986.09904,537.24997 976.25,537.25 L 141.40625,537.25 z "
