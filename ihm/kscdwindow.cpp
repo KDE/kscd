@@ -38,11 +38,12 @@
 #include "panel.h"
 #include "configwindow.h"
 
+using namespace Phonon;
+
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {	
 	setWindowFlags(Qt::FramelessWindowHint);
 	setAutoFillBackground(false);
-
 	m_backG = new BackGround(this);
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
@@ -56,7 +57,8 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_volumeB = new VolumeButton(this);
 	m_closeB = new CloseButton(this);
 	m_miniB = new MinimizeButton(this);
-	m_slider = new SeekSlider(this);
+// 	m_slider = new SeekSlider(this);
+	m_bar = new SeekBar(this);
 	m_panel = new Panel(this);
 	m_stateTrackDialog = false;
 	m_trackDlgCreated = false;
@@ -64,7 +66,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	
 // 	createTrackWindow();
 
-// 	setMask(*m_backG->bitmap());
+// 	setMask(m_backG->getPix());
 
 
 	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
@@ -108,7 +110,7 @@ KscdWindow::~KscdWindow()
 	delete m_closeB;
 	delete m_backG;
 	delete m_miniB;
-	delete m_slider;
+// 	delete m_slider;
 	delete m_miniB;
  	delete m_volumeB;
 	delete m_loopB;
@@ -163,6 +165,10 @@ void KscdWindow :: makeFinderSkinDialog()
 //Apply changes on kscdwidgets with new skin
 void KscdWindow::setNewSkin(QString newS){
 
+	kDebug () << "make change with new skin :"<<newS;
+	Prefs::setSkinChooser(newS);
+	Prefs::self()->writeConfig();
+
 	QSvgRenderer* rend = new QSvgRenderer(newS,this);
 	this->resize(rend->boundsOnElement("kscd_default").width(),
 			rend->boundsOnElement("kscd_default").height());
@@ -181,8 +187,13 @@ void KscdWindow::setNewSkin(QString newS){
 	m_closeB->changeSkin(newS);
 	m_miniB->changeSkin(newS);
 	m_panel->changeSkin(newS);
- 	(m_slider->cursor())->changeSkin(newS);
-	(m_slider->bar())->changeSkin(newS);	
+	m_bar->changeSkin(newS);
+	sslider->move(m_bar->x(),m_bar->y()-5);
+	sslider->setMaximumWidth(m_bar->width());
+	sslider->setMinimumWidth(m_bar->width());
+	
+//  	(m_slider->cursor())->changeSkin(newS);
+// 	(m_slider->bar())->changeSkin(newS);	
 
 //m_popUp->changeSkin(newS);;
 		
@@ -338,6 +349,7 @@ void KscdWindow::showArtistAlbum(QString infoStatus)
 
 void KscdWindow::setTime(qint64 pos){
 	m_panel->setTime(pos);
+// 	m_slider->setTime(pos);
 }
 void KscdWindow::panelInfo(QString mess)
 {

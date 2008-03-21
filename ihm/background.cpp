@@ -35,17 +35,29 @@
 BackGround::BackGround(QWidget * parent,QString sName):KscdWidget(sName,parent)
 
 {
-//  	kDebug()<<"background size:"<<(m_renderer->boundsOnElement(getId())).toRect().size();
-// 	QPixmap pix((m_renderer->boundsOnElement(m_id)).toRect().size());
-
-// 	m_bitmap = QBitmap((m_renderer->boundsOnElement(getId())).toRect().size());
-// 	kDebug()<<"bitmap size:"<<m_bitmap.size();
-// 	QPainter painter(&m_bitmap);
-// 	m_renderer->render(&painter,getId(),QRect((m_renderer->boundsOnElement(getId())).toRect().topLeft(),m_bitmap.size()));
-// 	m_bounds = new QRegion(m_bitmap);
+// 	kDebug()<<"default size:"<<m_renderer->defaultSize();
+// 	kDebug()<<"background size:"<<(m_renderer->boundsOnElement(getId())).toRect().size();
+// 	pix = ((m_renderer->boundsOnElement(getId())).toRect().size());
+// 	
+// // 	pix.setMask(pix.createHeuristicMask());
+// 	QPainter painter(&pix);
+// 	painter.setBackgroundMode(Qt::OpaqueMode);
+// // pix.setMask(pix.createMaskFromColor(Qt::lightGray,Qt::MaskOutColor));
+// //  	kDebug()<<"background size:"<<(m_renderer->boundsOnElement(getId())).toRect().size();
+// // 	QBitmap pix((m_renderer->boundsOnElement(m_id)).toRect().size());
+// // 	QPixmap pix((m_renderer->boundsOnElement(getId())).toRect().size());
+// // // 	m_bitmap = QBitmap((m_renderer->boundsOnElement(getId())).toRect().size());
+// // // 	kDebug()<<"bitmap size:"<<m_bitmap.size();
+// // 	QPainter painter(&pix);
+// 	m_renderer->render(&painter,getId());
+// 	pix.setMask(pix.createHeuristicMask());
+//  	m_bounds = new QRegion(&pix);
+// 	setMask(pix);
+// 	m_bounds = new QRegion(pix);
 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 	m_move = false;
+// 	update();
 }
 
 BackGround::~BackGround()

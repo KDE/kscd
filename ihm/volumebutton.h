@@ -63,7 +63,7 @@ private:
 private:
 	qreal angleToValue(qreal);
 	qreal valueToAngle(qreal);
-	void rotation(qreal);
+
 public:
 	VolumeButton(QWidget * parent=0, QString sName="volume", qreal value=50.0);
 	virtual ~VolumeButton();
@@ -75,6 +75,7 @@ public:
 	void paintEvent(QPaintEvent* event);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
+	void rotation(qreal);
 	void volumeShortcut(qreal);
 signals:
 	void volumeChange(qreal);

@@ -5,6 +5,7 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
     <!--<include>KGlobalSettings</include>-->
     <!--<include>kcompactdisc.h</include>-->
+	<include>KStandardDirs</include>
     <kcfgfile name="kscdrc"/>
     <group name="General">
         <entry name="Autoplay" type="Bool">
@@ -28,7 +29,8 @@
             <label>The font that will be used for the panel.</label>
 	    <whatsthis>Change the font of the text in the panel</whatsthis>
         </entry>
-	<entry name="SkinChooser" type="Path">
+	<entry name="SkinChooser" type="String">
+		<default code="true">KStandardDirs::installPath("data") + "/kscd/skin/default.svg"</default>
 	  <label>The skin that will be use for the application</label>
 	  <whatsthis>Change the skin of the application</whatsthis>
 	</entry>

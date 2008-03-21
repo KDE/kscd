@@ -179,7 +179,7 @@ void MBManager::discUpload()
 	else
 		mb_SetDepth(o, 2);
 
-//	m_browser = "firefox";
+// 	m_browser = "firefox";
 	m_browser = "konqueror";
 	
     // Tell the client library to return data in ISO8859-1 and not UTF-8

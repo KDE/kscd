@@ -43,6 +43,8 @@
 #include <QString>
 #include <QBitmap>
 #include <kdebug.h>
+#include "prefs.h"
+
 
 class KscdWidget:public QWidget
 {
@@ -50,6 +52,7 @@ class KscdWidget:public QWidget
 
 protected:
 	QRegion *m_bounds;
+// 	QBitmap pix;
 	QString m_state;
 	QString m_name;
 	QString m_file;
@@ -61,6 +64,7 @@ protected:
 	void paintEvent(QPaintEvent *event);
 
 public:
+
 	KscdWidget(QString sName,QWidget * parent=0);
 	virtual ~KscdWidget();
 	void setName(QString);
@@ -74,7 +78,10 @@ public:
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
 	void changeSkin(QString);
+	QString getPath();
 	QRegion* bounds();
+// 	QBitmap getPix();
+	void rotation(qreal);
 signals:
 	void needRepaint();
 	void changePicture();

@@ -39,7 +39,10 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
  	m_name = sName;
 	m_baseName = m_name;
 	m_id = m_name + "_" + m_state;
-	m_path = KStandardDirs::installPath("data") + "/kscd/skin/default.svg";
+
+// 	Prefs::setSkinChooser(KStandardDirs::installPath("data") + "/kscd/skin/default.svg");
+	m_path = Prefs::skinChooser();/*KStandardDirs::installPath("data") + "/kscd/skin/default.svg";*/
+
 	m_renderer = new QSvgRenderer(m_path,this);
 	if (m_renderer->elementExists(m_id))
 	{
@@ -120,8 +123,8 @@ void KscdWidget :: loadPicture(QString name,QString state)
 void KscdWidget :: paintEvent(QPaintEvent *event)
 {
 	
-
 	QPainter painter(this);
+	
 	if (m_renderer->elementExists(m_id))
 		m_renderer->render(&painter,m_id);
 }
@@ -175,9 +178,17 @@ void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
+QString KscdWidget :: getPath()
+{
+	return m_path;
+}
 
 QRegion* KscdWidget :: bounds()
 {
 	return m_bounds;
 }
 
+// QBitmap KscdWidget :: getPix()
+// {
+// 	return pix;
+// }

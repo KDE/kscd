@@ -36,6 +36,7 @@ SeekBar::SeekBar(QWidget * parent,QString sName):KscdWidget(sName,parent)
 {
 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+	hide();
 }
 
 SeekBar::~SeekBar()

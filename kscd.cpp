@@ -52,6 +52,12 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	devices = new HWControler();
 	
 // 	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
+	sslider = new Phonon::SeekSlider(devices->getMedia(),this);
+// 	sslider->setMediaObject(devices->getMedia());
+	sslider->move(m_bar->x(),m_bar->y());
+	sslider->setMaximumWidth(m_bar->width());
+	sslider->setMinimumWidth(m_bar->width());
+	sslider->show();
 // 	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
 // 	vs->setOrientation(Qt::Vertical);
 // 	vs->setMuteVisible(false);
@@ -544,7 +550,7 @@ void KSCD::loopdiscShortcut()
 
 void KSCD::volumeUpShortcut()
 {
-	if (devices->getVolume()<=0.96)
+	if (devices->getVolume()<=0.95)
 	{
 		m_volumeB->volumeShortcut(5.0);
 	}
@@ -588,8 +594,9 @@ void KSCD::actionButton(QString name)
 			{
 				kDebug()<<"time total"<<devices->getTotalTime();
 				devices->play();
-				m_slider->stop();
-				m_slider->start(devices->getTotalTime());
+// 				m_slider->stop();
+// 				m_slider->setTotalTime(devices->getTotalTime());
+// 				m_slider->setStep(devices->getTotalTime());
 				restoreTrackinfoLabel();
 				restoreArtistLabel();
 			}
@@ -611,7 +618,6 @@ void KSCD::actionButton(QString name)
 			if(devices->getState() == PlayingState)
 			{
 				devices->pause();
-				m_slider->pause();
 			}
 		/*}*/
 		emit(picture(name,state));
@@ -634,12 +640,12 @@ void KSCD::actionButton(QString name)
 			if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 			{
 				devices->stop(false);
-				m_slider->stop();
+// 				m_slider->stop();
 			}
 			if ((devices->getState() == PlayingState))
 			{
-				m_slider->stop();
-				m_slider->start(devices->getTotalTime());
+// 				m_slider->stop();
+// 				m_slider->start(devices->getTotalTime());
 				devices->play();
 				
 			}
@@ -664,13 +670,13 @@ void KSCD::actionButton(QString name)
 			if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 			{
 				devices->stop(false);
-				m_slider->stop();
+// 				m_slider->stop();
 			}
 			if ((devices->getState() == PlayingState))
 			{
-				m_slider->stop();
+// 				m_slider->stop();
 				devices->play();
-				m_slider->start(devices->getTotalTime());
+// 				m_slider->start(devices->getTotalTime());
 			}
 		}
 		emit(picture(name,state));
@@ -680,7 +686,7 @@ void KSCD::actionButton(QString name)
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
 			devices->stop();
-			m_slider->stop();
+// 			m_slider->stop();
 		}
 		emit(picture(name,state));
 	}
@@ -691,7 +697,7 @@ void KSCD::actionButton(QString name)
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
 			devices->stop();
-			m_slider->stop();
+// 			m_slider->stop();
 		}
 	}
 	if(name=="mute")

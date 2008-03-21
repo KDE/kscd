@@ -36,12 +36,6 @@ SeekSlider::SeekSlider(QWidget * parent):QWidget(parent)
 {
 	m_bar = new SeekBar(parent);
 	m_cursor = new SeekCursor(parent);
-	setTime(1000);
-	m_timeL = new QTimeLine(m_time,parent);
-	kDebug()<<"duration"<<m_timeL->duration ();
-	setStep(m_time,m_bar->width());
-	connect(m_timeL,SIGNAL(valueChanged(qreal)),m_cursor,SLOT(moveCursor(qreal)));
-	connect(m_timeL,SIGNAL(stateChanged(QTimeLine::State)),this,SLOT(resume(QTimeLine::State)));
 }
 
 SeekSlider::~SeekSlider()
@@ -65,12 +59,6 @@ void SeekSlider :: init(qint64 time)
 	m_timeL->setFrameRange (0,m_bar->width());
 	m_timeL->setUpdateInterval(1000);
 	m_cursor->setStep(m_time,m_bar->width());
-	kDebug()<<"m_step"<<m_cursor->getStep();
-	kDebug()<<"m_time"<<getTime();
-	kDebug()<<"width bar"<<m_bar->width();
-	kDebug()<<"duration"<<m_timeL->duration ();
-	kDebug()<<"current time"<<m_timeL->currentTime();
-	kDebug()<<"update"<<m_timeL->updateInterval();
 /*	setStep(m_time,m_bar->width());
 	kDebug()<<"step slider"<<getStep();*/
 }
@@ -98,7 +86,6 @@ void SeekSlider :: pause()
 void SeekSlider :: resume(QTimeLine::State state)
 {	
 	kDebug()<<"m_state"<<m_state;
-	kDebug()<<"state"<<state;
 	if(m_state==QTimeLine::Paused && state==QTimeLine::Running)
 	{
 		m_timeL->setPaused(false);
@@ -109,16 +96,36 @@ void SeekSlider :: resume(QTimeLine::State state)
 void SeekSlider :: setTime(qint64 time)
 {
 	m_time = time;
+	qint64 md = ((m_time/1000)/60)/10;
+	qint64 mu = ((m_time/1000)/60)%10;
+	qint64 sd = ((m_time/1000)%60)/10;
+	qint64 su = ((m_time/1000)%60)%10;
+	if(su>=0)
+	{
+		moveC();
+	}
 }
+// 	moveC();
+// 	kDebug()<<"SLIDER MOVEC:";
+// }
 
+void SeekSlider :: moveC()
+{
+
+		m_cursor->move(m_cursor->x()+m_step,m_cursor->y());
+}
 qint64 SeekSlider :: getTime()
 {
 	return m_time;
 }
-
-void  SeekSlider :: setStep(qint64 time,int length)
+void SeekSlider :: setTotalTime(qint64 time)
 {
-	m_step = (1000*length)/time;
+	m_totalTime = time;
+}
+
+void  SeekSlider :: setStep(qint64 time)
+{
+	m_step = round(float((1000*m_bar->width()))/float(time));
 }
 
 int SeekSlider :: getStep()

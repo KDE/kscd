@@ -109,7 +109,9 @@ protected:
 	KscdWidget *m_closeB;
 	KscdWidget *m_backG;
 	KscdWidget *m_miniB;
-	SeekSlider *m_slider;
+// 	SeekSlider *m_slider;
+	SeekBar *m_bar;
+	Phonon::SeekSlider *sslider;
 	Panel *m_panel;
 	KscdWidget *m_popup;
 

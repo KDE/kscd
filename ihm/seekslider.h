@@ -57,11 +57,12 @@ public:
 
 	void setTime(qint64);
 	qint64 getTime();
-
+	void setTotalTime(qint64);
+	void moveC();
 	/**
 	 * Calculation of move to do in 1 second
 	 */
-	void  setStep(qint64 time,int length);
+	void  setStep(qint64 time);
 	int  getStep();
 
 	/**
@@ -107,9 +108,15 @@ private:
 	QTimeLine::State m_state;
 
 	/**
-	 * Total time of the current track
+	 * Current time of the current track
 	 */
 	qint64 m_time;
+
+	/**
+	 * Total time of the current track
+	 */
+	qint64 m_totalTime;
+
 	/**
 	 * Move to do in 1 second
 	 */

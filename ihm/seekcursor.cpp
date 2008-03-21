@@ -38,6 +38,7 @@ SeekCursor::SeekCursor(QWidget * parent,QString sName):KscdWidget(sName,parent)
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 	m_posInit = x();
 	init();
+	hide();
 }
 
 SeekCursor::~SeekCursor()
