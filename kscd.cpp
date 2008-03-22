@@ -116,15 +116,18 @@ void KSCD::setupActions()
  */
 	// Set context menu policy to ActionsContextMenu
 	setContextMenuPolicy(Qt::ActionsContextMenu);
+// 	rightClick = new QMenu(this);
+// 	rightClick->setContextMenuPolicy(Qt::ActionsContextMenu);
+	
 	
 	m_actions = new KActionCollection(this);
 	m_actions->setConfigGroup("Configuration");
 
 //	configure_shortcuts = new QAction(i18n("Configure Shortcuts..."), this);
 	configure_shortcuts = m_actions->addAction(i18n("Configure Shortcuts..."));
-	configure_shortcuts->setShortcut(i18n("Configure Shortcuts..."));
 	configure_shortcuts->setText(i18n("Configure Shortcuts..."));
 	addAction(configure_shortcuts);
+	configure_shortcuts->setShortcut(tr("Ctrl+c"));
 	connect(configure_shortcuts, SIGNAL(triggered()), this, SLOT(configureShortcuts()));
 
 	configure = m_actions->addAction(i18n("Configure..."));
@@ -285,7 +288,7 @@ void KSCD::setDefaultShortcuts()
 	eject_shortcut->setText("Eject");
 	addAction(eject_shortcut);
 	eject_shortcut->setShortcut(tr("e"));
-	connect(eject_shortcut, SIGNAL(triggered()), devices, SLOT(eject()));
+	connect(eject_shortcut, SIGNAL(triggered()), this, SLOT(ejectShortcut()));
 
 	//volume up
 	volume_up_shortcut = new QAction(i18n("volume_up"), this);
@@ -293,7 +296,6 @@ void KSCD::setDefaultShortcuts()
 	volume_up_shortcut->setText("Volume Up");
 	addAction(volume_up_shortcut);
 	volume_up_shortcut->setShortcut(tr("Up"));
-	//connect(volume_up_shortcut, SIGNAL(triggered()), m_volumeB, SIGNAL(volumeupSignal()));
 	connect(volume_up_shortcut, SIGNAL(triggered()), this, SLOT(volumeUpShortcut()));
 
 	//volume down
@@ -440,15 +442,18 @@ void KSCD::setShortcut(QString name, QString key)
 
 }
 
+void KSCD::ejectShortcut()
+{
+	actionButton("eject");
+}
+
 void KSCD::quitShortcut()
 {
-	kDebug()<<"Quit Shortcut";
 	actionButton("close");
 }
 
 void KSCD::minimizeShortcut()
 {
-	kDebug()<<"Minimize Shortcut";
 	actionButton("minimize");
 }
 
@@ -692,6 +697,7 @@ void KSCD::actionButton(QString name)
 	}
 	if(name=="eject")
 	{
+		m_trackDlg->removeRowsTrackTable(m_MBManager->getTrackList().size());
 		devices->eject();
 		emit(picture(name,state));
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))

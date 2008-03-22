@@ -143,6 +143,7 @@ private:
 	QAction* quit_shortcut;
 	QAction* minimize_shortcut;
 	KActionCollection * m_actions;
+	QMenu * rightClick;
 
 	void setHourglass();
 
@@ -182,6 +183,7 @@ public slots:
 	void changeVolume(qreal);
 	void playTrack(int);
 
+	void ejectShortcut();
 	void tracklistShortcut();
 	void muteShortcut();
 	void playShortcut();

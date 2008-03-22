@@ -136,11 +136,13 @@ void KscdWindow :: closeTrackDialog()
 	m_trackDlg->hide();
 }
 
+// void KscdWindow :: clearTracklist()
+
 void KscdWindow :: createTrackDialog(QList<MBTrackInfo> trackList,QString albumTitle)
 {
 	QList<MBTrackInfo>::iterator it;
 	m_trackDlg->removeRowsTrackTable(trackList.size());
-
+	
 	m_stateTrackDialog = true;
 	m_trackDlg->setAlbumLbl(albumTitle);
  	int trackNumber = 1;
