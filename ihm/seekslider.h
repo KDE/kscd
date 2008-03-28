@@ -62,7 +62,7 @@ public:
 	/**
 	 * Calculation of move to do in 1 second
 	 */
-	void  setStep(qint64 time);
+	void  setStep();
 	int  getStep();
 
 	/**

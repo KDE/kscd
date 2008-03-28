@@ -96,13 +96,16 @@ void SeekSlider :: resume(QTimeLine::State state)
 void SeekSlider :: setTime(qint64 time)
 {
 	m_time = time;
+	kDebug()<<"time:"<<m_time;
+	kDebug()<<"modulo"<<m_time%m_step;
 	qint64 md = ((m_time/1000)/60)/10;
 	qint64 mu = ((m_time/1000)/60)%10;
 	qint64 sd = ((m_time/1000)%60)/10;
 	qint64 su = ((m_time/1000)%60)%10;
-	if(su>=0)
+	if(su >= 0)
 	{
-		moveC();
+		kDebug()<<"Déplacement du curseur de 1";
+// 		moveC();
 	}
 }
 // 	moveC();
@@ -121,11 +124,14 @@ qint64 SeekSlider :: getTime()
 void SeekSlider :: setTotalTime(qint64 time)
 {
 	m_totalTime = time;
+	kDebug()<<"m_totalTime"<<m_totalTime;
+	setStep();
 }
 
-void  SeekSlider :: setStep(qint64 time)
+void  SeekSlider :: setStep()
 {
-	m_step = round(float((1000*m_bar->width()))/float(time));
+	m_step = round(float(m_totalTime)/float(m_bar->width()));
+	kDebug()<<"step:"<<m_step;
 }
 
 int SeekSlider :: getStep()

@@ -54,8 +54,15 @@ BackGround::BackGround(QWidget * parent,QString sName):KscdWidget(sName,parent)
 //  	m_bounds = new QRegion(&pix);
 // 	setMask(pix);
 // 	m_bounds = new QRegion(pix);
-	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
-	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+// 	QRectF rect = m_renderer->boundsOnElement(getId());
+// 	pix = QPixmap(rect.toRect().size());
+// 	pix.fill(QColor(Qt::transparent));
+// 	QPainter p(&pix);
+// 	m_renderer->render(&p,getId(),rect);
+// // 	m_bounds=new QRegion(pix);
+// 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+// 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+// 	m_bounds=new QRegion(pix.mask());
 	m_move = false;
 // 	update();
 }

@@ -34,8 +34,9 @@
 
 VolumeButton::VolumeButton(QWidget * parent,QString sName,qreal value):KscdWidget(sName,parent)
 {
-	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
-	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+// 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
+// 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+// 	m_bounds=new QRegion(pix.mask());
 	m_vValue = value;
 	m_angle = valueToAngle(m_vValue);
 	m_centerX = width()/2;
@@ -45,27 +46,28 @@ VolumeButton::VolumeButton(QWidget * parent,QString sName,qreal value):KscdWidge
 
 VolumeButton::~VolumeButton()
 {
-	delete m_bounds ;
 }
 
 /* change skin path and refresh */
 void VolumeButton::changeSkin(QString newPathSkin)
 {
-	QString newId = m_baseName + "_default";
-			
-	m_path=newPathSkin;
 
-	m_renderer->load(m_path);
+// 	QString newId = m_baseName + "_default";
+// 			
+// 	m_path=newPathSkin;
+// 
+// 	m_renderer->load(m_path);
 	if (m_renderer->elementExists(m_id))
 	{
 	//	loadPicture(getName(),"default");
-		setFixedSize(m_renderer->boundsOnElement(newId).width(),
-					m_renderer->boundsOnElement(newId).height());
-		
-		m_bounds = new QRegion((m_renderer->boundsOnElement(newId)).toRect(),QRegion::Ellipse);
-		
-		move(m_renderer->boundsOnElement(newId).x(),
-			m_renderer->boundsOnElement(newId).y());
+// 		setFixedSize(m_renderer->boundsOnElement(newId).width(),
+// 					m_renderer->boundsOnElement(newId).height());
+// 		
+// 		m_bounds = new QRegion((m_renderer->boundsOnElement(newId)).toRect(),QRegion::Ellipse);
+// 		
+// 		move(m_renderer->boundsOnElement(newId).x(),
+// 			m_renderer->boundsOnElement(newId).y());
+		loadSkin(newPathSkin);
 		
 		emit(changePicture());
 		emit(needRepaint());

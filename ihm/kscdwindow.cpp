@@ -66,7 +66,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	
 // 	createTrackWindow();
 
-// 	setMask(m_backG->getPix());
+	setMask(m_backG->getPix().mask());
 
 
 	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
@@ -121,14 +121,6 @@ KscdWindow::~KscdWindow()
 	delete m_finderSkin;
 }
 
-// void KscdWindow :: paintEvent(QPaintEvent* event)
-// {
-// 	QPainter painter(this);
-// 	painter.setPen(Qt::NoPen);
-// 	painter.setBrush(Qt::transparent);
-// 
-// }
-
 void KscdWindow :: closeTrackDialog()
 {
 	kDebug()<<"Close Track Dialog";
@@ -172,12 +164,12 @@ void KscdWindow::setNewSkin(QString newS){
 	Prefs::self()->writeConfig();
 
 	QSvgRenderer* rend = new QSvgRenderer(newS,this);
-	this->resize(rend->boundsOnElement("kscd_default").width(),
-			rend->boundsOnElement("kscd_default").height());
+	this->resize(rend->boundsOnElement("kscdBack_default").width(),
+			rend->boundsOnElement("kscdBack_default").height());
 
 	m_backG->changeSkin(newS);
 	m_stopB->changeSkin(newS);
-	m_playB->changeSkin(newS);	
+	m_playB->changeSkin(newS);
 	m_prevB->changeSkin(newS);
 	m_nextB->changeSkin(newS);
 	m_ejectB->changeSkin(newS);
@@ -189,15 +181,21 @@ void KscdWindow::setNewSkin(QString newS){
 	m_closeB->changeSkin(newS);
 	m_miniB->changeSkin(newS);
 	m_panel->changeSkin(newS);
-	m_bar->changeSkin(newS);
 	sslider->move(m_bar->x(),m_bar->y()-5);
 	sslider->setMaximumWidth(m_bar->width());
+
 	sslider->setMinimumWidth(m_bar->width());
 	
 //  	(m_slider->cursor())->changeSkin(newS);
-// 	(m_slider->bar())->changeSkin(newS);	
+// 	(m_slider->bar())->changeSkin(newS);
 
 //m_popUp->changeSkin(newS);;
+	QRectF rect = rend->boundsOnElement("kscdBack_default");
+	QPixmap pix(rect.toRect().size());
+	pix.fill(QColor(Qt::transparent));
+	QPainter p(&pix);
+	rend->render(&p,"kscdBack_default",rect);
+	setMask(pix.mask());
 		
 }
 

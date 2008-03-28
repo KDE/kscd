@@ -52,7 +52,7 @@ class KscdWidget:public QWidget
 
 protected:
 	QRegion *m_bounds;
-// 	QBitmap pix;
+	QPixmap pix;
 	QString m_state;
 	QString m_name;
 	QString m_file;
@@ -80,8 +80,11 @@ public:
 	void changeSkin(QString);
 	QString getPath();
 	QRegion* bounds();
-// 	QBitmap getPix();
+	QPixmap getPix();
 	void rotation(qreal);
+
+public slots:
+	void loadSkin(QString);
 signals:
 	void needRepaint();
 	void changePicture();

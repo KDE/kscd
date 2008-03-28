@@ -51,17 +51,13 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	devices = new HWControler();
 	
-// 	addSeekSlider(new Phonon::SeekSlider(devices->getMedia()));
+
 	sslider = new Phonon::SeekSlider(devices->getMedia(),this);
 // 	sslider->setMediaObject(devices->getMedia());
 	sslider->move(m_bar->x(),m_bar->y());
 	sslider->setMaximumWidth(m_bar->width());
 	sslider->setMinimumWidth(m_bar->width());
 	sslider->show();
-// 	Phonon::VolumeSlider * vs = new Phonon::VolumeSlider(devices->getAudioOutPut());
-// 	vs->setOrientation(Qt::Vertical);
-// 	vs->setMuteVisible(false);
-// 	addVolumeSlider(vs);
 
 /**
  *	SETTINGS

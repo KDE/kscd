@@ -41,6 +41,7 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 {
 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Rectangle);
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
+// 	m_bounds=new QRegion(pix.mask());
 
 	setAutoFillBackground(true); 
 	p_panelColor= new QPalette(Qt::transparent);

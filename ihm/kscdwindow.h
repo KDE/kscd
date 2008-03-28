@@ -80,7 +80,7 @@
 #include "mbmanager.h"
 
 #include <phonon/seekslider.h>
-#include <phonon/volumeslider.h>
+// #include <phonon/volumeslider.h>
 
 #include <QLCDNumber>
 #include <QMainWindow>

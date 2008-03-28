@@ -14,7 +14,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
-   sodipodi:docbase="D:\$Boulot$\kdemultimedia\kscd\ihm\skin"
+   sodipodi:docbase="/home/Stan/isi-kscd/kdemultimedia/kscd/ihm/skin"
    sodipodi:docname="default.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
@@ -1338,15 +1338,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.6203867"
-     inkscape:cx="271.24696"
-     inkscape:cy="1225.2871"
+     inkscape:zoom="0.90509668"
+     inkscape:cx="576.21975"
+     inkscape:cy="1083.2311"
      inkscape:document-units="px"
-     inkscape:current-layer="kscdBack_default"
+     inkscape:current-layer="kscd_default"
      inkscape:window-width="1210"
      inkscape:window-height="742"
-     inkscape:window-x="62"
-     inkscape:window-y="220"
+     inkscape:window-x="70"
+     inkscape:window-y="0"
      showgrid="true"
      width="700px"
      height="1300px" />
@@ -2283,7 +2283,7 @@
            height="254.52039"
            x="0"
            y="0"
-           ry="1.3067975"
+           ry="127.26019"
            inkscape:label="#rect9273" />
         <g
            id="g2564"
@@ -2596,7 +2596,7 @@
          style="stroke:#001c78;stroke-opacity:1"
          inkscape:label="#minimize"
          id="minimize_default"
-         transform="translate(619.00097,11.129126)">
+         transform="translate(561.00097,9.129126)">
         <path
            d="M 25 12.5 A 12.5 12.5 0 1 1  0,12.5 A 12.5 12.5 0 1 1  25 12.5 z"
            sodipodi:ry="12.5"
@@ -2616,7 +2616,7 @@
          inkscape:label="#close"
          style="stroke:#001c78;stroke-opacity:1"
          id="close_default"
-         transform="translate(654.00097,16.129126)">
+         transform="translate(600.00097,20.129126)">
         <path
            d="M 25 12.5 A 12.5 12.5 0 1 1  0,12.5 A 12.5 12.5 0 1 1  25 12.5 z"
            sodipodi:ry="12.5"
