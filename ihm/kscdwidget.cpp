@@ -37,7 +37,7 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 {
 	m_state = "default";
  	m_name = sName;
-// 	m_baseName = m_name;
+	m_baseName = m_name;
 	m_id = m_name + "_" + m_state;
 
 // 	Prefs::setSkinChooser(KStandardDirs::installPath("data") + "/kscd/skin/default.svg");
@@ -65,7 +65,7 @@ KscdWidget::~KscdWidget()
 
 void KscdWidget::changeSkin(QString newPathSkin)
 {
-// 	QString newId = m_name + "_default";
+// 	QString newId = m_baseName + "_default";
 // 			
 // 	m_path=newPathSkin;
 // 
@@ -197,14 +197,15 @@ QPixmap KscdWidget :: getPix()
 
 void KscdWidget :: loadSkin(QString skin)
 {
+	QString newId = m_baseName + "_default";
 	m_path = skin;
 	m_renderer->load(skin);
-	QRectF rect = m_renderer->boundsOnElement(getId());
+	QRectF rect = m_renderer->boundsOnElement(newId);
 	resize(rect.width(),rect.height());
 	pix = QPixmap(rect.toRect().size());
 	pix.fill(QColor(Qt::transparent));
 	QPainter p(&pix);
-	m_renderer->render(&p,getId(),rect);
+	m_renderer->render(&p,newId,rect);
 	m_bounds = new QRegion(rect.toRect(),QRegion::Ellipse);
 	move(rect.toRect().x(),rect.toRect().y());
 }
