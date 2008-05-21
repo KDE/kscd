@@ -496,12 +496,12 @@ change anything.</para>
 <title>Using &SMTP; (Email) to send CDDB information</title>
 
 <para>To prepare to submit information using email, enter your email address in the 
-textbox labeled <guilabel>Reply-To:</guilabel>, your email server in the textbox 
+text box labeled <guilabel>Reply-To:</guilabel>, your email server in the text box 
 labeled <guilabel>SMTP-server:</guilabel> and select the port number in the drop down box 
 labeled <guilabel>Port:</guilabel>.</para>
 <para>If you need to use a password to send email using the email server, place a mark in the 
 check box labeled <guilabel>Server needs authentication</guilabel> and enter your 
-username in the textbox labeled <guilabel>Username:</guilabel>.</para>
+username in the text box labeled <guilabel>Username:</guilabel>.</para>
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
 page. The <guibutton>Defaults</guibutton> button restores the default values of all entries in this dialog; <guibutton>OK</guibutton> saves the current settings and exits;
