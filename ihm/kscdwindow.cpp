@@ -36,14 +36,13 @@
 #include <klocalizedstring.h>
 
 #include "panel.h"
-#include "configwindow.h"
 
 using namespace Phonon;
 
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {	
 	setWindowFlags(Qt::FramelessWindowHint);
-	setAutoFillBackground(false);
+//	setAutoFillBackground(false);
 	m_backG = new BackGround(this);
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
@@ -64,6 +63,10 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_trackDlgCreated = false;
  	m_trackDlg = new TrackListDlg(parent);
 	
+ 	
+// 	m_prefB = new ConfigButton(this);
+ 	
+ 	
 // 	createTrackWindow();
 
 	setMask(m_backG->getPix().mask());
@@ -77,23 +80,23 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 // 	QGridLayout* panelLayout = new QGridLayout;
 // 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
 
-	connect(m_stopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_playB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_prevB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_nextB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_ejectB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_muteB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_randB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_loopB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_trackB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_volumeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_volumeB,SIGNAL(volumeChange(qreal)),SLOT(catchVolume(qreal)));
+	connect(m_stopB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_playB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_prevB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_nextB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_ejectB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_muteB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_randB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_loopB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_trackB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_volumeB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_volumeB,SIGNAL(volumeChange(qreal)),this,SIGNAL(actionClicked(QString)));
 	connect(m_trackDlg,SIGNAL(itemClicked(int)),this,SLOT(doubleClickedEvent(int)));
-	connect(m_miniB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
-	connect(m_closeB,SIGNAL(buttonClicked(QString)),SLOT(catchButton(QString)));
+	connect(m_miniB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_closeB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 	connect(m_backG,SIGNAL(moveValue(QPoint)),this,SLOT(moveWindow(QPoint)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),m_panel,SLOT(setVolumeDisplay(qreal)));
-	show();
+//	connect(m_prefB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 }
 
 KscdWindow::~KscdWindow()
@@ -160,27 +163,28 @@ void KscdWindow :: makeFinderSkinDialog()
 void KscdWindow::setNewSkin(QString newS){
 
 	kDebug () << "make change with new skin :"<<newS;
-	Prefs::setSkinChooser(newS);
+	Prefs::setUrl(newS);
 	Prefs::self()->writeConfig();
-
+	kDebug () << "**** " << Prefs::url() << " ****";
+	
 	QSvgRenderer* rend = new QSvgRenderer(newS,this);
 	this->resize(rend->boundsOnElement("kscdBack_default").width(),
 			rend->boundsOnElement("kscdBack_default").height());
 
-	m_backG->changeSkin(newS);
-	m_stopB->changeSkin(newS);
-	m_playB->changeSkin(newS);
-	m_prevB->changeSkin(newS);
-	m_nextB->changeSkin(newS);
-	m_ejectB->changeSkin(newS);
-	m_muteB->changeSkin(newS);
-	m_randB->changeSkin(newS);
-	m_loopB->changeSkin(newS);
-	m_trackB->changeSkin(newS);
-	m_volumeB->changeSkin(newS);
-	m_closeB->changeSkin(newS);
-	m_miniB->changeSkin(newS);
-	m_panel->changeSkin(newS);
+	m_backG->loadSkin(newS);
+	m_stopB->loadSkin(newS);
+	m_playB->loadSkin(newS);
+	m_prevB->loadSkin(newS);
+	m_nextB->loadSkin(newS);
+	m_ejectB->loadSkin(newS);
+	m_muteB->loadSkin(newS);
+	m_randB->loadSkin(newS);
+	m_loopB->loadSkin(newS);
+	m_trackB->loadSkin(newS);
+	m_volumeB->loadSkin(newS);
+	m_closeB->loadSkin(newS);
+	m_miniB->loadSkin(newS);
+	m_panel->loadSkin(newS);
 	sslider->move(m_bar->x(),m_bar->y()-5);
 	sslider->setMaximumWidth(m_bar->width());
 
@@ -320,11 +324,11 @@ KscdWidget * KscdWindow::getPanel(){
 }
 
 
-void  KscdWindow::paintEvent(QPaintEvent *event)
-{
-	QPainter painter(this);
-	painter.setBackgroundMode(Qt::TransparentMode);
-}
+//void  KscdWindow::paintEvent(QPaintEvent *event)
+//{
+//	QPainter painter(this);
+//	painter.setBackgroundMode(Qt::TransparentMode);
+//}
 
 
 /**

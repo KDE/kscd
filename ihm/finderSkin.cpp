@@ -42,8 +42,7 @@ FinderSkin::FinderSkin(QWidget* parent):finderSkinUI(parent)
 	
 	QStringList filter;
 	filter<<"*.svg";
-	directory->setNameFilters(filter);	
-	
+	directory->setNameFilters(filter);
 	QStringList list = directory->entryList();
 	comboBoxTitleSkin->addItems(list);
 

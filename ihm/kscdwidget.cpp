@@ -41,7 +41,7 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 	m_id = m_name + "_" + m_state;
 
 // 	Prefs::setSkinChooser(KStandardDirs::installPath("data") + "/kscd/skin/default.svg");
-	m_path = Prefs::skinChooser();/*KStandardDirs::installPath("data") + "/kscd/skin/default.svg";*/
+	m_path = /*KStandardDirs::installPath("data") + "/kscd/skin/default.svg";*/Prefs::url();
 
 	m_renderer = new QSvgRenderer(this);
 	loadSkin(m_path);
@@ -59,33 +59,6 @@ KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 KscdWidget::~KscdWidget()
 {
 	delete m_renderer;
-}
-
-/* change skin path and refresh */
-
-void KscdWidget::changeSkin(QString newPathSkin)
-{
-// 	QString newId = m_baseName + "_default";
-// 			
-// 	m_path=newPathSkin;
-// 
-// 	m_renderer->load(m_path);
-
-//	loadPicture(getName(),"default");
-	if (m_renderer->elementExists(m_id))
-	{
-// 		setFixedSize(m_renderer->boundsOnElement(newId).width(),
-// 					m_renderer->boundsOnElement(newId).height());
-// 		
-// 		m_bounds = new QRegion((m_renderer->boundsOnElement(newId)).toRect(),QRegion::Ellipse);
-// 		
-// 		move(m_renderer->boundsOnElement(newId).x(),
-// 			m_renderer->boundsOnElement(newId).y());
-		loadSkin(newPathSkin);
-	
-		emit(changePicture());
-		emit(needRepaint());
-	}
 }
 
 void KscdWidget :: setName(QString sName)
@@ -154,6 +127,7 @@ void KscdWidget :: mousePressEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
+		kDebug() << "**** button name : " << m_name << " ****";
 		m_state = "pressed";
 		m_id = m_name + "_" + m_state;
 		emit(needRepaint());
@@ -197,15 +171,20 @@ QPixmap KscdWidget :: getPix()
 
 void KscdWidget :: loadSkin(QString skin)
 {
+//	Prefs::setUrl(skin);
+//	Prefs::self()->writeConfig();
 	QString newId = m_baseName + "_default";
 	m_path = skin;
 	m_renderer->load(skin);
-	QRectF rect = m_renderer->boundsOnElement(newId);
-	resize(rect.width(),rect.height());
-	pix = QPixmap(rect.toRect().size());
-	pix.fill(QColor(Qt::transparent));
-	QPainter p(&pix);
-	m_renderer->render(&p,newId,rect);
-	m_bounds = new QRegion(rect.toRect(),QRegion::Ellipse);
-	move(rect.toRect().x(),rect.toRect().y());
+	if (m_renderer->elementExists(m_id)){
+		QRectF rect = m_renderer->boundsOnElement(newId);
+		resize(rect.width(),rect.height());
+		pix = QPixmap(rect.toRect().size());
+		pix.fill(QColor(Qt::transparent));
+		QPainter p(&pix);
+		m_renderer->render(&p,newId,rect);
+		m_bounds = new QRegion(pix);
+	//	setMask(pix.mask());
+		move(rect.toRect().x(),rect.toRect().y());
+	}
 }

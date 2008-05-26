@@ -77,7 +77,6 @@ public:
 	void leaveEvent (QEvent * event);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
-	void changeSkin(QString);
 	QString getPath();
 	QRegion* bounds();
 	QPixmap getPix();

@@ -44,7 +44,6 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QCloseEvent>
-
 #include <QCursor>
 
 // Phonon libs
@@ -54,7 +53,6 @@
 #include "ihm/kscdwindow.h"
 #include "hwcontroler.h"
 #include "mbmanager.h"
-#include "prefs.h"
 // #include "configWidget.h"
 #include <config-alsa.h>
 #include <QLCDNumber>
@@ -87,6 +85,7 @@
 #include "prefs.h"
 #include "ui_generalSettings.h"
 #include "ui_interfaceSettings.h"
+//#include "ui_fontSettings.h"
 // class CDDBDlg;
 // class DockWidget;
 // class QGridLayout;
@@ -116,7 +115,6 @@ class KSCD : public KscdWindow, public KSessionManager {
 private:
 	HWControler* devices;	
 	MBManager* m_MBManager;
-	
 	bool mute;
 	bool play;
 	bool random;
@@ -150,6 +148,7 @@ private:
 	// Settings.
 	Ui::generalSettings ui_general;
 	Ui::interfaceSettings ui_interface;
+//	Ui::fontSettings ui_font;
 
 	/**
 	 * Load the last settings 

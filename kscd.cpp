@@ -26,7 +26,11 @@
 // #include <kshortcutsdialog.h>
 #include "kscd.h"
 #include "ihm/configwindow.h"
-
+#include <QSplashScreen>
+#include <QPixmap>
+#include <KUrl>
+#include <QStringList>
+#include <QDir>
 using namespace Phonon;
 
 static const char description[] = I18N_NOOP("KDE CD player");
@@ -141,12 +145,12 @@ void KSCD::setupActions()
 	
 //Find out skin
 //	QAction* findS = new QAction(i18n("Skin..."), this);
-	QAction* findS = m_actions->addAction(i18n("Skin..."));
+	/*QAction* findS = m_actions->addAction(i18n("Skin..."));
 	findS->setShortcut(i18n("Skin..."));
 	findS->setText(i18n("Skin..."));
 	addAction(findS);
 	connect(findS, SIGNAL(triggered()), this, SLOT(makeFinderSkinDialog()));
-	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));
+	connect(m_finderSkin,SIGNAL(pathSkinChanged(QString)),this,SLOT(setNewSkin(QString)));*/
 	
 	
 //////////Set Shortcuts
@@ -234,21 +238,21 @@ void KSCD::setDefaultShortcuts()
 	quit_shortcut = new QAction(i18n("quit"), this);
 	quit_shortcut = m_actions->addAction("Quit");
 	quit_shortcut->setText("Quit");
-	addAction(quit_shortcut);
+	//addAction(quit_shortcut);
 	quit_shortcut->setShortcut(tr("Escape"));
 	connect(quit_shortcut, SIGNAL(triggered()), this, SLOT(quitShortcut()));
 
 	//minimize
-	minimize_shortcut = new QAction(i18n("minimize"), this);
-	minimize_shortcut = m_actions->addAction("Minimize");
-	minimize_shortcut->setText("Minimize");
-	addAction(minimize_shortcut);
+	minimize_shortcut = new QAction( this);
+	//minimize_shortcut = m_actions->addAction("Minimize");
+	//minimize_shortcut->setText("Minimize");
+	//addAction(minimize_shortcut);
 	minimize_shortcut->setShortcut(tr("Alt+Escape"));
 	connect(minimize_shortcut, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
 	
 	//play/pause
 	play_pause_shortcut = new QAction(i18n("play"), this);
-	play_pause_shortcut = m_actions->addAction("Play/Pause");
+	//play_pause_shortcut = m_actions->addAction("Play/Pause");
 	play_pause_shortcut->setText("Play/Pause");
 	addAction(play_pause_shortcut);
 	play_pause_shortcut->setShortcut(Qt::Key_Space);
@@ -782,6 +786,10 @@ void KSCD::actionButton(QString name)
 		}
 		emit(picture(name,"default"));
 	}
+	if ( name == "configure")
+	{
+		optionsPreferences();
+	}
 }
 
 /**
@@ -851,7 +859,17 @@ void KSCD :: optionsPreferences()
 	QWidget *interfaceSettingsDlg = new QWidget;
 	ui_interface.setupUi(interfaceSettingsDlg);
 	
-	dialog->addPage(interfaceSettingsDlg, i18n("Interface"), "fill-color");
+	//Filter on the skin url combo box
+	QString pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
+	QDir *directory= new QDir(pathSkins);
+	QStringList filter;
+	filter << "*.svg";
+	directory->setNameFilters(filter);
+	QStringList list = directory->entryList();
+	ui_interface.kcfg_url->addItems(list);
+	
+	dialog->addPage(interfaceSettingsDlg, i18n("Appearance"), "fill-color");
+
 	connect(dialog, SIGNAL(settingsChanged( const QString &)), this, SLOT(updateSettings()));
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
 	dialog->setHelp(QString(),"kscd");
@@ -866,11 +884,13 @@ void KSCD :: updateSettings()
 	kDebug()<<"font config:"<<Prefs::textFont();
 	devices->setEjectActivated(Prefs::ejectOnFinish());
 	kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
-	m_panel->setEjectAct(Prefs::ejectOnFinish());
+	m_panel->setEjectAct( Prefs::ejectOnFinish() );
+	setNewSkin( KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url() );
 }
 
 void KSCD :: loadSettings()
 {
+	//setNewSkin( KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url() );
 	m_panel->setTextColor(Prefs::textColor());
 	m_panel->setTextSizeFont(Prefs::textFont());
 	m_panel->setEjectAct(Prefs::ejectOnFinish());
@@ -927,6 +947,9 @@ int main( int argc, char *argv[] )
 		exit(0);
 	}
 	KUniqueApplication a;
+//	QPixmap pixM("/home/stanislas/isi-kscd/kdemultimedia/kscd/splash2.png");
+//	QSplashScreen splash( pixM );
+//	splash.show();
 	KSCD *k = new KSCD();
 	a.setTopWidget( k );
 //   a.setMainWidget(k);
@@ -936,11 +959,14 @@ int main( int argc, char *argv[] )
 	if (kapp->isSessionRestored())
 	{
 		KConfigGroup group(KApplication::kApplication()->sessionConfig(), "General");
-		if (group.readEntry("Show", false))
+		if (group.readEntry("Show", false)){
+//			splash.finish(k);
 			k->show();
+		}
 	}
 	else
 	{
+//		splash.finish(k);
 		k->show();
 	}
 

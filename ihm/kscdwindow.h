@@ -74,6 +74,7 @@
 #include "seekslider.h"
 #include "seekcursor.h"
 #include "finderSkin.h"
+#include "configbutton.h"
 #include <QSvgRenderer>
 
 // #include "cddbmanager.h"
@@ -109,6 +110,7 @@ protected:
 	KscdWidget *m_closeB;
 	KscdWidget *m_backG;
 	KscdWidget *m_miniB;
+	KscdWidget *m_prefB;
 // 	SeekSlider *m_slider;
 	SeekBar *m_bar;
 	Phonon::SeekSlider *sslider;
@@ -140,16 +142,16 @@ protected:
 	
 public:
 	/**
- 	* Creates a new Kscdwindow instance
+ 	* Constructor
 	*/
 	KscdWindow(QWidget *parent = 0);
 	
 	/**
-	 * Destroys an instance of Kscdwindow
+	 * Destructor
 	 */
 	virtual ~KscdWindow();
 
-	void paintEvent(QPaintEvent *event);
+//	void paintEvent(QPaintEvent *event);
 
  	KscdWidget * getPanel();
 	void setTime(qint64 pos);
