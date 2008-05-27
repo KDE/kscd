@@ -27,7 +27,7 @@ kde4_add_executable(kscd ${kscd_SRCS})
 
 target_link_libraries(kscd ${KDE4_KUTILS_LIBS} kcddb kcompactdisc)
 
-install(TARGETS kscd DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS kscd ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 
 ########### install files ###############
@@ -38,6 +38,7 @@ install(FILES kscd.kcfg  DESTINATION  ${KCFG_INSTALL_DIR})
 install(FILES audiocd_play.desktop  DESTINATION
 ${SERVICES_INSTALL_DIR}/ServiceMenus)
 install(PROGRAMS workman2cddb.pl DESTINATION ${BIN_INSTALL_DIR})
+
 
 kde4_install_icons(${ICON_INSTALL_DIR})
 
