@@ -48,7 +48,6 @@ set(kscd_SRCS
 	ihm/seekslider.cpp
 	ihm/seekcursor.cpp
 	ihm/seekbar.cpp
-	ihm/configbutton.cpp
 )
 
 set(kscd_Resources ihm/skin)
