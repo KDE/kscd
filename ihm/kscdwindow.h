@@ -74,7 +74,6 @@
 #include "seekslider.h"
 #include "seekcursor.h"
 #include "finderSkin.h"
-#include "configbutton.h"
 #include <QSvgRenderer>
 
 // #include "cddbmanager.h"

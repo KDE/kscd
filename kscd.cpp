@@ -238,21 +238,21 @@ void KSCD::setDefaultShortcuts()
 	quit_shortcut = new QAction(i18n("quit"), this);
 	quit_shortcut = m_actions->addAction("Quit");
 	quit_shortcut->setText("Quit");
-	//addAction(quit_shortcut);
+	addAction(quit_shortcut);
 	quit_shortcut->setShortcut(tr("Escape"));
 	connect(quit_shortcut, SIGNAL(triggered()), this, SLOT(quitShortcut()));
 
 	//minimize
-	minimize_shortcut = new QAction( this);
-	//minimize_shortcut = m_actions->addAction("Minimize");
-	//minimize_shortcut->setText("Minimize");
-	//addAction(minimize_shortcut);
+	minimize_shortcut = new QAction(i18n("minimize"), this);
+	minimize_shortcut = m_actions->addAction("Minimize");
+	minimize_shortcut->setText("Minimize");
+	addAction(minimize_shortcut);
 	minimize_shortcut->setShortcut(tr("Alt+Escape"));
 	connect(minimize_shortcut, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
 	
 	//play/pause
-	play_pause_shortcut = new QAction(i18n("play"), this);
-	//play_pause_shortcut = m_actions->addAction("Play/Pause");
+	play_pause_shortcut = new QAction(i18n("play/pause"),this);
+	play_pause_shortcut = m_actions->addAction("Play/Pause");
 	play_pause_shortcut->setText("Play/Pause");
 	addAction(play_pause_shortcut);
 	play_pause_shortcut->setShortcut(Qt::Key_Space);

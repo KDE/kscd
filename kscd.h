@@ -123,7 +123,8 @@ private:
 	
 	QAction* configure_shortcuts;
 	QAction* configure;
-	QAction* play_pause_shortcut;
+	QAction* play_pause_shortcut;	
+	QAction* play_pause;
 	QAction* stop_shortcut;
 	QAction* next_shortcut;
 	QAction* previous_shortcut;
