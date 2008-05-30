@@ -52,7 +52,6 @@ class KCompactDisc;
 #include "configWidget.h"
 #include <kapplication.h>
 #include <kconfigdialog.h>
-#include <k3process.h>
 #include <krandomsequence.h>
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
