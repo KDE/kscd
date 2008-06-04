@@ -42,6 +42,7 @@
 #include <QBitmap>
 #include <QPainter>
 #include <QPoint>
+#include <QCursor>
 #include <kdebug.h>
 #include "kscdwidget.h"
 
@@ -54,6 +55,7 @@ private:
 	QPoint mousePosition;
 	int m_deplacement;
 	bool m_move;
+	QCursor* cursor;
 public:
 	BackGround(QWidget * parent=0, QString sName="kscdBack");
 	virtual ~BackGround();
@@ -64,8 +66,6 @@ private:
 	void mouseMoveEvent(QMouseEvent * event);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
-signals:
-	void moveValue(QPoint);
 };
 
 #endif /*BACKGROUND_H_*/

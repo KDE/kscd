@@ -184,7 +184,7 @@ void KscdWidget :: loadSkin(QString skin)
 		QPainter p(&pix);
 		m_renderer->render(&p,newId,rect);
 		m_bounds = new QRegion(pix);
-	//	setMask(pix.mask());
+		//setMask( pix.mask() );
 		move(rect.toRect().x(),rect.toRect().y());
 	}
 }

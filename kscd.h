@@ -43,6 +43,7 @@
 #include <QGridLayout>
 #include <QKeyEvent>
 #include <QEvent>
+#include <QMouseEvent>
 #include <QCloseEvent>
 #include <QCursor>
 
@@ -80,32 +81,15 @@
 #include <kuniqueapplication.h>
 #include <kcmoduleloader.h>
 #include <ktoolinvocation.h>
+#include <kaction.h>
+#include <QList>
 #include "panel.h"
 
 #include "prefs.h"
 #include "ui_generalSettings.h"
 #include "ui_interfaceSettings.h"
-//#include "ui_fontSettings.h"
-// class CDDBDlg;
-// class DockWidget;
-// class QGridLayout;
-// class KActionCollection;
-// class KToggleAction;
+
 #include <kshortcutseditor.h>
-
-// enum  	ActionType {
-// 		WidgetAction = Qt::WidgetShortcut, 
-// 		WindowAction = Qt::WindowShortcut, 
-// 		ApplicationAction = Qt::ApplicationShortcut, 
-// 		GlobalAction = 4, 
-// 		AllActions = 0xffffffff
-// 	}
-// enum  	LetterShortcuts {
-// 		LetterShortcutsDisallowed = 0, 
-// 		LetterShortcutsAllowed
-// 	}
-
-
 
 class KSCD : public KscdWindow, public KSessionManager {
 
@@ -115,35 +99,37 @@ class KSCD : public KscdWindow, public KSessionManager {
 private:
 	HWControler* devices;	
 	MBManager* m_MBManager;
+
 	bool mute;
 	bool play;
 	bool random;
 	bool looptrack;
 	bool loopdisc;
 	
-	QAction* configure_shortcuts;
-	QAction* configure;
-	QAction* play_pause_shortcut;	
-	QAction* play_pause;
-	QAction* stop_shortcut;
-	QAction* next_shortcut;
-	QAction* previous_shortcut;
-	QAction* eject_shortcut;
-	QAction* random_shortcut;
-	QAction* looptrack_shortcut;
-	QAction* loopdisc_shortcut;
-	QAction* tracklist_shortcut;
-	QAction* mute_shortcut;
-	QAction* DownloadAction;
-	QAction* UploadAction;
-	QAction* CDDBWindowAction;
-	QAction* volume_up_shortcut;
-	QAction* volume_down_shortcut;
-	QAction* quit_shortcut;
-	QAction* minimize_shortcut;
+	KAction* m_configureShortcutsAction;
+	KAction* m_configureAction;
+	KAction* m_playPauseAction;
+	KAction* m_stopAction;
+	KAction* m_nextAction;
+	KAction* m_previousAction;
+	KAction* m_ejectAction;
+	KAction* m_randomAction;
+	KAction* m_looptrackAction;
+	KAction* m_loopdiscAction;
+	KAction* m_tracklistAction;
+	KAction* m_muteAction;
+	KAction* m_downloadAction;
+	KAction* m_uploadAction;
+	KAction* m_CDDBWindowAction;
+	KAction* m_volumeUpAction;
+	KAction* m_volumeDownAction;
+	KAction* m_quitAction;
+	KAction* m_minimizeAction;
 	KActionCollection * m_actions;
-	QMenu * rightClick;
-
+	KAction* m_separatorAction;
+	KAction* m_separator2Action;
+	KAction* m_separator3Action;
+	
 	void setHourglass();
 
 	// Settings.
@@ -155,7 +141,7 @@ private:
 	 * Load the last settings 
 	 */
 	void loadSettings();
-
+	
 public:
 	explicit KSCD(QWidget *parent = 0);
 	~KSCD();
@@ -163,10 +149,11 @@ public:
 	virtual bool saveState(QSessionManager& sm);
 	void writeSettings();
 	HWControler * getDevices();
+	
 // 	KCompactDisc* getCd(); // kept for CDDB compatibility
+	
 protected:
 	void setupActions();
-	void setDefaultShortcuts();
 
 signals:
 	void picture(QString,QString);
@@ -177,7 +164,6 @@ signals:
 
 public slots:
 
-	void test();
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 	void changeVolume(qreal);

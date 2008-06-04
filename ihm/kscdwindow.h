@@ -90,7 +90,7 @@
 
 #include <kdebug.h>
 
-class KscdWindow:public QWidget
+class KscdWindow:public QMainWindow
 {
 	Q_OBJECT
 
@@ -119,9 +119,13 @@ protected:
 	TrackListDlg *m_trackDlg;
 	FinderSkin *m_finderSkin;
 
+	QPoint mousePosition;
+	bool m_move;
 	const QPalette * p_panelColor;
 
-	
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent * event);
 	 /**
 	 * Create the track list dialog
 	 */
@@ -138,6 +142,7 @@ protected:
 
 	/** The state creation of the track dialog */
 	bool m_trackDlgCreated;
+	
 	
 public:
 	/**
@@ -162,7 +167,6 @@ public slots:
 	void doubleClickedEvent(int);
 	void showArtistLabel(QString);
 	void showTrackinfoLabel(QString);
-	void moveWindow(QPoint);
 	void panelInfo(QString);
 
 	/**

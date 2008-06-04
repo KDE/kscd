@@ -39,7 +39,7 @@
 
 using namespace Phonon;
 
-KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
+KscdWindow::KscdWindow(QWidget *parent):QMainWindow(parent)
 {	
 	setWindowFlags(Qt::FramelessWindowHint);
 //	setAutoFillBackground(false);
@@ -63,23 +63,18 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_trackDlgCreated = false;
  	m_trackDlg = new TrackListDlg(parent);
 	
- 	
 // 	m_prefB = new ConfigButton(this);
  	
- 	
+ 	m_move = false;
 // 	createTrackWindow();
 
-	setMask(m_backG->getPix().mask());
-
-
+	setMask( m_backG->getPix().mask() );
+	setCentralWidget( m_backG );
+	
+	
 	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
 
-	// Configuration windows
-	//ConfigWindow *m_config = new ConfigWindow(this);
-
-// 	QGridLayout* panelLayout = new QGridLayout;
-// 	m_layout->addLayout(panelLayout, 0, 3, 2, 1);
-
+	
 	connect(m_stopB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 	connect(m_playB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 	connect(m_prevB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
@@ -90,11 +85,10 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	connect(m_loopB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 	connect(m_trackB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 	connect(m_volumeB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_volumeB,SIGNAL(volumeChange(qreal)),this,SIGNAL(actionClicked(QString)));
+	connect(m_volumeB,SIGNAL(volumeChange(qreal)),this,SIGNAL(actionVolume(qreal)));
 	connect(m_trackDlg,SIGNAL(itemClicked(int)),this,SLOT(doubleClickedEvent(int)));
 	connect(m_miniB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 	connect(m_closeB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_backG,SIGNAL(moveValue(QPoint)),this,SLOT(moveWindow(QPoint)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),m_panel,SLOT(setVolumeDisplay(qreal)));
 //	connect(m_prefB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 }
@@ -241,11 +235,6 @@ void KscdWindow :: catchVolume(qreal value)
 	emit(actionVolume(value));
 }
 
-void KscdWindow :: moveWindow(QPoint value)
-{
-	move(value);
-}
-
 void KscdWindow::changePicture(QString name,QString state)
 {
 	if(name == "play")
@@ -387,5 +376,40 @@ void KscdWindow::panelInfo(QString mess)
 		m_panel->setRandom("random");
 	}
 	m_panel->displayInfo(m_panel->getLoop(),m_panel->getRandom());
+}
+
+void KscdWindow :: mousePressEvent(QMouseEvent *event)
+{
+	if(event->button() == Qt::LeftButton)
+	{
+		event->accept();
+		mousePosition = event->pos();
+		m_move =true;
+		grabMouse(Qt::SizeAllCursor);
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void KscdWindow :: mouseReleaseEvent(QMouseEvent *event)
+{
+	releaseMouse();
+	m_move = false;
+}
+
+void KscdWindow :: mouseMoveEvent(QMouseEvent * event)
+{
+	if(m_move == true)
+	{
+		event->accept();
+		move(event->globalPos() - mousePosition);
+		//emit(moveValue(event->globalPos() - mousePosition));
+	}
+	else
+	{
+		event->ignore();
+	}
 }
 
