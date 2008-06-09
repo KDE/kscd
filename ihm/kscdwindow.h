@@ -90,7 +90,7 @@
 
 #include <kdebug.h>
 
-class KscdWindow:public QMainWindow
+class KscdWindow:public QWidget
 {
 	Q_OBJECT
 

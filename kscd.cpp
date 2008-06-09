@@ -32,6 +32,9 @@
 #include <QStringList>
 #include <QDir>
 #include <QCursor>
+#include <QList>
+#include <QMenu>
+
 using namespace Phonon;
 
 static const char description[] = I18N_NOOP("KDE CD player");
@@ -62,7 +65,9 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	/** Music Brainz initialisation	*/
 	m_MBManager = new MBManager();
 	m_MBManager->discLookup();
+	
 	setupActions();
+	setupContextMenu();
 }
 
 KSCD::~KSCD()
@@ -79,9 +84,6 @@ KSCD::~KSCD()
 
 void KSCD::setupActions()
 {	
-	// Set context menu policy to ActionsContextMenu
-	setContextMenuPolicy(Qt::ActionsContextMenu);
-
 	m_actions = new KActionCollection(this);
 	m_actions->setConfigGroup("Configuration");
 	
@@ -98,16 +100,11 @@ void KSCD::setupActions()
 	m_configureAction->setShortcut(tr("c"));
 	connect(m_configureAction, SIGNAL(triggered()), this, SLOT(optionsPreferences()));
 
-	m_separatorAction = new KAction( i18n( "Separator" ) , this );
-	m_separatorAction->setSeparator( true );
-	addAction( m_separatorAction );
-
 	//download info
 	m_downloadAction = m_actions->addAction("Download Info");
 	m_downloadAction->setText("Download Info");
 	addAction(m_downloadAction);
 	m_downloadAction->setShortcut(tr("d"));
-	//m_downloadAction->setVisible( false );
 	connect(m_downloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
 	
 	//upload info
@@ -115,18 +112,12 @@ void KSCD::setupActions()
 	m_uploadAction->setText("Upload Info");
 	addAction(m_uploadAction);
 	m_uploadAction->setShortcut(tr("u"));
-	//m_uploadAction->setVisible( false );
 	connect(m_uploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
 
-	m_separator2Action = new KAction( i18n( "Separator" ) , this );
-	m_separator2Action->setSeparator( true );
-	addAction( m_separator2Action );
-	
 	//play/pause
 	m_playPauseAction = m_actions->addAction("Play/Pause");
 	m_playPauseAction->setText("Play/Pause");
 	m_playPauseAction->setShortcut(Qt::Key_Space);
-	//m_playPauseAction->setVisible( false );
 	connect(m_playPauseAction, SIGNAL(triggered()), this, SLOT(playShortcut()));
 	addAction(m_playPauseAction);
 
@@ -135,7 +126,6 @@ void KSCD::setupActions()
 	m_stopAction->setText("Stop");
 	addAction(m_stopAction);
 	m_stopAction->setShortcut(tr("s"));
-	//m_stopAction->setVisible( false );
 	connect(m_stopAction, SIGNAL(triggered()), devices, SLOT(stop()));
 
 	//next
@@ -143,7 +133,6 @@ void KSCD::setupActions()
 	m_nextAction->setText("Next");
 	addAction(m_nextAction);
 	m_nextAction->setShortcut(tr("Right"));
-	//m_nextAction->setVisible( false );
 	connect(m_nextAction, SIGNAL(triggered()), devices, SLOT(nextTrack()));
 
 	//previous
@@ -151,7 +140,6 @@ void KSCD::setupActions()
 	m_previousAction->setText("Previous");
 	addAction(m_previousAction);
 	m_previousAction->setShortcut(tr("Left"));
-	//m_previousAction->setVisible( false );
 	connect(m_previousAction, SIGNAL(triggered()), devices, SLOT(prevTrack()));
 
 	//eject
@@ -159,7 +147,6 @@ void KSCD::setupActions()
 	m_ejectAction->setText("Eject");
 	addAction(m_ejectAction);
 	m_ejectAction->setShortcut(tr("e"));
-	//m_ejectAction->setVisible( false );
 	connect(m_ejectAction, SIGNAL(triggered()), this, SLOT(ejectShortcut()));
 
 	//volume up
@@ -167,7 +154,6 @@ void KSCD::setupActions()
 	m_volumeUpAction->setText("Volume Up");
 	addAction(m_volumeUpAction);
 	m_volumeUpAction->setShortcut(tr("Up"));
-	//m_volumeUpAction->setVisible( false );
 	connect(m_volumeUpAction, SIGNAL(triggered()), this, SLOT(volumeUpShortcut()));
 
 	//volume down
@@ -175,7 +161,6 @@ void KSCD::setupActions()
 	m_volumeDownAction->setText("Volume Down");
 	addAction(m_volumeDownAction);
 	m_volumeDownAction->setShortcut(tr("Down"));
-	//m_volumeDownAction->setVisible( false );
 	connect(m_volumeDownAction, SIGNAL(triggered()), this, SLOT(volumeDownShortcut()));
 
 	//random
@@ -183,7 +168,6 @@ void KSCD::setupActions()
 	m_randomAction->setText("Random");
 	addAction(m_randomAction);
 	m_randomAction->setShortcut(tr("r"));
-	//m_randomAction->setVisible( false );
 	connect(m_randomAction, SIGNAL(triggered()), this, SLOT(randomShortcut()));
 
 	//looptrack
@@ -191,7 +175,6 @@ void KSCD::setupActions()
 	m_looptrackAction->setText("Repeat Track");
 	addAction(m_looptrackAction);
 	m_looptrackAction->setShortcut(tr("l"));
-	m_looptrackAction->setVisible( false );
 	connect(m_looptrackAction, SIGNAL(triggered()), this, SLOT(looptrackShortcut()));
 
 	//loopdisc
@@ -199,7 +182,6 @@ void KSCD::setupActions()
 	m_loopdiscAction->setText("Repeat Album");
 	addAction(m_loopdiscAction);
 	m_loopdiscAction->setShortcut(tr("Ctrl+l"));
-	//m_loopdiscAction->setVisible( false );
 	connect(m_loopdiscAction, SIGNAL(triggered()), this, SLOT(loopdiscShortcut()));
 
 	//tracklist
@@ -207,7 +189,6 @@ void KSCD::setupActions()
 	m_tracklistAction->setText("Show Tracklist");
 	addAction(m_tracklistAction);
 	m_tracklistAction->setShortcut(tr("t"));
-	//m_tracklistAction->setVisible( false );
 	connect(m_tracklistAction, SIGNAL(triggered()), this, SLOT(tracklistShortcut()));
 
 	//mute
@@ -215,12 +196,7 @@ void KSCD::setupActions()
 	m_muteAction->setText("Mute/Unmute");
 	addAction(m_muteAction);
 	m_muteAction->setShortcut(tr("m"));
-	//m_muteAction->setVisible( false );
 	connect(m_muteAction, SIGNAL(triggered()), this, SLOT(muteShortcut()));
-	
-	m_separator3Action = new KAction( i18n( "Separator" ) , this );
-	m_separator3Action->setSeparator( true );
-	addAction( m_separator3Action );
 	
 	//minimize
 	m_minimizeAction = m_actions->addAction("Minimize");
@@ -236,9 +212,10 @@ void KSCD::setupActions()
 	m_quitAction->setShortcut(tr("Escape"));
 	connect(m_quitAction, SIGNAL(triggered()), this, SLOT(quitShortcut()));
 	
+	setContextMenuPolicy(Qt::CustomContextMenu);
+	
 	//Read saved settings
 	m_actions->readSettings();
-	//configureShortcuts();
 
 	mute = false;
 	play = false;
@@ -265,6 +242,23 @@ void KSCD::setupActions()
 	
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 	connect(devices,SIGNAL(cdLoaded()),m_MBManager,SLOT(discLookup()));
+	
+	connect( this , SIGNAL( customContextMenuRequested( const QPoint &) ) , SLOT( showContextMenu( const QPoint &) ) );
+}
+
+void KSCD :: setupContextMenu()
+{
+	contextMenu = new QMenu( this );
+	contextMenu->addAction(m_configureShortcutsAction);
+	contextMenu->addAction(m_configureAction);
+	contextMenu->addSeparator();
+	contextMenu->addAction(m_minimizeAction);
+	contextMenu->addAction(m_quitAction);
+}
+
+void KSCD :: showContextMenu( const QPoint &p)
+{
+	contextMenu->popup( mapToGlobal ( p ) );
 }
 
 /**

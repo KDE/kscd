@@ -46,7 +46,7 @@
 #include <QMouseEvent>
 #include <QCloseEvent>
 #include <QCursor>
-
+#include <QPoint>
 // Phonon libs
 #include <phonon/phononnamespace.h>
 #include <phonon/seekslider.h>
@@ -106,6 +106,8 @@ private:
 	bool looptrack;
 	bool loopdisc;
 	
+	QMenu *contextMenu;
+	
 	KAction* m_configureShortcutsAction;
 	KAction* m_configureAction;
 	KAction* m_playPauseAction;
@@ -126,10 +128,6 @@ private:
 	KAction* m_quitAction;
 	KAction* m_minimizeAction;
 	KActionCollection * m_actions;
-	KAction* m_separatorAction;
-	KAction* m_separator2Action;
-	KAction* m_separator3Action;
-	
 	void setHourglass();
 
 	// Settings.
@@ -154,6 +152,8 @@ public:
 	
 protected:
 	void setupActions();
+	void setupContextMenu();
+	
 
 signals:
 	void picture(QString,QString);
@@ -164,6 +164,10 @@ signals:
 
 public slots:
 
+
+	void showContextMenu( const QPoint & );
+	//void selectSkinUrl();
+	
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 	void changeVolume(qreal);

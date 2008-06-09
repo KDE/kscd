@@ -39,10 +39,10 @@
 
 using namespace Phonon;
 
-KscdWindow::KscdWindow(QWidget *parent):QMainWindow(parent)
+KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 {	
 	setWindowFlags(Qt::FramelessWindowHint);
-//	setAutoFillBackground(false);
+	
 	m_backG = new BackGround(this);
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
@@ -69,7 +69,6 @@ KscdWindow::KscdWindow(QWidget *parent):QMainWindow(parent)
 // 	createTrackWindow();
 
 	setMask( m_backG->getPix().mask() );
-	setCentralWidget( m_backG );
 	
 	
 	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
