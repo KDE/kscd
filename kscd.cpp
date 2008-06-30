@@ -22,8 +22,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#include "docking.h"
+
 #include "kscd.h"
+
+#include "docking.h"
 #include "prefs.h"
 #include "cddbdlg.h"
 #include "configWidget.h"
@@ -1011,7 +1013,7 @@ void KSCD::showArtistLabel(QString infoStatus)
  * KDE 4.0 quick fix: it looks like the conversion to mode
  * CDDB info into KCompactDisc wasn't finished, so we work around
  * it here for now by explicitly overriding data from m_cd with
- * data from cddbInfo iff cddbInfo.isValid() && 
+ * data from cddbInfo iff cddbInfo.isValid() &&
  * cddbInfo.numberOfTracks() == m_cd->tracks()
  */
 

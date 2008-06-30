@@ -37,7 +37,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QComboBox" name="songListCB" />
+      <widget class="KComboBox" name="songListCB" />
      </item>
      <item>
       <layout class="QHBoxLayout" >

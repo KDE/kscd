@@ -72,7 +72,6 @@ Name[zh_TW]=KsCD 播放器
 Exec=kscd -caption "%c" %i
 X-DocPath=kscd/index.html
 Icon=kscd
-Path=
 Type=Application
 Terminal=false
 X-KDE-StartupNotify=true

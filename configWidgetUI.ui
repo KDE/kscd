@@ -217,7 +217,7 @@
        </widget>
       </item>
       <item row="2" column="1" >
-       <widget class="QComboBox" name="kcfg_AudioSystem" >
+       <widget class="KComboBox" name="kcfg_AudioSystem" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
@@ -243,7 +243,7 @@
        </widget>
       </item>
       <item row="3" column="1" >
-       <widget class="QLineEdit" name="kcfg_AudioDevice" >
+       <widget class="KLineEdit" name="kcfg_AudioDevice" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
@@ -275,7 +275,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="kcfg_SelectedEncoding" >
+       <widget class="KComboBox" name="kcfg_SelectedEncoding" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
