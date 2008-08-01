@@ -76,7 +76,7 @@
 <legalnotice>&FDLNotice;</legalnotice>
 
 
-<date>2005-12-22</date>
+<date>2008-08-01</date>
 <releaseinfo>1.5</releaseinfo>
 
 <abstract>
@@ -130,6 +130,8 @@ support)</para></listitem>
 <listitem><para>Sony NEWS</para></listitem>
 <listitem><para>OSF/1</para></listitem>
 <listitem><para>Ultrix</para></listitem>
+<listitem><para>&Windows;</para></listitem>
+<listitem><para>&MacOS;</para></listitem>
 </itemizedlist>
 
 <para>and should compile on many others with few modifications.</para>
@@ -210,7 +212,7 @@ elapsed time, and total remaining time.</para>
 </sect2>
 
 <sect2 id="configuration-button">
-<title>The <guibutton>Configuration</guibutton> button</title>
+<title>The <guibutton>Extras</guibutton> button</title>
 
 <screenshot>
 <screeninfo>The Extras button</screeninfo>
@@ -253,8 +255,6 @@ using this tool.</para>
 </sect2>
 
 
-
-
 <sect2>
 <title>The Volume slider</title>
 
@@ -283,7 +283,7 @@ the sound card mixer will affect the playback volume as well.</para>
 </mediaobject>
 </screenshot>
 	    
-<para>This combo box shows you the current track number, the name of the track and the time (in minutes and seconds).  You can use this drop down box to directly select
+<para>This drop down box shows you the current track number, the name of the track and the time (in minutes and seconds).  You can use this drop down box to directly select
 any track on the &CD;.  </para>
 </sect2>
 
@@ -296,7 +296,7 @@ any track on the &CD;.  </para>
 <title>The primary configuration window</title>
 
 <para>You configure &kscd; by clicking on the <guibutton>Extras</guibutton> button.  This will bring up a menu, select 
-<guilabel>Configure &kscd;...</guilabel>.  This will open a new window.</para>
+<guilabel>Configure &kscd;...</guilabel>  to open a new window.</para>
 <para>The primary configuration window for &kscd; is divided into two 
 major sections. </para>
 
@@ -316,45 +316,16 @@ Player</guilabel></link> to determine the look and behavior of &kscd;.</para></l
 <screeninfo>The <guilabel>CD Player</guilabel> dialog</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd12.png" format="PNG"/></imageobject>
-<textobject><phrase>The <guilabel>KSCD Configuration</guilabel> dialog</phrase></textobject>
+<textobject><phrase>The <guilabel>CD Player</guilabel> dialog</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para>The <guilabel>LCD font:</guilabel> text box lists the currently selected font to display all information in the &kscd; status display.  To change the font, click the <guibutton>Choose...</guibutton> button.</para>
+<para>The <guilabel>LCD font</guilabel> text box lists the currently selected font to display all information in the &kscd; status display.  To change the font, click the <guibutton>Choose...</guibutton> button.</para>
 
-<para>The <guilabel>LCD color:</guilabel> and <guilabel>Background
-color:</guilabel> fields show the color selected for the foreground and
+<para>The <guilabel>LCD color</guilabel> and <guilabel>Background
+color</guilabel> fields show the color selected for the foreground and
 background of the status display. Press the color bars to change
 these colors.</para>
-
-
-<!--
-<para>The <guilabel>Unix mail command</guilabel> field shows the
-command used to send new <acronym>CDDB</acronym> entries to the
-database. The default value is <userinput><command>mail</command>
-<option>-s <replaceable>%s</replaceable></option></userinput>. You
-will need to make sure this command will actually send mail to
-non-local systems if you want to submit <acronym>CDDB</acronym>
-entries, especially if you access the Internet through a dial-up
-connection. Check the documentation for your &Linux; distribution for
-details. Some Linux distributions that use sendmail to deliver email
-require only that you enter your mail host into the
-<option>&quot;Smart&quot; relay host</option> field in
-<filename>/etc/sendmail.cf</filename>. In addition, the
-<acronym>CDDB</acronym> site will want to be able to mail you back; it
-may therefore also be necessary to edit
-<filename>/etc/sendmail.cf</filename> to ensure that the return
-address on the submission is valid. Your mileage is likely to vary. If
-all else fails, use <link linkend="smtp-options">SMTP</link>
-instead.</para>
-
-<para>The <guilabel>WWW-Browser</guilabel> section lets you choose which web
-browser to use to access the web sites in the <link linkend="information-button">information button</link> menus.  You can choose
-either &konqueror; or a custom browser with the radio buttons. By default, the
-<guilabel>Use Custom Browser</guilabel> field contains
-<userinput><command>kfmclient</command>
-<option><replaceable>openURL %s</replaceable></option></userinput>.</para>
--->
 
 <para>Placing a mark in the check box labeled <guilabel>Show icon in system tray</guilabel> causes a &kscd; control to
 appear in the &kicker; panel.</para>
@@ -369,11 +340,6 @@ top of the kicker window each time the &CD; track changes.  This window will aut
 <textobject><phrase>Sample track announcement</phrase></textobject>
 </mediaobject>
 </screenshot>
-
-
-<para>Set the <guilabel>Skip interval</guilabel> box to the desired number of 
-seconds to move ahead or behind when the <guibutton>forward skip</guibutton> 
-or <guibutton>reverse skip</guibutton> buttons in the Control Panel are pressed.</para>
 
 <para><guilabel>Autoplay when CD inserted</guilabel> causes &kscd; to start playing the &CD; 
 when the tray is closed, with no need to press the
@@ -406,14 +372,15 @@ less CPU proccessing time, but it does require that the dedicated cable be conne
 
 <para>The check box labeled <guilabel>Use direct digital playback</guilabel> determines which method &kscd; uses to read the audio tracts.  If there is a mark in the check box, the first method is used.  If there is no mark in the check box, the second method is utilized.</para>
 
-<para>If you have selected direct digital playback, a drop down box labeled <guilabel>Select audio backend:</guilabel> will let you select which 
+<para>If you have selected direct digital playback, a drop down box labeled <guilabel>Select audio backend</guilabel> will let you select which 
 sound backend the digital information should be sent to.  The contents of the drop down box will vary depending on your system. 
 Most users should select <guilabel>arts</guilabel>.  You can also select the device the audio backend uses by entering the device location in 
-the text box labeled <guilabel>Select audio device:</guilabel>.  A full discussion of audio devices and audio backends is beyond the scope of this manual.</para>
+the text box labeled <guilabel>Select audio device</guilabel>.  A full discussion of audio devices and audio backends is beyond the scope of this manual.</para>
 
 <para>If a mark is placed in the check box labeled <guilabel>Allow encoding selection</guilabel>, you can select the text encoding for the results of a CDDB request.</para>
 <tip><para>The standard describes CDDB results as being strictly Latin 1.  If you are not having problems with your CDDB information, leave this box unchecked.</para></tip>
 
+<!-- Music Information Services missing-->
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
 page. The <guibutton>Defaults</guibutton> button restores the default values of all entries in this dialog; <guibutton>OK</guibutton> saves the current settings and exits;
@@ -421,34 +388,36 @@ page. The <guibutton>Defaults</guibutton> button restores the default values of 
 <guibutton>Cancel</guibutton> exits without saving. </para>
 </sect1>
 
-<sect1 id="freedb-tab">
-<title>The <guilabel>freedb Lookup</guilabel> tab</title>
+
+<sect1 id="cddb-page">
+<title>The CDDB Page</title>
+<para>The <guilabel>CDDB</guilabel> page is divided in the <guilabel>Lookup</guilabel> tab
+and the <guilabel>Submit</guilabel> tab.</para>
+
+<sect2 id="lookup-tab">
+<title>The <guilabel>Lookup</guilabel> Tab</title>
 <screenshot>
-<screeninfo>The <guilabel>freedb Lookup</guilabel> tab of the configuration dialog</screeninfo>
+<screeninfo>The <guilabel>Lookup</guilabel> tab of the configuration dialog</screeninfo>
 <mediaobject>
 <imageobject> <imagedata fileref="kscd14.png" format="PNG"/> </imageobject>
-<textobject><phrase>The <guilabel>freedb Lookup</guilabel> tab of the configuration
+<textobject><phrase>The <guilabel>Lookup</guilabel> tab of the configuration
 dialog</phrase></textobject>
 </mediaobject>
 </screenshot>
 
-<para> The <guilabel>freedb Lookup</guilabel> tab sets up the <acronym>CDDB</acronym> functions
+<para> The <guilabel>Lookup</guilabel> tab sets up the <acronym>CDDB</acronym> functions
 of &kscd;.</para>
 
-<para>The <guilabel>Mode</guilabel> option determines how <acronym>CDDB</acronym> lookups 
-are performed. Setting <guilabel>Cache only</guilabel> means that only information already 
-on your computer will be used. <guilabel>Cache and remote</guilabel> will look up 
-information you do not already have while <guilabel>Remote only</guilabel> looks up 
-every disc over the Internet.</para>
+<para>You can select the options <guilabel>Enable MusicBrainz lookup</guilabel> or
+<guilabel>Enable freedb lookup</guilabel>.</para>
 
-
-<para>The <guilabel>CDDB Server:</guilabel> section determines which CDDB mirror site is used by &kscd; to 
+<para>The <guilabel>Freedb server</guilabel> section determines which CDDB mirror site is used by &kscd; to 
 get album information.  You can enter a server name, port number and protocol using the text boxes and drop 
 down boxes or you can click the <guibutton>Show Mirror List</guibutton> button.  Clicking this button will 
 open a new window with a list of CDDB mirrors and their locations.  Simply select the server you want from 
 the list and click <guibutton>OK</guibutton>.</para>
 
-<para>The section labeled <guilabel>Cache locations</guilabel> lets you determine where &kscd; saves CDDB information 
+<para>The section labeled <guilabel>Cache Locations</guilabel> lets you determine where &kscd; saves CDDB information 
 on your computer.  To add a folder, enter the folder location in the text box at the top of the section and click 
 <guibutton>Add</guibutton>.  You can also select a 
 folder by clicking on the blue file folder to the right of the text box. To delete a folder, click on the folder name 
@@ -460,23 +429,24 @@ page. The <guibutton>Defaults</guibutton> button restores the default values of 
 <guibutton>Apply</guibutton> saves the current settings without exiting;
 <guibutton>Cancel</guibutton> exits without saving. </para>
 
-</sect1>
+</sect2>
 
-<sect1 id="smtp-options">
-<title>The <guilabel>freedb Submit</guilabel> tab</title>
+<sect2 id="submit-tab">
+<title>The <guilabel>Submit</guilabel> Tab</title>
 
 <screenshot>
-<screeninfo>The freedb Submit tab</screeninfo>
+<screeninfo>The Submit tab</screeninfo>
 <mediaobject>
 <imageobject><imagedata fileref="kscd16.png" format="PNG"/></imageobject>
 </mediaobject>
 </screenshot>
 
-<para>The freedb Submit tab sets up connection to a mail
+<para>The f<guilabel>Submit</guilabel> tab sets up connection to a mail
 server or a web server to submit new <acronym>CDDB</acronym> entries. This is useful
 if you do not have your own system configured as a server. </para>
 
-<para>If you plan to submit a CDDB entry, first you must decide between submitting between &HTTP;
+<para>If you plan to submit a CDDB entry, enter your email adress into the first textbox,
+then you must decide between submitting between &HTTP;
 and submitting the entry as an email (via &SMTP;).  </para>
 
 <tip><para>It is simpler to submit new entries using &HTTP;.  Some firewalls block this traffic.  If your 
@@ -485,36 +455,37 @@ firewall prevents you from sending new entries using &HTTP;, you can use &SMTP;.
 <para>First select either <guilabel>&HTTP;</guilabel> or <guilabel>SMTP (Email)</guilabel> to determine which 
 protocol to use.</para>
 
-<sect2 id="http-options">
+<sect3 id="http-options">
 <title>Using &HTTP; to send CDDB information</title>
 <para>You can enter a server name or port number in the text boxes provided.  If 
 you want to send this information to the international servers, you do not need to 
 change anything.</para>
-</sect2>
+</sect3>
 
-<sect2 id="smtp2-options">
+<sect3 id="smtp-options">
 <title>Using &SMTP; (Email) to send CDDB information</title>
 
 <para>To prepare to submit information using email, enter your email address in the 
 text box labeled <guilabel>Reply-To:</guilabel>, your email server in the text box 
-labeled <guilabel>SMTP-server:</guilabel> and select the port number in the drop down box 
+labeled <guilabel>SMTP server:</guilabel> and select the port number in the spinbox 
 labeled <guilabel>Port:</guilabel>.</para>
 <para>If you need to use a password to send email using the email server, place a mark in the 
 check box labeled <guilabel>Server needs authentication</guilabel> and enter your 
-username in the text box labeled <guilabel>Username:</guilabel>.</para>
+username in the text box labeled <guilabel>Username</guilabel>.</para>
 
 <para>The <guibutton>Help</guibutton> button opens the &kscd; help contents
 page. The <guibutton>Defaults</guibutton> button restores the default values of all entries in this dialog; <guibutton>OK</guibutton> saves the current settings and exits;
 <guibutton>Apply</guibutton> saves the current settings without exiting;
 <guibutton>Cancel</guibutton> exits without saving. </para>
+</sect3>
 </sect2>
 </sect1>
 
-
 </chapter>
 
+<!-- follwing chapters need proofreading -->
 <chapter id="cddb-editor">
-<title>The <guilabel>CD Database Editor</guilabel></title>
+<title>The CD Database Editor</title>
 
 <screenshot>
 <screeninfo>The &CD; Database Editor</screeninfo>
@@ -529,7 +500,7 @@ and upload <link linkend="cddb-support"><acronym>CDDB</acronym> (Compact Disc
 Data Base)</link> entries.</para>
 
 <para>If there is an entry in your local <acronym>CDDB</acronym> tree
-(see the <link linkend="freedb-tab">CDDB subsection</link> in the
+(see the <link linkend="cddb-page">CDDB subsection</link> in the
 Configuration chapter) for the &CD; in your &CD-ROM; drive, or if the
 disc could be found in the freedb, you will see the name of the artist
 and the title of the &CD; in the <guilabel>Artist:</guilabel> and
@@ -538,7 +509,7 @@ titles in the <interface>Tracks</interface> selection box. Otherwise,
 you will see a list of tracks and play times without titles.</para>
 
 <para>You can make an annotation for the entire disc with the
-<guibutton>Comment</guibutton> button under the
+<guilabel>Comment</guilabel> field under the
 <guilabel>Title</guilabel> field, or for a selected track in the
 <guilabel>Tracks</guilabel> selection box with the adjacent
 <guibutton>Comment</guibutton> button. If you select a track in the
@@ -560,7 +531,7 @@ disc. Above the <acronym>ID</acronym> code is the category of the
 <guilabel>freedb</guilabel> entry. These categories correspond to the
 subfolders tree of the folder chosen in the <guilabel>freedb
 Base Folder:</guilabel> in the <link
-linkend="freedb-tab"><guilabel>freedb</guilabel> tab</link> of the &kscd;
+linkend="cddb-page"><guilabel>CDDB</guilabel> page</link> of the &kscd;
 Configuration window.</para>
 
 <para>The <guilabel>Length:</guilabel> display shows the total play time of
@@ -595,9 +566,8 @@ applet hides the main &kscd; window. If the main window is hidden, a second
 <note><para>To be precise, the applet is displayed in the <application>system
 tray</application> in the panel. If no applet appears when &kscd; is minimized,
 you may have removed the tray. To add it, <mousebutton>right</mousebutton> click
-on an empty spot on the panel and select <menuchoice><guisubmenu>Add</guisubmenu>
-<guisubmenu>Applet</guisubmenu> <guimenuitem>System Tray</guimenuitem>
-</menuchoice></para></note>
+on an empty spot on the panel and select <guimenuitem>Add Applet tp Panel...</guimenuitem>. 
+In the upcoming dialog, choose <guimenuitem>System Tray</guimenuitem></para></note>
 
 </chapter>
 
@@ -608,7 +578,7 @@ on an empty spot on the panel and select <menuchoice><guisubmenu>Add</guisubmenu
 over the Internet that contains information about most audio &CD;s in
 circulation. If you have Internet access, you will likely never have to manually
 enter track information for your &CD;s if you have this set up properly. See
-<link linkend="freedb-tab">The freedb Tab</link> subsection in the configuring
+<link linkend="cddb-page">The CDDB Page</link> subsection in the configuring
 &kscd; chapter for detailed instructions on how to configure this service, and
 the <link linkend="cddb-editor">The &CD; Database Editor</link> section for
 instructions on how to edit <acronym>CDDB</acronym> entries.</para>
@@ -684,8 +654,8 @@ better to do with your spare time.</para>
 <para>The next step is to determine if &kmix; volume levels are appropriate.</para>
 <note><para>&kmix; is a sound mixer panel that is included in &kde;.  This mixer allows you to adjust the relative volume levels of many sound components.</para></note>
 <para>To start &kmix;, select 
-<menuchoice><guimenu>K-Button</guimenu><guimenuitem>Multimedia</guimenuitem>
-<guimenuitem>&kmix;</guimenuitem></menuchoice>.</para>
+<menuchoice><guimenuitem>Multimedia</guimenuitem>
+<guimenuitem>&kmix;</guimenuitem></menuchoice> in the &kmenu;.</para>
 <para>Once &kmix; has started, you will be presented with a new window with a number of volume sliders.  Depending on the configuration, the sliders may have labels, or the labels may be hidden.  If you do not see any labels for the sliders, you should make the labels visible before continuing.  To make the labels visible, select 
 <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &kmix;...</guimenuitem></menuchoice> from the &kmix; window.  This will open a small window with a few check boxes. To 
 turn the labels on, place a mark in the check box labeld <guilabel>Show labels</guilabel> and click <guibutton>OK</guibutton>.</para>
@@ -709,8 +679,8 @@ light above each slider.  If you click on this light you can toggle between brig
 <title>Determine if other sounds are audible on my computer</title>
 <para>In this section, we are going to test to see if other types of sounds are audible on your computer. We will do this by playing a sound over the speakers that is stored on your hard drive.  </para>
 <para>First we must locate an appropriate test file.  This will be done using the command line.</para>
-<para>Select <menuchoice><guimenu>K-Button</guimenu><guimenuitem>System</guimenuitem>
-<guimenuitem>&konsole;</guimenuitem></menuchoice>.  A new window will appear with a command prompt.  At the prompt type:</para>
+<para>Select <menuchoice><guimenuitem>System</guimenuitem>
+<guimenuitem>&konsole;</guimenuitem></menuchoice> in the &kmenu;. A new window will appear with a command prompt.  At the prompt type:</para>
 <para><screen><prompt>$</prompt> <userinput><command>locate -n1 KDE_Window_Open.wav</command></userinput></screen></para>
 <para>When you press return, there will be a pause, and a single line with a file location will be printed below your typed command.</para>
 <para><screen><prompt>$</prompt> <userinput><command>locate -n1 KDE_Window_Open.wav</command></userinput>
@@ -871,7 +841,7 @@ Steven Grimm <email>koreth@hyperion.com</email></para></listitem>
 
 <para>Special thanks to Ti Kan and Steve Scherf, the inventors of the
 <acronym>CDDB</acronym> database concept. Visit <ulink
-url="http://www.cddb.com/">http://ww.cddb.com</ulink> for more information on
+url="http://www.cddb.com/">http://www.cddb.com</ulink> for more information on
 <acronym>CDDB</acronym>.</para>
 
 <para>A very special thank you also to David White who wrote the original &kscd;
