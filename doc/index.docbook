@@ -81,7 +81,7 @@
 
 <abstract>
 <para>&kscd; is a small, fast, <abbrev>CDDB</abbrev> enabled audio
-<abbrev>&CD;</abbrev> player for &UNIX; platforms.</para>
+<abbrev>&CD;</abbrev> player for &UNIX;, &Windows; and &MacOS; platforms.</para>
 </abstract>
 
 <keywordset>
@@ -98,8 +98,8 @@
 <chapter id="introduction">
 <title>Introduction</title>
 
-<para>&kscd; is a fast, <acronym>CDDB</acronym> enabled &CD; player for the &UNIX;
-platform. &kscd; stands for <quote>The KDE Project's small/simple &CD;
+<para>&kscd; is a fast, <acronym>CDDB</acronym> enabled &CD; player for &UNIX;, 
+&Windows; and &MacOS; platforms. &kscd; stands for <quote>The &kde; Project's small/simple &CD;
 player</quote>.</para>
 
 <para><emphasis>New</emphasis>: the <filename>workman2cddb.pl</filename> Perl
@@ -390,7 +390,7 @@ page. The <guibutton>Defaults</guibutton> button restores the default values of 
 
 
 <sect1 id="cddb-page">
-<title>The CDDB Page</title>
+<title>The <guilabel>CDDB</guilabel> Page</title>
 <para>The <guilabel>CDDB</guilabel> page is divided in the <guilabel>Lookup</guilabel> tab
 and the <guilabel>Submit</guilabel> tab.</para>
 
@@ -557,16 +557,16 @@ Database Editor without saving.</para>
 </screenshot>
 
 <para>When the <guilabel>Show icon in system tray</guilabel> box is checked, a
-small &kscd; applet is also displayed in the &kicker;. Unlike the main &kscd; window, this applet is available on
+small &kscd; applet is also displayed in the panel. Unlike the main &kscd; window, this applet is available on
 any desktop. <mousebutton>Right</mousebutton> click on the applet to pop up a
-menu to control &CD; playback. A <mousebutton>left</mousebutton> click on the
+menu to control &CD; playback. A &LMB; click on the
 applet hides the main &kscd; window. If the main window is hidden, a second
-<mousebutton>left</mousebutton> click on the applet restores it. </para>
+&LMB; click on the applet restores it. </para>
 
 <note><para>To be precise, the applet is displayed in the <application>system
 tray</application> in the panel. If no applet appears when &kscd; is minimized,
 you may have removed the tray. To add it, <mousebutton>right</mousebutton> click
-on an empty spot on the panel and select <guimenuitem>Add Applet tp Panel...</guimenuitem>. 
+on an empty spot on the panel and select <guimenuitem>Add Widgets...</guimenuitem>. 
 In the upcoming dialog, choose <guimenuitem>System Tray</guimenuitem></para></note>
 
 </chapter>
@@ -619,6 +619,9 @@ Folder. These files can be edited with any text editor if you have nothing
 better to do with your spare time.</para>
 
 </chapter>
+<!-- quoting aaron
+most of that chapter is now really irrelevant to the current kscd. if it is 
+kept, it would need a massive rewrite.
 
 <chapter id="troubleshooting">
 <title>Troubleshooting the &CD; player</title>
@@ -645,7 +648,7 @@ better to do with your spare time.</para>
 <textobject><phrase>The Volume slider</phrase></textobject>
 </mediaobject>
 </screenshot>
-<para>Click once on the vertical yellow bar and drag the bar all the way to the right end of the slider.</para>
+<para>Click once on the vertical bar and drag the bar all the way to the right end of the slider.</para>
 <para>If you can hear music now, the problem is solved.  If you still cannot hear the music, click 
 <link linkend="ts-kmixlevels">here</link> to continue.</para>
 </sect1>
@@ -654,33 +657,30 @@ better to do with your spare time.</para>
 <para>The next step is to determine if &kmix; volume levels are appropriate.</para>
 <note><para>&kmix; is a sound mixer panel that is included in &kde;.  This mixer allows you to adjust the relative volume levels of many sound components.</para></note>
 <para>To start &kmix;, select 
-<menuchoice><guimenuitem>Multimedia</guimenuitem>
-<guimenuitem>&kmix;</guimenuitem></menuchoice> in the &kmenu;.</para>
-<para>Once &kmix; has started, you will be presented with a new window with a number of volume sliders.  Depending on the configuration, the sliders may have labels, or the labels may be hidden.  If you do not see any labels for the sliders, you should make the labels visible before continuing.  To make the labels visible, select 
+<menuchoice><guimenu>Applications</guimenu><guisubmenu>Multimedia</guisubmenu>
+<guimenuitem>Sound Mixer &kmix;</guimenuitem></menuchoice> in the &kmenu;.</para>
+<para>Click with the &LMB; on the &kmix; icon in the panel and choose <guilabel>Mixer</guilabel> to display a new window with a number of volume sliders.  Depending on the configuration, the sliders may have labels, or the labels may be hidden.  If you do not see any labels for the sliders, you should make the labels visible before continuing.  To make the labels visible, select 
 <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &kmix;...</guimenuitem></menuchoice> from the &kmix; window.  This will open a small window with a few check boxes. To 
 turn the labels on, place a mark in the check box labeld <guilabel>Show labels</guilabel> and click <guibutton>OK</guibutton>.</para>
-<para>Each slider controls the volume of a different audio device.  There are two parts to each device that may need to be altered.  If you look at a slider, there is a green 
-light above each slider.  If you click on this light you can toggle between bright green and dark green.  If the light is dark green, that audio device is muted and will not produce any sound.  If the light is light green, the device is not muted.  Once you have verified that the device is not muted, you increase the volume of the device by draging the yellow bar up the slider.  The volume of an audio device is decreased by dragging the yellow bar down the slider.</para>
-<note><para>Some sliders will have a red light as well.  This light is not important for playback of compact discs so you can ignore them for now.</para></note>
+<para>Each slider controls the volume of a different audio device.  There are two parts to each device that may need to be altered.  If you look at a slider, there is a small check box above each slider labelled <guilabel>Mute</guilabel>.  If you click on this checkbox you can mute the audio device and it will not produce any sound.  Once you have verified that the device is not muted, you increase the volume of the device by draging the bar up the slider.  The volume of an audio device is decreased by dragging the bar down the slider.</para>
 <para>Click on the tab labeled <guilabel>Output</guilabel>.</para>
-<para>Please make sure the sliders are not muted (bright green light) and that the yellow bar is all the way at the top of the slider for the following audio devices:</para>
+<para>Please make sure the sliders are not muted and that the bar is all the way at the top of the slider for the following audio devices:</para>
 <itemizedlist>
 <listitem><para><guilabel>Master</guilabel></para></listitem>
 <listitem><para><guilabel>Master Mono</guilabel></para></listitem>
 <listitem><para><guilabel>PC Speaker</guilabel></para></listitem>
 <listitem><para><guilabel>PCM</guilabel></para></listitem>
 </itemizedlist>
-
 <para>If you still do not hear the &CD;, click on the tab labeled <guilabel>Input</guilabel></para>
-<para>Now make sure the slider labeled <guilabel>CD</guilabel> is not muted (bright green light) and that the yellow bar is all the way at the top of the slider.</para>
+<para>Now make sure the slider labeled <guilabel>CD</guilabel> is not muted and that the bar is all the way at the top of the slider.</para>
 <para>If you can hear the &CD; now, you can stop troubleshooting.  If not, click <link linkend="ts-othersounds">here</link> to continue</para>
 </sect1>
 <sect1 id="ts-othersounds">
 <title>Determine if other sounds are audible on my computer</title>
 <para>In this section, we are going to test to see if other types of sounds are audible on your computer. We will do this by playing a sound over the speakers that is stored on your hard drive.  </para>
 <para>First we must locate an appropriate test file.  This will be done using the command line.</para>
-<para>Select <menuchoice><guimenuitem>System</guimenuitem>
-<guimenuitem>&konsole;</guimenuitem></menuchoice> in the &kmenu;. A new window will appear with a command prompt.  At the prompt type:</para>
+<para>Select <menuchoice><guimenuitem>Applications</guimenuitem><guimenuitem>System</guimenuitem>
+<guimenuitem>Terminal &konsole;</guimenuitem></menuchoice> in the &kmenu;. A new window will appear with a command prompt.  At the prompt type:</para>
 <para><screen><prompt>$</prompt> <userinput><command>locate -n1 KDE_Window_Open.wav</command></userinput></screen></para>
 <para>When you press return, there will be a pause, and a single line with a file location will be printed below your typed command.</para>
 <para><screen><prompt>$</prompt> <userinput><command>locate -n1 KDE_Window_Open.wav</command></userinput>
@@ -773,7 +773,7 @@ answers</link> section of this manual.</para>
 as <ulink url="http://www.google.com">Google</ulink>.</para>
 </sect1>
 </chapter>
-
+-->
 <chapter id="questions-and-answers">
 <title>Questions and answers</title>
 
