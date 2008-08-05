@@ -445,7 +445,7 @@ page. The <guibutton>Defaults</guibutton> button restores the default values of 
 server or a web server to submit new <acronym>CDDB</acronym> entries. This is useful
 if you do not have your own system configured as a server. </para>
 
-<para>If you plan to submit a CDDB entry, enter your email adress into the first textbox,
+<para>If you plan to submit a CDDB entry, enter your email address into the first textbox,
 then you must decide between submitting between &HTTP;
 and submitting the entry as an email (via &SMTP;).  </para>
 
@@ -661,7 +661,7 @@ kept, it would need a massive rewrite.
 <guimenuitem>Sound Mixer &kmix;</guimenuitem></menuchoice> in the &kmenu;.</para>
 <para>Click with the &LMB; on the &kmix; icon in the panel and choose <guilabel>Mixer</guilabel> to display a new window with a number of volume sliders.  Depending on the configuration, the sliders may have labels, or the labels may be hidden.  If you do not see any labels for the sliders, you should make the labels visible before continuing.  To make the labels visible, select 
 <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &kmix;...</guimenuitem></menuchoice> from the &kmix; window.  This will open a small window with a few check boxes. To 
-turn the labels on, place a mark in the check box labeld <guilabel>Show labels</guilabel> and click <guibutton>OK</guibutton>.</para>
+turn the labels on, place a mark in the check box labeled <guilabel>Show labels</guilabel> and click <guibutton>OK</guibutton>.</para>
 <para>Each slider controls the volume of a different audio device.  There are two parts to each device that may need to be altered.  If you look at a slider, there is a small check box above each slider labelled <guilabel>Mute</guilabel>.  If you click on this checkbox you can mute the audio device and it will not produce any sound.  Once you have verified that the device is not muted, you increase the volume of the device by draging the bar up the slider.  The volume of an audio device is decreased by dragging the bar down the slider.</para>
 <para>Click on the tab labeled <guilabel>Output</guilabel>.</para>
 <para>Please make sure the sliders are not muted and that the bar is all the way at the top of the slider for the following audio devices:</para>
@@ -700,7 +700,7 @@ turn the labels on, place a mark in the check box labeld <guilabel>Show labels</
 <itemizedlist>
 <listitem><para>Please make sure the speakers are connected to your computer appropriatly (see your user manual if necessary).</para></listitem>
 <listitem><para>If your speakers require batteries, please replace the batteries with fresh batteries.</para></listitem>
-<listitem><para>If your external speakers plug into the wall, please make sure they are plugged in to the socket, the power cord is securly plugged into the back of the speakers and the wall outlet is working.</para></listitem>
+<listitem><para>If your external speakers plug into the wall, please make sure they are plugged in to the socket, the power cord is securely plugged into the back of the speakers and the wall outlet is working.</para></listitem>
 <listitem><para>If your speakers have a power button, please make sure the power is turned on.</para></listitem>
 <listitem><para>If your speakers have a volume knob, please make sure the volume is turned half way between off and maximum.</para></listitem>
 </itemizedlist>
@@ -789,7 +789,7 @@ as <ulink url="http://www.google.com">Google</ulink>.</para>
 </screenshot>
 </question>
 <answer><para>This means that &kscd; couldn't open your &CD-ROM; drive. The name of
-the device in the <guilabel>&CD-ROM; Device</guilabel>cdrom field of the
+the device in the <guilabel>&CD-ROM; Device</guilabel> field of the
 <guilabel>Kscd Configuration</guilabel> must actually refer to the block device
 associated with your &CD-ROM; drive. This will often be a hardlink to the
 appropriate <acronym>IDE</acronym> (<filename>/dev/hdx</filename>) or
