@@ -51,8 +51,6 @@ kde4_add_ui_files(kscd_SRCS ihm/trackListDlgUI.ui ihm/finderSkinUI.ui generalSet
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
 
-#kde_kcfg_DATA(kscd.kcfg)
-
 kde4_add_executable(kscd ${kscd_SRCS})
 
 target_link_libraries(kscd ${KDE4_KUTILS_LIBS} kcddb kcompactdisc)
@@ -67,7 +65,6 @@ install(FILES kscd.profile.xml  DESTINATION  ${DATA_INSTALL_DIR}/profiles)
 install(FILES kscd.kcfg  DESTINATION  ${KCFG_INSTALL_DIR})
 install(FILES audiocd_play.desktop  DESTINATION
 ${SERVICES_INSTALL_DIR}/ServiceMenus)
-# install(PROGRAMS workman2cddb.pl DESTINATION ${BIN_INSTALL_DIR})
 
 add_subdirectory(pics)
 
