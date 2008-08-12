@@ -101,113 +101,113 @@ void KSCD::setupActions()
 	connect(m_configureAction, SIGNAL(triggered()), this, SLOT(optionsPreferences()));
 
 	//download info
-	m_downloadAction = m_actions->addAction("Download Info");
-	m_downloadAction->setText("Download Info");
+	m_downloadAction = m_actions->addAction(i18n("Download Info"));
+	m_downloadAction->setText(i18n("Download Info"));
 	addAction(m_downloadAction);
 	m_downloadAction->setShortcut(tr("d"));
 	connect(m_downloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
 	
 	//upload info
 	m_uploadAction = m_actions->addAction("Upload Info");
-	m_uploadAction->setText("Upload Info");
+	m_uploadAction->setText(i18n("Upload Info"));
 	addAction(m_uploadAction);
 	m_uploadAction->setShortcut(tr("u"));
 	connect(m_uploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
 
 	//play/pause
 	m_playPauseAction = m_actions->addAction("Play/Pause");
-	m_playPauseAction->setText("Play/Pause");
+	m_playPauseAction->setText(i18n("Play/Pause"));
 	m_playPauseAction->setShortcut(Qt::Key_Space);
 	connect(m_playPauseAction, SIGNAL(triggered()), this, SLOT(playShortcut()));
 	addAction(m_playPauseAction);
 
 	//stop
 	m_stopAction = m_actions->addAction("Stop");
-	m_stopAction->setText("Stop");
+	m_stopAction->setText(i18n("Stop"));
 	addAction(m_stopAction);
 	m_stopAction->setShortcut(tr("s"));
 	connect(m_stopAction, SIGNAL(triggered()), devices, SLOT(stop()));
 
 	//next
 	m_nextAction = m_actions->addAction("next");
-	m_nextAction->setText("Next");
+	m_nextAction->setText(i18n("Next"));
 	addAction(m_nextAction);
 	m_nextAction->setShortcut(tr("Right"));
 	connect(m_nextAction, SIGNAL(triggered()), devices, SLOT(nextTrack()));
 
 	//previous
 	m_previousAction = m_actions->addAction("previous");
-	m_previousAction->setText("Previous");
+	m_previousAction->setText(i18n("Previous"));
 	addAction(m_previousAction);
 	m_previousAction->setShortcut(tr("Left"));
 	connect(m_previousAction, SIGNAL(triggered()), devices, SLOT(prevTrack()));
 
 	//eject
 	m_ejectAction = m_actions->addAction("eject");
-	m_ejectAction->setText("Eject");
+	m_ejectAction->setText(i18n("Eject"));
 	addAction(m_ejectAction);
 	m_ejectAction->setShortcut(tr("e"));
 	connect(m_ejectAction, SIGNAL(triggered()), this, SLOT(ejectShortcut()));
 
 	//volume up
 	m_volumeUpAction = m_actions->addAction("volume_up");
-	m_volumeUpAction->setText("Volume Up");
+	m_volumeUpAction->setText(i18n("Volume Up"));
 	addAction(m_volumeUpAction);
 	m_volumeUpAction->setShortcut(tr("Up"));
 	connect(m_volumeUpAction, SIGNAL(triggered()), this, SLOT(volumeUpShortcut()));
 
 	//volume down
 	m_volumeDownAction = m_actions->addAction("volume_down");
-	m_volumeDownAction->setText("Volume Down");
+	m_volumeDownAction->setText(i18n("Volume Down"));
 	addAction(m_volumeDownAction);
 	m_volumeDownAction->setShortcut(tr("Down"));
 	connect(m_volumeDownAction, SIGNAL(triggered()), this, SLOT(volumeDownShortcut()));
 
 	//random
 	m_randomAction = m_actions->addAction("random");
-	m_randomAction->setText("Random");
+	m_randomAction->setText(i18n("Random"));
 	addAction(m_randomAction);
 	m_randomAction->setShortcut(tr("r"));
 	connect(m_randomAction, SIGNAL(triggered()), this, SLOT(randomShortcut()));
 
 	//looptrack
 	m_looptrackAction = m_actions->addAction("looptrack");
-	m_looptrackAction->setText("Repeat Track");
+	m_looptrackAction->setText(i18n("Repeat Track"));
 	addAction(m_looptrackAction);
 	m_looptrackAction->setShortcut(tr("l"));
 	connect(m_looptrackAction, SIGNAL(triggered()), this, SLOT(looptrackShortcut()));
 
 	//loopdisc
 	m_loopdiscAction = m_actions->addAction("loopdisc");
-	m_loopdiscAction->setText("Repeat Album");
+	m_loopdiscAction->setText(i18n("Repeat Album"));
 	addAction(m_loopdiscAction);
 	m_loopdiscAction->setShortcut(tr("Ctrl+l"));
 	connect(m_loopdiscAction, SIGNAL(triggered()), this, SLOT(loopdiscShortcut()));
 
 	//tracklist
 	m_tracklistAction = m_actions->addAction("tracklist");
-	m_tracklistAction->setText("Show Tracklist");
+	m_tracklistAction->setText(i18n("Show Tracklist"));
 	addAction(m_tracklistAction);
 	m_tracklistAction->setShortcut(tr("t"));
 	connect(m_tracklistAction, SIGNAL(triggered()), this, SLOT(tracklistShortcut()));
 
 	//mute
 	m_muteAction = m_actions->addAction("mute");
-	m_muteAction->setText("Mute/Unmute");
+	m_muteAction->setText(i18n("Mute/Unmute"));
 	addAction(m_muteAction);
 	m_muteAction->setShortcut(tr("m"));
 	connect(m_muteAction, SIGNAL(triggered()), this, SLOT(muteShortcut()));
 	
 	//minimize
 	m_minimizeAction = m_actions->addAction("Minimize");
-	m_minimizeAction->setText("Minimize");
+	m_minimizeAction->setText(i18n("Minimize"));
 	addAction(m_minimizeAction);
 	m_minimizeAction->setShortcut(tr("Ctrl+Escape"));
 	connect(m_minimizeAction, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
 		
 	//quit
 	m_quitAction = m_actions->addAction("Quit");
-	m_quitAction->setText("Quit");
+	m_quitAction->setText(i18n("Quit"));
 	addAction(m_quitAction);
 	m_quitAction->setShortcut(tr("Escape"));
 	connect(m_quitAction, SIGNAL(triggered()), this, SLOT(quitShortcut()));

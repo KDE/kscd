@@ -63,19 +63,19 @@ ConfigWindow::ConfigWindow(KSCD * parent):QMainWindow()
 	setSCConfig();
 
 
-	tab->addTab(hwPage,"Hardware");
-	tab->addTab(panelPage,"Visual");
+	tab->addTab(hwPage,i18n("Hardware"));
+	tab->addTab(panelPage,i18n("Visual"));
 //	tab->addTab(shortcutsPage,"ShortCuts");
 //	tab->addTab(panelPage,"Panel");
-	tab->addTab(scPage,"Shortcuts");
+	tab->addTab(scPage,i18n("Shortcuts"));
 
 	setCentralWidget(confPage);
 
 
 
-	bOk = new QPushButton("Ok",this);
-	bApply = new QPushButton("Apply",this);
-	bCancel = new QPushButton("Cancel",this);
+	bOk = new QPushButton(i18n("Ok"),this);
+	bApply = new QPushButton(i18n("Apply"),this);
+	bCancel = new QPushButton(i18n("Cancel"),this);
 
 	lButtons->addWidget(bOk);
 	connect(bOk,SIGNAL(clicked()),this,SLOT(ok()));
@@ -118,7 +118,7 @@ void ConfigWindow::setPanelConf(){
 
 //Panel Text Color
 	cbText = new KColorButton(QColor(Qt::white),this);
-	lTextColor = new QLabel("Choose Text Color : ",this);
+	lTextColor = new QLabel(i18n("Choose Text Color : "),this);
 
 	panelGrid->addWidget(lTextColor, 1, 0);
 	panelGrid->addWidget(cbText, 1, 1);
@@ -126,10 +126,10 @@ void ConfigWindow::setPanelConf(){
 //Change global skin
 	skinFound=false;
 	newSkin= new QString();
-	lPath= new QLabel("Skin File :", this);
-	titleFile= new QLabel("Choose a new skin");
-	pBrowser= new QPushButton("new",this);
-	pClearB= new QPushButton("clear",this);
+	lPath= new QLabel(i18n("Skin File :"), this);
+	titleFile= new QLabel(i18n("Choose a new skin"));
+	pBrowser= new QPushButton(i18n("new"),this);
+	pClearB= new QPushButton(i18n("clear"),this);
 	pClearB->setEnabled(false);
 
 	panelGrid->addWidget(lPath, 4, 0);
@@ -139,9 +139,9 @@ void ConfigWindow::setPanelConf(){
 
 
 //Change the font of the text
-	buttonFont = new QPushButton("New font",this);
-	titleFont = new QLabel ("Font can change here :");
-	presentationText = new QLabel("aA,bB,cC...123...");
+	buttonFont = new QPushButton(i18n("New font"),this);
+	titleFont = new QLabel (i18n("Font can change here :"));
+	presentationText = new QLabel(i18n("aA,bB,cC...123..."));
 
 	panelGrid->addWidget(titleFont, 2, 0);
 	panelGrid->addWidget(buttonFont, 2, 1);
@@ -158,13 +158,13 @@ void ConfigWindow::setHardConfig(){
 	hwPage->setLayout(hwGrid);
 
 	cbEject = new QCheckBox(this);
-	lEject = new QLabel("Eject the CD at the end of the disc :",this);
+	lEject = new QLabel(i18n("Eject the CD at the end of the disc :"),this);
 
 	hwGrid->addWidget(cbEject, 0, 1);
 	hwGrid->addWidget(lEject, 0, 0);
 
 	cbDriver = new QComboBox(this);
-	lDriver = new QLabel("Choose the primary CD Reader :");
+	lDriver = new QLabel(i18n("Choose the primary CD Reader :"));
 	for (int i = 0; i < player->getDevices()->nbCdReader() ;i++){
 		cbDriver->addItem(player->getDevices()->getCdReader(i));
 	}
@@ -196,21 +196,21 @@ void ConfigWindow::setSCConfig(){
 	muteShortcut = new QLineEdit;
 	configureShortcut = new QLineEdit;
 
-	playLabel = new QLabel("Play/Pause",this);
-	stopLabel = new QLabel("Stop",this);
-	ejectLabel = new QLabel("Eject",this);
-	nextLabel = new QLabel("Next Track",this);
-	previousLabel = new QLabel("Previous Track",this);
-	volumeUpLabel = new QLabel("Volume Up",this);
-	volumeDownLabel = new QLabel("Volume Down",this);
-	randomLabel = new QLabel("Random",this);
-	loopTrackLabel = new QLabel("Loop Track",this);
-	loopDiscLabel = new QLabel("Loop Disc",this);
-	trackListLabel = new QLabel("Tracklist",this);
-	cddbWindowLabel = new QLabel("CDDB Window",this);
-	downloadInfoLabel = new QLabel("Downlod Info",this);
-	muteLabel = new QLabel("Mute",this);
-	configureLabel = new QLabel("Configure KsCD",this);
+	playLabel = new QLabel(i18n("Play/Pause"),this);
+	stopLabel = new QLabel(i18n("Stop"),this);
+	ejectLabel = new QLabel(i18n("Eject"),this);
+	nextLabel = new QLabel(i18n("Next Track"),this);
+	previousLabel = new QLabel(i18n("Previous Track"),this);
+	volumeUpLabel = new QLabel(i18n("Volume Up"),this);
+	volumeDownLabel = new QLabel(i18n("Volume Down"),this);
+	randomLabel = new QLabel(i18n("Random"),this);
+	loopTrackLabel = new QLabel(i18n("Loop Track"),this);
+	loopDiscLabel = new QLabel(i18n("Loop Disc"),this);
+	trackListLabel = new QLabel(i18n("Tracklist"),this);
+	cddbWindowLabel = new QLabel(i18n("CDDB Window"),this);
+	downloadInfoLabel = new QLabel(i18n("Downlod Info"),this);
+	muteLabel = new QLabel(i18n("Mute"),this);
+	configureLabel = new QLabel(i18n("Configure KsCD"),this);
 	
 	scGrid->addWidget(playLabel, 0, 0);
 	scGrid->addWidget(playShortcut, 0, 1);
@@ -276,7 +276,7 @@ void ConfigWindow::apply(){
 		kDebug()<<"clear after ok";
 		newSkin->clear();
 		titleFile->clear();
-		titleFile->setText("Choose a new skin");
+		titleFile->setText(i18n("Choose a new skin"));
 		pClearB->setEnabled(false);
 		skinFound=false;		
 	}
@@ -380,7 +380,7 @@ void ConfigWindow::ok(){
 		kDebug()<<"clear after ok";
 		newSkin->clear();
 		titleFile->clear();
-		titleFile->setText("Choose a new skin");
+		titleFile->setText(i18n("Choose a new skin"));
 		pClearB->setEnabled(false);
 		skinFound=false;		
 	}
@@ -391,7 +391,7 @@ void ConfigWindow::cancel(){
 	kDebug()<<"clear newSkin after cancel";
 	newSkin->clear();
 	titleFile->clear();
-	titleFile->setText("Choose a new skin");
+	titleFile->setText(i18n("Choose a new skin"));
 	pClearB->setEnabled(false);
 	skinFound=false;
 	hide();
@@ -414,13 +414,13 @@ void ConfigWindow::catchPathFinderSkin(){
 }
 void ConfigWindow::makeBrowser(){
 	kDebug()<<"browser";
-	QFileDialog fileDlg(this,"Find a new skin", "/home", NULL);
+	QFileDialog fileDlg(this,i18n("Find a new skin"), "/home", NULL);
 	fileDlg.setFileMode(QFileDialog::ExistingFile);
 	fileDlg.setFilter(tr("SVG Files (*.svg)"));
 	fileDlg.setViewMode(QFileDialog::Detail);
 	QStringList fileNames;
 	if(fileDlg.exec()) fileNames= fileDlg.selectedFiles();
-	kDebug()<<"Noms choisis:"<<fileNames;
+	kDebug()<<"names choosen:"<<fileNames;
  	
 
 	if(!fileNames.empty()){//a new file has been chosen
@@ -430,7 +430,7 @@ void ConfigWindow::makeBrowser(){
 		titleFile->setText(((fileNames.first()).split("/")).back());
 		pClearB->setEnabled(true);
 	}else{
-		kDebug()<<"Aucun file choisi";
+		kDebug()<<"no files choosen";
 	}
 }
 void ConfigWindow::clearBrowser(){
@@ -439,7 +439,7 @@ void ConfigWindow::clearBrowser(){
 	titleFile->clear();
 	skinFound=false;
 	pClearB->setEnabled(false);
-	titleFile->setText("Choose a new skin");
+	titleFile->setText(i18n("Choose a new skin"));
 }
 void ConfigWindow::catchPlayShortcut(){
 	actionsCalled.append(PlayShortcut);

@@ -266,7 +266,7 @@ void Panel::setTextColor(QColor c){
 void Panel::setEjectAct(bool b){
 	if(b)
 	{
-		ejectStatus->setText("eject CD");
+		ejectStatus->setText(i18n("eject CD"));
 	}
 	else
 	{

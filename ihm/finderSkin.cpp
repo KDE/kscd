@@ -87,7 +87,7 @@ void FinderSkin::accept(){
 	skinFound=false;
 	newSkin->clear();
 	lTitleSkin->clear();
-	lTitleSkin->setText("Choose a new skin");
+	lTitleSkin->setText(i18n("Choose a new skin"));
 	this->hide();
 	
 }
@@ -96,7 +96,7 @@ void FinderSkin::reject(){
 	skinFound=false;
 	newSkin->clear();
 	lTitleSkin->clear();
-	lTitleSkin->setText("Choose a new skin");
+	lTitleSkin->setText(i18n("Choose a new skin"));
 	this->hide();
 }
 
@@ -112,6 +112,6 @@ void FinderSkin::showBrowser(){
 		skinFound=true;
 		delete(newSkin);
 		newSkin=new QString(fileNames.first());	
-		lTitleSkin->setText(((fileNames.first()).split("/")).back());
+		lTitleSkin->setText(i18n(((fileNames.first()).split("/")).back()));
 	}
 }
