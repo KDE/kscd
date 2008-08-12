@@ -1,7 +1,7 @@
 /*
    Kscd - A simple cd player for the KDE Project
 
-   $Id$
+   $Id: kscd.h 818722 2008-06-09 12:01:16Z krzywda $
 
    Copyright (c) 1997 Bernd Johannes Wuebben <wuebben@math.cornell.edu>
    Copyright (c) 2002 Aaron J. Seigo <aseigo@kde.org>
@@ -25,171 +25,179 @@
 #ifndef __KSCD__
 #define __KSCD__
 
-#include <QGridLayout>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QCloseEvent>
-
-// CD support.
-class KCompactDisc;
-
-// CDDB support via libkcddb
-#include <libkcddb/kcddb.h>
-#include <libkcddb/client.h>
-
-
-#include <QPushButton>
+// Solid implementation
+#include <QLabel>
 #include <qdialog.h>
 #include <qapplication.h>
 #include <QTimer>
+#include <QComboBox>
 #include <qscrollbar.h>
 #include <qslider.h>
-#include <q3tabdialog.h>
+#include <QToolTip>
+#include <QMenu>
+#include <QCloseEvent>
+#include <QKeyEvent>
+#include <QEvent>
+#include <QMenu>
+#include <QtDBus>
+#include <QGridLayout>
+#include <QKeyEvent>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QCloseEvent>
+#include <QCursor>
+#include <QPoint>
+// Phonon libs
+#include <phonon/phononnamespace.h>
+#include <phonon/seekslider.h>
 
-#include "ledlamp.h"
-#include "ui_panel.h"
-#include "prefs.h"
-#include "configWidget.h"
+#include "ihm/kscdwindow.h"
+#include "hwcontroler.h"
+#include "mbmanager.h"
+// #include "configWidget.h"
+#include <config-alsa.h>
+#include <QLCDNumber>
+
 #include <kapplication.h>
 #include <kconfigdialog.h>
+#include <k3process.h>
 #include <krandomsequence.h>
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
+// #include <kcompactdisc.h>
+#include <kdebug.h>
+#include <kaboutdata.h>
+#include <kactioncollection.h>
+#include <kcmdlineargs.h>
+#include <khelpmenu.h>
+#include <kshortcutsdialog.h>
+#include <kiconloader.h>
+#include <kinputdialog.h>
+#include <kmessagebox.h>
+#include <kmenu.h>
+#include <krun.h>
+#include <kstandardaction.h>
+#include <kstringhandler.h>
+#include <kuniqueapplication.h>
+#include <kcmoduleloader.h>
+#include <ktoolinvocation.h>
+#include <kaction.h>
+#include <QList>
+#include "panel.h"
 
-class CDDBDlg;
-class DockWidget;
-class QGridLayout;
-class KActionCollection;
-class KToggleAction;
+#include "prefs.h"
+#include "ui_generalSettings.h"
+#include "ui_interfaceSettings.h"
 
-class KSCD : public QWidget, Ui::kscdPanelDlg, public KSessionManager {
+#include <kshortcutseditor.h>
 
-    Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
+class KSCD : public KscdWindow, public KSessionManager {
 
-public /*Q_SLOTS*/slots:
-    Q_SCRIPTABLE bool playing();
-    Q_SCRIPTABLE void play() { playClicked(); }
-    Q_SCRIPTABLE void stop() { stopClicked(); }
-    Q_SCRIPTABLE void previous() { prevClicked(); }
-    Q_SCRIPTABLE void next() { nextClicked(); }
-    Q_SCRIPTABLE void jumpTo(int seconds) { jumpToTime(seconds); }
-    Q_SCRIPTABLE void eject() { ejectClicked(); }
-    Q_SCRIPTABLE void quit() { quitClicked(); }
-    Q_SCRIPTABLE void toggleLoop() { loopClicked(); }
-    Q_SCRIPTABLE void toggleShuffle() { randomClicked(); }
-    Q_SCRIPTABLE void toggleTimeDisplay() { cycleplaytimemode(); }
-    Q_SCRIPTABLE void cddbDialog() { CDDialogSelected(); }
-    Q_SCRIPTABLE void optionDialog() { showConfig(); }
-    Q_SCRIPTABLE void setTrack(int t) { trackSelected(t > 0 ? t - 1 : 0); }
-    Q_SCRIPTABLE void volumeDown() { decVolume(); }
-    Q_SCRIPTABLE void volumeUp() { incVolume(); }
-    Q_SCRIPTABLE void setVolume(int v);
-    Q_SCRIPTABLE void setDevice(const QString& dev);
-    Q_SCRIPTABLE int getVolume() { return Prefs::volume(); }
-    Q_SCRIPTABLE int currentTrack();
-    Q_SCRIPTABLE int currentTrackLength();
-    Q_SCRIPTABLE int currentPosition();
-    Q_SCRIPTABLE int getStatus();
-    Q_SCRIPTABLE QString currentTrackTitle();
-    Q_SCRIPTABLE QString currentAlbum();
-    Q_SCRIPTABLE  QString currentArtist();
-    Q_SCRIPTABLE QStringList trackList();
-
-public:
-    explicit KSCD(QWidget *parent = 0);
-    ~KSCD();
-    virtual bool saveState(QSessionManager& sm);
-
-    void setDocking(bool dock);
-    void setDevicePaths();
-
-signals:
-    void tooltipCurrentTrackChanged(const QString &);
-
-public slots:
-    void setColors();
-    void writeSettings();
-    void playClicked();
-    void nextClicked();
-    void prevClicked();
-    void stopClicked();
-    void ejectClicked();
-    void jumpToTime(int);
-    void quitClicked();
-    void trackSelected(int);
-    void showConfig();
-    void incVolume();
-    void decVolume();
-    void volChanged(int);
-    void led_on();
-    void led_off();
-    void titlelabeltimeout();
-    void togglequeryled();
-    void cycleplaytimemode();
-    void showVolumeInLabel();
-    void showArtistLabel(QString);
-    void restoreArtistLabel();
-
-    void randomClicked();	
-    void randomChanged(bool);
-    void loopClicked();
-    void loopChanged(bool);
-
-    void information(QAction *action);
-
-protected:
-    // mostly start up stuff
-    void readSettings();
-    void drawPanel();
-    void setupPopups();
-    void setLEDs(int seconds);
-    void resetTimeSlider(bool enabled);
-
-    void closeEvent(QCloseEvent *e);
-    void keyPressEvent(QKeyEvent *e);
-    bool event(QEvent *e);
-
-    void populateSongList();
-    void updateConfigDialog(configWidget *widget);
+	Q_OBJECT
+	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
 
 private:
-    KConfigDialog   *configDialog;
-    CDDBDlg         *cddialog;
-    KCompactDisc    *m_cd;
-    QTimer           titlelabeltimer;
-    QTimer           queryledtimer;
-    bool             updateTime;
+	HWControler* devices;	
+	MBManager* m_MBManager;
 
-    /**
-     * Info from CDDB, and exploded versions thereof.
-     */
-    KCDDB::CDInfo cddbInfo;
-    KCDDB::Client *cddb;
-    KActionCollection *m_actions;
-    KToggleAction *m_togglePopupsAction;
-    DockWidget *m_dockWidget;
+	bool mute;
+	bool play;
+	bool random;
+	bool looptrack;
+	bool loopdisc;
+	
+	QMenu *contextMenu;
+	
+	KAction* m_configureShortcutsAction;
+	KAction* m_configureAction;
+	KAction* m_playPauseAction;
+	KAction* m_stopAction;
+	KAction* m_nextAction;
+	KAction* m_previousAction;
+	KAction* m_ejectAction;
+	KAction* m_randomAction;
+	KAction* m_looptrackAction;
+	KAction* m_loopdiscAction;
+	KAction* m_tracklistAction;
+	KAction* m_muteAction;
+	KAction* m_downloadAction;
+	KAction* m_uploadAction;
+	KAction* m_CDDBWindowAction;
+	KAction* m_volumeUpAction;
+	KAction* m_volumeDownAction;
+	KAction* m_quitAction;
+	KAction* m_minimizeAction;
+	KActionCollection * m_actions;
+	void setHourglass();
+
+	// Settings.
+	Ui::generalSettings ui_general;
+	Ui::interfaceSettings ui_interface;
+//	Ui::fontSettings ui_font;
+
+	/**
+	 * Load the last settings 
+	 */
+	void loadSettings();
+	
+public:
+	explicit KSCD(QWidget *parent = 0);
+	~KSCD();
+	
+	virtual bool saveState(QSessionManager& sm);
+	void writeSettings();
+	HWControler * getDevices();
+	
+// 	KCompactDisc* getCd(); // kept for CDDB compatibility
+	
+protected:
+	void setupActions();
+	void setupContextMenu();
+	
+
+signals:
+	void picture(QString,QString);
+	void infoPanel(QString);
+	/* Popup signals */
+// 	void showTitlePopUp(QString, QString);
+// 	void hideTitlePopUp();
 
 public slots:
-    void lookupCDDB();
 
-private slots:
-    void CDDialogSelected();
-    void CDDialogDone();
-    void setCDInfo(KCDDB::CDInfo);
-    void lookupCDDBDone(KCDDB::Result);
-    void trackChanged(unsigned);
-    void trackPosition(unsigned);
-    void discChanged(unsigned);
-	void discInformation(KCompactDisc::DiscInfo);
-    void discStatusChanged(KCompactDisc::DiscStatus);
-    void configDone();
-    void configureKeys();
-    void setIcons();
 
-    void timeSliderPressed();
-    void timeSliderReleased();
-    void timeSliderMoved(int seconds);
+	void showContextMenu( const QPoint & );
+	//void selectSkinUrl();
+	
+	void restoreArtistLabel();
+	void restoreTrackinfoLabel();
+	void changeVolume(qreal);
+	void playTrack(int);
+
+	void ejectShortcut();
+	void tracklistShortcut();
+	void muteShortcut();
+	void playShortcut();
+	void randomShortcut();
+	void looptrackShortcut();
+	void loopdiscShortcut();
+	void volumeUpShortcut();
+	void volumeDownShortcut();
+	void quitShortcut();
+	void minimizeShortcut();
+	void actionButton(QString);
+	void setShortcut(QString, QString);
+	void catchtime(qint64 pos);
+
+	//void setNewSkin(QString);
+	void unsetHourglass();
+	void configureShortcuts();
+
+	/**
+	* Open the config window
+	*/
+	void optionsPreferences();
+	void updateSettings();
+	void configureKeys();
 };
 
 #endif

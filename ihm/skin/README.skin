@@ -1,0 +1,86 @@
+
+How To Create Your Own Skin
+
+There is 2 main steps to create an KsCD skin:
+1 - Draw the 'default' KsCD with the buttons positioned at the right place.
+2 - Draw the other buttons in the others states.
+
+A button can have 3 states:
+ * default.
+ * pressed : when the mouse clicks on the button.
+ * over : when the mouse is over the button.
+
+1. Draw the 'default' KsCD
+
+a) Create the background with 'kscdBack_default' id :
+	- mustn't have any transform attribute on it (see its xml)
+	- his position must be the following : x=0, y=0 (in the top left corner)
+	
+b) Rules for drawing a default button:
+ * First draw the button the way you want in the top left corner.
+ * Name this button with the corresponding id (see list below).
+ * Translate the button to the place you want on the background.
+
+The button list to be drawn:
+	- play_default
+	- stop_default
+	- eject_default
+	- next_default
+	- previous_default
+	- volume_default
+	- loop_default
+	- random_default
+	- tracklist_default
+	- minimize_default
+	- close_default
+	- mute_default
+	- panel_default
+	- seekBar_default
+	- seekCursor_default
+
+c) Then select every 'default' items and group them with the id:'kscd_default'.
+
+2 - Draw the other buttons
+
+Then you will have to redraw each button in every state :
+
+List of buttons id :
+	- pause_default
+	- looptrack_default
+	- loopdisc_default
+	- unmute_default
+	- popup_default
+	
+	- play_over
+	- pause_over
+	- stop_over
+	- eject_over
+	- next_over
+	- previous_over
+	- loop_over
+	- looptrack_over
+	- loopdisc_over
+	- random_over
+	- tracklist_over
+	- minimize_over
+	- close_over
+	- mute_over
+	- unmute_over
+	- seekCursor_over
+	
+	- play_pressed
+	- pause_pressed
+	- stop_pressed
+	- eject_pressed
+	- next_pressed
+	- previous_pressed
+	- loop_pressed
+	- looptrack_pressed
+	- loopdisc_pressed
+	- random_pressed
+	- tracklist_pressed
+	- minimize_pressed
+	- close_pressed
+	- mute_pressed
+	- unmute_pressed
+	- seekCursor_pressed

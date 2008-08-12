@@ -1,0 +1,135 @@
+<ui version="4.0" >
+ <class>finderSkinUI</class>
+ <widget class="QDialog" name="finderSkinUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>336</width>
+    <height>240</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>336</width>
+    <height>240</height>
+   </size>
+  </property>
+  <property name="maximumSize" >
+   <size>
+    <width>336</width>
+    <height>240</height>
+   </size>
+  </property>
+  <property name="windowTitle" >
+   <string>Find out a new skin</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset>
+    <normaloff>../hi32-app-kscd.png</normaloff>../hi32-app-kscd.png</iconset>
+  </property>
+  <widget class="QWidget" name="layoutWidget" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>12</y>
+     <width>315</width>
+     <height>220</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" >
+    <item row="0" column="0" colspan="2" >
+     <widget class="QLabel" name="lDefaultSkin" >
+      <property name="text" >
+       <string>Default Skin File:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" colspan="2" >
+     <widget class="QComboBox" name="comboBoxTitleSkin" />
+    </item>
+    <item row="1" column="0" >
+     <spacer>
+      <property name="orientation" >
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0" >
+       <size>
+        <width>104</width>
+        <height>41</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="0" colspan="3" >
+     <widget class="QCheckBox" name="checkOtherSkin" >
+      <property name="text" >
+       <string>Find other Skin</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" >
+     <widget class="QLabel" name="lNewSkin" >
+      <property name="enabled" >
+       <bool>false</bool>
+      </property>
+      <property name="text" >
+       <string>New SVG File:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1" colspan="2" >
+     <widget class="QLabel" name="lTitleSkin" >
+      <property name="enabled" >
+       <bool>false</bool>
+      </property>
+      <property name="text" >
+       <string>Choose a skin</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3" >
+     <widget class="QPushButton" name="browserButton" >
+      <property name="enabled" >
+       <bool>false</bool>
+      </property>
+      <property name="text" >
+       <string>&amp;Browse</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" colspan="2" >
+     <spacer>
+      <property name="orientation" >
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0" >
+       <size>
+        <width>104</width>
+        <height>41</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="5" column="0" colspan="4" >
+     <widget class="QDialogButtonBox" name="buttonBox" >
+      <property name="orientation" >
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="standardButtons" >
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
