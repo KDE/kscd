@@ -287,11 +287,13 @@ void KSCD::restoreTrackinfoLabel()
 	QString title, length ;
 
 	// If disc is inserted
-	if (devices->getCD()->isCdInserted())
-	{
-		title = QString("%1 - ").arg(devices->getCurrentTrack(), 2, 10, QLatin1Char('0')) ;
-		title.append(m_MBManager->getTrackList()[devices->getCurrentTrack()-1].Title);
-		length.append(m_MBManager->getTrackList()[devices->getCurrentTrack()-1].Duration);
+	int currentTrack = devices->getCurrentTrack();
+	if (devices->getCD()->isCdInserted()  && currentTrack > 0 )
+	{	
+                
+		title = QString("%1 - ").arg(currentTrack, 2, 10, QLatin1Char('0')) ;
+		title.append(m_MBManager->getTrackList()[currentTrack-1].Title);
+		length.append(m_MBManager->getTrackList()[currentTrack-1].Duration);
 		
 		showTrackinfoLabel(title);
 		m_popup = new TitlePopUp(this, "popup");
