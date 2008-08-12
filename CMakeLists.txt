@@ -69,5 +69,5 @@ install(FILES audiocd_play.desktop  DESTINATION
 ${SERVICES_INSTALL_DIR}/ServiceMenus)
 # install(PROGRAMS workman2cddb.pl DESTINATION ${BIN_INSTALL_DIR})
 
-kde4_install_icons(${ICON_INSTALL_DIR})
+add_subdirectory(pics)
 
