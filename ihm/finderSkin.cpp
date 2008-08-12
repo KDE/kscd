@@ -23,6 +23,7 @@
  */
 
 #include "finderSkin.h"
+#include <klocale.h>
 
 QString FinderSkin::pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
 
@@ -112,6 +113,6 @@ void FinderSkin::showBrowser(){
 		skinFound=true;
 		delete(newSkin);
 		newSkin=new QString(fileNames.first());	
-		lTitleSkin->setText(i18n(((fileNames.first()).split("/")).back()));
+		lTitleSkin->setText(((fileNames.first()).split("/")).back());
 	}
 }

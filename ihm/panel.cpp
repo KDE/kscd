@@ -35,7 +35,7 @@
 #include <kdebug.h>
 #include <QTimer>
 #include <QTextEdit>
-
+#include <klocale.h>
 
 Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 {
