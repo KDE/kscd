@@ -1,16 +1,16 @@
 project(kscd)
 
 include_directories(
- 		${CMAKE_SOURCE_DIR}/libkcddb
- 		${CMAKE_BINARY_DIR}/libkcddb
- 		${CMAKE_SOURCE_DIR}/libkcompactdisc
- 		${CMAKE_BINARY_DIR}/libkcompactdisc
+		${CMAKE_SOURCE_DIR}/libkcddb
+		${CMAKE_BINARY_DIR}/libkcddb
+		${CMAKE_SOURCE_DIR}/libkcompactdisc
+		${CMAKE_BINARY_DIR}/libkcompactdisc
 		${CMAKE_SOURCE_DIR}/kscd
-		${CMAKE_BINARY_DIR}/kscd
+			${CMAKE_BINARY_DIR}/kscd
 		)
 
 add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
-
+add_subdirectory(tests)
 ########### next target ###############
 
 set(kscd_SRCS 
@@ -71,36 +71,3 @@ ${SERVICES_INSTALL_DIR}/ServiceMenus)
 
 kde4_install_icons(${ICON_INSTALL_DIR})
 
-
-############ Tests ##############
-
-# HWControler test unit
-kde4_add_unit_test(HWControler_test
-	hwcontroler.cpp
-	audiocd.cpp
-	./tests/hwcontroler_test.cpp
-)
-
-# AudioCD test unit
-kde4_add_unit_test(AudioCD_test
-	audiocd.cpp
-	./tests/audiocd_test.cpp
-)
-
-
-# libraries needed for HWControler tests
-target_link_libraries(HWControler_test
-	${KDE4_KUTILS_LIBS}
-	${QT_QTTEST_LIBRARY}
-	kcddb
-	kcompactdisc
-)
-
-
-# libraries needed for AudioCD tests
-target_link_libraries(AudioCD_test
-	${KDE4_KUTILS_LIBS}
-	${QT_QTTEST_LIBRARY}
-	kcddb
-	kcompactdisc
-)
