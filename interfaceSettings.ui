@@ -21,9 +21,6 @@
     <height>118</height>
    </size>
   </property>
-  <property name="windowTitle" >
-   <string>Form</string>
-  </property>
   <widget class="QWidget" name="" >
    <property name="geometry" >
     <rect>
