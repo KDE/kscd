@@ -1,7 +1,5 @@
 project(kscd)
 
-find_package(MusicBrainz REQUIRED)
-
 include_directories(
  		${CMAKE_SOURCE_DIR}/libkcddb
  		${CMAKE_BINARY_DIR}/libkcddb
@@ -12,9 +10,6 @@ include_directories(
 		)
 
 add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
-
-########### next target ###############
-
 
 ########### next target ###############
 
@@ -53,7 +48,6 @@ set(kscd_SRCS
 file(GLOB resource_svg "ihm/skin/*.svg")
 
 kde4_add_ui_files(kscd_SRCS ihm/trackListDlgUI.ui ihm/finderSkinUI.ui generalSettings.ui interfaceSettings.ui)
-kde4_add_ui_files(kscd_SRCS ihm/finderSkinUI.ui)
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
 
