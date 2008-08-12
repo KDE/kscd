@@ -310,7 +310,7 @@ Phonon::State HWControler ::getState()
 			return ErrorState;
 		}
 	}
-};
+}
 
 void HWControler ::configMedia()
 {

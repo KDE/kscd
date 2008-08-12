@@ -55,7 +55,6 @@ private:
 	QPoint mousePosition;
 	int m_deplacement;
 	bool m_move;
-	QCursor* cursor;
 public:
 	BackGround(QWidget * parent=0, QString sName="kscdBack");
 	virtual ~BackGround();
