@@ -36,12 +36,8 @@
 #include <QSvgRenderer>
 #include <QWidget>
 #include <QRegion>
-#include <QRectF>
 #include <QMouseEvent>
-#include <KStandardDirs>
-#include <QPainter>
 #include <QString>
-#include <QBitmap>
 #include <kdebug.h>
 #include "prefs.h"
 

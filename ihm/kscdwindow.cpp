@@ -32,7 +32,8 @@
  */
 #include "kscdwindow.h"
 #include <QString>
-#include <QTextEdit>
+#include <QBitmap>
+#include <QPainter>
 #include <klocalizedstring.h>
 
 #include "panel.h"

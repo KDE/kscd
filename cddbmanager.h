@@ -43,19 +43,10 @@ using namespace KCDDB;
 #include <kinputdialog.h>
 #include <kdebug.h>
 
-#include <QTimer>
 #include <QDialog>
 
-#include <QLabel>
-#include <QGridLayout>
-#include <QLayout>
-#include <QLineEdit>
-#include <QTextEdit>
 #include <QTableWidget>
-#include <QStringList>
-#include <QTableWidgetItem>
 #include <QPushButton>
-#include <KStandardAction>
 
 class KSCD;
 

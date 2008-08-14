@@ -31,7 +31,10 @@
  *
  */
 #include "kscdwidget.h"
-#include <QTimer>
+#include <QPainter>
+#include <QRegion>
+#include <QPixmap>
+#include <QBitmap>
 
 KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
 {

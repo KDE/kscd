@@ -46,8 +46,6 @@
 #include <QList>
 #include <QColor>
 
-#include <QFileDialog>
-#include <QStringList>
 
 
 #include <QComboBox>

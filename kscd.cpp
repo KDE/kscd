@@ -21,20 +21,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-// #include <QKeyEvent>
-// #include <kactioncollection.h>
-// #include <kshortcutsdialog.h>
 #include "kscd.h"
 #include "ihm/configwindow.h"
 #include <QSplashScreen>
 #include <QPixmap>
-#include <KUrl>
 #include <QStringList>
 #include <QDir>
-#include <QCursor>
-#include <QList>
 #include <QMenu>
-
+#include <QDBusConnection>
+#include <QDBusInterface>
 using namespace Phonon;
 
 static const char description[] = I18N_NOOP("KDE CD player");

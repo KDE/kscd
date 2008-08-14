@@ -27,12 +27,8 @@
 
 
 #include <QDialog>
-#include <QtGui>
 #include <QFileInfoList>
-#include <QFileInfoListIterator>
-#include <QDir>
 #include <QFileInfo>
-#include <KStandardDirs>
 
 
 #include <kdebug.h>

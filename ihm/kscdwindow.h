@@ -35,25 +35,14 @@
 
 #include <QLabel>
 #include <QWidget>
-#include <QGridLayout>
-#include <QLayout>
-#include <QSlider>
-#include <QLineEdit>
-#include <QSizePolicy>
 #include <QLabel>
 
-#include <QModelIndex>
 #include <QPalette>
 #include <QTableWidget>
-#include <QTableView>
 #include <QStringList>
-#include <QTableWidgetItem>
 #include <klocalizedstring.h>
-#include <QHeaderView>
-#include <QTimer>
 #include <QList>
 #include <QStringList>
-#include <KInputDialog>
 #include "kscdwidget.h"
 #include "stopbutton.h"
 #include "playbutton.h"
@@ -74,7 +63,6 @@
 #include "seekslider.h"
 #include "seekcursor.h"
 #include "finderSkin.h"
-#include <QSvgRenderer>
 
 // #include "cddbmanager.h"
 #include "mbmanager.h"
@@ -82,8 +70,6 @@
 #include <phonon/seekslider.h>
 // #include <phonon/volumeslider.h>
 
-#include <QLCDNumber>
-#include <QMainWindow>
 
 #include "prefs.h"
 

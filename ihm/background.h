@@ -35,14 +35,10 @@
 
 #include <QWidget>
 #include <QString>
-#include <QRegion>
 #include <QMouseEvent>
 #include <QEvent>
 #include <QPoint>
-#include <QBitmap>
-#include <QPainter>
 #include <QPoint>
-#include <QCursor>
 #include <kdebug.h>
 #include "kscdwidget.h"
 

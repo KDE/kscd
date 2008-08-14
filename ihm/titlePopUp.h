@@ -37,7 +37,6 @@
 
 #include <QGridLayout>
 #include <QLabel>
-#include <QTimer>
 #include <QWidget>
 #include "kscdwidget.h"
 #include <kdebug.h>

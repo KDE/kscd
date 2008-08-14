@@ -26,26 +26,18 @@
 #define __KSCD__
 
 // Solid implementation
-#include <QLabel>
 #include <qdialog.h>
 #include <qapplication.h>
-#include <QTimer>
-#include <QComboBox>
 #include <qscrollbar.h>
 #include <qslider.h>
-#include <QToolTip>
 #include <QMenu>
 #include <QCloseEvent>
 #include <QKeyEvent>
 #include <QEvent>
 #include <QMenu>
-#include <QtDBus>
-#include <QGridLayout>
 #include <QKeyEvent>
 #include <QEvent>
-#include <QMouseEvent>
 #include <QCloseEvent>
-#include <QCursor>
 #include <QPoint>
 // Phonon libs
 #include <phonon/phononnamespace.h>
@@ -56,7 +48,6 @@
 #include "mbmanager.h"
 // #include "configWidget.h"
 #include <config-alsa.h>
-#include <QLCDNumber>
 
 #include <kapplication.h>
 #include <kconfigdialog.h>
@@ -82,7 +73,6 @@
 #include <kcmoduleloader.h>
 #include <ktoolinvocation.h>
 #include <kaction.h>
-#include <QList>
 #include "panel.h"
 
 #include "prefs.h"

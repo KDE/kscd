@@ -31,6 +31,7 @@
  *
  */
 #include "tracklistdlg.h"
+#include <QHeaderView>
 
 TrackListDlg::TrackListDlg(QWidget * parent):trackListDlgUI(parent)
 {

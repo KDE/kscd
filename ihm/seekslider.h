@@ -34,10 +34,6 @@
 #define SEEKSLIDER_H_
 
 #include <QWidget>
-#include <QString>
-#include <QRegion>
-#include <QMouseEvent>
-#include <QEvent>
 #include <QTimeLine>
 #include <kdebug.h>
 // #include "kscdwidget.h"

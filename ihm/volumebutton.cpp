@@ -31,6 +31,7 @@
  *
  */
 #include "volumebutton.h"
+#include <QPainter>
 
 VolumeButton::VolumeButton(QWidget * parent,QString sName,qreal value):KscdWidget(sName,parent)
 {

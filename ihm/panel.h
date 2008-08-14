@@ -34,13 +34,11 @@
 #define PANEL_H_
 
 #include <QWidget>
-#include <QGroupBox>
 #include <QLabel>
-#include <QVBoxLayout>
 
-#include <QLCDNumber>
 #include <QPalette>
 #include "kscdwidget.h"
+#include <QGridLayout>
 
 class Panel:public KscdWidget
 {

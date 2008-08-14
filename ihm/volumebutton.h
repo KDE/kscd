@@ -34,12 +34,9 @@
 #define VOLUMEBUTTON_H_
 
 #include <QWidget>
-#include <QAbstractSlider>
 #include <QString>
-#include <QRegion>
 #include <QMouseEvent>
 #include <QEvent>
-#include <QPainter>
 #include <kdebug.h>
 #include "kscdwidget.h"
 #include <QWheelEvent>

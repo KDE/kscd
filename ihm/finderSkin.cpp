@@ -24,6 +24,9 @@
 
 #include "finderSkin.h"
 #include <klocale.h>
+#include <QDir>
+#include <QFileDialog>
+#include <KStandardDirs>
 
 QString FinderSkin::pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
 

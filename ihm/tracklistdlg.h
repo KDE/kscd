@@ -37,7 +37,6 @@
 #include "ui_trackListDlgUI.h"
 
 #include <QDialog>
-#include <QtGui>
 
 #include <kdebug.h>
 

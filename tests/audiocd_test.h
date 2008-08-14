@@ -36,8 +36,6 @@
 
 #include <QObject>
 #include <qtest_kde.h>
-#include <QtTest>
-#include <QtCore>
 
 #include "audiocd.h"
 class AudioCD_test: public QObject {

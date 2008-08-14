@@ -35,8 +35,6 @@
 #define HWCONTROLER_TEST_H
 #include <QObject>
 #include <qtest_kde.h>
-#include <QtTest>
-#include <QtCore>
 #include "hwcontroler.h"
 class HWControler_test : public QObject
 {

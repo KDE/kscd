@@ -33,6 +33,7 @@
  */
 
 #include "titlePopUp.h"
+#include <QTimer>
 
 TitlePopUp::TitlePopUp(QWidget *parent, QString sName) : KscdWidget(sName,parent)
 {
