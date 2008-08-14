@@ -82,8 +82,8 @@ public:
 * Getters/Setters
 */
 	/** Returns the disc information */
-	DiscInfo getDiscInfo() { return this->m_discInfo; }
-	QList <MBTrackInfo> getTrackList() { return this->m_trackList; }
+	DiscInfo getDiscInfo() const { return this->m_discInfo; } 
+	QList <MBTrackInfo> getTrackList() const { return this->m_trackList; }
 	bool isValidInfo() { return this->m_validInfo; }
 	
 public slots:

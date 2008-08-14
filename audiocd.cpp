@@ -104,19 +104,19 @@ AudioCD::~AudioCD()
 {
 }
 
-Solid::OpticalDrive * AudioCD::getCdDrive()
+Solid::OpticalDrive * AudioCD::getCdDrive() const
 {
 	return cdDrive;
 }
-Solid::OpticalDisc * AudioCD::getCd()
+Solid::OpticalDisc * AudioCD::getCd() const
 {
 	return cd;
 }
-Phonon::MediaSource * AudioCD::getMediaSource()
+Phonon::MediaSource * AudioCD::getMediaSource() const
 {
 	return src;
 }
-QString AudioCD::getCdPath()
+QString AudioCD::getCdPath() const
 {
 	return block->device();
 }
@@ -164,6 +164,6 @@ void AudioCD::reloadCD()
 	}
 	
 }
-QString AudioCD::signature(){
+QString AudioCD::signature() const{
 	return odsign.udi();
 }

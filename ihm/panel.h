@@ -69,13 +69,13 @@ private:
 public:
 	Panel(QWidget * parent=0, QString sName="panel");
 	virtual ~Panel();
-	QString getTitle();
-	QString getAlbum();
-	QString getAuthor();
-	QString getVolume();
-	QString getLoop();
-	QString getRandom();
-	QString getInfo();
+	QString getTitle() const;
+	QString getAlbum() const;
+	QString getAuthor() const;
+	QString getVolume() const;
+	QString getLoop() const;
+	QString getRandom() const;
+	QString getInfo() const;
 private:
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);

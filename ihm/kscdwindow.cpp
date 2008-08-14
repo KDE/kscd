@@ -308,7 +308,7 @@ void KscdWindow::changePicture(QString name,QString state)
 		m_miniB->loadPicture(name,state);
 	}
 }
-KscdWidget * KscdWindow::getPanel(){
+KscdWidget * KscdWindow::getPanel() const{
 	return m_panel;
 }
 

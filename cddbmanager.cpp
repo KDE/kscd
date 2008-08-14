@@ -32,6 +32,7 @@
  */
 #include "cddbmanager.h"
 #include "kscd.h"
+#include <klocale.h>
 
 class KSCD;
 
@@ -85,7 +86,7 @@ void CDDBManager::CDDialogSelected()
 	
 	//m_cddialog->raise();// Puts the window on top
 
-	m_cddialog->setWindowTitle(tr("CDDB Manager"));
+	m_cddialog->setWindowTitle(i18n("CDDB Manager"));
 	m_cddialog->resize(400, 600);
 	m_cddialog->setMinimumSize(300,500);
 //	m_cddialog->setDefault(true);
@@ -97,7 +98,7 @@ void CDDBManager::CDDialogSelected()
 	QGridLayout * albumLayout = new QGridLayout;
 
 	// Album Title
-	QLabel* albumTitleLabel = new QLabel(tr("Album Title"));
+	QLabel* albumTitleLabel = new QLabel(i18n("Album Title"));
 	QLineEdit* albumTitlelineEdit = new QLineEdit;
 	albumTitlelineEdit->insert (m_cddbInfo.get(Title).toString());
 	//albumTitleLabel->setBuddy(albumTitlelineEdit);
@@ -105,7 +106,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumTitlelineEdit, 0, 1);
 
 	// Artist
-	QLabel* albumArtistLabel = new QLabel(tr("Artist"));
+	QLabel* albumArtistLabel = new QLabel(i18n("Artist"));
 	QLineEdit* albumArtistlineEdit = new QLineEdit;
 	albumArtistlineEdit->insert (m_cddbInfo.get(KCDDB::Artist).toString());
 	//albumArtistLabel->setBuddy(albumArtistlineEdit);
@@ -113,7 +114,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumArtistlineEdit, 1, 1);
 
 	// Year
-	QLabel* albumYearLabel = new QLabel(tr("Year"));
+	QLabel* albumYearLabel = new QLabel(i18n("Year"));
 	QLineEdit* albumYearlineEdit = new QLineEdit;
 	albumYearlineEdit->insert (m_cddbInfo.get(Year).toString());
 	//albumYearLabel->setBuddy(albumYearlineEdit);
@@ -122,7 +123,7 @@ void CDDBManager::CDDialogSelected()
 	
 	
 	// Genre
-	QLabel* albumGenreLabel = new QLabel(tr("Genre"));
+	QLabel* albumGenreLabel = new QLabel(i18n("Genre"));
 	QLineEdit* albumGenrelineEdit = new QLineEdit;
 	albumGenrelineEdit->insert (m_cddbInfo.get(Genre).toString());
 	//albumGenreLabel->setBuddy(albumGenrelineEdit);
@@ -130,7 +131,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumGenrelineEdit, 3, 1);
 
 	// Category
-	QLabel* albumCategoryLabel = new QLabel(tr("Category"));
+	QLabel* albumCategoryLabel = new QLabel(i18n("Category"));
 	QLineEdit* albumCategorylineEdit = new QLineEdit;
 	albumCategorylineEdit->insert (m_cddbInfo.get(Category).toString());
 	//albumCategoryLabel->setBuddy(albumCategorylineEdit);
@@ -138,7 +139,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumCategorylineEdit, 4, 1);
 
 	// Length
-	QLabel* albumLengthLabel = new QLabel(tr("Length"));
+	QLabel* albumLengthLabel = new QLabel(i18n("Length"));
 	QLineEdit* albumLengthlineEdit = new QLineEdit;
 	albumLengthlineEdit->insert(m_cddbInfo.get(Length).toString());
 	//albumLengthLabel->setBuddy(albumLengthlineEdit);
@@ -146,7 +147,7 @@ void CDDBManager::CDDialogSelected()
 	albumLayout->addWidget(albumLengthlineEdit, 5, 1);
 	
 	// Comment
-	QLabel* albumCommentLabel = new QLabel(tr("Comment"));
+	QLabel* albumCommentLabel = new QLabel(i18n("Comment"));
 	QTextEdit* albumCommenttextEdit = new QTextEdit;
 	albumCommenttextEdit->append(m_cddbInfo.get(Comment).toString());
 	//albumCommentLabel->setBuddy(albumCommentlineEdit);
@@ -158,7 +159,7 @@ void CDDBManager::CDDialogSelected()
 	//Tracks	
 	QTableWidget* tracksTable = new QTableWidget(0, 7);
 	QStringList tracklabels;
-	tracklabels << tr("Title") << tr("Artist") << tr("Genre") << tr("Category") << tr("Year") << tr("Length") << tr("Comment");
+	tracklabels << i18n("Title") << i18n("Artist") << i18n("Genre") << i18n("Category") << i18n("Year") << i18n("Length") << i18n("Comment");
 	tracksTable->setHorizontalHeaderLabels(tracklabels);
 	//tracksTable->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
 	//tracksTable->verticalHeader()->hide();

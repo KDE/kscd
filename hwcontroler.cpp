@@ -236,7 +236,7 @@ void HWControler :: mute(bool mute)
 	}
 }
 
-qint64 HWControler :: getTotalTime ()
+qint64 HWControler :: getTotalTime ()const 
 {
 	if(!(selectedCd==-1))
 	{
@@ -255,7 +255,7 @@ qint64 HWControler :: getTotalTime ()
 		return -1;
 	}
 }
-qint64 HWControler :: getRemainingTime ()
+qint64 HWControler :: getRemainingTime ()const 
 {
 	if(!(selectedCd==-1))
 	{
@@ -274,7 +274,7 @@ qint64 HWControler :: getRemainingTime ()
 		return -1;
 	}
 }
-qreal HWControler :: getVolume()
+qreal HWControler :: getVolume()const 
 {
 	if (selectedS == -1)
 	{
@@ -293,7 +293,7 @@ void HWControler :: setVolume(qreal vol)
 	}
 
 }
-Phonon::State HWControler ::getState()
+Phonon::State HWControler ::getState()const 
 {
 	if(selectedCd==-1)
 	{
@@ -334,7 +334,7 @@ void HWControler ::configMedia()
 	}
 }
 
-AudioCD * HWControler::getCD()
+AudioCD * HWControler::getCD()const 
 {
 	if((selectedCd!=-1))
 	{
@@ -413,7 +413,7 @@ void HWControler ::replayDisk()
 	}
 }
 
-Phonon::MediaObject * HWControler ::getMedia()
+Phonon::MediaObject * HWControler ::getMedia()const 
 {
 	if((selectedCd!=-1))
 	{
@@ -428,11 +428,11 @@ void HWControler ::catchCurrentTime(qint64 pos)
 {
 	emit(currentTime(pos));
 }
-Phonon::AudioOutput * HWControler ::getAudioOutPut()
+Phonon::AudioOutput * HWControler ::getAudioOutPut()const 
 {
 	return speakers;
 }
-int HWControler ::getCurrentTrack()
+int HWControler ::getCurrentTrack()const 
 {
 	if((selectedCd!=-1))
 	{
@@ -443,7 +443,7 @@ int HWControler ::getCurrentTrack()
 	}
 	return 0;
 }
-int HWControler ::getTotalTrack()
+int HWControler ::getTotalTrack()const 
 {
 	if((selectedCd!=-1))
 	{
@@ -545,6 +545,6 @@ bool HWControler :: isEjectActivated()
 int HWControler ::nbCdReader(){
 	return  cdIn.size();
 }
-QString HWControler ::getCdReader(int num){
+QString HWControler ::getCdReader(int num)const {
 	return cdIn[num]->signature();
 }

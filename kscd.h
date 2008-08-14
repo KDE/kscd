@@ -98,6 +98,7 @@ private:
 	
 	QMenu *contextMenu;
 	
+
 	KAction* m_configureShortcutsAction;
 	KAction* m_configureAction;
 	KAction* m_playPauseAction;
@@ -117,6 +118,7 @@ private:
 	KAction* m_volumeDownAction;
 	KAction* m_quitAction;
 	KAction* m_minimizeAction;
+
 	KActionCollection * m_actions;
 	void setHourglass();
 
@@ -136,7 +138,7 @@ public:
 	
 	virtual bool saveState(QSessionManager& sm);
 	void writeSettings();
-	HWControler * getDevices();
+	HWControler * getDevices() const;
 	
 // 	KCompactDisc* getCd(); // kept for CDDB compatibility
 	

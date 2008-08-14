@@ -183,30 +183,30 @@ Panel::~Panel()
 	delete l_time;
 }
 
-QString Panel::getTitle()
+QString Panel::getTitle() const
 {
 	return l_title->text();
 }
-QString Panel::getAlbum()
+QString Panel::getAlbum() const
 {
 	return l_album->text();
 
 }
-QString Panel::getAuthor()
+QString Panel::getAuthor() const
 {
 	return l_author->text();
 
 }
-QString Panel::getVolume()
+QString Panel::getVolume() const
 {
 	return l_volume->text();
 
 }
-QString Panel::getLoop()
+QString Panel::getLoop() const
 {
 	return l_loop->text();
 }
-QString Panel::getRandom()
+QString Panel::getRandom() const
 {
 	return l_random->text();
 }
@@ -334,7 +334,7 @@ void Panel::displayInfo(QString loop, QString random)
 	l_loop->setText(loop);
 	l_random->setText(random);
 }
-QString Panel::getInfo()
+QString Panel::getInfo() const
 {
 	return l_info->text();
 }

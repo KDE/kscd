@@ -105,9 +105,9 @@ void FinderSkin::reject(){
 }
 
 void FinderSkin::showBrowser(){
-	QFileDialog fileDlg(this,"Find a new skin", "/home", NULL);
+	QFileDialog fileDlg(this,i18n("Find a new skin"), "/home", NULL);
 	fileDlg.setFileMode(QFileDialog::ExistingFile);
-	fileDlg.setFilter(tr("SVG Files (*.svg)"));
+	fileDlg.setFilter(i18n("SVG Files (*.svg)"));
 	fileDlg.setViewMode(QFileDialog::Detail);
 	QStringList fileNames;
 	if(fileDlg.exec()) fileNames= fileDlg.selectedFiles();

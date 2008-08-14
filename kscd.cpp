@@ -81,32 +81,42 @@ void KSCD::setupActions()
 {	
 	m_actions = new KActionCollection(this);
 	m_actions->setConfigGroup("Configuration");
+/*
+	KAction* m_configureShortcutsAction = new KAction( i18n("Configure Shortcuts..."), m_actions );
+	m_configureShortcutsAction->setObjectName( "Configure Shortcuts..." );
+	m_configureShortcutsAction->setShortcut( Qt::Key_S );
+	connect( m_configureShortcutsAction, SIGNAL( triggered() ), this, SLOT(configureShortcuts()));
+*/
+
 	
 	m_configureShortcutsAction = m_actions->addAction(i18n("Configure Shortcuts..."));
 	m_configureShortcutsAction->setText(i18n("Configure Shortcuts..."));
 	addAction(m_configureShortcutsAction);
-	m_configureShortcutsAction->setShortcut(tr("Ctrl+c"));
+	//m_configureShortcutsAction->setShortcut(Qt::Key_C);
 	connect(m_configureShortcutsAction, SIGNAL(triggered()), this, SLOT(configureShortcuts()));
 	
+
+
+
+
 	m_configureAction = m_actions->addAction(i18n("Configure..."));
-	m_configureAction->setShortcut(i18n("Configure..."));
 	m_configureAction->setText(i18n("Configure..."));
 	addAction(m_configureAction);
-	m_configureAction->setShortcut(tr("c"));
+//	m_configureAction->setShortcut(Qt::Key_S);
 	connect(m_configureAction, SIGNAL(triggered()), this, SLOT(optionsPreferences()));
 
 	//download info
 	m_downloadAction = m_actions->addAction(i18n("Download Info"));
 	m_downloadAction->setText(i18n("Download Info"));
 	addAction(m_downloadAction);
-	m_downloadAction->setShortcut(tr("d"));
+	//m_downloadAction->setShortcut(Qt::Key_S);
 	connect(m_downloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
 	
 	//upload info
 	m_uploadAction = m_actions->addAction("Upload Info");
 	m_uploadAction->setText(i18n("Upload Info"));
 	addAction(m_uploadAction);
-	m_uploadAction->setShortcut(tr("u"));
+	//m_uploadAction->setShortcut(Qt::Key_S);
 	connect(m_uploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
 
 	//play/pause
@@ -120,95 +130,97 @@ void KSCD::setupActions()
 	m_stopAction = m_actions->addAction("Stop");
 	m_stopAction->setText(i18n("Stop"));
 	addAction(m_stopAction);
-	m_stopAction->setShortcut(tr("s"));
+	m_stopAction->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_V);
 	connect(m_stopAction, SIGNAL(triggered()), devices, SLOT(stop()));
 
 	//next
 	m_nextAction = m_actions->addAction("next");
 	m_nextAction->setText(i18n("Next"));
 	addAction(m_nextAction);
-	m_nextAction->setShortcut(tr("Right"));
+	m_nextAction->setShortcut(Qt::Key_Right);
 	connect(m_nextAction, SIGNAL(triggered()), devices, SLOT(nextTrack()));
 
 	//previous
 	m_previousAction = m_actions->addAction("previous");
 	m_previousAction->setText(i18n("Previous"));
 	addAction(m_previousAction);
-	m_previousAction->setShortcut(tr("Left"));
+	m_previousAction->setShortcut(Qt::Key_Left);
 	connect(m_previousAction, SIGNAL(triggered()), devices, SLOT(prevTrack()));
 
 	//eject
 	m_ejectAction = m_actions->addAction("eject");
 	m_ejectAction->setText(i18n("Eject"));
 	addAction(m_ejectAction);
-	m_ejectAction->setShortcut(tr("e"));
+	m_ejectAction->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
 	connect(m_ejectAction, SIGNAL(triggered()), this, SLOT(ejectShortcut()));
 
 	//volume up
 	m_volumeUpAction = m_actions->addAction("volume_up");
 	m_volumeUpAction->setText(i18n("Volume Up"));
 	addAction(m_volumeUpAction);
-	m_volumeUpAction->setShortcut(tr("Up"));
+	m_volumeUpAction->setShortcut(Qt::Key_Up);
 	connect(m_volumeUpAction, SIGNAL(triggered()), this, SLOT(volumeUpShortcut()));
 
 	//volume down
 	m_volumeDownAction = m_actions->addAction("volume_down");
 	m_volumeDownAction->setText(i18n("Volume Down"));
 	addAction(m_volumeDownAction);
-	m_volumeDownAction->setShortcut(tr("Down"));
+	m_volumeDownAction->setShortcut(Qt::Key_Down);
 	connect(m_volumeDownAction, SIGNAL(triggered()), this, SLOT(volumeDownShortcut()));
 
 	//random
 	m_randomAction = m_actions->addAction("random");
 	m_randomAction->setText(i18n("Random"));
 	addAction(m_randomAction);
-	m_randomAction->setShortcut(tr("r"));
+	m_randomAction->setShortcut(Qt::CTRL + Qt:: Key_H);
 	connect(m_randomAction, SIGNAL(triggered()), this, SLOT(randomShortcut()));
 
 	//looptrack
 	m_looptrackAction = m_actions->addAction("looptrack");
 	m_looptrackAction->setText(i18n("Repeat Track"));
 	addAction(m_looptrackAction);
-	m_looptrackAction->setShortcut(tr("l"));
+	m_looptrackAction->setShortcut(Qt::CTRL + Qt::Key_T);
 	connect(m_looptrackAction, SIGNAL(triggered()), this, SLOT(looptrackShortcut()));
 
 	//loopdisc
 	m_loopdiscAction = m_actions->addAction("loopdisc");
 	m_loopdiscAction->setText(i18n("Repeat Album"));
 	addAction(m_loopdiscAction);
-	m_loopdiscAction->setShortcut(tr("Ctrl+l"));
+	m_loopdiscAction->setShortcut(Qt::CTRL + Qt::Key_D);
 	connect(m_loopdiscAction, SIGNAL(triggered()), this, SLOT(loopdiscShortcut()));
 
 	//tracklist
 	m_tracklistAction = m_actions->addAction("tracklist");
 	m_tracklistAction->setText(i18n("Show Tracklist"));
 	addAction(m_tracklistAction);
-	m_tracklistAction->setShortcut(tr("t"));
+	//m_tracklistAction->setShortcut(Qt::Key_S);
 	connect(m_tracklistAction, SIGNAL(triggered()), this, SLOT(tracklistShortcut()));
 
 	//mute
 	m_muteAction = m_actions->addAction("mute");
 	m_muteAction->setText(i18n("Mute/Unmute"));
 	addAction(m_muteAction);
-	m_muteAction->setShortcut(tr("m"));
+	//m_muteAction->setShortcut(Qt::Key_S);
 	connect(m_muteAction, SIGNAL(triggered()), this, SLOT(muteShortcut()));
 	
 	//minimize
 	m_minimizeAction = m_actions->addAction("Minimize");
 	m_minimizeAction->setText(i18n("Minimize"));
 	addAction(m_minimizeAction);
-	m_minimizeAction->setShortcut(tr("Ctrl+Escape"));
+	//m_minimizeAction->setShortcut(Qt::Key_S);
 	connect(m_minimizeAction, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
 		
 	//quit
 	m_quitAction = m_actions->addAction("Quit");
 	m_quitAction->setText(i18n("Quit"));
 	addAction(m_quitAction);
-	m_quitAction->setShortcut(tr("Escape"));
+	m_quitAction->setShortcut(Qt::CTRL + Qt::Key_Q);
 	connect(m_quitAction, SIGNAL(triggered()), this, SLOT(quitShortcut()));
 	
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	
+
+
 	//Read saved settings
 	m_actions->readSettings();
 
@@ -768,7 +780,7 @@ void KSCD::configureKeys()
 /**
  * Accessors
  */
-HWControler* KSCD::getDevices()
+HWControler* KSCD::getDevices() const
 {
 	return devices;
 }

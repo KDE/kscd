@@ -59,12 +59,12 @@ class AudioCD: public QObject
 		AudioCD();
 		AudioCD(Solid::Device aCd);
 		~AudioCD();
-		Solid::OpticalDrive * getCdDrive();
-		Solid::OpticalDisc * getCd();
-		Phonon::MediaSource * getMediaSource();
-		QString getCdPath();
+		Solid::OpticalDrive * getCdDrive() const;
+		Solid::OpticalDisc * getCd() const;
+		Phonon::MediaSource * getMediaSource() const;
+		QString getCdPath() const ;
 		bool isCdInserted();
-		QString signature();
+		QString signature() const;
 
 	public slots:
 		void catchEjectPressed();

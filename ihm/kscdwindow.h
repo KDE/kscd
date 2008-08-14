@@ -143,7 +143,7 @@ public:
 
 //	void paintEvent(QPaintEvent *event);
 
- 	KscdWidget * getPanel();
+ 	KscdWidget * getPanel() const;
 	void setTime(qint64 pos);
 
 public slots:
