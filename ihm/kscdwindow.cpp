@@ -194,7 +194,7 @@ void KscdWindow::setNewSkin(QString & newS){
 	QPainter p(&pix);
 	rend->render(&p,"kscdBack_default",rect);
 	setMask(pix.mask());
-		
+	delete rend;
 }
 
 

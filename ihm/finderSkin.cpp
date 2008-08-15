@@ -62,7 +62,7 @@ FinderSkin::~FinderSkin()
 	delete newSkin;
 }
 
-void FinderSkin::setNewSkinPath(QString nameFile) {
+void FinderSkin::setNewSkinPath(QString & nameFile) {
 	skinFound=true;
 	delete(newSkin);
 	newSkin=new QString(FinderSkin::pathSkins+nameFile);	
