@@ -64,23 +64,23 @@ KscdWidget::~KscdWidget()
 	delete m_renderer;
 }
 
-void KscdWidget :: setName(QString sName)
+void KscdWidget :: setName(QString & sName)
 {
 	m_name = sName;
 }
 
 
-QString KscdWidget :: getName() const
+QString  KscdWidget :: getName() const
 {
 	return m_name;
 }
 
-QString KscdWidget :: getState() const
+QString  KscdWidget :: getState() const
 {
 	return m_state;
 }
 
-void KscdWidget :: setId(QString name,QString state)
+void KscdWidget :: setId(QString & name,QString & state)
 {
 	m_id = name + "_" + state;
 }
@@ -91,7 +91,7 @@ QString KscdWidget :: getId() const
  	return m_id;
  }
 
-void KscdWidget :: loadPicture(QString name,QString state)
+void KscdWidget :: loadPicture(QString & name,QString & state)
 {
 	m_id= name + "_" + state;
 	emit(changePicture());
@@ -172,7 +172,7 @@ QPixmap KscdWidget :: getPix() const
 	return pix;
 }
 
-void KscdWidget :: loadSkin(QString skin)
+void KscdWidget :: loadSkin(QString & skin)
 {
 //	Prefs::setUrl(skin);
 //	Prefs::self()->writeConfig();

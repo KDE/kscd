@@ -165,7 +165,7 @@ void Panel::update_panel_label(){
 		}
 		//add the last letter
 		data =data+c;
-		setTitleDisplay(& data);
+		setTitleDisplay(data);
 	}
 }
 
@@ -210,29 +210,29 @@ QString Panel::getRandom() const
 {
 	return l_random->text();
 }
-void Panel::setTitleDisplay(QString * title)
+void Panel::setTitleDisplay(QString & title)
 {
-	l_title->setText(* title);
+	l_title->setText(title);
 }
-void Panel::setTitle(QString * title)
+void Panel::setTitle(QString & title)
 {
-	l_title->setText(* title);
-	titleTrack->setText(* title);
+	l_title->setText(title);
+	titleTrack->setText(title);
 }
-void Panel::setAuthor(QString * author)
+void Panel::setAuthor(QString & author)
 {
-	l_author->setText(* author);
+	l_author->setText(author);
 }
-void Panel::setAlbum(QString * album)
+void Panel::setAlbum(QString & album)
 {
 
-	QString mess = * album;
+	QString mess = album;
 	l_album->setText(mess);
 
 }
-void Panel::setVolume(QString * volume)
+void Panel::setVolume(QString & volume)
 {
-	l_title->setText(*volume);
+	l_title->setText(volume);
 
 }
 

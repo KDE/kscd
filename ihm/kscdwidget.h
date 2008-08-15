@@ -63,12 +63,12 @@ public:
 
 	KscdWidget(QString sName,QWidget * parent=0);
 	virtual ~KscdWidget();
-	void setName(QString);
+	void setName(QString &);
 	QString getName() const;
 	QString getState() const;
-	void setId(QString,QString);
+	void setId(QString &,QString &);
 	QString getId() const;
-	void loadPicture(QString,QString);
+	void loadPicture(QString &,QString &);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
 	void mousePressEvent(QMouseEvent * event);
@@ -79,11 +79,11 @@ public:
 	void rotation(qreal);
 
 public slots:
-	void loadSkin(QString);
+	void loadSkin(QString &);
 signals:
 	void needRepaint();
 	void changePicture();
-	void buttonClicked(QString);
+	void buttonClicked(QString &);
 };
 
 #endif /*KSCDWIDGET_H_*/

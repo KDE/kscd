@@ -75,20 +75,20 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
 
 	
-	connect(m_stopB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_playB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_prevB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_nextB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_ejectB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_muteB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_randB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_loopB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_trackB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_volumeB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_stopB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_playB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_prevB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_nextB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_ejectB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_muteB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_randB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_loopB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_trackB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_volumeB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),this,SIGNAL(actionVolume(qreal)));
 	connect(m_trackDlg,SIGNAL(itemClicked(int)),this,SLOT(doubleClickedEvent(int)));
-	connect(m_miniB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
-	connect(m_closeB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_miniB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_closeB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),m_panel,SLOT(setVolumeDisplay(qreal)));
 //	connect(m_prefB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 }
@@ -127,7 +127,7 @@ void KscdWindow :: closeTrackDialog()
 
 // void KscdWindow :: clearTracklist()
 
-void KscdWindow :: createTrackDialog(QList<MBTrackInfo> trackList,QString albumTitle)
+void KscdWindow :: createTrackDialog(QList<MBTrackInfo> & trackList,QString  & albumTitle)
 {
 	QList<MBTrackInfo>::iterator it;
 	m_trackDlg->removeRowsTrackTable(trackList.size());
@@ -154,7 +154,7 @@ void KscdWindow :: makeFinderSkinDialog()
 }
 
 //Apply changes on kscdwidgets with new skin
-void KscdWindow::setNewSkin(QString newS){
+void KscdWindow::setNewSkin(QString & newS){
 
 	kDebug () << "make change with new skin :"<<newS;
 	Prefs::setUrl(newS);
@@ -224,7 +224,7 @@ void KscdWindow :: doubleClickedEvent(int pos)
 /**
  * Links treatments with the UI
  */
-void KscdWindow :: catchButton(QString name)
+void KscdWindow :: catchButton(QString & name)
 {
 	kDebug()<<"Catch :" << name;
 	emit(actionClicked(name));
@@ -235,29 +235,37 @@ void KscdWindow :: catchVolume(qreal value)
 	emit(actionVolume(value));
 }
 
-void KscdWindow::changePicture(QString name,QString state)
+void KscdWindow::changePicture(QString & name,QString & state)
 {
+	QString result;
+	QString def = "default";
 	if(name == "play")
 	{
-		m_playB->loadPicture("pause",state);
-		m_playB->setName("pause");
+		result = "pause";
+		m_playB->loadPicture(result,state);
+		m_playB->setName(result);
 	}
 	if(name == "pause")
 	{
-		m_playB->loadPicture("play",state);
-		m_playB->setName("play");
+		result = "play";
+		m_playB->loadPicture(result,state);
+		m_playB->setName(result);
 	}
 	if(name == "stop")
 	{
+		result = "play";
 		m_stopB->loadPicture(name,state);
-		m_playB->setName("play");
-		m_playB->loadPicture(m_playB->getName(),"default");
+		m_playB->setName(result);
+		QString tmp = m_playB->getName();
+		m_playB->loadPicture(tmp,def);
 	}
 	if(name == "eject")
 	{
-		m_ejectB->loadPicture(name,state);
-		m_playB->setName("play");
-		m_playB->loadPicture(m_playB->getName(),"default");
+		result = "play";
+		m_stopB->loadPicture(name,state);
+		m_playB->setName(result);
+		QString tmp = m_playB->getName();
+		m_playB->loadPicture(tmp,def);
 	}
 	if(name == "next")
 	{
@@ -281,7 +289,9 @@ void KscdWindow::changePicture(QString name,QString state)
 	}
 	if(name == "p_random")
 	{
-		m_randB->loadPicture("random","pressed");	
+		result = "random";
+		def = "pressed";
+		m_randB->loadPicture(result,def);	
 	}
 	if(name == "loop")
 	{
@@ -308,8 +318,8 @@ void KscdWindow::changePicture(QString name,QString state)
 		m_miniB->loadPicture(name,state);
 	}
 }
-KscdWidget * KscdWindow::getPanel() const{
-	return m_panel;
+KscdWidget & KscdWindow::getPanel() const{
+	return *m_panel;
 }
 
 
@@ -323,28 +333,28 @@ KscdWidget * KscdWindow::getPanel() const{
 /**
  * Manages the Trackinfo Label
  */
-void KscdWindow::showTrackinfoLabel(QString infoStatus)
+void KscdWindow::showTrackinfoLabel(QString & infoStatus)
 {
-	m_panel->setTitle(&infoStatus);
+	m_panel->setTitle(infoStatus);
 }
 
 /**
  * Manages the Artist label
  */
-void KscdWindow::showArtistLabel(QString infoStatus)
+void KscdWindow::showArtistLabel(QString  & infoStatus)
 {
-	m_panel->setAuthor(&infoStatus);
+	m_panel->setAuthor(infoStatus);
 }
-void KscdWindow::showArtistAlbum(QString infoStatus)
+void KscdWindow::showArtistAlbum(QString & infoStatus)
 {
-	m_panel->setAlbum(&infoStatus);
+	m_panel->setAlbum(infoStatus);
 }
 
 void KscdWindow::setTime(qint64 pos){
 	m_panel->setTime(pos);
 // 	m_slider->setTime(pos);
 }
-void KscdWindow::panelInfo(QString mess)
+void KscdWindow::panelInfo(QString & mess)
 {
 	QString informationDisplay;
 	if(mess == "loop")

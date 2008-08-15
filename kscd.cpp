@@ -216,18 +216,18 @@ void KSCD::setupActions()
 	 * General
 	 */
 	// Connects UI with actions triggering
-	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
-	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
+	connect(this,SIGNAL(actionClicked(QString&)), this, SLOT(actionButton(QString&)));
+	connect(this,SIGNAL(picture(QString&,QString&)), this, SLOT(changePicture(QString&,QString&)));
 	
 	// General connects
 	connect(this,SIGNAL(trackClicked(int)), this, SLOT(playTrack(int)));
 	connect(this,SIGNAL(actionVolume(qreal)), this, SLOT(changeVolume(qreal)));
 	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(catchtime(qint64)));
-	connect(this,SIGNAL(infoPanel(QString)),this,SLOT(panelInfo(QString)));
+	connect(this,SIGNAL(infoPanel(QString&)),this,SLOT(panelInfo(QString&)));
 	
 	// MB
-	connect(m_MBManager, SIGNAL(showArtistLabel(QString)), this, SLOT(showArtistLabel(QString)));
-	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString)), this, SLOT(showTrackinfoLabel(QString)));
+	connect(m_MBManager, SIGNAL(showArtistLabel(QString&)), this, SLOT(showArtistLabel(QString&)));
+	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString&)), this, SLOT(showTrackinfoLabel(QString&)));
 	
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 	connect(devices,SIGNAL(cdLoaded()),m_MBManager,SLOT(discLookup()));
@@ -261,12 +261,13 @@ void KSCD::restoreArtistLabel()
 		QString artist, title;
 		artist = m_MBManager->getDiscInfo().Artist;
 		title = m_MBManager->getDiscInfo().Title;
-		showArtistLabel(QString("%1").arg(artist));
-		showArtistAlbum(QString("%1").arg(title));
+		showArtistLabel(artist);
+		showArtistAlbum(title);
 	}
 	else
 	{
-		showArtistLabel("");
+		QString empty = "";
+		showArtistLabel(empty);
 	}
 
 }
@@ -303,7 +304,7 @@ void KSCD::configureShortcuts()
 	KShortcutsDialog::configure(m_actions, KShortcutsEditor::LetterShortcutsAllowed, this, true);
 }
 
-void KSCD::setShortcut(QString name, QString key)
+void KSCD::setShortcut(QString & name, QString & key)
 {
 	kDebug()<<"SetShortcut, "<<name<<" : "<<key;
 	if (name == "Play/Pause")
@@ -385,90 +386,106 @@ void KSCD::setShortcut(QString name, QString key)
 
 void KSCD::ejectShortcut()
 {
-	actionButton("eject");
+	QString result = "eject";
+	actionButton(result);
 }
 
 void KSCD::quitShortcut()
 {
-	actionButton("close");
+	QString result = "close";
+	actionButton(result);
 }
 
 void KSCD::minimizeShortcut()
 {
-	actionButton("minimize");
+	QString result = "minimize";
+	actionButton(result);;
 }
 
 void KSCD::tracklistShortcut()
 {
-	actionButton("tracklist");
+	QString result = "tracklist";
+	actionButton(result);
 }
 
 void KSCD::muteShortcut()
 {
+	QString def = "default";
 	if (!mute)
 	{
-		actionButton("unmute");
-		emit(picture("unmute","default"));
+		QString result = "unmute";
+		actionButton(result);
+		emit(picture(result,def));
 		//mute = !mute;
 	}
 	else
 	{
-		actionButton("mute");
-		emit(picture("mute","default"));
+		QString result = "mute";
+		actionButton(result);
+		emit(picture(result,def));
 		//mute = !mute;
 	}
 }
 
 void KSCD::playShortcut()
 {
+	QString def = "default";
 	if (!play)
 	{
-		actionButton("play");
-		emit(picture("play","default"));
+		QString result = "play";
+		actionButton(result);
+		emit(picture(result,def));
 		//play = !play;
 	}
 	else
 	{
-		actionButton("pause");
-		emit(picture("pause","default"));
+		QString result = "pause";
+		actionButton(result);
+		emit(picture(result,def));
 		//play = !play;
 	}
 }
 
 void KSCD::randomShortcut()
 {
+	QString def = "default";
 	if (!random)
 	{
-		actionButton("p_random");
-		emit(picture("p_random","default"));
-		emit(infoPanel("p_random"));
+		QString result = "p_random";
+		actionButton(result);
+		emit(picture(result,def));
+		emit(infoPanel(result));
 
 		//random = !random;
 	}
 	else
 	{
-		actionButton("random");
-		emit(picture("random","default"));
-		emit(infoPanel("random"));
+		QString result = "random";
+		actionButton(result);
+		emit(picture(result,def));
+		emit(infoPanel(result));
 		//random = !random;
 	}
 }
 
 void KSCD::looptrackShortcut()
 {
+	QString def = "default";
 	if (!looptrack)
 	{
-		actionButton("looptrack");
-		emit(picture("looptrack","default"));
-		emit(infoPanel("looptrack"));
+		QString result = "looptrack";
+		actionButton(result);
+		emit(picture(result,def));
+		emit(infoPanel(result));
 
 		//looptrack = !looptrack;
 	}
 	else
 	{
-		actionButton("loop");
-		emit(picture("loop","default"));
-		emit(infoPanel("loop"));
+		QString result = "loop";
+		actionButton(result);
+		emit(picture(result,def));
+		emit(infoPanel(result));
 
 		//looptrack = !looptrack;
 	}
@@ -476,19 +493,22 @@ void KSCD::looptrackShortcut()
 
 void KSCD::loopdiscShortcut()
 {
+	QString def = "default";
 	if (!loopdisc)
 	{
-		actionButton("loopdisc");
-		emit(picture("loopdisc","default"));
-		emit(infoPanel("loopdisc"));
+		QString result = "loopdisc";
+		actionButton(result);
+		emit(picture(result,def));
+		emit(infoPanel(result));
 
 		//loopdisc = !loopdisc;
 	}
 	else
 	{
-		actionButton("loop");
-		emit(picture("loop","default"));
-		emit(infoPanel("loop"));
+		QString result = "loop";
+		actionButton(result);
+		emit(picture(result,def));
+		emit(infoPanel(result));
 
 		//loopdisc = !loopdisc;
 	}
@@ -513,25 +533,34 @@ void KSCD::volumeDownShortcut()
 
 void KSCD::playTrack(int track)
 {
+	QString result = "play";
+	QString def = "default";
 	kDebug()<<"playtrack enter "<<track;
 	devices->play(track);
-	emit(picture("play","default"));
+	emit(picture(result,def));
 }
 
 /**
  * Link IHM with actions
  */
-void KSCD::actionButton(QString name)
+void KSCD::actionButton(QString & name)
 {
+
 	QString state = "over";
+	QString result;
 	if(name=="play")
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
-			if(!devices->getCD()->isCdInserted())
-				showArtistLabel(i18n("No disc"));
-			else
-				showArtistLabel(i18n("Invalid disc"));
+			QString result;
+			if(!devices->getCD()->isCdInserted()){
+				result = i18n("No disc");
+				showArtistLabel(result);
+			}
+			else{
+				result = i18n("Invalid disc");
+				showArtistLabel(result);
+			}
 			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
 		}
 		else
@@ -573,10 +602,15 @@ void KSCD::actionButton(QString name)
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
-			if(!devices->getCD()->isCdInserted())
-				showArtistLabel(i18n("No disc"));
-			else
-				showArtistLabel(i18n("Invalid disc"));
+			QString result;
+			if(!devices->getCD()->isCdInserted()){
+				result = i18n("No disc");
+				showArtistLabel(result);
+			}
+			else{
+				result = i18n("Invalid disc");
+				showArtistLabel(result);
+			}
 			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
 		}
 		else
@@ -602,10 +636,15 @@ void KSCD::actionButton(QString name)
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted()) 
 		{
-			if(!devices->getCD()->isCdInserted())
-				showArtistLabel(i18n("No disc"));
-			else
-				showArtistLabel(i18n("Invalid disc"));
+			QString result;
+			if(!devices->getCD()->isCdInserted()){
+				result = i18n("No disc");
+				showArtistLabel(result);
+			}
+			else{
+				result = i18n("Invalid disc");
+				showArtistLabel(result);
+			}
 			QTimer::singleShot(2000, this, SLOT(restoreArtistLabel()));
 		}
 		else
@@ -663,7 +702,8 @@ void KSCD::actionButton(QString name)
 	{
 		devices->setRandom(false);
 		emit(picture(name,state));
-		emit(infoPanel("random"));
+		result = "random";
+		emit(infoPanel(result));
 
 		random = !random;
 	}
@@ -671,7 +711,8 @@ void KSCD::actionButton(QString name)
 	{
 		devices->setRandom(true);
 		emit(picture(name,state));
-		emit(infoPanel("p_random"));
+		result = "p_random";
+		emit(infoPanel(result));
 
 		random = !random;
 	}
@@ -679,7 +720,8 @@ void KSCD::actionButton(QString name)
 	{
 		devices->setLoopMode(NoLoop);
 		emit(picture(name,state));
-		emit(infoPanel("loop"));
+		result = "loop";
+		emit(infoPanel(result));
 
 		looptrack = false;
 		loopdisc = false;
@@ -688,7 +730,8 @@ void KSCD::actionButton(QString name)
 	{
 		devices->setLoopMode(LoopOne);
 		emit(picture(name,state));
-		emit(infoPanel("looptrack"));
+		result = "looptrack";
+		emit(infoPanel(result));
 
 		looptrack = true;
 		loopdisc = false;
@@ -697,7 +740,7 @@ void KSCD::actionButton(QString name)
 	{
 		devices->setLoopMode(LoopAll);
 		emit(picture(name,state));
-		emit(infoPanel("loopdisc"));
+		emit(infoPanel(name));
 
 		loopdisc = true;
 		looptrack = false;
@@ -722,10 +765,13 @@ void KSCD::actionButton(QString name)
 		else
 		{
 			//createTrackDialog(m_cddbManager->getTrackList(),m_cddbManager->getDiscTitle());
-			createTrackDialog(m_MBManager->getTrackList(),m_MBManager->getDiscInfo().Title);
+			QList<MBTrackInfo> list = m_MBManager->getTrackList();
+			QString * title = new QString(m_MBManager->getDiscInfo().Title);
+			createTrackDialog(list,*title);
 			kDebug()<<"open track window";
 		}
-		emit(picture(name,"default"));
+		QString def = "default";
+		emit(picture(name,def));
 	}
 	if ( name == "configure")
 	{
@@ -821,7 +867,8 @@ void KSCD :: updateSettings()
 	devices->setEjectActivated(Prefs::ejectOnFinish());
 	kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
 	m_panel->setEjectAct( Prefs::ejectOnFinish() );
-	setNewSkin( KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url() );
+	QString skin = KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url();
+	setNewSkin( skin );
 }
 
 void KSCD :: loadSettings()

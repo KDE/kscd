@@ -94,8 +94,8 @@ public slots:
 	void discUpload();
 	
 signals:
-	void showArtistLabel(QString);
-	void showTrackinfoLabel(QString);
+	void showArtistLabel(QString&);
+	void showTrackinfoLabel(QString&);
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 };

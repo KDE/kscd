@@ -115,7 +115,7 @@ protected:
 	 /**
 	 * Create the track list dialog
 	 */
-	void createTrackDialog(QList<MBTrackInfo> trackList,QString albumTitle);
+	void createTrackDialog(QList<MBTrackInfo> & trackList,QString & albumTitle);
 
 	 /**
 	 * Close the track list dialog
@@ -134,7 +134,7 @@ public:
 	/**
  	* Constructor
 	*/
-	KscdWindow(QWidget *parent = 0);
+	KscdWindow(QWidget * parent = 0);
 	
 	/**
 	 * Destructor
@@ -143,17 +143,17 @@ public:
 
 //	void paintEvent(QPaintEvent *event);
 
- 	KscdWidget * getPanel() const;
+ 	KscdWidget & getPanel() const;
 	void setTime(qint64 pos);
 
 public slots:
-	void catchButton(QString);
+	void catchButton(QString &);
 	void catchVolume(qreal);
-	void changePicture(QString, QString);
+	void changePicture(QString &, QString &);
 	void doubleClickedEvent(int);
-	void showArtistLabel(QString);
-	void showTrackinfoLabel(QString);
-	void panelInfo(QString);
+	void showArtistLabel(QString &);
+	void showTrackinfoLabel(QString &);
+	void panelInfo(QString &);
 
 	/**
 	 * Show the finder skin dialog
@@ -163,13 +163,13 @@ public slots:
 	/**
 	* Refresh skin
 	*/
-	void setNewSkin(QString);
+	void setNewSkin(QString &);
 
-	void showArtistAlbum(QString);
+	void showArtistAlbum(QString &);
 	//void setTime(qint64 pos);
 
 signals:
-	void actionClicked(QString);
+	void actionClicked(QString &);
 	void actionVolume(qreal);
 	void trackClicked(int);
 

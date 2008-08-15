@@ -149,8 +149,8 @@ protected:
 	
 
 signals:
-	void picture(QString,QString);
-	void infoPanel(QString);
+	void picture(QString&,QString&);
+	void infoPanel(QString&);
 	/* Popup signals */
 // 	void showTitlePopUp(QString, QString);
 // 	void hideTitlePopUp();
@@ -177,8 +177,8 @@ public slots:
 	void volumeDownShortcut();
 	void quitShortcut();
 	void minimizeShortcut();
-	void actionButton(QString);
-	void setShortcut(QString, QString);
+	void actionButton(QString&);
+	void setShortcut(QString&, QString&);
 	void catchtime(qint64 pos);
 
 	//void setNewSkin(QString);
