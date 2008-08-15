@@ -48,18 +48,18 @@ public:
 	SeekSlider(QWidget * parent=0);
 	virtual ~SeekSlider();
 
-	SeekCursor* cursor();
-	SeekBar* bar();
+	SeekCursor* cursor() const;
+	SeekBar* bar() const;
 
 	void setTime(qint64);
-	qint64 getTime();
+	qint64 getTime() const;
 	void setTotalTime(qint64);
 	void moveC();
 	/**
 	 * Calculation of move to do in 1 second
 	 */
 	void  setStep();
-	int  getStep();
+	int  getStep() const;
 
 	/**
 	 * Initialize all attibutes

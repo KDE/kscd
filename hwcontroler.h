@@ -1,10 +1,7 @@
 /*
  * Kscd - A simple cd player for the KDE Project
  *
- * Copyright (c) 1997 Bernd Johannes wuebben@math.cornell.edu
- * Copyright (c) 2002-2003 Aaron J. Seigo <aseigo@kde.org>
- * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
- * Copyright (c) 2003-2006 Richard Lärkäng <nouseforaname@home.se>
+ * Copyright (c) 2008 Amine Bouchikhi <bouchikhi.amine@gmail.com>
  *
  * --------------
  * ISI KsCD Team :

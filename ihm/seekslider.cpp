@@ -42,12 +42,12 @@ SeekSlider::~SeekSlider()
 {
 }
 
-SeekCursor* SeekSlider :: cursor()
+SeekCursor* SeekSlider :: cursor() const
 {
 	return m_cursor;
 }
 
-SeekBar* SeekSlider :: bar()
+SeekBar* SeekSlider :: bar() const
 {
 	return m_bar;
 }
@@ -117,7 +117,7 @@ void SeekSlider :: moveC()
 
 		m_cursor->move(m_cursor->x()+m_step,m_cursor->y());
 }
-qint64 SeekSlider :: getTime()
+qint64 SeekSlider :: getTime() const
 {
 	return m_time;
 }
@@ -134,7 +134,7 @@ void  SeekSlider :: setStep()
 	kDebug()<<"step:"<<m_step;
 }
 
-int SeekSlider :: getStep()
+int SeekSlider :: getStep() const
 {
 	return m_step;
 }

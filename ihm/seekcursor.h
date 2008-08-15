@@ -52,7 +52,7 @@ public:
 	 */
 	void init();
 
-	int getStep();
+	int getStep() const;
 	void setStep(qint64,int);
 private:
 	/**

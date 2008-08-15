@@ -5,6 +5,7 @@
  * Copyright (c) 2002-2003 Aaron J. Seigo <aseigo@kde.org>
  * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
  * Copyright (c) 2003-2006 Richard Lärkäng <nouseforaname@home.se>
+ * Copyright (c) 2008 Amine Bouchikhi <bouchikhi.amine@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,25 +70,12 @@ KSCD::~KSCD()
 {
 	delete devices;
 	delete m_MBManager;
-// 	delete m_cd;
-// 	delete m_cddbManager;
-//	delete w_titlePopUp;	//deleting of the title popup
-
-/*	delete m_cddialog;
-	delete m_cddb;*/
 }
 
 void KSCD::setupActions()
 {	
 	m_actions = new KActionCollection(this);
 	m_actions->setConfigGroup("Configuration");
-/*
-	KAction* m_configureShortcutsAction = new KAction( i18n("Configure Shortcuts..."), m_actions );
-	m_configureShortcutsAction->setObjectName( "Configure Shortcuts..." );
-	m_configureShortcutsAction->setShortcut( Qt::Key_S );
-	connect( m_configureShortcutsAction, SIGNAL( triggered() ), this, SLOT(configureShortcuts()));
-*/
-
 	
 	m_configureShortcutsAction = m_actions->addAction(i18n("Configure Shortcuts..."));
 	m_configureShortcutsAction->setText(i18n("Configure Shortcuts..."));
@@ -102,21 +90,18 @@ void KSCD::setupActions()
 	m_configureAction = m_actions->addAction(i18n("Configure..."));
 	m_configureAction->setText(i18n("Configure..."));
 	addAction(m_configureAction);
-//	m_configureAction->setShortcut(Qt::Key_S);
 	connect(m_configureAction, SIGNAL(triggered()), this, SLOT(optionsPreferences()));
 
 	//download info
 	m_downloadAction = m_actions->addAction(i18n("Download Info"));
 	m_downloadAction->setText(i18n("Download Info"));
 	addAction(m_downloadAction);
-	//m_downloadAction->setShortcut(Qt::Key_S);
 	connect(m_downloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
 	
 	//upload info
 	m_uploadAction = m_actions->addAction("Upload Info");
 	m_uploadAction->setText(i18n("Upload Info"));
 	addAction(m_uploadAction);
-	//m_uploadAction->setShortcut(Qt::Key_S);
 	connect(m_uploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
 
 	//play/pause
@@ -193,21 +178,18 @@ void KSCD::setupActions()
 	m_tracklistAction = m_actions->addAction("tracklist");
 	m_tracklistAction->setText(i18n("Show Tracklist"));
 	addAction(m_tracklistAction);
-	//m_tracklistAction->setShortcut(Qt::Key_S);
 	connect(m_tracklistAction, SIGNAL(triggered()), this, SLOT(tracklistShortcut()));
 
 	//mute
 	m_muteAction = m_actions->addAction("mute");
 	m_muteAction->setText(i18n("Mute/Unmute"));
 	addAction(m_muteAction);
-	//m_muteAction->setShortcut(Qt::Key_S);
 	connect(m_muteAction, SIGNAL(triggered()), this, SLOT(muteShortcut()));
 	
 	//minimize
 	m_minimizeAction = m_actions->addAction("Minimize");
 	m_minimizeAction->setText(i18n("Minimize"));
 	addAction(m_minimizeAction);
-	//m_minimizeAction->setShortcut(Qt::Key_S);
 	connect(m_minimizeAction, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
 		
 	//quit
@@ -785,30 +767,25 @@ HWControler* KSCD::getDevices() const
 	return devices;
 }
 
-// KCompactDisc* KSCD::getCd()
-// {
-// // 	return m_cd;
-// }
-
 /**
  * Save state on session termination
  */
 bool KSCD::saveState(QSessionManager& /*sm*/)
 {
 	writeSettings();
-	KConfigGroup config(KApplication::kApplication()->sessionConfig(), "General");
-	config.writeEntry("Show", isVisible());
+	KConfigGroup config(KApplication::kApplication()->sessionConfig(), i18n("General"));
+	config.writeEntry(i18n("Show"), isVisible());
 	return true;
 }
 
 void KSCD :: optionsPreferences()
 {
-	if ( KConfigDialog::showDialog( "settings" ) )  {
+	if ( KConfigDialog::showDialog( i18n("Settings") ) )  {
 	        return;
 	}
 
 	//KConfigDialog didn't find an instance of this dialog, so lets create it :
-	KConfigDialog* dialog = new KConfigDialog( this, "settings",  Prefs::self() );
+	KConfigDialog* dialog = new KConfigDialog( this, i18n("Settings"),  Prefs::self() );
 	// Add the General Settings page
 	QWidget *generalSettingsDlg = new QWidget;
 	ui_general.setupUi(generalSettingsDlg);
@@ -876,6 +853,7 @@ int main( int argc, char *argv[] )
 	aboutData.addCredit(ki18n("Wilfried Huss"), ki18n("Patches galore"));
 	aboutData.addCredit(ki18n("Steven Grimm"), ki18n("Workman library"));
 	aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
+	aboutData.addCredit(ki18n("Amine Bouchikhi"), ki18n("Developer"));
 	aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
     
 	KCmdLineArgs::init( argc, argv, &aboutData );
@@ -906,9 +884,6 @@ int main( int argc, char *argv[] )
 		exit(0);
 	}
 	KUniqueApplication a;
-//	QPixmap pixM("/home/stanislas/isi-kscd/kdemultimedia/kscd/splash2.png");
-//	QSplashScreen splash( pixM );
-//	splash.show();
 	KSCD *k = new KSCD();
 	a.setTopWidget( k );
 //   a.setMainWidget(k);
@@ -928,9 +903,6 @@ int main( int argc, char *argv[] )
 //		splash.finish(k);
 		k->show();
 	}
-
-// 	if (args->count() > 0)
-// 		Prefs::self()->setCdDevice(args->arg(0));
 
 	return a.exec();
 }

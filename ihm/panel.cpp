@@ -53,7 +53,7 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	titleTrack = new QLabel("");
 	l_title = new QLabel("");
 	vbl_layout->addWidget(l_title,4,0);
-	l_album = new QLabel("<center>WELCOME!</center>");
+	l_album = new QLabel("<center>"+i18n("WELCOME!")+"</center>");
 	vbl_layout->addWidget(l_album,3,0);
 	l_author = new QLabel("");
 	vbl_layout->addWidget(l_author,2, 0);
@@ -68,7 +68,7 @@ Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
 	vbl_layoutIntern->addWidget(l_loop,0,0);
 	vbl_layoutIntern->addWidget(l_random,0,1);
 	vbl_layoutIntern->addWidget(ejectStatus,0,2);
-	l_time = new QLabel("<center><font size="+textSize->text()+"><b>00 : 00</b></font></center>");
+	l_time = new QLabel("<center><font size="+textSize->text()+"><b>00 "+i18n(":")+" 00</b></font></center>");
 	vbl_layout->addWidget(l_time, 5, 0);
 	setLayout(vbl_layout);
 
@@ -315,7 +315,13 @@ void Panel::setTime(qint64 pos)
 	qint64 sd = ((pos/1000)%60)/10;
 	qint64 su = ((pos/1000)%60)%10;
 	QString result;
-	QTextStream(&result) << "<center><b>"<< md << mu << " : " << sd << su <<"</b></center>";
+/*
+ %1 = Minutes decimal
+ %2 = Minutes unit
+ %3 = Seconds decimal
+ %4 = Seconds unit
+*/
+	QTextStream(&result) << i18n("%1 %2 : %3 %4",md,mu,sd,su);
 	l_time->setText(result);
 }
 

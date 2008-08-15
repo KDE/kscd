@@ -70,12 +70,12 @@ void KscdWidget :: setName(QString sName)
 }
 
 
-QString KscdWidget :: getName()
+QString KscdWidget :: getName() const
 {
 	return m_name;
 }
 
-QString KscdWidget :: getState()
+QString KscdWidget :: getState() const
 {
 	return m_state;
 }
@@ -86,7 +86,7 @@ void KscdWidget :: setId(QString name,QString state)
 }
 
 
-QString KscdWidget :: getId()
+QString KscdWidget :: getId() const
  {
  	return m_id;
  }
@@ -157,17 +157,17 @@ void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
-QString KscdWidget :: getPath()
+QString KscdWidget :: getPath() const
 {
 	return m_path;
 }
 
-QRegion* KscdWidget :: bounds()
+QRegion* KscdWidget :: bounds() const
 {
 	return m_bounds;
 }
 
-QPixmap KscdWidget :: getPix()
+QPixmap KscdWidget :: getPix() const
 {
 	return pix;
 }

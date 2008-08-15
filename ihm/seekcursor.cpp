@@ -46,7 +46,7 @@ SeekCursor::~SeekCursor()
 {
 }
 
-int SeekCursor :: getStep()
+int SeekCursor :: getStep() const
 {
 	return m_step;
 }

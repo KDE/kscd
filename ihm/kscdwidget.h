@@ -64,18 +64,18 @@ public:
 	KscdWidget(QString sName,QWidget * parent=0);
 	virtual ~KscdWidget();
 	void setName(QString);
-	QString getName();
-	QString getState();
+	QString getName() const;
+	QString getState() const;
 	void setId(QString,QString);
-	QString getId();
+	QString getId() const;
 	void loadPicture(QString,QString);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
-	QString getPath();
-	QRegion* bounds();
-	QPixmap getPix();
+	QString getPath() const;
+	QRegion* bounds() const;
+	QPixmap getPix() const;
 	void rotation(qreal);
 
 public slots:

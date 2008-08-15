@@ -12,8 +12,7 @@
  * Stanislas KRZYWDA <stanislas.krzywda@gmail.com>
  * Sovanramy Var <mastasushi@gmail.com>
  * Bouchikhi Mohamed-Amine <bouchikhi.amine@gmail.com>
- * Gastellu Sylvain<sylvain.gastellu@gmail.com>
- * Dembele Karim <>
+ * Gastellu Sylvain <sylvain.gastellu@gmail.com>
  * -----------------------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or modify

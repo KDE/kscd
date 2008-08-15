@@ -6,6 +6,7 @@
    Copyright (c) 1997 Bernd Johannes Wuebben <wuebben@math.cornell.edu>
    Copyright (c) 2002 Aaron J. Seigo <aseigo@kde.org>
    Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
+   Copyright (c) 2008 Amine Bouchikhi <bouchikhi.amine@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
