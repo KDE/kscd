@@ -42,12 +42,12 @@ FinderSkin::FinderSkin(QWidget* parent):finderSkinUI(parent)
 	newSkin= new QString();
 	skinFound=false;
 	
-	QDir *directory= new QDir(FinderSkin::pathSkins);
+	QDir directory(FinderSkin::pathSkins);
 	
 	QStringList filter;
 	filter<<"*.svg";
-	directory->setNameFilters(filter);
-	QStringList list = directory->entryList();
+	directory.setNameFilters(filter);
+	QStringList list = directory.entryList();
 	comboBoxTitleSkin->addItems(list);
 
 	connect(buttonBox,SIGNAL(accepted()), SLOT(accept())); 
