@@ -820,11 +820,11 @@ void KSCD :: optionsPreferences()
 	
 	//Filter on the skin url combo box
 	QString pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
-	QDir *directory= new QDir(pathSkins);
+	QDir directory(pathSkins);
 	QStringList filter;
 	filter << "*.svg";
-	directory->setNameFilters(filter);
-	QStringList list = directory->entryList();
+	directory.setNameFilters(filter);
+	QStringList list = directory.entryList();
 	ui_interface.kcfg_url->addItems(list);
 	
 	dialog->addPage(interfaceSettingsDlg, i18n("Appearance"), "fill-color");
