@@ -36,7 +36,7 @@
 #include <QTimer>
 #include <klocale.h>
 
-Panel::Panel(QWidget * parent, QString sName):KscdWidget(sName,parent)
+Panel::Panel(QWidget * parent, const QString& sName):KscdWidget(sName,parent)
 {
 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Rectangle);
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());

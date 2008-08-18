@@ -33,7 +33,7 @@
 #include "volumebutton.h"
 #include <QPainter>
 
-VolumeButton::VolumeButton(QWidget * parent,QString sName,qreal value):KscdWidget(sName,parent)
+VolumeButton::VolumeButton(QWidget * parent,const QString& sName,qreal value):KscdWidget(sName,parent)
 {
 // 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
 // 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());

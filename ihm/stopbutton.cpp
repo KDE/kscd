@@ -32,7 +32,7 @@
  */
 #include "stopbutton.h"
 
-StopButton::StopButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
+StopButton::StopButton(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
 {
 // 	QRectF rect = m_renderer->boundsOnElement(getId());
 // 	pix = QPixmap(rect.toRect().size());

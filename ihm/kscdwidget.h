@@ -61,7 +61,7 @@ protected:
 
 public:
 
-	KscdWidget(QString sName,QWidget * parent=0);
+	KscdWidget(const QString& sName,QWidget * parent=0);
 	virtual ~KscdWidget();
 	void setName(QString &);
 	QString getName() const;

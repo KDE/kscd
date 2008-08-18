@@ -32,7 +32,7 @@
  */
 #include "background.h"
 
-BackGround::BackGround(QWidget * parent,QString sName):KscdWidget(sName,parent)
+BackGround::BackGround(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
 {
 	m_move = false;
 	

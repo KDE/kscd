@@ -52,7 +52,7 @@ private:
 	int m_deplacement;
 	bool m_move;
 public:
-	BackGround(QWidget * parent=0, QString sName="kscdBack");
+	BackGround(QWidget * parent=0, const QString& sName="kscdBack");
 	virtual ~BackGround();
 
 private:

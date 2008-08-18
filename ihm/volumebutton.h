@@ -62,7 +62,7 @@ private:
 	qreal valueToAngle(qreal);
 
 public:
-	VolumeButton(QWidget * parent=0, QString sName="volume", qreal value=50.0);
+	VolumeButton(QWidget * parent=0, const QString& sName="volume", qreal value=50.0);
 	virtual ~VolumeButton();
 	void changeSkin(QString newPathSkin);
 	void mousePressEvent(QMouseEvent * event);

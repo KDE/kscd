@@ -34,7 +34,7 @@
 #include "titlePopUp.h"
 #include <QTimer>
 
-TitlePopUp::TitlePopUp(QWidget *parent, QString sName) : KscdWidget(sName,parent)
+TitlePopUp::TitlePopUp(QWidget *parent, const QString& sName) : KscdWidget(sName,parent)
 {
 //	m_region = new QRegion(x(),y(),x()+width(),y()+height(),QRegion::Ellipse);
 	move(parent->width()/2,parent->height()/2);

@@ -67,7 +67,7 @@ private:
 	QLabel * ejectStatus;
 	
 public:
-	Panel(QWidget * parent=0, QString sName="panel");
+	Panel(QWidget * parent=0, const QString& sName="panel");
 	virtual ~Panel();
 	QString getTitle() const;
 	QString getAlbum() const;

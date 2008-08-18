@@ -36,7 +36,7 @@
 #include <QPixmap>
 #include <QBitmap>
 
-KscdWidget::KscdWidget(QString sName,QWidget * parent):QWidget(parent)
+KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 {
 	m_state = "default";
  	m_name = sName;

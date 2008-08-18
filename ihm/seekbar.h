@@ -44,7 +44,7 @@ class SeekBar:public KscdWidget
 {
 	Q_OBJECT
 public:
-	SeekBar(QWidget * parent=0, QString sName="seekBar");
+	SeekBar(QWidget * parent=0, const QString& sName="seekBar");
 	virtual ~SeekBar();
 private:
 	void leaveEvent(QEvent* event);

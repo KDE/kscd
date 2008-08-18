@@ -32,7 +32,7 @@
  */
 #include "nextbutton.h"
 
-NextButton::NextButton(QWidget * parent,QString sName):KscdWidget(sName,parent)
+NextButton::NextButton(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
 {
 // 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
 // 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
