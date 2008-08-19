@@ -81,21 +81,21 @@ private:
 	void leaveEvent (QEvent * event);
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
-	void setTitleDisplay(QString & title);
+	void setTitleDisplay(const QString & title);
 
 
 public slots:
 	void setTime(qint64 pos);
 	void update_panel_label();
-	void setTextColor(QColor c);
-	void setTitle(QString & title);
-	void setAuthor(QString & author);
-	void setAlbum(QString & album);
-	void setVolume(QString & volume);
-	void setLoop(QString loop);
-	void setRandom(QString random);
-	void displayInfo(QString loop, QString random);
-	void setTextSizeFont(QFont font);
+	void setTextColor(const QColor& c);
+	void setTitle(const QString & title);
+	void setAuthor(const QString & author);
+	void setAlbum(const QString & album);
+	void setVolume(const QString & volume);
+	void setLoop(const QString& loop);
+	void setRandom(const QString& random);
+	void displayInfo(const QString& loop, const QString& random);
+	void setTextSizeFont(const QFont& font);
 	void setEjectAct(bool b);
 	void setVolumeDisplay(qreal volume);
 };

@@ -54,7 +54,7 @@ FinderSkin::FinderSkin(QWidget* parent):finderSkinUI(parent)
 	connect(buttonBox,SIGNAL(rejected()), SLOT(reject()));
 	connect(browserButton,SIGNAL(clicked()), SLOT(showBrowser()));
 	connect(checkOtherSkin,SIGNAL(clicked()),SLOT(showNewSkin()));
-	connect(comboBoxTitleSkin,SIGNAL(activated(QString)),SLOT(setNewSkinPath(QString)));
+	connect(comboBoxTitleSkin,SIGNAL(activated(const QString&)),SLOT(setNewSkinPath(const QString&)));
 }
 
 FinderSkin::~FinderSkin()
@@ -62,7 +62,7 @@ FinderSkin::~FinderSkin()
 	delete newSkin;
 }
 
-void FinderSkin::setNewSkinPath(QString & nameFile) {
+void FinderSkin::setNewSkinPath(const QString & nameFile) {
 	skinFound=true;
 	delete(newSkin);
 	newSkin=new QString(FinderSkin::pathSkins+nameFile);	

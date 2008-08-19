@@ -69,7 +69,7 @@ class FinderSkin : public finderSkinUI
 	/** clear the new skin**/
 	void showNewSkin();
 
-	void setNewSkinPath(QString &);
+	void setNewSkinPath(const QString &);
    signals:
 	/**Send new skin path*/ 
 	void pathSkinChanged(QString &);

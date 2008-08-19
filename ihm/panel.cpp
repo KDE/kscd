@@ -210,33 +210,33 @@ QString Panel::getRandom() const
 {
 	return l_random->text();
 }
-void Panel::setTitleDisplay(QString & title)
+void Panel::setTitleDisplay(const QString & title)
 {
 	l_title->setText(title);
 }
-void Panel::setTitle(QString & title)
+void Panel::setTitle(const QString & title)
 {
 	l_title->setText(title);
 	titleTrack->setText(title);
 }
-void Panel::setAuthor(QString & author)
+void Panel::setAuthor(const QString & author)
 {
 	l_author->setText(author);
 }
-void Panel::setAlbum(QString & album)
+void Panel::setAlbum(const QString & album)
 {
 
 	QString mess = album;
 	l_album->setText(mess);
 
 }
-void Panel::setVolume(QString & volume)
+void Panel::setVolume(const QString & volume)
 {
 	l_title->setText(volume);
 
 }
 
-void Panel::setTextSizeFont(QFont font){
+void Panel::setTextSizeFont(const QFont& font){
 	l_author->setFont(font);
 	l_title->setFont(font);
 	l_album->setFont(font);
@@ -247,7 +247,7 @@ void Panel::setTextSizeFont(QFont font){
 	volumeDisplay->setFont(font);
 }
 
-void Panel::setTextColor(QColor c){
+void Panel::setTextColor(const QColor& c){
 	color = c;
 	QColorGroup grp( QColor( c.red(), c.green(), c.blue() ), Qt::black, QColor( 128, 128, 128 ),
 	QColor( 64, 64, 64 ), Qt::black, Qt::darkGreen, Qt::black );
@@ -325,17 +325,17 @@ void Panel::setTime(qint64 pos)
 	l_time->setText(result);
 }
 
-void Panel::setLoop(QString loop)
+void Panel::setLoop(const QString& loop)
 {
 	l_loop->setText(loop);
 }
-void Panel::setRandom(QString random)
+void Panel::setRandom(const QString& random)
 {
 	l_random->setText(random);
 }
 
 //concatenation display info random and loop panel
-void Panel::displayInfo(QString loop, QString random)
+void Panel::displayInfo(const QString& loop, const QString& random)
 {
 	l_loop->setText(loop);
 	l_random->setText(random);
