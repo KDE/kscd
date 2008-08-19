@@ -193,11 +193,7 @@ void KSCD::setupActions()
 	connect(m_minimizeAction, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
 		
 	//quit
-	m_quitAction = m_actions->addAction("Quit");
-	m_quitAction->setText(i18n("Quit"));
-	addAction(m_quitAction);
-	m_quitAction->setShortcut(Qt::CTRL + Qt::Key_Q);
-	connect(m_quitAction, SIGNAL(triggered()), this, SLOT(quitShortcut()));
+	m_quitAction = KStandardAction::quit(this,SLOT(quitShortcut()),this);
 	
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	
