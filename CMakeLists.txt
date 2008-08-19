@@ -1,7 +1,7 @@
 project(kscd)
 
 include_directories(
-                ${CMAKE_CURRENT_SOURCE_DIR}/ihm
+                ${CMAKE_CURRENT_SOURCE_DIR}/gui
 		${CMAKE_SOURCE_DIR}/libkcddb
 		${CMAKE_BINARY_DIR}/libkcddb
 		${CMAKE_SOURCE_DIR}/libkcompactdisc
@@ -21,33 +21,33 @@ set(kscd_SRCS
 # 	configWidget.cpp 
 # 	cddbdlg.cpp 
 	mbmanager.cpp
-	ihm/kscdwindow.cpp 
-	ihm/kscdwidget.cpp 
-	ihm/ejectbutton.cpp 
-	ihm/stopbutton.cpp 
-	ihm/playbutton.cpp 
-	ihm/nextbutton.cpp 
-	ihm/previousbutton.cpp 
-	ihm/mutebutton.cpp
-	ihm/randombutton.cpp
-	ihm/loopbutton.cpp
-	ihm/tracklistbutton.cpp
-	ihm/volumebutton.cpp
-	ihm/panel.cpp
-	ihm/titlePopUp.cpp
-	ihm/tracklistdlg.cpp
-	ihm/background.cpp
-	ihm/closebutton.cpp
-	ihm/minimizebutton.cpp
-	ihm/finderSkin.cpp
-	ihm/seekslider.cpp
-	ihm/seekcursor.cpp
-	ihm/seekbar.cpp
+	gui/kscdwindow.cpp 
+	gui/kscdwidget.cpp 
+	gui/ejectbutton.cpp 
+	gui/stopbutton.cpp 
+	gui/playbutton.cpp 
+	gui/nextbutton.cpp 
+	gui/previousbutton.cpp 
+	gui/mutebutton.cpp
+	gui/randombutton.cpp
+	gui/loopbutton.cpp
+	gui/tracklistbutton.cpp
+	gui/volumebutton.cpp
+	gui/panel.cpp
+	gui/titlePopUp.cpp
+	gui/tracklistdlg.cpp
+	gui/background.cpp
+	gui/closebutton.cpp
+	gui/minimizebutton.cpp
+	gui/finderSkin.cpp
+	gui/seekslider.cpp
+	gui/seekcursor.cpp
+	gui/seekbar.cpp
 )
 
-file(GLOB resource_svg "ihm/skin/*.svg")
+file(GLOB resource_svg "gui/skin/*.svg")
 
-kde4_add_ui_files(kscd_SRCS ihm/trackListDlgUI.ui ihm/finderSkinUI.ui generalSettings.ui interfaceSettings.ui)
+kde4_add_ui_files(kscd_SRCS gui/trackListDlgUI.ui gui/finderSkinUI.ui generalSettings.ui interfaceSettings.ui)
 
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
 

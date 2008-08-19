@@ -44,7 +44,7 @@
 #include <phonon/phononnamespace.h>
 #include <phonon/seekslider.h>
 
-#include "ihm/kscdwindow.h"
+#include "gui/kscdwindow.h"
 #include "hwcontroler.h"
 #include "mbmanager.h"
 // #include "configWidget.h"
