@@ -186,11 +186,11 @@ void CDDBManager::CDDialogSelected()
 	QGridLayout * buttonsLayout = new QGridLayout;
 
 	// Save Button
-	QPushButton *savebutton = new QPushButton("Save");
+	QPushButton *savebutton = new QPushButton(i18n("Save"));
 	buttonsLayout->addWidget(savebutton, 0, 0);
 
 	//Cancel Button
-	QPushButton *cancelbutton = new QPushButton("Cancel");
+	QPushButton *cancelbutton = new QPushButton(i18n("Cancel"));
 	connect(cancelbutton,SIGNAL(clicked()),this,SLOT(CDDialogDone()));
 	buttonsLayout->addWidget(cancelbutton, 0, 1);
 
