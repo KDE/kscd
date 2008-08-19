@@ -34,9 +34,6 @@
 
 BackGround::BackGround(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
 {
-	m_move = false;
-	
-	
 }
 
 BackGround::~BackGround()

@@ -45,12 +45,6 @@
 class BackGround:public KscdWidget
 {
 	Q_OBJECT
-private:
-	int m_posX;
-	int m_posY;
-	QPoint mousePosition;
-	int m_deplacement;
-	bool m_move;
 public:
 	BackGround(QWidget * parent=0, const QString& sName="kscdBack");
 	virtual ~BackGround();
