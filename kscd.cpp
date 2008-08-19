@@ -766,8 +766,8 @@ void KSCD::actionButton(QString & name)
 		{
 			//createTrackDialog(m_cddbManager->getTrackList(),m_cddbManager->getDiscTitle());
 			QList<MBTrackInfo> list = m_MBManager->getTrackList();
-			QString * title = new QString(m_MBManager->getDiscInfo().Title);
-			createTrackDialog(list,*title);
+			QString title(m_MBManager->getDiscInfo().Title);
+			createTrackDialog(list,title);
 			kDebug()<<"open track window";
 		}
 		QString def = "default";
