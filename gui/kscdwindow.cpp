@@ -41,9 +41,9 @@
 using namespace Phonon;
 
 KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
-{	
+{
 	setWindowFlags(Qt::FramelessWindowHint);
-	
+
 	m_backG = new BackGround(this);
 	m_stopB = new StopButton(this);
 	m_playB = new PlayButton(this);
@@ -63,32 +63,32 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	m_stateTrackDialog = false;
 	m_trackDlgCreated = false;
  	m_trackDlg = new TrackListDlg(parent);
-	
+
 // 	m_prefB = new ConfigButton(this);
- 	
+
  	m_move = false;
 // 	createTrackWindow();
 
 	setMask( m_backG->getPix().mask() );
-	
-	
+
+
 	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
 
-	
-	connect(m_stopB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_playB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_prevB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_nextB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_ejectB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_muteB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_randB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_loopB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_trackB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_volumeB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+
+	connect(m_stopB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_playB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_prevB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_nextB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_ejectB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_muteB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_randB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_loopB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_trackB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_volumeB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),this,SIGNAL(actionVolume(qreal)));
 	connect(m_trackDlg,SIGNAL(itemClicked(int)),this,SLOT(doubleClickedEvent(int)));
-	connect(m_miniB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
-	connect(m_closeB,SIGNAL(buttonClicked(QString&)),this,SIGNAL(actionClicked(QString&)));
+	connect(m_miniB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_closeB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),m_panel,SLOT(setVolumeDisplay(qreal)));
 //	connect(m_prefB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 }
@@ -131,7 +131,7 @@ void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,QString  & alb
 {
 	QList<MBTrackInfo>::iterator it;
 	m_trackDlg->removeRowsTrackTable(trackList.size());
-	
+
 	m_stateTrackDialog = true;
 	m_trackDlg->setAlbumLbl(albumTitle);
  	int trackNumber = 1;
@@ -160,7 +160,7 @@ void KscdWindow::setNewSkin(QString & newS){
 	Prefs::setUrl(newS);
 	Prefs::self()->writeConfig();
 	kDebug () << "**** " << Prefs::url() << " ****";
-	
+
 	QSvgRenderer* rend = new QSvgRenderer(newS,this);
 	this->resize(rend->boundsOnElement("kscdBack_default").width(),
 			rend->boundsOnElement("kscdBack_default").height());
@@ -183,7 +183,7 @@ void KscdWindow::setNewSkin(QString & newS){
 	sslider->setMaximumWidth(m_bar->width());
 
 	sslider->setMinimumWidth(m_bar->width());
-	
+
 //  	(m_slider->cursor())->changeSkin(newS);
 // 	(m_slider->bar())->changeSkin(newS);
 
@@ -235,7 +235,7 @@ void KscdWindow::catchVolume(qreal value)
 	emit(actionVolume(value));
 }
 
-void KscdWindow::changePicture(QString & name,QString & state)
+void KscdWindow::changePicture(const QString & name,const QString & state)
 {
 	QString result;
 	QString def = "default";
@@ -291,7 +291,7 @@ void KscdWindow::changePicture(QString & name,QString & state)
 	{
 		result = "random";
 		def = "pressed";
-		m_randB->loadPicture(result,def);	
+		m_randB->loadPicture(result,def);
 	}
 	if(name == "loop")
 	{
@@ -354,7 +354,7 @@ void KscdWindow::setTime(qint64 pos){
 	m_panel->setTime(pos);
 // 	m_slider->setTime(pos);
 }
-void KscdWindow::panelInfo(QString & mess)
+void KscdWindow::panelInfo(const QString & mess)
 {
 	QString informationDisplay;
 	if(mess == "loop")
@@ -373,7 +373,7 @@ void KscdWindow::panelInfo(QString & mess)
 		//m_panel->setLoop("loop disc  ");
 		//informationDisplay = "loop disc  ";
 		m_panel->setLoop("loop disc  ");
-	}	
+	}
 	if(mess == "random")
 	{
 		//m_panel->setRandom("");

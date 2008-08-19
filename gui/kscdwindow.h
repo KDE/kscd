@@ -128,14 +128,14 @@ protected:
 
 	/** The state creation of the track dialog */
 	bool m_trackDlgCreated;
-	
-	
+
+
 public:
 	/**
  	* Constructor
 	*/
 	KscdWindow(QWidget * parent = 0);
-	
+
 	/**
 	 * Destructor
 	 */
@@ -149,17 +149,17 @@ public:
 public slots:
 	void catchButton(QString &);
 	void catchVolume(qreal);
-	void changePicture(QString &, QString &);
+	void changePicture(const QString &, const QString &);
 	void doubleClickedEvent(int);
 	void showArtistLabel(QString &);
 	void showTrackinfoLabel(QString &);
-	void panelInfo(QString &);
+	void panelInfo(const QString &);
 
 	/**
 	 * Show the finder skin dialog
 	 */
 	void makeFinderSkinDialog();
-	
+
 	/**
 	* Refresh skin
 	*/
@@ -169,7 +169,7 @@ public slots:
 	//void setTime(qint64 pos);
 
 signals:
-	void actionClicked(QString &);
+	void actionClicked(const QString &);
 	void actionVolume(qreal);
 	void trackClicked(int);
 

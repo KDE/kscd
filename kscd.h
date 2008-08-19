@@ -88,7 +88,7 @@ class KSCD : public KscdWindow, public KSessionManager {
 	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
 
 private:
-	HWControler* devices;	
+	HWControler* devices;
 	MBManager* m_MBManager;
 
 	bool mute;
@@ -96,9 +96,9 @@ private:
 	bool random;
 	bool looptrack;
 	bool loopdisc;
-	
+
 	QMenu *contextMenu;
-	
+
 
 	KAction* m_configureShortcutsAction;
 	KAction* m_configureAction;
@@ -129,28 +129,28 @@ private:
 //	Ui::fontSettings ui_font;
 
 	/**
-	 * Load the last settings 
+	 * Load the last settings
 	 */
 	void loadSettings();
-	
+
 public:
 	explicit KSCD(QWidget *parent = 0);
 	~KSCD();
-	
+
 	virtual bool saveState(QSessionManager& sm);
 	void writeSettings();
 	HWControler * getDevices() const;
-	
+
 // 	KCompactDisc* getCd(); // kept for CDDB compatibility
-	
+
 protected:
 	void setupActions();
 	void setupContextMenu();
-	
+
 
 signals:
-	void picture(QString&,QString&);
-	void infoPanel(QString&);
+	void picture(const QString&,const QString&);
+	void infoPanel(const QString&);
 	/* Popup signals */
 // 	void showTitlePopUp(QString, QString);
 // 	void hideTitlePopUp();
@@ -160,7 +160,7 @@ public slots:
 
 	void showContextMenu( const QPoint & );
 	//void selectSkinUrl();
-	
+
 	void restoreArtistLabel();
 	void restoreTrackinfoLabel();
 	void changeVolume(qreal);
@@ -177,8 +177,7 @@ public slots:
 	void volumeDownShortcut();
 	void quitShortcut();
 	void minimizeShortcut();
-	void actionButton(QString&);
-	void setShortcut(QString&, QString&);
+	void actionButton(const QString&);
 	void catchtime(qint64 pos);
 
 	//void setNewSkin(QString);

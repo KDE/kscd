@@ -41,13 +41,13 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 {
 	/** Hourglass */
 	setHourglass();
-  
+
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
-	
-	
-	
+
+
+
 	devices = new HWControler();
-	
+
 
 	sslider = new Phonon::SeekSlider(devices->getMedia(),this);
 // 	sslider->setMediaObject(devices->getMedia());
@@ -57,11 +57,11 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	sslider->show();
 
 	loadSettings();
-	
+
 	/** Music Brainz initialisation	*/
 	m_MBManager = new MBManager();
 	m_MBManager->discLookup();
-	
+
 	setupActions();
 	setupContextMenu();
 }
@@ -73,16 +73,16 @@ KSCD::~KSCD()
 }
 
 void KSCD::setupActions()
-{	
+{
 	m_actions = new KActionCollection(this);
 	m_actions->setConfigGroup("Configuration");
-	
+
 	m_configureShortcutsAction = m_actions->addAction(i18n("Configure Shortcuts..."));
 	m_configureShortcutsAction->setText(i18n("Configure Shortcuts..."));
 	addAction(m_configureShortcutsAction);
 	//m_configureShortcutsAction->setShortcut(Qt::Key_C);
 	connect(m_configureShortcutsAction, SIGNAL(triggered()), this, SLOT(configureShortcuts()));
-	
+
 
 
 
@@ -97,7 +97,7 @@ void KSCD::setupActions()
 	m_downloadAction->setText(i18n("Download Info"));
 	addAction(m_downloadAction);
 	connect(m_downloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
-	
+
 	//upload info
 	m_uploadAction = m_actions->addAction("Upload Info");
 	m_uploadAction->setText(i18n("Upload Info"));
@@ -185,18 +185,18 @@ void KSCD::setupActions()
 	m_muteAction->setText(i18n("Mute/Unmute"));
 	addAction(m_muteAction);
 	connect(m_muteAction, SIGNAL(triggered()), this, SLOT(muteShortcut()));
-	
+
 	//minimize
 	m_minimizeAction = m_actions->addAction("Minimize");
 	m_minimizeAction->setText(i18n("Minimize"));
 	addAction(m_minimizeAction);
 	connect(m_minimizeAction, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
-		
+
 	//quit
 	m_quitAction = KStandardAction::quit(this,SLOT(quitShortcut()),this);
-	
+
 	setContextMenuPolicy(Qt::CustomContextMenu);
-	
+
 
 
 	//Read saved settings
@@ -207,27 +207,27 @@ void KSCD::setupActions()
 	random = false;
 	looptrack = false;
 	loopdisc = false;
-	
+
 	/**
 	 * General
 	 */
 	// Connects UI with actions triggering
-	connect(this,SIGNAL(actionClicked(QString&)), this, SLOT(actionButton(QString&)));
-	connect(this,SIGNAL(picture(QString&,QString&)), this, SLOT(changePicture(QString&,QString&)));
-	
+	connect(this,SIGNAL(actionClicked(const QString&)), this, SLOT(actionButton(const QString&)));
+	connect(this,SIGNAL(picture(const QString&,const QString&)), this, SLOT(changePicture(const QString&,const QString&)));
+
 	// General connects
 	connect(this,SIGNAL(trackClicked(int)), this, SLOT(playTrack(int)));
 	connect(this,SIGNAL(actionVolume(qreal)), this, SLOT(changeVolume(qreal)));
 	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(catchtime(qint64)));
-	connect(this,SIGNAL(infoPanel(QString&)),this,SLOT(panelInfo(QString&)));
-	
+	connect(this,SIGNAL(infoPanel(const QString&)),this,SLOT(panelInfo(const QString&)));
+
 	// MB
 	connect(m_MBManager, SIGNAL(showArtistLabel(QString&)), this, SLOT(showArtistLabel(QString&)));
 	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString&)), this, SLOT(showTrackinfoLabel(QString&)));
-	
+
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 	connect(devices,SIGNAL(cdLoaded()),m_MBManager,SLOT(discLookup()));
-	
+
 	connect( this , SIGNAL( customContextMenuRequested( const QPoint &) ) , SLOT( showContextMenu( const QPoint &) ) );
 }
 
@@ -275,12 +275,12 @@ void KSCD::restoreTrackinfoLabel()
 	// If disc is inserted
 	int currentTrack = devices->getCurrentTrack();
 	if (devices->getCD()->isCdInserted()  && currentTrack > 0 )
-	{	
-                
+	{
+
 		title = QString("%1 - ").arg(currentTrack, 2, 10, QLatin1Char('0')) ;
 		title.append(m_MBManager->getTrackList()[currentTrack-1].Title);
 		length.append(m_MBManager->getTrackList()[currentTrack-1].Duration);
-		
+
 		showTrackinfoLabel(title);
 		m_popup = new TitlePopUp(this, "popup");
 	}
@@ -298,86 +298,6 @@ void KSCD::changeVolume(qreal value)
 void KSCD::configureShortcuts()
 {
 	KShortcutsDialog::configure(m_actions, KShortcutsEditor::LetterShortcutsAllowed, this, true);
-}
-
-void KSCD::setShortcut(QString & name, QString & key)
-{
-	kDebug()<<"SetShortcut, "<<name<<" : "<<key;
-	if (name == "Play/Pause")
-	{
-		m_playPauseAction->setShortcut(key);
-	}
-
-	if (name == "Stop")
-	{
-		m_stopAction->setShortcut(key);
-	}
-
-	if (name == "Next Track")
-	{
-		m_nextAction->setShortcut(key);
-	}
-
-	if (name == "Previous Track")
-	{
-		m_previousAction->setShortcut(key);
-	}
-
-	if (name == "Eject")
-	{
-		m_ejectAction->setShortcut(key);
-	}
-
-	if (name == "Random")
-	{
-		m_randomAction->setShortcut(key);
-	}
-
-	if (name == "Loop Track")
-	{
-		m_looptrackAction->setShortcut(key);
-	}
-
-	if (name == "Loop Disc")
-	{
-		m_loopdiscAction->setShortcut(key);
-	}
-
-	if (name == "Tracklist")
-	{
-		m_tracklistAction->setShortcut(key);
-	}
-
-	if (name == "Mute")
-	{
-		m_muteAction->setShortcut(key);
-	}
-
-	if (name == "Download Info")
-	{
-		m_downloadAction->setShortcut(key);
-	}
-
-	if (name == "CDDB Window")
-	{
-		m_CDDBWindowAction->setShortcut(key);
-	}
-	
-	if (name == "Volume Up")
-	{
-		m_volumeUpAction->setShortcut(key);
-	}
-	
-	if (name == "Volume Down")
-	{
-		m_volumeDownAction->setShortcut(key);
-	}
-
-	if (name == "Configure KsCD")
-	{
-		m_configureAction->setShortcut(key);
-	}
-
 }
 
 void KSCD::ejectShortcut()
@@ -539,7 +459,7 @@ void KSCD::playTrack(int track)
 /**
  * Link IHM with actions
  */
-void KSCD::actionButton(QString & name)
+void KSCD::actionButton(const QString & name)
 {
 
 	QString state = "over";
@@ -623,14 +543,14 @@ void KSCD::actionButton(QString & name)
 // 				m_slider->stop();
 // 				m_slider->start(devices->getTotalTime());
 				devices->play();
-				
+
 			}
 		}
 		emit(picture(name,state));
 	}
 	if(name=="previous")
 	{
-		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted()) 
+		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
 			QString result;
 			if(!devices->getCD()->isCdInserted()){
@@ -647,7 +567,7 @@ void KSCD::actionButton(QString & name)
 		{
 			devices->prevTrack();
 			restoreTrackinfoLabel();
-			
+
 			if((devices->getState() == StoppedState) || (devices->getState() == PausedState))
 			{
 				devices->stop(false);
@@ -831,12 +751,12 @@ void KSCD::optionsPreferences()
 	// Add the General Settings page
 	QWidget *generalSettingsDlg = new QWidget;
 	ui_general.setupUi(generalSettingsDlg);
-	
+
 	dialog->addPage(generalSettingsDlg, i18n("General"), "kscd");
-  
+
 	QWidget *interfaceSettingsDlg = new QWidget;
 	ui_interface.setupUi(interfaceSettingsDlg);
-	
+
 	//Filter on the skin url combo box
 	QString pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
 	QDir directory(pathSkins);
@@ -845,7 +765,7 @@ void KSCD::optionsPreferences()
 	directory.setNameFilters(filter);
 	QStringList list = directory.entryList();
 	ui_interface.kcfg_url->addItems(list);
-	
+
 	dialog->addPage(interfaceSettingsDlg, i18n("Appearance"), "fill-color");
 
 	connect(dialog, SIGNAL(settingsChanged( const QString &)), this, SLOT(updateSettings()));
@@ -898,7 +818,7 @@ int main( int argc, char *argv[] )
 	aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
 	aboutData.addCredit(ki18n("Amine Bouchikhi"), ki18n("Developer"));
 	aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
-    
+
 	KCmdLineArgs::init( argc, argv, &aboutData );
 
 	KCmdLineOptions options;
@@ -920,7 +840,7 @@ int main( int argc, char *argv[] )
 			  if (args->count() > 0)
 			  {
 				kscd.call( "setDevice",  QString(args->arg(0)));
-			  }  
+			  }
 			  if (args->isSet("start"))
 			  {
 				kscd.call("play");

@@ -52,7 +52,7 @@ KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 	{
 		setFixedSize(m_renderer->boundsOnElement(m_id).width(),
 				m_renderer->boundsOnElement(m_id).height());
-		
+
 		connect(this, SIGNAL(needRepaint()),this, SLOT(repaint()));
 		connect(this,SIGNAL(changePicture()),this,SLOT(update()));
 		setMouseTracking ( true );
@@ -91,7 +91,7 @@ QString KscdWidget::getId() const
  	return m_id;
  }
 
-void KscdWidget::loadPicture(QString & name,QString & state)
+void KscdWidget::loadPicture(const QString & name,const QString & state)
 {
 	m_id= name + "_" + state;
 	emit(changePicture());
@@ -100,9 +100,9 @@ void KscdWidget::loadPicture(QString & name,QString & state)
 
 void KscdWidget::paintEvent(QPaintEvent *event)
 {
-	
+
 	QPainter painter(this);
-	
+
 	if (m_renderer->elementExists(m_id))
 		m_renderer->render(&painter,m_id);
 }

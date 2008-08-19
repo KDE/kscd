@@ -68,7 +68,7 @@ public:
 	QString getState() const;
 	void setId(QString &,QString &);
 	QString getId() const;
-	void loadPicture(QString &,QString &);
+	void loadPicture(const QString &,const QString &);
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
 	void mousePressEvent(QMouseEvent * event);
@@ -83,7 +83,7 @@ public slots:
 signals:
 	void needRepaint();
 	void changePicture();
-	void buttonClicked(QString &);
+	void buttonClicked(const QString &);
 };
 
 #endif /*KSCDWIDGET_H_*/
