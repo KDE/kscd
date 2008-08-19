@@ -43,7 +43,7 @@ LoopButton::~LoopButton()
 {
 }
 
-void LoopButton :: mousePressEvent(QMouseEvent *event)
+void LoopButton::mousePressEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -58,7 +58,7 @@ void LoopButton :: mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void LoopButton :: mouseReleaseEvent(QMouseEvent *event)
+void LoopButton::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{

@@ -43,27 +43,27 @@ BackGround::~BackGround()
 {
 }
 
-void BackGround :: mousePressEvent(QMouseEvent *event)
+void BackGround::mousePressEvent(QMouseEvent *event)
 {
 	event->ignore();
 }
 
-void BackGround :: mouseReleaseEvent(QMouseEvent *event)
+void BackGround::mouseReleaseEvent(QMouseEvent *event)
 {
 	event->ignore();
 }
 
-void BackGround :: mouseMoveEvent(QMouseEvent * event)
+void BackGround::mouseMoveEvent(QMouseEvent * event)
 {
 	event->ignore();
 }
 
-void BackGround :: enterEvent (QEvent * event)
+void BackGround::enterEvent (QEvent * event)
 {
 	event->ignore();
 }
 
-void BackGround :: leaveEvent (QEvent * event)
+void BackGround::leaveEvent (QEvent * event)
 {
 	event->ignore();
 }

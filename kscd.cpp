@@ -235,7 +235,7 @@ void KSCD::setupActions()
 	connect( this , SIGNAL( customContextMenuRequested( const QPoint &) ) , SLOT( showContextMenu( const QPoint &) ) );
 }
 
-void KSCD :: setupContextMenu()
+void KSCD::setupContextMenu()
 {
 	contextMenu = new QMenu( this );
 	contextMenu->addAction(m_configureShortcutsAction);
@@ -245,7 +245,7 @@ void KSCD :: setupContextMenu()
 	contextMenu->addAction(m_quitAction);
 }
 
-void KSCD :: showContextMenu( const QPoint &p)
+void KSCD::showContextMenu( const QPoint &p)
 {
 	contextMenu->popup( mapToGlobal ( p ) );
 }
@@ -824,7 +824,7 @@ bool KSCD::saveState(QSessionManager& /*sm*/)
 	return true;
 }
 
-void KSCD :: optionsPreferences()
+void KSCD::optionsPreferences()
 {
 	if ( KConfigDialog::showDialog( i18n("Settings") ) )  {
 	        return;
@@ -858,7 +858,7 @@ void KSCD :: optionsPreferences()
 	dialog->show();
 }
 
-void KSCD :: updateSettings()
+void KSCD::updateSettings()
 {
 	m_panel->setTextColor(Prefs::textColor());
 	kDebug()<<"color config:"<<Prefs::textColor();
@@ -871,7 +871,7 @@ void KSCD :: updateSettings()
 	setNewSkin( skin );
 }
 
-void KSCD :: loadSettings()
+void KSCD::loadSettings()
 {
 	//setNewSkin( KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url() );
 	m_panel->setTextColor(Prefs::textColor());

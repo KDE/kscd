@@ -46,25 +46,25 @@ SeekCursor::~SeekCursor()
 {
 }
 
-int SeekCursor :: getStep() const
+int SeekCursor::getStep() const
 {
 	return m_step;
 }
 
-void SeekCursor :: setStep(qint64 time,int lenght)
+void SeekCursor::setStep(qint64 time,int lenght)
 {
 
 	m_step = ceil((SECOND_IN_MILLI * (float)lenght)/(float)time);
 	kDebug()<<"m_step:"<<m_step;
 }
 
-void SeekCursor :: init()
+void SeekCursor::init()
 {
 	m_posCurrent = m_posInit;
 	move(m_posCurrent,y());
 }
 
-void SeekCursor :: moveCursor(qreal pos)
+void SeekCursor::moveCursor(qreal pos)
 {
 	m_posCurrent = m_posCurrent + getStep();
 	move(m_posCurrent,y());

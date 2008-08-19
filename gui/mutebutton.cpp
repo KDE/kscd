@@ -43,7 +43,7 @@ MuteButton::~MuteButton()
 {
 }
 
-void MuteButton :: mousePressEvent(QMouseEvent *event)
+void MuteButton::mousePressEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -66,7 +66,7 @@ void MuteButton :: mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void MuteButton :: mouseReleaseEvent(QMouseEvent *event)
+void MuteButton::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{

@@ -274,7 +274,7 @@ void Panel::setEjectAct(bool b){
 	
 }
 
-void Panel :: mousePressEvent(QMouseEvent *event)
+void Panel::mousePressEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -286,7 +286,7 @@ void Panel :: mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void Panel :: mouseReleaseEvent(QMouseEvent *event)
+void Panel::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -298,12 +298,12 @@ void Panel :: mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
-void Panel :: enterEvent (QEvent * event)
+void Panel::enterEvent (QEvent * event)
 {
 	event->ignore();
 }
 
-void Panel :: leaveEvent (QEvent * event)
+void Panel::leaveEvent (QEvent * event)
 {
 	event->ignore();
 }

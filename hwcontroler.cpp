@@ -46,7 +46,7 @@
 
 using namespace Phonon;
 
-HWControler :: HWControler ()
+HWControler::HWControler ()
 {
 	setEjectActivated(false);
 	// in kscd starting, no loop option
@@ -102,18 +102,18 @@ HWControler::~HWControler ()
 }
 
 // TODO function to switch optical drive
-void HWControler :: selectCd(int cdNum)
+void HWControler::selectCd(int cdNum)
 {
 
 }
 
 // TODO function to switch audio output
-void HWControler :: selectSpeaker(int sNum)
+void HWControler::selectSpeaker(int sNum)
 {
 
 }
 
-void HWControler :: eject()
+void HWControler::eject()
 {
 	// if optical drive detected with a cd inside
 	if(!(selectedCd==-1))
@@ -122,7 +122,7 @@ void HWControler :: eject()
 	}
 }
 
-void HWControler :: play()
+void HWControler::play()
 {
 	if((selectedCd!=-1))
 	{
@@ -151,7 +151,7 @@ void HWControler :: play()
 		kDebug() << "No Drive detected!!!";
 	}
 }
-void HWControler :: nextTrack()
+void HWControler::nextTrack()
 {
 	if(!(selectedCd==-1))
 	{
@@ -177,7 +177,7 @@ void HWControler :: nextTrack()
 	}	
 
 }
-void HWControler :: prevTrack()
+void HWControler::prevTrack()
 {
 	if(!(selectedCd==-1))
 	{
@@ -202,7 +202,7 @@ void HWControler :: prevTrack()
 		}
 	}
 }
-void HWControler :: stop(bool restart)
+void HWControler::stop(bool restart)
 {
 	if(!(selectedCd==-1))
 	{
@@ -218,7 +218,7 @@ void HWControler :: stop(bool restart)
 		}
 	}
 }
-void HWControler :: pause()
+void HWControler::pause()
 {
 	if(!(selectedCd==-1))
 	{
@@ -228,7 +228,7 @@ void HWControler :: pause()
 		}
 	}
 }
-void HWControler :: mute(bool mute)
+void HWControler::mute(bool mute)
 {
 	if((selectedS!=-1))
 	{
@@ -236,7 +236,7 @@ void HWControler :: mute(bool mute)
 	}
 }
 
-qint64 HWControler :: getTotalTime ()const 
+qint64 HWControler::getTotalTime ()const 
 {
 	if(!(selectedCd==-1))
 	{
@@ -255,7 +255,7 @@ qint64 HWControler :: getTotalTime ()const
 		return -1;
 	}
 }
-qint64 HWControler :: getRemainingTime ()const 
+qint64 HWControler::getRemainingTime ()const 
 {
 	if(!(selectedCd==-1))
 	{
@@ -274,7 +274,7 @@ qint64 HWControler :: getRemainingTime ()const
 		return -1;
 	}
 }
-qreal HWControler :: getVolume()const 
+qreal HWControler::getVolume()const 
 {
 	if (selectedS == -1)
 	{
@@ -285,7 +285,7 @@ qreal HWControler :: getVolume()const
 		return speakers->volume();
 	}
 }
-void HWControler :: setVolume(qreal vol)
+void HWControler::setVolume(qreal vol)
 {
 	if (selectedS != -1)
 	{
@@ -473,7 +473,7 @@ void HWControler ::catchTitleChanged()
 }
 
 
-void HWControler :: setRandom(bool b)
+void HWControler::setRandom(bool b)
 {
 	random = b;
 	if (b) kDebug() << "Random Activated";
@@ -538,7 +538,7 @@ void HWControler ::setEjectActivated(bool b)
 	isEjectAtTheEndOfTheCdActivated = b;
 	kDebug() << "Eject at the end mode changed";
 }
-bool HWControler :: isEjectActivated()
+bool HWControler::isEjectActivated()
 {
 	return isEjectAtTheEndOfTheCdActivated;
 }

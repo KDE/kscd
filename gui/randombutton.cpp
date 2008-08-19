@@ -43,7 +43,7 @@ RandomButton::~RandomButton()
 {
 }
 
-void RandomButton :: mousePressEvent(QMouseEvent *event)
+void RandomButton::mousePressEvent(QMouseEvent *event)
 {
  	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
  	{
@@ -65,7 +65,7 @@ void RandomButton :: mousePressEvent(QMouseEvent *event)
  	}
 }
 
-void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
+void RandomButton::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -91,7 +91,7 @@ void RandomButton :: mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
-void RandomButton :: enterEvent (QEvent * event )
+void RandomButton::enterEvent (QEvent * event )
 {
 	if(m_name == "p_random")
 	{
@@ -107,7 +107,7 @@ void RandomButton :: enterEvent (QEvent * event )
 	}
 }
 
-void RandomButton :: leaveEvent (QEvent * event )
+void RandomButton::leaveEvent (QEvent * event )
 {
 	if(m_name == "p_random")
 	{

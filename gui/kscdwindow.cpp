@@ -118,16 +118,16 @@ KscdWindow::~KscdWindow()
 	delete m_finderSkin;
 }
 
-void KscdWindow :: closeTrackDialog()
+void KscdWindow::closeTrackDialog()
 {
 	kDebug()<<"Close Track Dialog";
 	m_stateTrackDialog = false;
 	m_trackDlg->hide();
 }
 
-// void KscdWindow :: clearTracklist()
+// void KscdWindow::clearTracklist()
 
-void KscdWindow :: createTrackDialog(QList<MBTrackInfo> & trackList,QString  & albumTitle)
+void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,QString  & albumTitle)
 {
 	QList<MBTrackInfo>::iterator it;
 	m_trackDlg->removeRowsTrackTable(trackList.size());
@@ -148,7 +148,7 @@ void KscdWindow :: createTrackDialog(QList<MBTrackInfo> & trackList,QString  & a
 	m_trackDlg->show();
 }
 
-void KscdWindow :: makeFinderSkinDialog()
+void KscdWindow::makeFinderSkinDialog()
 {
 	m_finderSkin->show();
 }
@@ -198,7 +198,7 @@ void KscdWindow::setNewSkin(QString & newS){
 }
 
 
-void KscdWindow :: doubleClickedEvent(int pos)
+void KscdWindow::doubleClickedEvent(int pos)
 {
 	kDebug()<<"signal recu\n"<<"pos clicked:"<<pos;
  	emit(trackClicked(pos));
@@ -224,13 +224,13 @@ void KscdWindow :: doubleClickedEvent(int pos)
 /**
  * Links treatments with the UI
  */
-void KscdWindow :: catchButton(QString & name)
+void KscdWindow::catchButton(QString & name)
 {
 	kDebug()<<"Catch :" << name;
 	emit(actionClicked(name));
 }
 
-void KscdWindow :: catchVolume(qreal value)
+void KscdWindow::catchVolume(qreal value)
 {
 	emit(actionVolume(value));
 }
@@ -388,7 +388,7 @@ void KscdWindow::panelInfo(QString & mess)
 	m_panel->displayInfo(m_panel->getLoop(),m_panel->getRandom());
 }
 
-void KscdWindow :: mousePressEvent(QMouseEvent *event)
+void KscdWindow::mousePressEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton)
 	{
@@ -403,13 +403,13 @@ void KscdWindow :: mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void KscdWindow :: mouseReleaseEvent(QMouseEvent *event)
+void KscdWindow::mouseReleaseEvent(QMouseEvent *event)
 {
 	releaseMouse();
 	m_move = false;
 }
 
-void KscdWindow :: mouseMoveEvent(QMouseEvent * event)
+void KscdWindow::mouseMoveEvent(QMouseEvent * event)
 {
 	if(m_move == true)
 	{

@@ -61,44 +61,44 @@ TrackListDlg::~TrackListDlg()
 	delete yearLbl;
 }
 
-void TrackListDlg :: setAlbumLbl(QString album)
+void TrackListDlg::setAlbumLbl(QString album)
 {
 	albumLbl->setText(album);
 }
 
-void TrackListDlg :: setYearLbl(QString year)
+void TrackListDlg::setYearLbl(QString year)
 {
 	yearLbl->setText(year);
 }
 
-void TrackListDlg :: addItemTrackTable(int row,int column,QString item)
+void TrackListDlg::addItemTrackTable(int row,int column,QString item)
 {
 	trackModel->setData(trackModel->index(row,column), item);
 }
 
-int TrackListDlg :: numberColumnTrackTable()
+int TrackListDlg::numberColumnTrackTable()
 {
 	return trackTable->columnCount();
 }
 
-void TrackListDlg :: addRowTrackTable(int row)
+void TrackListDlg::addRowTrackTable(int row)
 {
 	trackModel->insertRow(row);
 }
 
-bool TrackListDlg :: removeRowsTrackTable(int count)
+bool TrackListDlg::removeRowsTrackTable(int count)
 {
  	return trackModel->removeRows(0,count);
 }
 
-void TrackListDlg :: valueDoubleCliked(QTableWidgetItem* item)
+void TrackListDlg::valueDoubleCliked(QTableWidgetItem* item)
 {
 	kDebug()<<"Signal itemClicked emis";
 	kDebug()<<"valeur envoye:"<<item->row();
 	emit(itemClicked(item->row()+ 1));
 }
 
-void TrackListDlg :: moveTrackDialog(int x, int y)
+void TrackListDlg::moveTrackDialog(int x, int y)
 {
 	move(x,y);
 }

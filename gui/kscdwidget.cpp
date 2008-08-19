@@ -64,41 +64,41 @@ KscdWidget::~KscdWidget()
 	delete m_renderer;
 }
 
-void KscdWidget :: setName(QString & sName)
+void KscdWidget::setName(QString & sName)
 {
 	m_name = sName;
 }
 
 
-QString  KscdWidget :: getName() const
+QString  KscdWidget::getName() const
 {
 	return m_name;
 }
 
-QString  KscdWidget :: getState() const
+QString  KscdWidget::getState() const
 {
 	return m_state;
 }
 
-void KscdWidget :: setId(QString & name,QString & state)
+void KscdWidget::setId(QString & name,QString & state)
 {
 	m_id = name + "_" + state;
 }
 
 
-QString KscdWidget :: getId() const
+QString KscdWidget::getId() const
  {
  	return m_id;
  }
 
-void KscdWidget :: loadPicture(QString & name,QString & state)
+void KscdWidget::loadPicture(QString & name,QString & state)
 {
 	m_id= name + "_" + state;
 	emit(changePicture());
 	emit(needRepaint());
 }
 
-void KscdWidget :: paintEvent(QPaintEvent *event)
+void KscdWidget::paintEvent(QPaintEvent *event)
 {
 	
 	QPainter painter(this);
@@ -107,7 +107,7 @@ void KscdWidget :: paintEvent(QPaintEvent *event)
 		m_renderer->render(&painter,m_id);
 }
 
-void KscdWidget :: enterEvent (QEvent * event )
+void KscdWidget::enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = "over";
@@ -116,7 +116,7 @@ void KscdWidget :: enterEvent (QEvent * event )
 	setToolTip(m_name);
 }
 
-void KscdWidget :: leaveEvent (QEvent * event )
+void KscdWidget::leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = "default";
@@ -125,7 +125,7 @@ void KscdWidget :: leaveEvent (QEvent * event )
 }
 
 
-void KscdWidget :: mousePressEvent(QMouseEvent *event)
+void KscdWidget::mousePressEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -141,7 +141,7 @@ void KscdWidget :: mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
+void KscdWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -157,22 +157,22 @@ void KscdWidget :: mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
-QString KscdWidget :: getPath() const
+QString KscdWidget::getPath() const
 {
 	return m_path;
 }
 
-QRegion* KscdWidget :: bounds() const
+QRegion* KscdWidget::bounds() const
 {
 	return m_bounds;
 }
 
-QPixmap KscdWidget :: getPix() const
+QPixmap KscdWidget::getPix() const
 {
 	return pix;
 }
 
-void KscdWidget :: loadSkin(QString & skin)
+void KscdWidget::loadSkin(QString & skin)
 {
 //	Prefs::setUrl(skin);
 //	Prefs::self()->writeConfig();

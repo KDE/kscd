@@ -42,17 +42,17 @@ SeekSlider::~SeekSlider()
 {
 }
 
-SeekCursor* SeekSlider :: cursor() const
+SeekCursor* SeekSlider::cursor() const
 {
 	return m_cursor;
 }
 
-SeekBar* SeekSlider :: bar() const
+SeekBar* SeekSlider::bar() const
 {
 	return m_bar;
 }
 
-void SeekSlider :: init(qint64 time)
+void SeekSlider::init(qint64 time)
 {
 	setTime(time);
 	m_timeL->setDuration((int)time);
@@ -63,27 +63,27 @@ void SeekSlider :: init(qint64 time)
 	kDebug()<<"step slider"<<getStep();*/
 }
 
-void SeekSlider :: start(qint64 time)
+void SeekSlider::start(qint64 time)
 {
 	init(time);
 	m_timeL->start();
 	m_state = m_timeL->state();
 }
 
-void SeekSlider :: stop()
+void SeekSlider::stop()
 {
 	m_timeL->stop();
 	m_state = m_timeL->state();
 	m_cursor->init();
 }
 
-void SeekSlider :: pause()
+void SeekSlider::pause()
 {
 	m_timeL->setPaused(true);
 	m_state = m_timeL->state();
 }
 
-void SeekSlider :: resume(QTimeLine::State state)
+void SeekSlider::resume(QTimeLine::State state)
 {	
 	kDebug()<<"m_state"<<m_state;
 	if(m_state==QTimeLine::Paused && state==QTimeLine::Running)
@@ -93,7 +93,7 @@ void SeekSlider :: resume(QTimeLine::State state)
 	}
 }
 	
-void SeekSlider :: setTime(qint64 time)
+void SeekSlider::setTime(qint64 time)
 {
 	m_time = time;
 	kDebug()<<"time:"<<m_time;
@@ -112,29 +112,29 @@ void SeekSlider :: setTime(qint64 time)
 // 	kDebug()<<"SLIDER MOVEC:";
 // }
 
-void SeekSlider :: moveC()
+void SeekSlider::moveC()
 {
 
 		m_cursor->move(m_cursor->x()+m_step,m_cursor->y());
 }
-qint64 SeekSlider :: getTime() const
+qint64 SeekSlider::getTime() const
 {
 	return m_time;
 }
-void SeekSlider :: setTotalTime(qint64 time)
+void SeekSlider::setTotalTime(qint64 time)
 {
 	m_totalTime = time;
 	kDebug()<<"m_totalTime"<<m_totalTime;
 	setStep();
 }
 
-void  SeekSlider :: setStep()
+void  SeekSlider::setStep()
 {
 	m_step = round(float(m_totalTime)/float(m_bar->width()));
 	kDebug()<<"step:"<<m_step;
 }
 
-int SeekSlider :: getStep() const
+int SeekSlider::getStep() const
 {
 	return m_step;
 }

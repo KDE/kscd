@@ -77,7 +77,7 @@ void VolumeButton::changeSkin(QString newPathSkin)
 	}
 }
 
-void VolumeButton :: mousePressEvent(QMouseEvent *event)
+void VolumeButton::mousePressEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -93,7 +93,7 @@ void VolumeButton :: mousePressEvent(QMouseEvent *event)
 	}
 }
 // 
-void VolumeButton :: mouseMoveEvent(QMouseEvent *event)
+void VolumeButton::mouseMoveEvent(QMouseEvent *event)
 {
       if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()) && m_move == true){
 	    event->accept();
@@ -143,13 +143,13 @@ void VolumeButton :: mouseMoveEvent(QMouseEvent *event)
 }
 
 
-void VolumeButton :: mouseReleaseEvent(QMouseEvent *event)
+void VolumeButton::mouseReleaseEvent(QMouseEvent *event)
 {
 	releaseMouse();
 	m_move = false;
 }
 
-void VolumeButton :: wheelEvent(QWheelEvent *event)
+void VolumeButton::wheelEvent(QWheelEvent *event)
 {
 	qreal step = valueToAngle((event->delta()/120)*wheelStep);
 
@@ -183,7 +183,7 @@ qreal VolumeButton::valueToAngle(qreal value)
 {
 	return value*wheelStep ;
 }
-void VolumeButton :: paintEvent(QPaintEvent *event)
+void VolumeButton::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 	painter.translate((m_renderer->boundsOnElement(m_id).width())/2,
@@ -194,13 +194,13 @@ void VolumeButton :: paintEvent(QPaintEvent *event)
 	m_renderer->render(&painter,m_id);
 }
 
-void VolumeButton :: enterEvent (QEvent * event )
+void VolumeButton::enterEvent (QEvent * event )
 {
 	event->accept();
 	setToolTip(m_name);
 }
 
-void VolumeButton :: leaveEvent (QEvent * event )
+void VolumeButton::leaveEvent (QEvent * event )
 {
 	event->accept();
 }

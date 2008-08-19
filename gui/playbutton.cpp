@@ -43,7 +43,7 @@ PlayButton::~PlayButton()
 {
 }
 
-void PlayButton :: mousePressEvent(QMouseEvent *event)
+void PlayButton::mousePressEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
@@ -58,7 +58,7 @@ void PlayButton :: mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void PlayButton :: mouseReleaseEvent(QMouseEvent *event)
+void PlayButton::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft ()))
 	{
