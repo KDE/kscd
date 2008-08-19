@@ -84,7 +84,7 @@ public:
 	/** Returns the disc information */
 	DiscInfo getDiscInfo() const { return this->m_discInfo; } 
 	QList <MBTrackInfo> getTrackList() const { return this->m_trackList; }
-	bool isValidInfo() { return this->m_validInfo; }
+	bool isValidInfo() const { return this->m_validInfo; }
 	
 public slots:
 	/** Gets information about the disc inserted */

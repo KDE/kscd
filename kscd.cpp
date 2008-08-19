@@ -918,15 +918,19 @@ int main( int argc, char *argv[] )
 		if (args->count() > 0 || args->isSet("start"))
 		{
 			QDBusInterface kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
+                        if(kscd.isValid())
+                        {
             // Forward the command line args to the running instance.
-			if (args->count() > 0)
-			{
+			  if (args->count() > 0)
+			  {
 				kscd.call( "setDevice",  QString(args->arg(0)));
-			}
-			if (args->isSet("start"))
-			{
+			  }  
+			  if (args->isSet("start"))
+			  {
 				kscd.call("play");
-			}
+			  }
+                        }
+                args->clear();
 		}
 		exit(0);
 	}
