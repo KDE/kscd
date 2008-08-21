@@ -43,28 +43,7 @@
 class Panel:public KscdWidget
 {
 	Q_OBJECT
-private:
-	QLabel * volumeDisplay;
-	QTimer * timer;
-	QGridLayout * vbl_layout;
-	QGridLayout * vbl_layoutIntern;
-	QLabel * l_title;
-	QLabel * l_test;
-	int index;
-	int timerVolume;
-	QColor color;
-	QLabel * l_author;
-	QLabel * titleTrack;
-	QLabel * l_album;
-	QLabel * l_playing_state;
-	QLabel * l_volume;
-	QLabel * l_time;
-	QLabel * l_loop;
-	QLabel * l_random;
-	QLabel * l_info;
-	QLabel * textSize;
-	QLabel * ejectStatus;
-	
+
 public:
 	Panel(QWidget * parent=0, const QString& sName="panel");
 	virtual ~Panel();
@@ -75,6 +54,7 @@ public:
 	QString getLoop() const;
 	QString getRandom() const;
 	QString getInfo() const;
+
 private:
 	void enterEvent (QEvent * event);
 	void leaveEvent (QEvent * event);
@@ -97,5 +77,26 @@ public slots:
 	void setTextSizeFont(const QFont& font);
 	void setEjectAct(bool b);
 	void setVolumeDisplay(qreal volume);
+
+private:
+	QLabel * volumeDisplay;
+	QGridLayout * vbl_layout;
+	QGridLayout * vbl_layoutIntern;
+	QLabel * l_title;
+	QLabel * l_test;
+	int index;
+	int timerVolume;
+	QColor color;
+	QLabel * l_author;
+	QLabel * titleTrack;
+	QLabel * l_album;
+	QLabel * l_playing_state;
+	QLabel * l_volume;
+	QLabel * l_time;
+	QLabel * l_loop;
+	QLabel * l_random;
+	QLabel * l_info;
+	QLabel * textSize;
+	QLabel * ejectStatus;
 };
-#endif 
+#endif

@@ -5,6 +5,7 @@
  * Copyright (c) 2002-2003 Aaron J. Seigo <aseigo@kde.org>
  * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
  * Copyright (c) 2003-2006 Richard Lärkäng <nouseforaname@home.se>
+ * Copyright (c) 2008 Laurent Montel <montel@kde.org>
  *
  * --------------
  * ISI KsCD Team :
@@ -42,7 +43,7 @@ Panel::Panel(QWidget * parent, const QString& sName):KscdWidget(sName,parent)
 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
 // 	m_bounds=new QRegion(pix.mask());
 
-	setAutoFillBackground(true); 
+	setAutoFillBackground(true);
 	QPalette p_panelColor(Qt::transparent);
 	setPalette(p_panelColor);
 	vbl_layout = new QGridLayout();
@@ -72,7 +73,7 @@ Panel::Panel(QWidget * parent, const QString& sName):KscdWidget(sName,parent)
 	vbl_layout->addWidget(l_time, 5, 0);
 	setLayout(vbl_layout);
 
-	QTimer * timer = new QTimer ();
+	QTimer * timer = new QTimer (this);
 	timer->setSingleShot(false);
 	connect(timer,SIGNAL(timeout()),this,SLOT(update_panel_label()));
 	timer->start(150);
@@ -82,7 +83,7 @@ void Panel::update_panel_label(){
 	timerVolume=timerVolume-1;
 	if(timerVolume < 0)
 	{
-		volumeDisplay->setText("");
+		volumeDisplay->clear();
 	}
 	if(l_title->text().count()>0)
 	{
@@ -146,17 +147,17 @@ void Panel::update_panel_label(){
 		{
 			l_title->setText(titleTrack->text());
 		}
-		
+
 		// if the size is lower than the size of the panel
 		while(l_title->text().count()< addSpace)
 		{
 			//add  " " to have the same size that the panel
 			l_title->setText(l_title->text()+" ");
 		}
-		
+
 		//recup the first letter
 		QChar c = l_title->text().data()[0];
-		
+
 		//create a new data
 		QString data;
 		for(int i = 1; i <l_title->text().count(); i++)
@@ -171,7 +172,6 @@ void Panel::update_panel_label(){
 
 Panel::~Panel()
 {
-	delete 	timer;
 	delete vbl_layout;
 	delete l_title;
 	delete ejectStatus;
@@ -268,9 +268,9 @@ void Panel::setEjectAct(bool b){
 	}
 	else
 	{
-		ejectStatus->setText("");
-	} 
-	
+		ejectStatus->clear();
+	}
+
 }
 
 void Panel::mousePressEvent(QMouseEvent *event)
@@ -347,8 +347,7 @@ QString Panel::getInfo() const
 void Panel::setVolumeDisplay(qreal volume)
 {
 	timerVolume = 20;
-	int q = volume;
 	QString s;
-	s = "<p align=right>"+s.number(q)+"</p>";
+	s = QString("<p align=right>%1</p>").arg(volume);
 	volumeDisplay->setText(s);
 }
