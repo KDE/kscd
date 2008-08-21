@@ -43,8 +43,8 @@ Panel::Panel(QWidget * parent, const QString& sName):KscdWidget(sName,parent)
 // 	m_bounds=new QRegion(pix.mask());
 
 	setAutoFillBackground(true); 
-	p_panelColor= new QPalette(Qt::transparent);
-	setPalette(*p_panelColor);
+	QPalette p_panelColor(Qt::transparent);
+	setPalette(p_panelColor);
 	vbl_layout = new QGridLayout();
 	vbl_layout->setVerticalSpacing(1);
 
@@ -174,7 +174,6 @@ Panel::~Panel()
 	delete 	timer;
 	delete vbl_layout;
 	delete l_title;
-	delete p_panelColor;
 	delete ejectStatus;
 	delete l_author;
 	delete l_album;

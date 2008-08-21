@@ -53,7 +53,6 @@ private:
 	int index;
 	int timerVolume;
 	QColor color;
-	const QPalette * p_panelColor;
 	QLabel * l_author;
 	QLabel * titleTrack;
 	QLabel * l_album;
