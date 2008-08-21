@@ -45,20 +45,6 @@
 class KscdWidget:public QWidget
 {
 	Q_OBJECT
-
-protected:
-	QRegion *m_bounds;
-	QPixmap pix;
-	QString m_state;
-	QString m_name;
-	QString m_file;
-	QString m_path;
-	QString m_id;
-	QString m_baseName;
-	QSvgRenderer *m_renderer;
-
-	void paintEvent(QPaintEvent *event);
-
 public:
 
 	KscdWidget(const QString& sName,QWidget * parent=0);
@@ -78,12 +64,29 @@ public:
 	QPixmap getPix() const;
 	void rotation(qreal);
 
-public slots:
-	void loadSkin(QString &);
+protected:
+	void paintEvent(QPaintEvent *event);
+
+public:
+	void loadSkin(const QString &);
+
 signals:
 	void needRepaint();
 	void changePicture();
 	void buttonClicked(const QString &);
+
+protected:
+	QRegion *m_bounds;
+	QString m_state;
+	QString m_name;
+	QString m_id;
+	QSvgRenderer *m_renderer;
+private:
+	QPixmap pix;
+	QString m_file;
+	QString m_path;
+	QString m_baseName;
+
 };
 
 #endif /*KSCDWIDGET_H_*/

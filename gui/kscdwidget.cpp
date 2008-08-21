@@ -43,8 +43,7 @@ KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 	m_baseName = m_name;
 	m_id = m_name + "_" + m_state;
 
-// 	Prefs::setSkinChooser(KStandardDirs::installPath("data") + "/kscd/skin/default.svg");
-	m_path = /*KStandardDirs::installPath("data") + "/kscd/skin/default.svg";*/Prefs::url();
+	m_path = Prefs::url();
 
 	m_renderer = new QSvgRenderer(this);
 	loadSkin(m_path);
@@ -62,6 +61,7 @@ KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 KscdWidget::~KscdWidget()
 {
 	delete m_renderer;
+        delete m_bounds;
 }
 
 void KscdWidget::setName(QString & sName)
@@ -172,10 +172,8 @@ QPixmap KscdWidget::getPix() const
 	return pix;
 }
 
-void KscdWidget::loadSkin(QString & skin)
+void KscdWidget::loadSkin(const QString & skin)
 {
-//	Prefs::setUrl(skin);
-//	Prefs::self()->writeConfig();
 	QString newId = m_baseName + "_default";
 	m_path = skin;
 	m_renderer->load(skin);
