@@ -50,66 +50,66 @@ class trackListDlgUI : public QDialog, public Ui::trackListDlgUI
 
 class TrackListDlg : public trackListDlgUI
 {
-   Q_OBJECT
+    Q_OBJECT
 
-	private:
-		/** Table view instance for the trackTable */
-		QTableView* trackTableView ;
+private:
+    /** Table view instance for the trackTable */
+    QTableView* trackTableView ;
 
-		QAbstractItemModel* trackModel;
-	public:
-		/** Create an instance of TrackListDlg */
-		TrackListDlg(QWidget* parent = 0);
-	
-		/** Destroy an instance of TrackListDlg */
-		~TrackListDlg();
-	
-		/** Modify the text of the album label
-		* @return void
-		**/
-		void setAlbumLbl(QString);
-		
-		/** Modify the text of the year label
-		* @return void
-		**/
-		void setYearLbl(QString);
+    QAbstractItemModel* trackModel;
+public:
+    /** Create an instance of TrackListDlg */
+    TrackListDlg(QWidget* parent = 0);
 
-		/** Add a row to the track table
-		* @return void
-		**/
-		void addItemTrackTable(int,int,QString);
-		
-		/** Return the number of column of the track table
-		* @return int
-		**/
-		int numberColumnTrackTable();
+    /** Destroy an instance of TrackListDlg */
+    ~TrackListDlg();
 
-		/** Add a row to the track table
-		* @return void
-		**/
-		void addRowTrackTable(int);
+    /** Modify the text of the album label
+     * @return void
+     **/
+    void setAlbumLbl(const QString&);
 
-		/** Remove all rows to the track table
-		* @return void
-		**/
-		bool removeRowsTrackTable(int count);
+    /** Modify the text of the year label
+     * @return void
+     **/
+    void setYearLbl(const QString&);
 
-		/** Move the track dialog
-		* @return void
-		**/
-		void moveTrackDialog(int, int);
+    /** Add a row to the track table
+     * @return void
+     **/
+    void addItemTrackTable(int,int,const QString&);
+
+    /** Return the number of column of the track table
+     * @return int
+     **/
+    int numberColumnTrackTable() const;
+
+    /** Add a row to the track table
+     * @return void
+     **/
+    void addRowTrackTable(int);
+
+    /** Remove all rows to the track table
+     * @return void
+     **/
+    bool removeRowsTrackTable(int count);
+
+    /** Move the track dialog
+     * @return void
+     **/
+    void moveTrackDialog(int, int);
 
 // 	private:
 // 		void closeEvent( QCloseEvent * event );
-	public slots:
-		/** Mouse double click event on a row of the track table
-		* @return void
-		**/
-		void valueDoubleCliked(QTableWidgetItem*);
+public slots:
+    /** Mouse double click event on a row of the track table
+     * @return void
+     **/
+    void valueDoubleCliked(QTableWidgetItem*);
 
-	signals:
-		/** Send the postion of the clicked item**/
-		void itemClicked(int);
+signals:
+    /** Send the postion of the clicked item**/
+    void itemClicked(int);
 };
 
 #endif // TRACKLISTDLG_H

@@ -35,21 +35,14 @@
 
 TrackListDlg::TrackListDlg(QWidget * parent):trackListDlgUI(parent)
 {
-// 	setWindowFlags(Qt::WindowShadeButtonHint);
-// 	kDebug()<<"parent height:"<<parent->height();
-// 	QPoint point = new QPoint(0,parent->height());
-// 	mapFrom(parent,*point);
-	kDebug()<<"width:"<<width();
-	kDebug()<<"height:"<<height();
-	trackTableView = trackTable;
-	trackModel = trackTableView->model();
-	trackTableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-	trackTableView->verticalHeader()->hide();
+    trackTableView = trackTable;
+    trackModel = trackTableView->model();
+    trackTableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    trackTableView->verticalHeader()->hide();
 
-		setMinimumHeight(0);
-setSizeIncrement ( 0, 50 );
-	connect(trackTable,SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
-		this,SLOT(valueDoubleCliked(QTableWidgetItem*)));
+    setSizeIncrement ( 0, 50 );
+    connect(trackTable,SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
+            this,SLOT(valueDoubleCliked(QTableWidgetItem*)));
 }
 
 TrackListDlg::~TrackListDlg()
@@ -61,22 +54,22 @@ TrackListDlg::~TrackListDlg()
 	delete yearLbl;
 }
 
-void TrackListDlg::setAlbumLbl(QString album)
+void TrackListDlg::setAlbumLbl(const QString& album)
 {
 	albumLbl->setText(album);
 }
 
-void TrackListDlg::setYearLbl(QString year)
+void TrackListDlg::setYearLbl(const QString& year)
 {
 	yearLbl->setText(year);
 }
 
-void TrackListDlg::addItemTrackTable(int row,int column,QString item)
+void TrackListDlg::addItemTrackTable(int row,int column,const QString& item)
 {
 	trackModel->setData(trackModel->index(row,column), item);
 }
 
-int TrackListDlg::numberColumnTrackTable()
+int TrackListDlg::numberColumnTrackTable() const
 {
 	return trackTable->columnCount();
 }
@@ -93,8 +86,6 @@ bool TrackListDlg::removeRowsTrackTable(int count)
 
 void TrackListDlg::valueDoubleCliked(QTableWidgetItem* item)
 {
-	kDebug()<<"Signal itemClicked emis";
-	kDebug()<<"valeur envoye:"<<item->row();
 	emit(itemClicked(item->row()+ 1));
 }
 
