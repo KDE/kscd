@@ -117,12 +117,6 @@ protected:
 	 */
 	void createTrackDialog(QList<MBTrackInfo> & trackList,QString & albumTitle);
 
-	 /**
-	 * Close the track list dialog
-	 */
-	void closeTrackDialog();
-
-
 	/** The dialog track state : true = visible / false = hide */
 	bool m_stateTrackDialog;
 
@@ -167,6 +161,11 @@ public slots:
 
 	void showArtistAlbum(QString &);
 	//void setTime(qint64 pos);
+
+    /**
+	 * Close the track list dialog
+	 */
+	void closeTrackDialog();
 
 signals:
 	void actionClicked(const QString &);

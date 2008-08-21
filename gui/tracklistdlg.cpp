@@ -32,6 +32,7 @@
  */
 #include "tracklistdlg.h"
 #include <QHeaderView>
+#include <kdebug.h>
 
 TrackListDlg::TrackListDlg(QWidget * parent):trackListDlgUI(parent)
 {
@@ -47,11 +48,16 @@ TrackListDlg::TrackListDlg(QWidget * parent):trackListDlgUI(parent)
 
 TrackListDlg::~TrackListDlg()
 {
-	delete trackTableView;
-	delete trackModel;
-	delete trackTable;
-	delete albumLbl;
-	delete yearLbl;
+    delete trackTableView;
+    delete trackModel;
+    delete trackTable;
+    delete albumLbl;
+    delete yearLbl;
+}
+
+void TrackListDlg::closeEvent( QCloseEvent * )
+{
+    emit trackListClosed();
 }
 
 void TrackListDlg::setAlbumLbl(const QString& album)

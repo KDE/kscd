@@ -99,8 +99,8 @@ public:
      **/
     void moveTrackDialog(int, int);
 
-// 	private:
-// 		void closeEvent( QCloseEvent * event );
+private:
+    void closeEvent( QCloseEvent * event );
 public slots:
     /** Mouse double click event on a row of the track table
      * @return void
@@ -110,6 +110,8 @@ public slots:
 signals:
     /** Send the postion of the clicked item**/
     void itemClicked(int);
+    void trackListClosed();
+
 };
 
 #endif // TRACKLISTDLG_H
