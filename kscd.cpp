@@ -783,7 +783,11 @@ void KSCD::updateSettings()
 	devices->setEjectActivated(Prefs::ejectOnFinish());
 	kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
 	m_panel->setEjectAct( Prefs::ejectOnFinish() );
-	QString skin = KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url();
+        QString skin;
+        if(Prefs::url().startsWith('/'))
+            skin = Prefs::url();
+        else
+	    skin = KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url();
 	setNewSkin( skin );
 }
 
