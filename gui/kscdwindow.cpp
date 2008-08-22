@@ -360,12 +360,11 @@ void KscdWindow::panelInfo(const QString & mess)
 	QString informationDisplay;
 	if(mess == "loop")
 	{
-		m_panel->setLoop("");
-		//m_panel->setLoop("");
-	}
+		m_panel->setLoop("" );
+        }
 	if(mess == "looptrack")
 	{
-		m_panel->setLoop("loop track  ");
+		m_panel->setLoop(i18n( "loop track  " ));
 		//m_panel->setLoop("loop track  ");
 		//informationDisplay = "loop track  ";
 	}
@@ -373,7 +372,7 @@ void KscdWindow::panelInfo(const QString & mess)
 	{
 		//m_panel->setLoop("loop disc  ");
 		//informationDisplay = "loop disc  ";
-		m_panel->setLoop("loop disc  ");
+		m_panel->setLoop(i18n( "loop disc  " ));
 	}
 	if(mess == "random")
 	{
@@ -384,7 +383,7 @@ void KscdWindow::panelInfo(const QString & mess)
 	{
 		//m_panel->setRandom("random");
 		//informationDisplay += "random";
-		m_panel->setRandom("random");
+		m_panel->setRandom(i18n( "random" ));
 	}
 	m_panel->displayInfo(m_panel->getLoop(),m_panel->getRandom());
 }
