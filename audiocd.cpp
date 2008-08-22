@@ -41,11 +41,12 @@
 using namespace Phonon;
 AudioCD::AudioCD()
 {
-cdDrive = NULL;
-cd = NULL;
-block = NULL;
-src = NULL;
+    cdDrive = NULL;
+    cd = NULL;
+    block = NULL;
+    src = NULL;
 }
+
 AudioCD::AudioCD(Solid::Device aCd)
 {
 
@@ -55,7 +56,7 @@ AudioCD::AudioCD(Solid::Device aCd)
 
 	// get the opticaldrive
 	cdDrive=aCd.as<Solid::OpticalDrive>();
-	
+
 	connect(cdDrive,SIGNAL(ejectDone(Solid::ErrorType, QVariant, const QString &)),this,SLOT(catchEjectPressed()));
 	connect(bell,SIGNAL(deviceAdded(const QString)),this,SLOT(reloadCD()));
 
@@ -115,7 +116,7 @@ QString AudioCD::getCdPath() const
 {
 	return block->device();
 }
-bool AudioCD::isCdInserted()
+bool AudioCD::isCdInserted() const
 {
 	return (cd!=NULL);
 }
@@ -157,7 +158,7 @@ void AudioCD::reloadCD()
 			}
 		}
 	}
-	
+
 }
 QString AudioCD::signature() const{
 	return odsign.udi();

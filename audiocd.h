@@ -57,8 +57,8 @@ class AudioCD: public QObject
 		Solid::OpticalDrive * getCdDrive() const;
 		Solid::OpticalDisc * getCd() const;
 		Phonon::MediaSource * getMediaSource() const;
-		QString getCdPath() const ;
-		bool isCdInserted();
+		QString getCdPath() const;
+		bool isCdInserted() const;
 		QString signature() const;
 
 	public slots:
