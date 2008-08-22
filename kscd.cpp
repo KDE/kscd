@@ -290,7 +290,7 @@ void KSCD::restoreTrackinfoLabel()
 }
 void KSCD::changeVolume(qreal value)
 {
-	kDebug()<<"changeVolume enter "<<value;
+	//kDebug()<<"changeVolume enter "<<value;
 	devices->setVolume(value);
 }
 
