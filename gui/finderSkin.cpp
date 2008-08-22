@@ -39,18 +39,17 @@ QString FinderSkin::pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/"
  */
 FinderSkin::FinderSkin(QWidget* parent):finderSkinUI(parent)
 {
-	newSkin= new QString();
 	skinFound=false;
-	
+
 	QDir directory(FinderSkin::pathSkins);
-	
+
 	QStringList filter;
 	filter<<"*.svg";
 	directory.setNameFilters(filter);
 	QStringList list = directory.entryList();
 	comboBoxTitleSkin->addItems(list);
 
-	connect(buttonBox,SIGNAL(accepted()), SLOT(accept())); 
+	connect(buttonBox,SIGNAL(accepted()), SLOT(accept()));
 	connect(buttonBox,SIGNAL(rejected()), SLOT(reject()));
 	connect(browserButton,SIGNAL(clicked()), SLOT(showBrowser()));
 	connect(checkOtherSkin,SIGNAL(clicked()),SLOT(showNewSkin()));
@@ -59,13 +58,11 @@ FinderSkin::FinderSkin(QWidget* parent):finderSkinUI(parent)
 
 FinderSkin::~FinderSkin()
 {
-	delete newSkin;
 }
 
 void FinderSkin::setNewSkinPath(const QString & nameFile) {
 	skinFound=true;
-	delete(newSkin);
-	newSkin=new QString(FinderSkin::pathSkins+nameFile);	
+	newSkin=FinderSkin::pathSkins+nameFile;
 }
 
 void FinderSkin::showNewSkin(){
@@ -86,36 +83,36 @@ void FinderSkin::showNewSkin(){
 
 void FinderSkin::accept(){
 	if(skinFound){
-		emit(pathSkinChanged(*newSkin));
+		emit(pathSkinChanged(newSkin));
 	}
 	skinFound=false;
-	newSkin->clear();
+	newSkin.clear();
 	lTitleSkin->clear();
 	lTitleSkin->setText(i18n("Choose a new skin"));
 	this->hide();
-	
+
 }
 
 void FinderSkin::reject(){
 	skinFound=false;
-	newSkin->clear();
+	newSkin.clear();
 	lTitleSkin->clear();
 	lTitleSkin->setText(i18n("Choose a new skin"));
 	this->hide();
 }
 
 void FinderSkin::showBrowser(){
+    //TODO /home .???? portable ?
 	QFileDialog fileDlg(this,i18n("Find a new skin"), "/home", NULL);
 	fileDlg.setFileMode(QFileDialog::ExistingFile);
 	fileDlg.setFilter(i18n("SVG Files (*.svg)"));
 	fileDlg.setViewMode(QFileDialog::Detail);
 	QStringList fileNames;
 	if(fileDlg.exec()) fileNames= fileDlg.selectedFiles();
-	
+
 	if(!fileNames.empty()){
 		skinFound=true;
-		delete(newSkin);
-		newSkin=new QString(fileNames.first());	
+		newSkin=fileNames.first();
 		lTitleSkin->setText(((fileNames.first()).split("/")).back());
 	}
 }

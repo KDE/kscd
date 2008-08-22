@@ -45,9 +45,9 @@ class FinderSkin : public finderSkinUI
 {
    Q_OBJECT
    private:
-	QString * newSkin;
+	QString newSkin;
 	bool skinFound;
-	
+
 
    public:
 
@@ -71,7 +71,7 @@ class FinderSkin : public finderSkinUI
 
 	void setNewSkinPath(const QString &);
    signals:
-	/**Send new skin path*/ 
+	/**Send new skin path*/
 	void pathSkinChanged(QString &);
 
 };
