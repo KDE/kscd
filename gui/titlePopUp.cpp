@@ -36,12 +36,9 @@
 
 TitlePopUp::TitlePopUp(QWidget *parent, const QString& sName) : KscdWidget(sName,parent)
 {
-//	m_region = new QRegion(x(),y(),x()+width(),y()+height(),QRegion::Ellipse);
 	move(parent->width()/2,parent->height()/2);
 
 	m_layout = new QGridLayout;
-//
-//	resize(296, 64);
 /*	resize(300,64);*/
 
 // 	kDebug() << "size : " << size();
