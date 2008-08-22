@@ -23,7 +23,6 @@
  *
  */
 #include "kscd.h"
-#include "gui/configwindow.h"
 #include <QSplashScreen>
 #include <QPixmap>
 #include <QStringList>

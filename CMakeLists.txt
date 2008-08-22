@@ -18,7 +18,6 @@ set(kscd_SRCS
 	hwcontroler.cpp 
 	audiocd.cpp 
 # 	bwlednum.cpp 
-# 	configWidget.cpp 
 # 	cddbdlg.cpp 
 	mbmanager.cpp
 	gui/kscdwindow.cpp 

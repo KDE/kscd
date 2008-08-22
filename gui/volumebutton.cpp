@@ -35,9 +35,6 @@
 
 VolumeButton::VolumeButton(QWidget * parent,const QString& sName,qreal value):KscdWidget(sName,parent)
 {
-// 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
-// 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());
-// 	m_bounds=new QRegion(pix.mask());
 	m_vValue = value;
 	m_angle = valueToAngle(m_vValue);
 	m_centerX = width()/2;
