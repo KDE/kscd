@@ -40,12 +40,12 @@ TitlePopUp::TitlePopUp(QWidget *parent, const QString& sName) : KscdWidget(sName
 	move(parent->width()/2,parent->height()/2);
 
 	m_layout = new QGridLayout;
-// 	
+//
 //	resize(296, 64);
 /*	resize(300,64);*/
 
 // 	kDebug() << "size : " << size();
-// 
+//
 // 	move(600,400);
 	setAutoFillBackground(false);
 	m_lengthLbl = new QLabel(this);
@@ -72,7 +72,7 @@ TitlePopUp::~TitlePopUp()
 /**
 * show a popup containning current track title and his length
 */
-void TitlePopUp::showTitlePopUp(QString trackTitle, QString trackLength)
+void TitlePopUp::showTitlePopUp(const QString& trackTitle, const QString& trackLength)
 {
 	QTimer::singleShot(5000, this, SLOT(hideTitlePopUp()));
 	m_lengthLbl->setText(trackLength);

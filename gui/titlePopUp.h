@@ -52,14 +52,14 @@ private:
 public:
 	TitlePopUp(QWidget *parent=0, const QString& sName="popup");
 	~TitlePopUp();
-	
+
 	void enterEvent (QEvent * event){event->ignore();}
 	void leaveEvent (QEvent * event){event->ignore();}
 	void mousePressEvent(QMouseEvent * event){event->ignore();}
 	void mouseReleaseEvent(QMouseEvent * event){event->ignore();}
 
 public slots:
-	void showTitlePopUp(QString , QString);
+	void showTitlePopUp(const QString& , const QString&);
 	void hideTitlePopUp();
 };
 
