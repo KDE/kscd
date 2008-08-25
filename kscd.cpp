@@ -6,6 +6,7 @@
  * Copyright (c) 2004 Alexander Kern <alex.kern@gmx.de>
  * Copyright (c) 2003-2006 Richard Lärkäng <nouseforaname@home.se>
  * Copyright (c) 2008 Amine Bouchikhi <bouchikhi.amine@gmail.com>
+ * Copyright (c) 2008 Laurent Montel <montel@kde.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -868,14 +869,12 @@ int main( int argc, char *argv[] )
 	{
 		KConfigGroup group(KApplication::kApplication()->sessionConfig(), "General");
 		if (group.readEntry("Show", false)){
-//			splash.finish(k);
 			k->show();
 		}
 	}
 	else
 	{
-//		splash.finish(k);
-		k->show();
+            k->show();
 	}
 
 	return a.exec();

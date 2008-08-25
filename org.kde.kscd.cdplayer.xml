@@ -5,5 +5,8 @@
     <method name="playTrack">
       <arg name="track" type="i" direction="in"/>
     </method>
+    <method name="ejectShortcut"/>
+    <method name="muteShortcut"/>
+    <method name="randomShortcut"/>
   </interface>
 </node>

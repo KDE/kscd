@@ -104,22 +104,27 @@ Solid::OpticalDrive * AudioCD::getCdDrive() const
 {
 	return cdDrive;
 }
+
 Solid::OpticalDisc * AudioCD::getCd() const
 {
 	return cd;
 }
+
 Phonon::MediaSource * AudioCD::getMediaSource() const
 {
 	return src;
 }
+
 QString AudioCD::getCdPath() const
 {
 	return block->device();
 }
+
 bool AudioCD::isCdInserted() const
 {
 	return (cd!=NULL);
 }
+
 void AudioCD::catchEjectPressed()
 {
 	kDebug() << "#o#o#o#o#o#o#o#o#o#o#o#o#o#o#Eject Pressed!";
@@ -130,6 +135,7 @@ void AudioCD::catchEjectPressed()
 
 	emit(discChanged ());
 }
+
 void AudioCD::reloadCD()
 {
 	// look for an opticaldisc inserted in this drive
@@ -160,6 +166,7 @@ void AudioCD::reloadCD()
 	}
 
 }
+
 QString AudioCD::signature() const{
 	return odsign.udi();
 }

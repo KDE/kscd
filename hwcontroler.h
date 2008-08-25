@@ -82,7 +82,7 @@ class HWControler : public QObject
 		QList<int> playList;
 
 		int posPlayList;
-		
+
 	public:
 		HWControler();
 		~HWControler();
@@ -102,8 +102,8 @@ class HWControler : public QObject
 		int getCurrentTrack()const ;
 		int getTotalTrack()const ;
 		bool isDiscValid();
-		bool isEjectActivated();
-		int nbCdReader();
+		bool isEjectActivated() const;
+		int nbCdReader() const;
 		QString getCdReader(int num)const ;
 	private:
 		void loadPlayList();

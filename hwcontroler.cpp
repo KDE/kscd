@@ -102,13 +102,13 @@ HWControler::~HWControler ()
 }
 
 // TODO function to switch optical drive
-void HWControler::selectCd(int cdNum)
+void HWControler::selectCd(int /*cdNum*/)
 {
 
 }
 
 // TODO function to switch audio output
-void HWControler::selectSpeaker(int sNum)
+void HWControler::selectSpeaker(int /*sNum*/)
 {
 
 }
@@ -135,9 +135,9 @@ void HWControler::play()
 				kDebug() << getCurrentTrack() <<"/"<< getTotalTrack();
 //			}
 			/*else
-			{	
+			{
 				kDebug() << "Booooooooooooooooo";
-				
+
 				playRand();
 			}*/
 		}
@@ -174,7 +174,7 @@ void HWControler::nextTrack()
 				playRand();
 			}
 		}
-	}	
+	}
 
 }
 void HWControler::prevTrack()
@@ -236,7 +236,7 @@ void HWControler::mute(bool mute)
 	}
 }
 
-qint64 HWControler::getTotalTime ()const 
+qint64 HWControler::getTotalTime ()const
 {
 	if(!(selectedCd==-1))
 	{
@@ -255,7 +255,7 @@ qint64 HWControler::getTotalTime ()const
 		return -1;
 	}
 }
-qint64 HWControler::getRemainingTime ()const 
+qint64 HWControler::getRemainingTime ()const
 {
 	if(!(selectedCd==-1))
 	{
@@ -274,7 +274,7 @@ qint64 HWControler::getRemainingTime ()const
 		return -1;
 	}
 }
-qreal HWControler::getVolume()const 
+qreal HWControler::getVolume()const
 {
 	if (selectedS == -1)
 	{
@@ -293,7 +293,7 @@ void HWControler::setVolume(qreal vol)
 	}
 
 }
-Phonon::State HWControler ::getState()const 
+Phonon::State HWControler ::getState()const
 {
 	if(selectedCd==-1)
 	{
@@ -334,7 +334,7 @@ void HWControler ::configMedia()
 	}
 }
 
-AudioCD * HWControler::getCD()const 
+AudioCD * HWControler::getCD()const
 {
 	if((selectedCd!=-1))
 	{
@@ -352,7 +352,7 @@ void HWControler ::replayTrack(qint64 pos)
 {
 	if(getRemainingTime()<= 500)
 	{
-		
+
 		switch (loopState)
 		{
 			case LoopOne:
@@ -367,7 +367,7 @@ void HWControler ::replayTrack(qint64 pos)
 						playRand();
 					}
 		}
-		
+
 	}
 }
 void HWControler ::playRand()
@@ -377,7 +377,7 @@ void HWControler ::playRand()
 	{
 		posPlayList = 0;
 		endOfList = true;
-		
+
 	}
 	else
 	{
@@ -413,7 +413,7 @@ void HWControler ::replayDisk()
 	}
 }
 
-Phonon::MediaObject * HWControler ::getMedia()const 
+Phonon::MediaObject * HWControler ::getMedia()const
 {
 	if((selectedCd!=-1))
 	{
@@ -428,11 +428,11 @@ void HWControler ::catchCurrentTime(qint64 pos)
 {
 	emit(currentTime(pos));
 }
-Phonon::AudioOutput * HWControler ::getAudioOutPut()const 
+Phonon::AudioOutput * HWControler ::getAudioOutPut()const
 {
 	return speakers;
 }
-int HWControler ::getCurrentTrack()const 
+int HWControler ::getCurrentTrack()const
 {
 	if((selectedCd!=-1))
 	{
@@ -443,7 +443,7 @@ int HWControler ::getCurrentTrack()const
 	}
 	return 0;
 }
-int HWControler ::getTotalTrack()const 
+int HWControler ::getTotalTrack()const
 {
 	if((selectedCd!=-1))
 	{
@@ -538,13 +538,16 @@ void HWControler ::setEjectActivated(bool b)
 	isEjectAtTheEndOfTheCdActivated = b;
 	kDebug() << "Eject at the end mode changed";
 }
-bool HWControler::isEjectActivated()
+
+bool HWControler::isEjectActivated() const
 {
 	return isEjectAtTheEndOfTheCdActivated;
 }
-int HWControler ::nbCdReader(){
+
+int HWControler::nbCdReader() const {
 	return  cdIn.size();
 }
+
 QString HWControler ::getCdReader(int num)const {
 	return cdIn[num]->signature();
 }
