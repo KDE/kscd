@@ -47,16 +47,13 @@
 #include "gui/kscdwindow.h"
 #include "hwcontroler.h"
 #include "mbmanager.h"
-// #include "configWidget.h"
 #include <config-alsa.h>
 
 #include <kapplication.h>
 #include <kconfigdialog.h>
-#include <k3process.h>
 #include <krandomsequence.h>
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
-// #include <kcompactdisc.h>
 #include <kdebug.h>
 #include <kaboutdata.h>
 #include <kactioncollection.h>
