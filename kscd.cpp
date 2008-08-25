@@ -30,6 +30,8 @@
 #include <QMenu>
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include "cdplayeradaptor.h"
+
 using namespace Phonon;
 
 static const char description[] = I18N_NOOP("KDE CD player");
@@ -41,7 +43,9 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	/** Hourglass */
 	setHourglass();
 
-	QDBusConnection::sessionBus().registerObject("/CDPlayer", this, QDBusConnection::ExportScriptableSlots);
+        new CDPlayerAdaptor( this );
+
+	QDBusConnection::sessionBus().registerObject("/CDPlayer", this);
 
 
 

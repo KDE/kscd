@@ -44,6 +44,8 @@ set(kscd_SRCS
 	gui/seekbar.cpp
 )
 
+qt4_add_dbus_adaptor(kscd_SRCS org.kde.kscd.cdplayer.xml kscd.h KSCD)
+
 file(GLOB resource_svg "gui/skin/*.svg")
 
 kde4_add_ui_files(kscd_SRCS gui/trackListDlgUI.ui gui/finderSkinUI.ui generalSettings.ui interfaceSettings.ui)
@@ -64,6 +66,8 @@ install(FILES kscd.profile.xml  DESTINATION  ${DATA_INSTALL_DIR}/profiles)
 install(FILES kscd.kcfg  DESTINATION  ${KCFG_INSTALL_DIR})
 install(FILES audiocd_play.desktop  DESTINATION
 ${SERVICES_INSTALL_DIR}/ServiceMenus)
+
+install( FILES org.kde.kscd.cdplayer.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR} )
 
 add_subdirectory(pics)
 

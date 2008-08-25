@@ -82,8 +82,6 @@
 class KSCD : public KscdWindow, public KSessionManager {
 
 	Q_OBJECT
-	Q_CLASSINFO("D-Bus Interface", "org.kde.KSCD")
-
 private:
 	HWControler* devices;
 	MBManager* m_MBManager;
