@@ -25,7 +25,7 @@
 #include "finderSkin.h"
 #include <klocale.h>
 #include <QDir>
-#include <QFileDialog>
+#include <KFileDialog>
 #include <KStandardDirs>
 
 QString FinderSkin::pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
@@ -102,11 +102,10 @@ void FinderSkin::reject(){
 }
 
 void FinderSkin::showBrowser(){
-    //TODO /home .???? portable ?
-	QFileDialog fileDlg(this,i18n("Find a new skin"), "/home", NULL);
-	fileDlg.setFileMode(QFileDialog::ExistingFile);
+        KFileDialog fileDlg( KUrl("~" ), "*.svg", this );
+        fileDlg.setCaption( i18n("Find a new skin") );
+        fileDlg.setMode( KFile::ExistingOnly );
 	fileDlg.setFilter(i18n("SVG Files (*.svg)"));
-	fileDlg.setViewMode(QFileDialog::Detail);
 	QStringList fileNames;
 	if(fileDlg.exec()) fileNames= fileDlg.selectedFiles();
 
