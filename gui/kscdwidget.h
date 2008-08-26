@@ -49,10 +49,10 @@ public:
 
 	KscdWidget(const QString& sName,QWidget * parent=0);
 	virtual ~KscdWidget();
-	void setName(QString &);
+	void setName(const QString &);
 	QString getName() const;
 	QString getState() const;
-	void setId(QString &,QString &);
+	void setId(const QString &,const QString &);
 	QString getId() const;
 	void loadPicture(const QString &,const QString &);
 	void enterEvent (QEvent * event);
@@ -76,7 +76,7 @@ signals:
 	void buttonClicked(const QString &);
 
 protected:
-	QRegion *m_bounds;
+    QRegion *m_bounds;
 	QString m_state;
 	QString m_name;
 	QString m_id;

@@ -128,7 +128,7 @@ void KscdWindow::closeTrackDialog()
 
 // void KscdWindow::clearTracklist()
 
-void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,QString  & albumTitle)
+void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,const QString  & albumTitle)
 {
 	QList<MBTrackInfo>::iterator it;
 	m_trackDlg->removeRowsTrackTable(trackList.size());

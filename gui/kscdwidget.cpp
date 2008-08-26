@@ -60,11 +60,11 @@ KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 
 KscdWidget::~KscdWidget()
 {
+    delete m_bounds;
 	delete m_renderer;
-        delete m_bounds;
 }
 
-void KscdWidget::setName(QString & sName)
+void KscdWidget::setName(const QString & sName)
 {
 	m_name = sName;
 }
@@ -80,7 +80,7 @@ QString  KscdWidget::getState() const
 	return m_state;
 }
 
-void KscdWidget::setId(QString & name,QString & state)
+void KscdWidget::setId(const QString & name,const QString & state)
 {
 	m_id = name + "_" + state;
 }

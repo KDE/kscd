@@ -84,7 +84,7 @@ void SeekSlider::pause()
 }
 
 void SeekSlider::resume(QTimeLine::State state)
-{	
+{
 	kDebug()<<"m_state"<<m_state;
 	if(m_state==QTimeLine::Paused && state==QTimeLine::Running)
 	{
@@ -92,7 +92,7 @@ void SeekSlider::resume(QTimeLine::State state)
 		m_state = m_timeL->state();
 	}
 }
-	
+
 void SeekSlider::setTime(qint64 time)
 {
 	m_time = time;
@@ -104,7 +104,6 @@ void SeekSlider::setTime(qint64 time)
 	qint64 su = ((m_time/1000)%60)%10;
 	if(su >= 0)
 	{
-		kDebug()<<"Déplacement du curseur de 1";
 // 		moveC();
 	}
 }

@@ -115,7 +115,7 @@ protected:
 	 /**
 	 * Create the track list dialog
 	 */
-	void createTrackDialog(QList<MBTrackInfo> & trackList,QString & albumTitle);
+	void createTrackDialog(QList<MBTrackInfo> & trackList,const QString & albumTitle);
 
 	/** The dialog track state : true = visible / false = hide */
 	bool m_stateTrackDialog;

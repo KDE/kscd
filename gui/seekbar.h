@@ -34,11 +34,10 @@
 #define SEEKBAR_H_
 
 #include <QWidget>
-#include <QString>
 #include <QMouseEvent>
 #include <QEvent>
-#include <kdebug.h>
 #include "kscdwidget.h"
+
 
 class SeekBar:public KscdWidget
 {
