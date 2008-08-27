@@ -54,7 +54,15 @@ kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
 
 kde4_add_executable(kscd ${kscd_SRCS})
 
-target_link_libraries(kscd ${KDE4_KUTILS_LIBS} kcddb kcompactdisc)
+target_link_libraries(kscd
+    ${KDE4_KUTILS_LIBS}
+    ${KDE4_KDEUI_LIBS}
+    ${KDE4_KIO_LIBS}
+    ${KDE4_SOLID_LIBS}
+    ${KDE4_PHONON_LIBS}
+    ${MUSICBRAINZ_LIBRARIES}
+    kcddb
+    kcompactdisc)
 
 ########### install files ###############
 
