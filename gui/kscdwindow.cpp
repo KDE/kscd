@@ -360,28 +360,24 @@ void KscdWindow::panelInfo(const QString & mess)
 	QString informationDisplay;
 	if(mess == "loop")
 	{
-		m_panel->setLoop("" );
+		m_panel->setLoop("");
         }
 	if(mess == "looptrack")
 	{
 		m_panel->setLoop(i18n( "loop track  " ));
-		//m_panel->setLoop("loop track  ");
 		//informationDisplay = "loop track  ";
 	}
 	if(mess == "loopdisc")
 	{
-		//m_panel->setLoop("loop disc  ");
 		//informationDisplay = "loop disc  ";
 		m_panel->setLoop(i18n( "loop disc  " ));
 	}
 	if(mess == "random")
 	{
-		//m_panel->setRandom("");
 		m_panel->setRandom("");
 	}
 	if(mess == "p_random")
 	{
-		//m_panel->setRandom("random");
 		//informationDisplay += "random";
 		m_panel->setRandom(i18n( "random" ));
 	}
