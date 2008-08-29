@@ -82,6 +82,57 @@
 class KSCD : public KscdWindow, public KSessionManager {
 
 	Q_OBJECT
+public:
+	explicit KSCD(QWidget *parent = 0);
+	~KSCD();
+
+	virtual bool saveState(QSessionManager& sm);
+	void writeSettings();
+	HWControler * getDevices() const;
+
+protected:
+	void setupActions();
+	void setupContextMenu();
+
+
+signals:
+	void picture(const QString&,const QString&);
+	void infoPanel(const QString&);
+
+public slots:
+
+
+	void showContextMenu( const QPoint & );
+
+	void restoreArtistLabel();
+	void restoreTrackinfoLabel();
+	void changeVolume(qreal);
+	void playTrack(int);
+
+	void ejectShortcut();
+	void tracklistShortcut();
+	void muteShortcut();
+	void playShortcut();
+	void randomShortcut();
+	void looptrackShortcut();
+	void loopdiscShortcut();
+	void volumeUpShortcut();
+	void volumeDownShortcut();
+	void quitShortcut();
+	void minimizeShortcut();
+	void actionButton(const QString&);
+	void catchtime(qint64 pos);
+
+	//void setNewSkin(QString);
+	void unsetHourglass();
+	void configureShortcuts();
+
+	/**
+	* Open the config window
+	*/
+	void optionsPreferences();
+	void updateSettings();
+	void configureKeys();
 private:
 	HWControler* devices;
 	MBManager* m_MBManager;
@@ -121,70 +172,12 @@ private:
 	// Settings.
 	Ui::generalSettings ui_general;
 	Ui::interfaceSettings ui_interface;
-//	Ui::fontSettings ui_font;
 
 	/**
 	 * Load the last settings
 	 */
 	void loadSettings();
 
-public:
-	explicit KSCD(QWidget *parent = 0);
-	~KSCD();
-
-	virtual bool saveState(QSessionManager& sm);
-	void writeSettings();
-	HWControler * getDevices() const;
-
-// 	KCompactDisc* getCd(); // kept for CDDB compatibility
-
-protected:
-	void setupActions();
-	void setupContextMenu();
-
-
-signals:
-	void picture(const QString&,const QString&);
-	void infoPanel(const QString&);
-	/* Popup signals */
-// 	void showTitlePopUp(QString, QString);
-// 	void hideTitlePopUp();
-
-public slots:
-
-
-	void showContextMenu( const QPoint & );
-	//void selectSkinUrl();
-
-	void restoreArtistLabel();
-	void restoreTrackinfoLabel();
-	void changeVolume(qreal);
-	void playTrack(int);
-
-	void ejectShortcut();
-	void tracklistShortcut();
-	void muteShortcut();
-	void playShortcut();
-	void randomShortcut();
-	void looptrackShortcut();
-	void loopdiscShortcut();
-	void volumeUpShortcut();
-	void volumeDownShortcut();
-	void quitShortcut();
-	void minimizeShortcut();
-	void actionButton(const QString&);
-	void catchtime(qint64 pos);
-
-	//void setNewSkin(QString);
-	void unsetHourglass();
-	void configureShortcuts();
-
-	/**
-	* Open the config window
-	*/
-	void optionsPreferences();
-	void updateSettings();
-	void configureKeys();
 };
 
 #endif

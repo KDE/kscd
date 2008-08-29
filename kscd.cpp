@@ -319,7 +319,7 @@ void KSCD::quitShortcut()
 void KSCD::minimizeShortcut()
 {
 	QString result = "minimize";
-	actionButton(result);;
+	actionButton(result);
 }
 
 void KSCD::tracklistShortcut()
@@ -781,11 +781,11 @@ void KSCD::optionsPreferences()
 void KSCD::updateSettings()
 {
 	m_panel->setTextColor(Prefs::textColor());
-	kDebug()<<"color config:"<<Prefs::textColor();
+	//kDebug()<<"color config:"<<Prefs::textColor();
 	m_panel->setTextSizeFont(Prefs::textFont());
-	kDebug()<<"font config:"<<Prefs::textFont();
+	//kDebug()<<"font config:"<<Prefs::textFont();
 	devices->setEjectActivated(Prefs::ejectOnFinish());
-	kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
+	//kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
 	m_panel->setEjectAct( Prefs::ejectOnFinish() );
         QString skin;
         if(Prefs::url().startsWith('/'))
@@ -861,7 +861,6 @@ int main( int argc, char *argv[] )
 	KUniqueApplication a;
 	KSCD *k = new KSCD();
 	a.setTopWidget( k );
-//   a.setMainWidget(k);
 
 	k->setWindowTitle(KGlobal::caption());
 
