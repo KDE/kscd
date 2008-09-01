@@ -66,7 +66,7 @@ target_link_libraries(kscd
 
 ########### install files ###############
 
-install(TARGETS kscd DESTINATION ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kscd ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES ${resource_svg} DESTINATION ${DATA_INSTALL_DIR}/kscd/skin)
 
 install(FILES kscd.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR})
