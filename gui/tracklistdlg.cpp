@@ -33,26 +33,32 @@
 #include "tracklistdlg.h"
 #include <QHeaderView>
 #include <kdebug.h>
+#include <QVBoxLayout>
 
-TrackListDlg::TrackListDlg(QWidget * parent):trackListDlgUI(parent)
+TrackListDlg::TrackListDlg(QWidget * parent)
+    :KDialog(parent)
 {
-    trackTableView = trackTable;
+    QWidget *page = new QWidget( this );
+    QVBoxLayout* vlay = new QVBoxLayout( page );
+
+    m_ui = new trackListDlgUI( this );
+    vlay->addWidget( m_ui );
+
+
+    setMainWidget( page );
+    setButtons( KDialog::Close );
+    trackTableView = m_ui->trackTable;
     trackModel = trackTableView->model();
     trackTableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     trackTableView->verticalHeader()->hide();
 
     setSizeIncrement ( 0, 50 );
-    connect(trackTable,SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
+    connect(m_ui->trackTable,SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
             this,SLOT(valueDoubleCliked(QTableWidgetItem*)));
 }
 
 TrackListDlg::~TrackListDlg()
 {
-    delete trackTableView;
-    delete trackModel;
-    delete trackTable;
-    delete albumLbl;
-    delete yearLbl;
 }
 
 void TrackListDlg::closeEvent( QCloseEvent * )
@@ -62,12 +68,12 @@ void TrackListDlg::closeEvent( QCloseEvent * )
 
 void TrackListDlg::setAlbumLbl(const QString& album)
 {
-	albumLbl->setText(album);
+	m_ui->albumLbl->setText(album);
 }
 
 void TrackListDlg::setYearLbl(const QString& year)
 {
-	yearLbl->setText(year);
+	m_ui->yearLbl->setText(year);
 }
 
 void TrackListDlg::addItemTrackTable(int row,int column,const QString& item)
@@ -77,7 +83,7 @@ void TrackListDlg::addItemTrackTable(int row,int column,const QString& item)
 
 int TrackListDlg::numberColumnTrackTable() const
 {
-	return trackTable->columnCount();
+	return m_ui->trackTable->columnCount();
 }
 
 void TrackListDlg::addRowTrackTable(int row)

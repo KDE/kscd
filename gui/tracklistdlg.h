@@ -36,19 +36,19 @@
 
 #include "ui_trackListDlgUI.h"
 
-#include <QDialog>
+#include <KDialog>
 
 #include <kdebug.h>
 
-class trackListDlgUI : public QDialog, public Ui::trackListDlgUI
+class trackListDlgUI : public QWidget, public Ui::trackListDlgUI
 {
    public:
-      trackListDlgUI( QWidget *parent ) : QDialog( parent ) {
+      trackListDlgUI( QWidget *parent ) : QWidget( parent ) {
          setupUi( this );
       }
 };
 
-class TrackListDlg : public trackListDlgUI
+class TrackListDlg : public KDialog
 {
     Q_OBJECT
 
@@ -111,6 +111,8 @@ signals:
     /** Send the postion of the clicked item**/
     void itemClicked(int);
     void trackListClosed();
+private:
+    trackListDlgUI *m_ui;
 
 };
 

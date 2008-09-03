@@ -1,6 +1,6 @@
 <ui version="4.0" >
  <class>trackListDlgUI</class>
- <widget class="QDialog" name="trackListDlgUI" >
+ <widget class="QWidget" name="trackListDlgUI" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -17,9 +17,6 @@
   </property>
   <property name="windowTitle" >
    <string>KsCD - TrackList</string>
-  </property>
-  <property name="windowIcon" >
-   <iconset>../../../../../../../../.designer/backup/isi-kscd/kdemultimedia/kscd/hi16-app-kscd.png</iconset>
   </property>
   <property name="autoFillBackground" >
    <bool>false</bool>
