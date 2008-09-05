@@ -441,7 +441,7 @@ page. The <guibutton>Defaults</guibutton> button restores the default values of 
 </mediaobject>
 </screenshot>
 
-<para>The f<guilabel>Submit</guilabel> tab sets up connection to a mail
+<para>The <guilabel>Submit</guilabel> tab sets up connection to a mail
 server or a web server to submit new <acronym>CDDB</acronym> entries. This is useful
 if you do not have your own system configured as a server. </para>
 
