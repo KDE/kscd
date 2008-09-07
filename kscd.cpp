@@ -875,7 +875,7 @@ int main( int argc, char *argv[] )
 	{
             k->show();
 	}
-
+	args->clear();
 	return a.exec();
 }
 
