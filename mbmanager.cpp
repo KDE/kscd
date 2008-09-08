@@ -47,7 +47,7 @@ void MBManager::discLookup()
 	MusicBrainz MB;
 	string      error, data;
 	bool        ret;
-	int         numTracks, trackNum = 1;
+	int         numTracks = 0, trackNum = 1;
 
 	m_validInfo = true;
 
@@ -134,8 +134,6 @@ void MBManager::discLookup()
 	}
 	else
 	{
-		// FIXME get the real track number
-		numTracks = 25;
 		// If invalid data, fill the informations with something
 		// Sets info
 		m_discInfo.Title = i18n("Unknown album");
@@ -147,7 +145,7 @@ void MBManager::discLookup()
 		{
 
 			track.Title = i18n("Unknown title");
-			track.Artist = i18n("Unknown artist");
+			track.Artist = m_discInfo.Artist;
 			track.Duration = MB.Data(MBE_AlbumGetTrackDuration, i).c_str();
 
 			m_trackList << track;
