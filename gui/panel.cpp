@@ -348,6 +348,6 @@ void Panel::setVolumeDisplay(qreal volume)
 {
 	timerVolume = 20;
 	QString s;
-	s = QString("<p align=right>%1</p>").arg(volume);
+	s = QString("<p align=right>%1</p>").arg((int)volume);
 	volumeDisplay->setText(s);
 }
