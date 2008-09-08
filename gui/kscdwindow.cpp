@@ -136,13 +136,13 @@ void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,const QString 
 
 	m_stateTrackDialog = true;
 	m_trackDlg->setAlbumLbl(albumTitle);
- 	int trackNumber = 1;
+ 	int trackNumber = 0;
 	for(it = trackList.begin();it != end;++it)
 	{
-		m_trackDlg->addRowTrackTable(trackNumber-1);
-		m_trackDlg->addItemTrackTable(trackNumber-1,0,QString::number(trackNumber));
-		m_trackDlg->addItemTrackTable(trackNumber-1,1,(*it).Title);
-		m_trackDlg->addItemTrackTable(trackNumber-1,2,(*it).Duration);
+		m_trackDlg->addRowTrackTable(trackNumber);
+		m_trackDlg->addItemTrackTable(trackNumber,0,QString::number(trackNumber+1));
+		m_trackDlg->addItemTrackTable(trackNumber,1,(*it).Title);
+		m_trackDlg->addItemTrackTable(trackNumber,2,(*it).Duration);
 //		m_trackDlg->setYearLbl((*it).Year);
 		trackNumber++;
 	}
