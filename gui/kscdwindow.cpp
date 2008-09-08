@@ -247,13 +247,13 @@ void KscdWindow::changePicture(const QString & name,const QString & state)
 		m_playB->loadPicture(result,state);
 		m_playB->setName(result);
 	}
-	if(name == "pause")
+	else if(name == "pause")
 	{
 		result = "play";
 		m_playB->loadPicture(result,state);
 		m_playB->setName(result);
 	}
-	if(name == "stop")
+	else if(name == "stop")
 	{
 		result = "play";
 		m_stopB->loadPicture(name,state);
@@ -261,61 +261,60 @@ void KscdWindow::changePicture(const QString & name,const QString & state)
 		QString tmp = m_playB->getName();
 		m_playB->loadPicture(tmp,def);
 	}
-	if(name == "eject")
+	else if(name == "eject")
 	{
 		result = "play";
-		m_stopB->loadPicture(name,state);
 		m_playB->setName(result);
 		QString tmp = m_playB->getName();
 		m_playB->loadPicture(tmp,def);
 	}
-	if(name == "next")
+	else if(name == "next")
 	{
 		m_nextB->loadPicture(name,state);
 	}
-	if(name == "previous")
+	else if(name == "previous")
 	{
 		m_prevB->loadPicture(name,state);
 	}
-	if(name == "mute")
+	else if(name == "mute")
 	{
 		m_muteB->loadPicture(name,state);
 	}
-	if(name == "unmute")
+	else if(name == "unmute")
 	{
 		m_muteB->loadPicture(name,state);
 	}
-	if(name == "random")
+	else if(name == "random")
 	{
 		m_randB->loadPicture(name,state);
 	}
-	if(name == "p_random")
+	else if(name == "p_random")
 	{
 		result = "random";
 		def = "pressed";
 		m_randB->loadPicture(result,def);
 	}
-	if(name == "loop")
+	else if(name == "loop")
 	{
 		m_loopB->loadPicture(name,state);
 	}
-	if(name == "looptrack")
+	else if(name == "looptrack")
 	{
 		m_loopB->loadPicture(name,state);
 	}
-	if(name == "loopdisc")
+	else if(name == "loopdisc")
 	{
 		m_loopB->loadPicture(name,state);
 	}
-	if(name == "tracklist")
+	else if(name == "tracklist")
 	{
 		m_trackB->loadPicture(name,state);
 	}
-	if(name == "close")
+	else if(name == "close")
 	{
 		m_closeB->loadPicture(name,state);
 	}
-	if(name == "minimize")
+	else if(name == "minimize")
 	{
 		m_miniB->loadPicture(name,state);
 	}
