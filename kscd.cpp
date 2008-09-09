@@ -832,31 +832,26 @@ int main( int argc, char *argv[] )
 	KCmdLineOptions options;
 	options.add("s");
 	options.add("start", ki18n("Start playing"));
-	options.add("+[device]", ki18n("CD device, can be a path or a media:/ URL"));
 	KCmdLineArgs::addCmdLineOptions(options);
 	KUniqueApplication::addCmdLineOptions();
 	KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
 	if (!KUniqueApplication::start())
 	{
-		fprintf(stderr, "kscd is already running\n");
-		if (args->count() > 0 || args->isSet("start"))
-		{
-			QDBusInterface kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
-                        if(kscd.isValid())
-                        {
-            // Forward the command line args to the running instance.
-			  if (args->count() > 0)
-			  {
-				kscd.call( "setDevice",  QString(args->arg(0)));
-			  }
-			  if (args->isSet("start"))
-			  {
-				kscd.call("play");
-			  }
-                        }
+            fprintf(stderr, "kscd is already running\n");
+            if (args->count() > 0 || args->isSet("start"))
+            {
+                QDBusInterface kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
+                if(kscd.isValid())
+                {
+                    // Forward the command line args to the running instance.
+                    if (args->isSet("start"))
+                    {
+                        kscd.call("play");
+                    }
+                }
                 args->clear();
-		}
-		exit(0);
+            }
+            exit(0);
 	}
 	KUniqueApplication a;
 	KSCD *k = new KSCD();
