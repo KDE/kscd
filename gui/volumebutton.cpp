@@ -92,10 +92,10 @@ void VolumeButton::mouseMoveEvent(QMouseEvent *event)
 		qreal A=(qreal)acos((b*b+c*c-a*a)/(2*b*c));
 
 	//sound must be higher
-	if(event->x()>m_centerX && event->y()< m_posY
-		|| event->x()< m_centerX && event->y()>m_posY
-		|| event->y()<m_centerY && event->y()==m_posY && event->x()<m_posX
-		|| event->y()>m_centerY && event->y()==m_posY && event->x()>m_posX){
+	if((event->x()>m_centerX && event->y()< m_posY)
+		|| (event->x()< m_centerX && event->y()>m_posY)
+		|| (event->y()<m_centerY && event->y()==m_posY && event->x()<m_posX)
+		|| (event->y()>m_centerY && event->y()==m_posY && event->x()>m_posX)){
 
 		if((m_angle - (180 * (A))/3.1415)>=0){
 			rotation(m_angle - (180 * (A))/3.1415); //change m_angle
@@ -103,10 +103,10 @@ void VolumeButton::mouseMoveEvent(QMouseEvent *event)
 			emit(volumeChange(m_vValue));		// change sound volume
 		}
 	//sound must be lower
-	}else if(event->x()<=m_centerX && event->y()< m_posY
-		|| event->x()>= m_centerX && event->y()>m_posY
-		|| event->y()<m_centerY && event->y()==m_posY && event->x()>m_posX
-		|| event->y()>m_centerY && event->y()==m_posY && event->x()<m_posX){
+	}else if((event->x()<=m_centerX && event->y()< m_posY)
+		|| (event->x()>= m_centerX && event->y()>m_posY)
+		|| (event->y()<m_centerY && event->y()==m_posY && event->x()>m_posX)
+		|| (event->y()>m_centerY && event->y()==m_posY && event->x()<m_posX)){
 
 
 		if((m_angle + (180 * (A))/3.1415)<=250){
