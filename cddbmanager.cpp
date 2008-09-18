@@ -284,7 +284,7 @@ void CDDBManager::lookupCDDBDone(KCDDB::Result result)
 		{
 			// The user selected and item and pressed OK
 			int c = 0;
-			for(QStringList::Iterator it = list.begin(); it != list.end(); ++it )
+			for(QStringList::const_iterator it = list.begin(); it != list.end(); ++it )
 			{
 				if( *it == res) break;
 				c++;
