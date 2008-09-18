@@ -60,7 +60,6 @@ KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 
 KscdWidget::~KscdWidget()
 {
-    kDebug()<<" sssssssssssssssssssssssssssssssssssssss";
     delete m_bounds;
 	delete m_renderer;
 }
