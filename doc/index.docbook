@@ -374,7 +374,7 @@ less CPU proccessing time, but it does require that the dedicated cable be conne
 
 <para>If you have selected direct digital playback, a drop down box labeled <guilabel>Select audio backend</guilabel> will let you select which 
 sound backend the digital information should be sent to.  The contents of the drop down box will vary depending on your system. 
-Most users should select <guilabel>arts</guilabel>.  You can also select the device the audio backend uses by entering the device location in 
+Most users should select <guilabel>phonon</guilabel>.  You can also select the device the audio backend uses by entering the device location in 
 the text box labeled <guilabel>Select audio device</guilabel>.  A full discussion of audio devices and audio backends is beyond the scope of this manual.</para>
 
 <para>If a mark is placed in the check box labeled <guilabel>Allow encoding selection</guilabel>, you can select the text encoding for the results of a CDDB request.</para>
@@ -441,7 +441,7 @@ page. The <guibutton>Defaults</guibutton> button restores the default values of 
 </mediaobject>
 </screenshot>
 
-<para>The f<guilabel>Submit</guilabel> tab sets up connection to a mail
+<para>The <guilabel>Submit</guilabel> tab sets up connection to a mail
 server or a web server to submit new <acronym>CDDB</acronym> entries. This is useful
 if you do not have your own system configured as a server. </para>
 
