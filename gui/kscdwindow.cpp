@@ -109,7 +109,6 @@ KscdWindow::~KscdWindow()
 	delete m_backG;
 	delete m_miniB;
 // 	delete m_slider;
-	delete m_miniB;
  	delete m_volumeB;
 	delete m_loopB;
 	delete m_randB;
