@@ -42,9 +42,9 @@ class NextButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	NextButton(QWidget * parent=0, const QString& sName="next");
+	explicit NextButton(QWidget * parent=0, const QString& sName="next");
 	virtual ~NextButton();
-	
+
 };
 
 #endif /*NEXTBUTTON_H_*/

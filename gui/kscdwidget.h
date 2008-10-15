@@ -47,7 +47,7 @@ class KscdWidget:public QWidget
 	Q_OBJECT
 public:
 
-	KscdWidget(const QString& sName,QWidget * parent=0);
+	explicit KscdWidget(const QString& sName,QWidget * parent=0);
 	virtual ~KscdWidget();
 	void setName(const QString &);
 	QString getName() const;

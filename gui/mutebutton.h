@@ -44,7 +44,7 @@ class MuteButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	MuteButton(QWidget * parent=0, const QString& sName="mute");
+	explicit MuteButton(QWidget * parent=0, const QString& sName="mute");
 	virtual ~MuteButton();
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);

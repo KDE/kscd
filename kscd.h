@@ -35,10 +35,6 @@
 #include <QCloseEvent>
 #include <QKeyEvent>
 #include <QEvent>
-#include <QMenu>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QCloseEvent>
 #include <QPoint>
 // Phonon libs
 #include <phonon/phononnamespace.h>

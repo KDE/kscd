@@ -42,7 +42,7 @@ class StopButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	StopButton(QWidget * parent=0, const QString& sName="stop");
+	explicit StopButton(QWidget * parent=0, const QString& sName="stop");
 	virtual ~StopButton();
 
 };

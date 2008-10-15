@@ -44,7 +44,7 @@ class LoopButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	LoopButton(QWidget * parent=0, const QString& sName="loop");
+	explicit LoopButton(QWidget * parent=0, const QString& sName="loop");
 	virtual ~LoopButton();
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
