@@ -48,7 +48,7 @@ void RandomButton::mousePressEvent(QMouseEvent *event)
 		m_state = "pressed";
 		if(m_name== "random")
 		{
-			m_id = m_name + "_" + m_state;
+			m_id = m_name + '_' + m_state;
 			emit(needRepaint());
 		}
 		else
@@ -79,7 +79,7 @@ void RandomButton::mouseReleaseEvent(QMouseEvent *event)
 			m_name = "random";
 		}
 		kDebug() << m_name ;
-		m_id = m_name + "_" + m_state;
+		m_id = m_name + '_' + m_state;
 		emit(buttonClicked(m_name));
 	}
 	else
@@ -98,7 +98,7 @@ void RandomButton::enterEvent (QEvent * event )
 	{
 		event->accept();
 		m_state = "over";
-		m_id = m_name + "_" + m_state;
+		m_id = m_name + '_' + m_state;
 		emit(needRepaint());
 		setToolTip(m_name);
 	}
@@ -114,7 +114,7 @@ void RandomButton::leaveEvent (QEvent * event )
 	{
 		event->accept();
 		m_state = "default";
-		m_id = m_name + "_" + m_state;
+		m_id = m_name + '_' + m_state;
 		emit(needRepaint());
 	}
 }

@@ -48,12 +48,12 @@ void MuteButton::mousePressEvent(QMouseEvent *event)
 		m_state = "pressed";
 		if(m_name== "mute")
 		{
-			m_id = m_name + "_" + m_state;
+			m_id = m_name + '_' + m_state;
 			emit(needRepaint());
 		}
 		else
 		{
-			m_id = m_name + "_" + m_state;
+			m_id = m_name + '_' + m_state;
 			emit(needRepaint());
 		}
 	}
@@ -72,13 +72,13 @@ void MuteButton::mouseReleaseEvent(QMouseEvent *event)
 		if(m_name=="mute")
 		{
 			m_name = "unmute";
-			m_id = m_name + "_" + m_state;
+			m_id = m_name + '_' + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else
 		{
 			m_name = "mute";
-			m_id = m_name + "_" + m_state;
+			m_id = m_name + '_' + m_state;
 			emit(buttonClicked(m_name));
 		}
 	}

@@ -46,7 +46,7 @@ void LoopButton::mousePressEvent(QMouseEvent *event)
 	{
 		event->accept();
 		m_state = "pressed";
-		m_id = m_name + "_" + m_state;
+		m_id = m_name + '_' + m_state;
 		emit(needRepaint());
 	}
 	else
@@ -64,19 +64,19 @@ void LoopButton::mouseReleaseEvent(QMouseEvent *event)
 		if(m_name == "loop")
 		{
  			m_name = "looptrack";
-			m_id = m_name + "_" + m_state;
+			m_id = m_name + '_' + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else if(m_name == "looptrack")
 		{
  			m_name = "loopdisc";
-			m_id = m_name + "_" + m_state;
+			m_id = m_name + '_' + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else if(m_name == "loopdisc")
 		{
  			m_name = "loop";
-			m_id = m_name + "_" + m_state;
+			m_id = m_name + '_' + m_state;
 			emit(buttonClicked(m_name));
 		}
 	}

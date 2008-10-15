@@ -46,7 +46,7 @@ void PlayButton::mousePressEvent(QMouseEvent *event)
 	{
 		event->accept();
 		m_state = "pressed";
-		m_id = m_name + "_" + m_state;
+		m_id = m_name + '_' + m_state;
 		emit(needRepaint());
 	}
 	else
@@ -62,7 +62,7 @@ void PlayButton::mouseReleaseEvent(QMouseEvent *event)
 		event->accept();
 		m_state = "over";
 		emit(buttonClicked(m_name));
-		m_id = m_name + "_" + m_state;
+		m_id = m_name + '_' + m_state;
 		emit(needRepaint());
 	}
 }

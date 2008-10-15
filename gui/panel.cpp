@@ -152,7 +152,7 @@ void Panel::update_panel_label(){
 		while(l_title->text().count()< addSpace)
 		{
 			//add  " " to have the same size that the panel
-			l_title->setText(l_title->text()+" ");
+			l_title->setText(l_title->text()+' ');
 		}
 
 		//recup the first letter

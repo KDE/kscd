@@ -41,7 +41,7 @@ KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 	m_state = "default";
  	m_name = sName;
 	m_baseName = m_name;
-	m_id = m_name + "_" + m_state;
+	m_id = m_name + '_' + m_state;
 
 	m_path = Prefs::url();
 
@@ -82,7 +82,7 @@ QString  KscdWidget::getState() const
 
 void KscdWidget::setId(const QString & name,const QString & state)
 {
-	m_id = name + "_" + state;
+	m_id = name + '_' + state;
 }
 
 
@@ -93,7 +93,7 @@ QString KscdWidget::getId() const
 
 void KscdWidget::loadPicture(const QString & name,const QString & state)
 {
-	m_id= name + "_" + state;
+	m_id= name + '_' + state;
 	emit(changePicture());
 	emit(needRepaint());
 }
@@ -111,7 +111,7 @@ void KscdWidget::enterEvent (QEvent * event )
 {
 	event->accept();
 	m_state = "over";
-	m_id = m_name + "_" + m_state;
+	m_id = m_name + '_' + m_state;
 	emit(needRepaint());
 	setToolTip(m_name);
 }
@@ -120,7 +120,7 @@ void KscdWidget::leaveEvent (QEvent * event )
 {
 	event->accept();
 	m_state = "default";
-	m_id = m_name + "_" + m_state;
+	m_id = m_name + '_' + m_state;
 	emit(needRepaint());
 }
 
@@ -132,7 +132,7 @@ void KscdWidget::mousePressEvent(QMouseEvent *event)
 		event->accept();
 		kDebug() << "**** button name : " << m_name << " ****";
 		m_state = "pressed";
-		m_id = m_name + "_" + m_state;
+		m_id = m_name + '_'+ m_state;
 		emit(needRepaint());
 	}
 	else
@@ -147,7 +147,7 @@ void KscdWidget::mouseReleaseEvent(QMouseEvent *event)
 	{
 		event->accept();
 		m_state = "over";
-		m_id = m_name + "_" + m_state;
+		m_id = m_name + '_' + m_state;
 		emit(buttonClicked(m_name));
 		emit(needRepaint());
 	}
