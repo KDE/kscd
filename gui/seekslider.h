@@ -30,8 +30,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef SEEKSLIDER_H_
-#define SEEKSLIDER_H_
+#ifndef SEEKSLIDER_H
+#define SEEKSLIDER_H
 
 #include <QWidget>
 #include <QTimeLine>
@@ -95,12 +95,12 @@ private:
 
 	/**
 	 * A QTimeLine
-	 */	
+	 */
 	QTimeLine* m_timeL;
 
 	/**
 	 * Current state of the slider
-	 */	
+	 */
 	QTimeLine::State m_state;
 
 	/**

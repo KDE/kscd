@@ -28,8 +28,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef __AUDIOCD__
-#define __AUDIOCD__
+#ifndef AUDIOCD
+#define AUDIOCD
 
 #include <solid/opticaldisc.h>
 #include <solid/device.h>
@@ -38,8 +38,6 @@
 #include <solid/devicenotifier.h>
 #include <QString>
 #include <phonon/mediasource.h>
-
-#include <QString>
 #include <QObject>
 
 

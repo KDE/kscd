@@ -30,8 +30,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef KSCDWIDGET_H_
-#define KSCDWIDGET_H_
+#ifndef KSCDWIDGET_H
+#define KSCDWIDGET_H
 
 #include <QSvgRenderer>
 #include <QWidget>

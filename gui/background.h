@@ -30,14 +30,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef BACKGROUND_H_
-#define BACKGROUND_H_
+#ifndef BACKGROUND_H
+#define BACKGROUND_H
 
 #include <QWidget>
 #include <QString>
 #include <QMouseEvent>
 #include <QEvent>
-#include <QPoint>
 #include <QPoint>
 #include <kdebug.h>
 #include "kscdwidget.h"

@@ -30,19 +30,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef KSCDWINDOW_H_
-#define KSCDWINDOW_H_
+#ifndef KSCDWINDOW_H
+#define KSCDWINDOW_H
 
 #include <QLabel>
 #include <QWidget>
-#include <QLabel>
-
 #include <QPalette>
 #include <QTableWidget>
 #include <QStringList>
 #include <klocalizedstring.h>
 #include <QList>
-#include <QStringList>
 #include "kscdwidget.h"
 #include "stopbutton.h"
 #include "playbutton.h"

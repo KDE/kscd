@@ -72,7 +72,7 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	setMask( m_backG->getPix().mask() );
 
 
-	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the begining
+	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the beginning
 
 
 	connect(m_stopB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));

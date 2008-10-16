@@ -31,8 +31,8 @@
  *
  */
 
-#ifndef __CDDBMANAGER_H__
-#define __CDDBMANAGER_H__
+#ifndef CDDBMANAGER_H
+#define CDDBMANAGER_H
 
 // CDDB support via libkcddb
 #include <libkcddb/kcddb.h>
@@ -78,15 +78,15 @@ private:
 	bool infoSet;
 	bool autoDownload;
 	KSCD * pKscd;
-	
+
 public:
 	KCDDB::Client* getCddbClient(){ return m_cddbClient; }
 	KCDDB::CDInfo getCddbInfo(){ return m_cddbInfo; }
 	KCDDB::TrackOffsetList getCdSignature(){ return m_cdSignature; }
-	
+
 	QList <CDDBTrack> getTrackList();
 	QString getDiscTitle();
-	
+
 	void setupCDDB(int nbTrack, KCDDB::TrackOffsetList signature);
 
 private slots:

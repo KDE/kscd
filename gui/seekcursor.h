@@ -30,8 +30,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef SEEKCURSOR_H_
-#define SEEKCURSOR_H_
+#ifndef SEEKCURSOR_H
+#define SEEKCURSOR_H
 
 #include <QWidget>
 #include <QString>
@@ -46,9 +46,9 @@ class SeekCursor:public KscdWidget
 public:
 	SeekCursor(QWidget * parent=0, const QString& sName="seekCursor");
 	virtual ~SeekCursor();
-	
+
 	/**
-	 * Initialize the cursor to his initial posion
+	 * Initialize the cursor to his initial position
 	 */
 	void init();
 
@@ -69,8 +69,8 @@ private:
 	int m_step;
 public slots:
 	/**
-	 * Move the cursor 
-	 * @param: qreal 
+	 * Move the cursor
+	 * @param: qreal
 	 */
 	void moveCursor(qreal);
 };

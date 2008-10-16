@@ -31,8 +31,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef PREVIOUSBUTTON_H_
-#define PREVIOUSBUTTON_H_
+#ifndef PREVIOUSBUTTON_H
+#define PREVIOUSBUTTON_H
 
 #include <QWidget>
 #include <QString>
@@ -44,7 +44,7 @@ class PreviousButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	PreviousButton(QWidget * parent=0, const QString& sName="previous");
+	explicit PreviousButton(QWidget * parent=0, const QString& sName="previous");
 	virtual ~PreviousButton();
 
 };

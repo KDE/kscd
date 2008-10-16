@@ -30,8 +30,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef IHMNAMESPACE_H_
-#define IHMNAMESPACE_H_
+#ifndef IHMNAMESPACE_H
+#define IHMNAMESPACE_H
 
 namespace IHM
 {
@@ -43,14 +43,14 @@ namespace IHM
 		Released,
 		Embedded
 	};
-	
+
 	enum ButtonType
 	{
 		normal,
 		focused,
 		pressed
 	};
-	
+
 	enum NameButton
 	{
 		Play,

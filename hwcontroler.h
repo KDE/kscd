@@ -2,12 +2,8 @@
  * Kscd - A simple cd player for the KDE Project
  *
  * Copyright (c) 2008 Amine Bouchikhi <bouchikhi.amine@gmail.com>
+ * Copyright (c) 2008 Stanislas Krzywda <stanislas.krzywda@gmail.com>
  *
- * --------------
- * ISI KsCD Team :
- * --------------
- * Bouchikhi Mohamed-Amine <bouchikhi.amine@gmail.com>
- * Gastellu Sylvain
  * -----------------------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,8 +21,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef __HWCONTROLER__
-#define __HWCONTROLER__
+#ifndef HWCONTROLER
+#define HWCONTROLER
 
 #include <QObject>
 #include <QList>

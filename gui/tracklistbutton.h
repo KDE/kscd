@@ -30,8 +30,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef TRACKLISTBUTTON_H_
-#define TRACKLISTBUTTON_H_
+#ifndef TRACKLISTBUTTON_H
+#define TRACKLISTBUTTON_H
 
 #include <QWidget>
 #include <QString>

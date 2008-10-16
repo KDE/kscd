@@ -31,8 +31,8 @@
  *
  */
 
-#ifndef __MBMANAGER_H__
-#define __MBMANAGER_H__
+#ifndef MBMANAGER_H
+#define MBMANAGER_H
 
 // // MusicBrainz
 #include <stdio.h>
@@ -69,30 +69,30 @@ class MBManager : public QObject
 private:
 	DiscInfo m_discInfo;				/// Contains the album's information
 	QList <MBTrackInfo> m_trackList;	/// List of tracks information
-	
+
 	char * m_browser;
-	
+
 	bool m_validInfo;					/// Tells whether the lookup query succeeded
-	
+
 public:
 	MBManager();
 	~MBManager();
-	
+
 /**
 * Getters/Setters
 */
 	/** Returns the disc information */
-	DiscInfo getDiscInfo() const { return this->m_discInfo; } 
+	DiscInfo getDiscInfo() const { return this->m_discInfo; }
 	QList <MBTrackInfo> getTrackList() const { return this->m_trackList; }
 	bool isValidInfo() const { return this->m_validInfo; }
-	
+
 public slots:
 	/** Gets information about the disc inserted */
 	void discLookup();
-	
+
 	/** Uploads information */
 	void discUpload();
-	
+
 signals:
 	void showArtistLabel(QString&);
 	void showTrackinfoLabel(QString&);

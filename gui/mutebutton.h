@@ -31,8 +31,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef MUTEBUTTON_H_
-#define MUTEBUTTON_H_
+#ifndef MUTEBUTTON_H
+#define MUTEBUTTON_H
 
 #include <QWidget>
 #include <QString>

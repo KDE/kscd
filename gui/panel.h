@@ -30,8 +30,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef PANEL_H_
-#define PANEL_H_
+#ifndef PANEL_H
+#define PANEL_H
 
 #include <QWidget>
 #include <QLabel>

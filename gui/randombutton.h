@@ -30,8 +30,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-#ifndef RANDOMBUTTON_H_
-#define RANDOMBUTTON_H_
+#ifndef RANDOMBUTTON_H
+#define RANDOMBUTTON_H
 
 #include <QWidget>
 #include <QString>

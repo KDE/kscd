@@ -134,7 +134,7 @@ void MBManager::discLookup()
 	}
 	else
 	{
-		// If invalid data, fill the informations with something
+		// If invalid data, fill the information with something
 		// Sets info
 		m_discInfo.Title = i18n("Unknown album");
 		m_discInfo.Artist = i18n("Unknown artist");
