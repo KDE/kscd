@@ -42,6 +42,9 @@ set(kscd_SRCS
 	gui/seekslider.cpp
 	gui/seekcursor.cpp
 	gui/seekbar.cpp
+	dbus/PlayerDBusHandler.cpp
+	dbus/RootDBusHandler.cpp
+	dbus/TracklistDBusHandler.cpp
 )
 
 qt4_add_dbus_adaptor(kscd_SRCS org.kde.kscd.cdplayer.xml kscd.h KSCD)
