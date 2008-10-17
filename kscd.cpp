@@ -135,7 +135,7 @@ void KSCD::setupActions()
 	addAction(m_previousAction);
 	m_previousAction->setShortcut(Qt::Key_Left);
 	connect(m_previousAction, SIGNAL(triggered()), devices, SLOT(prevTrack()));
-
+	
 	//eject
 	m_ejectAction = m_actions->addAction("eject");
 	m_ejectAction->setText(i18n("Eject"));
