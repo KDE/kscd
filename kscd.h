@@ -23,8 +23,8 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef KSCD
-#define KSCD
+#ifndef KSCD_H
+#define KSCD_H
 
 // Solid implementation
 #include <qdialog.h>
