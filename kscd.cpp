@@ -24,6 +24,9 @@
  *
  */
 #include "kscd.h"
+#include "dbus/PlayerDBusHandler.h"
+#include "dbus/RootDBusHandler.h"
+#include "dbus/TracklistDBusHandler.h"
 #include <QSplashScreen>
 #include <QPixmap>
 #include <QStringList>
@@ -48,7 +51,9 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this);
 
-
+	KsCD::PlayerDBusHandler * pdbh = new KsCD::PlayerDBusHandler(this);
+	KsCD::RootDBusHandler * rdbh = new KsCD::RootDBusHandler();
+	KsCD::TracklistDBusHandler * tdbh = new KsCD::TracklistDBusHandler();
 
 	devices = new HWControler();
 

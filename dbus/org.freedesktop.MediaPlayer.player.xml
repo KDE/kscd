@@ -45,11 +45,6 @@
         <arg type="i" direction="out"/>
     </method>
 
-    <method name="GetMetadata">
-        <arg type="a{sv}" direction="out"/>
-        <annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
-    </method>
-
     <method name="GetCaps">
         <arg type="i" direction="out" />
     </method>

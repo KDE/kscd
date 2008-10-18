@@ -16,7 +16,7 @@
  ******************************************************************************/
 
 #include "RootDBusHandler.h"
-
+#include "RootAdaptor.h"
 #include "kscd.h"
 
 // Marshall the DBusVersion data into a D-BUS argument
@@ -44,7 +44,9 @@ namespace KsCD
     RootDBusHandler::RootDBusHandler()
         : QObject()
     {
-    	
+    	new RootAdaptor( this );
+
+    		QDBusConnection::sessionBus().registerObject("/Player", this);
     }
 
     QString RootDBusHandler::Identity()

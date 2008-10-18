@@ -19,6 +19,7 @@
 #ifndef PLAYERDBUSHANDLER_H
 #define PLAYERDBUSHANDLER_H
 
+#include "../kscd.h"
 
 #include <QObject>
 #include <QVariantMap>
@@ -50,7 +51,7 @@ namespace KsCD
     {
         Q_OBJECT
         public:
-            PlayerDBusHandler();
+            PlayerDBusHandler(KSCD * kscd);
 
             enum DBusCaps {
                  NONE                  = 0,
@@ -85,6 +86,7 @@ namespace KsCD
             void slotTrackChange();
             void slotStatusChange();
         private:
+        	KSCD * player;
             static PlayerDBusHandler* s_instance;
     };
 

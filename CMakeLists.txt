@@ -14,12 +14,32 @@ add_subdirectory(tests)
 ########### next target ###############
 
 set(kscd_SRCS 
+
+##########
+# Main
+##########
+
 	kscd.cpp 
+	
+###############
+# Solid/Phonon
+###############
+
 	hwcontroler.cpp 
 	audiocd.cpp 
-# 	bwlednum.cpp 
+# 	bwlednum.cpp
+
+#########################
+# Music Brainz / CDDB
+#########################
+
 # 	cddbdlg.cpp 
 	mbmanager.cpp
+	
+####################
+# Graphics / SVG
+####################
+
 	gui/kscdwindow.cpp 
 	gui/kscdwidget.cpp 
 	gui/ejectbutton.cpp 
@@ -42,20 +62,45 @@ set(kscd_SRCS
 	gui/seekslider.cpp
 	gui/seekcursor.cpp
 	gui/seekbar.cpp
+	
+####################
+# DBus Connection
+####################
+
 	dbus/PlayerDBusHandler.cpp
 	dbus/RootDBusHandler.cpp
 	dbus/TracklistDBusHandler.cpp
 )
 
+
+##################################
+#        DBUS LINKING            #
+##################################
+
 qt4_add_dbus_adaptor(kscd_SRCS org.kde.kscd.cdplayer.xml kscd.h KSCD)
+qt4_add_dbus_adaptor( kscd_SRCS dbus/org.freedesktop.MediaPlayer.root.xml dbus/RootDBusHandler.h KsCD::RootDBusHandler RootAdaptor RootAdaptor)
+qt4_add_dbus_adaptor( kscd_SRCS dbus/org.freedesktop.MediaPlayer.player.xml dbus/PlayerDBusHandler.h KsCD::PlayerDBusHandler PlayerAdaptor PlayerAdaptor)
+qt4_add_dbus_adaptor( kscd_SRCS dbus/org.freedesktop.MediaPlayer.tracklist.xml dbus/TracklistDBusHandler.h KsCD::TracklistDBusHandler TracklistAdaptor TracklistAdaptor)
+
+##################################
+#        Graphics Setting        #
+##################################
 
 file(GLOB resource_svg "gui/skin/*.svg")
 
 kde4_add_ui_files(kscd_SRCS gui/trackListDlgUI.ui gui/finderSkinUI.ui generalSettings.ui interfaceSettings.ui)
 
+##################################
+#        KsCD Executable         #
+##################################
+
 kde4_add_kcfg_files(kscd_SRCS prefs.kcfgc)
 
 kde4_add_executable(kscd ${kscd_SRCS})
+
+##################################
+#        Libraries Linking       #
+##################################
 
 target_link_libraries(kscd
     ${KDE4_KUTILS_LIBS}

@@ -16,6 +16,7 @@
  ******************************************************************************/
 
 #include "TracklistDBusHandler.h"
+#include "TracklistAdaptor.h"
 #include "dbus/PlayerDBusHandler.h"
 
 #include <KUrl>
@@ -27,7 +28,11 @@ namespace KsCD
 
     TracklistDBusHandler::TracklistDBusHandler()
         : QObject()
-    {}
+    {
+    	new TracklistAdaptor( this );
+
+    		QDBusConnection::sessionBus().registerObject("/Player", this);
+    }
 
     int TracklistDBusHandler::AddTrack( const QString& url, bool playImmediately )
     {
