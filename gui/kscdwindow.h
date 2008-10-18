@@ -59,7 +59,6 @@
 #include "titlePopUp.h"
 #include "seekslider.h"
 #include "seekcursor.h"
-#include "finderSkin.h"
 
 // #include "cddbmanager.h"
 #include "mbmanager.h"
@@ -100,7 +99,6 @@ protected:
 	KscdWidget *m_popup;
 
 	TrackListDlg *m_trackDlg;
-	FinderSkin *m_finderSkin;
 
 	QPoint mousePosition;
 	bool m_move;
@@ -145,11 +143,6 @@ public slots:
 	void showArtistLabel(QString &);
 	void showTrackinfoLabel(QString &);
 	void panelInfo(const QString &);
-
-	/**
-	 * Show the finder skin dialog
-	 */
-	void makeFinderSkinDialog();
 
 	/**
 	* Refresh skin

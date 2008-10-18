@@ -129,18 +129,18 @@ void KSCD::setupActions()
 
 	//next
 	m_nextAction = m_actions->addAction("next");
-	m_nextAction->setText(i18n("Next"));
+	m_nextAction->setText(i18nc("Next","This action allow the user to pass to the following track"));
 	addAction(m_nextAction);
 	m_nextAction->setShortcut(Qt::Key_Right);
 	connect(m_nextAction, SIGNAL(triggered()), devices, SLOT(nextTrack()));
 
 	//previous
 	m_previousAction = m_actions->addAction("previous");
-	m_previousAction->setText(i18n("Previous"));
+	m_previousAction->setText(i18nc("Previous","This action allow the user to pass to the preceding track"));
 	addAction(m_previousAction);
 	m_previousAction->setShortcut(Qt::Key_Left);
 	connect(m_previousAction, SIGNAL(triggered()), devices, SLOT(prevTrack()));
-	
+
 	//eject
 	m_ejectAction = m_actions->addAction("eject");
 	m_ejectAction->setText(i18n("Eject"));
@@ -164,7 +164,7 @@ void KSCD::setupActions()
 
 	//random
 	m_randomAction = m_actions->addAction("random");
-	m_randomAction->setText(i18n("Random"));
+	m_randomAction->setText(i18nc("Random","This action allow the user to listen a random track list"));
 	addAction(m_randomAction);
 	m_randomAction->setShortcut(Qt::CTRL + Qt:: Key_H);
 	connect(m_randomAction, SIGNAL(triggered()), this, SLOT(randomShortcut()));
@@ -744,7 +744,7 @@ HWControler* KSCD::getDevices() const
 bool KSCD::saveState(QSessionManager& /*sm*/)
 {
 	writeSettings();
-	KConfigGroup config(KApplication::kApplication()->sessionConfig(), i18n("General"));
+	KConfigGroup config(KApplication::kApplication()->sessionConfig(), i18nc("General","General option in the configuration dialog"));
 	config.writeEntry(i18n("Show"), isVisible());
 	return true;
 }
@@ -761,7 +761,7 @@ void KSCD::optionsPreferences()
 	QWidget *generalSettingsDlg = new QWidget;
 	ui_general.setupUi(generalSettingsDlg);
 
-	dialog->addPage(generalSettingsDlg, i18n("General"), "kscd");
+	dialog->addPage(generalSettingsDlg, i18nc("General","General option in the configuration dialog"), "kscd");
 
 	QWidget *interfaceSettingsDlg = new QWidget;
 	ui_interface.setupUi(interfaceSettingsDlg);
