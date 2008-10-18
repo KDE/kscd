@@ -72,9 +72,6 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	setMask( m_backG->getPix().mask() );
 
 
-	m_finderSkin= new FinderSkin(this); //New finder skin dialog created at the beginning
-
-
 	connect(m_stopB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
 	connect(m_playB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
 	connect(m_prevB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
@@ -115,7 +112,6 @@ KscdWindow::~KscdWindow()
 // 	delete /*m_popUp*/;
 
 	delete m_trackDlg;
-	delete m_finderSkin;
 }
 
 void KscdWindow::closeTrackDialog()
@@ -147,11 +143,6 @@ void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,const QString 
 	}
 	m_trackDlg->moveTrackDialog(x(),y()+frameGeometry().height());
 	m_trackDlg->show();
-}
-
-void KscdWindow::makeFinderSkinDialog()
-{
-	m_finderSkin->show();
 }
 
 //Apply changes on kscdwidgets with new skin
