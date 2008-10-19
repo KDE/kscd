@@ -87,7 +87,7 @@ qt4_add_dbus_adaptor( kscd_SRCS dbus/org.freedesktop.MediaPlayer.tracklist.xml d
 
 file(GLOB resource_svg "gui/skin/*.svg")
 
-kde4_add_ui_files(kscd_SRCS gui/trackListDlgUI.ui gui/finderSkinUI.ui generalSettings.ui interfaceSettings.ui)
+kde4_add_ui_files(kscd_SRCS gui/trackListDlgUI.ui generalSettings.ui interfaceSettings.ui)
 
 ##################################
 #        KsCD Executable         #
