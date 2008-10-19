@@ -51,12 +51,12 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	QDBusConnection::sessionBus().registerObject("/CDPlayer", this);
 
-	KsCD::PlayerDBusHandler * pdbh = new KsCD::PlayerDBusHandler(this);
-	KsCD::RootDBusHandler * rdbh = new KsCD::RootDBusHandler();
-	KsCD::TracklistDBusHandler * tdbh = new KsCD::TracklistDBusHandler();
 
 	devices = new HWControler();
 
+	KsCD::PlayerDBusHandler * pdbh = new KsCD::PlayerDBusHandler(this);
+	KsCD::RootDBusHandler * rdbh = new KsCD::RootDBusHandler();
+	KsCD::TracklistDBusHandler * tdbh = new KsCD::TracklistDBusHandler();
 
 	sslider = new Phonon::SeekSlider(devices->getMedia(),this);
 // 	sslider->setMediaObject(devices->getMedia());
@@ -280,7 +280,7 @@ void KSCD::restoreArtistLabel()
 void KSCD::restoreTrackinfoLabel()
 {
 	QString title, length ;
-
+/*
 	// If disc is inserted
 	int currentTrack = devices->getCurrentTrack();
 	if (devices->getCD()->isCdInserted()  && currentTrack > 0 )
@@ -296,7 +296,7 @@ void KSCD::restoreTrackinfoLabel()
 	else
 	{
 		showTrackinfoLabel(title);
-	}
+	}*/
 }
 void KSCD::changeVolume(qreal value)
 {
@@ -829,7 +829,7 @@ int main( int argc, char *argv[] )
 	aboutData.addCredit(ki18n("Wilfried Huss"), ki18n("Patches galore"));
 	aboutData.addCredit(ki18n("Steven Grimm"), ki18n("Workman library"));
 	aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
-	aboutData.addCredit(ki18n("Amine Bouchikhi"), ki18n("Developer"));
+	aboutData.addCredit(ki18n("Amine Bouchikhi"), ki18n("Solid/Phonon Upgrade, QDBus connection"),"bouchikhi.amine@gmail.com");
 	aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
 	KCmdLineArgs::init( argc, argv, &aboutData );
