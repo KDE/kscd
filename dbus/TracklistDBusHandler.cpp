@@ -26,12 +26,16 @@
 namespace KsCD
 {
 
-    TracklistDBusHandler::TracklistDBusHandler()
+    TracklistDBusHandler::TracklistDBusHandler(KSCD *kscd)
         : QObject()
     {
-    	new TracklistAdaptor( this );
+    	
+    	player = kscd;
+    	    	new TracklistAdaptor( this );
 
-    		QDBusConnection::sessionBus().registerObject("/Player", this);
+    	    		QDBusConnection::sessionBus().registerObject("/Player", this);
+
+    	        setObjectName("TracklistDBusHandler");
     }
 
     int TracklistDBusHandler::AddTrack( const QString& url, bool playImmediately )

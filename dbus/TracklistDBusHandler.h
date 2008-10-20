@@ -20,6 +20,7 @@
 
 #include <QObject>
 #include <QVariantMap>
+#include "../kscd.h"
 
 namespace KsCD
 {
@@ -28,8 +29,10 @@ namespace KsCD
         Q_OBJECT
         Q_CLASSINFO("D-Bus Interface", "org.freedesktop.MediaPlayer.tracklist")
 
+    private:
+    		KSCD * player;
         public:
-            TracklistDBusHandler();
+            TracklistDBusHandler(KSCD *kscd);
 
             int AddTrack( const QString &, bool );
             void DelTrack( int index );

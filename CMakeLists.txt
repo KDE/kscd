@@ -25,7 +25,7 @@ set(kscd_SRCS
 	audiocd.cpp 
 
 #########################
-# Music Brainz / CDDB
+# Music Brainz 
 #########################
 
 	mbmanager.cpp

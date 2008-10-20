@@ -41,12 +41,16 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, Version &version)
 namespace KsCD
 {
 
-    RootDBusHandler::RootDBusHandler()
+    RootDBusHandler::RootDBusHandler(KSCD * kscd)
         : QObject()
     {
-    	new RootAdaptor( this );
+    	
+    	player = kscd;
+    	    	new RootAdaptor( this );
 
-    		QDBusConnection::sessionBus().registerObject("/Player", this);
+    	    		QDBusConnection::sessionBus().registerObject("/Player", this);
+
+    	        setObjectName("RootDBusHandler");
     }
 
     QString RootDBusHandler::Identity()

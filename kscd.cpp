@@ -55,8 +55,8 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 	devices = new HWControler();
 
 	KsCD::PlayerDBusHandler * pdbh = new KsCD::PlayerDBusHandler(this);
-	KsCD::RootDBusHandler * rdbh = new KsCD::RootDBusHandler();
-	KsCD::TracklistDBusHandler * tdbh = new KsCD::TracklistDBusHandler();
+	KsCD::RootDBusHandler * rdbh = new KsCD::RootDBusHandler(this);
+	KsCD::TracklistDBusHandler * tdbh = new KsCD::TracklistDBusHandler(this);
 
 	sslider = new Phonon::SeekSlider(devices->getMedia(),this);
 // 	sslider->setMediaObject(devices->getMedia());
@@ -822,14 +822,14 @@ int main( int argc, char *argv[] )
 						 "1.5", ki18n(description),
 									  KAboutData::License_GPL,
 		   ki18n("(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo"));
-	aboutData.addAuthor(ki18n("Aaron J. Seigo"), ki18n("Current maintainer"), "aseigo@kde.org");
+	aboutData.addCredit(ki18n("Amine Bouchikhi"), ki18n("Current maintainer, Solid/Phonon Upgrade, QDBus connection"),"bouchikhi.amine@gmail.com");
+	aboutData.addAuthor(ki18n("Aaron J. Seigo"), ki18n("Previous maintainer"), "aseigo@kde.org");
 	aboutData.addAuthor(ki18n("Alexander Kern"),ki18n("Workman library update, CDTEXT, CDDA"), "kernalex@kde.org");
 	aboutData.addAuthor(ki18n("Bernd Johannes Wuebben"),KLocalizedString(), "wuebben@kde.org");
 	aboutData.addAuthor(ki18n("Dirk Försterling"), ki18n("Workman library, previous maintainer"), "milliByte@gmx.net");
 	aboutData.addCredit(ki18n("Wilfried Huss"), ki18n("Patches galore"));
 	aboutData.addCredit(ki18n("Steven Grimm"), ki18n("Workman library"));
 	aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
-	aboutData.addCredit(ki18n("Amine Bouchikhi"), ki18n("Solid/Phonon Upgrade, QDBus connection"),"bouchikhi.amine@gmail.com");
 	aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
 	KCmdLineArgs::init( argc, argv, &aboutData );

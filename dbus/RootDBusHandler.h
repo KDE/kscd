@@ -21,6 +21,8 @@
 #include <QObject>
 #include <QDBusArgument>
 
+#include "../kscd.h"
+
 struct Version
 {
     quint16 major;
@@ -39,8 +41,11 @@ namespace KsCD
     {
         Q_OBJECT
 
+    private: 
+    	KSCD * player;
+        
         public:
-            RootDBusHandler();
+            RootDBusHandler(KSCD * kscd);
             QString Identity();
             void Quit();
             Version MprisVersion();
