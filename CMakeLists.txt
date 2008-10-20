@@ -2,10 +2,6 @@ project(kscd)
 
 include_directories(
                 ${CMAKE_CURRENT_SOURCE_DIR}/gui
-		${CMAKE_SOURCE_DIR}/libkcddb
-		${CMAKE_BINARY_DIR}/libkcddb
-		${CMAKE_SOURCE_DIR}/libkcompactdisc
-		${CMAKE_BINARY_DIR}/libkcompactdisc
 		${CMAKE_SOURCE_DIR}/kscd
 			${CMAKE_BINARY_DIR}/kscd
 		)
@@ -27,13 +23,11 @@ set(kscd_SRCS
 
 	hwcontroler.cpp 
 	audiocd.cpp 
-# 	bwlednum.cpp
 
 #########################
 # Music Brainz / CDDB
 #########################
 
-# 	cddbdlg.cpp 
 	mbmanager.cpp
 	
 ####################
