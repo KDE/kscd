@@ -129,21 +129,21 @@ void KSCD::setupActions()
 
 	//next
 	m_nextAction = m_actions->addAction("next");
-	m_nextAction->setText(i18nc("Next","This action allow the user to pass to the following track"));
+	m_nextAction->setText(i18nc( "This action allow user to pass to the following track","Next" ));
 	addAction(m_nextAction);
 	m_nextAction->setShortcut(Qt::Key_Right);
 	connect(m_nextAction, SIGNAL(triggered()), devices, SLOT(nextTrack()));
 
 	//previous
 	m_previousAction = m_actions->addAction("previous");
-	m_previousAction->setText(i18nc("Previous","This action allow the user to pass to the preceding track"));
+	m_previousAction->setText(i18nc( "This action allow the user to pass to the preceding track", "Previous" ) );
 	addAction(m_previousAction);
 	m_previousAction->setShortcut(Qt::Key_Left);
 	connect(m_previousAction, SIGNAL(triggered()), devices, SLOT(prevTrack()));
 
 	//eject
 	m_ejectAction = m_actions->addAction("eject");
-	m_ejectAction->setText(i18n("Eject"));
+	m_ejectAction->setText(i18nc( " This action allow to eject the inserted disc", "Eject"));
 	addAction(m_ejectAction);
 	m_ejectAction->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
 	connect(m_ejectAction, SIGNAL(triggered()), this, SLOT(ejectShortcut()));
@@ -164,7 +164,7 @@ void KSCD::setupActions()
 
 	//random
 	m_randomAction = m_actions->addAction("random");
-	m_randomAction->setText(i18nc("Random","This action allow the user to listen a random track list"));
+	m_randomAction->setText(i18nc("This action allow the user to listen a random track list","Random"));
 	addAction(m_randomAction);
 	m_randomAction->setShortcut(Qt::CTRL + Qt:: Key_H);
 	connect(m_randomAction, SIGNAL(triggered()), this, SLOT(randomShortcut()));
@@ -744,7 +744,7 @@ HWControler* KSCD::getDevices() const
 bool KSCD::saveState(QSessionManager& /*sm*/)
 {
 	writeSettings();
-	KConfigGroup config(KApplication::kApplication()->sessionConfig(), i18nc("General","General option in the configuration dialog"));
+	KConfigGroup config(KApplication::kApplication()->sessionConfig(), i18nc("General option in the configuration dialog","General"));
 	config.writeEntry(i18n("Show"), isVisible());
 	return true;
 }
@@ -761,7 +761,7 @@ void KSCD::optionsPreferences()
 	QWidget *generalSettingsDlg = new QWidget;
 	ui_general.setupUi(generalSettingsDlg);
 
-	dialog->addPage(generalSettingsDlg, i18nc("General","General option in the configuration dialog"), "kscd");
+	dialog->addPage(generalSettingsDlg, i18nc("General option in the configuration dialog","General"), "kscd");
 
 	QWidget *interfaceSettingsDlg = new QWidget;
 	ui_interface.setupUi(interfaceSettingsDlg);

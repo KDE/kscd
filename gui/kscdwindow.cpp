@@ -369,7 +369,7 @@ void KscdWindow::panelInfo(const QString & mess)
 	if(mess == "p_random")
 	{
 		//informationDisplay += "random";
-		m_panel->setRandom(i18n( "random" ));
+		m_panel->setRandom(i18nc( "This action allow the user to listen a random track","random"));
 	}
 	m_panel->displayInfo(m_panel->getLoop(),m_panel->getRandom());
 }
