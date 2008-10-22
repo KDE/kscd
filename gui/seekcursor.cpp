@@ -48,10 +48,10 @@ int SeekCursor::getStep() const
 	return m_step;
 }
 
-void SeekCursor::setStep(qint64 time,int lenght)
+void SeekCursor::setStep(qint64 time,int length)
 {
 
-	m_step = ceil((SECOND_IN_MILLI * (float)lenght)/(float)time);
+	m_step = ceil((SECOND_IN_MILLI * (float)length)/(float)time);
 	kDebug()<<"m_step:"<<m_step;
 }
 
