@@ -40,27 +40,27 @@ namespace KsCD
 
     int TracklistDBusHandler::AddTrack( const QString& url, bool playImmediately )
     {
-    	
+        return 0;
     }
 
     void TracklistDBusHandler::DelTrack( int index )
     {
-    	
+        return 0;
     }
 
     int TracklistDBusHandler::GetCurrentTrack()
     {
-    	
+        return 0;
     }
 
     int TracklistDBusHandler::GetLength()
     {
-    	
+        return 0;
     }
 
     QVariantMap TracklistDBusHandler::GetMetadata( int position )
     {
-    	
+        return QVariantMap();
     }
 
     void TracklistDBusHandler::SetLoop(bool enable)

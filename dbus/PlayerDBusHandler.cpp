@@ -75,6 +75,9 @@ namespace KsCD
     DBusStatus PlayerDBusHandler::GetStatus()
     {
     	kDebug() << "**** Dbus -> GetStatus() ****";
+        struct DBusStatus s;
+        memset(&s, 0, sizeof(struct DBusStatus));
+        return s;
     }
 
     void PlayerDBusHandler::Pause()

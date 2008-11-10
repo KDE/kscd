@@ -55,7 +55,7 @@ namespace KsCD
 
     QString RootDBusHandler::Identity()
     {
-    	
+        return QString();
     }
 
     void RootDBusHandler::Quit()
