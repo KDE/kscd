@@ -45,7 +45,6 @@ namespace KsCD
 
     void TracklistDBusHandler::DelTrack( int index )
     {
-        return 0;
     }
 
     int TracklistDBusHandler::GetCurrentTrack()
