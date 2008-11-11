@@ -125,14 +125,14 @@ void KscdWindow::closeTrackDialog()
 
 void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,const QString  & albumTitle)
 {
-	QList<MBTrackInfo>::iterator it;
-        QList<MBTrackInfo>::const_iterator end = trackList.end();
+	QList<MBTrackInfo>::const_iterator it;
+        QList<MBTrackInfo>::const_iterator end = trackList.constEnd();
 	m_trackDlg->removeRowsTrackTable(trackList.size());
 
 	m_stateTrackDialog = true;
 	m_trackDlg->setAlbumLbl(albumTitle);
  	int trackNumber = 0;
-	for(it = trackList.begin();it != end;++it)
+	for(it = trackList.constBegin();it != end;++it)
 	{
 		m_trackDlg->addRowTrackTable(trackNumber);
 		m_trackDlg->addItemTrackTable(trackNumber,0,QString::number(trackNumber+1));
