@@ -46,6 +46,8 @@ GenericName[ru]=Проигрыватель аудиодисков
 GenericName[se]=CD-čuojaheaddji
 GenericName[sk]=CD prehrávač
 GenericName[sl]=Predvajalnik CD-jev
+GenericName[sr]=ЦД плејер
+GenericName[sr@latin]=CD plejer
 GenericName[sv]=Cd-spelare
 GenericName[ta]=குறுந்தகடு இயக்கி
 GenericName[tg]=Бозингари Диски Фишурда
@@ -64,6 +66,7 @@ Name=KsCD
 Name[af]=Kscd
 Name[bn]=কে-এস-সিডি
 Name[hi]==के-एससीडी
+Name[sr]=КсЦД
 Name[sv]=Kscd
 Name[ta]=Ksகுறுந்தகடு
 Name[tg]=KsДиски Фишурда
