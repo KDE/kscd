@@ -408,8 +408,7 @@ dialog</phrase></textobject>
 <para> The <guilabel>Lookup</guilabel> tab sets up the <acronym>CDDB</acronym> functions
 of &kscd;.</para>
 
-<para>You can select the options <guilabel>Enable MusicBrainz lookup</guilabel> or
-<guilabel>Enable freedb lookup</guilabel>.</para>
+<para>You can select the option <guilabel>Enable freedb lookup</guilabel> (default).</para>
 
 <para>The <guilabel>Freedb server</guilabel> section determines which CDDB mirror site is used by &kscd; to 
 get album information.  You can enter a server name, port number and protocol using the text boxes and drop 
