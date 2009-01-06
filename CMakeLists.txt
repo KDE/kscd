@@ -52,7 +52,7 @@ set(kscd_SRCS
 	gui/background.cpp
 	gui/closebutton.cpp
 	gui/minimizebutton.cpp
-	gui/seekslider.cpp
+	#gui/seekslider.cpp
 	gui/seekcursor.cpp
 	gui/seekbar.cpp
 	
