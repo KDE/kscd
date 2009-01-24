@@ -81,4 +81,4 @@ Type=Application
 Terminal=false
 X-KDE-StartupNotify=true
 X-DBUS-StartupType=Multi
-Categories=Qt;KDE;AudioVideo;
+Categories=Qt;KDE;AudioVideo;Player;
