@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 GenericName=CD Player
-GenericName[af]=Cd Speler
+GenericName[af]=CD Speler
 GenericName[ar]=مشغل الأقراص المدمجة
 GenericName[bg]=Плеър за компактдискове
 GenericName[bn]=সিডি প্লেয়ার
@@ -68,7 +68,6 @@ GenericName[zh_CN]=CD 播放器
 GenericName[zh_HK]=CD 播放器
 GenericName[zh_TW]=CD 播放器
 Name=KsCD
-Name[af]=Kscd
 Name[bn]=কে-এস-সিডি
 Name[hi]==के-एससीडी
 Name[hne]==के-एससीडी
