@@ -113,8 +113,7 @@ install( FILES ${resource_svg} DESTINATION ${DATA_INSTALL_DIR}/kscd/skin)
 install(FILES kscd.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR})
 install(FILES kscd.profile.xml  DESTINATION  ${DATA_INSTALL_DIR}/profiles)
 install(FILES kscd.kcfg  DESTINATION  ${KCFG_INSTALL_DIR})
-install(FILES audiocd_play.desktop  DESTINATION
-${SERVICES_INSTALL_DIR}/ServiceMenus)
+install(FILES kscd-play-audiocd.desktop DESTINATION ${DATA_INSTALL_DIR}/solid/actions )
 
 install( FILES org.kde.kscd.cdplayer.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR} )
 

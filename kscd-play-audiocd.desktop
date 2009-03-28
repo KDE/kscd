@@ -1,0 +1,9 @@
+[Desktop Entry]
+X-KDE-Solid-Predicate=[ StorageVolume.ignored == false AND OpticalDisc.availableContent == 'Audio' ]
+Type=Service
+Actions=open;
+
+[Desktop Action open]
+Exec=kscd -s
+Icon=kscd
+Name=Play Audio CD with KsCD
