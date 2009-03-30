@@ -7,3 +7,7 @@ Actions=open;
 Exec=kscd -s
 Icon=kscd
 Name=Play Audio CD with KsCD
+Name[pt]=Tocar o CD de Áudio com o KsCD
+Name[pt_BR]=Reproduzir CD de áudio com o KsCD
+Name[sv]=Spela ljud-cd med Kscd
+Name[uk]=Відтворити звуковий КД за допомогою KsCD
