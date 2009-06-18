@@ -2710,34 +2710,6 @@
        y1="59.767475"
        x2="1599.1053"
        y2="168.80536"
-       id="linearGradient4341"
-       xlink:href="#linearGradient4111"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.0095561,0,0,1.0255082,-15.033798,-2.9477989)" />
-    <radialGradient
-       cx="1573.2223"
-       cy="-30.084469"
-       r="145.63585"
-       fx="1573.2223"
-       fy="-30.084469"
-       id="radialGradient4343"
-       xlink:href="#linearGradient4181"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.1797608,1.0376239e-6,-4.3061505e-7,0.5144915,-282.80377,74.892207)" />
-    <linearGradient
-       x1="1598.5118"
-       y1="-10.481991"
-       x2="1598.647"
-       y2="154.4644"
-       id="linearGradient4345"
-       xlink:href="#linearGradient4099"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,5.5132341e-2,-0.1156987,56.235148)" />
-    <linearGradient
-       x1="1599.1678"
-       y1="59.767475"
-       x2="1599.1053"
-       y2="168.80536"
        id="linearGradient4357"
        xlink:href="#linearGradient4111"
        gradientUnits="userSpaceOnUse"
@@ -2855,7 +2827,7 @@
          x="1208.7428"
          y="4.0627685"
          id="rect2822"
-         style="opacity:1;fill:#dcdcdc;fill-opacity:1;stroke:#4c4c4c;stroke-width:0.31749266;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+         style="opacity:1;fill:#dcdcdc;fill-opacity:1;stroke:#4c4c4c;stroke-width:0.72194195;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <rect
          width="688.34491"
          height="25.065647"
@@ -2950,6 +2922,15 @@
            id="text4122"
            style="font-size:4px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans" />
       </g>
+      <rect
+         width="696.77209"
+         height="259.89984"
+         rx="7.3544579"
+         ry="7.9794455"
+         x="1209.5562"
+         y="5.0089583"
+         id="rect5347"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#f0f0f0;stroke-width:1.42428648;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     </g>
     <g
        transform="matrix(1.0022412,0,0,0.9737707,-1184.7776,9.2816317)"
