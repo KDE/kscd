@@ -42,7 +42,7 @@ class MinimizeButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	explicit MinimizeButton(QWidget * parent=0, const QString& sName="minimize");
+	explicit MinimizeButton(QWidget * parent=0);
 	virtual ~MinimizeButton();
 
 };

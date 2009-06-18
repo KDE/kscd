@@ -31,8 +31,9 @@
  *
  */
 #include "stopbutton.h"
+#include <KLocale>
 
-StopButton::StopButton(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
+StopButton::StopButton(QWidget * parent):KscdWidget(I18N_NOOP("stop"),parent)
 {
 }
 

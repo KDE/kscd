@@ -31,8 +31,9 @@
  *
  */
 #include "mutebutton.h"
+#include <KLocale>
 
-MuteButton::MuteButton(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
+MuteButton::MuteButton(QWidget * parent):KscdWidget(I18N_NOOP("mute"),parent)
 {
 }
 

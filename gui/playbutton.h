@@ -43,7 +43,7 @@ class PlayButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	explicit PlayButton(QWidget * parent=0, const QString& sName="play");
+	explicit PlayButton(QWidget * parent=0);
 	virtual ~PlayButton();
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
