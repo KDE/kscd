@@ -43,7 +43,7 @@ class EjectButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	explicit EjectButton(QWidget * parent=0, const QString& sName="eject");
+	explicit EjectButton(QWidget * parent=0);
 	virtual ~EjectButton();
 
 };

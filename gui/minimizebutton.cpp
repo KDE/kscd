@@ -31,8 +31,9 @@
  *
  */
 #include "minimizebutton.h"
+#include <KLocale>
 
-MinimizeButton::MinimizeButton(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
+MinimizeButton::MinimizeButton(QWidget * parent):KscdWidget(I18N_NOOP("minimize"),parent)
 {
 }
 

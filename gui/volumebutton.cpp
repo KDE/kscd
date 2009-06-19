@@ -32,8 +32,9 @@
  */
 #include "volumebutton.h"
 #include <QPainter>
+#include <KLocale>
 
-VolumeButton::VolumeButton(QWidget * parent,const QString& sName,qreal value):KscdWidget(sName,parent)
+VolumeButton::VolumeButton(QWidget * parent, qreal value):KscdWidget(I18N_NOOP("volume"),parent)
 {
 	m_vValue = value;
 	m_angle = valueToAngle(m_vValue);
@@ -181,7 +182,7 @@ void VolumeButton::paintEvent(QPaintEvent *event)
 void VolumeButton::enterEvent (QEvent * event )
 {
 	event->accept();
-	setToolTip(m_name);
+	setToolTip( i18n( qPrintable( m_name ) ) );
 }
 
 void VolumeButton::leaveEvent (QEvent * event )

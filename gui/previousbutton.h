@@ -44,7 +44,7 @@ class PreviousButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	explicit PreviousButton(QWidget * parent=0, const QString& sName="previous");
+	explicit PreviousButton(QWidget * parent=0);
 	virtual ~PreviousButton();
 
 };

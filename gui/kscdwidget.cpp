@@ -35,7 +35,7 @@
 #include <QRegion>
 #include <QPixmap>
 #include <QBitmap>
-
+#include "klocale.h"
 KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 {
 	m_state = "default";
@@ -113,7 +113,7 @@ void KscdWidget::enterEvent (QEvent * event )
 	m_state = "over";
 	m_id = m_name + '_' + m_state;
 	emit(needRepaint());
-	setToolTip(m_name);
+	setToolTip( i18n( qPrintable( m_name ) ) );
 }
 
 void KscdWidget::leaveEvent (QEvent * event )

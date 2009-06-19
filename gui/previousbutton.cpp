@@ -31,8 +31,9 @@
  *
  */
 #include "previousbutton.h"
+#include <KLocale>
 
-PreviousButton::PreviousButton(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
+PreviousButton::PreviousButton(QWidget * parent):KscdWidget(I18N_NOOP("previous"),parent)
 {
 }
 

@@ -42,7 +42,7 @@ class TrackListButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	explicit TrackListButton(QWidget * parent=0, const QString& sName="tracklist");
+	explicit TrackListButton(QWidget * parent=0);
 	virtual ~TrackListButton();
 
 };

@@ -42,7 +42,7 @@ class CloseButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	explicit CloseButton(QWidget * parent=0, const QString& sName="close");
+	explicit CloseButton(QWidget * parent=0);
 	virtual ~CloseButton();
 
 };

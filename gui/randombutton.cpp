@@ -31,8 +31,9 @@
  *
  */
 #include "randombutton.h"
+#include <KLocale>
 
-RandomButton::RandomButton(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
+RandomButton::RandomButton(QWidget * parent):KscdWidget(I18N_NOOP("random"),parent)
 {
 }
 
@@ -100,7 +101,7 @@ void RandomButton::enterEvent (QEvent * event )
 		m_state = "over";
 		m_id = m_name + '_' + m_state;
 		emit(needRepaint());
-		setToolTip(m_name);
+		setToolTip( i18n( qPrintable( m_name ) ) );
 	}
 }
 

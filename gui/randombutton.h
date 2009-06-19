@@ -44,7 +44,7 @@ class RandomButton:public KscdWidget
 {
 	Q_OBJECT
 public:
-	explicit RandomButton(QWidget * parent=0, const QString& sName="random");
+	explicit RandomButton(QWidget * parent=0);
 	virtual ~RandomButton();
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);
