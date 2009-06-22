@@ -206,8 +206,8 @@
     <filter
        id="AI_Sfocatura_4">
       <feGaussianBlur
-         stdDeviation="4"
-         id="feGaussianBlur6" />
+         id="feGaussianBlur6"
+         stdDeviation="4" />
     </filter>
     <radialGradient
        cx="58"
@@ -2492,14 +2492,14 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.0831885,0,0,0.6916089,-93.4196,109.47281)" />
     <linearGradient
-       x1="1171.7639"
+       x1="1184.0994"
        y1="30.881998"
-       x2="1981.1538"
+       x2="1935.0582"
        y2="30.881998"
        id="linearGradient4182"
        xlink:href="#linearGradient4176"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,0.2479981,0,22.720131)" />
+       gradientTransform="matrix(1,0,0,0.2479981,-9.7384986,22.720131)" />
     <radialGradient
        cx="1573.2223"
        cy="-30.084469"
@@ -2669,7 +2669,7 @@
          width="662.96362"
          height="0.33188778"
          ry="0.024535751"
-         x="1233.7609"
+         x="1224.0223"
          y="30.212864"
          id="rect186804"
          style="opacity:0.7480315;fill:url(#linearGradient4182);fill-opacity:1;stroke:none;stroke-width:0.90600002;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
