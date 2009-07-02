@@ -178,14 +178,9 @@ void KscdWidget::loadSkin(const QString & skin)
 	m_path = skin;
 	if (!m_renderer->load(skin))
 	{
-		// TODO We should make kconfig_compiler create a setDefaultUrl or something
-		KConfigSkeletonItem *urlItem = Prefs::self()->findItem("url");
-		if (urlItem)
-		{
-			urlItem->setDefault();
-			m_path = Prefs::url();
-			m_renderer->load(skin);
-		}
+		Prefs::setUrl(Prefs::defaultUrlValue());
+		m_path = Prefs::url();
+		m_renderer->load(skin);
 	}
 	if (m_renderer->elementExists(m_id)){
 		QRectF rect = m_renderer->boundsOnElement(newId);
