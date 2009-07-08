@@ -3,3 +3,4 @@ File=kscd.kcfg
 ClassName=Prefs
 Singleton=true
 Mutators=true
+DefaultValueGetters=true
