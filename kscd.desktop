@@ -83,5 +83,5 @@ Icon=kscd
 Type=Application
 Terminal=false
 X-KDE-StartupNotify=true
-X-DBUS-StartupType=Multi
+X-DBUS-StartupType=Unique
 Categories=Qt;KDE;AudioVideo;Player;
