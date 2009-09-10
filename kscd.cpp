@@ -745,7 +745,7 @@ bool KSCD::saveState(QSessionManager& /*sm*/)
 {
 	writeSettings();
 	KConfigGroup config(KApplication::kApplication()->sessionConfig(), i18nc("General option in the configuration dialog","General"));
-	config.writeEntry(i18n("Show"), isVisible());
+	//config.writeEntry(i18n("Show"), isVisible());
 	return true;
 }
 
@@ -866,8 +866,12 @@ int main( int argc, char *argv[] )
 
 	if (kapp->isSessionRestored())
 	{
+		// The user has no way to show it if it's hidden - so why start it hidden?
+#if 0
 		KConfigGroup group(KApplication::kApplication()->sessionConfig(), "General");
-		if (group.readEntry("Show", false)){
+		if (group.readEntry("Show", false))
+#endif
+                {
 			k->show();
 		}
 	}
