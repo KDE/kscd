@@ -8,6 +8,7 @@ Exec=kscd -s
 Icon=kscd
 Name=Play Audio CD with KsCD
 Name[ar]=شغل أقراص صوتية بـ KsCD
+Name[ast]=Reproducir el CD d'audio con KsCD
 Name[bg]=Изпълнение на звукови дискове с KsCD
 Name[ca]=Reprodueix CD d'àudio amb el KsCD
 Name[cs]=Přehrát audio CD v KsCD
