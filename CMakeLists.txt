@@ -111,7 +111,6 @@ install(TARGETS kscd ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES ${resource_svg} DESTINATION ${DATA_INSTALL_DIR}/kscd/skin)
 
 install(FILES kscd.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR})
-install(FILES kscd.profile.xml  DESTINATION  ${DATA_INSTALL_DIR}/profiles)
 install(FILES kscd.kcfg  DESTINATION  ${KCFG_INSTALL_DIR})
 install(FILES kscd-play-audiocd.desktop DESTINATION ${DATA_INSTALL_DIR}/solid/actions )
 
