@@ -248,9 +248,8 @@ void Panel::setTextSizeFont(const QFont& font){
 
 void Panel::setTextColor(const QColor& c){
 	color = c;
-	QColorGroup grp( QColor( c.red(), c.green(), c.blue() ), Qt::black, QColor( 128, 128, 128 ),
-	QColor( 64, 64, 64 ), Qt::black, Qt::darkGreen, Qt::black );
-	QPalette pal( grp, grp, grp );
+	QPalette pal( QColor( c.red(), c.green(), c.blue() ), Qt::black, QColor( 128, 128, 128 ),
+	              QColor( 64, 64, 64 ), Qt::black, Qt::darkGreen, Qt::black );
 	l_title->setPalette(pal);
 	l_author->setPalette(pal);
 	l_album->setPalette(pal);

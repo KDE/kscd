@@ -5,7 +5,6 @@ include_directories(
 		${CMAKE_SOURCE_DIR}/kscd
 			${CMAKE_BINARY_DIR}/kscd
 		)
-add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 add_subdirectory(tests)
 ########### next target ###############
 
