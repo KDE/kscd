@@ -34,6 +34,7 @@
 #include <QString>
 #include <QBitmap>
 #include <QPainter>
+#include <QTime>
 #include <klocalizedstring.h>
 
 #include "panel.h"
@@ -137,7 +138,10 @@ void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,const QString 
 		m_trackDlg->addRowTrackTable(trackNumber);
 		m_trackDlg->addItemTrackTable(trackNumber,0,QString::number(trackNumber+1));
 		m_trackDlg->addItemTrackTable(trackNumber,1,(*it).Title);
-		m_trackDlg->addItemTrackTable(trackNumber,2,(*it).Duration);
+		QTime time;
+		QString msecs = (*it).Duration;
+		time = time.addMSecs(msecs.toInt());
+		m_trackDlg->addItemTrackTable(trackNumber,2,time.toString("mm:ss"));
 //		m_trackDlg->setYearLbl((*it).Year);
 		trackNumber++;
 	}
@@ -229,6 +233,7 @@ void KscdWindow::catchVolume(qreal value)
 
 void KscdWindow::changePicture(const QString & name,const QString & state)
 {
+  kDebug() << name << state;
 	QString result;
 	QString def = "default";
 	if(name == "play")

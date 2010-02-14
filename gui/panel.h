@@ -70,7 +70,7 @@ public slots:
 	void setTitle(const QString & title);
 	void setAuthor(const QString & author);
 	void setAlbum(const QString & album);
-	void setVolume(const QString & volume);
+// 	void setVolume(const QString & volume);
 	void setLoop(const QString& loop);
 	void setRandom(const QString& random);
 	void displayInfo(const QString& loop, const QString& random);

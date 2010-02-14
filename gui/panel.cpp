@@ -49,14 +49,17 @@ Panel::Panel(QWidget * parent, const QString& sName):KscdWidget(sName,parent)
 	vbl_layout = new QGridLayout();
 	vbl_layout->setVerticalSpacing(1);
 
-	index=0;
+// 	index=0;
 	ejectStatus = new QLabel("");
 	titleTrack = new QLabel("");
 	l_title = new QLabel("");
+	l_title->setAlignment(Qt::AlignCenter);
 	vbl_layout->addWidget(l_title,4,0);
-	l_album = new QLabel("<center>"+i18n("WELCOME!")+"</center>");
+	l_album = new QLabel(i18n("WELCOME!"));
+	l_album->setAlignment(Qt::AlignCenter);
 	vbl_layout->addWidget(l_album,3,0);
 	l_author = new QLabel("");
+	l_author->setAlignment(Qt::AlignCenter);
 	vbl_layout->addWidget(l_author,2, 0);
 	volumeDisplay = new QLabel("");
 	vbl_layout->addWidget(volumeDisplay,5,0);
@@ -64,11 +67,13 @@ Panel::Panel(QWidget * parent, const QString& sName):KscdWidget(sName,parent)
 	l_random = new QLabel("");
 	l_info = new QLabel("");
 	textSize = new QLabel("");
+	
 	vbl_layoutIntern = new QGridLayout();
-	vbl_layout->addLayout(vbl_layoutIntern,0,0);
 	vbl_layoutIntern->addWidget(l_loop,0,0);
 	vbl_layoutIntern->addWidget(l_random,0,1);
 	vbl_layoutIntern->addWidget(ejectStatus,0,2);
+	
+	vbl_layout->addLayout(vbl_layoutIntern,0,0);
 	l_time = new QLabel("<center><font size="+textSize->text()+"><b>00 "+i18n(":")+" 00</b></font></center>");
 	vbl_layout->addWidget(l_time, 5, 0);
 	setLayout(vbl_layout);
@@ -229,11 +234,11 @@ void Panel::setAlbum(const QString & album)
 	l_album->setText(mess);
 
 }
-void Panel::setVolume(const QString & volume)
-{
-	l_title->setText(volume);
-
-}
+// void Panel::setVolume(const QString & volume)
+// {
+// 	volumeDisplay->setText(volume);
+// 
+// }
 
 void Panel::setTextSizeFont(const QFont& font){
 	l_author->setFont(font);
@@ -320,7 +325,7 @@ void Panel::setTime(qint64 pos)
  %4 = Seconds unit
 */
 	QTextStream(&result) << i18n("%1 %2 : %3 %4",md,mu,sd,su);
-	l_time->setText(result);
+	l_time->setText("<center><font size=" + textSize->text() + "><b>" + result + "</b></font></center>");
 }
 
 void Panel::setLoop(const QString& loop)

@@ -280,7 +280,7 @@ void KSCD::restoreArtistLabel()
 void KSCD::restoreTrackinfoLabel()
 {
 	QString title, length ;
-/*
+
 	// If disc is inserted
 	int currentTrack = devices->getCurrentTrack();
 	if (devices->getCD()->isCdInserted()  && currentTrack > 0 )
@@ -296,7 +296,7 @@ void KSCD::restoreTrackinfoLabel()
 	else
 	{
 		showTrackinfoLabel(title);
-	}*/
+	}
 }
 void KSCD::changeVolume(qreal value)
 {
