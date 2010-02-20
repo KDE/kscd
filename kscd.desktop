@@ -145,7 +145,6 @@ Name[zh_CN]=KsCD
 Name[zh_HK]=KsCD
 Name[zh_TW]=KsCD 播放器
 Exec=kscd -caption "%c" %i
-X-DocPath=kscd/index.html
 Icon=kscd
 Type=Application
 Terminal=false
