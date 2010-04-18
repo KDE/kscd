@@ -64,13 +64,13 @@ void LoopButton::mouseReleaseEvent(QMouseEvent *event)
 		m_state = "over";
 		if(m_name == "loop")
 		{
- 			m_name = "looptrack";
+ 			m_name = I18N_NOOP("looptrack");
 			m_id = m_name + '_' + m_state;
 			emit(buttonClicked(m_name));
 		}
 		else if(m_name == "looptrack")
 		{
- 			m_name = "loopdisc";
+ 			m_name = I18N_NOOP("loopdisc");
 			m_id = m_name + '_' + m_state;
 			emit(buttonClicked(m_name));
 		}
