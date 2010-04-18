@@ -49,7 +49,9 @@ TrackListDlg::TrackListDlg(QWidget * parent)
     setButtons( KDialog::Close );
     trackTableView = m_ui->trackTable;
     trackModel = trackTableView->model();
-    trackTableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    trackTableView->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
+    trackTableView->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+    trackTableView->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
     trackTableView->verticalHeader()->hide();
 
     setSizeIncrement ( 0, 50 );
