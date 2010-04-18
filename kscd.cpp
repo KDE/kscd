@@ -463,6 +463,7 @@ void KSCD::playTrack(int track)
 	kDebug()<<"playtrack enter "<<track;
 	devices->play(track);
 	emit(picture(result,def));
+	restoreArtistLabel();
 }
 
 /**
