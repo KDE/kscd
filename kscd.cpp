@@ -54,9 +54,9 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	devices = new HWControler();
 
-	KsCD::PlayerDBusHandler * pdbh = new KsCD::PlayerDBusHandler(this);
-	KsCD::RootDBusHandler * rdbh = new KsCD::RootDBusHandler(this);
-	KsCD::TracklistDBusHandler * tdbh = new KsCD::TracklistDBusHandler(this);
+	new KsCD::PlayerDBusHandler(this);
+	new KsCD::RootDBusHandler(this);
+	new KsCD::TracklistDBusHandler(this);
 
 	sslider = new Phonon::SeekSlider(devices->getMedia(),this);
 // 	sslider->setMediaObject(devices->getMedia());
@@ -473,7 +473,7 @@ void KSCD::actionButton(const QString & name)
 
 	QString state = "over";
 	QString result;
-	if(name=="play")
+	if (name == "play")
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
@@ -504,7 +504,7 @@ void KSCD::actionButton(const QString & name)
 		emit(picture(name,state));
 		play = !play;
 	}
-	if(name=="pause")
+        else if (name == "pause")
 	{
 		/*if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
@@ -523,7 +523,7 @@ void KSCD::actionButton(const QString & name)
 		emit(picture(name,state));
 		play = !play;
 	}
-	if(name=="next")
+        else if (name == "next")
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
@@ -557,7 +557,7 @@ void KSCD::actionButton(const QString & name)
 		}
 		emit(picture(name,state));
 	}
-	if(name=="previous")
+        else if(name == "previous")
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
@@ -591,7 +591,7 @@ void KSCD::actionButton(const QString & name)
 		}
 		emit(picture(name,state));
 	}
-	if(name=="stop")
+        else if(name == "stop")
 	{
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
@@ -600,7 +600,7 @@ void KSCD::actionButton(const QString & name)
 		}
 		emit(picture(name,state));
 	}
-	if(name=="eject")
+        else if (name == "eject")
 	{
 		m_trackDlg->removeRowsTrackTable(m_MBManager->getTrackList().size());
 		devices->eject();
@@ -611,19 +611,19 @@ void KSCD::actionButton(const QString & name)
 // 			m_slider->stop();
 		}
 	}
-	if(name=="mute")
+        else if (name == "mute")
 	{
 		devices->mute(false);
 		emit(picture(name,state));
 		mute = !mute;
 	}
-	if(name=="unmute")
+        else if (name == "unmute")
 	{
 		devices->mute(true);
 		emit(picture(name,state));
 		mute = !mute;
 	}
-	if(name == "random")
+        else if (name == "random")
 	{
 		devices->setRandom(false);
 		emit(picture(name,state));
@@ -632,7 +632,7 @@ void KSCD::actionButton(const QString & name)
 
 		random = !random;
 	}
-	if(name == "p_random")
+        else if (name == "p_random")
 	{
 		devices->setRandom(true);
 		emit(picture(name,state));
@@ -641,7 +641,7 @@ void KSCD::actionButton(const QString & name)
 
 		random = !random;
 	}
-	if(name == "loop")
+        else if (name == "loop")
 	{
 		devices->setLoopMode(NoLoop);
 		emit(picture(name,state));
@@ -651,7 +651,7 @@ void KSCD::actionButton(const QString & name)
 		looptrack = false;
 		loopdisc = false;
 	}
-	if(name == "looptrack")
+        else if (name == "looptrack")
 	{
 		devices->setLoopMode(LoopOne);
 		emit(picture(name,state));
@@ -661,7 +661,7 @@ void KSCD::actionButton(const QString & name)
 		looptrack = true;
 		loopdisc = false;
 	}
-	if(name == "loopdisc")
+        else if (name == "loopdisc")
 	{
 		devices->setLoopMode(LoopAll);
 		emit(picture(name,state));
@@ -670,17 +670,17 @@ void KSCD::actionButton(const QString & name)
 		loopdisc = true;
 		looptrack = false;
 	}
-	if(name=="minimize")
+        else if (name == "minimize")
 	{
 		showMinimized ();
 		emit(picture(name,state));
 	}
-	if(name=="close")
+        else if (name == "close")
 	{
 		close();
 		emit(picture(name,state));
 	}
-	if(name == "tracklist")
+        else if (name == "tracklist")
 	{
 		if(m_stateTrackDialog == true)
 		{
@@ -698,7 +698,7 @@ void KSCD::actionButton(const QString & name)
 		QString def = "default";
 		emit(picture(name,def));
 	}
-	if ( name == "configure")
+        else if (name == "configure")
 	{
 		optionsPreferences();
 	}
