@@ -148,7 +148,7 @@ void KscdWidget::mouseReleaseEvent(QMouseEvent *event)
 		event->accept();
 		m_state = "over";
 		m_id = m_name + '_' + m_state;
-		emit(buttonClicked(m_name));
+		emit(buttonClicked(QString(m_name)));
 		emit(needRepaint());
 	}
 	else
