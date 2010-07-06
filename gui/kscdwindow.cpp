@@ -139,8 +139,7 @@ void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,const QString 
 		m_trackDlg->addItemTrackTable(trackNumber,0,QString::number(trackNumber+1));
 		m_trackDlg->addItemTrackTable(trackNumber,1,(*it).Title);
 		QTime time;
-		QString msecs = (*it).Duration;
-		time = time.addMSecs(msecs.toInt());
+		time = time.addMSecs((*it).Duration);
 		m_trackDlg->addItemTrackTable(trackNumber,2,time.toString("mm:ss"));
 //		m_trackDlg->setYearLbl((*it).Year);
 		trackNumber++;

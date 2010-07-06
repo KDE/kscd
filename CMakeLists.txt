@@ -64,6 +64,8 @@ set(kscd_SRCS
 	dbus/TracklistDBusHandler.cpp
 )
 
+# For MusicBrainz error handling
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 ##################################
 #        DBUS LINKING            #

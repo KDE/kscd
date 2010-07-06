@@ -34,13 +34,6 @@
 #ifndef MBMANAGER_H
 #define MBMANAGER_H
 
-// // MusicBrainz
-#include <stdio.h>
-#include <stdlib.h>
-#include "musicbrainz/musicbrainz.h"
-#include "musicbrainz/mb_c.h"
-#include "musicbrainz/browser.h"
-
 // KDE includes
 #include <kdebug.h>
 #include <klocalizedstring.h>
@@ -59,7 +52,7 @@ struct MBTrackInfo
 {
 	QString Title;
 	QString Artist;
-	QString Duration;
+	int Duration; // in milliseconds
 };
 
 class MBManager : public QObject
@@ -69,8 +62,6 @@ class MBManager : public QObject
 private:
 	DiscInfo m_discInfo;				/// Contains the album's information
 	QList <MBTrackInfo> m_trackList;	/// List of tracks information
-
-	char * m_browser;
 
 	bool m_validInfo;					/// Tells whether the lookup query succeeded
 
