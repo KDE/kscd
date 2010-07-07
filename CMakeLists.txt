@@ -8,38 +8,38 @@ include_directories(
 add_subdirectory(tests)
 ########### next target ###############
 
-set(kscd_SRCS 
+set(kscd_SRCS
 
 ##########
 # Main
 ##########
 
-	kscd.cpp 
-	
+	kscd.cpp
+
 ###############
 # Solid/Phonon
 ###############
 
-	hwcontroler.cpp 
-	audiocd.cpp 
+	hwcontroler.cpp
+	audiocd.cpp
 
 #########################
-# Music Brainz 
+# Music Brainz
 #########################
 
 	mbmanager.cpp
-	
+
 ####################
 # Graphics / SVG
 ####################
 
-	gui/kscdwindow.cpp 
-	gui/kscdwidget.cpp 
-	gui/ejectbutton.cpp 
-	gui/stopbutton.cpp 
-	gui/playbutton.cpp 
-	gui/nextbutton.cpp 
-	gui/previousbutton.cpp 
+	gui/kscdwindow.cpp
+	gui/kscdwidget.cpp
+	gui/ejectbutton.cpp
+	gui/stopbutton.cpp
+	gui/playbutton.cpp
+	gui/nextbutton.cpp
+	gui/previousbutton.cpp
 	gui/mutebutton.cpp
 	gui/randombutton.cpp
 	gui/loopbutton.cpp
@@ -54,7 +54,7 @@ set(kscd_SRCS
 	#gui/seekslider.cpp
 	gui/seekcursor.cpp
 	gui/seekbar.cpp
-	
+
 ####################
 # DBus Connection
 ####################
@@ -102,7 +102,7 @@ target_link_libraries(kscd
     ${KDE4_KIO_LIBS}
     ${KDE4_SOLID_LIBS}
     ${KDE4_PHONON_LIBS}
-    ${MUSICBRAINZ_LIBRARIES}
+    ${MUSICBRAINZ3_LIBRARIES}
     kcddb
     kcompactdisc)
 
