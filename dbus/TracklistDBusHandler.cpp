@@ -35,7 +35,7 @@ namespace KsCD
 
     	    		QDBusConnection::sessionBus().registerObject("/Player", this);
 
-    	        setObjectName("TracklistDBusHandler");
+    	        setObjectName( QLatin1String("TracklistDBusHandler" ));
     }
 
     int TracklistDBusHandler::AddTrack( const QString& url, bool playImmediately )

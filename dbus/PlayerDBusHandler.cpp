@@ -65,7 +65,7 @@ namespace KsCD
     		QDBusConnection::sessionBus().registerObject("/Player", this);
     		
         s_instance = this;
-        setObjectName("PlayerDBusHandler");
+        setObjectName( QLatin1String("PlayerDBusHandler" ));
 
         //QDBusConnection::sessionBus().registerObject("/Player", this);
 

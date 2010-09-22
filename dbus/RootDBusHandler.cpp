@@ -50,7 +50,7 @@ namespace KsCD
 
     	    		QDBusConnection::sessionBus().registerObject("/Player", this);
 
-    	        setObjectName("RootDBusHandler");
+    	        setObjectName( QLatin1String("RootDBusHandler" ));
     }
 
     QString RootDBusHandler::Identity()
