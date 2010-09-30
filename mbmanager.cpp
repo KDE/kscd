@@ -162,7 +162,7 @@ void MBManager::discLookup()
 		//kDebug() << "Error: " << e.what();
 		m_discInfo.Title = i18n("Unknown album");
 		m_discInfo.Artist = i18n("Unknown artist");
-		m_discInfo.Artist = "No Disc";
+		m_discInfo.Artist = i18n( "No Disc" );
 		m_trackList.clear();
 	}
 }

@@ -49,7 +49,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
         new CDPlayerAdaptor( this );
 
-	QDBusConnection::sessionBus().registerObject("/CDPlayer", this);
+	QDBusConnection::sessionBus().registerObject(QLatin1String( "/CDPlayer" ), this);
 
 
 	devices = new HWControler();
@@ -84,7 +84,7 @@ KSCD::~KSCD()
 void KSCD::setupActions()
 {
 	m_actions = new KActionCollection(this);
-	m_actions->setConfigGroup("Configuration");
+	m_actions->setConfigGroup(QLatin1String( "Configuration" ));
 
 	m_configureShortcutsAction = m_actions->addAction(i18n("Configure Shortcuts..."));
 	m_configureShortcutsAction->setText(i18n("Configure Shortcuts..."));
@@ -108,95 +108,95 @@ void KSCD::setupActions()
 	connect(m_downloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
 
 	//upload info
-	m_uploadAction = m_actions->addAction("Upload Info");
+	m_uploadAction = m_actions->addAction( QLatin1String( "Upload Info" ));
 	m_uploadAction->setText(i18n("Upload Info"));
 	addAction(m_uploadAction);
 	connect(m_uploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
 
 	//play/pause
-	m_playPauseAction = m_actions->addAction("Play/Pause");
+	m_playPauseAction = m_actions->addAction( QLatin1String( "Play/Pause" ));
 	m_playPauseAction->setText(i18n("Play/Pause"));
 	m_playPauseAction->setShortcut(Qt::Key_Space);
 	connect(m_playPauseAction, SIGNAL(triggered()), this, SLOT(playShortcut()));
 	addAction(m_playPauseAction);
 
 	//stop
-	m_stopAction = m_actions->addAction("Stop");
+	m_stopAction = m_actions->addAction( QLatin1String( "Stop" ));
 	m_stopAction->setText(i18n("Stop"));
 	addAction(m_stopAction);
 	m_stopAction->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_V);
 	connect(m_stopAction, SIGNAL(triggered()), devices, SLOT(stop()));
 
 	//next
-	m_nextAction = m_actions->addAction("next");
+	m_nextAction = m_actions->addAction( QLatin1String( "next" ));
 	m_nextAction->setText(i18nc( "This action allow user to pass to the following track","Next" ));
 	addAction(m_nextAction);
 	m_nextAction->setShortcut(Qt::Key_Right);
 	connect(m_nextAction, SIGNAL(triggered()), devices, SLOT(nextTrack()));
 
 	//previous
-	m_previousAction = m_actions->addAction("previous");
+	m_previousAction = m_actions->addAction( QLatin1String( "previous" ));
 	m_previousAction->setText(i18nc( "This action allow the user to pass to the preceding track", "Previous" ) );
 	addAction(m_previousAction);
 	m_previousAction->setShortcut(Qt::Key_Left);
 	connect(m_previousAction, SIGNAL(triggered()), devices, SLOT(prevTrack()));
 
 	//eject
-	m_ejectAction = m_actions->addAction("eject");
+	m_ejectAction = m_actions->addAction( QLatin1String( "eject" ));
 	m_ejectAction->setText(i18nc( " This action allow to eject the inserted disc", "Eject"));
 	addAction(m_ejectAction);
 	m_ejectAction->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
 	connect(m_ejectAction, SIGNAL(triggered()), this, SLOT(ejectShortcut()));
 
 	//volume up
-	m_volumeUpAction = m_actions->addAction("volume_up");
+	m_volumeUpAction = m_actions->addAction( QLatin1String( "volume_up" ));
 	m_volumeUpAction->setText(i18n("Volume Up"));
 	addAction(m_volumeUpAction);
 	m_volumeUpAction->setShortcut(Qt::Key_Up);
 	connect(m_volumeUpAction, SIGNAL(triggered()), this, SLOT(volumeUpShortcut()));
 
 	//volume down
-	m_volumeDownAction = m_actions->addAction("volume_down");
+	m_volumeDownAction = m_actions->addAction( QLatin1String( "volume_down" ));
 	m_volumeDownAction->setText(i18n("Volume Down"));
 	addAction(m_volumeDownAction);
 	m_volumeDownAction->setShortcut(Qt::Key_Down);
 	connect(m_volumeDownAction, SIGNAL(triggered()), this, SLOT(volumeDownShortcut()));
 
 	//random
-	m_randomAction = m_actions->addAction("random");
+	m_randomAction = m_actions->addAction( QLatin1String( "random" ));
 	m_randomAction->setText(i18nc("This action allow the user to listen a random track list","Random"));
 	addAction(m_randomAction);
 	m_randomAction->setShortcut(Qt::CTRL + Qt:: Key_H);
 	connect(m_randomAction, SIGNAL(triggered()), this, SLOT(randomShortcut()));
 
 	//looptrack
-	m_looptrackAction = m_actions->addAction("looptrack");
+	m_looptrackAction = m_actions->addAction( QLatin1String( "looptrack" ));
 	m_looptrackAction->setText(i18n("Repeat Track"));
 	addAction(m_looptrackAction);
 	m_looptrackAction->setShortcut(Qt::CTRL + Qt::Key_T);
 	connect(m_looptrackAction, SIGNAL(triggered()), this, SLOT(looptrackShortcut()));
 
 	//loopdisc
-	m_loopdiscAction = m_actions->addAction("loopdisc");
+	m_loopdiscAction = m_actions->addAction( QLatin1String( "loopdisc" ));
 	m_loopdiscAction->setText(i18n("Repeat Album"));
 	addAction(m_loopdiscAction);
 	m_loopdiscAction->setShortcut(Qt::CTRL + Qt::Key_D);
 	connect(m_loopdiscAction, SIGNAL(triggered()), this, SLOT(loopdiscShortcut()));
 
 	//tracklist
-	m_tracklistAction = m_actions->addAction("tracklist");
+	m_tracklistAction = m_actions->addAction( QLatin1String( "tracklist" ));
 	m_tracklistAction->setText(i18n("Show Tracklist"));
 	addAction(m_tracklistAction);
 	connect(m_tracklistAction, SIGNAL(triggered()), this, SLOT(tracklistShortcut()));
 
 	//mute
-	m_muteAction = m_actions->addAction("mute");
+	m_muteAction = m_actions->addAction( QLatin1String( "mute" ));
 	m_muteAction->setText(i18n("Mute/Unmute"));
 	addAction(m_muteAction);
 	connect(m_muteAction, SIGNAL(triggered()), this, SLOT(muteShortcut()));
 
 	//minimize
-	m_minimizeAction = m_actions->addAction("Minimize");
+	m_minimizeAction = m_actions->addAction( QLatin1String( "Minimize" ));
 	m_minimizeAction->setText(i18n("Minimize"));
 	addAction(m_minimizeAction);
 	connect(m_minimizeAction, SIGNAL(triggered()), this, SLOT(minimizeShortcut()));
@@ -271,7 +271,7 @@ void KSCD::restoreArtistLabel()
 	}
 	else
 	{
-		QString empty = "";
+		QString empty;
 		showArtistLabel(empty);
 	}
 
@@ -286,12 +286,12 @@ void KSCD::restoreTrackinfoLabel()
 	if (devices->getCD()->isCdInserted()  && currentTrack > 0 )
 	{
 
-		title = QString("%1 - ").arg(currentTrack, 2, 10, QLatin1Char('0')) ;
+            title = QString::fromLatin1("%1 - ").arg(currentTrack, 2, 10, QLatin1Char('0')) ;
 		title.append(m_MBManager->getTrackList()[currentTrack-1].Title);
 		length.append(m_MBManager->getTrackList()[currentTrack-1].Duration);
 
 		showTrackinfoLabel(title);
-		m_popup = new TitlePopUp(this, "popup");
+		m_popup = new TitlePopUp(this, QLatin1String( "popup" ));
 	}
 	else
 	{
@@ -311,41 +311,41 @@ void KSCD::configureShortcuts()
 
 void KSCD::ejectShortcut()
 {
-	QString result = "eject";
+	QString result = QLatin1String( "eject" );
 	actionButton(result);
 }
 
 void KSCD::quitShortcut()
 {
-	QString result = "close";
+	QString result = QLatin1String( "close" );
 	actionButton(result);
 }
 
 void KSCD::minimizeShortcut()
 {
-	QString result = "minimize";
+	QString result = QLatin1String( "minimize" );
 	actionButton(result);
 }
 
 void KSCD::tracklistShortcut()
 {
-	QString result = "tracklist";
+	QString result = QLatin1String( "tracklist" );
 	actionButton(result);
 }
 
 void KSCD::muteShortcut()
 {
-	QString def = "default";
+	QString def = QLatin1String( "default" );
 	if (!mute)
 	{
-		QString result = "unmute";
+		QString result = QLatin1String( "unmute" );
 		actionButton(result);
 		emit(picture(result,def));
 		//mute = !mute;
 	}
 	else
 	{
-		QString result = "mute";
+		QString result = QLatin1String( "mute" );
 		actionButton(result);
 		emit(picture(result,def));
 		//mute = !mute;
@@ -354,17 +354,17 @@ void KSCD::muteShortcut()
 
 void KSCD::playShortcut()
 {
-	QString def = "default";
+	QString def = QLatin1String( "default" );
 	if (!play)
 	{
-		QString result = "play";
+		QString result = QLatin1String( "play" );
 		actionButton(result);
 		emit(picture(result,def));
 		//play = !play;
 	}
 	else
 	{
-		QString result = "pause";
+		QString result = QLatin1String( "pause" );
 		actionButton(result);
 		emit(picture(result,def));
 		//play = !play;
@@ -373,10 +373,10 @@ void KSCD::playShortcut()
 
 void KSCD::randomShortcut()
 {
-	QString def = "default";
+	QString def = QLatin1String( "default" );
 	if (!random)
 	{
-		QString result = "p_random";
+		QString result = QLatin1String( "p_random" );
 		actionButton(result);
 		emit(picture(result,def));
 		emit(infoPanel(result));
@@ -385,7 +385,7 @@ void KSCD::randomShortcut()
 	}
 	else
 	{
-		QString result = "random";
+		QString result = QLatin1String( "random" );
 		actionButton(result);
 		emit(picture(result,def));
 		emit(infoPanel(result));
@@ -395,10 +395,10 @@ void KSCD::randomShortcut()
 
 void KSCD::looptrackShortcut()
 {
-	QString def = "default";
+	QString def = QLatin1String( "default" );
 	if (!looptrack)
 	{
-		QString result = "looptrack";
+		QString result = QLatin1String( "looptrack" );
 		actionButton(result);
 		emit(picture(result,def));
 		emit(infoPanel(result));
@@ -407,7 +407,7 @@ void KSCD::looptrackShortcut()
 	}
 	else
 	{
-		QString result = "loop";
+		QString result = QLatin1String( "loop" );
 		actionButton(result);
 		emit(picture(result,def));
 		emit(infoPanel(result));
@@ -418,10 +418,10 @@ void KSCD::looptrackShortcut()
 
 void KSCD::loopdiscShortcut()
 {
-	QString def = "default";
+	QString def = QLatin1String( "default" );
 	if (!loopdisc)
 	{
-		QString result = "loopdisc";
+		QString result = QLatin1String( "loopdisc" );
 		actionButton(result);
 		emit(picture(result,def));
 		emit(infoPanel(result));
@@ -430,7 +430,7 @@ void KSCD::loopdiscShortcut()
 	}
 	else
 	{
-		QString result = "loop";
+		QString result = QLatin1String( "loop" );
 		actionButton(result);
 		emit(picture(result,def));
 		emit(infoPanel(result));
@@ -458,8 +458,8 @@ void KSCD::volumeDownShortcut()
 
 void KSCD::playTrack(int track)
 {
-	QString result = "play";
-	QString def = "default";
+	QString result = QLatin1String( "play" );
+	QString def = QLatin1String( "default" );
 	kDebug()<<"playtrack enter "<<track;
 	devices->play(track);
 	emit(picture(result,def));
@@ -472,9 +472,9 @@ void KSCD::playTrack(int track)
 void KSCD::actionButton(const QString & name)
 {
 
-	QString state = "over";
+	QString state = QLatin1String( "over" );
 	QString result;
-	if (name == "play")
+	if (name == QLatin1String( "play" ))
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
@@ -505,7 +505,7 @@ void KSCD::actionButton(const QString & name)
 		emit(picture(name,state));
 		play = !play;
 	}
-        else if (name == "pause")
+        else if (name == QLatin1String( "pause" ))
 	{
 		/*if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
@@ -524,7 +524,7 @@ void KSCD::actionButton(const QString & name)
 		emit(picture(name,state));
 		play = !play;
 	}
-        else if (name == "next")
+        else if (name == QLatin1String( "next" ))
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
@@ -558,7 +558,7 @@ void KSCD::actionButton(const QString & name)
 		}
 		emit(picture(name,state));
 	}
-        else if(name == "previous")
+        else if(name == QLatin1String( "previous" ))
 	{
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
@@ -592,7 +592,7 @@ void KSCD::actionButton(const QString & name)
 		}
 		emit(picture(name,state));
 	}
-        else if(name == "stop")
+        else if(name == QLatin1String( "stop" ))
 	{
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))
 		{
@@ -601,7 +601,7 @@ void KSCD::actionButton(const QString & name)
 		}
 		emit(picture(name,state));
 	}
-        else if (name == "eject")
+        else if (name == QLatin1String( "eject" ))
 	{
 		m_trackDlg->removeRowsTrackTable(m_MBManager->getTrackList().size());
 		devices->eject();
@@ -612,57 +612,57 @@ void KSCD::actionButton(const QString & name)
 // 			m_slider->stop();
 		}
 	}
-        else if (name == "mute")
+        else if (name == QLatin1String( "mute" ))
 	{
 		devices->mute(false);
 		emit(picture(name,state));
 		mute = !mute;
 	}
-        else if (name == "unmute")
+        else if (name == QLatin1String( "unmute" ))
 	{
 		devices->mute(true);
 		emit(picture(name,state));
 		mute = !mute;
 	}
-        else if (name == "random")
+        else if (name == QLatin1String( "random" ))
 	{
 		devices->setRandom(false);
 		emit(picture(name,state));
-		result = "random";
+		result = QLatin1String( "random" );
 		emit(infoPanel(result));
 
 		random = !random;
 	}
-        else if (name == "p_random")
+        else if (name == QLatin1String( "p_random" ))
 	{
 		devices->setRandom(true);
 		emit(picture(name,state));
-		result = "p_random";
+		result = QLatin1String( "p_random" );
 		emit(infoPanel(result));
 
 		random = !random;
 	}
-        else if (name == "loop")
+        else if (name == QLatin1String( "loop" ))
 	{
 		devices->setLoopMode(NoLoop);
 		emit(picture(name,state));
-		result = "loop";
+		result = QLatin1String( "loop" );
 		emit(infoPanel(result));
 
 		looptrack = false;
 		loopdisc = false;
 	}
-        else if (name == "looptrack")
+        else if (name == QLatin1String( "looptrack" ))
 	{
 		devices->setLoopMode(LoopOne);
 		emit(picture(name,state));
-		result = "looptrack";
+		result = QLatin1String( "looptrack" );
 		emit(infoPanel(result));
 
 		looptrack = true;
 		loopdisc = false;
 	}
-        else if (name == "loopdisc")
+        else if (name == QLatin1String( "loopdisc" ))
 	{
 		devices->setLoopMode(LoopAll);
 		emit(picture(name,state));
@@ -671,17 +671,17 @@ void KSCD::actionButton(const QString & name)
 		loopdisc = true;
 		looptrack = false;
 	}
-        else if (name == "minimize")
+        else if (name == QLatin1String( "minimize" ))
 	{
 		showMinimized ();
 		emit(picture(name,state));
 	}
-        else if (name == "close")
+        else if (name == QLatin1String( "close" ))
 	{
 		close();
 		emit(picture(name,state));
 	}
-        else if (name == "tracklist")
+        else if (name == QLatin1String( "tracklist" ))
 	{
 		if(m_stateTrackDialog == true)
 		{
@@ -696,10 +696,10 @@ void KSCD::actionButton(const QString & name)
 			createTrackDialog(list,title);
 			kDebug()<<"open track window";
 		}
-		QString def = "default";
+		QString def = QLatin1String( "default" );
 		emit(picture(name,def));
 	}
-        else if (name == "configure")
+        else if (name == QLatin1String( "configure" ))
 	{
 		optionsPreferences();
 	}
@@ -762,25 +762,25 @@ void KSCD::optionsPreferences()
 	QWidget *generalSettingsDlg = new QWidget;
 	ui_general.setupUi(generalSettingsDlg);
 
-	dialog->addPage(generalSettingsDlg, i18nc("General option in the configuration dialog","General"), "kscd");
+	dialog->addPage(generalSettingsDlg, i18nc("General option in the configuration dialog","General"), QLatin1String( "kscd" ));
 
 	QWidget *interfaceSettingsDlg = new QWidget;
 	ui_interface.setupUi(interfaceSettingsDlg);
 
 	//Filter on the skin url combo box
-	QString pathSkins=KStandardDirs::installPath("data") + "/kscd/skin/";
+	QString pathSkins=KStandardDirs::installPath("data") + QLatin1String( "/kscd/skin/" );
 	QDir directory(pathSkins);
 	QStringList filter;
-	filter << "*.svg";
+	filter << QLatin1String( "*.svg" );
 	directory.setNameFilters(filter);
 	QStringList list = directory.entryList();
 	ui_interface.kcfg_url->addItems(list);
 
-	dialog->addPage(interfaceSettingsDlg, i18n("Appearance"), "fill-color");
+	dialog->addPage(interfaceSettingsDlg, i18n("Appearance"), QLatin1String( "fill-color" ));
 
 	connect(dialog, SIGNAL(settingsChanged( const QString &)), this, SLOT(updateSettings()));
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
-	dialog->setHelp(QString(),"kscd");
+	dialog->setHelp(QString(),QLatin1String( "kscd" ));
 	dialog->show();
 }
 
@@ -794,10 +794,10 @@ void KSCD::updateSettings()
 	//kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
 	m_panel->setEjectAct( Prefs::ejectOnFinish() );
         QString skin;
-        if(Prefs::url().startsWith('/'))
+        if(Prefs::url().startsWith(QLatin1Char( '/' )))
             skin = Prefs::url();
         else
-	    skin = KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url();
+	    skin = KStandardDirs::installPath("data") + QLatin1String( "kscd/skin/" ) + Prefs::url();
 	setNewSkin( skin );
 }
 
@@ -846,13 +846,13 @@ int main( int argc, char *argv[] )
             fprintf(stderr, "kscd is already running\n");
             if (args->count() > 0 || args->isSet("start"))
             {
-                QDBusInterface kscd("org.kde.kscd", "/CDPlayer", "org.kde.kscd.CDPlayer");
+                QDBusInterface kscd(QLatin1String( "org.kde.kscd" ), QLatin1String( "/CDPlayer" ), QLatin1String( "org.kde.kscd.CDPlayer" ));
                 if(kscd.isValid())
                 {
                     // Forward the command line args to the running instance.
                     if (args->isSet("start"))
                     {
-                        kscd.call("play");
+                        kscd.call(QLatin1String( "play" ));
                     }
                 }
                 args->clear();
