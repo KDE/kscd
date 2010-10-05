@@ -33,7 +33,7 @@
 #include "ejectbutton.h"
 #include <KLocale>
 
-EjectButton::EjectButton(QWidget * parent):KscdWidget(I18N_NOOP("eject"),parent)
+EjectButton::EjectButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "eject" )),parent)
 {
 }
 

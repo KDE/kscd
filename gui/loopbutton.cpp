@@ -33,7 +33,7 @@
 #include "loopbutton.h"
 #include <KLocale>
 
-LoopButton::LoopButton(QWidget * parent):KscdWidget(I18N_NOOP("loop"),parent)
+LoopButton::LoopButton(QWidget * parent):KscdWidget(QLatin1String( "loop" ),parent)
 {
 }
 
@@ -46,8 +46,8 @@ void LoopButton::mousePressEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		m_state = "pressed";
-		m_id = m_name + '_' + m_state;
+		m_state = QLatin1String( "pressed" );
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(needRepaint());
 	}
 	else
@@ -61,23 +61,23 @@ void LoopButton::mouseReleaseEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		m_state = "over";
-		if(m_name == "loop")
+		m_state = QLatin1String( "over" );
+		if(m_name == QLatin1String( "loop" ))
 		{
- 			m_name = I18N_NOOP("looptrack");
-			m_id = m_name + '_' + m_state;
+ 			m_name = QLatin1String("looptrack");
+			m_id = m_name + QLatin1Char( '_' ) + m_state;
 			emit(buttonClicked(m_name));
 		}
-		else if(m_name == "looptrack")
+		else if(m_name == QLatin1String( "looptrack" ))
 		{
- 			m_name = I18N_NOOP("loopdisc");
-			m_id = m_name + '_' + m_state;
+ 			m_name = QLatin1String("loopdisc");
+			m_id = m_name + QLatin1Char( '_' ) + m_state;
 			emit(buttonClicked(m_name));
 		}
-		else if(m_name == "loopdisc")
+		else if(m_name == QLatin1String( "loopdisc" ))
 		{
- 			m_name = "loop";
-			m_id = m_name + '_' + m_state;
+ 			m_name = QLatin1String( "loop" );
+			m_id = m_name + QLatin1Char( '_' ) + m_state;
 			emit(buttonClicked(m_name));
 		}
 	}

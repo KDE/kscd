@@ -33,7 +33,7 @@ namespace KsCD
     	player = kscd;
     	    	new TracklistAdaptor( this );
 
-    	    		QDBusConnection::sessionBus().registerObject("/Player", this);
+    	    		QDBusConnection::sessionBus().registerObject( QLatin1String( "/Player" ), this);
 
     	        setObjectName( QLatin1String("TracklistDBusHandler" ));
     }

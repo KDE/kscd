@@ -140,7 +140,7 @@ void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,const QString 
 		m_trackDlg->addItemTrackTable(trackNumber,1,(*it).Title);
 		QTime time;
 		time = time.addMSecs((*it).Duration);
-		m_trackDlg->addItemTrackTable(trackNumber,2,time.toString("mm:ss"));
+		m_trackDlg->addItemTrackTable(trackNumber,2,time.toString(QLatin1String( "mm:ss" )));
 //		m_trackDlg->setYearLbl((*it).Year);
 		trackNumber++;
 	}
@@ -157,8 +157,8 @@ void KscdWindow::setNewSkin(QString & newS){
 	kDebug () << "**** " << Prefs::url() << " ****";
 
 	QSvgRenderer* rend = new QSvgRenderer(newS,this);
-	this->resize(rend->boundsOnElement("kscdBack_default").width(),
-			rend->boundsOnElement("kscdBack_default").height());
+	this->resize(rend->boundsOnElement(QLatin1String( "kscdBack_default" )).width(),
+			rend->boundsOnElement(QLatin1String( "kscdBack_default" )).height());
 
 	m_backG->loadSkin(newS);
 	m_stopB->loadSkin(newS);
@@ -183,11 +183,11 @@ void KscdWindow::setNewSkin(QString & newS){
 // 	(m_slider->bar())->changeSkin(newS);
 
 //m_popUp->changeSkin(newS);;
-	QRectF rect = rend->boundsOnElement("kscdBack_default");
+	QRectF rect = rend->boundsOnElement(QLatin1String( "kscdBack_default" ));
 	QPixmap pix(rect.toRect().size());
 	pix.fill(QColor(Qt::transparent));
 	QPainter p(&pix);
-	rend->render(&p,"kscdBack_default",rect);
+	rend->render(&p,QLatin1String( "kscdBack_default" ),rect);
 	setMask(pix.mask());
 	delete rend;
 }
@@ -234,81 +234,81 @@ void KscdWindow::changePicture(const QString & name,const QString & state)
 {
   kDebug() << name << state;
 	QString result;
-	QString def = "default";
-	if(name == "play")
+	QString def = QLatin1String( "default" );
+	if(name == QLatin1String( "play" ))
 	{
-		result = "pause";
+		result = QLatin1String( "pause" );
 		m_playB->loadPicture(result,state);
 		m_playB->setName(result);
 	}
-	else if(name == "pause")
+	else if(name == QLatin1String( "pause" ))
 	{
-		result = "play";
+		result = QLatin1String( "play" );
 		m_playB->loadPicture(result,state);
 		m_playB->setName(result);
 	}
-	else if(name == "stop")
+	else if(name == QLatin1String( "stop" ))
 	{
-		result = "play";
+		result = QLatin1String( "play" );
 		m_stopB->loadPicture(name,state);
 		m_playB->setName(result);
 		QString tmp = m_playB->getName();
 		m_playB->loadPicture(tmp,def);
 	}
-	else if(name == "eject")
+	else if(name == QLatin1String( "eject" ))
 	{
-		result = "play";
+		result = QLatin1String( "play" );
 		m_playB->setName(result);
 		QString tmp = m_playB->getName();
 		m_playB->loadPicture(tmp,def);
 	}
-	else if(name == "next")
+	else if(name == QLatin1String( "next" ))
 	{
 		m_nextB->loadPicture(name,state);
 	}
-	else if(name == "previous")
+	else if(name == QLatin1String( "previous" ))
 	{
 		m_prevB->loadPicture(name,state);
 	}
-	else if(name == "mute")
+	else if(name == QLatin1String( "mute" ))
 	{
 		m_muteB->loadPicture(name,state);
 	}
-	else if(name == "unmute")
+	else if(name == QLatin1String( "unmute" ))
 	{
 		m_muteB->loadPicture(name,state);
 	}
-	else if(name == "random")
+	else if(name == QLatin1String( "random" ))
 	{
 		m_randB->loadPicture(name,state);
 	}
-	else if(name == "p_random")
+	else if(name == QLatin1String( "p_random" ))
 	{
-		result = "random";
-		def = "pressed";
+		result = QLatin1String( "random" );
+		def = QLatin1String( "pressed" );
 		m_randB->loadPicture(result,def);
 	}
-	else if(name == "loop")
+	else if(name == QLatin1String( "loop" ))
 	{
 		m_loopB->loadPicture(name,state);
 	}
-	else if(name == "looptrack")
+	else if(name == QLatin1String( "looptrack" ))
 	{
 		m_loopB->loadPicture(name,state);
 	}
-	else if(name == "loopdisc")
+	else if(name == QLatin1String( "loopdisc" ))
 	{
 		m_loopB->loadPicture(name,state);
 	}
-	else if(name == "tracklist")
+	else if(name == QLatin1String( "tracklist" ))
 	{
 		m_trackB->loadPicture(name,state);
 	}
-	else if(name == "close")
+	else if(name == QLatin1String( "close" ))
 	{
 		m_closeB->loadPicture(name,state);
 	}
-	else if(name == "minimize")
+	else if(name == QLatin1String( "minimize" ))
 	{
 		m_miniB->loadPicture(name,state);
 	}
@@ -352,25 +352,25 @@ void KscdWindow::setTime(qint64 pos){
 void KscdWindow::panelInfo(const QString & mess)
 {
 	QString informationDisplay;
-	if(mess == "loop")
+	if(mess == QLatin1String( "loop" ))
 	{
-		m_panel->setLoop("");
+		m_panel->setLoop(QLatin1String( "" ));
         }
-	if(mess == "looptrack")
+	if(mess == QLatin1String( "looptrack" ))
 	{
 		m_panel->setLoop(i18n( "loop track  " ));
 		//informationDisplay = "loop track  ";
 	}
-	if(mess == "loopdisc")
+	if(mess == QLatin1String( "loopdisc" ))
 	{
 		//informationDisplay = "loop disc  ";
 		m_panel->setLoop(i18n( "loop disc  " ));
 	}
-	if(mess == "random")
+	if(mess == QLatin1String( "random" ))
 	{
-		m_panel->setRandom("");
+		m_panel->setRandom(QLatin1String( "" ));
 	}
-	if(mess == "p_random")
+	if(mess == QLatin1String( "p_random" ))
 	{
 		//informationDisplay += "random";
 		m_panel->setRandom(i18nc( "This action allow the user to listen a random track","random"));

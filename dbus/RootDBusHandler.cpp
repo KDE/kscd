@@ -48,7 +48,7 @@ namespace KsCD
     	player = kscd;
     	    	new RootAdaptor( this );
 
-    	    		QDBusConnection::sessionBus().registerObject("/Player", this);
+    	    		QDBusConnection::sessionBus().registerObject( QLatin1String( "/Player" ), this);
 
     	        setObjectName( QLatin1String("RootDBusHandler" ));
     }

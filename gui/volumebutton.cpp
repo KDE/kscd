@@ -34,7 +34,7 @@
 #include <QPainter>
 #include <KLocale>
 
-VolumeButton::VolumeButton(QWidget * parent, qreal value):KscdWidget(I18N_NOOP("volume"),parent)
+VolumeButton::VolumeButton(QWidget * parent, qreal value):KscdWidget(QLatin1String("volume"),parent)
 {
 	m_vValue = value;
 	m_angle = valueToAngle(m_vValue);

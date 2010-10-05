@@ -44,7 +44,7 @@ class SeekCursor:public KscdWidget
 {
 	Q_OBJECT
 public:
-	SeekCursor(QWidget * parent=0, const QString& sName="seekCursor");
+	SeekCursor(QWidget * parent=0, const QString& sName=QLatin1String( "seekCursor" ));
 	virtual ~SeekCursor();
 
 	/**

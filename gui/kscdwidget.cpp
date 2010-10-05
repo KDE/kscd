@@ -38,10 +38,10 @@
 #include "klocale.h"
 KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 {
-	m_state = "default";
+	m_state = QLatin1String( "default" );
  	m_name = sName;
 	m_baseName = m_name;
-	m_id = m_name + '_' + m_state;
+	m_id = m_name + QLatin1Char( '_' ) + m_state;
 
 	m_path = Prefs::url();
 
@@ -82,7 +82,7 @@ QString  KscdWidget::getState() const
 
 void KscdWidget::setId(const QString & name,const QString & state)
 {
-	m_id = name + '_' + state;
+	m_id = name + QLatin1Char( '_' ) + state;
 }
 
 
@@ -93,7 +93,7 @@ QString KscdWidget::getId() const
 
 void KscdWidget::loadPicture(const QString & name,const QString & state)
 {
-	m_id= name + '_' + state;
+	m_id= name + QLatin1Char( '_' ) + state;
 	emit(changePicture());
 	emit(needRepaint());
 }
@@ -110,8 +110,8 @@ void KscdWidget::paintEvent(QPaintEvent *event)
 void KscdWidget::enterEvent (QEvent * event )
 {
 	event->accept();
-	m_state = "over";
-	m_id = m_name + '_' + m_state;
+	m_state = QLatin1String( "over" );
+	m_id = m_name + QLatin1Char( '_' ) + m_state;
 	emit(needRepaint());
 	setToolTip( i18n( qPrintable( m_name ) ) );
 }
@@ -119,8 +119,8 @@ void KscdWidget::enterEvent (QEvent * event )
 void KscdWidget::leaveEvent (QEvent * event )
 {
 	event->accept();
-	m_state = "default";
-	m_id = m_name + '_' + m_state;
+	m_state = QLatin1String( "default" );
+	m_id = m_name + QLatin1Char( '_' ) + m_state;
 	emit(needRepaint());
 }
 
@@ -131,8 +131,8 @@ void KscdWidget::mousePressEvent(QMouseEvent *event)
 	{
 		event->accept();
 		kDebug() << "**** button name : " << m_name << " ****";
-		m_state = "pressed";
-		m_id = m_name + '_'+ m_state;
+		m_state = QLatin1String( "pressed" );
+		m_id = m_name + QLatin1Char( '_' )+ m_state;
 		emit(needRepaint());
 	}
 	else
@@ -146,8 +146,8 @@ void KscdWidget::mouseReleaseEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		m_state = "over";
-		m_id = m_name + '_' + m_state;
+		m_state = QLatin1String( "over" );
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(buttonClicked(QString(m_name)));
 		emit(needRepaint());
 	}
@@ -174,7 +174,7 @@ QPixmap KscdWidget::getPix() const
 
 void KscdWidget::loadSkin(const QString & skin)
 {
-	QString newId = m_baseName + "_default";
+	const QString newId = m_baseName + QLatin1String( "_default" );
 	m_path = skin;
 	if (!m_renderer->load(skin))
 	{

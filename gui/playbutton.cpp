@@ -33,7 +33,7 @@
 #include "playbutton.h"
 #include <KLocale>
 
-PlayButton::PlayButton(QWidget * parent):KscdWidget(I18N_NOOP("play"),parent)
+PlayButton::PlayButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "play" )),parent)
 {
 }
 
@@ -46,8 +46,8 @@ void PlayButton::mousePressEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		m_state = "pressed";
-		m_id = m_name + '_' + m_state;
+		m_state = QLatin1String( "pressed" );
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(needRepaint());
 	}
 	else
@@ -61,9 +61,9 @@ void PlayButton::mouseReleaseEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft ()))
 	{
 		event->accept();
-		m_state = "over";
+		m_state = QLatin1String( "over" );
 		emit(buttonClicked(m_name));
-		m_id = m_name + '_' + m_state;
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(needRepaint());
 	}
 }

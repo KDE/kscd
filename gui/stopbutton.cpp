@@ -33,7 +33,7 @@
 #include "stopbutton.h"
 #include <KLocale>
 
-StopButton::StopButton(QWidget * parent):KscdWidget(I18N_NOOP("stop"),parent)
+StopButton::StopButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "stop" )),parent)
 {
 }
 

@@ -33,7 +33,7 @@
 #include "mutebutton.h"
 #include <KLocale>
 
-MuteButton::MuteButton(QWidget * parent):KscdWidget(I18N_NOOP("mute"),parent)
+MuteButton::MuteButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "mute" )),parent)
 {
 }
 
@@ -46,8 +46,8 @@ void MuteButton::mousePressEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		m_state = "pressed";
-		m_id = m_name + '_' + m_state;
+		m_state = QLatin1String( "pressed" );
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(needRepaint());
 	}
 	else
@@ -61,16 +61,16 @@ void MuteButton::mouseReleaseEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		m_state = "over";
-		if(m_name=="mute")
+		m_state = QLatin1String( "over" );
+		if(m_name==QLatin1String( "mute" ))
 		{
-			m_name = I18N_NOOP("unmute");
+			m_name = I18N_NOOP(QLatin1String( "unmute" ));
 		}
 		else
 		{
-			m_name = I18N_NOOP("mute");
+			m_name = I18N_NOOP(QLatin1String( "mute" ));
 		}
-		m_id = m_name + '_' + m_state;
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(buttonClicked(m_name));
 	}
 }

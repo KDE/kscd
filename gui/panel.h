@@ -45,7 +45,7 @@ class Panel:public KscdWidget
 	Q_OBJECT
 
 public:
-	explicit Panel(QWidget * parent=0, const QString& sName="panel");
+	explicit Panel(QWidget * parent=0, const QString& sName=QLatin1String( "panel" ));
 	virtual ~Panel();
 	QString getTitle() const;
 	QString getAlbum() const;

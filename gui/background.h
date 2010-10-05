@@ -45,7 +45,7 @@ class BackGround:public KscdWidget
 {
 	Q_OBJECT
 public:
-	explicit BackGround(QWidget * parent=0, const QString& sName="kscdBack");
+	explicit BackGround(QWidget * parent=0, const QString& sName=QLatin1String( "kscdBack" ));
 	virtual ~BackGround();
 
 private:

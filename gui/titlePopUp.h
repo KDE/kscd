@@ -50,7 +50,7 @@ private:
 	QLabel* m_titleLbl;
 
 public:
-	TitlePopUp(QWidget *parent=0, const QString& sName="popup");
+	TitlePopUp(QWidget *parent=0, const QString& sName=QLatin1String( "popup" ));
 	~TitlePopUp();
 
 	void enterEvent (QEvent * event){event->ignore();}

@@ -62,12 +62,12 @@ namespace KsCD
     	kDebug() << "**** Launching Player Handler ****";
     	new PlayerAdaptor( this );
 
-    		QDBusConnection::sessionBus().registerObject("/Player", this);
+    		QDBusConnection::sessionBus().registerObject( QLatin1String( "/Player" ), this);
     		
         s_instance = this;
         setObjectName( QLatin1String("PlayerDBusHandler" ));
 
-        //QDBusConnection::sessionBus().registerObject("/Player", this);
+        //QDBusConnection::sessionBus().registerObject( QLatin1String( "/Player" ), this);
 
         connect( this, SIGNAL( StatusChange( DBusStatus ) ), this, SLOT( slotCapsChange() ) );
     }

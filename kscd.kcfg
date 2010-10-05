@@ -30,7 +30,7 @@
 	    <whatsthis>Change the font of the text in the panel</whatsthis>
         </entry>
 	<entry name="url" type="String">
-		<default code="true">KStandardDirs::installPath("data") + "kscd/skin/default.svg"</default>
+		<default code="true">KStandardDirs::installPath("data") + QLatin1String("kscd/skin/default.svg")</default>
 	  <label>The skin that will be use for the application</label>
 	  <whatsthis>Change the skin of the application</whatsthis>
 	</entry>

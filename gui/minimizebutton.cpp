@@ -33,7 +33,7 @@
 #include "minimizebutton.h"
 #include <KLocale>
 
-MinimizeButton::MinimizeButton(QWidget * parent):KscdWidget(I18N_NOOP("minimize"),parent)
+MinimizeButton::MinimizeButton(QWidget * parent):KscdWidget(QLatin1String("minimize"),parent)
 {
 }
 

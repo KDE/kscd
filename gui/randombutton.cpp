@@ -33,7 +33,7 @@
 #include "randombutton.h"
 #include <KLocale>
 
-RandomButton::RandomButton(QWidget * parent):KscdWidget(I18N_NOOP("random"),parent)
+RandomButton::RandomButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "random" )),parent)
 {
 }
 
@@ -46,10 +46,10 @@ void RandomButton::mousePressEvent(QMouseEvent *event)
  	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
  	{
  		event->accept();
-		m_state = "pressed";
-		if(m_name== "random")
+		m_state = QLatin1String( "pressed" );
+		if(m_name== QLatin1String( "random" ))
 		{
-			m_id = m_name + '_' + m_state;
+			m_id = m_name + QLatin1Char( '_' ) + m_state;
 			emit(needRepaint());
 		}
 		else
@@ -68,19 +68,19 @@ void RandomButton::mouseReleaseEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		m_state = "over";
-		if(m_name=="random")
+		m_state = QLatin1String( "over" );
+		if(m_name==QLatin1String( "random" ))
 		{
 			kDebug() << "1" ;
-			m_name = "p_random";
+			m_name = QLatin1String( "p_random" );
 		}
 		else
 		{
 			kDebug() << "2" ;
-			m_name = "random";
+			m_name = QLatin1String( "random" );
 		}
 		kDebug() << m_name ;
-		m_id = m_name + '_' + m_state;
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(buttonClicked(m_name));
 	}
 	else
@@ -91,15 +91,15 @@ void RandomButton::mouseReleaseEvent(QMouseEvent *event)
 
 void RandomButton::enterEvent (QEvent * event )
 {
-	if(m_name == "p_random")
+	if(m_name == QLatin1String( "p_random" ))
 	{
 		event->ignore();
 	}
 	else
 	{
 		event->accept();
-		m_state = "over";
-		m_id = m_name + '_' + m_state;
+		m_state = QLatin1String( "over" );
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(needRepaint());
 		setToolTip( i18n( qPrintable( m_name ) ) );
 	}
@@ -107,15 +107,15 @@ void RandomButton::enterEvent (QEvent * event )
 
 void RandomButton::leaveEvent (QEvent * event )
 {
-	if(m_name == "p_random")
+	if(m_name == QLatin1String( "p_random" ))
 	{
 		event->ignore();
 	}
 	else
 	{
 		event->accept();
-		m_state = "default";
-		m_id = m_name + '_' + m_state;
+		m_state = QLatin1String( "default" );
+		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(needRepaint());
 	}
 }
