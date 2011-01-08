@@ -287,8 +287,12 @@ void KSCD::restoreTrackinfoLabel()
 	{
 
 		title = QString::fromLatin1("%1 - ").arg(currentTrack, 2, 10, QLatin1Char('0')) ;
-		title.append(m_MBManager->getTrackList()[currentTrack-1].Title);
-		length.append(m_MBManager->getTrackList()[currentTrack-1].Duration);
+
+		if (m_MBManager->getTrackList().size() >= (currentTrack))
+		{
+			title.append(m_MBManager->getTrackList()[currentTrack-1].Title);
+			length.append(m_MBManager->getTrackList()[currentTrack-1].Duration);
+		}
 
 		showTrackinfoLabel(title);
 		m_popup = new TitlePopUp(this, QLatin1String( "popup" ));
