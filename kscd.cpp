@@ -1,4 +1,4 @@
-/*
+/* vim: noexpandtab
  * Kscd - A simple cd player for the KDE Project
  *
  * Copyright (c) 1997 Bernd Johannes wuebben@math.cornell.edu
@@ -286,7 +286,7 @@ void KSCD::restoreTrackinfoLabel()
 	if (devices->getCD()->isCdInserted()  && currentTrack > 0 )
 	{
 
-            title = QString::fromLatin1("%1 - ").arg(currentTrack, 2, 10, QLatin1Char('0')) ;
+		title = QString::fromLatin1("%1 - ").arg(currentTrack, 2, 10, QLatin1Char('0')) ;
 		title.append(m_MBManager->getTrackList()[currentTrack-1].Title);
 		length.append(m_MBManager->getTrackList()[currentTrack-1].Duration);
 
