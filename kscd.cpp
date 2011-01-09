@@ -105,7 +105,7 @@ void KSCD::setupActions()
 	m_downloadAction = m_actions->addAction(i18n("Download Info"));
 	m_downloadAction->setText(i18n("Download Info"));
 	addAction(m_downloadAction);
-	connect(m_downloadAction, SIGNAL(triggered()), m_MBManager, SLOT(discLookup()));
+	connect(m_downloadAction, SIGNAL(triggered()), this, SLOT(discLookup()));
 
 	//upload info
 	m_uploadAction = m_actions->addAction( QLatin1String( "Upload Info" ));
@@ -238,6 +238,11 @@ void KSCD::setupActions()
 	connect(devices,SIGNAL(cdLoaded(const QString&)),m_MBManager,SLOT(discLookup(const QString&)));
 
 	connect( this , SIGNAL( customContextMenuRequested( const QPoint &) ) , SLOT( showContextMenu( const QPoint &) ) );
+}
+
+void KSCD::discLookup()
+{
+	m_MBManager->discLookup(devices->getMedia()->currentSource().deviceName());
 }
 
 void KSCD::setupContextMenu()
