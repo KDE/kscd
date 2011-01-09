@@ -464,6 +464,14 @@ void HWControler ::play(int track)
 			mc->setCurrentTitle(track);
 			media->play();
 		}
+		else
+		{
+			kDebug() << "No disc inserted";
+		}
+	}
+	else
+	{
+		kDebug() << "No drive detected";
 	}
 
 }

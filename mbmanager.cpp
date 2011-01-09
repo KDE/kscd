@@ -126,11 +126,14 @@ void MBManager::discLookup()
 
 
 		}
-		// FIXME Doesn't seem to get caught, why?
-		// catch (MusicBrainz::WebServiceError &e)
+		catch (const MusicBrainz::WebServiceError &e)
+                {
+			kDebug() << "Error: " << e.what();
+			m_validInfo = false;
+                }
 		catch (...)
 		{
-			//kDebug() << "Error: " << e.what();
+			kDebug() << "Caught Unknown Exception:";
 			m_validInfo = false;
 		}
 
@@ -155,11 +158,17 @@ void MBManager::discLookup()
 		}
 		delete disc;
 	}
-	// FIXME Doesn't seem to get caught, why?
-	//catch (MusicBrainz::DiscError &e)
+        // FIXME Doesn't seem to get caught, why?
+        catch (const MusicBrainz::DiscError &e)
+        {
+		kDebug() << "Error: " << e.what();
+		m_discInfo.Title = i18n("Unknown album");
+		m_discInfo.Artist = i18n("Unknown artist");
+		m_discInfo.Artist = i18n( "No Disc" );
+		m_trackList.clear();
+        }
 	catch(...)
 	{
-		//kDebug() << "Error: " << e.what();
 		m_discInfo.Title = i18n("Unknown album");
 		m_discInfo.Artist = i18n("Unknown artist");
 		m_discInfo.Artist = i18n( "No Disc" );
