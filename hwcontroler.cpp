@@ -330,7 +330,7 @@ void HWControler ::configMedia()
 			connect(media,SIGNAL(finished()),this,SLOT(replayDisk()));
 			connect(mc,SIGNAL(titleChanged(int)),this,SLOT(catchTitleChanged()));
 		}
-		emit(cdLoaded());
+		emit(cdLoaded(media->currentSource().deviceName()));
 	}
 }
 

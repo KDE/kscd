@@ -47,7 +47,7 @@ MBManager::~MBManager()
 
 }
 
-void MBManager::discLookup()
+void MBManager::discLookup(const QString &device)
 {
 	m_validInfo = true;
 
@@ -72,17 +72,14 @@ void MBManager::discLookup()
 
 	try
 	{
-		// FIXME Uses the disc found by musicbrainz, not
-		// necessarily the one used by KsCD
-		MusicBrainz::Disc *disc = MusicBrainz::readDisc();
-		std::string discId = disc->getId();
+		MusicBrainz::Disc *disc = MusicBrainz::readDisc(qPrintable(device));
 
 		MusicBrainz::Query q(ws);
 		MusicBrainz::ReleaseResultList results;
 
 		try
 		{
-			MusicBrainz::ReleaseFilter f = MusicBrainz::ReleaseFilter().discId(discId);
+		MusicBrainz::ReleaseFilter f = MusicBrainz::ReleaseFilter().discId(disc->getId());
 			results = q.getReleases(&f);
 
 			// Check to see how many items were returned from the server

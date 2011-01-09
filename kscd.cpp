@@ -69,7 +69,7 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	/** Music Brainz initialisation	*/
 	m_MBManager = new MBManager();
-	m_MBManager->discLookup();
+	m_MBManager->discLookup(devices->getMedia()->currentSource().deviceName());
 
 	setupActions();
 	setupContextMenu();
@@ -235,7 +235,7 @@ void KSCD::setupActions()
 	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString&)), this, SLOT(showTrackinfoLabel(QString&)));
 
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
-	connect(devices,SIGNAL(cdLoaded()),m_MBManager,SLOT(discLookup()));
+	connect(devices,SIGNAL(cdLoaded(const QString&)),m_MBManager,SLOT(discLookup(const QString&)));
 
 	connect( this , SIGNAL( customContextMenuRequested( const QPoint &) ) , SLOT( showContextMenu( const QPoint &) ) );
 }

@@ -131,7 +131,7 @@ class HWControler : public QObject
 		void currentTime (qint64 pos);
 		void totalTime(qint64 pos);
 		void trackChanged();
-		void cdLoaded();
+		void cdLoaded(const QString& device);
 
 };
 

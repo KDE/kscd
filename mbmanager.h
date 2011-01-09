@@ -79,7 +79,7 @@ public:
 
 public slots:
 	/** Gets information about the disc inserted */
-	void discLookup();
+	void discLookup(const QString& device);
 
 	/** Uploads information */
 	void discUpload();
