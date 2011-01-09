@@ -156,7 +156,7 @@ private:
 	KAction* m_loopdiscAction;
 	KAction* m_tracklistAction;
 	KAction* m_muteAction;
-	// KAction* m_downloadAction;
+	KAction* m_downloadAction;
 	KAction* m_uploadAction;
 	KAction* m_CDDBWindowAction;
 	KAction* m_volumeUpAction;
