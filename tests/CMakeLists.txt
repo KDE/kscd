@@ -16,7 +16,6 @@ kde4_add_unit_test(AudioCD_test
 
 # libraries needed for HWControler tests
 target_link_libraries(HWControler_test
-	${KDE4_KUTILS_LIBS}
 	${KDE4_SOLID_LIBS}
 	${KDE4_PHONON_LIBS}
 	${QT_QTTEST_LIBRARY}
@@ -27,7 +26,6 @@ target_link_libraries(HWControler_test
 
 # libraries needed for AudioCD tests
 target_link_libraries(AudioCD_test
-	${KDE4_KUTILS_LIBS}
 	${KDE4_SOLID_LIBS}
 	${KDE4_PHONON_LIBS}
 	${QT_QTTEST_LIBRARY}
