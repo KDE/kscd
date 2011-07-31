@@ -62,8 +62,8 @@ AudioCD::AudioCD(Solid::Device aCd)
 	// get the opticaldrive
 	cdDrive=aCd.as<Solid::OpticalDrive>();
 
-	connect(cdDrive,SIGNAL(ejectDone(Solid::ErrorType, QVariant, const QString &)),this,SLOT(catchEjectPressed()));
-	connect(bell,SIGNAL(deviceAdded(const QString)),this,SLOT(reloadCD()));
+	connect(cdDrive,SIGNAL(ejectDone(Solid::ErrorType,QVariant,QString)),this,SLOT(catchEjectPressed()));
+	connect(bell,SIGNAL(deviceAdded(QString)),this,SLOT(reloadCD()));
 
 	cd = NULL;
 	block = NULL;

@@ -69,7 +69,7 @@ namespace KsCD
 
         //QDBusConnection::sessionBus().registerObject( QLatin1String( "/Player" ), this);
 
-        connect( this, SIGNAL( StatusChange( DBusStatus ) ), this, SLOT( slotCapsChange() ) );
+        connect( this, SIGNAL(StatusChange(DBusStatus)), this, SLOT(slotCapsChange()) );
     }
 
     DBusStatus PlayerDBusHandler::GetStatus()

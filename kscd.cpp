@@ -221,23 +221,23 @@ void KSCD::setupActions()
 	 * General
 	 */
 	// Connects UI with actions triggering
-	connect(this,SIGNAL(actionClicked(const QString&)), this, SLOT(actionButton(const QString&)));
-	connect(this,SIGNAL(picture(const QString&,const QString&)), this, SLOT(changePicture(const QString&,const QString&)));
+	connect(this,SIGNAL(actionClicked(QString)), this, SLOT(actionButton(QString)));
+	connect(this,SIGNAL(picture(QString,QString)), this, SLOT(changePicture(QString,QString)));
 
 	// General connects
 	connect(this,SIGNAL(trackClicked(int)), this, SLOT(playTrack(int)));
 	connect(this,SIGNAL(actionVolume(qreal)), this, SLOT(changeVolume(qreal)));
 	connect(devices,SIGNAL(currentTime(qint64)),this,SLOT(catchtime(qint64)));
-	connect(this,SIGNAL(infoPanel(const QString&)),this,SLOT(panelInfo(const QString&)));
+	connect(this,SIGNAL(infoPanel(QString)),this,SLOT(panelInfo(QString)));
 
 	// MB
 	connect(m_MBManager, SIGNAL(showArtistLabel(QString&)), this, SLOT(showArtistLabel(QString&)));
 	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString&)), this, SLOT(showTrackinfoLabel(QString&)));
 
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
-	connect(devices,SIGNAL(cdLoaded(const QString&)),m_MBManager,SLOT(discLookup(const QString&)));
+	connect(devices,SIGNAL(cdLoaded(QString)),m_MBManager,SLOT(discLookup(QString)));
 
-	connect( this , SIGNAL( customContextMenuRequested( const QPoint &) ) , SLOT( showContextMenu( const QPoint &) ) );
+	connect( this , SIGNAL(customContextMenuRequested(QPoint)) , SLOT(showContextMenu(QPoint)) );
 }
 
 void KSCD::discLookup()
@@ -787,7 +787,7 @@ void KSCD::optionsPreferences()
 
 	dialog->addPage(interfaceSettingsDlg, i18n("Appearance"), QLatin1String( "fill-color" ));
 
-	connect(dialog, SIGNAL(settingsChanged( const QString &)), this, SLOT(updateSettings()));
+	connect(dialog, SIGNAL(settingsChanged(QString)), this, SLOT(updateSettings()));
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
 	dialog->setHelp(QString(),QLatin1String( "kscd" ));
 	dialog->show();

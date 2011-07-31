@@ -73,21 +73,21 @@ KscdWindow::KscdWindow(QWidget *parent):QWidget(parent)
 	setMask( m_backG->getPix().mask() );
 
 
-	connect(m_stopB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_playB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_prevB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_nextB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_ejectB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_muteB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_randB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_loopB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_trackB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_volumeB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+	connect(m_stopB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_playB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_prevB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_nextB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_ejectB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_muteB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_randB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_loopB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_trackB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_volumeB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),this,SIGNAL(actionVolume(qreal)));
 	connect(m_trackDlg,SIGNAL(itemClicked(int)),this,SLOT(doubleClickedEvent(int)));
-        connect( m_trackDlg, SIGNAL( trackListClosed() ), this, SLOT( closeTrackDialog() ) );
-        connect(m_miniB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
-	connect(m_closeB,SIGNAL(buttonClicked(const QString&)),this,SIGNAL(actionClicked(const QString&)));
+        connect( m_trackDlg, SIGNAL(trackListClosed()), this, SLOT(closeTrackDialog()) );
+        connect(m_miniB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
+	connect(m_closeB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 	connect(m_volumeB,SIGNAL(volumeChange(qreal)),m_panel,SLOT(setVolumeDisplay(qreal)));
 //	connect(m_prefB,SIGNAL(buttonClicked(QString)),this,SIGNAL(actionClicked(QString)));
 }
