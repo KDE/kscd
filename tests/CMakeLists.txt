@@ -18,6 +18,7 @@ kde4_add_unit_test(AudioCD_test
 target_link_libraries(HWControler_test
 	${KDE4_SOLID_LIBS}
 	${KDE4_PHONON_LIBS}
+	${KDE4_KDECORE_LIBS}
 	${QT_QTTEST_LIBRARY}
 	kcddb
 	kcompactdisc
@@ -28,6 +29,7 @@ target_link_libraries(HWControler_test
 target_link_libraries(AudioCD_test
 	${KDE4_SOLID_LIBS}
 	${KDE4_PHONON_LIBS}
+	${KDE4_KDECORE_LIBS}
 	${QT_QTTEST_LIBRARY}
 	kcddb
 	kcompactdisc
