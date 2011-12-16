@@ -69,7 +69,10 @@ KSCD::KSCD( QWidget *parent ) : KscdWindow(parent)
 
 	/** Music Brainz initialisation	*/
 	m_MBManager = new MBManager();
-	m_MBManager->discLookup(devices->getMedia()->currentSource().deviceName());
+	if (devices->getMedia())
+	{
+		m_MBManager->discLookup(devices->getMedia()->currentSource().deviceName());
+	}
 
 	setupActions();
 	setupContextMenu();
