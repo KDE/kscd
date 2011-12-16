@@ -93,7 +93,7 @@ void TrackListDlg::setRowCount(int nRows)
 
 void TrackListDlg::removeRowsTrackTable()
 {
- 	m_ui->trackTable->clear();
+ 	m_ui->trackTable->setRowCount(0);
 }
 
 void TrackListDlg::valueDoubleCliked(QTableWidgetItem* item)
