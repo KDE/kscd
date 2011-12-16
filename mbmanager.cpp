@@ -171,6 +171,8 @@ void MBManager::discLookup(const QString &device)
 		m_discInfo.Artist = i18n( "No Disc" );
 		m_trackList.clear();
 	}
+	
+	emit discLookupFinished();
 }
 
 void MBManager::discUpload()

@@ -130,7 +130,9 @@ public slots:
 	void updateSettings();
 	void configureKeys();
 
-        void discLookup();
+	void discLookup();
+	void discLookupFinished();
+
 private:
 	HWControler* devices;
 	MBManager* m_MBManager;

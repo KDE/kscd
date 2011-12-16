@@ -64,6 +64,7 @@ AudioCD::AudioCD(Solid::Device aCd)
 
 	connect(cdDrive,SIGNAL(ejectDone(Solid::ErrorType,QVariant,QString)),this,SLOT(catchEjectPressed()));
 	connect(bell,SIGNAL(deviceAdded(QString)),this,SLOT(reloadCD()));
+	connect(bell,SIGNAL(deviceRemoved(QString)),this,SLOT(reloadCD()));
 
 	cd = NULL;
 	block = NULL;

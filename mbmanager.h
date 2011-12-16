@@ -86,6 +86,8 @@ public slots:
 
 signals:
 	void showArtistLabel(QString&);
+	
+	void discLookupFinished();
 };
 
 #endif

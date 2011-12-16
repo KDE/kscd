@@ -235,6 +235,7 @@ void KSCD::setupActions()
 
 	// MB
 	connect(m_MBManager, SIGNAL(showArtistLabel(QString&)), this, SLOT(showArtistLabel(QString&)));
+	connect(m_MBManager, SIGNAL(discLookupFinished()), this, SLOT(discLookupFinished()));
 
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 	connect(devices,SIGNAL(cdLoaded(QString)),m_MBManager,SLOT(discLookup(QString)));
@@ -245,6 +246,15 @@ void KSCD::setupActions()
 void KSCD::discLookup()
 {
 	m_MBManager->discLookup(devices->getMedia()->currentSource().deviceName());
+}
+
+void KSCD::discLookupFinished()
+{
+	// If the track dialog is open, refresh it
+	if(m_stateTrackDialog)
+	{
+		createTrackDialog(m_MBManager->getTrackList(), m_MBManager->getDiscInfo().Title);
+	}
 }
 
 void KSCD::setupContextMenu()

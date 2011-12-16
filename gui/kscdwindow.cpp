@@ -124,7 +124,7 @@ void KscdWindow::closeTrackDialog()
 
 // void KscdWindow::clearTracklist()
 
-void KscdWindow::createTrackDialog(QList<MBTrackInfo> & trackList,const QString  & albumTitle)
+void KscdWindow::createTrackDialog(const QList<MBTrackInfo> & trackList,const QString  & albumTitle)
 {
 	QList<MBTrackInfo>::const_iterator it;
 	QList<MBTrackInfo>::const_iterator end = trackList.constEnd();
