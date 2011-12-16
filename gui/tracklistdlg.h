@@ -52,11 +52,6 @@ class TrackListDlg : public KDialog
 {
     Q_OBJECT
 
-private:
-    /** Table view instance for the trackTable */
-    QTableView* trackTableView ;
-
-    QAbstractItemModel* trackModel;
 public:
     /** Create an instance of TrackListDlg */
     TrackListDlg(QWidget* parent = 0);
@@ -84,15 +79,15 @@ public:
      **/
     int numberColumnTrackTable() const;
 
-    /** Add a row to the track table
+    /** Set the number of rows
      * @return void
      **/
-    void addRowTrackTable(int);
+    void setRowCount(int nRows);
 
     /** Remove all rows to the track table
      * @return void
      **/
-    bool removeRowsTrackTable(int count);
+    void removeRowsTrackTable();
 
     /** Move the track dialog
      * @return void

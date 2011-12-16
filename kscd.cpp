@@ -614,7 +614,7 @@ void KSCD::actionButton(const QString & name)
 	}
         else if (name == QLatin1String( "eject" ))
 	{
-		m_trackDlg->removeRowsTrackTable(m_MBManager->getTrackList().size());
+		m_trackDlg->removeRowsTrackTable();
 		devices->eject();
 		emit(picture(name,state));
 		if ((devices->getState() == PlayingState)|| (devices->getState() == PausedState))

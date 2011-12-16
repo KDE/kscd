@@ -47,12 +47,10 @@ TrackListDlg::TrackListDlg(QWidget * parent)
 
     setMainWidget( page );
     setButtons( KDialog::Close );
-    trackTableView = m_ui->trackTable;
-    trackModel = trackTableView->model();
-    trackTableView->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
-    trackTableView->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-    trackTableView->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
-    trackTableView->verticalHeader()->hide();
+    m_ui->trackTable->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
+    m_ui->trackTable->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+    m_ui->trackTable->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
+    m_ui->trackTable->verticalHeader()->hide();
 
     setSizeIncrement ( 0, 50 );
     connect(m_ui->trackTable,SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
@@ -80,7 +78,7 @@ void TrackListDlg::setYearLbl(const QString& year)
 
 void TrackListDlg::addItemTrackTable(int row,int column,const QString& item)
 {
-	trackModel->setData(trackModel->index(row,column), item);
+	m_ui->trackTable->setItem(row,column, new QTableWidgetItem(item));
 }
 
 int TrackListDlg::numberColumnTrackTable() const
@@ -88,14 +86,14 @@ int TrackListDlg::numberColumnTrackTable() const
 	return m_ui->trackTable->columnCount();
 }
 
-void TrackListDlg::addRowTrackTable(int row)
+void TrackListDlg::setRowCount(int nRows)
 {
-	trackModel->insertRow(row);
+	m_ui->trackTable->setRowCount(nRows);
 }
 
-bool TrackListDlg::removeRowsTrackTable(int count)
+void TrackListDlg::removeRowsTrackTable()
 {
- 	return trackModel->removeRows(0,count);
+ 	m_ui->trackTable->clear();
 }
 
 void TrackListDlg::valueDoubleCliked(QTableWidgetItem* item)
