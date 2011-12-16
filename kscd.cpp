@@ -235,7 +235,6 @@ void KSCD::setupActions()
 
 	// MB
 	connect(m_MBManager, SIGNAL(showArtistLabel(QString&)), this, SLOT(showArtistLabel(QString&)));
-	connect(m_MBManager, SIGNAL(showTrackinfoLabel(QString&)), this, SLOT(showTrackinfoLabel(QString&)));
 
 	connect(devices,SIGNAL(trackChanged()),this,SLOT(restoreTrackinfoLabel()));
 	connect(devices,SIGNAL(cdLoaded(QString)),m_MBManager,SLOT(discLookup(QString)));

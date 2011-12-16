@@ -86,9 +86,6 @@ public slots:
 
 signals:
 	void showArtistLabel(QString&);
-	void showTrackinfoLabel(QString&);
-	void restoreArtistLabel();
-	void restoreTrackinfoLabel();
 };
 
 #endif
