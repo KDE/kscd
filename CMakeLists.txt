@@ -1,9 +1,24 @@
 project(kscd)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+find_package(Qt4 REQUIRED)
+find_package(KDE4 REQUIRED)
+include(KDE4Defaults)
+include(MacroLibrary)
+include_directories(${QT_INCLUDES} ${KDE4_INCLUDES})
+
+find_package(Alsa)
+alsa_configure_file(${CMAKE_CURRENT_BINARY_DIR}/config-alsa.h)
+
+find_package(Libkcddb REQUIRED)
+find_package(Libkcompactdisc REQUIRED)
+find_package(MusicBrainz3 REQUIRED)
+
 include_directories(
                 ${CMAKE_CURRENT_SOURCE_DIR}/gui
-		${CMAKE_SOURCE_DIR}/kscd
-			${CMAKE_BINARY_DIR}/kscd
+		${CMAKE_CURRENT_SOURCE_DIR}
+			${CMAKE_CURRENT_BINARY_DIR}
 		)
 add_subdirectory(tests)
 ########### next target ###############
