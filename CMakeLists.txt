@@ -11,12 +11,6 @@ include_directories(${QT_INCLUDES} ${KDE4_INCLUDES})
 find_package(Alsa)
 alsa_configure_file(${CMAKE_CURRENT_BINARY_DIR}/config-alsa.h)
 
-
-# If these two fail, behavior falls back to pre-git-migration
-# FIXME: After the git migration, we need the REQUIRED param
-find_package(Libkcddb)
-find_package(Libkcompactdisc)
-
 find_package(MusicBrainz3 REQUIRED)
 
 include_directories(
@@ -121,8 +115,7 @@ target_link_libraries(kscd
     ${KDE4_SOLID_LIBS}
     ${KDE4_PHONON_LIBS}
     ${MUSICBRAINZ3_LIBRARIES}
-    ${LIBKCDDB_LIBRARIES}
-    ${LIBKCOMPACTDISC_LIBRARIES})
+    )
 
 ########### install files ###############
 
