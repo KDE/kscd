@@ -121,6 +121,8 @@ target_link_libraries(kscd
     ${KDE4_SOLID_LIBS}
     ${KDE4_PHONON_LIBS}
     ${MUSICBRAINZ3_LIBRARIES}
+    ${LIBKCDDB_LIBRARIES}
+    ${LIBKCOMPACTDISC_LIBRARIES}
     kcddb
     kcompactdisc)
 
