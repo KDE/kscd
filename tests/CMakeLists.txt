@@ -20,8 +20,8 @@ target_link_libraries(HWControler_test
 	${KDE4_PHONON_LIBS}
 	${KDE4_KDECORE_LIBS}
 	${QT_QTTEST_LIBRARY}
-	kcddb
-	kcompactdisc
+	${LIBKCDDB_LIBRARIES}
+	${LIBKCOMPACTDISC_LIBRARIES}
 )
 
 
@@ -31,7 +31,7 @@ target_link_libraries(AudioCD_test
 	${KDE4_PHONON_LIBS}
 	${KDE4_KDECORE_LIBS}
 	${QT_QTTEST_LIBRARY}
-	kcddb
-	kcompactdisc
+	${LIBKCDDB_LIBRARIES}
+	${LIBKCOMPACTDISC_LIBRARIES}
 )
 
