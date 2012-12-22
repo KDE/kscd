@@ -1,5 +1,6 @@
 [Desktop Entry]
 GenericName=CD Player
+GenericName[bs]=CD plejer
 GenericName[ca]=Reproductor de CD
 GenericName[cs]=CD přehrávač
 GenericName[da]=Cd-afspiller
@@ -40,6 +41,7 @@ GenericName[x-test]=xxCD Playerxx
 GenericName[zh_CN]=CD 播放器
 GenericName[zh_TW]=CD 播放器
 Name=KsCD
+Name[bs]=KsCD
 Name[ca]=KsCD
 Name[cs]=KsCD
 Name[da]=KsCD
