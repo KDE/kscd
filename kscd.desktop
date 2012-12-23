@@ -1,7 +1,6 @@
 [Desktop Entry]
 GenericName=CD Player
 GenericName[bg]=Просвирване на звукови дискове
-GenericName[bs]=CD plejer
 GenericName[ca]=Reproductor de CD
 GenericName[cs]=CD přehrávač
 GenericName[da]=Cd-afspiller
@@ -43,7 +42,6 @@ GenericName[zh_CN]=CD 播放器
 GenericName[zh_TW]=CD 播放器
 Name=KsCD
 Name[bg]=KsCD
-Name[bs]=KsCD
 Name[ca]=KsCD
 Name[cs]=KsCD
 Name[da]=KsCD
