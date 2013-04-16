@@ -52,10 +52,6 @@ void RandomButton::mousePressEvent(QMouseEvent *event)
 			m_id = m_name + QLatin1Char( '_' ) + m_state;
 			emit(needRepaint());
 		}
-		else
-		{
-			event->ignore();
-		}
  	}
  	else
  	{
@@ -71,16 +67,13 @@ void RandomButton::mouseReleaseEvent(QMouseEvent *event)
 		m_state = QLatin1String( "over" );
 		if(m_name==QLatin1String( "random" ))
 		{
-			kDebug() << "1" ;
 			m_name = QLatin1String( "p_random" );
 		}
 		else
 		{
-			kDebug() << "2" ;
 			m_name = QLatin1String( "random" );
+			m_id = m_name + QLatin1Char( '_' ) + m_state;
 		}
-		kDebug() << m_name ;
-		m_id = m_name + QLatin1Char( '_' ) + m_state;
 		emit(buttonClicked(m_name));
 	}
 	else

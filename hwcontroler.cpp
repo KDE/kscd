@@ -485,6 +485,7 @@ void HWControler::setRandom(bool b)
 {
 	random = b;
 	if (b) kDebug() << "Random Activated";
+	else   kDebug() << "Random Disabled";
 
 
 	if((selectedCd!=-1))
