@@ -16,7 +16,8 @@ find_package(MusicBrainz3 REQUIRED)
 include_directories(
                 ${CMAKE_CURRENT_SOURCE_DIR}/gui
 		${CMAKE_CURRENT_SOURCE_DIR}
-			${CMAKE_CURRENT_BINARY_DIR}
+		${CMAKE_CURRENT_BINARY_DIR}
+		${MUSICBRAINZ3_INCLUDE_DIR}
 		)
 add_subdirectory(tests)
 ########### next target ###############
