@@ -47,20 +47,16 @@
 using namespace Phonon;
 
 HWControler::HWControler ()
+	: selectedCd(-1)
+	, speakers(new Phonon::AudioOutput ( MusicCategory, this ))
+	, selectedS(-1)
+	, media(new Phonon::MediaObject(this))
+	, mc(new MediaController(media))
+	, loopState(NoLoop)
+	, random(false)
+	, isEjectAtTheEndOfTheCdActivated(false)
+	, posPlayList(-1)
 {
-	setEjectActivated(false);
-	// in kscd starting, no loop option
-	loopState = NoLoop;
-
-	random = false;
-
-	// init CD detection
-	selectedCd=-1;
-
-	// init Speakers detection
-	selectedS=-1;
-	setVolume(50);
-
 	// getting all optical disc driver
 	QList<Solid::Device> devList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDrive, QString());
 
@@ -83,12 +79,7 @@ HWControler::HWControler ()
 		}
 	}
 
-	//TODO: Load ALL audio output
-	speakers = new Phonon::AudioOutput ( MusicCategory, this );
 	selectedS=0;
-
-	// init of media object
-	media = new Phonon::MediaObject(this);
 
 	// Multimedia configuration
 	configMedia();
@@ -210,6 +201,7 @@ void HWControler::stop(bool restart)
 		{
 			mc->setAutoplayTitles(false);
 			media->stop();
+			kDebug() << "stop with restart?" << restart;
 			if (restart)
 			{
 				mc->setCurrentTitle(1);
@@ -323,7 +315,6 @@ void HWControler ::configMedia()
                         if (!path.isValid())
 				path = Phonon::createPath(media, speakers);
 			kDebug()<< "Phonon Loaded";
-			mc = new MediaController(media);
 			mc->setAutoplayTitles(false);
 			media->setTickInterval(100);
 			connect(media,SIGNAL(tick(qint64)),this,SLOT(replayTrack(qint64)));
