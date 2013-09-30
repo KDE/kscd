@@ -121,7 +121,7 @@ class HWControler : public QObject
 		void play();
 		void nextTrack();
 		void prevTrack();
-		void stop(bool restart=true); // @param restart, if true restart from the beginning of the disc
+		void stop(bool restart=false); // @param restart, if true restart from the beginning of the disc
 		void pause();
 		void mute(bool mute);
 		void setRandom(bool b);
