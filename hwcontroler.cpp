@@ -320,7 +320,8 @@ void HWControler ::configMedia()
 		if(cdIn[selectedCd]->isCdInserted())
 		{
 			media->setCurrentSource(*cdIn[selectedCd]->getMediaSource());
-			path = Phonon::createPath(media, speakers);
+                        if (!path.isValid())
+				path = Phonon::createPath(media, speakers);
 			kDebug()<< "Phonon Loaded";
 			mc = new MediaController(media);
 			mc->setAutoplayTitles(false);
