@@ -50,6 +50,7 @@ GenericName[x-test]=xxCD Playerxx
 GenericName[zh_CN]=CD 播放器
 GenericName[zh_TW]=CD 播放器
 Name=KsCD
+Name[ast]=KsCD
 Name[bg]=KsCD
 Name[bs]=KsCD
 Name[ca]=KsCD
