@@ -27,6 +27,8 @@
 #include "dbus/PlayerDBusHandler.h"
 #include "dbus/RootDBusHandler.h"
 #include "dbus/TracklistDBusHandler.h"
+#include <KDBusService>
+#include <QApplication>
 #include <QSplashScreen>
 #include <QPixmap>
 #include <QStringList>
@@ -37,8 +39,6 @@
 #include "cdplayeradaptor.h"
 
 using namespace Phonon;
-
-static const char description[] = I18N_NOOP("KDE CD player");
 
 bool stoppedByUser = true;
 
@@ -801,7 +801,7 @@ void KSCD::optionsPreferences()
 
 	connect(dialog, SIGNAL(settingsChanged(QString)), this, SLOT(updateSettings()));
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
-	dialog->setHelp(QString(),QLatin1String( "kscd" ));
+	//dialog->setHelp(QString(),QLatin1String( "kscd" ));
 	dialog->show();
 }
 
@@ -840,68 +840,34 @@ void KSCD::catchtime(qint64 pos){
  */
 int main( int argc, char *argv[] )
 {
-	KAboutData aboutData("kscd", 0, ki18n("KsCD"),
-						 "1.5", ki18n(description),
-									  KAboutData::License_GPL,
-		   ki18n("(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo"));
-	aboutData.addCredit(ki18n("Amine Bouchikhi"), ki18n("Current maintainer, Solid/Phonon Upgrade, QDBus connection"),"bouchikhi.amine@gmail.com");
-	aboutData.addAuthor(ki18n("Aaron J. Seigo"), ki18n("Previous maintainer"), "aseigo@kde.org");
-	aboutData.addAuthor(ki18n("Alexander Kern"),ki18n("Workman library update, CDTEXT, CDDA"), "kernalex@kde.org");
-	aboutData.addAuthor(ki18n("Bernd Johannes Wuebben"),KLocalizedString(), "wuebben@kde.org");
-	aboutData.addAuthor(ki18n("Dirk Försterling"), ki18n("Workman library, previous maintainer"), "milliByte@gmx.net");
-	aboutData.addCredit(ki18n("Wilfried Huss"), ki18n("Patches galore"));
-	aboutData.addCredit(ki18n("Steven Grimm"), ki18n("Workman library"));
-	aboutData.addCredit(ki18n("Sven Lueppken"), ki18n("UI Work"));
-	aboutData.addCredit(ki18n("freedb.org"), ki18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
+	KAboutData aboutData("kscd", i18n("KsCD"),
+						 "2.0", i18n("KDE CD player"),
+									  KAboutLicense::GPL,
+		   i18n("(c) 2001, Dirk Försterling\n(c) 2003, Aaron J. Seigo"), 
+		   QString(), 
+		   i18n("http://www.kde.org"));
+	aboutData.addCredit(i18n("Amine Bouchikhi"), i18n("Current maintainer, Solid/Phonon Upgrade, QDBus connection"),"bouchikhi.amine@gmail.com");
+	aboutData.addAuthor(i18n("Aaron J. Seigo"), i18n("Previous maintainer"), "aseigo@kde.org");
+	aboutData.addAuthor(i18n("Alexander Kern"),i18n("Workman library update, CDTEXT, CDDA"), "kernalex@kde.org");
+	aboutData.addAuthor(i18n("Bernd Johannes Wuebben"), QString(), "wuebben@kde.org");
+	aboutData.addAuthor(i18n("Dirk Försterling"), i18n("Workman library, previous maintainer"), "milliByte@gmx.net");
+	aboutData.addCredit(i18n("Wilfried Huss"), i18n("Patches galore"));
+	aboutData.addCredit(i18n("Steven Grimm"), i18n("Workman library"));
+	aboutData.addCredit(i18n("Sven Lueppken"), i18n("UI Work"));
+	aboutData.addCredit(i18n("freedb.org"), i18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
 
-	KCmdLineArgs::init( argc, argv, &aboutData );
+	QCommandLineParser* parser = new QCommandLineParser;
 
-	KCmdLineOptions options;
-	options.add("s");
-	options.add("start", ki18n("Start playing"));
-	KCmdLineArgs::addCmdLineOptions(options);
-	KUniqueApplication::addCmdLineOptions();
-	KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
-	if (!KUniqueApplication::start())
-	{
-            fprintf(stderr, "kscd is already running\n");
-            if (args->count() > 0 || args->isSet("start"))
-            {
-                QDBusInterface kscd(QLatin1String( "org.kde.kscd" ), QLatin1String( "/CDPlayer" ), QLatin1String( "org.kde.kscd.CDPlayer" ));
-                if(kscd.isValid())
-                {
-                    // Forward the command line args to the running instance.
-                    if (args->isSet("start"))
-                    {
-                        kscd.call(QLatin1String( "play" ));
-                    }
-                }
-                args->clear();
-            }
-            exit(0);
-	}
-	KUniqueApplication a;
+	parser->addHelpOption();
+	parser->addVersionOption();
+	parser->addOption(QCommandLineOption("s", QString()));
+	parser->addOption(QCommandLineOption("start", i18n("Start playing")));
+	aboutData.setupCommandLine(parser);
+	QApplication a(argc, argv);
+	KDBusService service(KDBusService::Unique);
 	KSCD *k = new KSCD();
-	a.setTopWidget( k );
-
-	k->setWindowTitle(KGlobal::caption());
-
-	if (kapp->isSessionRestored())
-	{
-		// The user has no way to show it if it's hidden - so why start it hidden?
-#if 0
-		KConfigGroup group(KApplication::kApplication()->sessionConfig(), "General");
-		if (group.readEntry("Show", false))
-#endif
-                {
-			k->show();
-		}
-	}
-	else
-	{
-            k->show();
-	}
-	args->clear();
+	k->setWindowTitle("KSCD");
+	k->show();
 	return a.exec();
 }
 

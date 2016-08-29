@@ -1,14 +1,14 @@
 ############ Tests ##############
 
 # HWControler test unit
-kde4_add_unit_test(HWControler_test
+add_executable(HWControler_test
 	../hwcontroler.cpp
 	../audiocd.cpp
 	hwcontroler_test.cpp
 )
 
 # AudioCD test unit
-kde4_add_unit_test(AudioCD_test
+add_executable(AudioCD_test
 	../audiocd.cpp
 	audiocd_test.cpp
 )
@@ -16,18 +16,18 @@ kde4_add_unit_test(AudioCD_test
 
 # libraries needed for HWControler tests
 target_link_libraries(HWControler_test
-	${KDE4_SOLID_LIBS}
-	${KDE4_PHONON_LIBS}
-	${KDE4_KDECORE_LIBS}
-	${QT_QTTEST_LIBRARY}
+    Qt5::Test
+    Qt5::Widgets
+    KF5::Solid
+    ${PHONON_LIBRARIES}
 )
 
 
 # libraries needed for AudioCD tests
 target_link_libraries(AudioCD_test
-	${KDE4_SOLID_LIBS}
-	${KDE4_PHONON_LIBS}
-	${KDE4_KDECORE_LIBS}
-	${QT_QTTEST_LIBRARY}
+    Qt5::Test
+    Qt5::Widgets
+    KF5::Solid
+    ${PHONON_LIBRARIES}
 )
 

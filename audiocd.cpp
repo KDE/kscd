@@ -37,8 +37,6 @@
 #include <solid/block.h>
 #include <solid/devicenotifier.h>
 
-#include <kdebug.h>
-
 #include <phonon/mediasource.h>
 
 #include <QString>
@@ -75,7 +73,7 @@ AudioCD::AudioCD(Solid::Device aCd)
 
 	if (devList.isEmpty())
 	{
-		kDebug() << "No Optical Disc detected in the computer!";
+		qDebug() << "No Optical Disc detected in the computer!";
 		cd = NULL;
 		block = NULL;
 		src = NULL;
@@ -133,7 +131,7 @@ bool AudioCD::isCdInserted() const
 
 void AudioCD::catchEjectPressed()
 {
-	kDebug() << "#o#o#o#o#o#o#o#o#o#o#o#o#o#o#Eject Pressed!";
+	qDebug() << "#o#o#o#o#o#o#o#o#o#o#o#o#o#o#Eject Pressed!";
 
 	cd = NULL;
 	block = NULL;
@@ -149,7 +147,7 @@ void AudioCD::reloadCD()
 
 	if (devList.isEmpty())
 	{
-		kDebug() << "No Optical Disc detected in the computer!";
+		qDebug() << "No Optical Disc detected in the computer!";
 		cd = NULL;
 		block = NULL;
 		src = NULL;
@@ -162,7 +160,7 @@ void AudioCD::reloadCD()
 		{
 			if (devList[i].parentUdi()==odsign.udi())
 			{
-				kDebug() << "CD inserted!";
+				qDebug() << "CD inserted!";
 				cd = devList[i].as<Solid::OpticalDisc>();
 				block = odsign.as<Solid::Block>();
 				src = new MediaSource(Cd,block->device());

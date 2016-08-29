@@ -34,6 +34,8 @@
 #include "audiocd.h"
 #include "audiocd_test.h"
 
+#include <QtTest/QTest>
+
 //this test sequencec neeed to insert a CD
 void AudioCD_test::reloadCD_test()
 {
@@ -43,4 +45,4 @@ void AudioCD_test::reloadCD_test()
 	delete (audio_cd);
 }
 
-QTEST_KDEMAIN_CORE(AudioCD_test)
+QTEST_GUILESS_MAIN(AudioCD_test)

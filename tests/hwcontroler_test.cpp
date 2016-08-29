@@ -35,6 +35,8 @@
 #include "audiocd.h"
 #include "hwcontroler_test.h"
 
+#include <QtTest/QTest>
+
 /*We will eject the CD and very if it is always inserted*/
 void HWControler_test :: eject_test()
 {
@@ -195,4 +197,4 @@ void HWControler_test ::replayDisk_test()
 
 
 
-QTEST_KDEMAIN_CORE(HWControler_test)
+QTEST_GUILESS_MAIN(HWControler_test)

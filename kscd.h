@@ -27,7 +27,7 @@
 #define KSCD_H
 
 // Solid implementation
-#include <qdialog.h>
+#include <QDialog>
 #include <qapplication.h>
 #include <qscrollbar.h>
 #include <qslider.h>
@@ -43,12 +43,11 @@
 #include "gui/kscdwindow.h"
 #include "hwcontroler.h"
 #include "mbmanager.h"
-#include <config-alsa.h>
 
 #include <kapplication.h>
 #include <kconfigdialog.h>
 #include <krandomsequence.h>
-#include <kglobalaccel.h>
+#include <KGlobalAccel/KGlobalAccel>
 #include <ksessionmanager.h>
 #include <kdebug.h>
 #include <kaboutdata.h>
@@ -146,25 +145,25 @@ private:
 	QMenu *contextMenu;
 
 
-	KAction* m_configureShortcutsAction;
-	KAction* m_configureAction;
-	KAction* m_playPauseAction;
-	KAction* m_stopAction;
-	KAction* m_nextAction;
-	KAction* m_previousAction;
-	KAction* m_ejectAction;
-	KAction* m_randomAction;
-	KAction* m_looptrackAction;
-	KAction* m_loopdiscAction;
-	KAction* m_tracklistAction;
-	KAction* m_muteAction;
-	KAction* m_downloadAction;
-	KAction* m_uploadAction;
-	KAction* m_CDDBWindowAction;
-	KAction* m_volumeUpAction;
-	KAction* m_volumeDownAction;
-	KAction* m_quitAction;
-	KAction* m_minimizeAction;
+	QAction* m_configureShortcutsAction;
+	QAction* m_configureAction;
+	QAction* m_playPauseAction;
+	QAction* m_stopAction;
+	QAction* m_nextAction;
+	QAction* m_previousAction;
+	QAction* m_ejectAction;
+	QAction* m_randomAction;
+	QAction* m_looptrackAction;
+	QAction* m_loopdiscAction;
+	QAction* m_tracklistAction;
+	QAction* m_muteAction;
+	QAction* m_downloadAction;
+	QAction* m_uploadAction;
+	QAction* m_CDDBWindowAction;
+	QAction* m_volumeUpAction;
+	QAction* m_volumeDownAction;
+	QAction* m_quitAction;
+	QAction* m_minimizeAction;
 
 	KActionCollection * m_actions;
 	void setHourglass();

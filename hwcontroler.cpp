@@ -36,8 +36,6 @@
 #include <solid/block.h>
 #include <time.h>
 
-#include <kdebug.h>
-
 #include <phonon/mediasource.h>
 #include <phonon/mediaobject.h>
 #include <phonon/phononnamespace.h>
@@ -63,7 +61,7 @@ HWControler::HWControler ()
 	// if no optical drive detected
 	if (devList.isEmpty())
 	{
-		kDebug() << "No Optical Drive detected!";
+		qDebug() << "No Optical Drive detected!";
 		selectedCd = -1;
 
 	}
@@ -123,23 +121,23 @@ void HWControler::play()
 			{*/
 				mc->setAutoplayTitles(true);
 				media->play();
-				kDebug() << getCurrentTrack() <<"/"<< getTotalTrack();
+				qDebug() << getCurrentTrack() <<"/"<< getTotalTrack();
 //			}
 			/*else
 			{
-				kDebug() << "Booooooooooooooooo";
+				qDebug() << "Booooooooooooooooo";
 
 				playRand();
 			}*/
 		}
 		else
 		{
-			kDebug() << "No CD detected";
+			qDebug() << "No CD detected";
 		}
 	}
 	else
 	{
-		kDebug() << "No Drive detected!!!";
+		qDebug() << "No Drive detected!!!";
 	}
 }
 void HWControler::nextTrack()
@@ -201,7 +199,7 @@ void HWControler::stop(bool restart)
 		{
 			mc->setAutoplayTitles(false);
 			media->stop();
-			kDebug() << "stop with restart?" << restart;
+			qDebug() << "stop with restart?" << restart;
 			if (restart)
 			{
 				mc->setCurrentTitle(1);
@@ -308,13 +306,13 @@ void HWControler ::configMedia()
 {
 	if(selectedCd!=-1)
 	{
-		kDebug()<< "#o#o#o# Loading Optical Drive";
+		qDebug()<< "#o#o#o# Loading Optical Drive";
 		if(cdIn[selectedCd]->isCdInserted())
 		{
 			media->setCurrentSource(*cdIn[selectedCd]->getMediaSource());
                         if (!path.isValid())
 				path = Phonon::createPath(media, speakers);
-			kDebug()<< "Phonon Loaded";
+			qDebug()<< "Phonon Loaded";
 			mc->setAutoplayTitles(false);
 			media->setTickInterval(100);
 			connect(media,SIGNAL(tick(qint64)),this,SLOT(replayTrack(qint64)));
@@ -338,7 +336,7 @@ AudioCD * HWControler::getCD()const
 void HWControler ::setLoopMode(LoopMode lm)
 {
 	loopState = lm;
-	kDebug()<<"Loop Mode: "<<lm;
+	qDebug()<<"Loop Mode: "<<lm;
 }
 void HWControler ::replayTrack(qint64 pos)
 {
@@ -348,7 +346,7 @@ void HWControler ::replayTrack(qint64 pos)
 		switch (loopState)
 		{
 			case LoopOne:
-					kDebug()<<"End of this track!";
+					qDebug()<<"End of this track!";
 					media->stop();
 					mc->setCurrentTitle(mc->currentTitle());
 					media->play();
@@ -458,12 +456,12 @@ void HWControler ::play(int track)
 		}
 		else
 		{
-			kDebug() << "No disc inserted";
+			qDebug() << "No disc inserted";
 		}
 	}
 	else
 	{
-		kDebug() << "No drive detected";
+		qDebug() << "No drive detected";
 	}
 
 }
@@ -476,8 +474,8 @@ void HWControler ::catchTitleChanged()
 void HWControler::setRandom(bool b)
 {
 	random = b;
-	if (b) kDebug() << "Random Activated";
-	else   kDebug() << "Random Disabled";
+	if (b) qDebug() << "Random Activated";
+	else   qDebug() << "Random Disabled";
 
 
 	if((selectedCd!=-1))
@@ -526,7 +524,7 @@ void HWControler ::loadPlayList()
 
 	for (int i = 0; i<getTotalTrack();i++)
 	{
-		kDebug() << "Playlist : " << playList[i];
+		qDebug() << "Playlist : " << playList[i];
 	}
 }
 
@@ -537,7 +535,7 @@ int HWControler ::generateNumber(int inter)
 void HWControler ::setEjectActivated(bool b)
 {
 	isEjectAtTheEndOfTheCdActivated = b;
-	kDebug() << "Eject at the end mode changed";
+	qDebug() << "Eject at the end mode changed";
 }
 
 bool HWControler::isEjectActivated() const
