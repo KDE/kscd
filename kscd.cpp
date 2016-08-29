@@ -497,6 +497,8 @@ void KSCD::actionButton(const QString & name)
 	QString result;
 	if (name == QLatin1String( "play" ))
 	{
+		if (!devices->getCD())
+			return;
 		if( !devices->isDiscValid() || !devices->getCD()->isCdInserted())
 		{
 			QString result;
