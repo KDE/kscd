@@ -43,7 +43,6 @@
 #include "gui/kscdwindow.h"
 #include "hwcontroler.h"
 #include "mbmanager.h"
-#include <config-alsa.h>
 
 #include <kapplication.h>
 #include <kconfigdialog.h>

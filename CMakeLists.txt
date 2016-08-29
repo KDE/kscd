@@ -8,9 +8,6 @@ include(KDE4Defaults)
 include(MacroLibrary)
 include_directories(${QT_INCLUDES} ${KDE4_INCLUDES})
 
-find_package(Alsa)
-alsa_configure_file(${CMAKE_CURRENT_BINARY_DIR}/config-alsa.h)
-
 find_package(MusicBrainz3 REQUIRED)
 
 include_directories(
