@@ -26,7 +26,6 @@ endif()
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
 find_package(KF5 REQUIRED I18n Solid KIO KDELibs4Support GlobalAccel DBusAddons)
 find_package(Phonon4Qt5 REQUIRED)
-find_package(ALSA REQUIRED)
 find_package(MusicBrainz3 REQUIRED)
 
 include_directories(
