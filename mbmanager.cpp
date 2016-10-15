@@ -32,6 +32,8 @@
  */
 #include "mbmanager.h"
 
+#include <kurl.h>
+
 #include <ktoolinvocation.h>
 
 #include <musicbrainz3/musicbrainz.h>

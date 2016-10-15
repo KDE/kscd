@@ -52,7 +52,6 @@
 #include <kdebug.h>
 #include <kaboutdata.h>
 #include <kactioncollection.h>
-#include <kcmdlineargs.h>
 #include <khelpmenu.h>
 #include <kshortcutsdialog.h>
 #include <kiconloader.h>
@@ -63,7 +62,6 @@
 #include <kstandardaction.h>
 #include <kstringhandler.h>
 #include <kuniqueapplication.h>
-#include <kcmoduleloader.h>
 #include <ktoolinvocation.h>
 #include <kaction.h>
 #include "panel.h"
