@@ -373,7 +373,7 @@ void HWControler ::playRand()
 	{
 		posPlayList = posPlayList + 1;
 	}
-	if(endOfList and loopState!=LoopAll)
+	if(endOfList && loopState!=LoopAll)
 	{
 		stop();
 	}
