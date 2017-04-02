@@ -842,6 +842,8 @@ void KSCD::catchtime(qint64 pos){
  */
 int main( int argc, char *argv[] )
 {
+	QApplication a(argc, argv);
+	KLocalizedString::setApplicationDomain("kscd");
 	KAboutData aboutData("kscd", i18n("KsCD"),
 						 "2.0", i18n("KDE CD player"),
 									  KAboutLicense::GPL,
@@ -865,7 +867,6 @@ int main( int argc, char *argv[] )
 	parser->addOption(QCommandLineOption("s", QString()));
 	parser->addOption(QCommandLineOption("start", i18n("Start playing")));
 	aboutData.setupCommandLine(parser);
-	QApplication a(argc, argv);
 	KDBusService service(KDBusService::Unique);
 	KSCD *k = new KSCD();
 	k->setWindowTitle("KSCD");
