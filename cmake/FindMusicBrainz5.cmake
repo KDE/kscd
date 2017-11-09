@@ -11,30 +11,23 @@
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
 if(MUSICBRAINZ5_INCLUDE_DIR AND MUSICBRAINZ5_LIBRARIES)
-   set(MUSICBRAINZ5_FIND_QUIETLY TRUE)
-endif(MUSICBRAINZ5_INCLUDE_DIR AND MUSICBRAINZ5_LIBRARIES)
+    set(MUSICBRAINZ5_FIND_QUIETLY TRUE)
+endif()
 
-# use pkg-config to get the directories and then use these values
-# in the FIND_PATH() and FIND_LIBRARY() calls
-find_package(PkgConfig)
-pkg_check_modules(PC_LIBMUSICBRAINZ5 QUIET libmusicbrainz5cc libmusicbrainz5)
+find_path(MUSICBRAINZ5_INCLUDE_DIR musicbrainz5/Disc.h)
 
-FIND_PATH(MUSICBRAINZ5_INCLUDE_DIR musicbrainz5/Query.h
-          HINTS
-          ${PC_LIBMUSICBRAINZ5_INCLUDEDIR}
-          ${PC_LIBMUSICBRAINZ5_INCLUDE_DIRS}
-)
-
-FIND_LIBRARY( MUSICBRAINZ5_LIBRARIES NAMES musicbrainz5cc musicbrainz5
-              HINTS
-              ${PC_LIBMUSICBRAINZ5_LIBDIR}
-              ${PC_LIBMUSICBRAINZ5_LIB_DIRS}
-)
+find_library(MUSICBRAINZ5_LIBRARIES NAMES musicbrainz5cc)
+if (NOT MUSICBRAINZ5_LIBRARIES)
+    find_library(MUSICBRAINZ5_LIBRARIES NAMES musicbrainz5)
+endif()
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args( MusicBrainz5 DEFAULT_MSG
-                                   MUSICBRAINZ5_INCLUDE_DIR MUSICBRAINZ5_LIBRARIES)
+find_package_handle_standard_args(MusicBrainz5 DEFAULT_MSG MUSICBRAINZ5_INCLUDE_DIR MUSICBRAINZ5_LIBRARIES)
 
-MARK_AS_ADVANCED(MUSICBRAINZ5_INCLUDE_DIR MUSICBRAINZ5_LIBRARIES)
+add_library(musicbrainz SHARED IMPORTED)
+set_target_properties(musicbrainz PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${MUSICBRAINZ5_INCLUDE_DIR}"
+    IMPORTED_LOCATION "${MUSICBRAINZ5_LIBRARIES}"
+)
 
-
+mark_as_advanced(MUSICBRAINZ5_INCLUDE_DIR MUSICBRAINZ5_LIBRARIES)
