@@ -42,6 +42,9 @@
 #include <qstring.h>
 #include <qlist.h>
 
+// musicbrainz discid
+#include <discid/discid.h>
+
 struct DiscInfo
 {
 	QString Title;
@@ -64,6 +67,7 @@ private:
 	QList <MBTrackInfo> m_trackList;	/// List of tracks information
 
 	bool m_validInfo;					/// Tells whether the lookup query succeeded
+	DiscId *m_discid;
 
 public:
 	MBManager();
@@ -82,11 +86,11 @@ public slots:
 	void discLookup(const QString& device);
 
 	/** Uploads information */
-	void discUpload();
+	void discUpload(const QString& device=QString());
 
 signals:
 	void showArtistLabel(QString&);
-	
+
 	void discLookupFinished();
 };
 

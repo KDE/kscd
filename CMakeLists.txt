@@ -8,13 +8,15 @@ include(KDE4Defaults)
 include(MacroLibrary)
 include_directories(${QT_INCLUDES} ${KDE4_INCLUDES})
 
-find_package(MusicBrainz3 REQUIRED)
+find_package(MusicBrainz5 REQUIRED)
+find_package(DiscId REQUIRED)
 
 include_directories(
                 ${CMAKE_CURRENT_SOURCE_DIR}/gui
 		${CMAKE_CURRENT_SOURCE_DIR}
 		${CMAKE_CURRENT_BINARY_DIR}
-		${MUSICBRAINZ3_INCLUDE_DIR}
+		${MUSICBRAINZ5_INCLUDE_DIR}
+		${DISCID_INCLUDE_DIR}
 		)
 add_subdirectory(tests)
 ########### next target ###############
@@ -112,7 +114,8 @@ target_link_libraries(kscd
     ${KDE4_KIO_LIBS}
     ${KDE4_SOLID_LIBS}
     ${KDE4_PHONON_LIBS}
-    ${MUSICBRAINZ3_LIBRARIES}
+    ${MUSICBRAINZ5_LIBRARIES}
+    ${DISCID_LIBRARIES}
     )
 
 ########### install files ###############

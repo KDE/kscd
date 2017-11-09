@@ -130,6 +130,7 @@ public slots:
 	void configureKeys();
 
 	void discLookup();
+	void discUpload();
 	void discLookupFinished();
 
 private:

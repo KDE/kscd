@@ -114,7 +114,7 @@ void KSCD::setupActions()
 	m_uploadAction = m_actions->addAction( QLatin1String( "Upload Info" ));
 	m_uploadAction->setText(i18n("Upload Info"));
 	addAction(m_uploadAction);
-	connect(m_uploadAction, SIGNAL(triggered()), m_MBManager, SLOT(discUpload()));
+	connect(m_uploadAction, SIGNAL(triggered()), this, SLOT(discUpload()));
 
 	//play/pause
 	m_playPauseAction = m_actions->addAction( QLatin1String( "Play/Pause" ));
@@ -246,6 +246,11 @@ void KSCD::setupActions()
 void KSCD::discLookup()
 {
 	m_MBManager->discLookup(devices->getMedia()->currentSource().deviceName());
+}
+
+void KSCD::discUpload()
+{
+	m_MBManager->discUpload(devices->getMedia()->currentSource().deviceName());
 }
 
 void KSCD::discLookupFinished()
