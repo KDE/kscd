@@ -26,14 +26,16 @@ endif()
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
 find_package(KF5 REQUIRED I18n Solid KIO KDELibs4Support GlobalAccel DBusAddons)
 find_package(Phonon4Qt5 REQUIRED)
-find_package(MusicBrainz3 REQUIRED)
+find_package(MusicBrainz5 REQUIRED)
+find_package(DiscId REQUIRED)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/gui
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_BINARY_DIR}
     ${PHONON_INCLUDE_DIR}
-	${MUSICBRAINZ3_INCLUDE_DIR}
+	${MUSICBRAINZ5_INCLUDE_DIR}
+	${DISCID_INCLUDE_DIR}
 )
 if(BUILD_TESTING)
     find_package(Qt5Test REQUIRED)
@@ -134,7 +136,8 @@ target_link_libraries(kscd
     KF5::GlobalAccel
     KF5::DBusAddons
     ${PHONON_LIBRARIES}
-    ${MUSICBRAINZ3_LIBRARIES}
+    ${MUSICBRAINZ5_LIBRARIES}
+    ${DISCID_LIBRARIES}
 )
 
 ########### install files ###############
