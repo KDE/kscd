@@ -878,6 +878,3 @@ int main( int argc, char *argv[] )
 	k->show();
 	return a.exec();
 }
-
-
-#include "kscd.moc"

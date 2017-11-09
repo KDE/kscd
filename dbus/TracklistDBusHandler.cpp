@@ -77,5 +77,3 @@ namespace KsCD
     	
     }
 }
-
-#include "TracklistDBusHandler.moc"

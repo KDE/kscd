@@ -163,5 +163,3 @@ namespace KsCD
     }
 
 } // namespace KsCD
-
-#include "PlayerDBusHandler.moc"

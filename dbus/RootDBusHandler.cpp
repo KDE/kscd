@@ -72,5 +72,3 @@ namespace KsCD
     }
 
 }
-
-#include "RootDBusHandler.moc"
