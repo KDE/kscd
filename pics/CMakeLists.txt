@@ -1,10 +1,10 @@
 ecm_install_icons(
     ICONS
-        hi128-app-kscd.png
-        hi16-app-kscd.png
-        hi32-app-kscd.png
-        hi48-app-kscd.png
-        hi64-app-kscd.png
+        128-apps-kscd.png
+        16-apps-kscd.png
+        32-apps-kscd.png
+        48-apps-kscd.png
+        64-apps-kscd.png
     DESTINATION
-        ${ICON_INSTALL_DIR})
+        ${KDE_INSTALL_ICONDIR})
 
