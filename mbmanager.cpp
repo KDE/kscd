@@ -34,8 +34,7 @@
 
 #include <QDebug>
 
-#include <kurl.h>
-#include <ktoolinvocation.h>
+#include <KToolInvocation>
 
 #include <musicbrainz5/Query.h>
 #include <musicbrainz5/Artist.h>

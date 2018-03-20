@@ -26,16 +26,16 @@
 #ifndef KSCD_H
 #define KSCD_H
 
-// Solid implementation
-#include <QDialog>
-#include <qapplication.h>
-#include <qscrollbar.h>
-#include <qslider.h>
-#include <QMenu>
+#include <QApplication>
 #include <QCloseEvent>
-#include <QKeyEvent>
+#include <QDialog>
 #include <QEvent>
+#include <QKeyEvent>
+#include <QMenu>
 #include <QPoint>
+#include <QScrollBar>
+#include <QSlider>
+
 // Phonon libs
 #include <phonon/phononnamespace.h>
 #include <phonon/seekslider.h>
@@ -44,32 +44,27 @@
 #include "hwcontroler.h"
 #include "mbmanager.h"
 
-#include <kapplication.h>
-#include <kconfigdialog.h>
-#include <krandomsequence.h>
-#include <KGlobalAccel/KGlobalAccel>
-#include <ksessionmanager.h>
-#include <kaboutdata.h>
-#include <kactioncollection.h>
-#include <khelpmenu.h>
-#include <kshortcutsdialog.h>
-#include <kiconloader.h>
-#include <kinputdialog.h>
-#include <kmessagebox.h>
-#include <kmenu.h>
-#include <krun.h>
-#include <kstandardaction.h>
-#include <kstringhandler.h>
-#include <kuniqueapplication.h>
-#include <ktoolinvocation.h>
-#include <kaction.h>
+#include <KAboutData>
+#include <KAction>
+#include <KActionCollection>
+#include <KConfigDialog>
+#include <KGlobalAccel>
+#include <KIconLoader>
+#include <KHelpMenu>
+#include <KMessageBox>
+#include <KRandomSequence>
+#include <KSessionManager>
+#include <KShortcutsDialog>
+#include <KShortcutsEditor>
+#include <KStandardAction>
+#include <KStringHandler>
+#include <KUniqueApplication>
+
 #include "panel.h"
 
 #include "prefs.h"
 #include "ui_generalSettings.h"
 #include "ui_interfaceSettings.h"
-
-#include <kshortcutseditor.h>
 
 class KSCD : public KscdWindow, public KSessionManager {
 

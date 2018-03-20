@@ -24,7 +24,21 @@ else()
 endif()
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
-find_package(KF5 REQUIRED Config I18n Solid KIO KDELibs4Support GlobalAccel DBusAddons)
+find_package(KF5 REQUIRED
+    Config
+    ConfigWidgets
+    CoreAddons
+    DBusAddons
+    GlobalAccel
+    I18n
+    IconThemes
+    KDELibs4Support
+    KIO
+    Service
+    Solid
+    WidgetsAddons
+    XmlGui
+)
 find_package(Phonon4Qt5 REQUIRED)
 find_package(MusicBrainz5 REQUIRED)
 find_package(DiscId REQUIRED)
@@ -129,14 +143,20 @@ add_executable(kscd ${kscd_SRCS})
 ##################################
 
 target_link_libraries(kscd
-    Qt5::Widgets
     Qt5::Svg
-    KF5::Solid
+    Qt5::Widgets
     KF5::ConfigGui
-    KF5::I18n
-    KF5::KDELibs4Support
-    KF5::GlobalAccel
+    KF5::ConfigWidgets
+    KF5::CoreAddons
     KF5::DBusAddons
+    KF5::GlobalAccel
+    KF5::I18n
+    KF5::IconThemes
+    KF5::KDELibs4Support
+    KF5::Service
+    KF5::Solid
+    KF5::WidgetsAddons
+    KF5::XmlGui
     ${PHONON_LIBRARIES}
     ${MUSICBRAINZ5_LIBRARIES}
     ${DISCID_LIBRARIES}

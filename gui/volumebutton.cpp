@@ -32,7 +32,7 @@
  */
 #include "volumebutton.h"
 #include <QPainter>
-#include <KLocale>
+#include <KLocalizedString>
 
 VolumeButton::VolumeButton(QWidget * parent, qreal value):KscdWidget(QLatin1String("volume"),parent)
 {

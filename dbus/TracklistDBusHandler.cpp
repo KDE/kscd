@@ -19,7 +19,6 @@
 #include "TracklistAdaptor.h"
 #include "dbus/PlayerDBusHandler.h"
 
-#include <KUrl>
 #include <KSelectAction>
 
 

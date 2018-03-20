@@ -28,6 +28,7 @@
 #include "dbus/RootDBusHandler.h"
 #include "dbus/TracklistDBusHandler.h"
 
+#include <KConfigGui>
 #include <KDBusService>
 
 #include <QApplication>
@@ -777,7 +778,7 @@ HWControler* KSCD::getDevices() const
 bool KSCD::saveState(QSessionManager& /*sm*/)
 {
 	writeSettings();
-	KConfigGroup config(KApplication::kApplication()->sessionConfig(), i18nc("General option in the configuration dialog","General"));
+	KConfigGroup config(KConfigGui::sessionConfig(), i18nc("General option in the configuration dialog","General"));
 	//config.writeEntry(i18n("Show"), isVisible());
 	return true;
 }
