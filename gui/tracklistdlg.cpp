@@ -31,11 +31,16 @@
  *
  */
 #include "tracklistdlg.h"
+
+#include <QDialogButtonBox>
 #include <QHeaderView>
+#include <QPushButton>
 #include <QVBoxLayout>
 
+#include <KConfigGroup>
+
 TrackListDlg::TrackListDlg(QWidget * parent)
-    :KDialog(parent)
+    :QDialog(parent)
 {
     QWidget *page = new QWidget( this );
     QVBoxLayout* vlay = new QVBoxLayout( page );
@@ -43,9 +48,14 @@ TrackListDlg::TrackListDlg(QWidget * parent)
     m_ui = new trackListDlgUI( this );
     vlay->addWidget( m_ui );
 
-
-    setMainWidget( page );
-    setButtons( KDialog::Close );
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(page);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    mainLayout->addWidget(buttonBox);
     m_ui->trackTable->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
     m_ui->trackTable->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
     m_ui->trackTable->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);

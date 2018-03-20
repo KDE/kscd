@@ -36,7 +36,7 @@
 
 #include "ui_trackListDlgUI.h"
 
-#include <KDialog>
+#include <QDialog>
 
 class trackListDlgUI : public QWidget, public Ui::trackListDlgUI
 {
@@ -46,7 +46,7 @@ class trackListDlgUI : public QWidget, public Ui::trackListDlgUI
       }
 };
 
-class TrackListDlg : public KDialog
+class TrackListDlg : public QDialog
 {
     Q_OBJECT
 
