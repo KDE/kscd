@@ -869,6 +869,8 @@ int main( int argc, char *argv[] )
 	aboutData.addCredit(i18n("Steven Grimm"), i18n("Workman library"));
 	aboutData.addCredit(i18n("Sven Lueppken"), i18n("UI Work"));
 	aboutData.addCredit(i18n("freedb.org"), i18n("Special thanks to freedb.org for providing a free CDDB-like CD database"), 0, "http://freedb.org");
+	aboutData.setDesktopFileName(QStringLiteral("org.kde.kscd"));
+	KAboutData::setApplicationData(aboutData);
 
 	QCommandLineParser* parser = new QCommandLineParser;
 
