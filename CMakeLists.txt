@@ -32,7 +32,6 @@ find_package(KF5 REQUIRED
     GlobalAccel
     I18n
     IconThemes
-    KIO
     Solid
     WidgetsAddons
     XmlGui
