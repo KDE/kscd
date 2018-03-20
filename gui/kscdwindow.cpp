@@ -31,11 +31,13 @@
  *
  */
 #include "kscdwindow.h"
-#include <QString>
+
 #include <QBitmap>
 #include <QPainter>
+#include <QString>
 #include <QTime>
-#include <klocalizedstring.h>
+
+#include <KLocalizedString>
 
 #include "panel.h"
 
@@ -117,7 +119,7 @@ KscdWindow::~KscdWindow()
 
 void KscdWindow::closeTrackDialog()
 {
-	kDebug()<<"Close Track Dialog";
+	qDebug()<<"Close Track Dialog";
 	m_stateTrackDialog = false;
 	m_trackDlg->hide();
 }
@@ -151,10 +153,10 @@ void KscdWindow::createTrackDialog(const QList<MBTrackInfo> & trackList,const QS
 //Apply changes on kscdwidgets with new skin
 void KscdWindow::setNewSkin(QString & newS){
 
-	kDebug () << "make change with new skin :"<<newS;
+	qDebug () << "make change with new skin :"<<newS;
 	Prefs::setUrl(newS);
 	Prefs::self()->writeConfig();
-	kDebug () << "**** " << Prefs::url() << " ****";
+	qDebug () << "**** " << Prefs::url() << " ****";
 
 	QSvgRenderer* rend = new QSvgRenderer(newS,this);
 	this->resize(rend->boundsOnElement(QLatin1String( "kscdBack_default" )).width(),
@@ -195,7 +197,7 @@ void KscdWindow::setNewSkin(QString & newS){
 
 void KscdWindow::doubleClickedEvent(int pos)
 {
-	kDebug()<<"signal recu\n"<<"pos clicked:"<<pos;
+	qDebug()<<"signal recu\n"<<"pos clicked:"<<pos;
  	emit(trackClicked(pos));
 }
 
@@ -221,7 +223,7 @@ void KscdWindow::doubleClickedEvent(int pos)
  */
 void KscdWindow::catchButton(QString & name)
 {
-	kDebug()<<"Catch :" << name;
+	qDebug()<<"Catch :" << name;
 	emit(actionClicked(name));
 }
 
@@ -232,7 +234,7 @@ void KscdWindow::catchVolume(qreal value)
 
 void KscdWindow::changePicture(const QString & name,const QString & state)
 {
-  kDebug() << name << state;
+  qDebug() << name << state;
 	QString result;
 	QString def = QLatin1String( "default" );
 	if(name == QLatin1String( "play" ))

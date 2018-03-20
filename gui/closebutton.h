@@ -33,9 +33,9 @@
 #ifndef CLOSEBUTTON_H
 #define CLOSEBUTTON_H
 
-#include <QWidget>
 #include <QString>
-#include <kdebug.h>
+#include <QWidget>
+
 #include "kscdwidget.h"
 
 class CloseButton:public KscdWidget

@@ -27,15 +27,19 @@
 #include "dbus/PlayerDBusHandler.h"
 #include "dbus/RootDBusHandler.h"
 #include "dbus/TracklistDBusHandler.h"
+
 #include <KDBusService>
+
 #include <QApplication>
-#include <QSplashScreen>
-#include <QPixmap>
-#include <QStringList>
-#include <QDir>
-#include <QMenu>
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include <QDebug>
+#include <QDir>
+#include <QMenu>
+#include <QSplashScreen>
+#include <QStringList>
+#include <QPixmap>
+
 #include "cdplayeradaptor.h"
 
 using namespace Phonon;
@@ -326,7 +330,7 @@ void KSCD::restoreTrackinfoLabel()
 }
 void KSCD::changeVolume(qreal value)
 {
-	//kDebug()<<"changeVolume enter "<<value;
+	//qDebug()<<"changeVolume enter "<<value;
 	devices->setVolume(value);
 }
 
@@ -486,7 +490,7 @@ void KSCD::playTrack(int track)
 {
 	QString result = QLatin1String( "play" );
 	QString def = QLatin1String( "default" );
-	kDebug()<<"playtrack enter "<<track;
+	qDebug()<<"playtrack enter "<<track;
 	devices->play(track);
 	emit(picture(result,def));
 	restoreArtistLabel();
@@ -521,7 +525,7 @@ void KSCD::actionButton(const QString & name)
 		{
 			if((devices->getState() == StoppedState) || (devices->getState()) == PausedState)
 			{
-				kDebug()<<"time total"<<devices->getTotalTime();
+				qDebug()<<"time total"<<devices->getTotalTime();
 				devices->play();
 // 				m_slider->stop();
 // 				m_slider->setTotalTime(devices->getTotalTime());
@@ -713,7 +717,7 @@ void KSCD::actionButton(const QString & name)
 	{
 		if(m_stateTrackDialog == true)
 		{
-			kDebug()<<"close track window";
+			qDebug()<<"close track window";
 			closeTrackDialog();
 		}
 		else
@@ -722,7 +726,7 @@ void KSCD::actionButton(const QString & name)
 			QList<MBTrackInfo> list = m_MBManager->getTrackList();
 			QString title(m_MBManager->getDiscInfo().Title);
 			createTrackDialog(list,title);
-			kDebug()<<"open track window";
+			qDebug()<<"open track window";
 		}
 		QString def = QLatin1String( "default" );
 		emit(picture(name,def));
@@ -796,7 +800,7 @@ void KSCD::optionsPreferences()
 	ui_interface.setupUi(interfaceSettingsDlg);
 
 	//Filter on the skin url combo box
-	QString pathSkins=KStandardDirs::installPath("data") + QLatin1String( "/kscd/skin/" );
+	QString pathSkins=QStandardPaths::standardLocations(QStandardPaths::DataLocation).last() + QLatin1String( "/kscd/skin/" );
 	QDir directory(pathSkins);
 	QStringList filter;
 	filter << QLatin1String( "*.svg" );
@@ -815,23 +819,23 @@ void KSCD::optionsPreferences()
 void KSCD::updateSettings()
 {
 	m_panel->setTextColor(Prefs::textColor());
-	//kDebug()<<"color config:"<<Prefs::textColor();
+	//qDebug()<<"color config:"<<Prefs::textColor();
 	m_panel->setTextSizeFont(Prefs::textFont());
-	//kDebug()<<"font config:"<<Prefs::textFont();
+	//qDebug()<<"font config:"<<Prefs::textFont();
 	devices->setEjectActivated(Prefs::ejectOnFinish());
-	//kDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
+	//qDebug()<<"eject setting:"<<Prefs::ejectOnFinish();
 	m_panel->setEjectAct( Prefs::ejectOnFinish() );
         QString skin;
         if(Prefs::url().startsWith(QLatin1Char( '/' )))
             skin = Prefs::url();
         else
-	    skin = KStandardDirs::installPath("data") + QLatin1String( "kscd/skin/" ) + Prefs::url();
+	    skin = QStandardPaths::standardLocations(QStandardPaths::DataLocation).last() + QLatin1String( "kscd/skin/" ) + Prefs::url();
 	setNewSkin( skin );
 }
 
 void KSCD::loadSettings()
 {
-	//setNewSkin( KStandardDirs::installPath("data") + "kscd/skin/" + Prefs::url() );
+	//setNewSkin( QStandardPaths::standardLocations(QStandardPaths::DataLocation).last() + "kscd/skin/" + Prefs::url() );
 	m_panel->setTextColor(Prefs::textColor());
 	m_panel->setTextSizeFont(Prefs::textFont());
 	m_panel->setEjectAct(Prefs::ejectOnFinish());

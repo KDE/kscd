@@ -33,11 +33,12 @@
 #ifndef SEEKCURSOR_H
 #define SEEKCURSOR_H
 
-#include <QWidget>
 #include <QString>
-#include <kdebug.h>
+#include <QWidget>
+
 #include "kscdwidget.h"
-#include <math.h>
+
+#include <cmath>
 #define SECOND_IN_MILLI	1000
 
 class SeekCursor:public KscdWidget

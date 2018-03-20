@@ -33,14 +33,15 @@
 #ifndef VOLUMEBUTTON_H
 #define VOLUMEBUTTON_H
 
-#include <QWidget>
-#include <QString>
-#include <QMouseEvent>
 #include <QEvent>
-#include <kdebug.h>
-#include "kscdwidget.h"
+#include <QMouseEvent>
+#include <QString>
+#include <QWidget>
 #include <QWheelEvent>
-#include <math.h>
+
+#include "kscdwidget.h"
+
+#include <cmath>
 
 #define wheelStep	2.5
 class VolumeButton:public KscdWidget

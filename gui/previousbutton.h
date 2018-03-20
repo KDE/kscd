@@ -36,7 +36,7 @@
 
 #include <QWidget>
 #include <QString>
-#include <kdebug.h>
+
 #include "kscdwidget.h"
 
 

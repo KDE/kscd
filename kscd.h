@@ -49,7 +49,6 @@
 #include <krandomsequence.h>
 #include <KGlobalAccel/KGlobalAccel>
 #include <ksessionmanager.h>
-#include <kdebug.h>
 #include <kaboutdata.h>
 #include <kactioncollection.h>
 #include <khelpmenu.h>

@@ -32,7 +32,6 @@
  */
 #include "tracklistdlg.h"
 #include <QHeaderView>
-#include <kdebug.h>
 #include <QVBoxLayout>
 
 TrackListDlg::TrackListDlg(QWidget * parent)

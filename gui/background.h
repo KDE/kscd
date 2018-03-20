@@ -33,12 +33,12 @@
 #ifndef BACKGROUND_H
 #define BACKGROUND_H
 
-#include <QWidget>
-#include <QString>
-#include <QMouseEvent>
 #include <QEvent>
+#include <QMouseEvent>
 #include <QPoint>
-#include <kdebug.h>
+#include <QString>
+#include <QWidget>
+
 #include "kscdwidget.h"
 
 class BackGround:public KscdWidget

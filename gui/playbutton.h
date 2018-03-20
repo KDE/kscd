@@ -36,7 +36,7 @@
 #include <QWidget>
 #include <QString>
 #include <QMouseEvent>
-#include <kdebug.h>
+
 #include "kscdwidget.h"
 
 class PlayButton:public KscdWidget

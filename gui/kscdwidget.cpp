@@ -31,11 +31,15 @@
  *
  */
 #include "kscdwidget.h"
-#include <QPainter>
-#include <QRegion>
-#include <QPixmap>
+
 #include <QBitmap>
-#include "klocale.h"
+#include <QDebug>
+#include <QPainter>
+#include <QPixmap>
+#include <QRegion>
+
+#include <KLocalizedString>
+
 KscdWidget::KscdWidget(const QString& sName,QWidget * parent):QWidget(parent)
 {
 	m_state = QLatin1String( "default" );
@@ -130,7 +134,7 @@ void KscdWidget::mousePressEvent(QMouseEvent *event)
 	if(m_bounds->contains(event->pos()+(m_bounds->boundingRect()).topLeft()))
 	{
 		event->accept();
-		kDebug() << "**** button name : " << m_name << " ****";
+		qDebug() << "**** button name : " << m_name << " ****";
 		m_state = QLatin1String( "pressed" );
 		m_id = m_name + QLatin1Char( '_' )+ m_state;
 		emit(needRepaint());

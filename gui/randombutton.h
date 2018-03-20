@@ -37,7 +37,7 @@
 #include <QString>
 #include <QMouseEvent>
 #include <QEvent>
-#include <kdebug.h>
+
 #include "kscdwidget.h"
 
 class RandomButton:public KscdWidget

@@ -24,7 +24,7 @@ else()
 endif()
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
-find_package(KF5 REQUIRED I18n Solid KIO KDELibs4Support GlobalAccel DBusAddons)
+find_package(KF5 REQUIRED Config I18n Solid KIO KDELibs4Support GlobalAccel DBusAddons)
 find_package(Phonon4Qt5 REQUIRED)
 find_package(MusicBrainz5 REQUIRED)
 find_package(DiscId REQUIRED)
@@ -132,6 +132,8 @@ target_link_libraries(kscd
     Qt5::Widgets
     Qt5::Svg
     KF5::Solid
+    KF5::ConfigGui
+    KF5::I18n
     KF5::KDELibs4Support
     KF5::GlobalAccel
     KF5::DBusAddons

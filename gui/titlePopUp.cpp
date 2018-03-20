@@ -32,6 +32,7 @@
  */
 
 #include "titlePopUp.h"
+
 #include <QTimer>
 
 TitlePopUp::TitlePopUp(QWidget *parent, const QString& sName) : KscdWidget(sName,parent)
@@ -41,7 +42,7 @@ TitlePopUp::TitlePopUp(QWidget *parent, const QString& sName) : KscdWidget(sName
 	m_layout = new QGridLayout;
 /*	resize(300,64);*/
 
-// 	kDebug() << "size : " << size();
+// 	qDebug() << "size : " << size();
 //
 // 	move(600,400);
 	setAutoFillBackground(false);

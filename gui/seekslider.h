@@ -33,9 +33,9 @@
 #ifndef SEEKSLIDER_H
 #define SEEKSLIDER_H
 
-#include <QWidget>
 #include <QTimeLine>
-#include <kdebug.h>
+#include <QWidget>
+
 // #include "kscdwidget.h"
 #include "seekbar.h"
 #include "seekcursor.h"

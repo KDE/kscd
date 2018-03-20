@@ -30,7 +30,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+
 #include "seekcursor.h"
+
+#include <QDebug>
 
 SeekCursor::SeekCursor(QWidget * parent,const QString& sName):KscdWidget(sName,parent)
 {
@@ -52,7 +55,7 @@ void SeekCursor::setStep(qint64 time,int length)
 {
 
 	m_step = ceil((SECOND_IN_MILLI * (float)length)/(float)time);
-	kDebug()<<"m_step:"<<m_step;
+	qDebug()<<"m_step:"<<m_step;
 }
 
 void SeekCursor::init()

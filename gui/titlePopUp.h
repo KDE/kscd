@@ -38,8 +38,8 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QWidget>
+
 #include "kscdwidget.h"
-#include <kdebug.h>
 
 
 class TitlePopUp : public KscdWidget

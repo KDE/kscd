@@ -35,12 +35,11 @@
 #define MBMANAGER_H
 
 // KDE includes
-#include <kdebug.h>
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 
 // QT includes
-#include <qstring.h>
-#include <qlist.h>
+#include <QList>
+#include <QString>
 
 // musicbrainz discid
 #include <discid/discid.h>

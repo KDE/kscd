@@ -30,7 +30,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+
 #include "seekslider.h"
+
+#include <QDebug>
 
 SeekSlider::SeekSlider(QWidget * parent):QWidget(parent)
 {
@@ -60,7 +63,7 @@ void SeekSlider::init(qint64 time)
 	m_timeL->setUpdateInterval(1000);
 	m_cursor->setStep(m_time,m_bar->width());
 /*	setStep(m_time,m_bar->width());
-	kDebug()<<"step slider"<<getStep();*/
+	qDebug()<<"step slider"<<getStep();*/
 }
 
 void SeekSlider::start(qint64 time)
@@ -85,7 +88,7 @@ void SeekSlider::pause()
 
 void SeekSlider::resume(QTimeLine::State state)
 {
-	kDebug()<<"m_state"<<m_state;
+	qDebug()<<"m_state"<<m_state;
 	if(m_state==QTimeLine::Paused && state==QTimeLine::Running)
 	{
 		m_timeL->setPaused(false);
@@ -96,8 +99,8 @@ void SeekSlider::resume(QTimeLine::State state)
 void SeekSlider::setTime(qint64 time)
 {
 	m_time = time;
-	kDebug()<<"time:"<<m_time;
-	kDebug()<<"modulo"<<m_time%m_step;
+	qDebug()<<"time:"<<m_time;
+	qDebug()<<"modulo"<<m_time%m_step;
 	qint64 md = ((m_time/1000)/60)/10;
 	qint64 mu = ((m_time/1000)/60)%10;
 	qint64 sd = ((m_time/1000)%60)/10;
@@ -108,7 +111,7 @@ void SeekSlider::setTime(qint64 time)
 	}
 }
 // 	moveC();
-// 	kDebug()<<"SLIDER MOVEC:";
+// 	qDebug()<<"SLIDER MOVEC:";
 // }
 
 void SeekSlider::moveC()
@@ -123,14 +126,14 @@ qint64 SeekSlider::getTime() const
 void SeekSlider::setTotalTime(qint64 time)
 {
 	m_totalTime = time;
-	kDebug()<<"m_totalTime"<<m_totalTime;
+	qDebug()<<"m_totalTime"<<m_totalTime;
 	setStep();
 }
 
 void  SeekSlider::setStep()
 {
 	m_step = round(float(m_totalTime)/float(m_bar->width()));
-	kDebug()<<"step:"<<m_step;
+	qDebug()<<"step:"<<m_step;
 }
 
 int SeekSlider::getStep() const

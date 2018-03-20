@@ -32,8 +32,9 @@
  */
 #include "mbmanager.h"
 
-#include <kurl.h>
+#include <QDebug>
 
+#include <kurl.h>
 #include <ktoolinvocation.h>
 
 #include <musicbrainz5/Query.h>
@@ -202,7 +203,7 @@ static MusicBrainz5::CRelease *getRelease(MusicBrainz5::CQuery &query, std::stri
 	// TODO if multiple entries found
 	if (results->NumItems() > 1)
 	{
-		kDebug() << results->NumItems() << " entries found";
+		qDebug() << results->NumItems() << " entries found";
 	}
 
 	MusicBrainz5::CRelease *release;
@@ -272,23 +273,23 @@ void MBManager::discLookup(const QString &device)
 			}
 			else
 			{
-				kDebug() << "This CD was not found.";
+				qDebug() << "This CD was not found.";
 				m_validInfo = false;
 			}
 
 		}
 		catch (MusicBrainz5::CExceptionBase& error)
 		{
-			kDebug() << "Connection Exception: '" << error.what() << "'";
-			kDebug() << "LastResult: " << query.LastResult();
-			kDebug() << "LastHTTPCode: " << query.LastHTTPCode();
-			kDebug() << "LastErrorMessage: " << QString::fromUtf8(query.LastErrorMessage().c_str());
+			qDebug() << "Connection Exception: '" << error.what() << "'";
+			qDebug() << "LastResult: " << query.LastResult();
+			qDebug() << "LastHTTPCode: " << query.LastHTTPCode();
+			qDebug() << "LastErrorMessage: " << QString::fromUtf8(query.LastErrorMessage().c_str());
 
 			m_validInfo = false;
 		}
 		catch (...)
 		{
-			kDebug() << "Caught Unknown Exception:";
+			qDebug() << "Caught Unknown Exception:";
 			m_validInfo = false;
 		}
 	}
@@ -327,6 +328,6 @@ void MBManager::discUpload(const QString &device)
 	}
 	else
 	{
-		kDebug() << "Error: " << discid_get_error_msg(m_discid);
+		qDebug() << "Error: " << discid_get_error_msg(m_discid);
 	}
 }

@@ -34,12 +34,14 @@
 #define KSCDWINDOW_H
 
 #include <QLabel>
-#include <QWidget>
-#include <QPalette>
-#include <QTableWidget>
-#include <QStringList>
-#include <klocalizedstring.h>
 #include <QList>
+#include <QPalette>
+#include <QStringList>
+#include <QTableWidget>
+#include <QWidget>
+
+#include <KLocalizedString>
+
 #include "kscdwidget.h"
 #include "stopbutton.h"
 #include "playbutton.h"
@@ -68,9 +70,6 @@
 
 
 #include "prefs.h"
-
-
-#include <kdebug.h>
 
 class KscdWindow:public QWidget
 {

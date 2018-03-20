@@ -33,9 +33,9 @@
  */
 
 #include "panel.h"
-#include <kdebug.h>
+
 #include <QTimer>
-#include <klocale.h>
+#include <KLocalizedString>
 
 Panel::Panel(QWidget * parent, const QString& sName):KscdWidget(sName,parent)
 {

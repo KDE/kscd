@@ -18,10 +18,11 @@
 
 #include "PlayerDBusHandler.h"
 #include "../kscd.h"
-#include <kdebug.h>
+
+#include <QDBusArgument>
+#include <QDebug>
 #include <QObject>
 #include <QVariantMap>
-#include <QDBusArgument>
 
 #include "PlayerAdaptor.h"
 
@@ -59,7 +60,7 @@ namespace KsCD
         : QObject()
     {
     	player = kscd;
-    	kDebug() << "**** Launching Player Handler ****";
+    	qDebug() << "**** Launching Player Handler ****";
     	new PlayerAdaptor( this );
 
     		QDBusConnection::sessionBus().registerObject( QLatin1String( "/Player" ), this);
@@ -74,7 +75,7 @@ namespace KsCD
 
     DBusStatus PlayerDBusHandler::GetStatus()
     {
-    	kDebug() << "**** Dbus -> GetStatus() ****";
+    	qDebug() << "**** Dbus -> GetStatus() ****";
         struct DBusStatus s;
         memset(&s, 0, sizeof(struct DBusStatus));
         return s;
@@ -82,84 +83,84 @@ namespace KsCD
 
     void PlayerDBusHandler::Pause()
     {
-    	kDebug() << "**** Dbus -> Pause() ****";
+    	qDebug() << "**** Dbus -> Pause() ****";
     	player->getDevices()->pause() ;
     }
 
     void PlayerDBusHandler::Play()
     {
-    	kDebug() << "**** Dbus -> Play() ****";
+    	qDebug() << "**** Dbus -> Play() ****";
     	player->getDevices()->play();
     }
 
     void PlayerDBusHandler::Next()
     {
-    	kDebug() << "**** Dbus -> Next() ****";
+    	qDebug() << "**** Dbus -> Next() ****";
     	player->getDevices()->nextTrack();
     }
 
     void PlayerDBusHandler::Prev()
     {
-    	kDebug() << "**** Dbus -> Prev() ****";
+    	qDebug() << "**** Dbus -> Prev() ****";
     	player->getDevices()->prevTrack();
     }
 
     void PlayerDBusHandler::Repeat( bool on )
     {
-    	kDebug() << "**** Dbus -> Repeat() ****";
+    	qDebug() << "**** Dbus -> Repeat() ****";
     	
     }
 
     //position is specified in milliseconds
     int PlayerDBusHandler::PositionGet()
     {
-    	kDebug() << "**** Dbus -> PositionGet() ****";
+    	qDebug() << "**** Dbus -> PositionGet() ****";
     	return player->getDevices()->getTotalTime() - player->getDevices()->getRemainingTime();
     }
 
     void PlayerDBusHandler::PositionSet( int time )
     {
-    	kDebug() << "**** Dbus -> Position set() = "<<time<<" ****";
+    	qDebug() << "**** Dbus -> Position set() = "<<time<<" ****";
     	
     }
 
     void PlayerDBusHandler::Stop()
     {
-    	kDebug() << "**** Dbus -> Stop() ****";
+    	qDebug() << "**** Dbus -> Stop() ****";
     	player->getDevices()->stop();
     }
 
     int PlayerDBusHandler::VolumeGet()
     {
-    	kDebug() << "**** Dbus -> VolumeGet() ****";
+    	qDebug() << "**** Dbus -> VolumeGet() ****";
     	return player->getDevices()->getVolume();
     }
 
     void PlayerDBusHandler::VolumeSet( int vol )
     {
-    	kDebug() << "**** Dbus -> VolumeSet() ****";
+    	qDebug() << "**** Dbus -> VolumeSet() ****";
     	player->getDevices()->setVolume(vol);
     }
 
     int PlayerDBusHandler::GetCaps()
     {
-    	kDebug() << "**** Dbus -> GetCaps() ****";
+    	qDebug() << "**** Dbus -> GetCaps() ****";
     	return 0;
     }
 
     void PlayerDBusHandler::slotCapsChange()
     {
-    	kDebug() << "**** Dbus -> slotCapsChange() ****";
+    	qDebug() << "**** Dbus -> slotCapsChange() ****";
     }
 
     void PlayerDBusHandler::slotTrackChange()
     {
-    	kDebug() << "**** Dbus -> slotTrackChange() ****";
+    	qDebug() << "**** Dbus -> slotTrackChange() ****";
     }
 
     void PlayerDBusHandler::slotStatusChange()
     {
-    	kDebug() << "**** Dbus -> slotStatusChange() ****";
+    	qDebug() << "**** Dbus -> slotStatusChange() ****";
     }
 
 } // namespace KsCD

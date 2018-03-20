@@ -38,8 +38,6 @@
 
 #include <KDialog>
 
-#include <kdebug.h>
-
 class trackListDlgUI : public QWidget, public Ui::trackListDlgUI
 {
    public:

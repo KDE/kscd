@@ -38,7 +38,7 @@
 #include <QRegion>
 #include <QMouseEvent>
 #include <QString>
-#include <kdebug.h>
+
 #include "prefs.h"
 
 
