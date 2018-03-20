@@ -31,9 +31,9 @@
  *
  */
 #include "randombutton.h"
-#include <KLocale>
+#include <KLocalizedString>
 
-RandomButton::RandomButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "random" )),parent)
+RandomButton::RandomButton(QWidget * parent):KscdWidget(i18n( "random" ),parent)
 {
 }
 

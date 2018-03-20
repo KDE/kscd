@@ -31,9 +31,9 @@
  *
  */
 #include "playbutton.h"
-#include <KLocale>
+#include <KLocalizedString>
 
-PlayButton::PlayButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "play" )),parent)
+PlayButton::PlayButton(QWidget * parent):KscdWidget(i18n( "play" ),parent)
 {
 }
 

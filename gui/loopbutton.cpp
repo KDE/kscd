@@ -31,9 +31,9 @@
  *
  */
 #include "loopbutton.h"
-#include <KLocale>
+#include <KLocalizedString>
 
-LoopButton::LoopButton(QWidget * parent):KscdWidget(QLatin1String( "loop" ),parent)
+LoopButton::LoopButton(QWidget * parent):KscdWidget(i18n( "loop" ),parent)
 {
 }
 

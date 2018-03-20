@@ -31,9 +31,9 @@
  *
  */
 #include "closebutton.h"
-#include <KLocale>
+#include <KLocalizedString>
 
-CloseButton::CloseButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "close" )),parent)
+CloseButton::CloseButton(QWidget * parent):KscdWidget(i18n( "close" ),parent)
 {
 }
 

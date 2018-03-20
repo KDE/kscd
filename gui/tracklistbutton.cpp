@@ -31,9 +31,9 @@
  *
  */
 #include "tracklistbutton.h"
-#include <KLocale>
+#include <KLocalizedString>
 
-TrackListButton::TrackListButton(QWidget * parent):KscdWidget(QLatin1String("tracklist"),parent)
+TrackListButton::TrackListButton(QWidget * parent):KscdWidget(i18n("tracklist"),parent)
 {
 // 	m_bounds = new QRegion((m_renderer->boundsOnElement(getId())).toRect(),QRegion::Ellipse);
 // 	move((m_bounds->boundingRect()).x(),(m_bounds->boundingRect()).y());

@@ -56,9 +56,9 @@ TrackListDlg::TrackListDlg(QWidget * parent)
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     mainLayout->addWidget(buttonBox);
-    m_ui->trackTable->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
-    m_ui->trackTable->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-    m_ui->trackTable->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
+    m_ui->trackTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    m_ui->trackTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    m_ui->trackTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     m_ui->trackTable->verticalHeader()->hide();
 
     setSizeIncrement ( 0, 50 );

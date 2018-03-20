@@ -31,9 +31,9 @@
  *
  */
 #include "nextbutton.h"
-#include <KLocale>
+#include <KLocalizedString>
 
-NextButton::NextButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "next" )),parent)
+NextButton::NextButton(QWidget * parent):KscdWidget(i18n( "next" ),parent)
 {
 }
 

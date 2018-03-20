@@ -31,9 +31,9 @@
  *
  */
 #include "previousbutton.h"
-#include <KLocale>
+#include <KLocalizedString>
 
-PreviousButton::PreviousButton(QWidget * parent):KscdWidget(I18N_NOOP(QLatin1String( "previous" )),parent)
+PreviousButton::PreviousButton(QWidget * parent):KscdWidget(i18n( "previous" ),parent)
 {
 }
 

@@ -32,7 +32,6 @@ find_package(KF5 REQUIRED
     GlobalAccel
     I18n
     IconThemes
-    KDELibs4Support
     KIO
     Service
     Solid
@@ -152,7 +151,6 @@ target_link_libraries(kscd
     KF5::GlobalAccel
     KF5::I18n
     KF5::IconThemes
-    KF5::KDELibs4Support
     KF5::Service
     KF5::Solid
     KF5::WidgetsAddons

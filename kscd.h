@@ -45,7 +45,6 @@
 #include "mbmanager.h"
 
 #include <KAboutData>
-#include <KAction>
 #include <KActionCollection>
 #include <KConfigDialog>
 #include <KGlobalAccel>
@@ -53,12 +52,10 @@
 #include <KHelpMenu>
 #include <KMessageBox>
 #include <KRandomSequence>
-#include <KSessionManager>
 #include <KShortcutsDialog>
 #include <KShortcutsEditor>
 #include <KStandardAction>
 #include <KStringHandler>
-#include <KUniqueApplication>
 
 #include "panel.h"
 
@@ -66,7 +63,7 @@
 #include "ui_generalSettings.h"
 #include "ui_interfaceSettings.h"
 
-class KSCD : public KscdWindow, public KSessionManager {
+class KSCD : public KscdWindow {
 
 	Q_OBJECT
 public:
