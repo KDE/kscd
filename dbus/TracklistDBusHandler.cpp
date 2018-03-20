@@ -39,11 +39,14 @@ namespace KsCD
 
     int TracklistDBusHandler::AddTrack( const QString& url, bool playImmediately )
     {
+        Q_UNUSED(url)
+        Q_UNUSED(playImmediately)
         return 0;
     }
 
     void TracklistDBusHandler::DelTrack( int index )
     {
+        Q_UNUSED(index)
     }
 
     int TracklistDBusHandler::GetCurrentTrack()
@@ -58,17 +61,18 @@ namespace KsCD
 
     QVariantMap TracklistDBusHandler::GetMetadata( int position )
     {
+        Q_UNUSED(position)
         return QVariantMap();
     }
 
     void TracklistDBusHandler::SetLoop(bool enable)
     {
-    	
+    	Q_UNUSED(enable)
     }
 
     void TracklistDBusHandler::SetRandom( bool enable )
     {
-    	
+    	Q_UNUSED(enable)
     }
 
     void TracklistDBusHandler::slotTrackListChange()

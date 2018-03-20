@@ -107,6 +107,7 @@ namespace KsCD
 
     void PlayerDBusHandler::Repeat( bool on )
     {
+    	Q_UNUSED(on)
     	qDebug() << "**** Dbus -> Repeat() ****";
     	
     }

@@ -340,6 +340,8 @@ void HWControler ::setLoopMode(LoopMode lm)
 }
 void HWControler ::replayTrack(qint64 pos)
 {
+	Q_UNUSED(pos)
+
 	if(getRemainingTime()<= 500)
 	{
 

@@ -33,8 +33,7 @@
 #include "mbmanager.h"
 
 #include <QDebug>
-
-#include <KToolInvocation>
+#include <QDesktopServices>
 
 #include <musicbrainz5/Query.h>
 #include <musicbrainz5/Artist.h>
@@ -323,7 +322,7 @@ void MBManager::discUpload(const QString &device)
 	if (ok)
 	{
 		QString url = QString::fromUtf8(discid_get_submission_url(m_discid));
-		KToolInvocation::invokeBrowser(url);
+		QDesktopServices::openUrl(url);
 	}
 	else
 	{

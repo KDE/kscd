@@ -104,6 +104,7 @@ void KscdWidget::loadPicture(const QString & name,const QString & state)
 
 void KscdWidget::paintEvent(QPaintEvent *event)
 {
+	Q_UNUSED(event)
 
 	QPainter painter(this);
 

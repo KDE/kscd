@@ -130,6 +130,8 @@ void VolumeButton::mouseMoveEvent(QMouseEvent *event)
 
 void VolumeButton::mouseReleaseEvent(QMouseEvent *event)
 {
+	Q_UNUSED(event)
+
 	releaseMouse();
 	m_move = false;
 }
@@ -170,6 +172,8 @@ qreal VolumeButton::valueToAngle(qreal value)
 }
 void VolumeButton::paintEvent(QPaintEvent *event)
 {
+	Q_UNUSED(event)
+
 	QPainter painter(this);
 	painter.translate((m_renderer->boundsOnElement(m_id).width())/2,
 				(m_renderer->boundsOnElement(m_id).height())/2);

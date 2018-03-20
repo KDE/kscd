@@ -155,7 +155,7 @@ void KscdWindow::setNewSkin(QString & newS){
 
 	qDebug () << "make change with new skin :"<<newS;
 	Prefs::setUrl(newS);
-	Prefs::self()->writeConfig();
+	Prefs::self()->save();
 	qDebug () << "**** " << Prefs::url() << " ****";
 
 	QSvgRenderer* rend = new QSvgRenderer(newS,this);
@@ -397,6 +397,7 @@ void KscdWindow::mousePressEvent(QMouseEvent *event)
 
 void KscdWindow::mouseReleaseEvent(QMouseEvent *event)
 {
+	Q_UNUSED(event)
 	releaseMouse();
 	m_move = false;
 }

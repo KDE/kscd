@@ -66,6 +66,7 @@ void SeekCursor::init()
 
 void SeekCursor::moveCursor(qreal pos)
 {
+	Q_UNUSED(pos)
 	m_posCurrent = m_posCurrent + getStep();
 	move(m_posCurrent,y());
 }

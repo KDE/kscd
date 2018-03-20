@@ -33,7 +33,6 @@ find_package(KF5 REQUIRED
     I18n
     IconThemes
     KIO
-    Service
     Solid
     WidgetsAddons
     XmlGui
@@ -151,7 +150,6 @@ target_link_libraries(kscd
     KF5::GlobalAccel
     KF5::I18n
     KF5::IconThemes
-    KF5::Service
     KF5::Solid
     KF5::WidgetsAddons
     KF5::XmlGui

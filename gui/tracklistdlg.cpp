@@ -49,7 +49,6 @@ TrackListDlg::TrackListDlg(QWidget * parent)
     vlay->addWidget( m_ui );
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
-    QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
     mainLayout->addWidget(page);
