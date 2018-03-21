@@ -49,7 +49,7 @@
     </method>
 
     <signal name="TrackChange">
-        <arg type="a{sv}"/>
+        <arg type="a{sv}" direction="in"/>
         <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
     </signal>
 
