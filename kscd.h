@@ -46,7 +46,6 @@
 
 #include <kapplication.h>
 #include <kconfigdialog.h>
-#include <krandomsequence.h>
 #include <kglobalaccel.h>
 #include <ksessionmanager.h>
 #include <kdebug.h>
